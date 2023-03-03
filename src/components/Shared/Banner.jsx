@@ -8,8 +8,8 @@ function Banner() {
         <div className="banner-content">
           <div className="banner-warning">
             <span>
-              <a className="add-fragment" href="#">
-                <i className="fas fa-exclamation-triangle warning-icon" />
+              <a className="warning-icon" href="#">
+                <i className="fas fa-exclamation-triangle" />
               </a>
             </span>
             <span className="banner-span">Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h.</span>

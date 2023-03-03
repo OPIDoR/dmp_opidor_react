@@ -196,13 +196,12 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
               }}
             />
           </div>
-          <div className="col-md-2">
+          <div className="col-md-2" style={{ marginTop: "8px" }}>
             <span>
-              <a className="add-fragment" href="#" onClick={handleShow}>
-                <i className="fas fa-plus-square text-primary icon-margin-top" />
+              <a className="text-primary" href="#" onClick={handleShow}>
+                <i className="fas fa-plus-square" />
               </a>
             </span>
-            {/* <i className="fas fa-plus-square text-primary icon-margin-top " ></i> */}
           </div>
         </div>
 
@@ -223,25 +222,21 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
                     <p className="border m-2"> {list[idx]} </p>
                   </td>
                   <td style={{ width: "10%" }}>
-                    <div className="col-md-1">
-                      {
-                        level === 1 && (
-                          <span>
-                            <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
-                              <i className="fa fa-edit icon-margin-top text-primary" />
-                            </a>
-                          </span>
-                        )
-                        // <i className="fa fa-edit icon-margin-top text-primary" aria-hidden="true" onClick={() => handleEdit(idx)}></i>
-                      }
+                    <div className="col-md-1" style={{ marginTop: "8px" }}>
+                      {level === 1 && (
+                        <span>
+                          <a className="text-primary" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
+                            <i className="fa fa-edit" />
+                          </a>
+                        </span>
+                      )}
                     </div>
-                    <div className="col-md-1">
+                    <div className="col-md-1" style={{ marginTop: "8px" }}>
                       <span>
-                        <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
-                          <i className="fa fa-times icon-margin-top text-danger" />
+                        <a className="text-danger" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                          <i className="fa fa-times" />
                         </a>
                       </span>
-                      {/* <i className="fa fa-times icon-margin-top text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i> */}
                     </div>
                   </td>
                 </tr>

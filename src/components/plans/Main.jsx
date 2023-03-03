@@ -25,8 +25,8 @@ function Main() {
       <div className="main">
         <div className="banner-info">
           <span>
-            <a className="add-fragment" href="#">
-              <i className="fas fa-info-circle info-icon" />
+            <a className="info-icon" href="#">
+              <i className="fas fa-info-circle" />
             </a>
           </span>
           <span className="banner-span">Message à l’attention de l’utilisateur l’informant de la manipulation faite.</span>

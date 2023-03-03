@@ -141,13 +141,12 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
               </select>
             )}
           </div>
-          <div className="col-md-2">
+          <div className="col-md-2" style={{ marginTop: "8px" }}>
             <span>
-              <a className="add-fragment" href="#" aria-hidden="true" onClick={handleShow}>
-                <i className="fas fa-plus-square text-primary icon-margin-top" />
+              <a className="text-primary" href="#" aria-hidden="true" onClick={handleShow}>
+                <i className="fas fa-plus-square" />
               </a>
             </span>
-            {/* <i className="fas fa-plus-square text-primary icon-margin-top" onClick={handleShow}></i> */}
           </div>
         </div>
         {selectedValue && (

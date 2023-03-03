@@ -179,13 +179,12 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
               }}
             />
           </div>
-          <div className="col-md-2">
+          <div className="col-md-2" style={{ marginTop: "8px" }}>
             <span>
-              <a className="add-fragment" href="#" aria-hidden="true" onClick={handleShow}>
-                <i className="fas fa-plus-square text-primary icon-margin-top" />
+              <a className="text-primary" href="#" aria-hidden="true" onClick={handleShow}>
+                <i className="fas fa-plus-square" />
               </a>
             </span>
-            {/* <i className="fas fa-plus-square text-primary icon-margin-top" onClick={handleShow}></i> */}
           </div>
         </div>
 
@@ -207,24 +206,20 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
                   </td>
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1">
-                      {
-                        level === 1 && (
-                          <span>
-                            <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
-                              <i className="fa fa-edit icon-margin-top text-primary" />
-                            </a>
-                          </span>
-                        )
-                        // <i className="fa fa-edit icon-margin-top text-primary" aria-hidden="true" onClick={() => handleEdit(idx)}></i>
-                      }
+                      {level === 1 && (
+                        <span>
+                          <a className="text-primary" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
+                            <i className="fa fa-edit" />
+                          </a>
+                        </span>
+                      )}
                     </div>
                     <div className="col-md-1">
                       <span>
-                        <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
-                          <i className="fa fa-times icon-margin-top text-danger" />
+                        <a className="text-danger" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                          <i className="fa fa-times" />
                         </a>
                       </span>
-                      {/* <i className="fa fa-times icon-margin-top text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i> */}
                     </div>
                   </td>
                 </tr>
