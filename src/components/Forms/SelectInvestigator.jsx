@@ -142,7 +142,12 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
             )}
           </div>
           <div className="col-md-2">
-            <i className="fas fa-plus-square text-primary icon-margin-top" onClick={handleShow}></i>
+            <span>
+              <a className="add-fragment" href="#" aria-hidden="true" onClick={handleShow}>
+                <i className="fas fa-plus-square text-primary icon-margin-top" />
+              </a>
+            </span>
+            {/* <i className="fas fa-plus-square text-primary icon-margin-top" onClick={handleShow}></i> */}
           </div>
         </div>
         {selectedValue && (

@@ -118,7 +118,12 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                   <p className="border m-2"> {list[idx]} </p>
                 </div>
                 <div className="col-md-1">
-                  <i className="fa fa-times icon-margin-top text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i>
+                  <span>
+                    <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                      <i className="fa fa-times icon-margin-top text-danger" />
+                    </a>
+                  </span>
+                  {/* <i className="fa fa-times icon-margin-top text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i> */}
                 </div>
               </div>
             ))}

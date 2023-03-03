@@ -2,10 +2,6 @@
   outline: 1px solid #dc3545;
 }
 
-/* body {
-  margin: 30px;
-} */
-
 .button-margin {
   margin: 10px;
 }
@@ -36,4 +32,7 @@
 .legend {
   color: #2c7dad;
   text-transform: none;
+}
+a {
+  color: inherit;
 }

@@ -24,7 +24,11 @@ function Main() {
       <Banner></Banner>
       <div className="main">
         <div className="banner-info">
-          <i className="fas fa-info-circle info-icon"></i>
+          <span>
+            <a className="add-fragment" href="#">
+              <i className="fas fa-info-circle info-icon" />
+            </a>
+          </span>
           <span className="banner-span">Message à l’attention de l’utilisateur l’informant de la manipulation faite.</span>
         </div>
         <div className="card-articles">

@@ -136,10 +136,25 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
 
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1">
-                      {level === 1 && <i className="fa fa-edit m-3 text-primary" aria-hidden="true" onClick={() => handleEdit(idx)}></i>}
+                      {
+                        level === 1 && (
+                          <span>
+                            <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
+                              <i className="fa fa-edit m-3 text-primary" />
+                            </a>
+                          </span>
+                        )
+
+                        // <i className="fa fa-edit m-3 text-primary" ></i>
+                      }
                     </div>
                     <div className="col-md-1">
-                      <i className="fa fa-times m-3  text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i>
+                      <span>
+                        <a className="add-fragment" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                          <i className="fa fa-times m-3  text-danger" />
+                        </a>
+                      </span>
+                      {/* <i className="fa fa-times m-3  text-danger" aria-hidden="true" onClick={() => handleDeleteListe(idx)}></i> */}
                     </div>
                   </td>
                 </tr>

@@ -7,7 +7,11 @@ function Banner() {
         <img className="banner-logo" src="/assets/images/banner.png" alt="image" />
         <div className="banner-content">
           <div className="banner-warning">
-            <i className="fas fa-exclamation-triangle warning-icon"></i>
+            <span>
+              <a className="add-fragment" href="#">
+                <i className="fas fa-exclamation-triangle warning-icon" />
+              </a>
+            </span>
             <span className="banner-span">Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h.</span>
           </div>
           <div className="banner-main">
@@ -15,16 +19,28 @@ function Banner() {
               <img src="/assets/images/inrae.png" alt="" />
               <div className="banner-details">
                 <div>
-                  <i className="fas fa-envelope"></i>
+                  <span>
+                    <a className="" href="#">
+                      <i className="fas fa-envelope" />
+                    </a>
+                  </span>
                   <span className="banner-span">Contact</span>
                 </div>
 
                 <div>
-                  <i className="fas fa-globe"></i>
+                  <span>
+                    <a className="" href="#">
+                      <i className="fas fa-globe" />
+                    </a>
+                  </span>
                   <span className="banner-span">Gestion et partage des données scientifiques</span>
                 </div>
                 <div>
-                  <i className="fas fa-globe"></i>
+                  <span>
+                    <a className="" href="#">
+                      <i className="fas fa-globe" />
+                    </a>
+                  </span>
                   <span className="banner-span">Portail Data INRAE</span>
                 </div>
               </div>
