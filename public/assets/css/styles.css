@@ -29,11 +29,11 @@
   src: url("/assets/font/Tomarik-Display.ttf");
 }
 
-/* header */
-
 body {
   font-family: custumHelveticaRoman;
 }
+
+/* header */
 
 .logo {
   width: 150px;
@@ -83,6 +83,66 @@ body {
   background: var(--secondary);
   border-radius: 50%;
   padding: 5px;
+}
+
+/* footer */
+
+.footer {
+  color: var(--white);
+  margin: 50px 0px 0 0px;
+  padding-left: 70px;
+  padding-top: 30px;
+  background-color: var(--primary);
+  font-size: 18px;
+  font-family: custumHelveticaLight;
+}
+
+.item-footer a {
+  text-decoration: none;
+}
+
+.item-footer {
+  font-size: 16px;
+  padding: 10px;
+  list-style: none;
+}
+
+.title {
+  margin-left: 55px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.description {
+  margin-top: 15px;
+}
+
+.logo-gris {
+  width: 150px;
+  height: 60px;
+}
+
+.logo-republique {
+  width: 45px;
+  height: 45px;
+  margin-right: 10px;
+}
+
+.icon-footer {
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+.logo-cnrs {
+  width: 32px;
+  height: 32px;
+  margin-left: 10px;
+}
+.logo-road {
+  width: 70px;
+  height: 40px;
+  margin-left: 10px;
 }
 
 /* banner */
@@ -167,66 +227,6 @@ body {
   border-radius: 8px;
   z-index: 999;
   color: var(--white);
-}
-
-/* footer */
-
-.footer {
-  color: var(--white);
-  margin: 50px 0px 0 0px;
-  padding-left: 70px;
-  padding-top: 30px;
-  background-color: var(--primary);
-  font-size: 18px;
-  font-family: custumHelveticaLight;
-}
-
-.item-footer a {
-  text-decoration: none;
-}
-
-.item-footer {
-  font-size: 16px;
-  padding: 10px;
-  list-style: none;
-}
-
-.title {
-  margin-left: 55px;
-  font-size: 16px;
-  font-weight: bold;
-}
-.description {
-  margin-top: 15px;
-}
-
-.logo-gris {
-  width: 150px;
-  height: 60px;
-}
-
-.logo-republique {
-  width: 45px;
-  height: 45px;
-  margin-right: 10px;
-}
-
-.icon-footer {
-  margin-left: 10px;
-  width: 30px;
-  height: 30px;
-  -webkit-filter: invert(100%); /* Safari/Chrome */
-  filter: invert(100%);
-}
-.logo-cnrs {
-  width: 32px;
-  height: 32px;
-  margin-left: 10px;
-}
-.logo-road {
-  width: 70px;
-  height: 40px;
-  margin-left: 10px;
 }
 
 /* card */

@@ -222,7 +222,7 @@ describe("HandleGenerateForms component", () => {
     expect(wrapper.find("SelectInvestigator").prop("tooltip")).toBe("Aussi appelé Investigateur principal");
 
     //contributor (Select contributor)
-    expect(wrapper.find("SelectContributor").prop("label")).toBe("Responsables du stockage des donnée");
+    expect(wrapper.find("SelectContributor").prop("label")).toBe("Responsables du stockage des données");
     expect(wrapper.find("SelectContributor").prop("name")).toBe("contributor");
 
     //volumeUnit  (Select single)

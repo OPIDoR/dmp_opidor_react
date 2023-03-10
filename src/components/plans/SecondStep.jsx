@@ -3,6 +3,7 @@ import Select from "react-select";
 import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrganisme, getOtherOrganismeById } from "../../services/DmpPlansApi";
 import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
+import Button from "../Styled/Button";
 
 function SecondStep() {
   const { context, setContext } = useContext(GlobalContext);
@@ -276,9 +277,10 @@ function SecondStep() {
         </div>
       </div>
       <div className="row">
-        <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
+        {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
-        </button>
+        </button> */}
+        <Button handleNextStep={handleSendTemplateId} title="Valider mon choix"></Button>
       </div>
     </div>
   );

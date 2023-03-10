@@ -1,23 +1,24 @@
 import React from "react";
+import styles from "../assets/css/header.module.css";
 
 function Header() {
   return (
     <header>
-      <div className="header">
+      <div className={styles.header}>
         <nav>
-          <ul className="list">
-            <li className="item">
-              <img className="logo" src="/assets/images/logo.png" alt="banner" />
+          <ul className={styles.list}>
+            <li className={styles.item}>
+              <img className={styles.logo} src="../assets/images/logo.png" alt="banner" />
             </li>
-            <li className="item">AIDE EN LIGNE</li>
-            <li className="item dot" />
-            <li className="item">PGD ET MODEL</li>
-            <li className="item dot" />
-            <li className="item">APPROFONDIR</li>
-            <li className="item">
-              <button className="button">MON ESPACE</button>
+            <li className={styles.item}>AIDE EN LIGNE</li>
+            <li className={`${styles.item} ${styles.dot}`} />
+            <li className={styles.item}>PGD ET MODEL</li>
+            <li className={`${styles.item} ${styles.dot}`} />
+            <li className={styles.item}>APPROFONDIR</li>
+            <li className={styles.item}>
+              <button className={styles.button}>MON ESPACE</button>
             </li>
-            <li className="item">FR / ENG</li>
+            <li className={styles.item}>FR / ENG</li>
           </ul>
         </nav>
       </div>

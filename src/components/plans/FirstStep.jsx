@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../context/Global";
+import styles from "../assets/css/firstStep.module.css";
+import Button from "../Styled/Button";
 
 function FirstStep({ handleNextStep }) {
   const { setContext } = useContext(GlobalContext);
@@ -15,54 +17,55 @@ function FirstStep({ handleNextStep }) {
   };
 
   return (
-    <div className="container-card">
+    <div className={styles.container_card}>
       <div className="row">
-        <div className="row circle-content">
-          <div className="rom">
-            <div className="col-md-4 circle">1</div>
-            <div className="circle-text col-md-8 ">Indiquez le contexte de votre DMP</div>
+        <div className={`row ${styles.circle_content}`}>
+          <div className="row">
+            <div className={`col-md-4 ${styles.circle}`}>1</div>
+            <div className={`col-md-8 ${styles.circle_text}`}>Indiquez le contexte de votre DMP</div>
           </div>
         </div>
       </div>
       <div className="column">
         <div className="form-check">
           <input
-            className="form-check-input check"
+            className={`form-check-label ${styles.check}`}
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault1"
             defaultChecked={true}
             onClick={() => handleCheck("research_project")}
           />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault1">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault1">
             Projet de recherche
           </label>
-          <div className="list-context">
+          <div className={styles.list_context}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur rutrum
             commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula.
           </div>
         </div>
         <div className="form-check">
           <input
-            className="form-check-input check"
+            className={`form-check-label ${styles.check}`}
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault2"
             onClick={() => handleCheck("research_structure")}
           />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault2">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
             Structure de recherche
           </label>
-          <div className="list-context">
+          <div className={styles.list_context}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur rutrum
             commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula.
           </div>
         </div>
       </div>
       <div className="row">
-        <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
+        {/* <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
           Valider mon choix
-        </button>
+        </button> */}
+        <Button handleNextStep={handleNextStep} title="Valider mon choix"></Button>
       </div>
     </div>
   );
