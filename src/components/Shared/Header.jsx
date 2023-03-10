@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../assets/css/header.module.css";
+import logo from "../assets/images/logo.png";
 
 function Header() {
   return (
@@ -8,7 +9,7 @@ function Header() {
         <nav>
           <ul className={styles.list}>
             <li className={styles.item}>
-              <img className={styles.logo} src="../assets/images/logo.png" alt="banner" />
+              <img className={styles.logo} src={logo} alt="banner" />
             </li>
             <li className={styles.item}>AIDE EN LIGNE</li>
             <li className={`${styles.item} ${styles.dot}`} />

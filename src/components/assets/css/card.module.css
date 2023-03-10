@@ -37,15 +37,6 @@
   border-radius: 9px;
 }
 
-.card_info {
-  margin: 0px 0px 0px -360px;
-  background-color: var(--primary);
-  padding: 10px;
-  border-radius: 8px;
-  z-index: 999;
-  color: var(--white);
-}
-
 /* duplicata */
 .banner_span {
   margin-left: 15px;
@@ -55,4 +46,13 @@
 .info_icon {
   color: var(--white);
   font-size: 20px;
+}
+
+.card_info {
+  margin: 0px 0px 0px -360px;
+  background-color: var(--primary);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 999;
+  color: var(--white);
 }

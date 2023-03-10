@@ -5,6 +5,7 @@ import Header from "../Shared/Header";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import styles from "../assets/css/card.module.css";
+import Info from "../Styled/Info";
 
 function Main() {
   const [firstStep, setfirstStep] = useState(true);
@@ -24,14 +25,7 @@ function Main() {
       <Header></Header>
       <Banner></Banner>
       <div className={styles.main}>
-        <div className={styles.card_info}>
-          <span>
-            <a className={styles.info_icon} href="#">
-              <i className="fas fa-info-circle" />
-            </a>
-          </span>
-          <span className={styles.banner_span}>Message à l’attention de l’utilisateur l’informant de la manipulation faite.</span>
-        </div>
+        <Info text="Message à l’attention de l’utilisateur l’informant de la manipulation faite." icon="fas fa-info-circle" type="info"></Info>
         <div className={styles.card_articles}>
           {firstStep && <FirstStep handleNextStep={handleNextStep}></FirstStep>}
           {secondStep && <SecondStep></SecondStep>}

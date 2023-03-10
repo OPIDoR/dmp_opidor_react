@@ -1,25 +1,23 @@
 import React from "react";
 import styles from "../assets/css/banner.module.css";
+import Info from "../Styled/Info";
+import bannerImage from "../assets/images/banner.png";
+import inraeImage from "../assets/images/inrae.png";
 
 function Banner() {
   return (
     <section>
       <div className={styles.banner}>
-        <img className={styles.banner_logo} src="/assets/images/banner.png" alt="image" />
+        <img className={styles.banner_logo} src={bannerImage} alt="image" />
         <div className={styles.banner_content}>
-          <div className={styles.banner_warning}>
-            <span>
-              <a className={styles.warning_icon} href="#">
-                <i className="fas fa-exclamation-triangle" />
-              </a>
-            </span>
-            <span className={styles.banner_span}>
-              Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h.
-            </span>
-          </div>
+          <Info
+            text="Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h."
+            icon="fas fa-exclamation-triangle"
+            type="warning"
+          ></Info>
           <div className={styles.banner_main}>
             <div className={styles.banner_flex}>
-              <img src="/assets/images/inrae.png" alt="" />
+              <img src={inraeImage} alt="" />
               <div className={styles.banner_details}>
                 <div>
                   <span>
