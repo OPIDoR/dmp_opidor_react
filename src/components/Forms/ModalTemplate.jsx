@@ -6,6 +6,8 @@ import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePate
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getSchema } from "../../services/DmpServiceApi";
+import styles from "../assets/css/form.module.css";
+import CustumButton from "../Styled/CustumButton";
 
 /**
  * It takes a template name as an argument, loads the template file, and then renders a modal with the template file as a prop.
@@ -109,7 +111,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
 
   return (
     <>
-      <div className="border p-2 mb-2">
+      <div className={`p-2 mb-2 ${styles.border}`}>
         <p>{lng === "fr" ? value["form_label@fr_FR"] : value["form_label@en_GB"]}</p>
         {tooltip && (
           <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
@@ -157,17 +159,18 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
             </tbody>
           </table>
         )}
-
+        {/* className={`sub-fragment registry ${styles.legend}`}
         <button className="btn btn-primary button-margin" onClick={() => handleShow(true)}>
           Créé
-        </button>
+        </button> */}
+        <CustumButton handleNextStep={() => handleShow(true)} title="Créé" type="primary"></CustumButton>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>
           {keyValue === "funding" && index !== null && temp && (
-            <div className="col-md-12 funder">
+            <div className={`col-md-12 ${styles.funder}`}>
               <fieldset className="sub-fragment registry">
-                <legend className="sub-fragment registry legend">
+                <legend className={`sub-fragment registry ${styles.legend}`}>
                   Financeurs
                   <a href="#">
                     <span className="registry-info fas fa-info-circle" />
@@ -187,7 +190,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
                     <span className="property-value">{temp?.funder?.idType}</span>
                   </div>
                   <fieldset className="fragment-display sub-fragment">
-                    <legend className="legend">Politique de données</legend>
+                    <legend className={styles.legend}>Politique de données</legend>
                     <div className="fragment-property">
                       <span className="property-label">Titre : </span>
                       <span className="property-value">{temp?.funder?.dataPolicy?.title}</span>

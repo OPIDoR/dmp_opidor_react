@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getCheckPatern } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
+import styles from "../assets/css/form.module.css";
 
 /**
  * It's a function that takes in a bunch of props and returns a div with a label, an input, and a small tag.
@@ -45,10 +46,11 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
           ?
         </span>
       )}
+
       <input
         type={type}
         value={isConst === false ? (temp ? temp[name] : text == null ? "" : text) : isConst}
-        className={isRequired ? "form-control outline-red" : "form-control"}
+        className={isRequired ? `form-control ${styles.outline_red}` : "form-control"}
         hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}

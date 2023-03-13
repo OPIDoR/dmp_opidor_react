@@ -7,6 +7,7 @@ import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getRegistry, getRegistryValue, getSchema } from "../../services/DmpServiceApi";
+import styles from "../assets/css/form.module.css";
 
 function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header }) {
   const [list, setlist] = useState([]);
@@ -219,7 +220,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
               {form[keyValue].map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row">
-                    <p className="border m-2"> {list[idx]} </p>
+                    <p className={`m-2 ${styles.border}`}> {list[idx]} </p>
                   </td>
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1" style={{ marginTop: "8px" }}>

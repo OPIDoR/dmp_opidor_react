@@ -7,6 +7,7 @@ import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
+import styles from "../assets/css/form.module.css";
 
 function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header }) {
   const [list, setlist] = useState([]);
@@ -202,7 +203,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
               {form[keyValue].map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row">
-                    <p className="border m-2"> {list[idx]} </p>
+                    <p className={`m2 ${styles.border}`}> {list[idx]} </p>
                   </td>
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1">

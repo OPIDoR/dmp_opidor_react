@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React from "react";
 
 const Icon = styled.a`
-  color: var(--white);
   font-size: 20px;
 `;
 
@@ -31,12 +30,23 @@ function Info({ text, icon, type }) {
           border-radius: 8px;
         `;
 
+  const IconColor =
+    type === "info"
+      ? styled.a`
+          color: var(--white);
+          font-size: 20px;
+        `
+      : styled.a`
+          color: var(--yellow);
+          font-size: 20px;
+        `;
+
   return (
     <AlertContainer type={type}>
       <span>
-        <Icon>
+        <IconColor>
           <i className={icon} />
-        </Icon>
+        </IconColor>
       </span>
       <Text>{text}</Text>
     </AlertContainer>

@@ -4,7 +4,7 @@ import Footer from "../Shared/Footer";
 import Header from "../Shared/Header";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
-import styles from "../assets/css/card.module.css";
+import styles from "../assets/css/main.module.css";
 import Info from "../Styled/Info";
 
 function Main() {

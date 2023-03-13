@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/Global";
 import { Editor } from "@tinymce/tinymce-react";
+import styles from "../assets/css/form.module.css";
 
 function TinyArea({ label, name, changeValue, tooltip, level }) {
   const { form, temp } = useContext(GlobalContext);
@@ -17,7 +18,7 @@ function TinyArea({ label, name, changeValue, tooltip, level }) {
     settext(e);
   };
   return (
-    <div className="form-group ticket-summernote mr-4 ml-4 border">
+    <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.border}`}>
       <div className="row">
         <div>
           <label className="form-label mb-0 mt-2 text-lg">{label}</label>

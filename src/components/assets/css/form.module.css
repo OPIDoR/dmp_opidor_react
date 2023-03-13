@@ -1,0 +1,27 @@
+.outline_red {
+  outline: 1px solid #dc3545;
+}
+
+.border {
+  border: solid;
+  border-color: grey;
+  border-width: 1px;
+  padding: 10px 17px 3px 17px;
+  margin-bottom: 10px;
+}
+
+.funder {
+  border: solid;
+  border-color: grey;
+  border-width: 1px;
+  margin: 1px 1px 10px 1px;
+  padding: 10px;
+}
+
+.legend {
+  color: #2c7dad;
+  text-transform: none;
+}
+a {
+  color: inherit;
+}

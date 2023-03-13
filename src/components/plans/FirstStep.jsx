@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../context/Global";
-import styles from "../assets/css/firstStep.module.css";
-import Button from "../Styled/Button";
+import styles from "../assets/css/steps.module.css";
+import CircleTitle from "../Styled/CircleTitle";
+import CustumButton from "../Styled/CustumButton";
 
 function FirstStep({ handleNextStep }) {
   const { setContext } = useContext(GlobalContext);
@@ -17,15 +18,8 @@ function FirstStep({ handleNextStep }) {
   };
 
   return (
-    <div className={styles.container_card}>
-      <div className="row">
-        <div className={`row ${styles.circle_content}`}>
-          <div className="row">
-            <div className={`col-md-4 ${styles.circle}`}>1</div>
-            <div className={`col-md-8 ${styles.circle_text}`}>Indiquez le contexte de votre DMP</div>
-          </div>
-        </div>
-      </div>
+    <div>
+      <CircleTitle number="1" title="Indiquez le contexte de votre DMP"></CircleTitle>
       <div className="column">
         <div className="form-check">
           <input
@@ -65,7 +59,7 @@ function FirstStep({ handleNextStep }) {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
           Valider mon choix
         </button> */}
-        <Button handleNextStep={handleNextStep} title="Valider mon choix"></Button>
+        <CustumButton handleNextStep={handleNextStep} title="Valider mon choix"></CustumButton>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import Select from "react-select";
 import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
 import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
+import styles from "../assets/css/form.module.css";
 
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header }) {
   const [list, setlist] = useState([]);
@@ -115,7 +116,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
             list.map((el, idx) => (
               <div key={idx} className="row border">
                 <div className="col-md-11">
-                  <p className="border m-2"> {list[idx]} </p>
+                  <p className={`m2 ${styles.border}`}> {list[idx]} </p>
                 </div>
                 <div className="col-md-1" style={{ marginTop: "8px" }}>
                   <span>

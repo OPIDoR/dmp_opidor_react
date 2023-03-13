@@ -3,6 +3,7 @@ import styles from "../assets/css/banner.module.css";
 import Info from "../Styled/Info";
 import bannerImage from "../assets/images/banner.png";
 import inraeImage from "../assets/images/inrae.png";
+import { BsEnvelopeFill, BsGlobe } from "react-icons/bs";
 
 function Banner() {
   return (
@@ -20,28 +21,21 @@ function Banner() {
               <img src={inraeImage} alt="" />
               <div className={styles.banner_details}>
                 <div>
-                  <span>
+                  {/* <span>
                     <a className="" href="#">
                       <i className="fas fa-envelope" />
                     </a>
-                  </span>
+                  </span> */}
+                  <BsEnvelopeFill size={20} />
                   <span className={styles.banner_span}>Contact</span>
                 </div>
 
                 <div>
-                  <span>
-                    <a className="" href="#">
-                      <i className="fas fa-globe" />
-                    </a>
-                  </span>
+                  <BsGlobe size={20} />
                   <span className={styles.banner_span}>Gestion et partage des données scientifiques</span>
                 </div>
                 <div>
-                  <span>
-                    <a className="" href="#">
-                      <i className="fas fa-globe" />
-                    </a>
-                  </span>
+                  <BsGlobe size={20} />
                   <span className={styles.banner_span}>Portail Data INRAE</span>
                 </div>
               </div>

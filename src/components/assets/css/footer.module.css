@@ -20,6 +20,14 @@
   list-style: none;
 }
 
+.item_footer_last {
+  font-size: 16px;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
 .title {
   margin-left: 55px;
   font-size: 16px;
@@ -40,13 +48,6 @@
   margin-right: 10px;
 }
 
-.icon_footer {
-  margin-left: 10px;
-  width: 30px;
-  height: 30px;
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
-}
 .logo_cnrs {
   width: 32px;
   height: 32px;
@@ -56,4 +57,12 @@
   width: 70px;
   height: 40px;
   margin-left: 10px;
+}
+
+.icon_footer {
+  margin: 5px 10px 0px 10px;
+  width: 30px;
+  height: 30px;
+  /* -webkit-filter: invert(100%);
+  filter: invert(100%); */
 }

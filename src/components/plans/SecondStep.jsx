@@ -3,7 +3,9 @@ import Select from "react-select";
 import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrganisme, getOtherOrganismeById } from "../../services/DmpPlansApi";
 import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
-import Button from "../Styled/Button";
+import styles from "../assets/css/steps.module.css";
+import CustumButton from "../Styled/CustumButton";
+import CircleTitle from "../Styled/CircleTitle";
 
 function SecondStep() {
   const { context, setContext } = useContext(GlobalContext);
@@ -175,54 +177,47 @@ function SecondStep() {
   };
 
   return (
-    <div className="container-card">
-      <div className="row">
-        <div className="row circle-content">
-          <div className="rom">
-            <div className="col-md-4 circle">2</div>
-            <div className="circle-text col-md-8 ">Choisissez votre modèle</div>
-          </div>
-        </div>
-      </div>
+    <div>
+      <CircleTitle number="2" title="Choisissez votre modèle"></CircleTitle>
       <div className="column">
         <div className="form-check">
           <input
-            className="form-check-input check"
+            className={`form-check-label ${styles.check}`}
             type="radio"
             name="flexRadioDefault"
             id="flexRadioDefault1"
             defaultChecked
             onClick={() => handleCheckOption("1")}
           />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault1">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault1">
             Modèle par défaut
           </label>
-          <div className="list-context">{defaultModel && defaultModel?.title}</div>
+          <div className={styles.list_context}>{defaultModel && defaultModel?.title}</div>
         </div>
         <div className="form-check">
           <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onClick={() => handleCheckOption("2")} />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault2">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
             INRAE (votre organisme)
           </label>
 
-          <div className="list-organisme">
+          <div className={styles.list_organisme}>
             {isShowListOrganizme &&
               listOrganisme &&
               listOrganisme.map((el) => (
-                <label key={el.id} className="element-organisme label-sous-title">
+                <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
                   <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
                   {/* <label htmlFor={el.id}>{el.title}</label> */}
-                  <div className="list-element">{el.title}</div>
+                  <div className={styles.list_element}>{el.title}</div>
                 </label>
               ))}
           </div>
         </div>
         <div className="form-check">
           <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onClick={() => handleCheckOption("3")} />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault3">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault3">
             Autre organisme
           </label>
-          <div className="select">
+          <div className={styles.select}>
             {isShowOtherOrganisme && otherOrganisme && (
               <Select
                 options={otherOrganisme}
@@ -233,14 +228,14 @@ function SecondStep() {
                 }}
               />
             )}
-            <div className="list-organisme">
+            <div className={styles.list_organisme}>
               {isShowOrganizme &&
                 organismes &&
                 organismes.map((el) => (
-                  <label key={el.id} className="element-organisme label-sous-title">
+                  <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
                     <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
-                    <div className="list-element">{el.title}</div>
+                    <div className={styles.list_element}>{el.title}</div>
                   </label>
                 ))}
             </div>
@@ -248,10 +243,10 @@ function SecondStep() {
         </div>
         <div className="form-check">
           <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" onClick={() => handleCheckOption("4")} />
-          <label className="form-check-label label-title" htmlFor="flexRadioDefault4">
+          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault4">
             Financeur
           </label>
-          <div className="select">
+          <div className={styles.select}>
             {isShowListFunder && listFunder && (
               <Select
                 options={listFunder}
@@ -262,14 +257,15 @@ function SecondStep() {
                 }}
               />
             )}
-            <div className="list-organisme">
+
+            <div className={styles.list_organisme}>
               {isShowFunder &&
                 funders &&
                 funders.map((el) => (
-                  <label key={el.id} className="element-organisme label-sous-title">
+                  <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
                     <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
-                    <div className="list-element">{el.title}</div>
+                    <div className={styles.list_element}>{el.title}</div>
                   </label>
                 ))}
             </div>
@@ -280,7 +276,7 @@ function SecondStep() {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
         </button> */}
-        <Button handleNextStep={handleSendTemplateId} title="Valider mon choix"></Button>
+        <CustumButton handleNextStep={handleSendTemplateId} title="Valider mon choix"></CustumButton>
       </div>
     </div>
   );

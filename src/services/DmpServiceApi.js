@@ -21,7 +21,7 @@ export async function getSchema(t, token) {
     const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
     return await require(`../data/templates/${t}-template.json`);
   } catch (error) {
-    console.error(error);
+    return await require(`../data/templates/a-template.json`);
   }
 }
 
