@@ -5,7 +5,7 @@ import swal from "sweetalert";
 import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
-function SelectMultipleList({ label, registry, name, changeValue, tooltip, header }) {
+function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
   const { temp, settemp, lng } = useContext(GlobalContext);

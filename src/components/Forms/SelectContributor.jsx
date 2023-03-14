@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
-function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header }) {
+function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
 
   const [show, setShow] = useState(false);

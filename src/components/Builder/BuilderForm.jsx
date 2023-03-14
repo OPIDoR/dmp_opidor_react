@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import HandleGenerateForms from "./HandleGenerateForms";
 
-function BuilderForm({ shemaObject, level }) {
+function BuilderForm({ shemaObject, level, schemaId }) {
   const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
 
   /**
@@ -17,12 +17,20 @@ function BuilderForm({ shemaObject, level }) {
     level === 1 ? setform({ ...form, [name]: value }) : settemp({ ...temp, [name]: value });
   };
 
+  // const changeValue = (event) => {
+  //   const { name, value } = event.target;
+  //   const updatedForm = { ...form };
+  //   updatedForm[schemaId] = updatedForm[schemaId] || {};
+  //   updatedForm[schemaId][name] = value;
+  //   setform(updatedForm);
+  // };
+
   /**
    * It takes a JSON object and returns a React component
    * @returns An array of React components.
    */
 
-  return <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue}></HandleGenerateForms>;
+  return <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} schemaId={schemaId}></HandleGenerateForms>;
 }
 
 export default BuilderForm;

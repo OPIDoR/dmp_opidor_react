@@ -6,8 +6,8 @@ import Main from "./components/plans/Main";
 function App() {
   return (
     <>
-      <Redaction></Redaction>
-      {/* <MainForm SchemaId={"a"}></MainForm> */}
+      {/* <Redaction></Redaction> */}
+      <MainForm schemaId={"b"}></MainForm>
       {/* <Main></Main> */}
     </>
   );

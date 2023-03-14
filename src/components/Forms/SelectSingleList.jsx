@@ -5,7 +5,7 @@ import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 
-function SelectSingleList({ label, name, changeValue, tooltip, registry }) {
+function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId }) {
   const [options, setoptions] = useState(null);
   const { form, temp, lng } = useContext(GlobalContext);
 

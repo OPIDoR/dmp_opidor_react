@@ -1,5 +1,4 @@
 import React from "react";
-import TextArea from "../Forms/TextArea";
 import InputText from "../Forms/InputText";
 import InputTextDynamicaly from "../Forms/InputTextDynamicaly";
 import ModalTemplate from "../Forms/ModalTemplate";
@@ -11,7 +10,7 @@ import listContributor from "../../data/contributor.json";
 import TinyArea from "../Forms/TinyArea";
 import SelectInvestigator from "../Forms/SelectInvestigator";
 
-function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
+function HandleGenerateForms({ shemaObject, level, lng, changeValue, schemaId }) {
   const objectProp = shemaObject.properties;
   let data = [];
   // si type shema is an object
@@ -28,7 +27,9 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
         // si inputType === textarea
 
         if (value.inputType === "textarea") {
-          data.push(<TinyArea level={level} key={key} label={label} name={key} changeValue={changeValue} tooltip={tooltip}></TinyArea>);
+          data.push(
+            <TinyArea level={level} key={key} label={label} name={key} changeValue={changeValue} tooltip={tooltip} schemaId={schemaId}></TinyArea>
+          );
           //sethtmlGenerator(data);
         }
         // Condition 1.2
@@ -43,6 +44,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
+              schemaId={schemaId}
             ></SelectSingleList>
           );
         }
@@ -63,6 +65,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
               hidden={value.hidden ? true : false}
               tooltip={tooltip}
               isConst={isConst}
+              schemaId={schemaId}
             ></InputText>
           );
         }
@@ -84,6 +87,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                 level={level}
                 keyValue={key}
                 header={value["table_header@fr_FR"]}
+                schemaId={schemaId}
               ></SelectWithCreate>
             );
           } else {
@@ -96,6 +100,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
+                schemaId={schemaId}
               ></SelectMultipleList>
             );
           }
@@ -115,6 +120,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                   level={level}
                   tooltip={tooltip}
                   header={value["table_header@fr_FR"]}
+                  schemaId={schemaId}
                 ></SelectContributor>
               );
             } else {
@@ -127,12 +133,13 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                   keyValue={key}
                   level={level}
                   header={value["table_header@fr_FR"]}
+                  schemaId={schemaId}
                 ></ModalTemplate>
               );
             }
           }
           if (value.items.type === "string") {
-            data.push(<InputTextDynamicaly key={key} label={label} name={key} tooltip={tooltip}></InputTextDynamicaly>);
+            data.push(<InputTextDynamicaly key={key} label={label} name={key} tooltip={tooltip} schemaId={schemaId}></InputTextDynamicaly>);
           }
         }
       }
@@ -151,6 +158,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                 template={value.template_name}
                 keyValue={key}
                 level={level}
+                schemaId={schemaId}
               ></ModalTemplate>
             );
           }
@@ -168,6 +176,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                 keyValue={key}
                 level={level}
                 tooltip={tooltip}
+                schemaId={schemaId}
               ></SelectInvestigator>
             );
           }
@@ -183,6 +192,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue }) {
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
+                schemaId={schemaId}
               ></SelectSingleList>
             );
           }

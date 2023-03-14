@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
-function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip }) {
+function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const { form, setform, temp, settemp } = useContext(GlobalContext);

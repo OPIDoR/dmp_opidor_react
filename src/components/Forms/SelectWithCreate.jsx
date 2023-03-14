@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { getRegistry, getRegistryValue, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
-function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header }) {
+function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
 
   const [show, setShow] = useState(false);

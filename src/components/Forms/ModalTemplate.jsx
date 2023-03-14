@@ -14,7 +14,7 @@ import CustumButton from "../Styled/CustumButton";
  * </code>
  * @returns A React component.
  */
-function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
+function ModalTemplate({ value, template, keyValue, level, tooltip, header, schemaId }) {
   const [show, setShow] = useState(false);
   const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);

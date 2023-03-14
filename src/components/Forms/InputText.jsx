@@ -7,7 +7,7 @@ import styles from "../assets/css/form.module.css";
  * It's a function that takes in a bunch of props and returns a div with a label, an input, and a small tag.
  * @returns A React Component
  */
-function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst }) {
+function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst, schemaId }) {
   const { form, setform, temp } = useContext(GlobalContext);
   const [text, settext] = useState(null);
   const [isRequired, setisRequired] = useState(false);

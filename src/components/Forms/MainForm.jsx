@@ -9,7 +9,7 @@ import CustumSpinner from "../../components/Shared/CustumSpinner";
 import Main from "../../components/plans/Main";
 import Redaction from "../../components/redaction/Redaction";
 
-function MainForm({ SchemaId }) {
+function MainForm({ schemaId }) {
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,13 +19,13 @@ function MainForm({ SchemaId }) {
     //DataStorageStandard
     //ProjectStandard
     setLoading(true);
-    getSchema(SchemaId, "token")
+    getSchema(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [SchemaId]);
+  }, [schemaId]);
 
   /**
    * It checks if the form is filled in correctly.
@@ -57,7 +57,7 @@ function MainForm({ SchemaId }) {
         <div style={{ margin: "15px" }}>
           <div className="row"></div>
           <div className="m-4">
-            <BuilderForm shemaObject={standardTemplate} level={1}></BuilderForm>
+            <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
           <button onClick={handleSaveForm} className="btn btn-primary m-4">
             Enregistrer

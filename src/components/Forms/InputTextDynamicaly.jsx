@@ -5,7 +5,7 @@ import styles from "../assets/css/form.module.css";
 /* A React component that renders a form with a text input and a button. 
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, name, tooltip }) {
+function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
   const [formFields, setFormFields] = useState([""]);
   const { form, setform } = useContext(GlobalContext);
 

@@ -163,7 +163,7 @@ function Redaction() {
                         </Panel.Heading>
                         {isCollapsed[idx][i] == false && (
                           <Panel.Body collapsible={isCollapsed && isCollapsed[idx][i]}>
-                            <MainForm SchemaId={q.madmp_schema_id}></MainForm>
+                            <MainForm schemaId={q.madmp_schema_id}></MainForm>
                           </Panel.Body>
                         )}
                       </Panel>

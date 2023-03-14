@@ -3,7 +3,7 @@ import { GlobalContext } from "../context/Global";
 import { Editor } from "@tinymce/tinymce-react";
 import styles from "../assets/css/form.module.css";
 
-function TinyArea({ label, name, changeValue, tooltip, level }) {
+function TinyArea({ label, name, changeValue, tooltip, level, schemaId }) {
   const { form, temp } = useContext(GlobalContext);
   const [text, settext] = useState("<p></p>");
 
