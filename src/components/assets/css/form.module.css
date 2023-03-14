@@ -1,3 +1,5 @@
+@import url("./variable.css");
+
 .outline_red {
   outline: 1px solid #dc3545;
 }
@@ -8,6 +10,11 @@
   border-width: 1px;
   padding: 10px 17px 3px 17px;
   margin-bottom: 10px;
+}
+
+.form_margin {
+  padding: 10px 17px 3px 17px;
+  margin: 0px 0px 20px 0px;
 }
 
 .funder {
@@ -24,4 +31,19 @@
 }
 a {
   color: inherit;
+}
+
+.label_form {
+  font-size: 18px;
+  color: var(--secondary);
+  font-weight: bold;
+  font-family: custumHelveticaBold;
+}
+.dot_label {
+  height: 10px;
+  width: 10px;
+  background-color: var(--secondary);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
 }

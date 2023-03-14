@@ -40,12 +40,15 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
   };
   return (
     <div className="form-group">
-      <label>{label}</label>
-      {tooltip && (
-        <span className="" data-toggle="tooltip" data-placement="top" title={tooltip}>
-          ?
-        </span>
-      )}
+      <div className={styles.label_form}>
+        <strong className={styles.dot_label}></strong>
+        <label>{label}</label>
+        {tooltip && (
+          <span className="" data-toggle="tooltip" data-placement="top" title={tooltip}>
+            ?
+          </span>
+        )}
+      </div>
 
       <input
         type={type}

@@ -19,7 +19,6 @@ function MainForm({ SchemaId }) {
     //DataStorageStandard
     //ProjectStandard
     setLoading(true);
-
     getSchema(SchemaId, "token")
       .then((el) => {
         setstandardTemplate(el);

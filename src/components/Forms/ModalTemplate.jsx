@@ -110,13 +110,16 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
 
   return (
     <>
-      <div className={`p-2 mb-2 ${styles.border}`}>
-        <p>{lng === "fr" ? value["form_label@fr_FR"] : value["form_label@en_GB"]}</p>
-        {tooltip && (
-          <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-            ?
-          </span>
-        )}
+      <div className={`p-2 mb-2`}>
+        <div className={styles.label_form}>
+          <strong className={styles.dot_label}></strong>
+          <label>{lng === "fr" ? value["form_label@fr_FR"] : value["form_label@en_GB"]}</label>
+          {tooltip && (
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
+          )}
+        </div>
 
         {form[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">

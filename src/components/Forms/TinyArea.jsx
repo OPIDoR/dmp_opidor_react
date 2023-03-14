@@ -18,17 +18,19 @@ function TinyArea({ label, name, changeValue, tooltip, level }) {
     settext(e);
   };
   return (
-    <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.border}`}>
+    <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
-        <div>
-          <label className="form-label mb-0 mt-2 text-lg">{label}</label>
+        <div className={styles.label_form}>
+          <strong className={styles.dot_label}></strong>
+          <label>{label}</label>
           {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+            <span className="" data-toggle="tooltip" data-placement="top" title={tooltip}>
               ?
             </span>
           )}
         </div>
-        <div>
+
+        <div style={{ marginTop: "10px" }}>
           <Editor
             apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
             onEditorChange={(newText) => handleChange(newText)}

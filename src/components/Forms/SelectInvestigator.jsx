@@ -6,6 +6,7 @@ import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
+import styles from "../assets/css/form.module.css";
 
 function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip }) {
   const [show, setShow] = useState(false);
@@ -121,12 +122,15 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
   return (
     <>
       <div className="form-group">
-        <label>{label}</label>
-        {tooltip && (
-          <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-            ?
-          </span>
-        )}
+        <div className={styles.label_form}>
+          <strong className={styles.dot_label}></strong>
+          <label>{label}</label>
+          {tooltip && (
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
+          )}
+        </div>
         <div className="row">
           <div className="col-md-10">
             {options && (

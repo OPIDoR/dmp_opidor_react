@@ -6,6 +6,14 @@
   "type": "object",
   "class": "DataStorageStandard",
   "properties": {
+    "estimatedVolume": {
+      "type": "number",
+      "description": "Volume estimé des données",
+      "label@fr_FR": "Volume estimé des données",
+      "label@en_GB": "Estimated volume of data",
+      "form_label@fr_FR": "Volume estimé des données",
+      "form_label@en_GB": "Estimated volume of data"
+    },
     "cost": {
       "type": "array",
       "table_header@fr_FR": "Type de coût : montant",

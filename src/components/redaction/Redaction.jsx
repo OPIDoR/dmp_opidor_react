@@ -51,7 +51,7 @@ function Redaction() {
 
   useEffect(() => {
     setLoading(true);
-    getQuestion("a", "token")
+    getQuestion("token")
       .then((res) => {
         const result = res.data;
         setData(result);
@@ -78,7 +78,7 @@ function Redaction() {
         {loading && <CustumSpinner></CustumSpinner>}
         {!loading && error && <p>error</p>}
         {!loading && !error && data && (
-          <div style={{ margin: "15px" }}>
+          <div>
             <div className="row"></div>
             <div className="redaction_bloc">
               {data.map((el, idx) => (

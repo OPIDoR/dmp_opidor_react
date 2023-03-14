@@ -11,7 +11,7 @@ import contributorSvg from "../assets/images/svg/contributorSvg.svg";
 function Navbar() {
   return (
     <ul id="plan-navigation" className="nav nav-tabs plan-navigation" role="tablist">
-      <li role="presentation" className>
+      <li role="presentation">
         <a href="#" role="tab" aria-controls="content">
           {/* <span className="icon icon-general-infos" /> */}
           <img src={infoSvg} alt="" className="icon_navbar" />
@@ -20,7 +20,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="presentation" className>
+      <li role="presentation">
         <a href="#" role="tab" aria-controls="content">
           <img src={infoSvg} alt="" className="icon_navbar" />
           Produits de recherche
@@ -36,7 +36,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="contributors" className>
+      <li role="contributors">
         <a href="#" role="tab" aria-controls="content">
           <img src={contributorSvg} alt="" className="icon_navbar" />
           Contributeurs
@@ -44,7 +44,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="budget" className>
+      <li role="budget">
         <a href="#" role="tab" aria-controls="content">
           <img src={infoSvg} alt="" className="icon_navbar" />
           Budget
@@ -52,7 +52,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="presentation" className>
+      <li role="presentation">
         <a href="#" role="tab" aria-controls="content">
           <img src={infoSvg} alt="" className="icon_navbar" />
           Partager
@@ -60,7 +60,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="presentation" className>
+      <li role="presentation">
         <a href="#" role="tab" aria-controls="content">
           <img src={infoSvg} alt="" className="icon_navbar" />
           Télécharger
@@ -68,7 +68,7 @@ function Navbar() {
         <span className="active-line" />
         <span className="active-bullet">●</span>
       </li>
-      <li role="presentation" className>
+      <li role="presentation">
         <a href="#" role="tab" aria-controls="content">
           <img src={infoSvg} alt="" className="icon_navbar" />
           Télécharger

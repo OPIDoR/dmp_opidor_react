@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/Global";
+import styles from "../assets/css/form.module.css";
 
 /* A React component that renders a form with a text input and a button. 
 When the button is clicked, a new text input is added to the form. When the text
@@ -44,12 +45,15 @@ function InputTextDynamicaly({ label, name, tooltip }) {
 
   return (
     <div className="App">
-      <label>{label}</label>
-      {tooltip && (
-        <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-          ?
-        </span>
-      )}
+      <div className={styles.label_form}>
+        <strong className={styles.dot_label}></strong>
+        <label>{label}</label>
+        {tooltip && (
+          <span className="" data-toggle="tooltip" data-placement="top" title={tooltip}>
+            ?
+          </span>
+        )}
+      </div>
 
       {formFields.map((form, index) => {
         return (
