@@ -10,7 +10,6 @@ import Main from "../../components/plans/Main";
 import Redaction from "../../components/redaction/Redaction";
 
 function MainForm({ SchemaId }) {
-  console.log(SchemaId);
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);

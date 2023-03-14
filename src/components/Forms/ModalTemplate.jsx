@@ -80,7 +80,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header }) {
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    console.log(form[keyValue][idx]);
     settemp(form[keyValue][idx]);
     setShow(true);
     setindex(idx);

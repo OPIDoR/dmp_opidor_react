@@ -21,6 +21,8 @@
   list-style: none;
   color: var(--secondary);
   margin: 13px;
+  font-size: 19px;
+  font-weight: bold;
 }
 
 .item a {
@@ -48,4 +50,5 @@
   background: var(--secondary);
   border-radius: 50%;
   padding: 5px;
+  font-weight: bold;
 }

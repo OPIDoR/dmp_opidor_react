@@ -54,3 +54,86 @@
   align-items: center;
   font-family: custumHelveticaLight;
 }
+
+/* benjamin */
+
+.plan-navigation {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  background-color: transparent;
+  margin-top: -100px;
+  z-index: 5;
+}
+
+.plan-navigation > li {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding: 10px;
+  text-align: center;
+}
+
+.plan-navigation > li > a {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  width: 150px;
+  height: 150px;
+  color: var(--primary);
+  background-color: white;
+  font-size: large;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #e5e4e7;
+}
+
+.plan-navigation > li > .active-line {
+  border-left: 1px solid var(--primary);
+  border-right: 1px solid var(--primary);
+  height: 30px;
+  width: 0;
+  -ms-flex-item-align: center;
+  align-self: center;
+  display: none;
+}
+
+.plan-navigation > li > .active-bullet {
+  color: var(--primary);
+  font-size: xx-large;
+  line-height: 0;
+  display: none;
+}
+
+.plan-navigation > li.active .active-line,
+.plan-navigation > li.active .active-bullet,
+.plan-navigation > li:hover .active-line,
+.plan-navigation > li:hover .active-bullet {
+  display: block;
+}
+
+.plan-navigation > li.active > a,
+.plan-navigation > li > a:hover {
+  color: white;
+  background-color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: none;
+}
+
+.icon_navbar {
+  width: 50px;
+  height: 50px;
+}
+.icon_navbar:hover {
+  filter: brightness(0) invert(1);
+}
+
+.phase-tab.active .icon_navbar {
+  filter: brightness(0) invert(1);
+}
