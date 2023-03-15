@@ -69,8 +69,8 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
               options={options}
               name={name}
               defaultValue={{
-                label: getDefaultLabel(temp, form, name),
-                value: getDefaultLabel(temp, form, name),
+                label: getDefaultLabel(temp, form?.[schemaId], name),
+                value: getDefaultLabel(temp, form?.[schemaId], name),
               }}
             />
           </div>

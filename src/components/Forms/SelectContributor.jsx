@@ -42,17 +42,17 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         setregisterFile(res);
       });
 
-      if (!form[keyValue]) {
+      if (!form[schemaId][keyValue]) {
         return;
       }
       const patern = res.to_string;
       if (!patern.length) {
         return;
       }
-
-      setlist(form[keyValue].map((el) => parsePatern(el, patern)));
+      console.log(form?.[schemaId]?.[keyValue]);
+      setlist(form?.[schemaId]?.[keyValue].map((el) => parsePatern(el, patern)));
     });
-  }, [form[keyValue], registry]);
+  }, [form?.[schemaId]?.[keyValue], registry]);
 
   /**
    * It closes the modal and resets the state of the modal.
@@ -82,11 +82,16 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       setselectObject([...selectObject, object]);
       const parsedPatern = parsePatern(object, registerFile.to_string);
       setlist([...list, parsedPatern]);
-      changeValue({ target: { name, value: [...selectObject, object] } });
-
+      //changeValue({ target: { name, value: [...selectObject, object] } });
       const newObject = { person: object, role: role };
-      const arr3 = form[keyValue] ? [...form[keyValue], newObject] : [newObject];
-      setform({ ...form, [keyValue]: arr3 });
+      const arr3 = form?.[schemaId]?.[keyValue] ? [...form[schemaId][keyValue], newObject] : [newObject];
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [keyValue]: arr3,
+        },
+      });
     } else {
       changeValue({ target: { name, value } });
       setlist([...list, value]);
@@ -107,8 +112,14 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       if (willDelete) {
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
-        const deleteIndex = deleteByIndex(form[keyValue], idx);
-        setform({ ...form, [keyValue]: deleteIndex });
+        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
+        setform({
+          ...form,
+          [schemaId]: {
+            ...form[schemaId],
+            [keyValue]: deleteIndex,
+          },
+        });
         swal("Opération effectuée avec succès!", {
           icon: "success",
         });
@@ -124,7 +135,16 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   const handleAddToList = () => {
     if (index !== null) {
       const objectPerson = { person: temp, role: role };
-      setform({ ...form, [keyValue]: [...deleteByIndex(form[keyValue], index), objectPerson] });
+      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
+      const concatedObject = [...deleteIndex, objectPerson];
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [keyValue]: concatedObject,
+        },
+      });
+      //setform({ ...form, [keyValue]: [...deleteByIndex(form[keyValue], index), objectPerson] });
       const parsedPatern = parsePatern(temp, registerFile.to_string);
       setlist([...deleteByIndex([...list], index), parsedPatern]);
     } else {
@@ -141,7 +161,15 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    */
   const handleSave = () => {
     const objectPerson = { person: temp, role: role };
-    setform({ ...form, [keyValue]: [...(form[keyValue] || []), objectPerson] });
+    //setform({ ...form, [keyValue]: [...(form[keyValue] || []), objectPerson] });
+
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [keyValue]: [...(form[schemaId][keyValue] || []), objectPerson],
+      },
+    });
     const parsedPatern = parsePatern(temp, registerFile.to_string);
     setlist([...list, parsedPatern]);
     handleClose();
@@ -153,7 +181,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    settemp(form[keyValue][idx]["person"]);
+    settemp(form?.[schemaId]?.[keyValue][idx]["person"]);
     setShow(true);
     setindex(idx);
   };
@@ -192,10 +220,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
           </div>
         </div>
 
-        {form[keyValue] && list && (
+        {form?.[schemaId]?.[keyValue] && list && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
-              {form[keyValue].length > 0 && header && (
+              {form?.[schemaId]?.[keyValue].length > 0 && header && (
                 <tr>
                   <th scope="col">{header}</th>
                   <th scope="col"></th>
@@ -203,10 +231,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
               )}
             </thead>
             <tbody>
-              {form[keyValue].map((el, idx) => (
+              {list.map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row">
-                    <p className={`m2 ${styles.border}`}> {list[idx]} </p>
+                    <p className={`m2 ${styles.border}`}> {el} </p>
                   </td>
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1">

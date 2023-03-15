@@ -11,29 +11,27 @@ import styles from "../assets/css/form.module.css";
 
 function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
-
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
   const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
-
   const [registerFile, setregisterFile] = useState(null);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
     getSchema(template, "token").then((el) => {
       setregisterFile(el);
-      if (form[keyValue]) {
+      if (form?.[schemaId]?.[keyValue]) {
         const patern = el.to_string;
         if (patern.length > 0) {
-          Promise.all(form[keyValue].map((el) => parsePatern(el, patern))).then((listParsed) => {
+          Promise.all(form?.[schemaId]?.[keyValue].map((el) => parsePatern(el, patern))).then((listParsed) => {
             setlist(listParsed);
           });
         }
       }
     });
-  }, [template, form[keyValue]]);
+  }, [template, form?.[schemaId]?.[keyValue]]);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -94,8 +92,14 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     const updatedList = patern.length > 0 ? [...list, parsedPatern] : [...list, e.value];
     setlist(updatedList);
     setselectObject(patern.length > 0 ? [...selectObject, e.object] : selectObject);
-    changeValue({ target: { name: name, value: patern.length > 0 ? [...selectObject, e.object] : e.value } });
-    setform({ ...form, [keyValue]: form[keyValue] ? [...form[keyValue], ...[e.object]] : [e.object] });
+    //changeValue({ target: { name: name, value: patern.length > 0 ? [...selectObject, e.object] : e.value } });
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [keyValue]: [...(form[schemaId]?.[keyValue] || []), e.object],
+      },
+    });
   };
 
   /**
@@ -113,8 +117,15 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       if (willDelete) {
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
-        const deleteIndex = deleteByIndex(form[keyValue], idx);
-        setform({ ...form, [keyValue]: deleteIndex });
+        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
+        setform({
+          ...form,
+          [schemaId]: {
+            ...form[schemaId],
+            [keyValue]: deleteIndex,
+          },
+        });
+
         swal("Opération effectuée avec succès!", {
           icon: "success",
         });
@@ -132,15 +143,21 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       handleClose();
       return;
     }
-
     const checkForm = checkRequiredForm(registerFile, temp);
     if (checkForm) {
       toast.error("Veuiller remplire le champs " + getLabelName(checkForm, registerFile));
     } else {
       if (index !== null) {
-        const deleteIndex = deleteByIndex(form[keyValue], index);
+        //add in update
+        const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
         const concatedObject = [...deleteIndex, temp];
-        setform({ ...form, [keyValue]: concatedObject });
+        setform({
+          ...form,
+          [schemaId]: {
+            ...form[schemaId],
+            [keyValue]: concatedObject,
+          },
+        });
         const newList = deleteByIndex([...list], index);
         const parsedPatern = parsePatern(temp, registerFile.to_string);
         const copieList = [...newList, parsedPatern];
@@ -148,6 +165,8 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         settemp(null);
         handleClose();
       } else {
+        //add in add
+        console.log("add in add");
         handleSave();
       }
       toast.success("Enregistrement a été effectué avec succès !");
@@ -158,8 +177,14 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    * I'm trying to add a new object to an array of objects, and then add that array to a new object.
    */
   const handleSave = () => {
-    let newObject = form[keyValue] ? [...form[keyValue], temp] : [temp];
-    setform({ ...form, [keyValue]: newObject });
+    let newObject = form[schemaId][keyValue] ? [...form[schemaId][keyValue], temp] : [temp];
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [keyValue]: newObject,
+      },
+    });
     setlist([...list, parsePatern(temp, registerFile.to_string)]);
     handleClose();
     settemp(null);
@@ -170,7 +195,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    settemp(form[keyValue][idx]);
+    settemp(form?.[schemaId]?.[keyValue][idx]);
     setShow(true);
     setindex(idx);
   };
@@ -209,10 +234,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           </div>
         </div>
 
-        {form[keyValue] && list && (
+        {list && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
-              {form[keyValue].length > 0 && header && (
+              {form?.[schemaId]?.[keyValue]?.length > 0 && header && (
                 <tr>
                   <th scope="col">{header}</th>
                   <th scope="col"></th>
@@ -220,10 +245,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
               )}
             </thead>
             <tbody>
-              {form[keyValue].map((el, idx) => (
+              {list.map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row">
-                    <p className={`m-2 ${styles.border}`}> {list[idx]} </p>
+                    <p className={`m-2 ${styles.border}`}> {el} </p>
                   </td>
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1" style={{ marginTop: "8px" }}>

@@ -12,18 +12,18 @@ function BuilderForm({ shemaObject, level, schemaId }) {
    * event target.
    * @param event - the event that is triggered when the input is changed
    */
-  const changeValue = (event) => {
-    const { name, value } = event.target;
-    level === 1 ? setform({ ...form, [name]: value }) : settemp({ ...temp, [name]: value });
-  };
-
   // const changeValue = (event) => {
   //   const { name, value } = event.target;
-  //   const updatedForm = { ...form };
-  //   updatedForm[schemaId] = updatedForm[schemaId] || {};
-  //   updatedForm[schemaId][name] = value;
-  //   setform(updatedForm);
+  //   level === 1 ? setform({ ...form, [name]: value }) : settemp({ ...temp, [name]: value });
   // };
+
+  const changeValue = (event) => {
+    const { name, value } = event.target;
+    const updatedForm = { ...form };
+    updatedForm[schemaId] = updatedForm[schemaId] || {};
+    updatedForm[schemaId][name] = value;
+    level === 1 ? setform(updatedForm) : settemp({ ...temp, [name]: value });
+  };
 
   /**
    * It takes a JSON object and returns a React component

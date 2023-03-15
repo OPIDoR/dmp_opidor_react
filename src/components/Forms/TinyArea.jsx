@@ -8,7 +8,7 @@ function TinyArea({ label, name, changeValue, tooltip, level, schemaId }) {
   const [text, settext] = useState("<p></p>");
 
   useEffect(() => {
-    const defaultValue = temp ? temp[name] : form[name] ? form[name] : "<p></p>";
+    const defaultValue = temp ? temp[name] : form?.[schemaId]?.[name] ? form?.[schemaId]?.[name] : "<p></p>";
     const updatedText = level === 1 ? defaultValue : temp ? temp[name] : "<p></p>";
     settext(updatedText);
   }, [level, name]);

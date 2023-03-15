@@ -119,7 +119,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
             list.map((el, idx) => (
               <div key={idx} className="row border">
                 <div className="col-md-11">
-                  <p className={`m2 ${styles.border}`}> {list[idx]} </p>
+                  <p className={`m2 ${styles.border}`}> {el} </p>
                 </div>
                 <div className="col-md-1" style={{ marginTop: "8px" }}>
                   <span>

@@ -45,8 +45,17 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
 
     if (index !== null) {
-      const deleteIndex = deleteByIndex(form[keyValue], index);
-      setform({ ...form, [keyValue]: [...deleteIndex, temp] });
+      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
+      const concatedObject = [...deleteIndex, temp];
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [keyValue]: concatedObject,
+        },
+      });
+
+      //setform({ ...form, [keyValue]: [...deleteIndex, temp] });
       settemp(null);
     } else {
       handleSave();
@@ -59,9 +68,16 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    * When the user clicks the save button, the form is updated with the new data, the temp is set to null, and the modal is closed.
    */
   const handleSave = () => {
-    let newObject = form[keyValue] || [];
+    let newObject = form[schemaId][keyValue] || [];
     newObject = [...newObject, temp];
-    setform({ ...form, [keyValue]: newObject });
+    //setform({ ...form, [keyValue]: newObject });
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [keyValue]: newObject,
+      },
+    });
     settemp(null);
     handleClose();
   };
@@ -80,7 +96,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    settemp(form[keyValue][idx]);
+    settemp(form?.[schemaId]?.[keyValue][idx]);
     setShow(true);
     setindex(idx);
   };
@@ -98,8 +114,14 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        const deleteIndex = deleteByIndex(form[keyValue], idx);
-        setform({ ...form, [keyValue]: deleteIndex });
+        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
+        setform({
+          ...form,
+          [schemaId]: {
+            ...form[schemaId],
+            [keyValue]: deleteIndex,
+          },
+        });
         //toast.success("Congé accepté");
         swal("Opération effectuée avec succès!", {
           icon: "success",
@@ -121,10 +143,10 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
           )}
         </div>
 
-        {form[keyValue] && registerFile && (
+        {form?.[schemaId]?.[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
-              {form[keyValue].length > 0 && registerFile && header && (
+              {form?.[schemaId]?.[keyValue].length > 0 && registerFile && header && (
                 <tr>
                   <th scope="col">{header}</th>
                   <th scope="col"></th>
@@ -132,7 +154,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
               )}
             </thead>
             <tbody>
-              {form[keyValue].map((el, idx) => (
+              {form?.[schemaId]?.[keyValue].map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row">
                     <div className="preview" dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>

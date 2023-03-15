@@ -11,7 +11,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
 
   /* A React hook that is called when the component is mounted and when the name variable changes. */
   useEffect(() => {
-    setFormFields(form[name] || [""]);
+    setFormFields(form?.[schemaId]?.[name] || [""]);
   }, [name]);
 
   /**
@@ -21,7 +21,14 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
     let data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    setform({ ...form, [name]: data });
+    //setform({ ...form, [name]: data });
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [name]: data,
+      },
+    });
   };
 
   /**
@@ -39,7 +46,13 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
       let data = [...formFields];
       data.splice(index, 1);
       setFormFields(data);
-      setform({ ...form, [name]: data });
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [name]: data,
+        },
+      });
     }
   };
 

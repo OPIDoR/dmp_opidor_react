@@ -15,12 +15,13 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
   /* It's setting the state of the form to the value of the isConst variable. */
   useEffect(() => {
     if (isConst !== false) {
+      //TODO
       setform({ [name]: isConst });
     }
   }, []);
 
   useEffect(() => {
-    settext(form[name]);
+    settext(form?.[schemaId]?.[name]);
   }, [form[name]]);
 
   /**

@@ -134,6 +134,6 @@ export function getDefaultLabel(temp, form, name) {
       return temp[name];
     }
   } else {
-    return form[name];
+    return form?.[name];
   }
 }

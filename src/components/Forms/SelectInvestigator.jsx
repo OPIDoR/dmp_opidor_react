@@ -38,14 +38,14 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
       setrole(resRegistry.properties.role["const@fr_FR"]);
       getSchema(template, "token").then((res) => {
         setregisterFile(res);
-        if (!form[keyValue]) {
+        if (!form?.[schemaId]?.[keyValue]) {
           return;
         }
         const patern = res.to_string;
         if (!patern.length) {
           return;
         }
-        setselectedValue(parsePatern(form[keyValue].person, patern));
+        setselectedValue(parsePatern(form?.[schemaId]?.[keyValue].person, patern));
       });
     });
   }, [registry]);
@@ -71,8 +71,15 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     const { object, value } = options[e.target.value];
     setselectedValue(options[e.target.value].value);
     if (patern.length > 0) {
-      changeValue({ target: { name, value: [object] } });
-      setform({ ...form, [keyValue]: { person: object, role: role } });
+      //changeValue({ target: { name, value: [object] } });
+      //setform({ ...form, [keyValue]: { person: object, role: role } });
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [keyValue]: { person: object, role: role },
+        },
+      });
     } else {
       changeValue({ target: { name, value } });
     }
@@ -87,7 +94,14 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     //edit
     if (index !== null) {
       //const objectPerson = { person: temp, role: "from create" };
-      setform({ ...form, [keyValue]: { person: temp, role: role } });
+      //setform({ ...form, [keyValue]: { person: temp, role: role } });
+      setform({
+        ...form,
+        [schemaId]: {
+          ...form[schemaId],
+          [keyValue]: { person: temp, role: role },
+        },
+      });
       setselectedValue(parsePatern(temp, registerFile.to_string));
     } else {
       //save new
@@ -104,7 +118,14 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    */
   const handleSave = () => {
     //const objectPerson = { person: temp, role: "from create" };
-    setform({ ...form, [keyValue]: { person: temp, role: role } });
+    //setform({ ...form, [keyValue]: { person: temp, role: role } });
+    setform({
+      ...form,
+      [schemaId]: {
+        ...form[schemaId],
+        [keyValue]: { person: temp, role: role },
+      },
+    });
     handleClose();
     settemp(null);
     setselectedValue(parsePatern(temp, registerFile.to_string));
@@ -114,7 +135,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    settemp(form[keyValue]["person"]);
+    settemp(form?.[schemaId]?.[keyValue]["person"]);
     setShow(true);
     setindex(idx);
   };
