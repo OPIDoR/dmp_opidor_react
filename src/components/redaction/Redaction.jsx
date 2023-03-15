@@ -10,6 +10,7 @@ import { HiOutlineLightBulb } from "react-icons/hi";
 import { AiOutlineBell } from "react-icons/ai";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
+import styles from "../assets/css/redactions.module.css";
 
 import DOMPurify from "dompurify";
 import Navbar from "../Shared/Navbar";
@@ -80,19 +81,19 @@ function Redaction() {
         {!loading && !error && data && (
           <div>
             <div className="row"></div>
-            <div className="redaction_bloc">
+            <div className={styles.redaction_bloc}>
               {data.map((el, idx) => (
                 <React.Fragment key={idx}>
-                  <p className="title">
+                  <p className={styles.title}>
                     {el.number}. {el.title}
                   </p>
                   <div className="column">
-                    <div className="collapse_title">
-                      <span className="sous_title" onClick={() => handleCollapseAll(idx)}>
+                    <div className={styles.collapse_title}>
+                      <span className={styles.sous_title} onClick={() => handleCollapseAll(idx)}>
                         Tout développer{" "}
                       </span>
-                      <span className="sous_title"> | </span>
-                      <span className="sous_title" onClick={() => setIsCollapsed(initialCollapse)}>
+                      <span className={styles.sous_title}> | </span>
+                      <span className={styles.sous_title} onClick={() => setIsCollapsed(initialCollapse)}>
                         Tout réduire{" "}
                       </span>
                     </div>
@@ -103,9 +104,9 @@ function Redaction() {
                       <Panel eventKey={i}>
                         <Panel.Heading>
                           <Panel.Title toggle onClick={() => handlePanelToggle(idx, i)}>
-                            <div className="question_title">
-                              <div className="question_text">
-                                <div className="question_number">
+                            <div className={styles.question_title}>
+                              <div className={styles.question_text}>
+                                <div className={styles.question_number}>
                                   {el.number}.{q.number}
                                 </div>
                                 <div
@@ -116,11 +117,11 @@ function Redaction() {
                                 />
                               </div>
 
-                              <span className="question_icons">
+                              <span className={styles.question_icons}>
                                 {/* 1 */}
                                 <HiOutlineLightBulb
                                   size={45}
-                                  className="light_icon"
+                                  className={styles.light_icon}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
@@ -129,7 +130,7 @@ function Redaction() {
                                 {/* 2 */}
                                 <AiOutlineBell
                                   size={40}
-                                  className="bell_icon"
+                                  className={styles.bell_icon}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
@@ -139,7 +140,7 @@ function Redaction() {
                                 {isCollapsed[idx][i] ? (
                                   <TfiAngleDown
                                     size={35}
-                                    className="down_icon"
+                                    className={styles.down_icon}
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -149,7 +150,7 @@ function Redaction() {
                                 ) : (
                                   <TfiAngleUp
                                     size={35}
-                                    className="down_icon"
+                                    className={styles.down_icon}
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();

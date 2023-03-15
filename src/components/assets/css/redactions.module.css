@@ -1,0 +1,56 @@
+@import url("./variable.css");
+
+.redaction_bloc {
+  border-radius: 0px 8px 8px 8px;
+  border: solid;
+  border-color: var(--primary);
+  border-width: 1px;
+  margin: 10px;
+  padding: 35px;
+}
+.title {
+  font-weight: bold;
+  font-size: 30px;
+  color: var(--orange);
+}
+
+.collapse_title {
+  margin: 20px 0px 20px 0px;
+  font-family: custumHelveticaLight;
+}
+.sous_title {
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--secondary);
+}
+.question_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--primary);
+}
+.question_icons {
+  min-width: 125px;
+}
+
+.light_icon {
+  color: var(--primary);
+}
+.bell_icon {
+  color: var(--primary);
+}
+.down_icon {
+  color: var(--orange);
+}
+.question_number {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--secondary);
+  margin-right: 10px;
+}
+
+.question_text {
+  display: flex;
+  align-items: center;
+  font-family: custumHelveticaLight;
+}

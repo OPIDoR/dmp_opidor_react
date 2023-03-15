@@ -8,6 +8,7 @@ import { getSchema } from "../../services/DmpServiceApi";
 import CustumSpinner from "../../components/Shared/CustumSpinner";
 import Main from "../../components/plans/Main";
 import Redaction from "../../components/redaction/Redaction";
+import CustumButton from "../Styled/CustumButton";
 
 function MainForm({ schemaId }) {
   const { form } = useContext(GlobalContext);
@@ -59,9 +60,10 @@ function MainForm({ schemaId }) {
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <button onClick={handleSaveForm} className="btn btn-primary m-4">
+          <CustumButton handleNextStep={handleSaveForm} title="Enregistrer" position="center"></CustumButton>
+          {/* <button onClick={handleSaveForm} className="btn btn-primary m-4">
             Enregistrer
-          </button>
+          </button> */}
         </div>
       )}
     </>

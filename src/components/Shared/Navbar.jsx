@@ -1,80 +1,81 @@
 import React from "react";
 import infoSvg from "../assets/images/svg/infoSvg.svg";
-// import researchSvg from "../assets/images/svg/researchSvg.svg";
-// import redactionSvg from "../assets/images/svg/redactionSvg.svg";
+import researchSvg from "../assets/images/svg/researchSvg.svg";
+import redactionSvg from "../assets/images/svg/redactionSvg.svg";
 import contributorSvg from "../assets/images/svg/contributorSvg.svg";
-// import budgetSvg from "../assets/images/svg/budgetSvg.svg";
-// import shareSvg from "../assets/images/svg/shareSvg.svg";
-// import assistanceSvg from "../assets/images/svg/assistanceSvg.svg";
-// import download from "../assets/images/svg/download.svg";
+import budgetSvg from "../assets/images/svg/budgetSvg.svg";
+import shareSvg from "../assets/images/svg/shareSvg.svg";
+import assistanceSvg from "../assets/images/svg/assistanceSvg.svg";
+import downloadSvg from "../assets/images/svg/downloadSvg.svg";
+import styles from "../assets/css/navbar.module.css";
 
 function Navbar() {
   return (
-    <ul id="plan-navigation" className="nav nav-tabs plan-navigation" role="tablist">
-      <li role="presentation">
-        <a href="#" role="tab" aria-controls="content">
+    <ul id="plan_navigation" className={`nav nav-tabs ${styles.plan_navigation}`} role="tablist">
+      <li>
+        <a href="#">
           {/* <span className="icon icon-general-infos" /> */}
-          <img src={infoSvg} alt="" className="icon_navbar" />
+          <img src={infoSvg} alt="" className={styles.icon_navbar} />
           Informations générales
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="presentation">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
+      <li>
+        <a href="#">
+          <img src={researchSvg} alt="" className={styles.icon_navbar} />
           Produits de recherche
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="presentation" className="phase-tab active">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
+      <li className={styles.active}>
+        <a href="#">
+          <img src={redactionSvg} alt="" className={styles.icon_navbar} />
           Rédiger
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="contributors">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={contributorSvg} alt="" className="icon_navbar" />
+      <li>
+        <a href="#">
+          <img src={contributorSvg} alt="" className={styles.icon_navbar} />
           Contributeurs
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="budget">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
+      <li>
+        <a href="#">
+          <img src={budgetSvg} alt="" className={styles.icon_navbar} />
           Budget
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="presentation">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
+      <li>
+        <a href="#">
+          <img src={shareSvg} alt="" className={styles.icon_navbar} />
           Partager
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
-      <li role="presentation">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
+      <li>
+        <a href="#">
+          <img src={assistanceSvg} alt="" className={styles.icon_navbar} />
+          Demande d'assistance
+        </a>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
+      </li>
+      <li>
+        <a href="#">
+          <img src={downloadSvg} alt="" className={styles.icon_navbar} />
           Télécharger
         </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
-      </li>
-      <li role="presentation">
-        <a href="#" role="tab" aria-controls="content">
-          <img src={infoSvg} alt="" className="icon_navbar" />
-          Télécharger
-        </a>
-        <span className="active-line" />
-        <span className="active-bullet">●</span>
+        <span className={styles.active_line} />
+        <span className={styles.active_bullet}>●</span>
       </li>
     </ul>
   );

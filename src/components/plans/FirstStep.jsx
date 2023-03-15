@@ -59,7 +59,7 @@ function FirstStep({ handleNextStep }) {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
           Valider mon choix
         </button> */}
-        <CustumButton handleNextStep={handleNextStep} title="Valider mon choix"></CustumButton>
+        <CustumButton handleNextStep={handleNextStep} title="Valider mon choix" position="start"></CustumButton>
       </div>
     </div>
   );

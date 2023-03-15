@@ -187,7 +187,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         <button className="btn btn-primary button-margin" onClick={() => handleShow(true)}>
           Créé
         </button> */}
-        <CustumButton handleNextStep={() => handleShow(true)} title="Créé" type="primary"></CustumButton>
+        <CustumButton handleNextStep={() => handleShow(true)} title="Ajouter un élément" type="primary" position="start"></CustumButton>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>
