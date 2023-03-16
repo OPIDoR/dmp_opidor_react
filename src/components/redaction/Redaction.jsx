@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { Panel, PanelGroup } from "react-bootstrap";
@@ -14,6 +14,8 @@ import styles from "../assets/css/redactions.module.css";
 
 import DOMPurify from "dompurify";
 import Navbar from "../Shared/Navbar";
+import ModalRecommandation from "./ModalRecommandation";
+import ModalComment from "./ModalComment";
 
 function Redaction() {
   const [loading, setLoading] = useState(false);
@@ -21,6 +23,8 @@ function Redaction() {
   const [data, setData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
   const [initialCollapse, setinitialCollapse] = useState(null);
+  const [showModalRecommandation, setshowModalRecommandation] = useState(false);
+  const [showModalComment, setshowModalComment] = useState(false);
 
   const handleCollapseAll = (idx) => {
     setIsCollapsed((prevState) => {
@@ -81,6 +85,7 @@ function Redaction() {
         {!loading && !error && data && (
           <div>
             <div className="row"></div>
+
             <div className={styles.redaction_bloc}>
               {data.map((el, idx) => (
                 <React.Fragment key={idx}>
@@ -125,8 +130,13 @@ function Redaction() {
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
+                                    setshowModalRecommandation(false);
+                                    setshowModalComment(!showModalComment);
                                   }}
                                 />
+                                {isCollapsed[idx][i] == false && showModalComment && (
+                                  <ModalComment show={showModalComment} setshowModalComment={setshowModalComment}></ModalComment>
+                                )}
                                 {/* 2 */}
                                 <AiOutlineBell
                                   size={40}
@@ -134,8 +144,17 @@ function Redaction() {
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     e.preventDefault();
+                                    setshowModalComment(false);
+                                    setshowModalRecommandation(!showModalRecommandation);
                                   }}
                                 />
+                                {isCollapsed[idx][i] == false && showModalRecommandation && (
+                                  <ModalRecommandation
+                                    show={showModalRecommandation}
+                                    setshowModalRecommandation={setshowModalRecommandation}
+                                  ></ModalRecommandation>
+                                )}
+                                {/* <Modal show={showModalRecommandation}></Modal> */}
                                 {/* 3 */}
                                 {isCollapsed[idx][i] ? (
                                   <TfiAngleDown
