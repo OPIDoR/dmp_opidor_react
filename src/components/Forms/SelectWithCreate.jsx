@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import Select from "react-select";
-import { checkRequiredForm, deleteByIndex, getLabelName, parsePatern } from "../../utils/GeneratorUtils";
+import { checkRequiredForm, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { Modal, Button } from "react-bootstrap";
 import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
@@ -92,14 +92,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     const updatedList = patern.length > 0 ? [...list, parsedPatern] : [...list, e.value];
     setlist(updatedList);
     setselectObject(patern.length > 0 ? [...selectObject, e.object] : selectObject);
-    //changeValue({ target: { name: name, value: patern.length > 0 ? [...selectObject, e.object] : e.value } });
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [keyValue]: [...(form[schemaId]?.[keyValue] || []), e.object],
-      },
-    });
+    setform(updateFormState(form, schemaId, keyValue, [...(form[schemaId]?.[keyValue] || []), e.object]));
   };
 
   /**
@@ -118,14 +111,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform({
-          ...form,
-          [schemaId]: {
-            ...form[schemaId],
-            [keyValue]: deleteIndex,
-          },
-        });
-
+        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
         swal("Opération effectuée avec succès!", {
           icon: "success",
         });
@@ -151,13 +137,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         //add in update
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
         const concatedObject = [...deleteIndex, temp];
-        setform({
-          ...form,
-          [schemaId]: {
-            ...form[schemaId],
-            [keyValue]: concatedObject,
-          },
-        });
+        setform(updateFormState(form, schemaId, keyValue, concatedObject));
         const newList = deleteByIndex([...list], index);
         const parsedPatern = parsePatern(temp, registerFile.to_string);
         const copieList = [...newList, parsedPatern];
@@ -178,13 +158,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    */
   const handleSave = () => {
     let newObject = form[schemaId][keyValue] ? [...form[schemaId][keyValue], temp] : [temp];
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [keyValue]: newObject,
-      },
-    });
+    setform(updateFormState(form, schemaId, keyValue, newObject));
     setlist([...list, parsePatern(temp, registerFile.to_string)]);
     handleClose();
     settemp(null);
@@ -213,7 +187,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           )}
         </div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
               options={options}
@@ -233,7 +207,6 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
             </span>
           </div>
         </div>
-
         {list && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>

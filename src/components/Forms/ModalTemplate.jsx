@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
-import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePatern } from "../../utils/GeneratorUtils";
+import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getSchema } from "../../services/DmpServiceApi";
@@ -18,8 +18,9 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   const [show, setShow] = useState(false);
   const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
-
   const [registerFile, setregisterFile] = useState(null);
+
+  /* A hook that is called when the component is mounted. */
   useEffect(() => {
     getSchema(template, "token").then((el) => {
       setregisterFile(el);
@@ -47,15 +48,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     if (index !== null) {
       const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
       const concatedObject = [...deleteIndex, temp];
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [keyValue]: concatedObject,
-        },
-      });
-
-      //setform({ ...form, [keyValue]: [...deleteIndex, temp] });
+      setform(updateFormState(form, schemaId, keyValue, concatedObject));
       settemp(null);
     } else {
       handleSave();
@@ -68,16 +61,9 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    * When the user clicks the save button, the form is updated with the new data, the temp is set to null, and the modal is closed.
    */
   const handleSave = () => {
-    let newObject = form[schemaId][keyValue] || [];
-    newObject = [...newObject, temp];
-    //setform({ ...form, [keyValue]: newObject });
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [keyValue]: newObject,
-      },
-    });
+    const newObject = [...(form[schemaId][keyValue] || []), temp];
+    setform(updateFormState(form, schemaId, keyValue, newObject));
+    setform(updateFormState(form, schemaId, keyValue, newObject));
     settemp(null);
     handleClose();
   };
@@ -89,16 +75,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    */
   const handleShow = (isOpen) => {
     setShow(isOpen);
-  };
-
-  /**
-   * When the user clicks the edit button, the form is populated with the data from the row that was clicked.
-   * @param idx - the index of the item in the array
-   */
-  const handleEdit = (idx) => {
-    settemp(form?.[schemaId]?.[keyValue][idx]);
-    setShow(true);
-    setindex(idx);
   };
 
   /**
@@ -115,19 +91,23 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     }).then((willDelete) => {
       if (willDelete) {
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform({
-          ...form,
-          [schemaId]: {
-            ...form[schemaId],
-            [keyValue]: deleteIndex,
-          },
-        });
+        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
         //toast.success("Congé accepté");
         swal("Opération effectuée avec succès!", {
           icon: "success",
         });
       }
     });
+  };
+
+  /**
+   * When the user clicks the edit button, the form is populated with the data from the row that was clicked.
+   * @param idx - the index of the item in the array
+   */
+  const handleEdit = (idx) => {
+    settemp(form?.[schemaId]?.[keyValue][idx]);
+    setShow(true);
+    setindex(idx);
   };
 
   return (
@@ -142,7 +122,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
             </span>
           )}
         </div>
-
         {form?.[schemaId]?.[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
@@ -159,7 +138,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
                   <td scope="row">
                     <div className="preview" dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
                   </td>
-
                   <td style={{ width: "10%" }}>
                     <div className="col-md-1">
                       {level === 1 && (
@@ -183,10 +161,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
             </tbody>
           </table>
         )}
-        {/* className={`sub-fragment registry ${styles.legend}`}
-        <button className="btn btn-primary button-margin" onClick={() => handleShow(true)}>
-          Créé
-        </button> */}
         <CustumButton handleNextStep={() => handleShow(true)} title="Ajouter un élément" type="primary" position="start"></CustumButton>
       </div>
       <Modal show={show} onHide={handleClose}>
@@ -232,7 +206,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
               </fieldset>
             </div>
           )}
-
           <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
         </Modal.Body>
         <Modal.Footer>

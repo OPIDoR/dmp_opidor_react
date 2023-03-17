@@ -32,8 +32,8 @@ function CustumButton({ handleNextStep, title, type, position }) {
           display: flex;
           justify-content: center;
         `;
-  const handleClick = () => {
-    handleNextStep();
+  const handleClick = (e) => {
+    handleNextStep(e);
   };
   return (
     <DivButton>

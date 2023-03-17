@@ -29,15 +29,11 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
    * @param e - The event object
    */
   const handleChangeInput = (e) => {
+    const { value } = e.target;
+    const isPattern = getCheckPatern(type, value);
     changeValue(e);
-    //const formatedNumber = formatNumberWithSpaces(e.target.value);
-    const isPattern = getCheckPatern(type, e.target.value);
-    if (isPattern) {
-      setisRequired(false);
-    } else {
-      setisRequired(true);
-    }
-    settext(e.target.value);
+    setisRequired(!isPattern);
+    settext(value);
   };
   return (
     <div className="form-group">
@@ -50,7 +46,6 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
           </span>
         )}
       </div>
-
       <input
         type={type}
         value={isConst === false ? (temp ? temp[name] : text == null ? "" : text) : isConst}

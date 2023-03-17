@@ -3,20 +3,20 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getComments } from "../../services/DmpComentApi";
 
-function ModalComment({ show, setshowModalComment }) {
+function ModalComment({ show, setshowModalComment, setFillColorLight }) {
   const [data, setData] = useState(null);
   const [text, settext] = useState("<p></p>");
 
   const modalStyles = {
     display: show ? "block" : "none",
     position: "absolute",
-    zIndex: 2,
+    zIndex: 99,
     background: "var(--primary)",
     padding: "10px",
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "-650px",
-    marginTop: "-32px",
+    marginLeft: "-804px",
+    marginTop: "366px",
     width: "640px",
     color: "var(--white)",
     // overflow: "auto", // Add thi
@@ -109,6 +109,7 @@ function ModalComment({ show, setshowModalComment }) {
             e.stopPropagation();
             e.preventDefault();
             setshowModalComment(false);
+            setFillColorLight("var(--primary)");
           }}
         >
           x

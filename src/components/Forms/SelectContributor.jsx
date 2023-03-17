@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import BuilderForm from "../Builder/BuilderForm";
 import Select from "react-select";
-import { deleteByIndex, parsePatern } from "../../utils/GeneratorUtils";
+import { deleteByIndex, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import swal from "sweetalert";
 import toast from "react-hot-toast";
@@ -11,7 +11,6 @@ import styles from "../assets/css/form.module.css";
 
 function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
-
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
@@ -41,15 +40,13 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       getSchema(template, "token").then((res) => {
         setregisterFile(res);
       });
-
-      if (!form[schemaId][keyValue]) {
+      if (!form?.[schemaId]?.[keyValue]) {
         return;
       }
       const patern = res.to_string;
       if (!patern.length) {
         return;
       }
-      console.log(form?.[schemaId]?.[keyValue]);
       setlist(form?.[schemaId]?.[keyValue].map((el) => parsePatern(el, patern)));
     });
   }, [form?.[schemaId]?.[keyValue], registry]);
@@ -77,25 +74,51 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   const handleChangeList = (e) => {
     const patern = registerFile.to_string;
     const { object, value } = e;
-
     if (patern.length > 0) {
       setselectObject([...selectObject, object]);
       const parsedPatern = parsePatern(object, registerFile.to_string);
       setlist([...list, parsedPatern]);
-      //changeValue({ target: { name, value: [...selectObject, object] } });
       const newObject = { person: object, role: role };
-      const arr3 = form?.[schemaId]?.[keyValue] ? [...form[schemaId][keyValue], newObject] : [newObject];
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [keyValue]: arr3,
-        },
-      });
+      const mergedList = form?.[schemaId]?.[keyValue] ? [...form[schemaId][keyValue], newObject] : [newObject];
+      setform(updateFormState(form, schemaId, keyValue, mergedList));
     } else {
       changeValue({ target: { name, value } });
       setlist([...list, value]);
     }
+  };
+
+  /**
+   * If the index is not null, then delete the item at the index, add the temp item to the end of the array,
+   * and then splice the item from the list array.
+   * If the index is null, then just save the item.
+   */
+  const handleAddToList = () => {
+    if (index !== null) {
+      const objectPerson = { person: temp, role: role };
+      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
+      const concatedObject = [...deleteIndex, objectPerson];
+      setform(updateFormState(form, schemaId, keyValue, concatedObject));
+      const parsedPatern = parsePatern(temp, registerFile.to_string);
+      setlist([...deleteByIndex([...list], index), parsedPatern]);
+    } else {
+      handleSave();
+    }
+    toast.success("Enregistrement a été effectué avec succès !");
+    settemp(null);
+    handleClose();
+  };
+
+  /**
+   * When the user clicks the save button, the function will take the temporary person object and add it to the form object, then it will parse the
+   * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
+   */
+  const handleSave = () => {
+    const objectPerson = { person: temp, role: role };
+    setform(updateFormState(form, schemaId, keyValue, [...(form[schemaId][keyValue] || []), objectPerson]));
+    const parsedPatern = parsePatern(temp, registerFile.to_string);
+    setlist([...list, parsedPatern]);
+    handleClose();
+    settemp(null);
   };
 
   /**
@@ -113,67 +136,12 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform({
-          ...form,
-          [schemaId]: {
-            ...form[schemaId],
-            [keyValue]: deleteIndex,
-          },
-        });
+        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
         swal("Opération effectuée avec succès!", {
           icon: "success",
         });
       }
     });
-  };
-
-  /**
-   * If the index is not null, then delete the item at the index, add the temp item to the end of the array,
-   * and then splice the item from the list array.
-   * If the index is null, then just save the item.
-   */
-  const handleAddToList = () => {
-    if (index !== null) {
-      const objectPerson = { person: temp, role: role };
-      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
-      const concatedObject = [...deleteIndex, objectPerson];
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [keyValue]: concatedObject,
-        },
-      });
-      //setform({ ...form, [keyValue]: [...deleteByIndex(form[keyValue], index), objectPerson] });
-      const parsedPatern = parsePatern(temp, registerFile.to_string);
-      setlist([...deleteByIndex([...list], index), parsedPatern]);
-    } else {
-      handleSave();
-    }
-    toast.success("Enregistrement a été effectué avec succès !");
-    settemp(null);
-    handleClose();
-  };
-
-  /**
-   * When the user clicks the save button, the function will take the temporary person object and add it to the form object, then it will parse the
-   * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
-   */
-  const handleSave = () => {
-    const objectPerson = { person: temp, role: role };
-    //setform({ ...form, [keyValue]: [...(form[keyValue] || []), objectPerson] });
-
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [keyValue]: [...(form[schemaId][keyValue] || []), objectPerson],
-      },
-    });
-    const parsedPatern = parsePatern(temp, registerFile.to_string);
-    setlist([...list, parsedPatern]);
-    handleClose();
-    settemp(null);
   };
 
   /**
@@ -199,7 +167,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
           )}
         </div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
               options={options}
@@ -219,7 +187,6 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
             </span>
           </div>
         </div>
-
         {form?.[schemaId]?.[keyValue] && list && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>

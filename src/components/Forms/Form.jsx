@@ -1,24 +1,18 @@
-import { useContext, useEffect, useRef, useState } from "react";
-
-//si type = string et inputtype = dropdown
-import BuilderForm from "../../components/Builder/BuilderForm";
-import { GlobalContext } from "../../components/context/Global";
+import { useContext, useEffect, useState } from "react";
+import BuilderForm from "../Builder/BuilderForm";
+import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
 import { getSchema } from "../../services/DmpServiceApi";
-import CustumSpinner from "../../components/Shared/CustumSpinner";
-import Main from "../../components/plans/Main";
-import Redaction from "../../components/redaction/Redaction";
+import CustumSpinner from "../Shared/CustumSpinner";
 import CustumButton from "../Styled/CustumButton";
 
-function MainForm({ schemaId }) {
+function Form({ schemaId }) {
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    //DataStorageStandard
-    //ProjectStandard
     setLoading(true);
     getSchema(schemaId, "token")
       .then((el) => {
@@ -42,14 +36,6 @@ function MainForm({ schemaId }) {
     //   console.log(form);
     // }
   };
-
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
-
   return (
     <>
       {loading && <CustumSpinner></CustumSpinner>}
@@ -61,13 +47,10 @@ function MainForm({ schemaId }) {
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
           <CustumButton handleNextStep={handleSaveForm} title="Enregistrer" position="center"></CustumButton>
-          {/* <button onClick={handleSaveForm} className="btn btn-primary m-4">
-            Enregistrer
-          </button> */}
         </div>
       )}
     </>
   );
 }
 
-export default MainForm;
+export default Form;

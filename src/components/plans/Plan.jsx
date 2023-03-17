@@ -7,7 +7,7 @@ import SecondStep from "./SecondStep";
 import styles from "../assets/css/main.module.css";
 import Info from "../Styled/Info";
 
-function Main() {
+function Plan() {
   const [firstStep, setfirstStep] = useState(true);
   const [secondStep, setsecondStep] = useState(false);
 
@@ -36,4 +36,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Plan;

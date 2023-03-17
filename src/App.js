@@ -1,15 +1,18 @@
 import "./App.css";
 import Redaction from "./components/redaction/Redaction";
-import MainForm from "./components/Forms/MainForm";
-import Main from "./components/plans/Main";
+import Form from "./components/Forms/Form";
+import Plan from "./components/plans/Plan";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Redaction></Redaction>
-      {/* <MainForm schemaId={"a"}></MainForm> */}
-      {/* <Main></Main> */}
-    </>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Redaction />} />
+        <Route exact path="/form" element={<Form schemaId={"a"} />} />
+        <Route exact path="/plan" element={<Plan />} />
+      </Routes>
+    </Router>
   );
 }
 

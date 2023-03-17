@@ -47,3 +47,8 @@ a {
   display: inline-block;
   margin-right: 5px;
 }
+
+.select_wrapper {
+  position: relative;
+  z-index: 9;
+}

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import BuilderForm from "../Builder/BuilderForm";
-import { parsePatern } from "../../utils/GeneratorUtils";
+import { parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
-import swal from "sweetalert";
 import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
@@ -66,20 +65,18 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     setShow(isOpen);
   };
 
+  /**
+   * It takes an event object, and then it sets the selectedValue state to the value of the event object.
+   * It then checks if the registerFile.to_string is greater than 0. If it is, it sets the form state to the result of the updateFormState function. If it
+   * isn't, it sets the value of the target name to the value of the event object.
+   * I
+   */
   const handleChangeList = (e) => {
     const patern = registerFile.to_string;
     const { object, value } = options[e.target.value];
     setselectedValue(options[e.target.value].value);
     if (patern.length > 0) {
-      //changeValue({ target: { name, value: [object] } });
-      //setform({ ...form, [keyValue]: { person: object, role: role } });
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [keyValue]: { person: object, role: role },
-        },
-      });
+      setform(updateFormState(form, schemaId, keyValue, { person: object, role: role }));
     } else {
       changeValue({ target: { name, value } });
     }
@@ -91,20 +88,10 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
-    //edit
     if (index !== null) {
-      //const objectPerson = { person: temp, role: "from create" };
-      //setform({ ...form, [keyValue]: { person: temp, role: role } });
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [keyValue]: { person: temp, role: role },
-        },
-      });
+      setform(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
       setselectedValue(parsePatern(temp, registerFile.to_string));
     } else {
-      //save new
       handleSave();
     }
     toast.success("Enregistrement a été effectué avec succès !");
@@ -117,15 +104,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
    */
   const handleSave = () => {
-    //const objectPerson = { person: temp, role: "from create" };
-    //setform({ ...form, [keyValue]: { person: temp, role: role } });
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [keyValue]: { person: temp, role: role },
-      },
-    });
+    setform(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
     handleClose();
     settemp(null);
     setselectedValue(parsePatern(temp, registerFile.to_string));
@@ -153,7 +132,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
           )}
         </div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-10 ${styles.select_wrapper}`}>
             {options && (
               <select id="company" className="form-control" onChange={handleChangeList}>
                 <option>Sélectionnez une valeur de la liste ou saisissez une nouvelle.</option>

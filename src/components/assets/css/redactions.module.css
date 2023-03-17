@@ -20,7 +20,7 @@
 }
 .sous_title {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 16px;
   color: var(--secondary);
 }
 .question_title {
@@ -31,13 +31,18 @@
 }
 .question_icons {
   min-width: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .light_icon {
   color: var(--primary);
+  margin: 0px 5px 0px 0px;
 }
 .bell_icon {
   color: var(--primary);
+  margin: 5px 5px 0px 0px;
 }
 .down_icon {
   color: var(--orange);

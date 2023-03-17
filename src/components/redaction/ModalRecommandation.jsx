@@ -2,19 +2,19 @@ import DOMPurify from "dompurify";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-function ModalRecommandation({ show, setshowModalRecommandation }) {
+function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBell }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
 
   const modalStyles = {
     display: show ? "block" : "none",
     position: "absolute",
-    zIndex: 2,
+    zIndex: 99,
     background: "var(--primary)",
     padding: "10px",
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "-620px",
-    marginTop: "-32px",
+    marginLeft: "-771px",
+    marginTop: "388px",
     width: "600px",
     height: "400px",
     color: "var(--white)",
@@ -212,6 +212,7 @@ function ModalRecommandation({ show, setshowModalRecommandation }) {
             e.stopPropagation();
             e.preventDefault();
             setshowModalRecommandation(false);
+            setFillColorBell("var(--primary)");
           }}
         >
           x

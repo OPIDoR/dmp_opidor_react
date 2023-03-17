@@ -100,12 +100,11 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           )}
         </div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
               options={options}
               name={name}
-              //defaultValue={isEdit ? isEdit[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle."}
               defaultValue={{
                 label: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",
                 value: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",

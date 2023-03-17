@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
+import { updateFormState } from "../../utils/GeneratorUtils";
 
 /* A React component that renders a form with a text input and a button. 
 When the button is clicked, a new text input is added to the form. When the text
@@ -21,14 +22,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
     let data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    //setform({ ...form, [name]: data });
-    setform({
-      ...form,
-      [schemaId]: {
-        ...form[schemaId],
-        [name]: data,
-      },
-    });
+    setform(updateFormState(form, schemaId, name, data));
   };
 
   /**
@@ -46,13 +40,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
       let data = [...formFields];
       data.splice(index, 1);
       setFormFields(data);
-      setform({
-        ...form,
-        [schemaId]: {
-          ...form[schemaId],
-          [name]: data,
-        },
-      });
+      setform(updateFormState(form, schemaId, name, data));
     }
   };
 
@@ -67,7 +55,6 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
           </span>
         )}
       </div>
-
       {formFields.map((form, index) => {
         return (
           <div key={index} style={{ margin: "10px" }}>

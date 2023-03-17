@@ -1,77 +1,117 @@
 import React from "react";
-import infoSvg from "../assets/images/svg/infoSvg.svg";
-import researchSvg from "../assets/images/svg/researchSvg.svg";
-import redactionSvg from "../assets/images/svg/redactionSvg.svg";
-import contributorSvg from "../assets/images/svg/contributorSvg.svg";
-import budgetSvg from "../assets/images/svg/budgetSvg.svg";
-import shareSvg from "../assets/images/svg/shareSvg.svg";
-import assistanceSvg from "../assets/images/svg/assistanceSvg.svg";
-import downloadSvg from "../assets/images/svg/downloadSvg.svg";
 import styles from "../assets/css/navbar.module.css";
+import ReasearchSVG from "../Styled/svg/ReasearchSVG";
+import ContributorSVG from "../Styled/svg/ContributorSVG";
+import AssistanceSVG from "../Styled/svg/AssistanceSVG";
+import BudgetSVG from "../Styled/svg/BudgetSVG";
+import RedactionSVG from "../Styled/svg/RedactionSVG";
+import DownloadSVG from "../Styled/svg/DownloadSVG";
+import ShareSVG from "../Styled/svg/ShareSVG";
+import InfoSVG from "../Styled/svg/InfoSVG";
 
 function Navbar() {
   return (
     <ul id="plan_navigation" className={`nav nav-tabs ${styles.plan_navigation}`} role="tablist">
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          {/* <span className="icon icon-general-infos" /> */}
-          <img src={infoSvg} alt="" className={styles.icon_navbar} />
+          <InfoSVG />
           Informations générales
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={researchSvg} alt="" className={styles.icon_navbar} />
+          <ReasearchSVG />
           Produits de recherche
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li className={styles.active}>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+        className={styles.active}
+      >
         <a href="#">
-          <img src={redactionSvg} alt="" className={styles.icon_navbar} />
+          <RedactionSVG />
           Rédiger
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={contributorSvg} alt="" className={styles.icon_navbar} />
+          <ContributorSVG />
           Contributeurs
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={budgetSvg} alt="" className={styles.icon_navbar} />
+          <BudgetSVG />
           Budget
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={shareSvg} alt="" className={styles.icon_navbar} />
+          <ShareSVG />
           Partager
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={assistanceSvg} alt="" className={styles.icon_navbar} />
+          <AssistanceSVG></AssistanceSVG>
           Demande d'assistance
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
       </li>
-      <li>
+      <li
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
         <a href="#">
-          <img src={downloadSvg} alt="" className={styles.icon_navbar} />
+          <DownloadSVG></DownloadSVG>
           Télécharger
         </a>
         <span className={styles.active_line} />

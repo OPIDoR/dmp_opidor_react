@@ -63,7 +63,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           )}
         </div>
         <div className="row">
-          <div className="col-md-10">
+          <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
               options={options}

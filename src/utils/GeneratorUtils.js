@@ -137,3 +137,13 @@ export function getDefaultLabel(temp, form, name) {
     return form?.[name];
   }
 }
+
+export function updateFormState(form, schemaId, keyValue, newObject) {
+  return {
+    ...form,
+    [schemaId]: {
+      ...form[schemaId],
+      [keyValue]: newObject,
+    },
+  };
+}
