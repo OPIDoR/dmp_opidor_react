@@ -1,0 +1,447 @@
+//getComments()  
+[
+  {
+    "id": 418,
+    "user_id": 1,
+    "text": "<p>Mon commentaire <strong>avec du formatage</strong></p>",
+    "archived": false,
+    "answer_id": 11549,
+    "archived_by": null,
+    "created_at": "2023-03-17T12:56:27.448Z",
+    "updated_at": "2023-03-17T12:56:27.448Z",
+    "user": {
+      "firstname": "DMP",
+      "surname": "Administrator",
+      "email": "info-opidor@inist.fr"
+    }
+  },
+  {
+    "id": 419,
+    "user_id": 1,
+    "text": "<p>Mon commentaire</p>",
+    "archived": false,
+    "answer_id": 11549,
+    "archived_by": null,
+    "created_at": "2023-03-17T13:00:18.641Z",
+    "updated_at": "2023-03-17T13:00:18.641Z",
+    "user": {
+      "firstname": "DMP",
+      "surname": "Administrator",
+      "email": "info-opidor@inist.fr"
+    }
+  }
+]
+
+//getDefaultModel ()
+
+{
+    "id": 276,
+    "title": "Science Europe : modèle structuré"
+    }
+//getOtherOrganisme
+    [
+        {
+        "id": 23,
+        "name": "AMUE - Agence de Mutualisation des Universités et Etablissements",
+        "sort_name": "AMUE - Agence de Mutualisation des Universités et Etablissements"
+        },
+        {
+        "id": 24,
+        "name": "ASSISTANCE PUBLIQUE - Hôpitaux de Marseille",
+        "sort_name": "ASSISTANCE PUBLIQUE - Hôpitaux de Marseille"
+        },
+        {
+        "id": 20,
+        "name": "AgroParisTech - Institut des sciences et industries du vivant et de l'environnement",
+        "sort_name": "AgroParisTech - Institut des sciences et industries du vivant et de l'environnement"
+        },
+        {
+        "id": 28,
+        "name": "CAMPUS CONDORCET",
+        "sort_name": "CAMPUS CONDORCET"
+        },
+        {
+        "id": 274,
+        "name": "CC-IN2P3 (Centre de Calcul - Institut national de physique nucléaire et de physique des particules du CNRS)",
+        "sort_name": "CC-IN2P3"
+        },
+        {
+        "id": 29,
+        "name": "CEA Commissariat à l'énergie atomique et aux énergies alternatives",
+        "sort_name": "CEA Commissariat à l'énergie atomique et aux énergies alternatives"
+        },
+        {
+        "id": 33,
+        "name": "CINES",
+        "sort_name": "CINES"
+        },
+        {
+        "id": 10,
+        "name": "CIRAD",
+        "sort_name": "CIRAD"
+        },
+        {
+        "id": 4,
+        "name": "CNRS",
+        "sort_name": "CNRS"
+        }
+        ]
+
+        //getOrganisme
+        {
+            "templates": [
+            {
+            "id": 614,
+            "title": "ANR - Modèle de PGD (français) (Personnalisé par CNRS)",
+            "default": false
+            },
+            {
+            "id": 555,
+            "title": "ERC DMP (Personnalisé par CNRS)",
+            "default": false
+            },
+            {
+            "id": 600,
+            "title": "Final - MASA - Modèle de PGD (français)",
+            "default": false
+            },
+            {
+            "id": 399,
+            "title": "Horizon 2020 DMP (Personnalisé par CNRS)",
+            "default": false
+            },
+            {
+            "id": 401,
+            "title": "Horizon 2020 FAIR DMP (anglais) (Personnalisé par CNRS)",
+            "default": false
+            }
+            ]
+            }
+
+        //getFunder
+        [
+            {
+            "id": 271,
+            "name": "Agence nationale de la recherche (ANR)",
+            "sort_name": "Agence nationale de la recherche"
+            },
+            {
+            "id": 6,
+            "name": "Commission européenne",
+            "sort_name": "Commission européenne"
+            },
+            {
+            "id": 236,
+            "name": "Conseil européen de la recherche (European Research Council, ERC)",
+            "sort_name": "Conseil européen de la recherche"
+            },
+            {
+            "id": 280,
+            "name": "INCa - Institut national du cancer",
+            "sort_name": "INCa - Institut national du cancer"
+            }
+            ]
+
+        //getOtherOrganismeById
+        {
+            "templates": [
+            {
+            "id": 760,
+            "title": "Horizon 2020 FAIR DMP (français) (Personnalisé par INRAE - Institut national de recherche pour l'agriculture l'alimentation et l'environnement)",
+            "default": false
+            },
+            {
+            "id": 501,
+            "title": "INRA - Trame Structure (5 modes de gestion)",
+            "default": false
+            },
+            {
+            "id": 518,
+            "title": "INRA - Trame générique v2",
+            "default": false
+            },
+            {
+            "id": 828,
+            "title": "INRAE Trame projet v3",
+            "default": false
+            },
+            {
+            "id": 829,
+            "title": "Test",
+            "default": false
+            }
+            ]
+            }
+
+        //getFunderById
+        {
+            "templates": [
+            {
+            "id": 294,
+            "title": "Horizon 2020 DMP",
+            "default": false
+            },
+            {
+            "id": 289,
+            "title": "Horizon 2020 FAIR DMP (anglais)",
+            "default": false
+            },
+            {
+            "id": 295,
+            "title": "Horizon 2020 FAIR DMP (français)",
+            "default": false
+            },
+            {
+            "id": 820,
+            "title": "Horizon Europe DMP (anglais)",
+            "default": false
+            }
+            ]
+            }
+//getquestion
+{
+    "sections": [
+    {
+    "id": 7456,
+    "title": "Description des données et collecte ou réutilisation de données existantes",
+    "description": null,
+    "number": 1,
+    "created_at": "2022-03-01T14:51:24.596Z",
+    "updated_at": "2022-03-01T14:51:24.596Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "f6144df2-8494-403e-a6d8-bf84b22283d6",
+    "questions": [
+    {
+    "id": 30661,
+    "text": "<p>Description g&eacute;n&eacute;rale du produit de recherche</p>",
+    "default_value": "",
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 49
+    },
+    {
+    "id": 30662,
+    "text": "Est-ce que des données existantes seront réutilisées ?",
+    "default_value": null,
+    "number": 2,
+    "question_format_id": 9,
+    "madmp_schema_id": 17
+    },
+    {
+    "id": 30663,
+    "text": "Comment seront produites/collectées les nouvelles données ?",
+    "default_value": null,
+    "number": 3,
+    "question_format_id": 9,
+    "madmp_schema_id": 7
+    },
+    {
+    "id": 30674,
+    "text": "<p>Backup!</p>",
+    "default_value": "",
+    "number": 4,
+    "question_format_id": 9,
+    "madmp_schema_id": 1
+    }
+    ]
+    },
+    {
+    "id": 7457,
+    "title": "Documentation et qualité des données",
+    "description": null,
+    "number": 2,
+    "created_at": "2022-03-01T14:51:24.909Z",
+    "updated_at": "2022-03-01T14:51:24.909Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "4bcf3904-76b7-464e-a214-37c140e345f4",
+    "questions": [
+    {
+    "id": 30664,
+    "text": "Quelles métadonnées et quelle documentation (par exemple mode d'organisation des données) accompagneront les données ?",
+    "default_value": null,
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 26
+    },
+    {
+    "id": 30665,
+    "text": "Quelles seront les méthodes utilisées pour assurer la qualité scientifique des données ?",
+    "default_value": null,
+    "number": 2,
+    "question_format_id": 9,
+    "madmp_schema_id": 46
+    }
+    ]
+    },
+    {
+    "id": 7458,
+    "title": "Exigences légales et éthiques, code de conduite",
+    "description": null,
+    "number": 3,
+    "created_at": "2022-03-01T14:51:25.171Z",
+    "updated_at": "2022-03-01T14:51:25.171Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "e05b9cda-b876-4801-aff2-4128e26222af",
+    "questions": [
+    {
+    "id": 30666,
+    "text": "Quelles seront les mesures appliquées pour assurer la protection des données à caractère personnel ?",
+    "default_value": null,
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 42
+    },
+    {
+    "id": 30667,
+    "text": "Quelles sont les contraintes juridiques (sensibilité des données autres qu'à caractère personnel, confidentialité, ...) à prendre en compte pour le partage et le stockage des données ?",
+    "default_value": null,
+    "number": 2,
+    "question_format_id": 9,
+    "madmp_schema_id": 35
+    },
+    {
+    "id": 30668,
+    "text": "Quels sont les aspects éthiques à prendre en compte lors de la collecte des données ?",
+    "default_value": null,
+    "number": 3,
+    "question_format_id": 9,
+    "madmp_schema_id": 28
+    }
+    ]
+    },
+    {
+    "id": 7459,
+    "title": "Traitement et analyse des données",
+    "description": null,
+    "number": 4,
+    "created_at": "2022-03-01T14:51:25.405Z",
+    "updated_at": "2022-03-01T14:51:25.405Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "e7690683-6825-472e-bd8b-64d23a8281ca",
+    "questions": [
+    {
+    "id": 30669,
+    "text": "Comment et avec quels moyens seront traitées les données ?",
+    "default_value": null,
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 14
+    }
+    ]
+    },
+    {
+    "id": 7460,
+    "title": "Stockage et sauvegarde des données pendant le processus de recherche",
+    "description": null,
+    "number": 5,
+    "created_at": "2022-03-01T14:51:25.487Z",
+    "updated_at": "2022-03-01T14:51:25.487Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "ebf97cc1-af61-43b5-892d-8187f85792f6",
+    "questions": [
+    {
+    "id": 30670,
+    "text": "Comment les données seront-elles stockées et sauvegardées tout au long du projet ?",
+    "default_value": null,
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 22
+    }
+    ]
+    },
+    {
+    "id": 7461,
+    "title": "Partage des données et conservation à long terme",
+    "description": null,
+    "number": 6,
+    "created_at": "2022-03-01T14:51:25.594Z",
+    "updated_at": "2022-03-01T14:51:25.594Z",
+    "phase_id": 1378,
+    "modifiable": true,
+    "versionable_id": "4ae63808-5794-43cc-9fe7-2a44d8f1c8ea",
+    "questions": [
+    {
+    "id": 30671,
+    "text": "Comment les données seront-elles partagées ?",
+    "default_value": null,
+    "number": 1,
+    "question_format_id": 9,
+    "madmp_schema_id": 19
+    },
+    {
+    "id": 30672,
+    "text": "<p>Comment les donn&eacute;es seront-elles conserv&eacute;es &agrave; long terme ?</p>",
+    "default_value": "",
+    "number": 2,
+    "question_format_id": 9,
+    "madmp_schema_id": 14
+    }
+    ]
+    }
+    ],
+    "plan": {
+    "id": 1234,
+    "dmp_id": 9876,
+    "research_outputs": [
+    {
+    "id": 1234,
+    "abbreviation": "Output 1"
+    },
+    {
+    "id": 2345,
+    "abbreviation": "Output 2"
+    },
+    {
+    "id": 3456,
+    "abbreviation": "Output 3"
+    },
+    {
+    "id": 4567,
+    "abbreviation": "Output 4"
+    },
+    {
+    "id": 5678,
+    "abbreviation": "Output 5"
+    },
+    {
+    "id": 6789,
+    "abbreviation": "Output 6"
+    },
+    {
+    "id": 7891,
+    "abbreviation": "Output 7"
+    }
+    ]
+    }
+    }
+
+//getContributor
+[
+    {
+    "nameType": "Personne",
+    "lastName": "FAURE",
+    "firstName": "Benjamin",
+    "mbox": "benji.f63@wanadoo.fr"
+    },
+    {
+    "nameType": "Personne",
+    "lastName": "LAIREZ",
+    "firstName": "Pierre",
+    "affiliationName": "Inria Saclay-Ile-de-France",
+    "affiliationId": "200818248E",
+    "affiliationIdType": "RNSR"
+    },
+    {
+    "nameType": "Personne",
+    "lastName": "CHENEVIER",
+    "firstName": "Pascale",
+    "affiliationName": "Systèmes Moléculaires et Matériaux pour l'Energie et la Santé",
+    "affiliationId": null,
+    "affiliationIdType": "RNSR"
+    }
+    ]

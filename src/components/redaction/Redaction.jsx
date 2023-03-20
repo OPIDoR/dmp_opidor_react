@@ -18,6 +18,7 @@ import ModalRecommandation from "./ModalRecommandation";
 import ModalComment from "./ModalComment";
 import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
+import ProjectPagination from "./ProjectPagination";
 
 function Redaction() {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,15 @@ function Redaction() {
   const [showModalComment, setshowModalComment] = useState(false);
   const [fillColorLight, setFillColorLight] = useState("var(--primary)");
   const [fillColorBell, setFillColorBell] = useState("var(--primary)");
+  const [initialData, setInitialData] = useState(null);
+
+  const [size, setsize] = useState(2);
+  const [currentData, setcurrentData] = useState([]);
+
+  const onChangePage = (pageOfItems) => {
+    // update state with new page of items
+    setcurrentData(pageOfItems);
+  };
 
   const handleCollapseAll = (idx) => {
     setIsCollapsed((prevState) => {
@@ -63,7 +73,9 @@ function Redaction() {
     setLoading(true);
     getQuestion("token")
       .then((res) => {
-        const result = res.data;
+        const result = res.data.sections;
+        console.log(result);
+        setInitialData(res.data);
         setData(result);
         const allColl = result.reduce((acc, el, idx) => {
           acc[idx] = {};
@@ -163,6 +175,10 @@ function Redaction() {
                                     show={showModalComment}
                                     setshowModalComment={setshowModalComment}
                                     setFillColorLight={setFillColorLight}
+                                    answerId={""}
+                                    researchOutputId={""}
+                                    planId={initialData.plan.id}
+                                    questionId={q.id}
                                   ></ModalComment>
                                 )}
                                 {/* 2 */}
@@ -219,6 +235,18 @@ function Redaction() {
           </div>
         )}
       </div>
+      {/* {initialData &&
+        currentData.map((el, idx) => (
+          <ul key={idx}>
+            <li>{el.abbreviation}</li>
+          </ul>
+        ))}
+      {initialData && currentData && (
+        <div className="col-sm-12 col-md-7">
+          <ProjectPagination items={initialData.plan.research_outputs} onChangePage={onChangePage} pageSize={size} />
+        </div>
+      )} */}
+
       <Footer></Footer>
     </>
   );

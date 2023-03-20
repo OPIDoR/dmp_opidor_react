@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { api_url } from "../config";
 // export async function getRegistry(t, token) {
 //   try {
 //     const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1", {
@@ -47,7 +47,7 @@ export async function getRegistry(t, token) {
 
 export async function getContributor(token) {
   try {
-    const response = await axios.get("https://mocki.io/v1/96771ddd-1144-4dd5-8462-50e31461c235");
+    const response = await axios.get(`${api_url}96771ddd-1144-4dd5-8462-50e31461c235`);
     return response;
   } catch (error) {
     console.error(error);

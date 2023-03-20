@@ -1,4 +1,5 @@
 import axios from "axios";
+import { api_url } from "../config";
 
 // export async function getOrganizme(token) {
 //   try {
@@ -17,7 +18,8 @@ import axios from "axios";
 
 export async function getQuestion(token) {
   try {
-    const response = await axios.get("https://mocki.io/v1/f2e418a4-5e69-42ad-a06a-1b8bd2730783");
+    const response = await axios.get(`${api_url}d610557d-1723-4019-b6dd-1cd21321efd3`);
+    console.log(response);
     return response;
   } catch (error) {
     console.error(error);
