@@ -1,9 +1,17 @@
 import DOMPurify from "dompurify";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getRecommandation } from "../../services/DmpRecommandationApi";
+import CustumSpinner from "../Shared/CustumSpinner";
 
 function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBell }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
+
+  const [data, setData] = useState(null);
+  const [text, settext] = useState("<p></p>");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [indexTab, setIndexTab] = useState(0);
 
   const modalStyles = {
     display: show ? "block" : "none",
@@ -32,6 +40,9 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
     background: activeTab === tab ? "var(--white)" : "var(--primary)",
     padding: "10px",
     borderRadius: "10px 10px 0px 0px",
+    fontWeight: "bold",
+    // fontFamily: "custumHelveticaLight",
+    // fontSize: "15px",
   });
 
   const navBar = {
@@ -73,7 +84,8 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
     }
     &::-webkit-scrollbar-thumb {
       background: var(--primary);
-      border-radius: 3px;
+      border-radius: 8px;
+      border: 3px solid var(--white);
     }
   `;
 
@@ -86,126 +98,60 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
     margin: 10px 0px 0px 0px;
     color: #fff;
     font-size: 25px;
+    font-family: custumHelveticaLight;
   `;
 
+  /* A hook that is called when the component is mounted. */
+  useEffect(() => {
+    setLoading(true);
+    getRecommandation("", "")
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
+  }, []);
+
   const getContent = () => {
-    switch (activeTab) {
-      case "Science Europe":
-        return (
-          <ScrollNav>
-            <NavBody>
-              <NavBodyText>
-                <div
-                  style={{
-                    wordBreak: "break-word", // Add this line to break the long text
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(`<div>eur à faire son choix.
-                    Formulaire standard (description des données)
-                    CONTACT
-                    SUPPORT
-                    TECHNIQUE
-                    Science Europe INRAE DCC IRD LMU
-                    ◦ Donnez des détails sur le type de données : par exemple 
-                    numérique (bases de données, tableurs), textuel (documents), 
-                    image, audio, vidéo, et/ou médias composites.
-                    ◦ Expliquez comment les données pourraient être réutilisées 
-                    dans d’autres contextes. Les identifiants persistants (PID) 
-                    devraient être appliqués de manière à ce que les données ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd dddddddddddddddddddddddddddddddddddddddd
-                    puissent être localisées et référencées de façon fiable et efficace. Ces PID aident aussi à comptabiliser les citations et les 
-                    réutilisations.
-                    ◦ Indiquez s’il sera envisagé d’attribuer aux données un PID. 
-                    Typiquement, un entrepôt pérenne digne de confiance attribuera des identifiants persistants</div>`),
-                  }}
-                />
-              </NavBodyText>
-            </NavBody>
-          </ScrollNav>
-        );
-      case "INRAE":
-        return (
-          <ScrollNav>
-            <NavBody>
-              <NavBodyText>
-                <div
-                  style={{
-                    wordBreak: "break-word", // Add this line to break the long text
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(
-                      "<div>ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8888888888888888888888888888888888888888888888888888888888888888888888888888</div>"
-                    ),
-                  }}
-                />
-              </NavBodyText>
-            </NavBody>
-          </ScrollNav>
-        );
-      case "DCC":
-        return (
-          <ScrollNav>
-            <NavBody>
-              <NavBodyText>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize("<p>dddddddd</p>"),
-                  }}
-                />
-              </NavBodyText>
-            </NavBody>
-          </ScrollNav>
-        );
-      case "IRD":
-        return (
-          <ScrollNav>
-            <NavBody>
-              <NavBodyText>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize("<p>dddddddd</p>"),
-                  }}
-                />
-              </NavBodyText>
-            </NavBody>
-          </ScrollNav>
-        );
-      case "LMU":
-        return (
-          <ScrollNav>
-            <NavBody>
-              <NavBodyText>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize("<p>dddddddd</p>"),
-                  }}
-                />
-              </NavBodyText>
-            </NavBody>
-          </ScrollNav>
-        );
-      default:
-        return null;
-    }
+    return (
+      <ScrollNav>
+        <NavBody>
+          <NavBodyText>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(data?.[indexTab]?.description),
+              }}
+            />
+          </NavBodyText>
+        </NavBody>
+      </ScrollNav>
+    );
   };
 
   return (
     <div style={modalStyles}>
       <MainNav>
-        <nav style={navBar}>
-          {["Science Europe", "INRAE", "DCC", "IRD", "LMU"].map((el, idx) => (
-            <span
-              key={idx}
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setActiveTab(el);
-              }}
-              style={navStyles(el)}
-            >
-              {el}
-            </span>
-          ))}
-        </nav>
+        {loading && <CustumSpinner></CustumSpinner>}
+        {!loading && error && <p>error</p>}
+        {!loading && !error && data && (
+          <nav style={navBar}>
+            {data.map((el, idx) => (
+              <span
+                key={idx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setActiveTab(el.titre);
+                  setIndexTab(idx);
+                }}
+                style={navStyles(el.titre)}
+              >
+                {el.titre}
+              </span>
+            ))}
+          </nav>
+        )}
+
         <Close
           className="close"
           onClick={(e) => {
@@ -219,7 +165,7 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
         </Close>
       </MainNav>
 
-      <div>{getContent()}</div>
+      <div>{data && getContent()}</div>
     </div>
   );
 }

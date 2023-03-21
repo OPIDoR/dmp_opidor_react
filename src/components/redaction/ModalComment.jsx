@@ -1,15 +1,17 @@
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getComments, postNote, updateNote } from "../../services/DmpComentApi";
 import moment from "moment";
 import DOMPurify from "dompurify";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { deleteByIndex } from "../../utils/GeneratorUtils";
+import EditorComment from "./EditorComment";
 
 function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, researchOutputId, planId, questionId }) {
-  const [data, setData] = useState(null);
+  const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isUpdate, setisUpdate] = useState(false);
@@ -24,10 +26,9 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     marginLeft: "-804px",
-    marginTop: "366px",
+    marginTop: "570px",
     width: "640px",
     color: "var(--white)",
-    // overflow: "auto", // Add thi
   };
 
   const NavBody = styled.div`
@@ -35,7 +36,6 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
     padding: 0px;
     margin-top: 4px;
     min-height: 320px;
-    max-height: 30px;
     margin-right: 20px;
   `;
   const NavBodyText = styled.div`
@@ -48,7 +48,9 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   `;
 
   const ScrollNav = styled.div`
+    max-height: 209px;
     overflow: auto;
+    overflow-anchor: none;
     scrollbar-width: bold;
     scrollbar-color: var(--primary) transparent;
     &::-webkit-scrollbar {
@@ -63,7 +65,8 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
     }
     &::-webkit-scrollbar-thumb {
       background: var(--primary);
-      border-radius: 3px;
+      border-radius: 8px;
+      border: 3px solid var(--white);
     }
   `;
 
@@ -73,7 +76,7 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   `;
 
   const Close = styled.div`
-    margin: 10px 2px 2px 0px;
+    margin: 0px 21px 12px 0px;
     color: #fff;
     font-size: 25px;
   `;
@@ -106,10 +109,11 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   }, []);
 
   /**
-   * The function handleChange takes in a parameter newText and sets the state of text to newText.
+   * "updateParentText" is a function that takes in a parameter called "updatedText" and then sets the value of "editorContentRef.current" to
+   * "updatedText".
    */
-  const handleChange = (newText) => {
-    settext(newText);
+  const updateParentText = (updatedText) => {
+    editorContentRef.current = updatedText;
   };
 
   /**
@@ -158,12 +162,14 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
    * I'm trying to update the state of the component with the new data.
    */
   const handleSave = (e) => {
+    const newText = editorContentRef.current;
     e.preventDefault();
     e.stopPropagation();
     //update
+
     if (isUpdate) {
       const newObject = { ...comment };
-      newObject["text"] = text;
+      newObject["text"] = newText;
       newObject["updated_at"] = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
       const objToUpdate = {
         note: {
@@ -186,14 +192,14 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
           plan_id: planId,
           user_id: 8,
           question_id: questionId,
-          text: text,
+          text: newText,
         },
       };
       postNote(obj).then((res) => {
         const objectToShow = {
           id: res.note.id,
           user_id: 1,
-          text: text,
+          text: newText,
           archived: false,
           answer_id: 11549,
           archived_by: null,
@@ -226,73 +232,52 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
           x
         </Close>
       </MainNav>
-      <ScrollNav>
+
+      <>
         {loading && <CustumSpinner></CustumSpinner>}
         {!loading && error && <p>error</p>}
         {!loading && !error && data && (
           <NavBody>
-            {data.map((el, idx) => (
-              <NavBodyText key={idx}>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize([el.text]),
-                  }}
-                />
-                {/* {el.text} */}
-                <CommentsCard>
-                  <div style={{ display: "flex" }}>
-                    <strong style={{ fontWeight: "bold", fontSize: "17px" }}>
-                      {el.user.surname} {el.user.firstname}
-                    </strong>
-                    <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
-                      le {moment(el.created_at).format("DD/MM/YYYY")} à {moment(el.created_at).format("hh:mm:ss")}
+            <ScrollNav>
+              {data.map((el, idx) => (
+                <NavBodyText key={idx}>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize([el.text]),
+                    }}
+                  />
+                  {/* {el.text} */}
+                  <CommentsCard>
+                    <div style={{ display: "flex" }}>
+                      <strong style={{ fontWeight: "bold", fontSize: "17px" }}>
+                        {el.user.surname} {el.user.firstname}
+                      </strong>
+                      <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
+                        le {moment(el.created_at).format("DD/MM/YYYY")} à {moment(el.created_at).format("hh:mm:ss")}
+                      </div>
                     </div>
-                  </div>
-                  <div style={{ marginRight: "-20px" }}>
-                    <div className="col-md-1">
-                      <span>
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleUpdate(e, el)}>
+                    <div style={{ marginRight: "-20px" }}>
+                      <div className="col-md-1">
+                        <span onClick={(e) => handleUpdate(e, el)}>
                           <i className="fa fa-edit" />
-                        </a>
-                      </span>
-                    </div>
-                    <div className="col-md-1">
-                      <span>
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDelete(e, idx)}>
+                        </span>
+                      </div>
+                      <div className="col-md-1">
+                        <span onClick={(e) => handleDelete(e, idx)}>
                           <i className="fa fa-times" />
-                        </a>
-                      </span>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </CommentsCard>
-              </NavBodyText>
-            ))}
+                  </CommentsCard>
+                </NavBodyText>
+              ))}
+            </ScrollNav>
+
             <div style={{ margin: "10px" }}>
               <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>
                 Ajoutez un commentaire à partager avec les collaborateurs
               </p>
-              <Editor
-                apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
-                onEditorChange={(newText) => handleChange(newText)}
-                // onInit={(evt, editor) => (editorRef.current = editor)}
-                value={text}
-                init={{
-                  branding: false,
-                  height: 200,
-                  menubar: false,
-                  plugins: [
-                    "advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table paste code help wordcount",
-                  ],
-                  toolbar:
-                    "undo redo | formatselect | " +
-                    "bold italic backcolor | alignleft aligncenter " +
-                    "alignright alignjustify | bullist numlist outdent indent | " +
-                    "removeformat | help",
-                  content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-                }}
-              />
+              <EditorComment initialValue={text} updateParentText={updateParentText} />
             </div>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
@@ -301,7 +286,7 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
             </div>
           </NavBody>
         )}
-      </ScrollNav>
+      </>
     </div>
   );
 }

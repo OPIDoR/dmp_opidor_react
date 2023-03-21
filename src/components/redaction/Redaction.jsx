@@ -49,7 +49,6 @@ function Redaction() {
           newState[elIndex][qIndex] = idx === parseInt(elIndex) ? false : true;
         });
       });
-      console.log(newState);
       return newState;
     });
   };
@@ -74,7 +73,6 @@ function Redaction() {
     getQuestion("token")
       .then((res) => {
         const result = res.data.sections;
-        console.log(result);
         setInitialData(res.data);
         setData(result);
         const allColl = result.reduce((acc, el, idx) => {
@@ -132,13 +130,29 @@ function Redaction() {
                   </p>
                   <div className="column">
                     <div className={styles.collapse_title}>
-                      <span className={styles.sous_title} onClick={() => handleCollapseAll(idx)}>
-                        Tout développer{" "}
-                      </span>
+                      <a
+                        href="#"
+                        className={styles.sous_title}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCollapseAll(idx);
+                        }}
+                      >
+                        Tout développer
+                      </a>
                       <span className={styles.sous_title}> | </span>
-                      <span className={styles.sous_title} onClick={() => setIsCollapsed(initialCollapse)}>
-                        Tout réduire{" "}
-                      </span>
+                      <a
+                        href="#"
+                        className={styles.sous_title}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setIsCollapsed(initialCollapse);
+                        }}
+                      >
+                        Tout réduire
+                      </a>
                     </div>
                   </div>
 
