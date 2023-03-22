@@ -13,14 +13,13 @@ import { TfiAngleUp } from "react-icons/tfi";
 import styles from "../assets/css/redactions.module.css";
 
 import DOMPurify from "dompurify";
-import Navbar from "../Shared/Navbar";
 import ModalRecommandation from "./ModalRecommandation";
 import ModalComment from "./ModalComment";
 import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
-import ProjectPagination from "./ProjectPagination";
 
-function Redaction() {
+function Redaction({ researchId, planId }) {
+  console.log(researchId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
@@ -30,15 +29,6 @@ function Redaction() {
   const [showModalComment, setshowModalComment] = useState(false);
   const [fillColorLight, setFillColorLight] = useState("var(--primary)");
   const [fillColorBell, setFillColorBell] = useState("var(--primary)");
-  const [initialData, setInitialData] = useState(null);
-
-  const [size, setsize] = useState(2);
-  const [currentData, setcurrentData] = useState([]);
-
-  const onChangePage = (pageOfItems) => {
-    // update state with new page of items
-    setcurrentData(pageOfItems);
-  };
 
   const handleCollapseAll = (idx) => {
     setIsCollapsed((prevState) => {
@@ -73,7 +63,6 @@ function Redaction() {
     getQuestion("token")
       .then((res) => {
         const result = res.data.sections;
-        setInitialData(res.data);
         setData(result);
         const allColl = result.reduce((acc, el, idx) => {
           acc[idx] = {};
@@ -112,9 +101,6 @@ function Redaction() {
 
   return (
     <>
-      <Header></Header>
-      <Banner></Banner>
-      <Navbar></Navbar>
       <div>
         {loading && <CustumSpinner></CustumSpinner>}
         {!loading && error && <p>error</p>}
@@ -184,16 +170,12 @@ function Redaction() {
                                 >
                                   <LightSVG fill={isCollapsed[idx][i] === false ? fillColorLight : "var(--primary)"} />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalComment && (
-                                  <ModalComment
-                                    show={showModalComment}
-                                    setshowModalComment={setshowModalComment}
-                                    setFillColorLight={setFillColorLight}
-                                    answerId={""}
-                                    researchOutputId={""}
-                                    planId={initialData.plan.id}
-                                    questionId={q.id}
-                                  ></ModalComment>
+                                {isCollapsed[idx][i] === false && showModalRecommandation && (
+                                  <ModalRecommandation
+                                    show={showModalRecommandation}
+                                    setshowModalRecommandation={setshowModalRecommandation}
+                                    setFillColorBell={setFillColorBell}
+                                  ></ModalRecommandation>
                                 )}
                                 {/* 2 */}
                                 <div
@@ -205,12 +187,16 @@ function Redaction() {
                                   <BellSVG fill={isCollapsed[idx][i] === false ? fillColorBell : "var(--primary)"} />
                                 </div>
 
-                                {isCollapsed[idx][i] === false && showModalRecommandation && (
-                                  <ModalRecommandation
-                                    show={showModalRecommandation}
-                                    setshowModalRecommandation={setshowModalRecommandation}
-                                    setFillColorBell={setFillColorBell}
-                                  ></ModalRecommandation>
+                                {isCollapsed[idx][i] === false && showModalComment && (
+                                  <ModalComment
+                                    show={showModalComment}
+                                    setshowModalComment={setshowModalComment}
+                                    setFillColorLight={setFillColorLight}
+                                    answerId={""}
+                                    researchOutputId={researchId}
+                                    planId={planId}
+                                    questionId={q.id}
+                                  ></ModalComment>
                                 )}
                                 {/* <Modal show={showModalRecommandation}></Modal> */}
                                 {/* 3 */}
@@ -249,19 +235,6 @@ function Redaction() {
           </div>
         )}
       </div>
-      {/* {initialData &&
-        currentData.map((el, idx) => (
-          <ul key={idx}>
-            <li>{el.abbreviation}</li>
-          </ul>
-        ))}
-      {initialData && currentData && (
-        <div className="col-sm-12 col-md-7">
-          <ProjectPagination items={initialData.plan.research_outputs} onChangePage={onChangePage} pageSize={size} />
-        </div>
-      )} */}
-
-      <Footer></Footer>
     </>
   );
 }

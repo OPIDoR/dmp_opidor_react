@@ -218,7 +218,13 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   };
 
   return (
-    <div style={modalStyles}>
+    <div
+      style={modalStyles}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <MainNav>
         <Close
           className="close"

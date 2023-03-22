@@ -129,7 +129,13 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
   };
 
   return (
-    <div style={modalStyles}>
+    <div
+      style={modalStyles}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
       <MainNav>
         {loading && <CustumSpinner></CustumSpinner>}
         {!loading && error && <p>error</p>}
