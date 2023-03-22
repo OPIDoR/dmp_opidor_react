@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
+/**
+ * A function that takes in an argument called content and then calls the updateParentText function with the content as the argument.
+ */
 const EditorComment = ({ initialValue, updateParentText }) => {
   const handleEditorChange = (content) => {
     updateParentText(content);

@@ -1,4 +1,3 @@
-import { Editor } from "@tinymce/tinymce-react";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getComments, postNote, updateNote } from "../../services/DmpComentApi";

@@ -1,13 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { Panel, PanelGroup } from "react-bootstrap";
-import Banner from "../Shared/Banner";
-import Footer from "../Shared/Footer";
-import Header from "../Shared/Header";
 import MainForm from "../Forms/Form";
-import { HiOutlineLightBulb } from "react-icons/hi";
-import { AiOutlineBell } from "react-icons/ai";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
 import styles from "../assets/css/redactions.module.css";
@@ -30,6 +25,9 @@ function Redaction({ researchId, planId }) {
   const [fillColorLight, setFillColorLight] = useState("var(--primary)");
   const [fillColorBell, setFillColorBell] = useState("var(--primary)");
 
+  /**
+   * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
+   */
   const handleCollapseAll = (idx) => {
     setIsCollapsed((prevState) => {
       const newState = { ...prevState };
@@ -43,6 +41,11 @@ function Redaction({ researchId, planId }) {
     });
   };
 
+  /**
+   * `handlePanelToggle` is a function that takes an event, an element index, and a question index,
+   * and then sets the state of `isCollapsed` to the
+   * opposite of what it was before.
+   */
   const handlePanelToggle = (e, elIndex, qIndex) => {
     e.preventDefault();
     e.stopPropagation();
@@ -58,6 +61,10 @@ function Redaction({ researchId, planId }) {
     });
   };
 
+  /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
+promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the initialCollapse state to the result of
+the promise. It then sets the isCollapsed state to the result of the promise. If the promise is rejected, it sets the error state to the error.
+Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
     getQuestion("token")
@@ -78,6 +85,11 @@ function Redaction({ researchId, planId }) {
       .finally(() => setLoading(false));
   }, []);
 
+  /**
+   * If the collapse is false, then set showModalRecommandation to false, set showModalComment to the opposite
+   *  of what it is, set FillColorLight to the
+   * opposite of what it is, and set FillColorBell to the opposite of what it is.
+   */
   const handleLightClick = (e, collapse) => {
     e.stopPropagation();
     e.preventDefault();
@@ -88,6 +100,11 @@ function Redaction({ researchId, planId }) {
       setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
+  /**
+   * If the collapse is false, then set showModalComment to false, set showModalRecommandation to the opposite
+   * of what it is, set FillColorBell to the
+   * opposite of what it is, and set FillColorLight to the opposite of what it is.
+   */
   const handleBellClick = (e, collapse) => {
     e.stopPropagation();
     e.preventDefault();

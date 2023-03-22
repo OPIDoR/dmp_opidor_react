@@ -6,9 +6,7 @@ import CustumSpinner from "../Shared/CustumSpinner";
 
 function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBell }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
-
   const [data, setData] = useState(null);
-  const [text, settext] = useState("<p></p>");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [indexTab, setIndexTab] = useState(0);
