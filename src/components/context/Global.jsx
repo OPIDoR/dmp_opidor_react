@@ -9,13 +9,15 @@ import React, { createContext, useEffect, useReducer, useState } from "react";
 let reducer = (form, formInfo) => {
   if (formInfo === null) {
     localStorage.removeItem("form");
+    localStorage.removeItem("pSearch");
     return {};
   }
   return { ...form, ...formInfo };
 };
 
 /* It's getting the form from localStorage. */
-const localState = JSON.parse(localStorage.getItem("form"));
+const formLocalState = JSON.parse(localStorage.getItem("form"));
+const pSearchLocalState = JSON.parse(localStorage.getItem("pSearch"));
 export const GlobalContext = createContext();
 
 /**
@@ -25,17 +27,27 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
-  const [form, setform] = useReducer(reducer, localState || {});
+  const [form, setform] = useReducer(reducer, formLocalState || {});
   const [temp, settemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
   const [lng, setlng] = useState("fr");
+  const [pSearch, setPSearch] = useState(pSearchLocalState || {});
 
   useEffect(() => {
     /* It's setting the form in localStorage. */
     localStorage.setItem("form", JSON.stringify(form));
   }, [form]);
 
-  return <GlobalContext.Provider value={{ form, setform, temp, settemp, lng, setlng, context, setContext }}>{children}</GlobalContext.Provider>;
+  useEffect(() => {
+    /* It's setting the form in localStorage. */
+    localStorage.setItem("pSearch", JSON.stringify(pSearch));
+  }, [pSearch]);
+
+  return (
+    <GlobalContext.Provider value={{ form, setform, temp, settemp, lng, setlng, context, setContext, pSearch, setPSearch }}>
+      {children}
+    </GlobalContext.Provider>
+  );
 }
 
 export default Global;

@@ -169,6 +169,8 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         <div className="row">
           <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
+              menuPortalTarget={document.body}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               onChange={handleChangeList}
               options={options}
               name={name}

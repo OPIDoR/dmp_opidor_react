@@ -220,6 +220,8 @@ function SecondStep() {
           <div className={styles.select}>
             {isShowOtherOrganisme && otherOrganisme && (
               <Select
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 options={otherOrganisme}
                 onChange={handleChangeOtherOrganisme}
                 value={{
@@ -249,6 +251,8 @@ function SecondStep() {
           <div className={styles.select}>
             {isShowListFunder && listFunder && (
               <Select
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
                 options={listFunder}
                 onChange={handleChangeFunder}
                 value={{

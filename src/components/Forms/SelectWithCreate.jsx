@@ -189,6 +189,8 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         <div className="row">
           <div className={`col-md-10 ${styles.select_wrapper}`}>
             <Select
+              menuPortalTarget={document.body}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               onChange={handleChangeList}
               options={options}
               name={name}

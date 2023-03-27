@@ -14,18 +14,21 @@ import CustumSpinner from "../Shared/CustumSpinner";
 import styles from "../assets/css/sidebar.module.css";
 import styled from "styled-components";
 import StyledSidebar from "./StyledSidebar";
+import { useContext } from "react";
+import { GlobalContext } from "../context/Global";
 
 function RedactionLayout() {
+  const { form, setform, pSearch, setPSearch } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [researchId, setResearchId] = useState(null);
   const [planId, setPlanId] = useState(null);
-
   const [currentItems, setcurrentItems] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const [renderKey, setRenderKey] = useState(0);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -37,12 +40,19 @@ function RedactionLayout() {
    */
   const handleClick = (e, id, index) => {
     e.preventDefault();
+    setPSearch({ ...pSearch, [researchId]: form });
+    setRenderKey((prevKey) => prevKey + 1);
+
+    // exist and not empty
+    if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
+      setform(pSearch[id]);
+    } else {
+      setform(null);
+    }
     setActiveIndex(index);
     setResearchId(id);
   };
 
-  //   const indexOfLastItem = currentPage * itemsPerPage;
-  //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
   useEffect(() => {
     setLoading(true);
@@ -53,8 +63,12 @@ function RedactionLayout() {
         setResearchId(result[activeIndex].id);
         setData(result);
 
-        // const currentItems = result.slice(indexOfFirstItem, indexOfLastItem);
-        // setcurrentItems(currentItems);
+        // exist and not empty
+        if (pSearch?.[result[activeIndex].id]) {
+          setform(pSearch[result[activeIndex].id]);
+        } else {
+          setform(null);
+        }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -142,7 +156,8 @@ function RedactionLayout() {
             </div>
           </StyledSidebar>
           <div className={styles.main}>
-            <Redaction researchId={researchId} planId={planId}></Redaction>
+            {" "}
+            <Redaction key={renderKey} researchId={researchId} planId={planId}></Redaction>
           </div>
         </div>
       )}

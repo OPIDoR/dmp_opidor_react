@@ -14,7 +14,7 @@ import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
 
 function Redaction({ researchId, planId }) {
-  console.log(researchId);
+  // console.log(researchId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
