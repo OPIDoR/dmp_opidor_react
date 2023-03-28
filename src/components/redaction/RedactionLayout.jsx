@@ -30,6 +30,9 @@ function RedactionLayout() {
   const itemsPerPage = 6;
   const [renderKey, setRenderKey] = useState(0);
 
+  /**
+   * When the user clicks on a page number, the current page number is set to the new page number.
+   */
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -44,11 +47,11 @@ function RedactionLayout() {
     setRenderKey((prevKey) => prevKey + 1);
 
     // exist and not empty
-    if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
-      setform(pSearch[id]);
-    } else {
-      setform(null);
-    }
+    // if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
+    //   setform(pSearch[id]);
+    // } else {
+    //   setform(null);
+    // }
     setActiveIndex(index);
     setResearchId(id);
   };
@@ -64,11 +67,11 @@ function RedactionLayout() {
         setData(result);
 
         // exist and not empty
-        if (pSearch?.[result[activeIndex].id]) {
-          setform(pSearch[result[activeIndex].id]);
-        } else {
-          setform(null);
-        }
+        // if (pSearch?.[result[activeIndex].id]) {
+        //   setform(pSearch[result[activeIndex].id]);
+        // } else {
+        //   setform(null);
+        // }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -156,7 +159,6 @@ function RedactionLayout() {
             </div>
           </StyledSidebar>
           <div className={styles.main}>
-            {" "}
             <Redaction key={renderKey} researchId={researchId} planId={planId}></Redaction>
           </div>
         </div>

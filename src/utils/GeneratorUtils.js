@@ -126,6 +126,15 @@ export function formatNumberWithSpaces(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+/**
+ * If the temp object has a property with the same name as the name parameter, and that property is an object, return the label property of that object.
+ * Otherwise, if the temp object has a property with the same name as the name parameter, and that property is a string, return that string. Otherwise,
+ * return the form object's property with the same name as the name parameter.
+ * @param temp - the object that contains the label
+ * @param form - the form object
+ * @param name - the name of the field
+ * @returns The label of the form field.
+ */
 export function getDefaultLabel(temp, form, name) {
   if (temp) {
     if (typeof temp[name] === "object") {
@@ -138,6 +147,15 @@ export function getDefaultLabel(temp, form, name) {
   }
 }
 
+/**
+ * It takes a form object, a schemaId, a keyValue, and a newObject, and returns a new form object with the newObject nested under the schemaId and
+ * keyValue.
+ * @param form - the form object
+ * @param schemaId - 'schema1'
+ * @param keyValue - 'name'
+ * @param newObject - {
+ * @returns A new object with the form object spread into it, and then the schemaId object spread into it, and then the keyValue object spread into it.
+ */
 export function updateFormState(form, schemaId, keyValue, newObject) {
   return {
     ...form,

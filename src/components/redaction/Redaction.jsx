@@ -37,6 +37,7 @@ function Redaction({ researchId, planId }) {
           newState[elIndex][qIndex] = idx === parseInt(elIndex) ? false : true;
         });
       });
+      console.table(newState);
       return newState;
     });
   };
