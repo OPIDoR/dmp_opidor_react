@@ -71,6 +71,7 @@ Dynamic form generation uses a number of open source projects to work properly:
 - [sweetalert](https://sweetalert2.github.io/) - A BEAUTIFUL, RESPONSIVE, CUSTOMIZABLE, ACCESSIBLE (WAI-ARIA) REPLACEMENT FOR JAVASCRIPT'S POPUP BOXES
 - [react-loader-spinner](https://www.npmjs.com/package/react-loader-spinner) - React-spinner-loader provides simple React SVG spinner component which can be implemented for async await operation before data loads to the view.
 - [axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js.
+- [moment](https://www.npmjs.com/package/moment) - JavaScript library for parsing, validating, manipulating, and formatting dates.
 
 ## Installation
 
@@ -83,6 +84,7 @@ npm i bootstrap@3.3.0
 npm i react-bootstrap@0.33.1
 npm i react-hot-toast sweetalert react-loader-spinner dompurify axios react-select
 npm install --save @tinymce/tinymce-react
+npm i moment
 ```
 
 For developement testing environment...

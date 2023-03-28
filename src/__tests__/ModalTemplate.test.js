@@ -49,6 +49,6 @@ describe("Handle Generate TextArea", () => {
       </Global>
     );
     expect(screen.getByText("Coûts liés au stockage et à la sauvegarde des données")).toBeInTheDocument();
-    expect(screen.getByText("Créé")).toBeInTheDocument();
+    expect(screen.getByText("Ajouter un élément")).toBeInTheDocument();
   });
 });

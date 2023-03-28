@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import Main from "../components/plans/Main";
+import Plan from "../components/plans/Plan";
 import Global from "../components/context/Global";
 import { shallow } from "enzyme";
 
@@ -12,7 +12,7 @@ describe("Main component", () => {
   it("renders header, banner, first step, and footer", () => {
     render(
       <Global>
-        <Main />
+        <Plan />
       </Global>
     );
 
@@ -25,7 +25,7 @@ describe("Main component", () => {
   it('renders second step when "Next" button is clicked', () => {
     render(
       <Global>
-        <Main />
+        <Plan />
       </Global>
     );
     fireEvent.click(screen.getByText("Valider mon choix"));
