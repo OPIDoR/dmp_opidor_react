@@ -59,3 +59,8 @@
   align-items: center;
   font-family: custumHelveticaLight;
 }
+
+.svg_size {
+  height: 55px !important;
+  width: 55px !important;
+}

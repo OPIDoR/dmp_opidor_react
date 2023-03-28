@@ -1,10 +1,10 @@
 import React from "react";
+import styles from "../../assets/css/redactions.module.css";
 
 function AssistanceSVG() {
   return (
     <svg
-      width="200"
-      height="200"
+      className={styles.svg_size}
       version="1.1"
       id="Capa_1"
       xmlns="http://www.w3.org/2000/svg"

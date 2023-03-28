@@ -1,8 +1,9 @@
 import React from "react";
+import styles from "../../assets/css/redactions.module.css";
 
 function ReasearchSVG() {
   return (
-    <svg width="200" height="200" id="Слой_1" enableBackground="new 0 0 300 300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <svg className={styles.svg_size} id="Слой_1" enableBackground="new 0 0 300 300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
       <g>
         <path
           fill="currentColor"

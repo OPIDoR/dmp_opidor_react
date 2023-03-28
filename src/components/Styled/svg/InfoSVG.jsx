@@ -1,8 +1,9 @@
 import React from "react";
+import styles from "../../assets/css/redactions.module.css";
 
 function InfoSVG() {
   return (
-    <svg width="200" height="200" id="Capa_1" enableBackground="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <svg className={styles.svg_size} id="Capa_1" enableBackground="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
       <g>
         <g>
           <g>

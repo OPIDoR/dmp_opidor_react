@@ -18,7 +18,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 
 function RedactionLayout() {
-  const { form, setform, pSearch, setPSearch } = useContext(GlobalContext);
+  const { setform, pSearch, setproductId } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -43,17 +43,20 @@ function RedactionLayout() {
    */
   const handleClick = (e, id, index) => {
     e.preventDefault();
-    setPSearch({ ...pSearch, [researchId]: form });
     setRenderKey((prevKey) => prevKey + 1);
-
-    // exist and not empty
-    // if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
-    //   setform(pSearch[id]);
-    // } else {
-    //   setform(null);
-    // }
+    handleIdsUpdate(id, true);
     setActiveIndex(index);
+  };
+
+  const handleIdsUpdate = (id, isNull) => {
     setResearchId(id);
+    setproductId(id);
+    // exist and not empty
+    if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
+      setform(pSearch[id]);
+    } else {
+      isNull && setform(null);
+    }
   };
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
@@ -63,15 +66,9 @@ function RedactionLayout() {
       .then((res) => {
         const result = res.data.plan.research_outputs;
         setPlanId(res.data.plan.id);
-        setResearchId(result[activeIndex].id);
         setData(result);
-
-        // exist and not empty
-        // if (pSearch?.[result[activeIndex].id]) {
-        //   setform(pSearch[result[activeIndex].id]);
-        // } else {
-        //   setform(null);
-        // }
+        const resultId = result[activeIndex].id;
+        handleIdsUpdate(resultId, false);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));

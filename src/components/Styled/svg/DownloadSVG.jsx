@@ -1,15 +1,13 @@
 import React from "react";
+import styles from "../../assets/css/redactions.module.css";
 
 function DownloadSVG() {
   return (
     <svg
-      width="200"
-      height="200"
+      className={styles.svg_size}
       version="1.1"
       id="Capa_1"
       xmlns="http://www.w3.org/2000/svg"
-      x="0px"
-      y="0px"
       viewBox="0 0 471.2 471.2"
       enableBackground="new 0 0 471.2 471.2"
     >

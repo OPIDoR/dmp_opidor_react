@@ -32,6 +32,11 @@ function Global({ children }) {
   const [context, setContext] = useState({ context: "research_project" });
   const [lng, setlng] = useState("fr");
   const [pSearch, setPSearch] = useState(pSearchLocalState || {});
+  const [productId, setproductId] = useState(null);
+
+  useEffect(() => {
+    productId && setPSearch({ ...pSearch, [productId]: form });
+  }, [productId, form]);
 
   useEffect(() => {
     /* It's setting the form in localStorage. */
@@ -44,7 +49,7 @@ function Global({ children }) {
   }, [pSearch]);
 
   return (
-    <GlobalContext.Provider value={{ form, setform, temp, settemp, lng, setlng, context, setContext, pSearch, setPSearch }}>
+    <GlobalContext.Provider value={{ form, setform, temp, settemp, lng, setlng, context, setContext, pSearch, setPSearch, productId, setproductId }}>
       {children}
     </GlobalContext.Provider>
   );

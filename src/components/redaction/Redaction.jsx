@@ -99,6 +99,7 @@ Finally, it sets the loading state to false. */
     e.preventDefault();
     if (collapse === false) {
       setshowModalRecommandation(false);
+      setshowModalRuns(false);
       setshowModalComment(!showModalComment);
       setFillColorLight((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
@@ -115,6 +116,7 @@ Finally, it sets the loading state to false. */
     e.preventDefault();
     if (collapse === false) {
       setshowModalComment(false);
+      setshowModalRuns(false);
       setshowModalRecommandation(!showModalRecommandation);
       setFillColorBell((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorLight((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
