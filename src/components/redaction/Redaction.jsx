@@ -5,13 +5,14 @@ import { Panel, PanelGroup } from "react-bootstrap";
 import MainForm from "../Forms/Form";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
+import { BsGear } from "react-icons/bs";
 import styles from "../assets/css/redactions.module.css";
-
 import DOMPurify from "dompurify";
 import ModalRecommandation from "./ModalRecommandation";
 import ModalComment from "./ModalComment";
 import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
+import ModalRuns from "./MadalRuns";
 
 function Redaction({ researchId, planId }) {
   // console.log(researchId);
@@ -22,6 +23,8 @@ function Redaction({ researchId, planId }) {
   const [initialCollapse, setinitialCollapse] = useState(null);
   const [showModalRecommandation, setshowModalRecommandation] = useState(false);
   const [showModalComment, setshowModalComment] = useState(false);
+  const [showModalRuns, setshowModalRuns] = useState(false);
+  const [fillColorGear, setFillColorGear] = useState("var(--primary)");
   const [fillColorLight, setFillColorLight] = useState("var(--primary)");
   const [fillColorBell, setFillColorBell] = useState("var(--primary)");
 
@@ -99,6 +102,7 @@ Finally, it sets the loading state to false. */
       setshowModalComment(!showModalComment);
       setFillColorLight((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorGear((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
   /**
@@ -114,6 +118,20 @@ Finally, it sets the loading state to false. */
       setshowModalRecommandation(!showModalRecommandation);
       setFillColorBell((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorLight((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorGear((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+    }
+  };
+
+  const handleGearClick = (e, collapse) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (collapse === false) {
+      setshowModalComment(false);
+      setshowModalRecommandation(false);
+      setshowModalRuns(!showModalRuns);
+      setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorLight((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorGear((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
     }
   };
 
@@ -125,7 +143,6 @@ Finally, it sets the loading state to false. */
         {!loading && !error && data && (
           <div>
             <div className="row"></div>
-
             <div className={styles.redaction_bloc}>
               {data.map((el, idx) => (
                 <React.Fragment key={idx}>
@@ -179,6 +196,22 @@ Finally, it sets the loading state to false. */
                               </div>
 
                               <span className={styles.question_icons}>
+                                {/* 0 */}
+                                <div
+                                  className={styles.light_icon}
+                                  onClick={(e) => {
+                                    handleGearClick(e, isCollapsed[idx][i]);
+                                  }}
+                                >
+                                  <BsGear
+                                    size={40}
+                                    style={{ marginTop: "6px", marginRight: "4px" }}
+                                    fill={isCollapsed[idx][i] === false ? fillColorGear : "var(--primary)"}
+                                  />
+                                </div>
+                                {isCollapsed[idx][i] === false && showModalRuns && (
+                                  <ModalRuns show={showModalRuns} setshowModalRuns={setshowModalRuns} setFillColorGear={setFillColorGear}></ModalRuns>
+                                )}
                                 {/* 1 */}
                                 <div
                                   className={styles.light_icon}

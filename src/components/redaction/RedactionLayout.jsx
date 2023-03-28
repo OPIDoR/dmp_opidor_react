@@ -158,7 +158,7 @@ function RedactionLayout() {
               </div>
             </div>
           </StyledSidebar>
-          <div className={styles.main}>
+          <div className={styles.main} style={{ width: "100%" }}>
             <Redaction key={renderKey} researchId={researchId} planId={planId}></Redaction>
           </div>
         </div>

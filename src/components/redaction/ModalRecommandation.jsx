@@ -19,7 +19,7 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
     padding: "10px",
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "-771px",
+    marginLeft: "-785px",
     marginTop: "388px",
     width: "600px",
     height: "400px",
