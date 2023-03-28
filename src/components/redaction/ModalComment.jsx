@@ -6,6 +6,7 @@ import DOMPurify from "dompurify";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
+import swal from "sweetalert";
 
 function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, researchOutputId, planId, questionId }) {
   const editorContentRef = useRef(null);
@@ -123,11 +124,24 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   const handleDelete = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    const newList = deleteByIndex(data, id);
-    setData(newList);
-    // deleteByIndex(id).then((res)=>{
-    //setData(newList);
-    // })
+    swal({
+      title: "Ëtes-vous sûr ?",
+      text: "Voulez-vous vraiment supprimer cet élément ?",
+      icon: "info",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        const newList = deleteByIndex(data, id);
+        setData(newList);
+        // deleteByIndex(id).then((res)=>{
+        //setData(newList);
+        // })
+        swal("Opération effectuée avec succès!", {
+          icon: "success",
+        });
+      }
+    });
   };
   /**
    * When the user clicks the update button, the text of the comment is set to the text of
@@ -247,6 +261,7 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
               {data.map((el, idx) => (
                 <NavBodyText key={idx}>
                   <div
+                    style={{ wordWrap: "break-word" }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([el.text]),
                     }}

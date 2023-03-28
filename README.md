@@ -22,8 +22,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Global from "./components/context/Global";
 import { Toaster } from "react-hot-toast";
 ```
