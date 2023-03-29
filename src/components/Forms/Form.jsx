@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
-import { getSchema } from "../../services/DmpServiceApi";
+import { getSchema, getSchemaByPlanId } from "../../services/DmpServiceApi";
 import CustumSpinner from "../Shared/CustumSpinner";
 import CustumButton from "../Styled/CustumButton";
 
-function Form({ schemaId }) {
+function Form({ schemaId, sections, researchId, questionId, planId }) {
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,8 @@ function Form({ schemaId }) {
 
   useEffect(() => {
     setLoading(true);
-    getSchema(schemaId, "token")
+    //getSchema(schemaId)
+    getSchemaByPlanId(schemaId, sections, researchId, questionId, planId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { Panel, PanelGroup } from "react-bootstrap";
-import MainForm from "../Forms/Form";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
@@ -13,12 +12,14 @@ import ModalComment from "./ModalComment";
 import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
 import ModalRuns from "./MadalRuns";
+import Form from "../Forms/Form";
 
 function Redaction({ researchId, planId }) {
   // console.log(researchId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [initialData, setInitialData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
   const [initialCollapse, setinitialCollapse] = useState(null);
   const [showModalRecommandation, setshowModalRecommandation] = useState(false);
@@ -40,7 +41,6 @@ function Redaction({ researchId, planId }) {
           newState[elIndex][qIndex] = idx === parseInt(elIndex) ? false : true;
         });
       });
-      console.table(newState);
       return newState;
     });
   };
@@ -73,6 +73,7 @@ Finally, it sets the loading state to false. */
     setLoading(true);
     getQuestion("token")
       .then((res) => {
+        setInitialData(res.data);
         const result = res.data.sections;
         setData(result);
         const allColl = result.reduce((acc, el, idx) => {
@@ -276,7 +277,13 @@ Finally, it sets the loading state to false. */
                         </Panel.Heading>
                         {isCollapsed[idx][i] === false && (
                           <Panel.Body collapsible={isCollapsed && isCollapsed[idx][i]}>
-                            <MainForm schemaId={q.madmp_schema_id}></MainForm>
+                            <Form
+                              schemaId={q.madmp_schema_id}
+                              sections={initialData}
+                              researchId={researchId}
+                              questionId={q.id}
+                              planId={planId}
+                            ></Form>
                           </Panel.Body>
                         )}
                       </Panel>

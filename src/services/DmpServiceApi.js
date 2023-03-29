@@ -18,8 +18,24 @@ import { api_url } from "../config";
 
 export async function getSchema(t, token) {
   try {
-    const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+    //const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
     return await require(`../data/templates/${t}-template.json`);
+  } catch (error) {
+    return await require(`../data/templates/a-template.json`);
+  }
+}
+
+export async function getSchemaByPlanId(schemaId, obj, researchId, questionId, planId, token) {
+  const plan_id = planId;
+  const question_id = questionId;
+  const research_output_id = researchId;
+  const madmp_schema_id = schemaId;
+  const dmp_id = obj.plan.dmp_id;
+  try {
+    // const response = await axios.get(
+    //   `/madmp_fragments/load_new_form?madmp_fragment[answer][plan_id]=:${plan_id}&madmp_fragment[answer][question_id]=:${question_id}&madmp_fragment[answer][research_output_id]=:${research_output_id}&madmp_fragment[schema_id]=:${madmp_schema_id}&madmp_fragment[dmp_id]=:${dmp_id}`
+    // );
+    return await require(`../data/templates/${madmp_schema_id}-template.json`);
   } catch (error) {
     return await require(`../data/templates/a-template.json`);
   }

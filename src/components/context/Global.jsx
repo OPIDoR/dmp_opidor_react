@@ -33,6 +33,7 @@ function Global({ children }) {
   const [lng, setlng] = useState("fr");
   const [pSearch, setPSearch] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
+  const [plans, setPlans] = useState(null);
 
   useEffect(() => {
     productId && setPSearch({ ...pSearch, [productId]: form });
@@ -49,7 +50,9 @@ function Global({ children }) {
   }, [pSearch]);
 
   return (
-    <GlobalContext.Provider value={{ form, setform, temp, settemp, lng, setlng, context, setContext, pSearch, setPSearch, productId, setproductId }}>
+    <GlobalContext.Provider
+      value={{ form, setform, temp, settemp, lng, setlng, context, setContext, pSearch, setPSearch, productId, setproductId, plans, setPlans }}
+    >
       {children}
     </GlobalContext.Provider>
   );
