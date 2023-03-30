@@ -12,7 +12,6 @@ import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustumSpinner from "../Shared/CustumSpinner";
 import styles from "../assets/css/sidebar.module.css";
-import styled from "styled-components";
 import StyledSidebar from "./StyledSidebar";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
@@ -155,7 +154,7 @@ function RedactionLayout() {
               </div>
             </div>
           </StyledSidebar>
-          <div className={styles.main} style={{ width: "100%" }}>
+          <div className={styles.main}>
             <Redaction key={renderKey} researchId={researchId} planId={planId}></Redaction>
           </div>
         </div>
