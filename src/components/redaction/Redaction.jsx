@@ -249,6 +249,7 @@ Finally, it sets the loading state to false. */
                                     answerId={""}
                                     researchOutputId={researchId}
                                     planId={planId}
+                                    userId={""}
                                     questionId={q.id}
                                   ></ModalComment>
                                 )}

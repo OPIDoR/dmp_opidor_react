@@ -8,7 +8,7 @@ import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
 import swal from "sweetalert";
 
-function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, researchOutputId, planId, questionId }) {
+function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, researchOutputId, planId, questionId, userId }) {
   const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
   const [data, setData] = useState(null);
@@ -175,59 +175,55 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
    * I'm trying to update the state of the component with the new data.
    */
   const handleSave = (e) => {
-    const newText = editorContentRef.current;
     e.preventDefault();
     e.stopPropagation();
-    //update
+
+    const newText = editorContentRef.current;
+    const currentTime = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
 
     if (isUpdate) {
-      const newObject = { ...comment };
-      newObject["text"] = newText;
-      newObject["updated_at"] = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
-      const objToUpdate = {
-        note: {
-          text: "<p>Mon commentaire</p>",
-        },
+      const updatedObject = {
+        ...comment,
+        text: newText,
+        updated_at: currentTime,
       };
-      updateObjectById(newObject.id, newObject);
-      settext("<p></p>");
-      setisUpdate(false);
-      // updateNote(objToUpdate, id).then((res)=>{
-      //   console.log(res)
-      // });
 
-      //save
+      updateObjectById(updatedObject.id, updatedObject);
     } else {
-      const obj = {
+      const newNote = {
         note: {
-          answer_id: 134,
-          research_output_id: 345,
+          answer_id: answerId,
+          research_output_id: researchOutputId,
           plan_id: planId,
-          user_id: 8,
+          user_id: userId,
           question_id: questionId,
           text: newText,
         },
       };
-      postNote(obj).then((res) => {
+
+      postNote(newNote).then((res) => {
         const objectToShow = {
+          ...newNote.note,
           id: res.note.id,
           user_id: 1,
-          text: newText,
           archived: false,
           answer_id: 11549,
           archived_by: null,
-          created_at: moment(new Date()).format("YYYY-MM-DD hh:mm:ss"),
-          updated_at: moment(new Date()).format("YYYY-MM-DD hh:mm:ss"),
+          created_at: currentTime,
+          updated_at: currentTime,
           user: {
             firstname: "DMP",
             surname: "Administrator",
             email: "info-opidor@inist.fr",
           },
         };
-        setData([...data, objectToShow]);
-        settext("<p></p>");
+
+        setData((prevData) => [...prevData, objectToShow]);
       });
     }
+
+    settext("<p></p>");
+    setisUpdate(false);
   };
 
   return (
