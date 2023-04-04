@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
 import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
@@ -84,20 +84,21 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    swal({
+
+    Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
-      icon: "info",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Oui, supprimer!",
+    }).then((result) => {
+      if (result.isConfirmed) {
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
         setform(updateFormState(form, schemaId, keyValue, deleteIndex));
-        //toast.success("Congé accepté");
-        swal("Opération effectuée avec succès!", {
-          icon: "success",
-        });
+        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
   };
@@ -106,7 +107,9 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    * When the user clicks the edit button, the form is populated with the data from the row that was clicked.
    * @param idx - the index of the item in the array
    */
-  const handleEdit = (idx) => {
+  const handleEdit = (e, idx) => {
+    e.preventDefault();
+    e.stopPropagation();
     settemp(form?.[schemaId]?.[keyValue][idx]);
     setShow(true);
     setindex(idx);
@@ -144,7 +147,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
                     <div className="col-md-1">
                       {level === 1 && (
                         <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={() => handleEdit(idx)}>
+                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
                             <i className="fa fa-edit" />
                           </a>
                         </span>

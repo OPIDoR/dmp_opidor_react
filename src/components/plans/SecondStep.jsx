@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrganisme, getOtherOrganismeById } from "../../services/DmpPlansApi";
 import { GlobalContext } from "../context/Global";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
 import CustumButton from "../Styled/CustumButton";
 import CircleTitle from "../Styled/CircleTitle";
@@ -168,7 +168,7 @@ function SecondStep() {
     if (context["template_id"]) {
       console.log(context);
     } else {
-      swal({
+      Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Vous devez choisir un modèle",

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { GlobalContext } from "../context/Global";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
@@ -67,14 +67,18 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    swal({
+
+    Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
-      icon: "info",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Oui, supprimer !",
+    }).then((result) => {
+      if (result.isConfirmed) {
         const newList = [...list];
         // only splice array when item is found
         if (idx > -1) {
@@ -82,9 +86,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
         }
         setlist(newList);
         settemp({ ...temp, [name]: newList });
-        swal("Opération effectuée avec succès!", {
-          icon: "success",
-        });
+        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
   };

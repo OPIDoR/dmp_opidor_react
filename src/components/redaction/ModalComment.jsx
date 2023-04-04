@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
 import CustumSpinner from "../Shared/CustumSpinner";
 import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
 
 function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, researchOutputId, planId, questionId, userId }) {
   const editorContentRef = useRef(null);
@@ -124,22 +124,21 @@ function ModalComment({ show, setshowModalComment, setFillColorLight, answerId, 
   const handleDelete = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    swal({
+
+    Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
-      icon: "info",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Oui, supprimer !",
+    }).then((result) => {
+      if (result.isConfirmed) {
         const newList = deleteByIndex(data, id);
         setData(newList);
-        // deleteByIndex(id).then((res)=>{
-        //setData(newList);
-        // })
-        swal("Opération effectuée avec succès!", {
-          icon: "success",
-        });
+        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
   };
