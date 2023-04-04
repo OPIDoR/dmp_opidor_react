@@ -78,8 +78,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    * The function takes a boolean value as an argument and sets the state of the show variable to the value of the argument.
    * @param isOpen - boolean
    */
-  const handleShow = (isOpen) => {
-    setShow(isOpen);
+  const handleShow = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShow(true);
   };
 
   /**
@@ -99,7 +101,9 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    * It creates a new array, then removes the item at the index specified by the parameter, then sets the state to the new array.
    * @param idx - the index of the item in the array
    */
-  const handleDeleteListe = (idx) => {
+  const handleDeleteListe = (e, idx) => {
+    e.preventDefault();
+    e.stopPropagation();
     swal({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -203,7 +207,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           </div>
           <div className="col-md-2" style={{ marginTop: "8px" }}>
             <span>
-              <a className="text-primary" href="#" onClick={handleShow}>
+              <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
               </a>
             </span>
@@ -237,7 +241,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
                     </div>
                     <div className="col-md-1" style={{ marginTop: "8px" }}>
                       <span>
-                        <a className="text-danger" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                        <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                           <i className="fa fa-times" />
                         </a>
                       </span>

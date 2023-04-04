@@ -67,7 +67,8 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
   `;
 
   const ScrollNav = styled.div`
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     scrollbar-width: bold;
     scrollbar-color: var(--primary) transparent;
     &::-webkit-scrollbar {
@@ -99,11 +100,18 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
     font-family: custumHelveticaLight;
   `;
 
+  const Theme = styled.div`
+    font-size: 25px;
+    font-family: custumHelveticaLight;
+    font-weight: bold;
+  `;
+
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
     getRecommandation("", "")
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
       })
       .catch((error) => setError(error))
@@ -115,11 +123,31 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
       <ScrollNav>
         <NavBody>
           <NavBodyText>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(data?.[indexTab]?.description),
-              }}
-            />
+            {data?.[indexTab]?.annotations[0]?.text ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(data?.[indexTab]?.annotations[0]["text"]),
+                }}
+              />
+            ) : (
+              <>
+                {data?.[indexTab].groups.map((el) => (
+                  <>
+                    <Theme>{el?.theme}</Theme>
+                    {el?.guidances.map((g) => (
+                      <>
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(g.text),
+                          }}
+                        />
+                        <hr></hr>
+                      </>
+                    ))}
+                  </>
+                ))}
+              </>
+            )}
           </NavBodyText>
         </NavBody>
       </ScrollNav>
@@ -145,12 +173,12 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorBel
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  setActiveTab(el.titre);
+                  setActiveTab(el.name);
                   setIndexTab(idx);
                 }}
-                style={navStyles(el.titre)}
+                style={navStyles(el.name)}
               >
-                {el.titre}
+                {el.name}
               </span>
             ))}
           </nav>

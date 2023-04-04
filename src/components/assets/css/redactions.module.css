@@ -42,7 +42,7 @@
 }
 .bell_icon {
   color: var(--primary);
-  margin: 5px 5px 0px 0px;
+  margin: 0px 5px 0px 0px;
 }
 .down_icon {
   color: var(--orange);

@@ -63,8 +63,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    * The function takes a boolean value as an argument and sets the state of the show variable to the value of the argument.
    * @param isOpen - boolean
    */
-  const handleShow = (isOpen) => {
-    setShow(isOpen);
+  const handleShow = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setShow(true);
   };
 
   /**
@@ -124,7 +126,9 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   /**
    * I want to delete an item from a list and then update the state of the list.
    */
-  const handleDeleteListe = (idx) => {
+  const handleDeleteListe = (e, idx) => {
+    e.preventDefault();
+    e.stopPropagation();
     swal({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -183,7 +187,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
           </div>
           <div className="col-md-2" style={{ marginTop: "8px" }}>
             <span>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={handleShow}>
+              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
               </a>
             </span>
@@ -217,7 +221,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
                     </div>
                     <div className="col-md-1">
                       <span>
-                        <a className="text-danger" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                        <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                           <i className="fa fa-times" />
                         </a>
                       </span>

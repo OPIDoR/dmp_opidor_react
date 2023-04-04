@@ -28,6 +28,7 @@ function Redaction({ researchId, planId }) {
   const [fillColorGear, setFillColorGear] = useState("var(--primary)");
   const [fillColorLight, setFillColorLight] = useState("var(--primary)");
   const [fillColorBell, setFillColorBell] = useState("var(--primary)");
+  const [questionId, setquestionId] = useState(null);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
@@ -95,9 +96,10 @@ Finally, it sets the loading state to false. */
    *  of what it is, set FillColorLight to the
    * opposite of what it is, and set FillColorBell to the opposite of what it is.
    */
-  const handleLightClick = (e, collapse) => {
+  const handleLightClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
+    setquestionId(q.id);
     if (collapse === false) {
       setshowModalRecommandation(false);
       setshowModalRuns(false);
@@ -112,9 +114,10 @@ Finally, it sets the loading state to false. */
    * of what it is, set FillColorBell to the
    * opposite of what it is, and set FillColorLight to the opposite of what it is.
    */
-  const handleBellClick = (e, collapse) => {
+  const handleBellClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
+    setquestionId(q.id);
     if (collapse === false) {
       setshowModalComment(false);
       setshowModalRuns(false);
@@ -125,9 +128,10 @@ Finally, it sets the loading state to false. */
     }
   };
 
-  const handleGearClick = (e, collapse) => {
+  const handleGearClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
+    setquestionId(q.id);
     if (collapse === false) {
       setshowModalComment(false);
       setshowModalRecommandation(false);
@@ -203,45 +207,30 @@ Finally, it sets the loading state to false. */
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleGearClick(e, isCollapsed[idx][i]);
+                                    handleGearClick(e, isCollapsed[idx][i], q);
                                   }}
                                 >
                                   <BsGear
                                     size={40}
                                     style={{ marginTop: "6px", marginRight: "4px" }}
-                                    fill={isCollapsed[idx][i] === false ? fillColorGear : "var(--primary)"}
+                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorGear : "var(--primary)"}
                                   />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalRuns && (
+                                {isCollapsed[idx][i] === false && showModalRuns && questionId && questionId == q.id && (
                                   <ModalRuns show={showModalRuns} setshowModalRuns={setshowModalRuns} setFillColorGear={setFillColorGear}></ModalRuns>
                                 )}
                                 {/* 1 */}
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleLightClick(e, isCollapsed[idx][i]);
+                                    handleLightClick(e, isCollapsed[idx][i], q);
                                   }}
                                 >
-                                  <LightSVG fill={isCollapsed[idx][i] === false ? fillColorLight : "var(--primary)"} />
+                                  <LightSVG
+                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorLight : "var(--primary)"}
+                                  />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalRecommandation && (
-                                  <ModalRecommandation
-                                    show={showModalRecommandation}
-                                    setshowModalRecommandation={setshowModalRecommandation}
-                                    setFillColorBell={setFillColorBell}
-                                  ></ModalRecommandation>
-                                )}
-                                {/* 2 */}
-                                <div
-                                  className={styles.bell_icon}
-                                  onClick={(e) => {
-                                    handleBellClick(e, isCollapsed[idx][i]);
-                                  }}
-                                >
-                                  <BellSVG fill={isCollapsed[idx][i] === false ? fillColorBell : "var(--primary)"} />
-                                </div>
-
-                                {isCollapsed[idx][i] === false && showModalComment && (
+                                {isCollapsed[idx][i] === false && showModalComment && questionId && questionId == q.id && (
                                   <ModalComment
                                     show={showModalComment}
                                     setshowModalComment={setshowModalComment}
@@ -253,7 +242,25 @@ Finally, it sets the loading state to false. */
                                     questionId={q.id}
                                   ></ModalComment>
                                 )}
-                                {/* <Modal show={showModalRecommandation}></Modal> */}
+                                {/* 2 */}
+                                <div
+                                  className={styles.bell_icon}
+                                  onClick={(e) => {
+                                    handleBellClick(e, isCollapsed[idx][i], q);
+                                  }}
+                                >
+                                  <BellSVG
+                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorBell : "var(--primary)"}
+                                  />
+                                </div>
+                                {isCollapsed[idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
+                                  <ModalRecommandation
+                                    show={showModalRecommandation}
+                                    setshowModalRecommandation={setshowModalRecommandation}
+                                    setFillColorBell={setFillColorBell}
+                                  ></ModalRecommandation>
+                                )}
+
                                 {/* 3 */}
                                 {isCollapsed[idx][i] ? (
                                   <TfiAngleDown

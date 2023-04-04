@@ -19,7 +19,7 @@ import { api_url } from "../config";
 export async function getComments(t, token) {
   try {
     const response = await axios.get(`${api_url}27480811-d6e6-4da4-9b84-c8cbff2fca91`);
-    console.log(`${api_url}27480811-d6e6-4da4-9b84-c8cbff2fca91`);
+    //console.log(`${api_url}27480811-d6e6-4da4-9b84-c8cbff2fca91`);
     return response;
   } catch (error) {
     console.log(error);

@@ -64,7 +64,9 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
    * It creates a new array, then removes the item at the index specified by the parameter, then sets the state to the new array.
    * @param idx - the index of the item in the array
    */
-  const handleDeleteListe = (idx) => {
+  const handleDeleteListe = (e, idx) => {
+    e.preventDefault();
+    e.stopPropagation();
     swal({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -122,7 +124,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                 </div>
                 <div className="col-md-1" style={{ marginTop: "8px" }}>
                   <span>
-                    <a className="text-danger" href="#" aria-hidden="true" onClick={() => handleDeleteListe(idx)}>
+                    <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                       <i className="fa fa-times" />
                     </a>
                   </span>
