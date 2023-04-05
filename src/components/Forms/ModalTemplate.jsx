@@ -93,7 +93,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer!",
+      confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
       if (result.isConfirmed) {
         const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
