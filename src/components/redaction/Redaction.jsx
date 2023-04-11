@@ -1,70 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getQuestion } from "../../services/DmpRedactionApi";
-import CustumSpinner from "../Shared/CustumSpinner";
+import CustomSpinner from "../Shared/CustomSpinner";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
 import styles from "../assets/css/redactions.module.css";
 import DOMPurify from "dompurify";
-import ModalRecommandation from "./ModalRecommandation";
-import ModalComment from "./ModalComment";
+import GuidanceModal from "./GuidanceModal";
+import CommentModal from "./CommentModal";
+import RunsModal from "./RunsModal";
 import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
-import ModalRuns from "./MadalRuns";
 import Form from "../Forms/Form";
+import { GlobalContext } from "../context/Global";
 
 function Redaction({ researchId, planId }) {
-  // console.log(researchId);
+  const { isCollapsed, setIsCollapsed } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [initialData, setInitialData] = useState(null);
-  const [isCollapsed, setIsCollapsed] = useState(null);
   const [initialCollapse, setinitialCollapse] = useState(null);
   const [showModalRecommandation, setshowModalRecommandation] = useState(false);
   const [showModalComment, setshowModalComment] = useState(false);
   const [showModalRuns, setshowModalRuns] = useState(false);
-  const [fillColorGear, setFillColorGear] = useState("var(--primary)");
-  const [fillColorLight, setFillColorLight] = useState("var(--primary)");
-  const [fillColorBell, setFillColorBell] = useState("var(--primary)");
+  const [fillColorIconRuns, setFillColorIconRuns] = useState("var(--primary)");
+  const [fillColorIconComment, setFillColorIconComment] = useState("var(--primary)");
+  const [fillColorIconRecommandation, setFillColorIconRecommandation] = useState("var(--primary)");
   const [questionId, setquestionId] = useState(null);
-
-  /**
-   * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
-   */
-  const handleCollapseAll = (idx) => {
-    setIsCollapsed((prevState) => {
-      const newState = { ...prevState };
-      Object.keys(newState).forEach((elIndex) => {
-        newState[elIndex] = { ...newState[elIndex] };
-        Object.keys(newState[elIndex]).forEach((qIndex) => {
-          newState[elIndex][qIndex] = idx === parseInt(elIndex) ? false : true;
-        });
-      });
-      return newState;
-    });
-  };
-
-  /**
-   * `handlePanelToggle` is a function that takes an event, an element index, and a question index,
-   * and then sets the state of `isCollapsed` to the
-   * opposite of what it was before.
-   */
-  const handlePanelToggle = (e, elIndex, qIndex) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsCollapsed((prevState) => {
-      const newState = {
-        ...prevState,
-        [elIndex]: {
-          ...prevState[elIndex],
-          [qIndex]: !prevState?.[elIndex]?.[qIndex],
-        },
-      };
-      return newState;
-    });
-  };
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
 promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the initialCollapse state to the result of
@@ -77,26 +41,53 @@ Finally, it sets the loading state to false. */
         setInitialData(res.data);
         const result = res.data.sections;
         setData(result);
-        const allColl = result.reduce((acc, el, idx) => {
-          acc[idx] = {};
-          el.questions.forEach((q, i) => {
-            acc[idx][i] = true;
-          });
-          return acc;
-        }, {});
-        setinitialCollapse(allColl);
-        setIsCollapsed(allColl);
+        if (!isCollapsed || !isCollapsed[planId]) {
+          const allCollapses = result.map((plan) => plan.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
+          const updatedCollapseState = { ...isCollapsed, [planId]: allCollapses };
+          setinitialCollapse(updatedCollapseState);
+          setIsCollapsed(updatedCollapseState);
+        }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [planId]);
+
+  /**
+   * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
+   */
+  const handleCollapseByIndex = (idx) => {
+    const updatedState = isCollapsed[planId].map((plan, planIndex) => {
+      return Object.fromEntries(Object.entries(plan).map(([qIndex, value]) => [qIndex, planIndex === idx ? false : true]));
+    });
+    setIsCollapsed({ ...isCollapsed, [planId]: updatedState });
+  };
+
+  /**
+   * `handlePanelUpdate` is a function that takes an event, an element index, and a question index,
+   * and then sets the state of `isCollapsed` to the
+   * opposite of what it was before.
+   */
+  const handlePanelUpdate = (e, elIndex, qIndex) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const updatedState = isCollapsed[planId].map((plan, planIndex) => {
+      if (planIndex === elIndex) {
+        return {
+          ...plan,
+          [qIndex]: !plan[qIndex],
+        };
+      }
+      return plan;
+    });
+    setIsCollapsed({ ...isCollapsed, [planId]: updatedState });
+  };
 
   /**
    * If the collapse is false, then set showModalRecommandation to false, set showModalComment to the opposite
    *  of what it is, set FillColorLight to the
    * opposite of what it is, and set FillColorBell to the opposite of what it is.
    */
-  const handleLightClick = (e, collapse, q) => {
+  const handleShowCommentClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
     setquestionId(q.id);
@@ -104,9 +95,9 @@ Finally, it sets the loading state to false. */
       setshowModalRecommandation(false);
       setshowModalRuns(false);
       setshowModalComment(!showModalComment);
-      setFillColorLight((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorGear((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconComment((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
   /**
@@ -114,7 +105,7 @@ Finally, it sets the loading state to false. */
    * of what it is, set FillColorBell to the
    * opposite of what it is, and set FillColorLight to the opposite of what it is.
    */
-  const handleBellClick = (e, collapse, q) => {
+  const handleShowRecommandationClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
     setquestionId(q.id);
@@ -122,13 +113,13 @@ Finally, it sets the loading state to false. */
       setshowModalComment(false);
       setshowModalRuns(false);
       setshowModalRecommandation(!showModalRecommandation);
-      setFillColorBell((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillColorLight((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorGear((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconRecommandation((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
 
-  const handleGearClick = (e, collapse, q) => {
+  const handleShowRunsClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
     setquestionId(q.id);
@@ -136,16 +127,16 @@ Finally, it sets the loading state to false. */
       setshowModalComment(false);
       setshowModalRecommandation(false);
       setshowModalRuns(!showModalRuns);
-      setFillColorBell((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorLight((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorGear((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillColorIconRuns((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
     }
   };
 
   return (
     <>
       <div>
-        {loading && <CustumSpinner></CustumSpinner>}
+        {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <p>error</p>}
         {!loading && !error && data && (
           <div>
@@ -164,7 +155,7 @@ Finally, it sets the loading state to false. */
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleCollapseAll(idx);
+                          handleCollapseByIndex(idx);
                         }}
                       >
                         Tout développer
@@ -188,7 +179,7 @@ Finally, it sets the loading state to false. */
                     <PanelGroup accordion id="accordion-example" key={i}>
                       <Panel eventKey={i} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
                         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-                          <Panel.Title toggle onClick={(e) => handlePanelToggle(e, idx, i)}>
+                          <Panel.Title toggle onClick={(e) => handlePanelUpdate(e, idx, i)}>
                             <div className={styles.question_title}>
                               <div className={styles.question_text}>
                                 <div className={styles.question_number}>
@@ -207,67 +198,83 @@ Finally, it sets the loading state to false. */
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleGearClick(e, isCollapsed[idx][i], q);
+                                    handleShowRunsClick(e, isCollapsed[planId][idx][i], q);
                                   }}
                                 >
                                   <BsGear
                                     size={40}
                                     style={{ marginTop: "6px", marginRight: "4px" }}
-                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorGear : "var(--primary)"}
+                                    fill={
+                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                        ? fillColorIconRuns
+                                        : "var(--primary)"
+                                    }
                                   />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalRuns && questionId && questionId == q.id && (
-                                  <ModalRuns show={showModalRuns} setshowModalRuns={setshowModalRuns} setFillColorGear={setFillColorGear}></ModalRuns>
+                                {isCollapsed[planId][idx][i] === false && showModalRuns && questionId && questionId == q.id && (
+                                  <RunsModal
+                                    show={showModalRuns}
+                                    setshowModalRuns={setshowModalRuns}
+                                    setFillColorIconRuns={setFillColorIconRuns}
+                                  ></RunsModal>
                                 )}
                                 {/* 1 */}
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleLightClick(e, isCollapsed[idx][i], q);
+                                    handleShowCommentClick(e, isCollapsed[planId][idx][i], q);
                                   }}
                                 >
                                   <LightSVG
-                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorLight : "var(--primary)"}
+                                    fill={
+                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                        ? fillColorIconComment
+                                        : "var(--primary)"
+                                    }
                                   />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalComment && questionId && questionId == q.id && (
-                                  <ModalComment
+                                {isCollapsed[planId][idx][i] === false && showModalComment && questionId && questionId == q.id && (
+                                  <CommentModal
                                     show={showModalComment}
                                     setshowModalComment={setshowModalComment}
-                                    setFillColorLight={setFillColorLight}
+                                    setFillColorIconComment={setFillColorIconComment}
                                     answerId={""}
                                     researchOutputId={researchId}
                                     planId={planId}
                                     userId={""}
                                     questionId={q.id}
-                                  ></ModalComment>
+                                  ></CommentModal>
                                 )}
                                 {/* 2 */}
                                 <div
                                   className={styles.bell_icon}
                                   onClick={(e) => {
-                                    handleBellClick(e, isCollapsed[idx][i], q);
+                                    handleShowRecommandationClick(e, isCollapsed[planId][idx][i], q);
                                   }}
                                 >
                                   <BellSVG
-                                    fill={isCollapsed[idx][i] === false && questionId && questionId === q.id ? fillColorBell : "var(--primary)"}
+                                    fill={
+                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                        ? fillColorIconRecommandation
+                                        : "var(--primary)"
+                                    }
                                   />
                                 </div>
-                                {isCollapsed[idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
-                                  <ModalRecommandation
+                                {isCollapsed[planId][idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
+                                  <GuidanceModal
                                     show={showModalRecommandation}
                                     setshowModalRecommandation={setshowModalRecommandation}
-                                    setFillColorBell={setFillColorBell}
-                                  ></ModalRecommandation>
+                                    setFillColorIconRecommandation={setFillColorIconRecommandation}
+                                  ></GuidanceModal>
                                 )}
 
                                 {/* 3 */}
-                                {isCollapsed[idx][i] ? (
+                                {isCollapsed[planId][idx][i] ? (
                                   <TfiAngleDown
                                     size={35}
                                     className={styles.down_icon}
                                     onClick={(e) => {
-                                      handlePanelToggle(e, idx, i);
+                                      handlePanelUpdate(e, idx, i);
                                     }}
                                   />
                                 ) : (
@@ -275,7 +282,7 @@ Finally, it sets the loading state to false. */
                                     size={35}
                                     className={styles.down_icon}
                                     onClick={(e) => {
-                                      handlePanelToggle(e, idx, i);
+                                      handlePanelUpdate(e, idx, i);
                                     }}
                                   />
                                 )}
@@ -283,8 +290,8 @@ Finally, it sets the loading state to false. */
                             </div>
                           </Panel.Title>
                         </Panel.Heading>
-                        {isCollapsed[idx][i] === false && (
-                          <Panel.Body collapsible={isCollapsed && isCollapsed[idx][i]}>
+                        {isCollapsed[planId][idx][i] === false && (
+                          <Panel.Body collapsible={isCollapsed && isCollapsed[planId][idx][i]}>
                             <Form
                               schemaId={q.madmp_schema_id}
                               sections={initialData}

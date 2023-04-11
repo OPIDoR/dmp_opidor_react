@@ -25,7 +25,7 @@ export async function getSchema(t, token) {
   }
 }
 
-export async function getSchemaByPlanId(schemaId, obj, researchId, questionId, planId, token) {
+export async function loadNewForm(schemaId, obj, researchId, questionId, planId, token) {
   const plan_id = planId;
   const question_id = questionId;
   const research_output_id = researchId;

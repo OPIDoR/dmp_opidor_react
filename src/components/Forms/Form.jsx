@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
-import { getSchema, getSchemaByPlanId } from "../../services/DmpServiceApi";
-import CustumSpinner from "../Shared/CustumSpinner";
+import { getSchema, loadNewForm } from "../../services/DmpServiceApi";
+import CustomSpinner from "../Shared/CustomSpinner";
 import CustumButton from "../Styled/CustumButton";
 
 function Form({ schemaId, sections, researchId, questionId, planId }) {
@@ -15,7 +15,7 @@ function Form({ schemaId, sections, researchId, questionId, planId }) {
   useEffect(() => {
     setLoading(true);
     //getSchema(schemaId)
-    getSchemaByPlanId(schemaId, sections, researchId, questionId, planId, "token")
+    loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })
@@ -39,7 +39,7 @@ function Form({ schemaId, sections, researchId, questionId, planId }) {
   };
   return (
     <>
-      {loading && <CustumSpinner></CustumSpinner>}
+      {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <p>error</p>}
       {!loading && !error && standardTemplate && (
         <div style={{ margin: "15px" }}>
