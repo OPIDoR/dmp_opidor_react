@@ -5,6 +5,11 @@ import Swal from "sweetalert2";
 import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
+/* This is a functional React component called `SelectMultipleList` that renders a select list with the ability to add and remove items from a list. It
+receives several props such as `label`, `registry`, `name`, `changeValue`, `tooltip`, `header`, and `schemaId`. It uses the `useState` and `useEffect`
+hooks to manage the state of the component and to fetch data from an API. It also uses the `Swal` library to display a confirmation message when
+deleting an item from the list. */
+
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
@@ -61,13 +66,11 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
   }, [temp]);
 
   /**
-   * It creates a new array, then removes the item at the index specified by the parameter, then sets the state to the new array.
-   * @param idx - the index of the item in the array
+   * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-
     Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",

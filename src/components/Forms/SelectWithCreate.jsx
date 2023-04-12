@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import { getRegistry, getRegistryValue, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
+/* The above code is a React component that renders a select input field with the ability to add new options to the select list. It also displays a table
+of the selected options and allows for editing and deleting of those options. The component uses hooks to manage state and makes use of external
+libraries such as React Bootstrap and SweetAlert for styling and displaying confirmation messages. */
 function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
@@ -98,13 +101,11 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
   };
 
   /**
-   * It creates a new array, then removes the item at the index specified by the parameter, then sets the state to the new array.
-   * @param idx - the index of the item in the array
+   * The function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-
     Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -172,8 +173,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
   };
 
   /**
-   * It sets the state of the temp variable to the value of the form[keyValue][idx] variable.
-   * @param idx - the index of the item in the array
+   * This function handles the edit functionality for a specific item in a form.
    */
   const handleEdit = (e, idx) => {
     e.preventDefault();

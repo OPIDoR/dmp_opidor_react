@@ -7,6 +7,9 @@ import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
+/* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
+the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
+select field. The selected option is displayed below the select field. */
 function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -57,9 +60,9 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     settemp(null);
     setindex(null);
   };
+
   /**
-   * The function takes a boolean value as an argument and sets the state of the show variable to the value of the argument.
-   * @param isOpen - boolean
+   * The function `handleShow` sets the state of `show` to true and prevents the default behavior of an event.
    */
   const handleShow = (e) => {
     e.stopPropagation();
@@ -68,10 +71,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
   };
 
   /**
-   * It takes an event object, and then it sets the selectedValue state to the value of the event object.
-   * It then checks if the registerFile.to_string is greater than 0. If it is, it sets the form state to the result of the updateFormState function. If it
-   * isn't, it sets the value of the target name to the value of the event object.
-   * I
+   * This function handles a change in a select input and updates the state accordingly.
    */
   const handleChangeList = (e) => {
     const patern = registerFile.to_string;
@@ -111,9 +111,9 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     settemp(null);
     setselectedValue(parsePatern(temp, registerFile.to_string));
   };
+
   /**
-   * It sets the state of the temp variable to the value of the form[keyValue][idx] variable.
-   * @param idx - the index of the item in the array
+   * This function handles the edit functionality for a specific item in a form.
    */
   const handleEdit = (e, idx) => {
     e.stopPropagation();

@@ -4,6 +4,12 @@ import styles from "../assets/css/steps.module.css";
 import CircleTitle from "../Styled/CircleTitle";
 import CustumButton from "../Styled/CustumButton";
 
+/**
+ * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management
+ * Plan).
+ * @returns A React component that renders a form with two radio buttons and a button to validate the user's choice. The component also uses context to
+ * set the value of the selected radio button.
+ */
 function FirstStep({ handleNextStep }) {
   const { setContext } = useContext(GlobalContext);
 
@@ -13,7 +19,6 @@ function FirstStep({ handleNextStep }) {
    * checkbox.
    */
   const handleCheck = (val) => {
-    console.log(val);
     setContext({ context: val });
   };
 

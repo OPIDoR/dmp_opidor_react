@@ -15,6 +15,7 @@ import styles from "../assets/css/sidebar.module.css";
 import StyledSidebar from "./StyledSidebar";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
+import CustomError from "../Shared/CustomError";
 
 function RedactionLayout() {
   const { setform, pSearch, setproductId } = useContext(GlobalContext);
@@ -48,6 +49,9 @@ function RedactionLayout() {
     setPlanId(id);
   };
 
+  /**
+   * This function updates the displayed research output ID, product ID, and form based on the provided ID and whether or not it is null.
+   */
   const handleIdsUpdate = (id, isNull) => {
     setDisplayedResearchOutputId(id);
     setproductId(id);
@@ -66,7 +70,6 @@ function RedactionLayout() {
       .then((res) => {
         const result = res.data.plan.research_outputs;
         setPlanId(res.data.plan.id);
-        console.log(res.data.plan.id);
         setData(result);
         const resultId = result[activeIndex].id;
         handleIdsUpdate(resultId, false);
@@ -75,6 +78,10 @@ function RedactionLayout() {
       .finally(() => setLoading(false));
   }, []);
 
+  /* This is a `useEffect` hook that is triggered whenever the `currentPage` or `data` state variables change. It calculates the range of items to be
+displayed on the current page based on the `currentPage` and `itemsPerPage` variables, and then sets the `currentItems` state variable to an array of
+items within that range, using the `slice` method on the `data` array. This allows the component to display a subset of the data on each page, based
+on the current page number. */
   useEffect(() => {
     if (data) {
       const indexOfLastItem = currentPage * itemsPerPage;
@@ -84,6 +91,9 @@ function RedactionLayout() {
     }
   }, [currentPage, data]);
 
+  /**
+   * The function handles going to the previous page by decreasing the current page number.
+   */
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
@@ -95,7 +105,7 @@ function RedactionLayout() {
       <Navbar></Navbar>
 
       {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <p>error</p>}
+      {!loading && error && <CustomError></CustomError>}
       {!loading && !error && data && (
         <div className={styles.section}>
           <StyledSidebar className="navbar-inverse">

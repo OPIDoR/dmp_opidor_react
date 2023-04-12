@@ -7,6 +7,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
 import Swal from "sweetalert2";
+import CustomError from "../Shared/CustomError";
 
 function ModalComment({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
   const editorContentRef = useRef(null);
@@ -248,7 +249,7 @@ function ModalComment({ show, setshowModalComment, setFillColorIconComment, answ
 
       <>
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <p>error</p>}
+        {!loading && error && <CustomError></CustomError>}
         {!loading && !error && data && (
           <NavBody>
             <ScrollNav>

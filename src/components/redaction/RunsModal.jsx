@@ -1,8 +1,6 @@
-import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getRecommandation } from "../../services/DmpRecommandationApi";
-import CustomSpinner from "../Shared/CustomSpinner";
 
 function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
   const [activeTab, setActiveTab] = useState("Science Europe");

@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 
-const Icon = styled.a`
-  font-size: 20px;
-`;
-
 const Text = styled.span`
   margin-left: 15px;
   font-size: 16px;

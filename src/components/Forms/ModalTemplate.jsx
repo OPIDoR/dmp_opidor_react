@@ -41,10 +41,8 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    */
   const handleAddToList = () => {
     if (!temp) return handleClose();
-
     const checkForm = checkRequiredForm(registerFile, temp);
     if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
-
     if (index !== null) {
       const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
       const concatedObject = [...deleteIndex, temp];
@@ -78,8 +76,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   };
 
   /**
-   * It creates a new array, then removes the item at the index specified by the parameter, then sets the state to the new array.
-   * @param idx - the index of the item in the array
+   * This function handles the deletion of an element from a form and displays a confirmation message using the Swal library.
    */
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
@@ -104,8 +101,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   };
 
   /**
-   * When the user clicks the edit button, the form is populated with the data from the row that was clicked.
-   * @param idx - the index of the item in the array
+   * This function handles the edit functionality for a form element in a React component.
    */
   const handleEdit = (e, idx) => {
     e.preventDefault();

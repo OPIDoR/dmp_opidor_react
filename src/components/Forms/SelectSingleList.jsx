@@ -5,6 +5,10 @@ import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 
+/* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
+label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
+the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
+the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId }) {
   const [options, setoptions] = useState(null);
   const { form, temp, lng } = useContext(GlobalContext);

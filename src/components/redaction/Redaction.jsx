@@ -14,6 +14,7 @@ import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
 import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
+import CustomError from "../Shared/CustomError";
 
 function Redaction({ researchId, planId }) {
   const { isCollapsed, setIsCollapsed } = useContext(GlobalContext);
@@ -83,9 +84,7 @@ Finally, it sets the loading state to false. */
   };
 
   /**
-   * If the collapse is false, then set showModalRecommandation to false, set showModalComment to the opposite
-   *  of what it is, set FillColorLight to the
-   * opposite of what it is, and set FillColorBell to the opposite of what it is.
+   * The function handles the click event for showing comments and sets the state of various modal and icon colors.
    */
   const handleShowCommentClick = (e, collapse, q) => {
     e.stopPropagation();
@@ -100,10 +99,9 @@ Finally, it sets the loading state to false. */
       setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
+
   /**
-   * If the collapse is false, then set showModalComment to false, set showModalRecommandation to the opposite
-   * of what it is, set FillColorBell to the
-   * opposite of what it is, and set FillColorLight to the opposite of what it is.
+   * This function handles the click event for showing a recommendation modal and toggles the visibility of other modals.
    */
   const handleShowRecommandationClick = (e, collapse, q) => {
     e.stopPropagation();
@@ -119,6 +117,9 @@ Finally, it sets the loading state to false. */
     }
   };
 
+  /**
+   * The function handles a click event to show or hide a modal for runs and updates the state of other modals accordingly.
+   */
   const handleShowRunsClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
@@ -137,7 +138,7 @@ Finally, it sets the loading state to false. */
     <>
       <div>
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <p>error</p>}
+        {!loading && error && <CustomError></CustomError>}
         {!loading && !error && data && (
           <div>
             <div className="row"></div>

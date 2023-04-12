@@ -3,16 +3,26 @@ import { GlobalContext } from "../context/Global";
 import { Editor } from "@tinymce/tinymce-react";
 import styles from "../assets/css/form.module.css";
 
+/* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
+`tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
+`useState` hook to set the initial state of the `text` variable to `<p></p>`. */
 function TinyArea({ label, name, changeValue, tooltip, level, schemaId }) {
   const { form, temp } = useContext(GlobalContext);
   const [text, settext] = useState("<p></p>");
 
+  /* This is a useEffect hook that runs when the component mounts and whenever the `level` or `name` props change. It sets the initial value of the `text`
+state based on the `temp` or `form` context values for the given `name` and `schemaId`, or sets it to `<p></p>` if no value is found. If the `level`
+prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses the `temp` value or `<p></p>`. Finally, it sets the `text` state to the
+`updatedText` value. */
   useEffect(() => {
     const defaultValue = temp ? temp[name] : form?.[schemaId]?.[name] ? form?.[schemaId]?.[name] : "<p></p>";
     const updatedText = level === 1 ? defaultValue : temp ? temp[name] : "<p></p>";
     settext(updatedText);
   }, [level, name]);
 
+  /**
+   * The function handleChange updates the value of a text input and sets the state of a component.
+   */
   const handleChange = (e) => {
     changeValue({ target: { name: name, value: e } });
     settext(e);

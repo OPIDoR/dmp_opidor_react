@@ -2,6 +2,7 @@ import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getRecommandation } from "../../services/DmpRecommandationApi";
+import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 
 function ModalRecommandation({ show, setshowModalRecommandation, setFillColorIconRecommandation }) {
@@ -118,6 +119,11 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorIco
       .finally(() => setLoading(false));
   }, []);
 
+  /* `getContent` is a function that returns JSX code. It creates a scrollable container (`<ScrollNav>`) that contains a body (`<NavBody>`) and text
+(`<NavBodyText>`). The text content is determined by the `data` state variable and the `indexTab` state variable. If
+`data[indexTab].annotations[0].text` exists, it is displayed using `dangerouslySetInnerHTML` to sanitize and render the HTML content. Otherwise, the
+function maps through the `data[indexTab].groups` array to display each group's `theme` and `guidances` using `dangerouslySetInnerHTML` to sanitize
+and render the HTML content. A horizontal line (`<hr>`) is added between each guidance. */
   const getContent = () => {
     return (
       <ScrollNav>
@@ -164,7 +170,7 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorIco
     >
       <MainNav>
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <p>error</p>}
+        {!loading && error && <CustomError></CustomError>}
         {!loading && !error && data && (
           <nav style={navBar}>
             {data.map((el, idx) => (

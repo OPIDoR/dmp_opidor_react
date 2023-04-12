@@ -7,6 +7,9 @@ import styles from "../assets/css/steps.module.css";
 import CustumButton from "../Styled/CustumButton";
 import CircleTitle from "../Styled/CircleTitle";
 
+/* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
+using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
+selected template ID to the next step. */
 function SecondStep() {
   const { context, setContext } = useContext(GlobalContext);
   const [defaultModel, setdefaultModel] = useState(null);
@@ -164,6 +167,9 @@ function SecondStep() {
     });
   };
 
+  /**
+   * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
+   */
   const handleSendTemplateId = () => {
     if (context["template_id"]) {
       console.log(context);

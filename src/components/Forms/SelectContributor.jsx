@@ -9,6 +9,10 @@ import toast from "react-hot-toast";
 import { getContributor, getSchema } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
+/* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
+state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
+component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
+contributors and allows users to edit or delete them. */
 function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
@@ -59,9 +63,9 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
     settemp(null);
     setindex(null);
   };
+
   /**
-   * The function takes a boolean value as an argument and sets the state of the show variable to the value of the argument.
-   * @param isOpen - boolean
+   * The function handles showing a component by setting its state to true.
    */
   const handleShow = (e) => {
     e.stopPropagation();
@@ -124,12 +128,11 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   };
 
   /**
-   * I want to delete an item from a list and then update the state of the list.
+   * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-
     Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -151,8 +154,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   };
 
   /**
-   * It sets the state of the temp variable to the value of the form[keyValue][idx] variable.
-   * @param idx - the index of the item in the array
+   * This function handles the edit functionality for a specific item in a form.
    */
   const handleEdit = (e, idx) => {
     e.preventDefault();
