@@ -9,7 +9,7 @@ import CustomError from "../Shared/CustomError";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
-function Form({ schemaId, sections, researchId, questionId, planId }) {
+function Form({ schemaId, searchProductPlan, researchId, questionId, planId }) {
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,8 +22,15 @@ loading state to `false`. */
   useEffect(() => {
     setLoading(true);
 
-    //loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
-    loadForm(schemaId, "token")
+    //TODO
+    const answersList = searchProductPlan.plan.research_outputs.filter((el) => el.id == planId);
+    if (answersList[0].answers) {
+      console.log("il existe une clé correspondant à l'identifiant de la question (`question_id`)");
+    } else {
+      console.log("On fait appel à la route `/madmp_fragments/load_form/...`");
+    }
+    loadNewForm(schemaId, searchProductPlan, researchId, questionId, planId, "token")
+      //loadForm(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })

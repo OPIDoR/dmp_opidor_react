@@ -171,9 +171,7 @@ function SecondStep() {
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
    */
   const handleSendTemplateId = () => {
-    if (context["template_id"]) {
-      console.log(context);
-    } else {
+    if (!context["template_id"]) {
       Swal.fire({
         icon: "error",
         title: "Oops...",

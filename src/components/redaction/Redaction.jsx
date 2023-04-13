@@ -295,7 +295,7 @@ Finally, it sets the loading state to false. */
                           <Panel.Body collapsible={isCollapsed && isCollapsed[planId][idx][i]}>
                             <Form
                               schemaId={q.madmp_schema_id}
-                              sections={initialData}
+                              searchProductPlan={initialData}
                               researchId={researchId}
                               questionId={q.id}
                               planId={planId}
