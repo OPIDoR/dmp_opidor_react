@@ -44,8 +44,10 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     const checkForm = checkRequiredForm(registerFile, temp);
     if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
     if (index !== null) {
-      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
-      const concatedObject = [...deleteIndex, temp];
+      //update
+      const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+      const deleteIndex = deleteByIndex(filterDeleted, index);
+      const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
       setform(updateFormState(form, schemaId, keyValue, concatedObject));
       settemp(null);
     } else {
@@ -81,7 +83,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   const handleDeleteListe = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-
     Swal.fire({
       title: "Ëtes-vous sûr ?",
       text: "Voulez-vous vraiment supprimer cet élément ?",
@@ -93,8 +94,10 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
       confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
       if (result.isConfirmed) {
-        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
+        //delete
+        const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+        filterDeleted[idx]["updateType"] = "delete";
+        setform(updateFormState(form, schemaId, keyValue, filterDeleted));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -106,7 +109,8 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    settemp(form?.[schemaId]?.[keyValue][idx]);
+    const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+    settemp(filterDeleted[idx]);
     setShow(true);
     setindex(idx);
   };
@@ -126,39 +130,44 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         {form?.[schemaId]?.[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
-              {form?.[schemaId]?.[keyValue].length > 0 && registerFile && header && (
-                <tr>
-                  <th scope="col">{header}</th>
-                  <th scope="col"></th>
-                </tr>
-              )}
+              {form?.[schemaId]?.[keyValue].length > 0 &&
+                registerFile &&
+                header &&
+                form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
+                  <tr>
+                    <th scope="col">{header}</th>
+                    <th scope="col"></th>
+                  </tr>
+                )}
             </thead>
             <tbody>
-              {form?.[schemaId]?.[keyValue].map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row">
-                    <div className="preview" dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
-                  </td>
-                  <td style={{ width: "10%" }}>
-                    <div className="col-md-1">
-                      {level === 1 && (
+              {form?.[schemaId]?.[keyValue]
+                .filter((el) => el.updateType !== "delete")
+                .map((el, idx) => (
+                  <tr key={idx}>
+                    <td scope="row">
+                      <div className="preview" dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
+                    </td>
+                    <td style={{ width: "10%" }}>
+                      <div className="col-md-1">
+                        {level === 1 && (
+                          <span>
+                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                              <i className="fa fa-edit" />
+                            </a>
+                          </span>
+                        )}
+                      </div>
+                      <div className="col-md-1">
                         <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                            <i className="fa fa-edit" />
+                          <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                            <i className="fa fa-times" />
                           </a>
                         </span>
-                      )}
-                    </div>
-                    <div className="col-md-1">
-                      <span>
-                        <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                          <i className="fa fa-times" />
-                        </a>
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}

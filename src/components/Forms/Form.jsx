@@ -21,9 +21,9 @@ the `standardTemplate` state with the response data. If there is an error, it se
 loading state to `false`. */
   useEffect(() => {
     setLoading(true);
-    //loadForm(schemaId, "token")
+
     //loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
-    loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
+    loadForm(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })
@@ -39,6 +39,8 @@ loading state to `false`. */
     e.preventDefault();
     //const checkForm = checkRequiredForm(standardTemplate, form);
     console.log(form);
+    //SEND form to DB
+    //update form with response
   };
   return (
     <>

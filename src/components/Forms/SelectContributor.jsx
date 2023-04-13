@@ -51,7 +51,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       if (!patern.length) {
         return;
       }
-      setlist(form?.[schemaId]?.[keyValue].map((el) => parsePatern(el, patern)));
+      setlist(form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete").map((el) => parsePatern(el, patern)));
     });
   }, [form?.[schemaId]?.[keyValue], registry]);
 
@@ -100,8 +100,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    */
   const handleAddToList = () => {
     if (index !== null) {
-      const objectPerson = { person: temp, role: role };
-      const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
+      //update
+      const objectPerson = { person: temp, role: role, updateType: "update" };
+      const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+      const deleteIndex = deleteByIndex(filterDeleted, index);
       const concatedObject = [...deleteIndex, objectPerson];
       setform(updateFormState(form, schemaId, keyValue, concatedObject));
       const parsedPatern = parsePatern(temp, registerFile.to_string);
@@ -146,8 +148,9 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       if (result.isConfirmed) {
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
-        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
+        const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+        filterDeleted[idx]["updateType"] = "delete";
+        setform(updateFormState(form, schemaId, keyValue, filterDeleted));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -159,7 +162,8 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    settemp(form?.[schemaId]?.[keyValue][idx]["person"]);
+    const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+    settemp(filterDeleted[idx]["person"]);
     setShow(true);
     setindex(idx);
   };
@@ -202,7 +206,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         {form?.[schemaId]?.[keyValue] && list && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
             <thead>
-              {form?.[schemaId]?.[keyValue].length > 0 && header && (
+              {form?.[schemaId]?.[keyValue].length > 0 && header && form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
                 <tr>
                   <th scope="col">{header}</th>
                   <th scope="col"></th>

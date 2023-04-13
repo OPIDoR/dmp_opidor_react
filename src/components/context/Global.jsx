@@ -46,6 +46,7 @@ function Global({ children }) {
   useEffect(() => {
     console.log("ena el form");
     console.log({ ...form });
+    //TODO
     productId && setPSearch({ ...pSearch, [productId]: { ...form } });
     //productId && setPSearch((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
   }, [form]);

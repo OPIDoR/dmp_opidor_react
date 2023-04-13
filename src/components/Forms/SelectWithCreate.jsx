@@ -28,9 +28,11 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       if (form?.[schemaId]?.[keyValue]) {
         const patern = el.to_string;
         if (patern.length > 0) {
-          Promise.all(form?.[schemaId]?.[keyValue].map((el) => parsePatern(el, patern))).then((listParsed) => {
-            setlist(listParsed);
-          });
+          Promise.all(form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete").map((el) => parsePatern(el, patern))).then(
+            (listParsed) => {
+              setlist(listParsed);
+            }
+          );
         }
       }
     });
@@ -120,8 +122,9 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       if (result.isConfirmed) {
         const newList = [...list];
         setlist(deleteByIndex(newList, idx));
-        const deleteIndex = deleteByIndex(form[schemaId][keyValue], idx);
-        setform(updateFormState(form, schemaId, keyValue, deleteIndex));
+        const concatedObject = [...form[schemaId][keyValue]];
+        concatedObject[idx]["updateType"] = "delete";
+        setform(updateFormState(form, schemaId, keyValue, concatedObject));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -143,9 +146,11 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     } else {
       if (index !== null) {
         //add in update
-        const deleteIndex = deleteByIndex(form[schemaId][keyValue], index);
-        const concatedObject = [...deleteIndex, temp];
+        const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+        const deleteIndex = deleteByIndex(filterDeleted, index);
+        const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
         setform(updateFormState(form, schemaId, keyValue, concatedObject));
+
         const newList = deleteByIndex([...list], index);
         const parsedPatern = parsePatern(temp, registerFile.to_string);
         const copieList = [...newList, parsedPatern];
@@ -154,7 +159,6 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         handleClose();
       } else {
         //add in add
-        console.log("add in add");
         handleSave();
       }
       toast.success("Enregistrement a été effectué avec succès !");
@@ -178,7 +182,8 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    settemp(form?.[schemaId]?.[keyValue][idx]);
+    const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+    settemp(filterDeleted[idx]);
     setShow(true);
     setindex(idx);
   };
