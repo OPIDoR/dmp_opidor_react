@@ -5,7 +5,7 @@ import { GlobalContext } from "../context/Global";
 import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { getSchema } from "../../services/DmpServiceApi";
+import { loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import CustumButton from "../Styled/CustumButton";
 
@@ -22,7 +22,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getSchema(template, "token").then((el) => {
+    loadForm(template, "token").then((el) => {
       setregisterFile(el);
     });
   }, [template]);

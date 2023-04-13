@@ -6,7 +6,7 @@ import { deleteByIndex, parsePatern, updateFormState } from "../../utils/Generat
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { getContributor, getSchema } from "../../services/DmpServiceApi";
+import { getContributor, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
 /* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
@@ -37,11 +37,11 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getSchema(registry, "token").then((res) => {
+    loadForm(registry, "token").then((res) => {
       setrole(res.properties.role["const@fr_FR"]);
       setregisterFile(res.properties.person.template_name);
       const template = res.properties.person["template_name"];
-      getSchema(template, "token").then((res) => {
+      loadForm(template, "token").then((res) => {
         setregisterFile(res);
       });
       if (!form?.[schemaId]?.[keyValue]) {

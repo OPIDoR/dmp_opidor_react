@@ -16,10 +16,19 @@ import { api_url } from "../config";
 //   }
 // }
 
-export async function getSchema(t, token) {
+// export async function loadForm(t, token) {
+//   try {
+//     //const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+//     return await require(`../data/templates/${t}-template.json`);
+//   } catch (error) {
+//     return await require(`../data/templates/a-template.json`);
+//   }
+// }
+
+export async function loadForm(fragmentId, token) {
   try {
-    //const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
-    return await require(`../data/templates/${t}-template.json`);
+    //const response = await axios.get(`/madmp_fragments/load_form/${fragmentId}`);
+    return await require(`../data/templates/${fragmentId}-template.json`);
   } catch (error) {
     return await require(`../data/templates/a-template.json`);
   }

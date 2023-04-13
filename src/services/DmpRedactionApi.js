@@ -18,7 +18,7 @@ import { api_url } from "../config";
 
 export async function getQuestion(token) {
   try {
-    const response = await axios.get(`${api_url}6109ffca-457d-40b6-8759-b17816645271`);
+    const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);
     return response;
   } catch (error) {
     console.error(error);

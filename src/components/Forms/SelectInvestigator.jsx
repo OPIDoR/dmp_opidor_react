@@ -4,7 +4,7 @@ import BuilderForm from "../Builder/BuilderForm";
 import { parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import toast from "react-hot-toast";
-import { getContributor, getSchema } from "../../services/DmpServiceApi";
+import { getContributor, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
 /* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
@@ -33,12 +33,12 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getSchema(registry, "token").then((resRegistry) => {
+    loadForm(registry, "token").then((resRegistry) => {
       setrole(resRegistry.properties.role["const@fr_FR"]);
       setregisterFile(resRegistry.properties.person.template_name);
       const template = resRegistry.properties.person["template_name"];
       setrole(resRegistry.properties.role["const@fr_FR"]);
-      getSchema(template, "token").then((res) => {
+      loadForm(template, "token").then((res) => {
         setregisterFile(res);
         if (!form?.[schemaId]?.[keyValue]) {
           return;

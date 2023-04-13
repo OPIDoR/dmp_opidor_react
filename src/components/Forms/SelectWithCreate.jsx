@@ -6,7 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { getRegistry, getRegistryValue, getSchema } from "../../services/DmpServiceApi";
+import { getRegistry, getRegistryValue, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 
 /* The above code is a React component that renders a select input field with the ability to add new options to the select list. It also displays a table
@@ -23,7 +23,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
-    getSchema(template, "token").then((el) => {
+    loadForm(template, "token").then((el) => {
       setregisterFile(el);
       if (form?.[schemaId]?.[keyValue]) {
         const patern = el.to_string;

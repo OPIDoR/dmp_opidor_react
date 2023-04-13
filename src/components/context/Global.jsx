@@ -1,23 +1,23 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
 
 /**
- * If the formInfo is null, remove the form from localStorage, otherwise return the form with the formInfo.
+ * If the formInfo is null, remove the form from sessionStorage, otherwise return the form with the formInfo.
  * @param form - the current state of the form
  * @param formInfo - This is the object that contains the form data.
  * @returns The reducer is returning a new object that is a combination of the form object and the formInfo object.
  */
 let reducer = (form, formInfo) => {
   if (formInfo === null) {
-    localStorage.removeItem("form");
-    localStorage.removeItem("pSearch");
+    sessionStorage.removeItem("form");
+    sessionStorage.removeItem("pSearch");
     return {};
   }
   return { ...form, ...formInfo };
 };
 
-/* It's getting the form from localStorage. */
-const formLocalState = JSON.parse(localStorage.getItem("form"));
-const pSearchLocalState = JSON.parse(localStorage.getItem("pSearch"));
+/* It's getting the form from sessionStorage. */
+const formLocalState = JSON.parse(sessionStorage.getItem("form"));
+const pSearchLocalState = JSON.parse(sessionStorage.getItem("pSearch"));
 export const GlobalContext = createContext();
 
 /**
@@ -36,18 +36,34 @@ function Global({ children }) {
   const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
 
-  useEffect(() => {
-    productId && setPSearch({ ...pSearch, [productId]: form });
-  }, [productId, form]);
+  const updateObjectByKey = (obj, keyToUpdate, newValue) => {
+    if (obj.hasOwnProperty(keyToUpdate)) {
+      obj[keyToUpdate] = newValue;
+    }
+    return obj;
+  };
 
   useEffect(() => {
-    /* It's setting the form in localStorage. */
-    localStorage.setItem("form", JSON.stringify(form));
+    console.log("ena el form");
+    console.log({ ...form });
+    productId && setPSearch({ ...pSearch, [productId]: { ...form } });
+    //productId && setPSearch((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
   }, [form]);
 
   useEffect(() => {
-    /* It's setting the form in localStorage. */
-    localStorage.setItem("pSearch", JSON.stringify(pSearch));
+    console.log("ena el product id");
+    productId && setPSearch({ ...pSearch, [productId]: { ...form } });
+    //productId && setPSearch((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
+  }, [productId]);
+
+  useEffect(() => {
+    /* It's setting the form in sessionStorage. */
+    sessionStorage.setItem("form", JSON.stringify(form));
+  }, [form]);
+
+  useEffect(() => {
+    /* It's setting the form in sessionStorage. */
+    sessionStorage.setItem("pSearch", JSON.stringify(pSearch));
   }, [pSearch]);
 
   return (

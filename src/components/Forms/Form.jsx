@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
-import { getSchema, loadNewForm } from "../../services/DmpServiceApi";
+import { loadForm, loadNewForm } from "../../services/DmpServiceApi";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustumButton from "../Styled/CustumButton";
 import CustomError from "../Shared/CustomError";
@@ -21,7 +21,7 @@ the `standardTemplate` state with the response data. If there is an error, it se
 loading state to `false`. */
   useEffect(() => {
     setLoading(true);
-    //getSchema(schemaId, "token")
+    //loadForm(schemaId, "token")
     //loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
     loadNewForm(schemaId, sections, researchId, questionId, planId, "token")
       .then((el) => {
