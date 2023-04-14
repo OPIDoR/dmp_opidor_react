@@ -49,7 +49,7 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
       <input
         type={type}
         value={isConst === false ? (temp ? temp[name] : text == null ? "" : text) : isConst}
-        className={isRequired ? `form-control ${styles.outline_red}` : "form-control"}
+        className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}

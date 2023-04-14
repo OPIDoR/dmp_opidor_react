@@ -101,6 +101,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue, schemaId })
                 tooltip={tooltip}
                 level={level}
                 schemaId={schemaId}
+                keyValue={key}
               ></SelectMultipleList>
             );
           }

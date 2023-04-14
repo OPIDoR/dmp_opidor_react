@@ -146,7 +146,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
                 .map((el, idx) => (
                   <tr key={idx}>
                     <td scope="row">
-                      <div className="preview" dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
+                      <div className={styles.border} dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
                     </td>
                     <td style={{ width: "10%" }}>
                       <div className="col-md-1">
@@ -160,7 +160,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
                       </div>
                       <div className="col-md-1">
                         <span>
-                          <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                             <i className="fa fa-times" />
                           </a>
                         </span>

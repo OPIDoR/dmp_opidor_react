@@ -9,7 +9,7 @@ import React, { createContext, useEffect, useReducer, useState } from "react";
 let reducer = (form, formInfo) => {
   if (formInfo === null) {
     sessionStorage.removeItem("form");
-    sessionStorage.removeItem("pSearch");
+    sessionStorage.removeItem("searchProduct");
     return {};
   }
   return { ...form, ...formInfo };
@@ -17,7 +17,7 @@ let reducer = (form, formInfo) => {
 
 /* It's getting the form from sessionStorage. */
 const formLocalState = JSON.parse(sessionStorage.getItem("form"));
-const pSearchLocalState = JSON.parse(sessionStorage.getItem("pSearch"));
+const pSearchLocalState = JSON.parse(sessionStorage.getItem("searchProduct"));
 export const GlobalContext = createContext();
 
 /**
@@ -31,7 +31,7 @@ function Global({ children }) {
   const [temp, settemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
   const [lng, setlng] = useState("fr");
-  const [pSearch, setPSearch] = useState(pSearchLocalState || {});
+  const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
@@ -45,13 +45,13 @@ function Global({ children }) {
 
   useEffect(() => {
     //TODO
-    productId && setPSearch({ ...pSearch, [productId]: { ...form } });
-    //productId && setPSearch((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
+    productId && setSearchProduct({ ...searchProduct, [productId]: { ...form } });
+    //productId && setSearchProduct((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
   }, [form]);
 
   useEffect(() => {
-    productId && setPSearch({ ...pSearch, [productId]: { ...form } });
-    //productId && setPSearch((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
+    productId && setSearchProduct({ ...searchProduct, [productId]: { ...form } });
+    //productId && setSearchProduct((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
   }, [productId]);
 
   useEffect(() => {
@@ -61,8 +61,8 @@ function Global({ children }) {
 
   useEffect(() => {
     /* It's setting the form in sessionStorage. */
-    sessionStorage.setItem("pSearch", JSON.stringify(pSearch));
-  }, [pSearch]);
+    sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
+  }, [searchProduct]);
 
   return (
     <GlobalContext.Provider
@@ -75,8 +75,8 @@ function Global({ children }) {
         setlng,
         context,
         setContext,
-        pSearch,
-        setPSearch,
+        searchProduct,
+        setSearchProduct,
         productId,
         setproductId,
         plans,

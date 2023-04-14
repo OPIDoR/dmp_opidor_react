@@ -10,10 +10,10 @@ receives several props such as `label`, `registry`, `name`, `changeValue`, `tool
 hooks to manage the state of the component and to fetch data from an API. It also uses the `Swal` library to display a confirmation message when
 deleting an item from the list. */
 
-function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, schemaId }) {
+function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId }) {
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
-  const { temp, settemp, lng } = useContext(GlobalContext);
+  const { form, temp, settemp, lng } = useContext(GlobalContext);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -62,6 +62,8 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
   useEffect(() => {
     if (temp) {
       setlist(temp[name]);
+    } else {
+      setlist(form?.[schemaId]?.[keyValue]);
     }
   }, [temp]);
 
@@ -106,20 +108,21 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
             </span>
           )}
         </div>
+        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
         <div className="row">
-          <div className={`col-md-10 ${styles.select_wrapper}`}>
+          <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
               options={options}
               name={name}
               defaultValue={{
-                label: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",
-                value: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",
+                label: temp ? temp[name] : "",
+                value: temp ? temp[name] : "",
               }}
             />
           </div>
         </div>
-        <div style={{ margin: "20px 30px 20px 20px" }}>
+        <div style={{ margin: "20px 2px 20px 2px" }}>
           {header && <p>{header}</p>}
           {list &&
             list.map((el, idx) => (
@@ -129,7 +132,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                 </div>
                 <div className="col-md-1" style={{ marginTop: "8px" }}>
                   <span>
-                    <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                    <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                       <i className="fa fa-times" />
                     </a>
                   </span>

@@ -60,10 +60,15 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
           <div key={index} style={{ margin: "10px" }}>
             <div className="row">
               <div className="col-md-9">
-                <input className="form-control" value={form} name={name} onChange={(event) => handleFormChange(event, index)} />
+                <input
+                  className={`form-control ${styles.input_text}`}
+                  value={form}
+                  name={name}
+                  onChange={(event) => handleFormChange(event, index)}
+                />
               </div>
               <div className="col-md-3">
-                <button type="button" className="btn btn-primary px-3 m-2" onClick={addFields}>
+                <button style={{ marginRight: "4px" }} type="button" className="btn btn-primary px-3 m-2" onClick={addFields}>
                   <i className="fa fa-plus" aria-hidden="true" />
                 </button>
                 <button type="button" className="btn btn-danger px-3 m-2" onClick={() => removeFields(index)}>

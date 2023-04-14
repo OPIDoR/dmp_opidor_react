@@ -6,10 +6,12 @@
 
 .border {
   border: solid;
-  border-color: grey;
+  border-color: var(--primary);
   border-width: 1px;
   padding: 10px 17px 3px 17px;
   margin-bottom: 10px;
+  color: var(--primary);
+  border-radius: 8px;
 }
 
 .form_margin {
@@ -51,4 +53,19 @@ a {
 .select_wrapper {
   position: relative;
   z-index: 9;
+}
+.input_text {
+  font-size: 16px;
+  font-family: custumHelveticaLight;
+  color: var(--primary);
+}
+.input_label {
+  margin: 10px 0px 10px 0px;
+  color: gray;
+}
+
+.preview {
+  color: var(--primary);
+  font-size: 16px;
+  font-family: custumHelveticaLight;
 }

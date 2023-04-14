@@ -25,8 +25,8 @@ const sampleData = {
 const globalState = {
   form: null,
   setform: jest.fn(),
-  pSearch: {},
-  setPSearch: jest.fn(),
+  searchProduct: {},
+  setSearchProduct: jest.fn(),
 };
 
 describe("RedactionLayout component", () => {

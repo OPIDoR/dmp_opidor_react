@@ -67,13 +67,14 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           )}
         </div>
         <div className="row">
-          <div className={`col-md-10 ${styles.select_wrapper}`}>
+          <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select
               menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
               onChange={handleChangeList}
               options={options}
               name={name}
+              style={{ color: "red" }}
               defaultValue={{
                 label: getDefaultLabel(temp, form?.[schemaId], name),
                 value: getDefaultLabel(temp, form?.[schemaId], name),

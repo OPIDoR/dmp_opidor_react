@@ -18,7 +18,7 @@ import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 
 function RedactionLayout() {
-  const { setform, pSearch, setproductId } = useContext(GlobalContext);
+  const { setform, searchProduct, setproductId } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -56,8 +56,8 @@ function RedactionLayout() {
     setDisplayedResearchOutputId(id);
     setproductId(id);
     // exist and not empty
-    if (pSearch && pSearch[id] && Object.keys(pSearch[id]).length > 0) {
-      setform(pSearch[id]);
+    if (searchProduct && searchProduct[id] && Object.keys(searchProduct[id]).length > 0) {
+      setform(searchProduct[id]);
     } else {
       isNull && setform(null);
     }

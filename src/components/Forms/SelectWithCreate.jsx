@@ -200,22 +200,22 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
             </span>
           )}
         </div>
+        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
         <div className="row">
-          <div className={`col-md-10 ${styles.select_wrapper}`}>
+          <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
               menuPortalTarget={document.body}
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               onChange={handleChangeList}
               options={options}
               name={name}
-              //defaultValue={isEdit ? isEdit[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle."}
               defaultValue={{
-                label: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",
-                value: temp ? temp[name] : "Sélectionnez une valeur de la liste ou saisissez une nouvelle.",
+                label: temp ? temp[name] : "",
+                value: temp ? temp[name] : "",
               }}
             />
           </div>
-          <div className="col-md-2" style={{ marginTop: "8px" }}>
+          <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
               <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
@@ -251,7 +251,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
                     </div>
                     <div className="col-md-1" style={{ marginTop: "8px" }}>
                       <span>
-                        <a className="text-danger" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
                           <i className="fa fa-times" />
                         </a>
                       </span>

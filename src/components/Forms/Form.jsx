@@ -21,16 +21,17 @@ the `standardTemplate` state with the response data. If there is an error, it se
 loading state to `false`. */
   useEffect(() => {
     setLoading(true);
-
-    //TODO
-    const answersList = searchProductPlan.plan.research_outputs.filter((el) => el.id == planId);
-    if (answersList[0].answers) {
-      console.log("il existe une clé correspondant à l'identifiant de la question (`question_id`)");
-    } else {
-      console.log("On fait appel à la route `/madmp_fragments/load_form/...`");
+    //TODO : Adapter le comportement d'ouverture d'une question en fonction de la présence ou non d'une clé correspondant à l'identifiant de la question
+    if (searchProductPlan) {
+      const answersList = searchProductPlan?.plan?.research_outputs.filter((el) => el.id === planId);
+      if (answersList[0]?.answers) {
+        console.log("il existe une clé correspondant à l'identifiant de la question (`question_id`)");
+      } else {
+        console.log("On fait appel à la route `/madmp_fragments/load_form/...`");
+      }
     }
-    loadNewForm(schemaId, searchProductPlan, researchId, questionId, planId, "token")
-      //loadForm(schemaId, "token")
+    //loadNewForm(schemaId, searchProductPlan, researchId, questionId, planId, "token")
+    loadForm(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })

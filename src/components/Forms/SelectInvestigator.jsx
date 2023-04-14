@@ -135,11 +135,13 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
             </span>
           )}
         </div>
+
+        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
         <div className="row">
-          <div className={`col-md-10 ${styles.select_wrapper}`}>
+          <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
               <select id="company" className="form-control" onChange={handleChangeList}>
-                <option>Sélectionnez une valeur de la liste ou saisissez une nouvelle.</option>
+                <option></option>
                 {options.map((o, idx) => (
                   <option key={o.value} value={idx}>
                     {o.label}
@@ -149,7 +151,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
               </select>
             )}
           </div>
-          <div className="col-md-2" style={{ marginTop: "8px" }}>
+          <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
               <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
@@ -159,7 +161,8 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
         </div>
         {selectedValue && (
           <div style={{ margin: "10px" }}>
-            <strong>Valeur sélectionnée :</strong> {selectedValue}
+            <span className={styles.input_label}>Valeur sélectionnée :</span>
+            <span className={styles.input_text}>{selectedValue}</span>
             <a href="#" onClick={(e) => handleEdit(e, 0)}>
               {" "}
               (modifié)
