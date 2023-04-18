@@ -284,7 +284,7 @@ function SecondStep() {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
         </button> */}
-        <CustumButton handleNextStep={handleSendTemplateId} title="Valider mon choix" position="start"></CustumButton>
+        <CustumButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustumButton>
       </div>
     </div>
   );

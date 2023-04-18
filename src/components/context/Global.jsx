@@ -35,32 +35,28 @@ function Global({ children }) {
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
+  const [productData, setProductData] = useState(null);
 
-  const updateObjectByKey = (obj, keyToUpdate, newValue) => {
-    if (obj.hasOwnProperty(keyToUpdate)) {
-      obj[keyToUpdate] = newValue;
+  /* This `useEffect` hook is watching for changes in the `productId` and `form` variables. If `productId` is truthy (not null, undefined, 0, false, or an
+empty string), it updates the `searchProduct` state by setting it to a new object that is a copy of the previous `searchProduct` state with a new
+key-value pair where the key is `productId` and the value is a copy of the `form` state. This is essentially updating the `searchProduct` state with
+the latest form data for a specific product. */
+  useEffect(() => {
+    if (productId) {
+      setSearchProduct((prevSearchProduct) => ({
+        ...prevSearchProduct,
+        [productId]: { ...form },
+      }));
     }
-    return obj;
-  };
+  }, [productId, form]);
 
+  /* It's setting the form in sessionStorage. */
   useEffect(() => {
-    //TODO
-    productId && setSearchProduct({ ...searchProduct, [productId]: { ...form } });
-    //productId && setSearchProduct((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
-  }, [form]);
-
-  useEffect(() => {
-    productId && setSearchProduct({ ...searchProduct, [productId]: { ...form } });
-    //productId && setSearchProduct((prevPSearch) => updateObjectByKey({ ...prevPSearch }, productId, { ...form }));
-  }, [productId]);
-
-  useEffect(() => {
-    /* It's setting the form in sessionStorage. */
     sessionStorage.setItem("form", JSON.stringify(form));
   }, [form]);
 
+  /* It's setting the searchProduct in sessionStorage. */
   useEffect(() => {
-    /* It's setting the form in sessionStorage. */
     sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
   }, [searchProduct]);
 
@@ -83,6 +79,8 @@ function Global({ children }) {
         setPlans,
         isCollapsed,
         setIsCollapsed,
+        productData,
+        setProductData,
       }}
     >
       {children}

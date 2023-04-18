@@ -7,9 +7,9 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import CustumButton from "../Styled/CustumButton";
 import CustomError from "../Shared/CustomError";
 
-/* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchId`, `questionId`, and `planId`). It
+/* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
-function Form({ schemaId, searchProductPlan, researchId, questionId, planId }) {
+function Form({ schemaId, searchProductPlan, researchOutputId, questionId, planId }) {
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ loading state to `false`. */
         console.log("On fait appel à la route `/madmp_fragments/load_form/...`");
       }
     }
-    //loadNewForm(schemaId, searchProductPlan, researchId, questionId, planId, "token")
+    //loadNewForm(schemaId, searchProductPlan, researchOutputId, questionId, planId, "token")
     loadForm(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
@@ -60,7 +60,7 @@ loading state to `false`. */
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <CustumButton handleNextStep={handleSaveForm} title="Enregistrer" position="center"></CustumButton>
+          <CustumButton handleClick={handleSaveForm} title="Enregistrer" position="center"></CustumButton>
         </div>
       )}
     </>

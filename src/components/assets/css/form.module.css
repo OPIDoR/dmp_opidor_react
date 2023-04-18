@@ -69,3 +69,9 @@ a {
   font-size: 16px;
   font-family: custumHelveticaLight;
 }
+
+.title {
+  font-weight: bold;
+  font-size: 30px;
+  color: var(--orange);
+}

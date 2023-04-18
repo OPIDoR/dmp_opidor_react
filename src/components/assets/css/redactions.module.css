@@ -30,7 +30,7 @@
   color: var(--primary);
 }
 .question_icons {
-  min-width: 125px;
+  min-width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;

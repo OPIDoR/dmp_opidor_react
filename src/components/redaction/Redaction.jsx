@@ -15,12 +15,13 @@ import LightSVG from "../Styled/svg/LightSVG";
 import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
+import Swal from "sweetalert2";
+import { deleteSearchProduct } from "../../services/DmpSearchProduct";
 
-function Redaction({ researchId, planId }) {
-  const { isCollapsed, setIsCollapsed } = useContext(GlobalContext);
+function Redaction({ researchOutputId, planId }) {
+  const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
   const [initialData, setInitialData] = useState(null);
   const [initialCollapse, setinitialCollapse] = useState(null);
   const [showModalRecommandation, setshowModalRecommandation] = useState(false);
@@ -30,6 +31,7 @@ function Redaction({ researchId, planId }) {
   const [fillColorIconComment, setFillColorIconComment] = useState("var(--primary)");
   const [fillColorIconRecommandation, setFillColorIconRecommandation] = useState("var(--primary)");
   const [questionId, setquestionId] = useState(null);
+  const [data, setData] = useState(null);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
 promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the initialCollapse state to the result of
@@ -42,25 +44,25 @@ Finally, it sets the loading state to false. */
         setInitialData(res.data);
         const result = res.data.sections;
         setData(result);
-        if (!isCollapsed || !isCollapsed[planId]) {
-          const allCollapses = result.map((plan) => plan.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
-          const updatedCollapseState = { ...isCollapsed, [planId]: allCollapses };
+        if (!isCollapsed || !isCollapsed[researchOutputId]) {
+          const allCollapses = res.data.sections.map((plan) => plan.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
+          const updatedCollapseState = { ...isCollapsed, [researchOutputId]: allCollapses };
           setinitialCollapse(updatedCollapseState);
           setIsCollapsed(updatedCollapseState);
         }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [planId]);
+  }, [researchOutputId, productData]);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
    */
   const handleCollapseByIndex = (idx) => {
-    const updatedState = isCollapsed[planId].map((plan, planIndex) => {
+    const updatedState = isCollapsed[researchOutputId].map((plan, planIndex) => {
       return Object.fromEntries(Object.entries(plan).map(([qIndex, value]) => [qIndex, planIndex === idx ? false : true]));
     });
-    setIsCollapsed({ ...isCollapsed, [planId]: updatedState });
+    setIsCollapsed({ ...isCollapsed, [researchOutputId]: updatedState });
   };
 
   /**
@@ -71,7 +73,7 @@ Finally, it sets the loading state to false. */
   const handlePanelUpdate = (e, elIndex, qIndex) => {
     e.preventDefault();
     e.stopPropagation();
-    const updatedState = isCollapsed[planId].map((plan, planIndex) => {
+    const updatedState = isCollapsed[researchOutputId].map((plan, planIndex) => {
       if (planIndex === elIndex) {
         return {
           ...plan,
@@ -80,7 +82,7 @@ Finally, it sets the loading state to false. */
       }
       return plan;
     });
-    setIsCollapsed({ ...isCollapsed, [planId]: updatedState });
+    setIsCollapsed({ ...isCollapsed, [researchOutputId]: updatedState });
   };
 
   /**
@@ -134,6 +136,30 @@ Finally, it sets the loading state to false. */
     }
   };
 
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Confirmez-vous la suppression",
+      text: "En supprimant ce produit de recherche, les réponses associées seront également supprimées",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Annuler",
+      confirmButtonText: "Oui, supprimer !",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //delete
+        deleteSearchProduct(researchOutputId, planId).then((res) => {
+          //const objectList = { ...searchProduct };
+          //delete objectList[researchOutputId];
+          //setSearchProduct(objectList);
+          setProductData(res.data.plan.research_outputs);
+        });
+        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+      }
+    });
+  };
+
   return (
     <>
       <div>
@@ -143,6 +169,12 @@ Finally, it sets the loading state to false. */
           <div>
             <div className="row"></div>
             <div className={styles.redaction_bloc}>
+              <div style={{ display: "flex", justifyContent: "right" }}>
+                <button className="btn btn-danger" onClick={handleDelete}>
+                  Supprimer <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
+                </button>
+              </div>
+
               {data.map((el, idx) => (
                 <React.Fragment key={idx}>
                   <p className={styles.title}>
@@ -199,20 +231,20 @@ Finally, it sets the loading state to false. */
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleShowRunsClick(e, isCollapsed[planId][idx][i], q);
+                                    handleShowRunsClick(e, isCollapsed[researchOutputId][idx][i], q);
                                   }}
                                 >
                                   <BsGear
                                     size={40}
                                     style={{ marginTop: "6px", marginRight: "4px" }}
                                     fill={
-                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
                                         ? fillColorIconRuns
                                         : "var(--primary)"
                                     }
                                   />
                                 </div>
-                                {isCollapsed[planId][idx][i] === false && showModalRuns && questionId && questionId == q.id && (
+                                {isCollapsed[researchOutputId][idx][i] === false && showModalRuns && questionId && questionId == q.id && (
                                   <RunsModal
                                     show={showModalRuns}
                                     setshowModalRuns={setshowModalRuns}
@@ -223,24 +255,24 @@ Finally, it sets the loading state to false. */
                                 <div
                                   className={styles.light_icon}
                                   onClick={(e) => {
-                                    handleShowCommentClick(e, isCollapsed[planId][idx][i], q);
+                                    handleShowCommentClick(e, isCollapsed[researchOutputId][idx][i], q);
                                   }}
                                 >
                                   <LightSVG
                                     fill={
-                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
                                         ? fillColorIconComment
                                         : "var(--primary)"
                                     }
                                   />
                                 </div>
-                                {isCollapsed[planId][idx][i] === false && showModalComment && questionId && questionId == q.id && (
+                                {isCollapsed[researchOutputId][idx][i] === false && showModalComment && questionId && questionId == q.id && (
                                   <CommentModal
                                     show={showModalComment}
                                     setshowModalComment={setshowModalComment}
                                     setFillColorIconComment={setFillColorIconComment}
                                     answerId={""}
-                                    researchOutputId={researchId}
+                                    researchOutputId={researchOutputId}
                                     planId={planId}
                                     userId={""}
                                     questionId={q.id}
@@ -250,18 +282,18 @@ Finally, it sets the loading state to false. */
                                 <div
                                   className={styles.bell_icon}
                                   onClick={(e) => {
-                                    handleShowRecommandationClick(e, isCollapsed[planId][idx][i], q);
+                                    handleShowRecommandationClick(e, isCollapsed[researchOutputId][idx][i], q);
                                   }}
                                 >
                                   <BellSVG
                                     fill={
-                                      isCollapsed[planId][idx][i] === false && questionId && questionId === q.id
+                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
                                         ? fillColorIconRecommandation
                                         : "var(--primary)"
                                     }
                                   />
                                 </div>
-                                {isCollapsed[planId][idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
+                                {isCollapsed[researchOutputId][idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
                                   <GuidanceModal
                                     show={showModalRecommandation}
                                     setshowModalRecommandation={setshowModalRecommandation}
@@ -270,8 +302,9 @@ Finally, it sets the loading state to false. */
                                 )}
 
                                 {/* 3 */}
-                                {isCollapsed[planId][idx][i] ? (
+                                {isCollapsed[researchOutputId][idx][i] ? (
                                   <TfiAngleDown
+                                    style={{ minWidth: "35px" }}
                                     size={35}
                                     className={styles.down_icon}
                                     onClick={(e) => {
@@ -281,6 +314,7 @@ Finally, it sets the loading state to false. */
                                 ) : (
                                   <TfiAngleUp
                                     size={35}
+                                    style={{ minWidth: "35px" }}
                                     className={styles.down_icon}
                                     onClick={(e) => {
                                       handlePanelUpdate(e, idx, i);
@@ -291,12 +325,12 @@ Finally, it sets the loading state to false. */
                             </div>
                           </Panel.Title>
                         </Panel.Heading>
-                        {isCollapsed[planId][idx][i] === false && (
-                          <Panel.Body collapsible={isCollapsed && isCollapsed[planId][idx][i]}>
+                        {isCollapsed[researchOutputId][idx][i] === false && (
+                          <Panel.Body collapsible={isCollapsed && isCollapsed[researchOutputId][idx][i]}>
                             <Form
                               schemaId={q.madmp_schema_id}
                               searchProductPlan={initialData}
-                              researchId={researchId}
+                              researchOutputId={researchOutputId}
                               questionId={q.id}
                               planId={planId}
                             ></Form>

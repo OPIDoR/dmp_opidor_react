@@ -172,7 +172,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
           </table>
         )}
         <CustumButton
-          handleNextStep={() => {
+          handleClick={() => {
             handleShow(true);
           }}
           title="Ajouter un élément"
