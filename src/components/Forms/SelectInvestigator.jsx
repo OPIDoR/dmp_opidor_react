@@ -13,7 +13,7 @@ select field. The selected option is displayed below the select field. */
 function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
-  const { form, setform, temp, settemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [role, setrole] = useState(null);
@@ -57,7 +57,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    */
   const handleClose = () => {
     setShow(false);
-    settemp(null);
+    setTemp(null);
     setindex(null);
   };
 
@@ -78,7 +78,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     const { object, value } = options[e.target.value];
     setselectedValue(options[e.target.value].value);
     if (patern.length > 0) {
-      setform(updateFormState(form, schemaId, keyValue, { person: object, role: role }));
+      setForm(updateFormState(form, schemaId, keyValue, { person: object, role: role }));
     } else {
       changeValue({ target: { name, value } });
     }
@@ -91,13 +91,13 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    */
   const handleAddToList = () => {
     if (index !== null) {
-      setform(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
+      setForm(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
       setselectedValue(parsePatern(temp, registerFile.to_string));
     } else {
       handleSave();
     }
     toast.success("Enregistrement a été effectué avec succès !");
-    settemp(null);
+    setTemp(null);
     handleClose();
   };
 
@@ -106,9 +106,9 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
    * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
    */
   const handleSave = () => {
-    setform(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
+    setForm(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
     handleClose();
-    settemp(null);
+    setTemp(null);
     setselectedValue(parsePatern(temp, registerFile.to_string));
   };
 
@@ -118,7 +118,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
   const handleEdit = (e, idx) => {
     e.stopPropagation();
     e.preventDefault();
-    settemp(form?.[schemaId]?.[keyValue]["person"]);
+    setTemp(form?.[schemaId]?.[keyValue]["person"]);
     setShow(true);
     setindex(idx);
   };

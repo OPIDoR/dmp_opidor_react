@@ -19,7 +19,7 @@ import CustomError from "../Shared/CustomError";
 import SearchProduct from "../SearchProduct/SearchProduct";
 
 function RedactionLayout() {
-  const { setform, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
+  const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -56,9 +56,9 @@ function RedactionLayout() {
   const handleIdsUpdate = (id, isNull) => {
     // exist and not empty
     if (searchProduct && searchProduct[id] && Object.keys(searchProduct[id]).length > 0) {
-      setform(searchProduct[id]);
+      setForm(searchProduct[id]);
     } else {
-      isNull && setform(null);
+      isNull && setForm(null);
     }
     setResearchOutputId(id);
     setproductId(id);
@@ -145,8 +145,8 @@ on the current page number. */
                           <a href="#" className={styles.nav_header}>
                             <div className={styles.nav_title}>{el.abbreviation}</div>
                             <div className={styles.nav_icon}>
-                              <BsBellFill size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBellFill>
-                              <BsCircle size={40}></BsCircle>
+                              <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                              <BsCheckCircleFill size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsCheckCircleFill>
                             </div>
                           </a>
                         </li>

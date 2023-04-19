@@ -23,14 +23,14 @@ export const GlobalContext = createContext();
 /**
  * It's a function that takes a prop called children and returns a GlobalContext.Provider
  * component that has a value prop that is an object with two
- * properties: form and setform.
+ * properties: form and setForm.
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
-  const [form, setform] = useReducer(reducer, formLocalState || {});
-  const [temp, settemp] = useState(null);
+  const [form, setForm] = useReducer(reducer, formLocalState || {});
+  const [temp, setTemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
-  const [lng, setlng] = useState("fr");
+  const [lng, setLng] = useState("fr");
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
@@ -64,11 +64,11 @@ the latest form data for a specific product. */
     <GlobalContext.Provider
       value={{
         form,
-        setform,
+        setForm,
         temp,
-        settemp,
+        setTemp,
         lng,
-        setlng,
+        setLng,
         context,
         setContext,
         searchProduct,

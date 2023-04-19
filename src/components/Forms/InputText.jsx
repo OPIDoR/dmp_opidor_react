@@ -8,7 +8,7 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst, schemaId }) {
-  const { form, setform, temp } = useContext(GlobalContext);
+  const { form, setForm, temp } = useContext(GlobalContext);
   const [text, settext] = useState(null);
   const [isRequired, setisRequired] = useState(false);
 
@@ -16,7 +16,7 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
   useEffect(() => {
     if (isConst !== false) {
       //TODO constant not updated
-      setform({ [name]: isConst });
+      setForm({ [name]: isConst });
     }
   }, []);
 

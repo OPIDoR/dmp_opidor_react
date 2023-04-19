@@ -3,7 +3,7 @@ import { GlobalContext } from "../context/Global";
 import HandleGenerateForms from "./HandleGenerateForms";
 
 function BuilderForm({ shemaObject, level, schemaId }) {
-  const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
 
   /**
    * Object destructuring
@@ -14,7 +14,7 @@ function BuilderForm({ shemaObject, level, schemaId }) {
    */
   // const changeValue = (event) => {
   //   const { name, value } = event.target;
-  //   level === 1 ? setform({ ...form, [name]: value }) : settemp({ ...temp, [name]: value });
+  //   level === 1 ? setForm({ ...form, [name]: value }) : setTemp({ ...temp, [name]: value });
   // };
 
   const changeValue = (event) => {
@@ -22,7 +22,7 @@ function BuilderForm({ shemaObject, level, schemaId }) {
     const updatedForm = { ...form };
     updatedForm[schemaId] = updatedForm[schemaId] || {};
     updatedForm[schemaId][name] = value;
-    level === 1 ? setform(updatedForm) : settemp({ ...temp, [name]: value });
+    level === 1 ? setForm(updatedForm) : setTemp({ ...temp, [name]: value });
   };
 
   /**

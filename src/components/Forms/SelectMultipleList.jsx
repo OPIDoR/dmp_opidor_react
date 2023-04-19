@@ -13,7 +13,7 @@ deleting an item from the list. */
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId }) {
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
-  const { form, temp, settemp, lng } = useContext(GlobalContext);
+  const { form, temp, setTemp, lng } = useContext(GlobalContext);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -90,7 +90,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           newList.splice(idx, 1); // 2nd parameter means remove one item only
         }
         setlist(newList);
-        settemp({ ...temp, [name]: newList });
+        setTemp({ ...temp, [name]: newList });
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });

@@ -16,7 +16,7 @@ import CustumButton from "../Styled/CustumButton";
  */
 function ModalTemplate({ value, template, keyValue, level, tooltip, header, schemaId }) {
   const [show, setShow] = useState(false);
-  const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
 
@@ -32,7 +32,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    */
   const handleClose = () => {
     setShow(false);
-    settemp(null);
+    setTemp(null);
     setindex(null);
   };
 
@@ -48,8 +48,8 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
       const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
       const deleteIndex = deleteByIndex(filterDeleted, index);
       const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
-      setform(updateFormState(form, schemaId, keyValue, concatedObject));
-      settemp(null);
+      setForm(updateFormState(form, schemaId, keyValue, concatedObject));
+      setTemp(null);
     } else {
       handleSave();
       toast.success("Enregistrement a été effectué avec succès !");
@@ -62,9 +62,9 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    */
   const handleSave = () => {
     const newObject = [...(form[schemaId][keyValue] || []), temp];
-    setform(updateFormState(form, schemaId, keyValue, newObject));
-    setform(updateFormState(form, schemaId, keyValue, newObject));
-    settemp(null);
+    setForm(updateFormState(form, schemaId, keyValue, newObject));
+    setForm(updateFormState(form, schemaId, keyValue, newObject));
+    setTemp(null);
     handleClose();
   };
 
@@ -97,7 +97,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         //delete
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         filterDeleted[idx]["updateType"] = "delete";
-        setform(updateFormState(form, schemaId, keyValue, filterDeleted));
+        setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -110,7 +110,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     e.preventDefault();
     e.stopPropagation();
     const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-    settemp(filterDeleted[idx]);
+    setTemp(filterDeleted[idx]);
     setShow(true);
     setindex(idx);
   };

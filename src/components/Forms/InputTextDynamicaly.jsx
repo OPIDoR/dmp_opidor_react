@@ -8,7 +8,7 @@ When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
 function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
   const [formFields, setFormFields] = useState([""]);
-  const { form, setform } = useContext(GlobalContext);
+  const { form, setForm } = useContext(GlobalContext);
 
   /* A React hook that is called when the component is mounted and when the name variable changes. */
   useEffect(() => {
@@ -22,7 +22,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
     let data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    setform(updateFormState(form, schemaId, name, data));
+    setForm(updateFormState(form, schemaId, name, data));
   };
 
   /**
@@ -40,7 +40,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
       let data = [...formFields];
       data.splice(index, 1);
       setFormFields(data);
-      setform(updateFormState(form, schemaId, name, data));
+      setForm(updateFormState(form, schemaId, name, data));
     }
   };
 

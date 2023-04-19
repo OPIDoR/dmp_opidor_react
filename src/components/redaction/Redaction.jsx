@@ -172,8 +172,8 @@ Finally, it sets the loading state to false. */
           <div>
             <div className="row"></div>
             <div className={styles.redaction_bloc}>
-              <div style={{ display: "flex", justifyContent: "right" }}>
-                <button className="btn btn-danger" onClick={handleDelete}>
+              <div style={{ display: "flex", justifyContent: "right", margin: "0px 10px 35px 0px" }}>
+                <button className="btn btn-default" onClick={handleDelete}>
                   Supprimer <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
                 </button>
               </div>

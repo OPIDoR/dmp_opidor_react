@@ -24,7 +24,7 @@ const sampleData = {
 
 const globalState = {
   form: null,
-  setform: jest.fn(),
+  setForm: jest.fn(),
   searchProduct: {},
   setSearchProduct: jest.fn(),
 };

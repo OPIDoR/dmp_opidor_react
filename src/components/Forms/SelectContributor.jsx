@@ -18,7 +18,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setform, temp, settemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [role, setrole] = useState(null);
@@ -60,7 +60,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    */
   const handleClose = () => {
     setShow(false);
-    settemp(null);
+    setTemp(null);
     setindex(null);
   };
 
@@ -86,7 +86,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       setlist([...list, parsedPatern]);
       const newObject = { person: object, role: role };
       const mergedList = form?.[schemaId]?.[keyValue] ? [...form[schemaId][keyValue], newObject] : [newObject];
-      setform(updateFormState(form, schemaId, keyValue, mergedList));
+      setForm(updateFormState(form, schemaId, keyValue, mergedList));
     } else {
       changeValue({ target: { name, value } });
       setlist([...list, value]);
@@ -105,14 +105,14 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
       const deleteIndex = deleteByIndex(filterDeleted, index);
       const concatedObject = [...deleteIndex, objectPerson];
-      setform(updateFormState(form, schemaId, keyValue, concatedObject));
+      setForm(updateFormState(form, schemaId, keyValue, concatedObject));
       const parsedPatern = parsePatern(temp, registerFile.to_string);
       setlist([...deleteByIndex([...list], index), parsedPatern]);
     } else {
       handleSave();
     }
     toast.success("Enregistrement a été effectué avec succès !");
-    settemp(null);
+    setTemp(null);
     handleClose();
   };
 
@@ -122,11 +122,11 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    */
   const handleSave = () => {
     const objectPerson = { person: temp, role: role };
-    setform(updateFormState(form, schemaId, keyValue, [...(form[schemaId][keyValue] || []), objectPerson]));
+    setForm(updateFormState(form, schemaId, keyValue, [...(form[schemaId][keyValue] || []), objectPerson]));
     const parsedPatern = parsePatern(temp, registerFile.to_string);
     setlist([...list, parsedPatern]);
     handleClose();
-    settemp(null);
+    setTemp(null);
   };
 
   /**
@@ -150,7 +150,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         setlist(deleteByIndex(newList, idx));
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         filterDeleted[idx]["updateType"] = "delete";
-        setform(updateFormState(form, schemaId, keyValue, filterDeleted));
+        setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -163,7 +163,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
     e.preventDefault();
     e.stopPropagation();
     const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-    settemp(filterDeleted[idx]["person"]);
+    setTemp(filterDeleted[idx]["person"]);
     setShow(true);
     setindex(idx);
   };

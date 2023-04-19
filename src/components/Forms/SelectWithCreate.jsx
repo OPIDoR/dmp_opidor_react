@@ -17,7 +17,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setform, temp, settemp, lng } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
 
@@ -76,7 +76,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    */
   const handleClose = () => {
     setShow(false);
-    settemp(null);
+    setTemp(null);
     setindex(null);
   };
   /**
@@ -99,7 +99,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     const updatedList = patern.length > 0 ? [...list, parsedPatern] : [...list, e.value];
     setlist(updatedList);
     setselectObject(patern.length > 0 ? [...selectObject, e.object] : selectObject);
-    setform(updateFormState(form, schemaId, keyValue, [...(form[schemaId]?.[keyValue] || []), e.object]));
+    setForm(updateFormState(form, schemaId, keyValue, [...(form[schemaId]?.[keyValue] || []), e.object]));
   };
 
   /**
@@ -124,7 +124,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         setlist(deleteByIndex(newList, idx));
         const concatedObject = [...form[schemaId][keyValue]];
         concatedObject[idx]["updateType"] = "delete";
-        setform(updateFormState(form, schemaId, keyValue, concatedObject));
+        setForm(updateFormState(form, schemaId, keyValue, concatedObject));
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
       }
     });
@@ -149,13 +149,13 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         const deleteIndex = deleteByIndex(filterDeleted, index);
         const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
-        setform(updateFormState(form, schemaId, keyValue, concatedObject));
+        setForm(updateFormState(form, schemaId, keyValue, concatedObject));
 
         const newList = deleteByIndex([...list], index);
         const parsedPatern = parsePatern(temp, registerFile.to_string);
         const copieList = [...newList, parsedPatern];
         setlist(copieList);
-        settemp(null);
+        setTemp(null);
         handleClose();
       } else {
         //add in add
@@ -170,10 +170,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
    */
   const handleSave = () => {
     let newObject = form[schemaId][keyValue] ? [...form[schemaId][keyValue], temp] : [temp];
-    setform(updateFormState(form, schemaId, keyValue, newObject));
+    setForm(updateFormState(form, schemaId, keyValue, newObject));
     setlist([...list, parsePatern(temp, registerFile.to_string)]);
     handleClose();
-    settemp(null);
+    setTemp(null);
   };
 
   /**
@@ -183,7 +183,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     e.preventDefault();
     e.stopPropagation();
     const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-    settemp(filterDeleted[idx]);
+    setTemp(filterDeleted[idx]);
     setShow(true);
     setindex(idx);
   };
