@@ -2,8 +2,15 @@
   font-size: 1.5rem !important;
 }
 
-/* body {
-  font-size: 16px;
-  font-family: custumHelveticaLight;
-  color: var(--primary);
-} */
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}

@@ -282,7 +282,15 @@ const data = {
 export async function getQuestion(token) {
   try {
     const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);
-    return { data: data };
+    const data = sessionStorage.getItem("data");
+    if (data) {
+      const saved = sessionStorage.getItem("data");
+      const initialValue = JSON.parse(saved);
+      return { data: initialValue };
+    } else {
+      sessionStorage.setItem("data", JSON.stringify(response.data));
+      return response;
+    }
   } catch (error) {
     console.error(error);
   }

@@ -47,7 +47,9 @@ function SearchProduct({ planId }) {
   const handleSelect = (e) => {
     setType(e.value);
   };
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const obj = {
       plan_id: planId,
       abbreviation: abbreviation,

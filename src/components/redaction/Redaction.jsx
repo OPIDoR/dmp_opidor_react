@@ -136,7 +136,9 @@ Finally, it sets the loading state to false. */
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     Swal.fire({
       title: "Confirmez-vous la suppression",
       text: "En supprimant ce produit de recherche, les réponses associées seront également supprimées",
@@ -153,6 +155,7 @@ Finally, it sets the loading state to false. */
           //const objectList = { ...searchProduct };
           //delete objectList[researchOutputId];
           //setSearchProduct(objectList);
+          console.log(res);
           setProductData(res.data.plan.research_outputs);
         });
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");

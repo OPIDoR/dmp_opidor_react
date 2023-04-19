@@ -65,16 +65,17 @@ function RedactionLayout() {
   };
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
+  //TODO update this , it can make error
   useEffect(() => {
     setActiveIndex(0);
     setLoading(true);
     getQuestion("token")
       .then((res) => {
         const result = res.data.plan.research_outputs;
-        setActiveIndex(res.data.plan.research_outputs[0].id);
+        const resultId = result[0].id;
+        setActiveIndex(result[0].id);
         setPlanId(res.data.plan.id);
         !productData && setProductData(result);
-        const resultId = result[0].id;
         handleIdsUpdate(resultId, false);
       })
       .catch((error) => setError(error))
