@@ -1,7 +1,7 @@
 import axios from "axios";
 import { api_url } from "../config";
 
-const data = {
+const dataObject = {
   sections: [
     {
       id: 7456,
@@ -21,6 +21,7 @@ const data = {
           number: 1,
           question_format_id: 9,
           madmp_schema_id: 49,
+          classname: "research_output_description",
         },
         {
           id: 30662,
@@ -29,6 +30,7 @@ const data = {
           number: 2,
           question_format_id: 9,
           madmp_schema_id: 17,
+          classname: "data_reuse",
         },
         {
           id: 30663,
@@ -37,6 +39,7 @@ const data = {
           number: 3,
           question_format_id: 9,
           madmp_schema_id: 7,
+          classname: "data_collection",
         },
         {
           id: 30674,
@@ -95,6 +98,7 @@ const data = {
           number: 1,
           question_format_id: 9,
           madmp_schema_id: 42,
+          classname: "personal_data_issues",
         },
         {
           id: 30667,
@@ -199,71 +203,134 @@ const data = {
             fragment_id: 746321,
           },
         },
+        metadata: {
+          hasPersonalData: true,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 2345,
         abbreviation: "Output 2",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 3456,
         abbreviation: "Output 3",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 4567,
         abbreviation: "Output 4",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 5678,
         abbreviation: "Output 5",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 6789,
         abbreviation: "Output 6",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 7891,
         abbreviation: "Output 7",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 2,
         abbreviation: "Output 8",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 3,
         abbreviation: "Output 9",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 4,
         abbreviation: "Output 10",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 5,
         abbreviation: "Output 11",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 6,
         abbreviation: "Output 12",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 7,
         abbreviation: "Output 13",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 8,
         abbreviation: "Output 14",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 9,
         abbreviation: "Output 15",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
       {
         id: 10,
         abbreviation: "Output 16",
+        metadata: {
+          hasPersonalData: false,
+          abbreviation: "MYRO",
+        },
       },
     ],
   },
 };
-
 // export async function getOrganizme(token) {
 //   try {
 //     const response = await axios.get("https://mocki.io/v1/fade6679-a726-4d00-b29d-2cb2fd67822e", {
@@ -281,15 +348,15 @@ const data = {
 
 export async function getQuestion(token) {
   try {
-    const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);
+    //const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);
     const data = sessionStorage.getItem("data");
     if (data) {
       const saved = sessionStorage.getItem("data");
       const initialValue = JSON.parse(saved);
       return { data: initialValue };
     } else {
-      sessionStorage.setItem("data", JSON.stringify(response.data));
-      return response;
+      sessionStorage.setItem("data", JSON.stringify(dataObject));
+      return { data: dataObject };
     }
   } catch (error) {
     console.error(error);

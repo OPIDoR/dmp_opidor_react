@@ -165,3 +165,15 @@ export function updateFormState(form, schemaId, keyValue, newObject) {
     },
   };
 }
+
+/**
+ * The function returns true if there are no personnel data issues or if the query is not related to personnel data issues.
+ * @param hasPersonnelData - A boolean value indicating whether the person has any personal data or not.
+ * @param q - The parameter "q" is likely an object that contains information about the query being made. It is used in the function to check if the
+ * classname property of the q object is equal to "personal_data_issues".
+ * @returns a boolean value. It will return `true` if `hasPersonnelData` is `false` or if `q.classname` is not equal to `"personal_data_issues"`.
+ * Otherwise, it will return `false`.
+ */
+export function showPersonnalData(hasPersonnelData, q) {
+  return !hasPersonnelData || q.classname !== "personal_data_issues";
+}

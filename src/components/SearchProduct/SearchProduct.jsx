@@ -13,6 +13,7 @@ import CustumButton from "../Styled/CustumButton";
 import stylesSidebar from "../assets/css/sidebar.module.css";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
+import { Modal, Button } from "react-bootstrap";
 
 const ProductStyle = styled.div`
   color: #000;
@@ -23,12 +24,13 @@ const ProductStyle = styled.div`
   justify-content: center;
   padding: 20px 35px 20px 35px;
 `;
-function SearchProduct({ planId }) {
+function SearchProduct({ planId, handleClose, show }) {
   const { setProductData } = useContext(GlobalContext);
   const [data, setData] = useState(null);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
+  const [isPersonnel, setisPersonnel] = useState(true);
 
   useEffect(() => {
     getTypeSearchProduct().then((res) => {
@@ -52,93 +54,121 @@ function SearchProduct({ planId }) {
       abbreviation: abbreviation,
       title: title,
       type: type,
+      hasPersonalData: isPersonnel,
     };
+
     const objShow = {
       id: new Date().getTime(),
       abbreviation: abbreviation,
+
+      metadata: {
+        hasPersonalData: isPersonnel,
+        abbreviation: abbreviation,
+      },
     };
+
     postSearchProduct(objShow).then((res) => {
       setProductData(res.data.plan.research_outputs);
       setAbbreviation("");
       setTitle("");
+      handleClose();
     });
   };
 
   return (
-    <div className={stylesSidebar.section}>
-      <div className={stylesSidebar.main}>
-        <ProductStyle>
-          <PanelGroup accordion id="accordion-example">
-            <Panel eventKey="1" style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
-              <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-                <Panel.Title toggle>
-                  <div className={styles.question_title}>
-                    <div className={styles.question_text}>
-                      <p className={styles.title}>Produit de recherche</p>
-                    </div>
-                    <span>
-                      {/* 3 */}
-                      {true ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                      ) : (
-                        <TfiAngleUp size={35} style={{ minWidth: "35px" }} className={styles.down_icon} />
-                      )}
-                    </span>
-                  </div>
-                </Panel.Title>
-              </Panel.Heading>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Produit de recherche</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div style={{ margin: "25px" }}>
+          <div className="form-group">
+            <div className={stylesForm.label_form}>
+              <strong className={stylesForm.dot_label}></strong>
+              <label>Abbreviation</label>
+            </div>
+            <input
+              value={abbreviation}
+              className={`form-control ${stylesForm.input_text}`}
+              placeholder={"ajouter abbreviation"}
+              type="text"
+              onChange={(e) => setAbbreviation(e.target.value)}
+            />
+            <small className="form-text text-muted">Limité à 20 caractères</small>
+          </div>
+          <div className="form-group">
+            <div className={stylesForm.label_form}>
+              <strong className={stylesForm.dot_label}></strong>
+              <label>Title</label>
+            </div>
+            <input
+              value={title}
+              className={`form-control ${stylesForm.input_text}`}
+              placeholder={"ajouter titre"}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <div className={stylesForm.label_form}>
+              <strong className={stylesForm.dot_label}></strong>
+              <label>Type</label>
+            </div>
+            {data && (
+              <Select
+                menuPortalTarget={document.body}
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+                options={data}
+                style={{ color: "red" }}
+                onChange={handleSelect}
+              />
+            )}
+          </div>
 
-              <Panel.Body collapsible={true}>
-                <div style={{ margin: "25px" }}>
-                  <div className="form-group">
-                    <div className={stylesForm.label_form}>
-                      <strong className={stylesForm.dot_label}></strong>
-                      <label>Abbreviation</label>
-                    </div>
-                    <input
-                      value={abbreviation}
-                      className={`form-control ${stylesForm.input_text}`}
-                      placeholder={"ajouter abbreviation"}
-                      type="text"
-                      onChange={(e) => setAbbreviation(e.target.value)}
-                    />
-                    <small className="form-text text-muted">Limité à 20 caractères</small>
-                  </div>
-                  <div className="form-group">
-                    <div className={stylesForm.label_form}>
-                      <strong className={stylesForm.dot_label}></strong>
-                      <label>Title</label>
-                    </div>
-                    <input
-                      value={title}
-                      className={`form-control ${stylesForm.input_text}`}
-                      placeholder={"ajouter titre"}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <div className={stylesForm.label_form}>
-                      <strong className={stylesForm.dot_label}></strong>
-                      <label>Type</label>
-                    </div>
-                    {data && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
-                        options={data}
-                        style={{ color: "red" }}
-                        onChange={handleSelect}
-                      />
-                    )}
-                  </div>
-                  <CustumButton title="Ajouter" position="start" type={"primary"} handleClick={handleSave}></CustumButton>
-                </div>
-              </Panel.Body>
-            </Panel>
-          </PanelGroup>
-        </ProductStyle>
-      </div>
-    </div>
+          <div className="form-group">
+            <div className={stylesForm.label_form}>
+              <label>Votre produit de rechercher contient-il des données personnelles ?</label>
+            </div>
+            <div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault1"
+                  onClick={() => setisPersonnel(true)}
+                  defaultChecked
+                />
+                <label className="form-check-label" htmlFor="flexRadioDefault1">
+                  Oui
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault2"
+                  onClick={() => setisPersonnel(false)}
+                />
+                <label className="form-check-label" htmlFor="flexRadioDefault2">
+                  Non
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* <CustumButton title="Ajouter" position="start" type={"primary"} handleClick={handleSave}></CustumButton> */}
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Fermer
+        </Button>
+        <Button variant="primary" onClick={handleSave}>
+          Ajouter
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 

@@ -17,8 +17,9 @@ import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import Swal from "sweetalert2";
 import { deleteSearchProduct } from "../../services/DmpSearchProduct";
+import { showPersonnalData } from "../../utils/GeneratorUtils";
 
-function Redaction({ researchOutputId, planId }) {
+function Redaction({ researchOutputId, planId, hasPersonnelData }) {
   const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -155,7 +156,6 @@ Finally, it sets the loading state to false. */
           //const objectList = { ...searchProduct };
           //delete objectList[researchOutputId];
           //setSearchProduct(objectList);
-          console.log(res);
           setProductData(res.data.plan.research_outputs);
         });
         Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
@@ -212,135 +212,142 @@ Finally, it sets the loading state to false. */
                   </div>
 
                   {el.questions.map((q, i) => (
-                    <PanelGroup accordion id="accordion-example" key={i}>
-                      <Panel eventKey={i} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
-                        <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-                          <Panel.Title toggle onClick={(e) => handlePanelUpdate(e, idx, i)}>
-                            <div className={styles.question_title}>
-                              <div className={styles.question_text}>
-                                <div className={styles.question_number}>
-                                  {el.number}.{q.number}
-                                </div>
-                                <div
-                                  style={{ marginTop: "12px", fontSize: "18px", fontWeight: "bold" }}
-                                  dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize([q.text]),
-                                  }}
-                                />
-                              </div>
+                    <>
+                      {showPersonnalData(hasPersonnelData, q) && (
+                        <PanelGroup accordion id="accordion-example" key={i}>
+                          <Panel eventKey={i} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
+                            <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
+                              <Panel.Title toggle onClick={(e) => handlePanelUpdate(e, idx, i)}>
+                                <div className={styles.question_title}>
+                                  <div className={styles.question_text}>
+                                    <div className={styles.question_number}>
+                                      {el.number}.{q.number}
+                                    </div>
+                                    <div
+                                      style={{ marginTop: "12px", fontSize: "18px", fontWeight: "bold" }}
+                                      dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize([q.text]),
+                                      }}
+                                    />
+                                  </div>
 
-                              <span className={styles.question_icons}>
-                                {/* 0 */}
-                                <div
-                                  className={styles.light_icon}
-                                  onClick={(e) => {
-                                    handleShowRunsClick(e, isCollapsed[researchOutputId][idx][i], q);
-                                  }}
-                                >
-                                  <BsGear
-                                    size={40}
-                                    style={{ marginTop: "6px", marginRight: "4px" }}
-                                    fill={
-                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
-                                        ? fillColorIconRuns
-                                        : "var(--primary)"
-                                    }
-                                  />
-                                </div>
-                                {isCollapsed[researchOutputId][idx][i] === false && showModalRuns && questionId && questionId == q.id && (
-                                  <RunsModal
-                                    show={showModalRuns}
-                                    setshowModalRuns={setshowModalRuns}
-                                    setFillColorIconRuns={setFillColorIconRuns}
-                                  ></RunsModal>
-                                )}
-                                {/* 1 */}
-                                <div
-                                  className={styles.light_icon}
-                                  onClick={(e) => {
-                                    handleShowCommentClick(e, isCollapsed[researchOutputId][idx][i], q);
-                                  }}
-                                >
-                                  <LightSVG
-                                    fill={
-                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
-                                        ? fillColorIconComment
-                                        : "var(--primary)"
-                                    }
-                                  />
-                                </div>
-                                {isCollapsed[researchOutputId][idx][i] === false && showModalComment && questionId && questionId == q.id && (
-                                  <CommentModal
-                                    show={showModalComment}
-                                    setshowModalComment={setshowModalComment}
-                                    setFillColorIconComment={setFillColorIconComment}
-                                    answerId={""}
-                                    researchOutputId={researchOutputId}
-                                    planId={planId}
-                                    userId={""}
-                                    questionId={q.id}
-                                  ></CommentModal>
-                                )}
-                                {/* 2 */}
-                                <div
-                                  className={styles.bell_icon}
-                                  onClick={(e) => {
-                                    handleShowRecommandationClick(e, isCollapsed[researchOutputId][idx][i], q);
-                                  }}
-                                >
-                                  <BellSVG
-                                    fill={
-                                      isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
-                                        ? fillColorIconRecommandation
-                                        : "var(--primary)"
-                                    }
-                                  />
-                                </div>
-                                {isCollapsed[researchOutputId][idx][i] === false && showModalRecommandation && questionId && questionId == q.id && (
-                                  <GuidanceModal
-                                    show={showModalRecommandation}
-                                    setshowModalRecommandation={setshowModalRecommandation}
-                                    setFillColorIconRecommandation={setFillColorIconRecommandation}
-                                  ></GuidanceModal>
-                                )}
+                                  <span className={styles.question_icons}>
+                                    {/* 0 */}
+                                    <div
+                                      className={styles.light_icon}
+                                      onClick={(e) => {
+                                        handleShowRunsClick(e, isCollapsed[researchOutputId][idx][i], q);
+                                      }}
+                                    >
+                                      <BsGear
+                                        size={40}
+                                        style={{ marginTop: "6px", marginRight: "4px" }}
+                                        fill={
+                                          isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
+                                            ? fillColorIconRuns
+                                            : "var(--primary)"
+                                        }
+                                      />
+                                    </div>
+                                    {isCollapsed[researchOutputId][idx][i] === false && showModalRuns && questionId && questionId == q.id && (
+                                      <RunsModal
+                                        show={showModalRuns}
+                                        setshowModalRuns={setshowModalRuns}
+                                        setFillColorIconRuns={setFillColorIconRuns}
+                                      ></RunsModal>
+                                    )}
+                                    {/* 1 */}
+                                    <div
+                                      className={styles.light_icon}
+                                      onClick={(e) => {
+                                        handleShowCommentClick(e, isCollapsed[researchOutputId][idx][i], q);
+                                      }}
+                                    >
+                                      <LightSVG
+                                        fill={
+                                          isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
+                                            ? fillColorIconComment
+                                            : "var(--primary)"
+                                        }
+                                      />
+                                    </div>
+                                    {isCollapsed[researchOutputId][idx][i] === false && showModalComment && questionId && questionId == q.id && (
+                                      <CommentModal
+                                        show={showModalComment}
+                                        setshowModalComment={setshowModalComment}
+                                        setFillColorIconComment={setFillColorIconComment}
+                                        answerId={""}
+                                        researchOutputId={researchOutputId}
+                                        planId={planId}
+                                        userId={""}
+                                        questionId={q.id}
+                                      ></CommentModal>
+                                    )}
+                                    {/* 2 */}
+                                    <div
+                                      className={styles.bell_icon}
+                                      onClick={(e) => {
+                                        handleShowRecommandationClick(e, isCollapsed[researchOutputId][idx][i], q);
+                                      }}
+                                    >
+                                      <BellSVG
+                                        fill={
+                                          isCollapsed[researchOutputId][idx][i] === false && questionId && questionId === q.id
+                                            ? fillColorIconRecommandation
+                                            : "var(--primary)"
+                                        }
+                                      />
+                                    </div>
+                                    {isCollapsed[researchOutputId][idx][i] === false &&
+                                      showModalRecommandation &&
+                                      questionId &&
+                                      questionId == q.id && (
+                                        <GuidanceModal
+                                          show={showModalRecommandation}
+                                          setshowModalRecommandation={setshowModalRecommandation}
+                                          setFillColorIconRecommandation={setFillColorIconRecommandation}
+                                        ></GuidanceModal>
+                                      )}
 
-                                {/* 3 */}
-                                {isCollapsed[researchOutputId][idx][i] ? (
-                                  <TfiAngleDown
-                                    style={{ minWidth: "35px" }}
-                                    size={35}
-                                    className={styles.down_icon}
-                                    onClick={(e) => {
-                                      handlePanelUpdate(e, idx, i);
-                                    }}
-                                  />
-                                ) : (
-                                  <TfiAngleUp
-                                    size={35}
-                                    style={{ minWidth: "35px" }}
-                                    className={styles.down_icon}
-                                    onClick={(e) => {
-                                      handlePanelUpdate(e, idx, i);
-                                    }}
-                                  />
-                                )}
-                              </span>
-                            </div>
-                          </Panel.Title>
-                        </Panel.Heading>
-                        {isCollapsed[researchOutputId][idx][i] === false && (
-                          <Panel.Body collapsible={isCollapsed && isCollapsed[researchOutputId][idx][i]}>
-                            <Form
-                              schemaId={q.madmp_schema_id}
-                              searchProductPlan={initialData}
-                              researchOutputId={researchOutputId}
-                              questionId={q.id}
-                              planId={planId}
-                            ></Form>
-                          </Panel.Body>
-                        )}
-                      </Panel>
-                    </PanelGroup>
+                                    {/* 3 */}
+                                    {isCollapsed[researchOutputId][idx][i] ? (
+                                      <TfiAngleDown
+                                        style={{ minWidth: "35px" }}
+                                        size={35}
+                                        className={styles.down_icon}
+                                        onClick={(e) => {
+                                          handlePanelUpdate(e, idx, i);
+                                        }}
+                                      />
+                                    ) : (
+                                      <TfiAngleUp
+                                        size={35}
+                                        style={{ minWidth: "35px" }}
+                                        className={styles.down_icon}
+                                        onClick={(e) => {
+                                          handlePanelUpdate(e, idx, i);
+                                        }}
+                                      />
+                                    )}
+                                  </span>
+                                </div>
+                              </Panel.Title>
+                            </Panel.Heading>
+                            {isCollapsed[researchOutputId][idx][i] === false && (
+                              <Panel.Body collapsible={isCollapsed && isCollapsed[researchOutputId][idx][i]}>
+                                <Form
+                                  schemaId={q.madmp_schema_id}
+                                  searchProductPlan={initialData}
+                                  researchOutputId={researchOutputId}
+                                  questionId={q.id}
+                                  planId={planId}
+                                ></Form>
+                              </Panel.Body>
+                            )}
+                          </Panel>
+                        </PanelGroup>
+                      )}
+                    </>
                   ))}
                 </React.Fragment>
               ))}

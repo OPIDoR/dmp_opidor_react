@@ -7,6 +7,7 @@ import Redaction from "./Redaction";
 import { BsBell } from "react-icons/bs";
 import { BsBellFill } from "react-icons/bs";
 import { BsCircle } from "react-icons/bs";
+import { MdAddCircleOutline } from "react-icons/md";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { getQuestion } from "../../services/DmpRedactionApi";
@@ -30,6 +31,11 @@ function RedactionLayout() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
   const [renderKey, setRenderKey] = useState(0);
+  const [show, setShow] = useState(false);
+  const [hasPersonnelData, setHasPersonnelData] = useState(null);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   /**
    * When the user clicks on a page number, the current page number is set to the new page number.
@@ -42,12 +48,12 @@ function RedactionLayout() {
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
    * tab that was clicked.
    */
-  const handleShowResearchOutputClick = (e, id, index) => {
+  const handleShowResearchOutputClick = (e, element, index) => {
     e.preventDefault();
     setRenderKey((prevKey) => prevKey + 1);
-    handleIdsUpdate(id, true);
-    setActiveIndex(id);
-    //setPlanId(id);
+    handleIdsUpdate(element.id, true);
+    setActiveIndex(element.id);
+    setHasPersonnelData(element?.metadata?.hasPersonalData);
   };
 
   /**
@@ -75,6 +81,7 @@ function RedactionLayout() {
         const resultId = result[0].id;
         setActiveIndex(result[0].id);
         setPlanId(res.data.plan.id);
+        setHasPersonnelData(result[0]?.metadata?.hasPersonalData);
         !productData && setProductData(result);
         handleIdsUpdate(resultId, false);
       })
@@ -101,6 +108,8 @@ on the current page number. */
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
+
+  const handleSaveProduct = () => {};
 
   return (
     <>
@@ -141,7 +150,7 @@ on the current page number. */
                     )}
                     {currentItems &&
                       currentItems.map((el, idx) => (
-                        <li key={idx} className={activeIndex == el.id ? "active" : ""} onClick={(e) => handleShowResearchOutputClick(e, el.id, idx)}>
+                        <li key={idx} className={activeIndex == el.id ? "active" : ""} onClick={(e) => handleShowResearchOutputClick(e, el, idx)}>
                           <a href="#" className={styles.nav_header}>
                             <div className={styles.nav_title}>{el.abbreviation}</div>
                             <div className={styles.nav_icon}>
@@ -172,13 +181,29 @@ on the current page number. */
                         )}
                       </>
                     )}
+                    <li onClick={handleShow}>
+                      <a
+                        href="#"
+                        className={styles.nav_header}
+                        onClick={(e) => {
+                          e.preventDefault();
+                        }}
+                      >
+                        <div className={styles.nav_title}>Créer</div>
+                        <div className={styles.nav_icon}>
+                          <MdAddCircleOutline size={40}></MdAddCircleOutline>
+                        </div>
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
             </StyledSidebar>
 
+            {show && <SearchProduct planId={planId} handleClose={handleClose} show={show}></SearchProduct>}
+
             <div className={styles.main}>
-              <Redaction key={renderKey} researchOutputId={researchOutputId} planId={planId}></Redaction>
+              <Redaction key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></Redaction>
             </div>
           </div>
         </>
