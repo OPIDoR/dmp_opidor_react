@@ -29,7 +29,7 @@ const StyledSidebar = styled.nav`
   /* ******************* active ******************************* */
   .navbar-nav > .active:first-child > a {
     background-color: #1c5170 !important;
-    border-radius: 20px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
   }
 
   .navbar-nav > .active:not(:first-child):not(:last-child) > a {
@@ -46,7 +46,7 @@ const StyledSidebar = styled.nav`
   /* *********************** hover *************************** */
   .navbar-nav > li:first-child:hover {
     background-color: #1c5170;
-    border-radius: 20px 0px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
   }
 
   .navbar-nav > li:not(:first-child):not(:last-child):hover {

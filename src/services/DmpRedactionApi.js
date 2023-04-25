@@ -205,7 +205,7 @@ const dataObject = {
         },
         metadata: {
           hasPersonalData: true,
-          abbreviation: "MYRO",
+          abbreviation: "indiquant le produit de recherche affiché",
         },
       },
       {
@@ -235,94 +235,6 @@ const dataObject = {
       {
         id: 5678,
         abbreviation: "Output 5",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 6789,
-        abbreviation: "Output 6",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 7891,
-        abbreviation: "Output 7",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 2,
-        abbreviation: "Output 8",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 3,
-        abbreviation: "Output 9",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 4,
-        abbreviation: "Output 10",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 5,
-        abbreviation: "Output 11",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 6,
-        abbreviation: "Output 12",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 7,
-        abbreviation: "Output 13",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 8,
-        abbreviation: "Output 14",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 9,
-        abbreviation: "Output 15",
-        metadata: {
-          hasPersonalData: false,
-          abbreviation: "MYRO",
-        },
-      },
-      {
-        id: 10,
-        abbreviation: "Output 16",
         metadata: {
           hasPersonalData: false,
           abbreviation: "MYRO",

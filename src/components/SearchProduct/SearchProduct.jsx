@@ -93,6 +93,7 @@ function SearchProduct({ planId, handleClose, show }) {
               placeholder={"ajouter abbreviation"}
               type="text"
               onChange={(e) => setAbbreviation(e.target.value)}
+              maxlength="20"
             />
             <small className="form-text text-muted">Limité à 20 caractères</small>
           </div>

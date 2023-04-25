@@ -19,7 +19,7 @@
   float: left;
   z-index: 8000;
   margin-bottom: 0px;
-  border-radius: 20px 0px 0px 20px;
+  border-radius: 0px 0px 0px 20px;
   margin-left: 0px;
   float: left;
   min-width: 240px;
@@ -27,7 +27,7 @@
 .nav_header {
   display: flex;
   flex-direction: column;
-  border-radius: 20px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
 }
 .nav_icon {
   display: flex;
@@ -59,7 +59,7 @@
 /* ************************************************** */
 .sidebar .navbar-nav > .active:first-child > a {
   background-color: #1c5170 !important;
-  border-radius: 20px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
 }
 
 .sidebar .navbar-nav > .active:not(:first-child):not(:last-child) > a {
@@ -76,7 +76,7 @@
 /* ************************************************** */
 .sidebar .navbar-nav > li:first-child:hover {
   background-color: #1c5170;
-  border-radius: 20px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
 }
 .sidebar .navbar-nav > li:not(:first-child):not(:last-child):hover {
   background-color: #1c5170;

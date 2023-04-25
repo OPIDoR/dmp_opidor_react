@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import SearchProduct from "../SearchProduct/SearchProduct";
+import { Panel, PanelGroup } from "react-bootstrap";
 
 function RedactionLayout() {
   const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
@@ -29,7 +30,7 @@ function RedactionLayout() {
   const [planId, setPlanId] = useState(null);
   const [currentItems, setcurrentItems] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
   const [renderKey, setRenderKey] = useState(0);
   const [show, setShow] = useState(false);
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
@@ -124,10 +125,11 @@ on the current page number. */
 
           <div className={styles.section}>
             <StyledSidebar className="navbar-inverse">
-              <div className="container-fluid">
+              <div className="">
                 <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-                  <ul className="nav navbar-nav">
-                    {productData.length > itemsPerPage && (
+                  <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
+                    {/* suivant */}
+                    {/* {productData.length > itemsPerPage && (
                       <>
                         {currentPage * itemsPerPage < productData.length && ( // Only show the "Next" button if not on the last page
                           <li>
@@ -147,20 +149,85 @@ on the current page number. */
                           </li>
                         )}
                       </>
+                    )} */}
+
+                    {productData && (
+                      <>
+                        {productData.length > 5 ? (
+                          <>
+                            {Array.from({ length: Math.ceil(productData.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
+                              const start = (page - 1) * itemsPerPage;
+                              const end = start + itemsPerPage;
+                              const pageItems = productData.slice(start, end);
+
+                              return (
+                                <PanelGroup accordion id="accordion-example" key={i}>
+                                  <Panel eventKey={i} style={{ borderWidth: "2px", borderColor: "var(--primary)" }}>
+                                    <Panel.Heading style={{ background: "rgb(128, 177, 205)" }}>
+                                      <Panel.Title
+                                        toggle
+                                        className={styles.nav_title}
+                                        style={{ display: "flex", justifyContent: "center", color: "white" }}
+                                      >
+                                        {start + 1} - {Math.min(end, productData.length)}
+                                      </Panel.Title>
+                                    </Panel.Heading>
+                                    <Panel.Body collapsible style={{ background: "var(--secondary)", padding: "0px 14px" }}>
+                                      <ul className="nav navbar-nav">
+                                        {pageItems.map((el, idx) => (
+                                          <li
+                                            key={idx}
+                                            className={activeIndex === el.id ? "active" : ""}
+                                            onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
+                                          >
+                                            <a href="#" className={styles.nav_header}>
+                                              <div className={styles.nav_title}>{el.abbreviation}</div>
+                                              <div className={styles.nav_icon}>
+                                                <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                                                <BsCheckCircleFill
+                                                  size={40}
+                                                  className={styles.space_right}
+                                                  style={{ color: "var(--orange)" }}
+                                                ></BsCheckCircleFill>
+                                              </div>
+                                            </a>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </Panel.Body>
+                                  </Panel>
+                                </PanelGroup>
+                              );
+                            })}
+                          </>
+                        ) : (
+                          <>
+                            {productData.map((el, idx) => (
+                              <li
+                                key={idx}
+                                className={activeIndex == el.id ? "active" : ""}
+                                onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
+                              >
+                                <a href="#" className={styles.nav_header}>
+                                  <div className={styles.nav_title}>{el.abbreviation}</div>
+                                  <div className={styles.nav_icon}>
+                                    <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                                    <BsCheckCircleFill
+                                      size={40}
+                                      className={styles.space_right}
+                                      style={{ color: "var(--orange)" }}
+                                    ></BsCheckCircleFill>
+                                  </div>
+                                </a>
+                              </li>
+                            ))}
+                          </>
+                        )}
+                      </>
                     )}
-                    {currentItems &&
-                      currentItems.map((el, idx) => (
-                        <li key={idx} className={activeIndex == el.id ? "active" : ""} onClick={(e) => handleShowResearchOutputClick(e, el, idx)}>
-                          <a href="#" className={styles.nav_header}>
-                            <div className={styles.nav_title}>{el.abbreviation}</div>
-                            <div className={styles.nav_icon}>
-                              <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
-                              <BsCheckCircleFill size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsCheckCircleFill>
-                            </div>
-                          </a>
-                        </li>
-                      ))}
-                    {productData.length > itemsPerPage && (
+
+                    {/* précident */}
+                    {/* {productData.length > itemsPerPage && (
                       <>
                         {currentPage > 1 && ( // Only show the "Previous" button if the current page is greater than 1
                           <li>
@@ -180,7 +247,7 @@ on the current page number. */
                           </li>
                         )}
                       </>
-                    )}
+                    )} */}
                     <li onClick={handleShow}>
                       <a
                         href="#"
@@ -203,7 +270,9 @@ on the current page number. */
             {show && <SearchProduct planId={planId} handleClose={handleClose} show={show}></SearchProduct>}
 
             <div className={styles.main}>
-              <Redaction key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></Redaction>
+              {researchOutputId && planId && (
+                <Redaction key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></Redaction>
+              )}
             </div>
           </div>
         </>
