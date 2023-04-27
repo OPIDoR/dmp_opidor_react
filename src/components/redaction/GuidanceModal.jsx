@@ -1,11 +1,11 @@
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { getRecommandation } from "../../services/DmpRecommandationApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
+import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
 
-function ModalRecommandation({ show, setshowModalRecommandation, setFillColorIconRecommandation }) {
+function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecommandation }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,64 +48,6 @@ function ModalRecommandation({ show, setshowModalRecommandation, setFillColorIco
     marginTop: "10px",
     display: "flex",
   };
-
-  const NavBody = styled.div`
-    color: #000;
-    padding: 0px;
-
-    margin-top: 4px;
-    min-height: 320px;
-    max-height: 10px;
-    margin-right: 20px;
-  `;
-  const NavBodyText = styled.div`
-    background: white; // Set the background color to white
-    padding: 18px; // Add padding if needed
-    border-radius: 0px 10px 10px 10px;
-    font-family: custumHelveticaLight;
-    color: var(--primary);
-    min-height: 300px;
-  `;
-
-  const ScrollNav = styled.div`
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-width: bold;
-    scrollbar-color: var(--primary) transparent;
-    &::-webkit-scrollbar {
-      width: 16px;
-      display: flex;
-      justify-content: space-between;
-      background: var(--white);
-      border-radius: 13px;
-    }
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 8px;
-      border: 3px solid var(--white);
-    }
-  `;
-
-  const MainNav = styled.div`
-    display: flex;
-    justify-content: space-between;
-  `;
-
-  const Close = styled.div`
-    margin: 10px 0px 0px 0px;
-    color: #fff;
-    font-size: 25px;
-    font-family: custumHelveticaLight;
-  `;
-
-  const Theme = styled.div`
-    font-size: 25px;
-    font-family: custumHelveticaLight;
-    font-weight: bold;
-  `;
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -208,4 +150,4 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
   );
 }
 
-export default ModalRecommandation;
+export default GuidanceModal;

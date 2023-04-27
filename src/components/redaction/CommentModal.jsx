@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 import { getComments, postComment, updateComment, deleteCommentById } from "../../services/DmpComentApi";
 import moment from "moment";
 import DOMPurify from "dompurify";
@@ -8,8 +7,9 @@ import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
 import Swal from "sweetalert2";
 import CustomError from "../Shared/CustomError";
+import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard } from "./styles/CommentModalStyles";
 
-function ModalComment({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
+function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
   const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
   const [data, setData] = useState(null);
@@ -31,72 +31,6 @@ function ModalComment({ show, setshowModalComment, setFillColorIconComment, answ
     width: "640px",
     color: "var(--white)",
   };
-
-  const NavBody = styled.div`
-    color: #000;
-    padding: 0px;
-    margin-top: 4px;
-    min-height: 320px;
-    margin-right: 20px;
-  `;
-  const NavBodyText = styled.div`
-    background: white; // Set the background color to white
-    padding: 18px 18px 5px 18px; // Add padding if needed
-    border-radius: 10px;
-    margin: 10px;
-    font-family: custumHelveticaLight;
-    color: var(--primary);
-  `;
-
-  const ScrollNav = styled.div`
-    max-height: 209px;
-    overflow: auto;
-    overflow-anchor: none;
-    scrollbar-width: bold;
-    scrollbar-color: var(--primary) transparent;
-    &::-webkit-scrollbar {
-      width: 16px;
-      display: flex;
-      justify-content: space-between;
-      background: var(--white);
-      border-radius: 13px;
-    }
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 8px;
-      border: 3px solid var(--white);
-    }
-  `;
-
-  const MainNav = styled.div`
-    display: flex;
-    justify-content: end;
-  `;
-
-  const Close = styled.div`
-    margin: 0px 21px 12px 0px;
-    color: #fff;
-    font-size: 25px;
-  `;
-
-  const ButtonComment = styled.button`
-    margin: 10px 2px 2px 0px;
-    color: #000;
-    font-size: 18px;
-    color: var(--primary) !important;
-    font-family: custumHelveticaLight !important;
-    border-radius: 8px !important;
-  `;
-
-  const CommentsCard = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0px 0px 10px;
-  `;
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -306,4 +240,4 @@ function ModalComment({ show, setshowModalComment, setFillColorIconComment, answ
   );
 }
 
-export default ModalComment;
+export default CommentModal;

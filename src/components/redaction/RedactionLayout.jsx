@@ -13,7 +13,7 @@ import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustomSpinner from "../Shared/CustomSpinner";
 import styles from "../assets/css/sidebar.module.css";
-import StyledSidebar from "./StyledSidebar";
+import StyledSidebar from "./styles/StyledSidebar";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
@@ -25,11 +25,8 @@ function RedactionLayout() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  //const [data, setData] = useState(null);
   const [researchOutputId, setResearchOutputId] = useState(null);
   const [planId, setPlanId] = useState(null);
-  const [currentItems, setcurrentItems] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   const [renderKey, setRenderKey] = useState(0);
   const [show, setShow] = useState(false);
@@ -37,13 +34,6 @@ function RedactionLayout() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  /**
-   * When the user clicks on a page number, the current page number is set to the new page number.
-   */
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
 
   /**
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
@@ -90,28 +80,6 @@ function RedactionLayout() {
       .finally(() => setLoading(false));
   }, [productData]);
 
-  /* This is a `useEffect` hook that is triggered whenever the `currentPage` or `data` state variables change. It calculates the range of items to be
-displayed on the current page based on the `currentPage` and `itemsPerPage` variables, and then sets the `currentItems` state variable to an array of
-items within that range, using the `slice` method on the `data` array. This allows the component to display a subset of the data on each page, based
-on the current page number. */
-  useEffect(() => {
-    if (productData) {
-      const indexOfLastItem = currentPage * itemsPerPage;
-      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-      const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
-      setcurrentItems(currentItems);
-    }
-  }, [currentPage, productData]);
-
-  /**
-   * The function handles going to the previous page by decreasing the current page number.
-   */
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const handleSaveProduct = () => {};
-
   return (
     <>
       <Header></Header>
@@ -128,29 +96,6 @@ on the current page number. */
               <div className="">
                 <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                   <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
-                    {/* suivant */}
-                    {/* {productData.length > itemsPerPage && (
-                      <>
-                        {currentPage * itemsPerPage < productData.length && ( // Only show the "Next" button if not on the last page
-                          <li>
-                            <a
-                              href="#"
-                              className={styles.nav_header}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handlePageChange(currentPage + 1);
-                              }}
-                            >
-                              <div className={styles.nav_title}>Suivant</div>
-                              <div className={styles.nav_icon}>
-                                <BsArrowRight size={40}></BsArrowRight>
-                              </div>
-                            </a>
-                          </li>
-                        )}
-                      </>
-                    )} */}
-
                     {productData && (
                       <>
                         {productData.length > 5 ? (
@@ -225,29 +170,6 @@ on the current page number. */
                         )}
                       </>
                     )}
-
-                    {/* précident */}
-                    {/* {productData.length > itemsPerPage && (
-                      <>
-                        {currentPage > 1 && ( // Only show the "Previous" button if the current page is greater than 1
-                          <li>
-                            <a
-                              href="#"
-                              className={styles.nav_header}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handlePreviousPage();
-                              }}
-                            >
-                              <div className={styles.nav_title}>Précident</div>
-                              <div className={styles.nav_icon}>
-                                <BsArrowLeft size={40}></BsArrowLeft>
-                              </div>
-                            </a>
-                          </li>
-                        )}
-                      </>
-                    )} */}
                     <li onClick={handleShow}>
                       <a
                         href="#"

@@ -1,29 +1,13 @@
 import React from "react";
 import stylesForm from "../assets/css/form.module.css";
-import styles from "../assets/css/redactions.module.css";
 import Select from "react-select";
-import styled from "styled-components";
 import { useEffect } from "react";
 import { getTypeSearchProduct, postSearchProduct } from "../../services/DmpSearchProduct";
 import { useState } from "react";
-import { Panel, PanelGroup } from "react-bootstrap";
-import { TfiAngleDown } from "react-icons/tfi";
-import { TfiAngleUp } from "react-icons/tfi";
-import CustumButton from "../Styled/CustumButton";
-import stylesSidebar from "../assets/css/sidebar.module.css";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import { Modal, Button } from "react-bootstrap";
 
-const ProductStyle = styled.div`
-  color: #000;
-  padding: 0px;
-  margin: 4px -145px 4px 75px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px 35px 20px 35px;
-`;
 function SearchProduct({ planId, handleClose, show }) {
   const { setProductData } = useContext(GlobalContext);
   const [data, setData] = useState(null);
@@ -32,6 +16,9 @@ function SearchProduct({ planId, handleClose, show }) {
   const [type, setType] = useState(null);
   const [isPersonnel, setisPersonnel] = useState(true);
 
+  /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeSearchProduct` function. It sets the fetched data to the
+`data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
+when the component mounts. */
   useEffect(() => {
     getTypeSearchProduct().then((res) => {
       const lng = "fr";
@@ -43,9 +30,15 @@ function SearchProduct({ planId, handleClose, show }) {
     });
   }, []);
 
+  /**
+   * This is a function that handles the selection of a value and sets it as the type.
+   */
   const handleSelect = (e) => {
     setType(e.value);
   };
+  /**
+   * The function handles saving data by creating an object and posting it to a server, then updating state variables and closing a modal.
+   */
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
