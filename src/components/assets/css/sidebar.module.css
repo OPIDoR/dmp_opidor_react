@@ -5,29 +5,14 @@
 }
 
 .main {
-  /* display: flex;
-  justify-content: center; */
   width: 80%;
   height: 100%;
 }
 
-.sidebar {
-  background-color: #80b1cd;
-  width: 220px;
-  height: 100%;
-  margin-left: -160px;
-  float: left;
-  z-index: 8000;
-  margin-bottom: 0px;
-  border-radius: 0px 0px 0px 20px;
-  margin-left: 0px;
-  float: left;
-  min-width: 240px;
-}
 .nav_header {
   display: flex;
   flex-direction: column;
-  border-radius: 0px 0px 0px 0px;
+  border-radius: 20px 0px 0px 0px;
 }
 .nav_icon {
   display: flex;
@@ -99,19 +84,4 @@
 .sidebar .navbar-collapse,
 nav.sidebar .container-fluid {
   padding: 0 0px 0 0px;
-}
-
-/*gives sidebar width/height*/
-
-/*give sidebar 100% width;*/
-.sidebar li {
-  width: 100%;
-}
-
-@media (min-width: 1330px) {
-  /*Show all nav*/
-  .sidebar {
-    margin-left: 0px;
-    float: left;
-  }
 }

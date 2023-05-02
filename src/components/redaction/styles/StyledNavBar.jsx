@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledSidebar = styled.nav`
+const StyledNavBar = styled.nav`
   background-color: #80b1cd;
   width: 220px;
   height: 100%;
@@ -8,12 +8,12 @@ const StyledSidebar = styled.nav`
   float: left;
   z-index: 8000;
   margin-bottom: 0px;
-  border-radius: 20px 0px 0px 20px;
+  border-radius: 20px 0px 0px 0px;
   margin-left: 0px;
   float: left;
 
   .navbar-nav {
-    margin: 0px -14px 0px -14px;
+    margin: 0px 0px 0px 0px;
   }
 
   /*adds border top to first nav box */
@@ -56,7 +56,7 @@ const StyledSidebar = styled.nav`
 
   .navbar-nav > li:last-child:hover {
     background-color: #1c5170;
-    border-radius: 0px 0px 0px 20px;
+    border-radius: 0px 0px 0px 0px;
   }
   /* ************************************************** */
   .navbar-nav > .active > a:hover {
@@ -84,4 +84,4 @@ const StyledSidebar = styled.nav`
   }
 `;
 
-export default StyledSidebar;
+export default StyledNavBar;

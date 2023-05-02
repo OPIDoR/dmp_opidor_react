@@ -177,3 +177,25 @@ export function updateFormState(form, schemaId, keyValue, newObject) {
 export function showPersonnalData(hasPersonnelData, q) {
   return !hasPersonnelData || q.classname !== "personal_data_issues";
 }
+
+/**
+ * The function returns the result of dividing the dividend by the divisor and rounding up to the nearest integer.
+ * @param dividend - The number that is being divided. It is the numerator in a division operation.
+ * @param divisor - The divisor is the number that the dividend is being divided by in the function. It is the number that determines how many equal
+ * parts the dividend will be split into.
+ * @returns The function `roundedUpDivision` is returning the result of dividing the `dividend` by the `divisor` and then rounding up the result to the
+ * nearest integer using the `Math.ceil` method.
+ */
+export function roundedUpDivision(dividend, divisor) {
+  return Math.ceil(dividend / divisor);
+}
+
+export function createDynamicObject(result) {
+  let dynamicObject = [];
+  for (let i = 0; i < result; i++) {
+    var isTruth = null;
+    isTruth = i === 0 ? false : true;
+    dynamicObject.push(isTruth);
+  }
+  return dynamicObject;
+}

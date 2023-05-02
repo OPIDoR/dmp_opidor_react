@@ -22,13 +22,12 @@ Données envoyées:
 
 ```json
 {
-    "plan_id": 1234,
-    "abbreviation": "MYRO",
-    "title": "My Research Output",
-    "type": "Dataset",
-    "hasPersonalData": true
+  "plan_id": 1234,
+  "abbreviation": "MYRO",
+  "title": "My Research Output",
+  "type": "Dataset",
+  "hasPersonalData": true
 }
-
 ```
 
 ## Onglet Rédiger
@@ -40,7 +39,7 @@ Les données envoyées du back prennent en compte l'ajout du paramétrage des pr
 
 ### Données Sections/Questions
 
-Ajout de la propriété  `classname` au niveau de la liste des questions. C'est une propriété indiquant la classe du template lié à la question.
+Ajout de la propriété `classname` au niveau de la liste des questions. C'est une propriété indiquant la classe du template lié à la question.
 
 Ex:
 
@@ -118,7 +117,7 @@ Ex:
 
 ### Données Plan/Produits de Recherche/Answers
 
-Ajout de la propriété  `metadata` au niveau de la liste des produits de recherches `research_outputs`. C'est un objet JSON contenant les données de paramétrage du produit de recherche (ou métadonnées) ajoutées lors de la création du produit de recherche.
+Ajout de la propriété `metadata` au niveau de la liste des produits de recherches `research_outputs`. C'est un objet JSON contenant les données de paramétrage du produit de recherche (ou métadonnées) ajoutées lors de la création du produit de recherche.
 Ex:
 
 ```json

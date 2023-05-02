@@ -190,7 +190,7 @@ Finally, it sets the loading state to false. */
                     style={{ marginRight: "10px" }}
                     data-toggle="tooltip"
                     data-placement="top"
-                    title={`Contient des données personnelles : ${searchProduct?.metadata?.hasPersonalData ? "oui" : "non"} `}
+                    title={`Contient des données personnelles : ${searchProduct?.metadata?.hasPersonalData ? "Oui" : "Non"} `}
                   >
                     <a href="#" onClick={(e) => e.preventDefault()}>
                       <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
@@ -207,10 +207,11 @@ Finally, it sets the loading state to false. */
               {showProductInfo && (
                 <div style={{ margin: "0px 10px 30px 10px" }}>
                   <div className={styles.sous_title}>
-                    - Nom du Produit de Recherche :<stron>{searchProduct?.metadata?.abbreviation}</stron>
+                    - Nom du Produit de Recherche : <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.abbreviation}</strong>
                   </div>
                   <div className={styles.sous_title}>
-                    - Contient des données personnelles : <strong>{searchProduct?.metadata?.hasPersonalData ? "oui" : "non"}</strong>
+                    - Contient des données personnelles :{" "}
+                    <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.hasPersonalData ? "Oui" : "Non"}</strong>
                   </div>
                 </div>
               )}

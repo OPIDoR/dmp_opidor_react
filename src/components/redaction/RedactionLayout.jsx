@@ -13,12 +13,13 @@ import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { getQuestion } from "../../services/DmpRedactionApi";
 import CustomSpinner from "../Shared/CustomSpinner";
 import styles from "../assets/css/sidebar.module.css";
-import StyledSidebar from "./styles/StyledSidebar";
+import StyledNavBar from "./styles/StyledNavBar";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import SearchProduct from "../SearchProduct/SearchProduct";
 import { Panel, PanelGroup } from "react-bootstrap";
+import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
 
 function RedactionLayout() {
   const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
@@ -27,10 +28,11 @@ function RedactionLayout() {
   const [error, setError] = useState(null);
   const [researchOutputId, setResearchOutputId] = useState(null);
   const [planId, setPlanId] = useState(null);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const [renderKey, setRenderKey] = useState(0);
   const [show, setShow] = useState(false);
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
+  const [isCollapsed, setIsCollapsed] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -75,10 +77,24 @@ function RedactionLayout() {
         setHasPersonnelData(result[0]?.metadata?.hasPersonalData);
         !productData && setProductData(result);
         handleIdsUpdate(resultId, false);
+        if (result.length > itemsPerPage) {
+          let resultDivision = roundedUpDivision(result.length, itemsPerPage);
+          setIsCollapsed(createDynamicObject(resultDivision));
+        }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [productData]);
+
+  const handleCollapseByIndex = (index) => {
+    console.log(isCollapsed);
+    setIsCollapsed((prevIsCollapsed) => {
+      const newIsCollapsed = [...prevIsCollapsed];
+      newIsCollapsed[index] = !newIsCollapsed[index];
+      console.log(newIsCollapsed);
+      return newIsCollapsed;
+    });
+  };
 
   return (
     <>
@@ -90,15 +106,14 @@ function RedactionLayout() {
       {!loading && !error && productData && (
         <>
           <SearchProduct planId={planId}></SearchProduct>
-
           <div className={styles.section}>
-            <StyledSidebar className="navbar-inverse">
+            <StyledNavBar className="navbar-inverse">
               <div className="">
                 <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                   <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
                     {productData && (
                       <>
-                        {productData.length > 5 ? (
+                        {productData.length > itemsPerPage && isCollapsed ? (
                           <>
                             {Array.from({ length: Math.ceil(productData.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
                               const start = (page - 1) * itemsPerPage;
@@ -113,12 +128,21 @@ function RedactionLayout() {
                                         toggle
                                         className={styles.nav_title}
                                         style={{ display: "flex", justifyContent: "center", color: "white" }}
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          handleCollapseByIndex(i);
+                                        }}
                                       >
                                         {start + 1} - {Math.min(end, productData.length)}
                                       </Panel.Title>
                                     </Panel.Heading>
-                                    <Panel.Body collapsible style={{ background: "var(--secondary)", padding: "0px 14px" }}>
-                                      <ul className="nav navbar-nav">
+
+                                    <Panel.Body
+                                      collapsible={isCollapsed && isCollapsed?.[i]}
+                                      style={{ background: "var(--secondary)", padding: "0px 0px 0px 0px" }}
+                                    >
+                                      <ul className="nav navbar-nav" style={{ width: "100%" }}>
                                         {pageItems.map((el, idx) => (
                                           <li
                                             key={idx}
@@ -187,7 +211,7 @@ function RedactionLayout() {
                   </ul>
                 </div>
               </div>
-            </StyledSidebar>
+            </StyledNavBar>
 
             {show && <SearchProduct planId={planId} handleClose={handleClose} show={show}></SearchProduct>}
 
