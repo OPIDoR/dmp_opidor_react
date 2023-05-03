@@ -93,7 +93,7 @@ when the component mounts. */
           <div className="form-group">
             <div className={stylesForm.label_form}>
               <strong className={stylesForm.dot_label}></strong>
-              <label>Title</label>
+              <label>Titre</label>
             </div>
             <input
               value={title}
