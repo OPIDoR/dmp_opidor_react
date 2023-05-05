@@ -6,8 +6,8 @@ import React, {
   
   import BuilderForm from './BuilderForm.jsx';
   import { GlobalContext } from '../context/Global.jsx';
-  import { checkRequiredForm, getLabelName, updateFormState } from '../utils/GeneratorUtils';
-  import { getFragment, saveForm } from '../services/DmpServiceApi';
+  import { checkRequiredForm, getLabelName, updateFormState } from '../../utils/GeneratorUtils';
+  import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
   
