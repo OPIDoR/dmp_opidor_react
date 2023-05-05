@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * If the formInfo is null, remove the form from sessionStorage, otherwise return the form with the formInfo.
@@ -27,10 +28,11 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
+  const { t, i18n } = useTranslation();
   const [form, setForm] = useReducer(reducer, formLocalState || {});
   const [temp, setTemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
-  const [lng, setLng] = useState("fr");
+  const [lng, setLng] = useState(null);
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
@@ -54,6 +56,14 @@ the latest form data for a specific product. */
   useEffect(() => {
     sessionStorage.setItem("form", JSON.stringify(form));
   }, [form]);
+
+  useEffect(() => {
+    const appLanguage = sessionStorage.getItem("lng");
+    if (appLanguage) {
+      setLng(appLanguage);
+    }
+    sessionStorage.setItem("lng", i18n.language.split("-")[0]);
+  }, [lng]);
 
   /* It's setting the searchProduct in sessionStorage. */
   useEffect(() => {

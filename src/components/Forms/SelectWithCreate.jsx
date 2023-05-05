@@ -8,11 +8,13 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { getRegistry, getRegistryValue, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
+import { useTranslation } from "react-i18next";
 
 /* The above code is a React component that renders a select input field with the ability to add new options to the select list. It also displays a table
 of the selected options and allows for editing and deleting of those options. The component uses hooks to manage state and makes use of external
 libraries such as React Bootstrap and SweetAlert for styling and displaying confirmation messages. */
 function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header, schemaId }) {
+  const { t } = useTranslation();
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -109,14 +111,14 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Etes-vous sûr ?"),
+      text: t("Voulez-vous vraiment supprimer cet élément ?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      cancelButtonText: "Annuler",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
       confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -125,7 +127,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         const concatedObject = [...form[schemaId][keyValue]];
         concatedObject[idx]["updateType"] = "delete";
         setForm(updateFormState(form, schemaId, keyValue, concatedObject));
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -200,7 +202,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
             </span>
           )}
         </div>
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
@@ -270,10 +272,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Fermer
+              {t("Fermer")}
             </Button>
             <Button variant="primary" onClick={handleAddToList}>
-              Enregistrer
+              {t("Enregistrer")}
             </Button>
           </Modal.Footer>
         </Modal>

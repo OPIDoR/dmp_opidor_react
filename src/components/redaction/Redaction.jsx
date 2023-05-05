@@ -18,8 +18,10 @@ import CustomError from "../Shared/CustomError";
 import Swal from "sweetalert2";
 import { deleteSearchProduct } from "../../services/DmpSearchProduct";
 import { showPersonnalData } from "../../utils/GeneratorUtils";
+import { useTranslation } from "react-i18next";
 
 function Redaction({ researchOutputId, planId, hasPersonnelData }) {
+  const { t } = useTranslation();
   const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -147,14 +149,14 @@ Finally, it sets the loading state to false. */
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Confirmez-vous la suppression",
-      text: "En supprimant ce produit de recherche, les réponses associées seront également supprimées",
+      title: t("Confirmez-vous la suppression"),
+      text: t("En supprimant ce produit de recherche, les réponses associées seront également supprimées"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
@@ -164,7 +166,7 @@ Finally, it sets the loading state to false. */
           //setSearchProduct(objectList);
           setProductData(res.data.plan.research_outputs);
         });
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -190,7 +192,7 @@ Finally, it sets the loading state to false. */
                     style={{ marginRight: "10px" }}
                     data-toggle="tooltip"
                     data-placement="top"
-                    title={`Contient des données personnelles : ${searchProduct?.metadata?.hasPersonalData ? "Oui" : "Non"} `}
+                    title={`${t("Contient des données personnelles")} : ${searchProduct?.metadata?.hasPersonalData ? t("Oui") : t("Non")} `}
                   >
                     <a href="#" onClick={(e) => e.preventDefault()}>
                       <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
@@ -200,18 +202,18 @@ Finally, it sets the loading state to false. */
 
                 <div>
                   <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
-                    Supprimer <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
+                    {t("Supprimer")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
                   </button>
                 </div>
               </div>
               {showProductInfo && (
                 <div style={{ margin: "0px 10px 30px 10px" }}>
                   <div className={styles.sous_title}>
-                    - Nom du Produit de Recherche : <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.abbreviation}</strong>
+                    - {t("Nom du Produit de Recherche")} : <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.abbreviation}</strong>
                   </div>
                   <div className={styles.sous_title}>
-                    - Contient des données personnelles :{" "}
-                    <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.hasPersonalData ? "Oui" : "Non"}</strong>
+                    - {t("Contient des données personnelles")} :
+                    <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.hasPersonalData ? t("Oui") : t("Non")}</strong>
                   </div>
                 </div>
               )}
@@ -231,7 +233,7 @@ Finally, it sets the loading state to false. */
                           handleCollapseByIndex(idx);
                         }}
                       >
-                        Tout développer
+                        {t("Tout développer")}
                       </a>
                       <span className={styles.sous_title}> | </span>
                       <a
@@ -243,7 +245,7 @@ Finally, it sets the loading state to false. */
                           setIsCollapsed(initialCollapse);
                         }}
                       >
-                        Tout réduire
+                        {t("Tout réduire")}
                       </a>
                     </div>
                   </div>

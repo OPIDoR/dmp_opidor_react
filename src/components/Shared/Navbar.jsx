@@ -8,8 +8,10 @@ import RedactionSVG from "../Styled/svg/RedactionSVG";
 import DownloadSVG from "../Styled/svg/DownloadSVG";
 import ShareSVG from "../Styled/svg/ShareSVG";
 import InfoSVG from "../Styled/svg/InfoSVG";
+import { useTranslation } from "react-i18next";
 
 function Navbar() {
+  const { t } = useTranslation();
   return (
     <ul id="plan_navigation" className={`nav nav-tabs ${styles.plan_navigation}`} role="tablist">
       <li
@@ -20,7 +22,7 @@ function Navbar() {
       >
         <a href="#">
           <InfoSVG />
-          Informations générales
+          {t("Informations générales")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -33,7 +35,7 @@ function Navbar() {
       >
         <a href="#">
           <ReasearchSVG />
-          Produits de recherche
+          {t("Produits de recherche")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -47,7 +49,7 @@ function Navbar() {
       >
         <a href="#">
           <RedactionSVG />
-          Rédiger
+          {t("Rédiger")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -60,7 +62,7 @@ function Navbar() {
       >
         <a href="#">
           <ContributorSVG />
-          Contributeurs
+          {t("Contributeurs")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -73,7 +75,7 @@ function Navbar() {
       >
         <a href="#">
           <BudgetSVG />
-          Budget
+          {t("Budget")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -86,7 +88,7 @@ function Navbar() {
       >
         <a href="#">
           <ShareSVG />
-          Partager
+          {t("Partager")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -99,7 +101,7 @@ function Navbar() {
       >
         <a href="#">
           <AssistanceSVG></AssistanceSVG>
-          Demande d'assistance
+          {t("Demande d'assistance")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -112,7 +114,7 @@ function Navbar() {
       >
         <a href="#">
           <DownloadSVG></DownloadSVG>
-          Télécharger
+          {t("Télécharger")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>

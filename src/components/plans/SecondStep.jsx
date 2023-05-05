@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
 import CustumButton from "../Styled/CustumButton";
 import CircleTitle from "../Styled/CircleTitle";
+import { useTranslation } from "react-i18next";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
 using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
 selected template ID to the next step. */
 function SecondStep() {
+  const { t } = useTranslation();
   const { context, setContext } = useContext(GlobalContext);
   const [defaultModel, setdefaultModel] = useState(null);
   const [defaultId, setdefaultId] = useState(null);
@@ -175,7 +177,7 @@ function SecondStep() {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Vous devez choisir un modèle",
+        text: t("Vous devez choisir un modèle"),
       });
     }
   };

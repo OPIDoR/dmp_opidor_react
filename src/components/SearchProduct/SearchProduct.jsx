@@ -7,8 +7,11 @@ import { useState } from "react";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 function SearchProduct({ planId, handleClose, show }) {
+  const { lng } = useContext(GlobalContext);
+  const { t } = useTranslation();
   const { setProductData } = useContext(GlobalContext);
   const [data, setData] = useState(null);
   const [abbreviation, setAbbreviation] = useState(null);
@@ -21,7 +24,6 @@ function SearchProduct({ planId, handleClose, show }) {
 when the component mounts. */
   useEffect(() => {
     getTypeSearchProduct().then((res) => {
-      const lng = "fr";
       const options = res.data.map((option) => ({
         value: lng === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
         label: lng === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
@@ -71,41 +73,41 @@ when the component mounts. */
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Produit de recherche</Modal.Title>
+        <Modal.Title>{t("Produit de recherche")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div style={{ margin: "25px" }}>
           <div className="form-group">
             <div className={stylesForm.label_form}>
               <strong className={stylesForm.dot_label}></strong>
-              <label>Abbreviation</label>
+              <label>{t("Abbreviation")}</label>
             </div>
             <input
               value={abbreviation}
               className={`form-control ${stylesForm.input_text}`}
-              placeholder={"ajouter abbreviation"}
+              placeholder={t("ajouter abbreviation")}
               type="text"
               onChange={(e) => setAbbreviation(e.target.value)}
               maxlength="20"
             />
-            <small className="form-text text-muted">Limité à 20 caractères</small>
+            <small className="form-text text-muted">{t("Limité à 20 caractères")}</small>
           </div>
           <div className="form-group">
             <div className={stylesForm.label_form}>
               <strong className={stylesForm.dot_label}></strong>
-              <label>Titre</label>
+              <label>{t("Titre")}</label>
             </div>
             <input
               value={title}
               className={`form-control ${stylesForm.input_text}`}
-              placeholder={"ajouter titre"}
+              placeholder={t("ajouter titre")}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div className="form-group">
             <div className={stylesForm.label_form}>
               <strong className={stylesForm.dot_label}></strong>
-              <label>Type</label>
+              <label>{t("Type")}</label>
             </div>
             {data && (
               <Select
@@ -120,7 +122,7 @@ when the component mounts. */
 
           <div className="form-group">
             <div className={stylesForm.label_form}>
-              <label>Votre produit de rechercher contient-il des données personnelles ?</label>
+              <label>{t("Votre produit de rechercher contient-il des données personnelles ?")}</label>
             </div>
             <div>
               <div className="form-check">
@@ -133,7 +135,7 @@ when the component mounts. */
                   defaultChecked
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
-                  Oui
+                  {t("Oui")}
                 </label>
               </div>
               <div className="form-check">
@@ -145,7 +147,7 @@ when the component mounts. */
                   onClick={() => setisPersonnel(false)}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault2">
-                  Non
+                  {t("Non")}
                 </label>
               </div>
             </div>
@@ -156,10 +158,10 @@ when the component mounts. */
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Fermer
+          {t("Fermer")}
         </Button>
         <Button variant="primary" onClick={handleSave}>
-          Ajouter
+          {t("Ajouter")}
         </Button>
       </Modal.Footer>
     </Modal>

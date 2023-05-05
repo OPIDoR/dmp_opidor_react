@@ -8,8 +8,10 @@ import roadmap from "../assets/images/roadmap.png";
 import republique from "../assets/images/republique.png";
 import a from "../assets/images/9.png";
 import b from "../assets/images/8.png";
+import { useTranslation } from "react-i18next";
 
 function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className={styles.footer}>
       <div className="row">
@@ -27,13 +29,13 @@ function Footer() {
         </div>
         <div className="col-md-3">
           <div>
-            <h6 className={styles.title}>NAVIGATION</h6>
+            <h6 className={styles.title}>{t("NAVIGATION")}</h6>
             <ul>
-              <li className={styles.item_footer}>Aide en ligne</li>
-              <li className={styles.item_footer}>PGD &amp; Modèles</li>
-              <li className={styles.item_footer}>Approfondir</li>
-              <li className={styles.item_footer}>Support technique / FAQ</li>
-              <li className={styles.item_footer}>Actualités</li>
+              <li className={styles.item_footer}>{t("Aide en ligne")}</li>
+              <li className={styles.item_footer}>{t("PGD et Modèles")}</li>
+              <li className={styles.item_footer}>{t("Approfondir")}</li>
+              <li className={styles.item_footer}>{t("Support technique / FAQ")}</li>
+              <li className={styles.item_footer}>{t("Actualités")}</li>
             </ul>
           </div>
         </div>
@@ -41,9 +43,9 @@ function Footer() {
           <div>
             <h6 className={styles.title}>A PROPOS</h6>
             <ul>
-              <li className={styles.item_footer}>A propos de DMP OPIDoR</li>
-              <li className={styles.item_footer}>Conditions Générales d’Utilisation</li>
-              <li className={styles.item_footer}>Politique de cookies</li>
+              <li className={styles.item_footer}>{t("A propos de DMP OPIDoR")}</li>
+              <li className={styles.item_footer}>{t("Conditions Générales d’Utilisation")}</li>
+              <li className={styles.item_footer}>{t("Politique de cookies")}</li>
               <li className={styles.item_footer}>
                 Github
                 {/* <img className={styles.icon_footer} src="../assets/images/github.png" alt="" /> */}
@@ -54,7 +56,7 @@ function Footer() {
         </div>
         <div className="col-md-3">
           <div>
-            <h6 className={styles.title}>ECOSYSTEM</h6>
+            <h6 className={styles.title}>{t("ECOSYSTEM")}</h6>
             <ul>
               <li className={styles.item_footer}>
                 <img src={a} alt="" className={styles.logo_gris} />

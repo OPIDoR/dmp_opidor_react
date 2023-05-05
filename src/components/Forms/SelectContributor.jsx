@@ -8,12 +8,14 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { getContributor, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
+import { useTranslation } from "react-i18next";
 
 /* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
 state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
 component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
 contributors and allows users to edit or delete them. */
 function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
+  const { t } = useTranslation();
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -136,14 +138,14 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Etes-vous sûr ?"),
+      text: t("Voulez-vous vraiment supprimer cet élément ?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = [...list];
@@ -151,7 +153,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         filterDeleted[idx]["updateType"] = "delete";
         setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -180,7 +182,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
             </span>
           )}
         </div>
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
@@ -251,10 +253,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Fermer
+                {t("Fermer")}
               </Button>
               <Button variant="primary" onClick={handleAddToList}>
-                Enregistrer
+                {t("Enregistrer")}
               </Button>
             </Modal.Footer>
           </Modal>

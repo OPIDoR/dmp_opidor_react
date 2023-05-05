@@ -4,6 +4,7 @@ import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
+import { useTranslation } from "react-i18next";
 
 /* This is a functional React component called `SelectMultipleList` that renders a select list with the ability to add and remove items from a list. It
 receives several props such as `label`, `registry`, `name`, `changeValue`, `tooltip`, `header`, and `schemaId`. It uses the `useState` and `useEffect`
@@ -11,6 +12,7 @@ hooks to manage the state of the component and to fetch data from an API. It als
 deleting an item from the list. */
 
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId }) {
+  const { t } = useTranslation();
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
   const { form, temp, setTemp, lng } = useContext(GlobalContext);
@@ -74,14 +76,14 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Etes-vous sûr ?"),
+      text: t("Voulez-vous vraiment supprimer cet élément ?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = [...list];
@@ -91,7 +93,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
         }
         setlist(newList);
         setTemp({ ...temp, [name]: newList });
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -108,7 +110,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
             </span>
           )}
         </div>
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
         <div className="row">
           <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select

@@ -6,11 +6,13 @@ import { GlobalContext } from "../context/Global";
 import toast from "react-hot-toast";
 import { getContributor, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
+import { useTranslation } from "react-i18next";
 
 /* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
 the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
 select field. The selected option is displayed below the select field. */
 function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const { form, setForm, temp, setTemp } = useContext(GlobalContext);
@@ -136,7 +138,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
           )}
         </div>
 
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
@@ -178,10 +180,10 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Fermer
+                {t("Fermer")}
               </Button>
               <Button variant="primary" onClick={handleAddToList}>
-                Enregistrer
+                {t("Enregistrer")}
               </Button>
             </Modal.Footer>
           </Modal>

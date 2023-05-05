@@ -8,8 +8,10 @@ import EditorComment from "./EditorComment";
 import Swal from "sweetalert2";
 import CustomError from "../Shared/CustomError";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard } from "./styles/CommentModalStyles";
+import { useTranslation } from "react-i18next";
 
 function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
+  const { t } = useTranslation();
   const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
   const [data, setData] = useState(null);
@@ -60,20 +62,20 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Etes-vous sûr ?"),
+      text: t("Voulez-vous vraiment supprimer cet élément ?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = deleteByIndex(data, id);
         setData(newList);
         //deleteCommentById()
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -230,7 +232,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             </div>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
-                {isUpdate ? "Modifier" : "Enregistrer"}
+                {isUpdate ? t("Modifier") : t("Enregistrer")}
               </ButtonComment>
             </div>
           </NavBody>

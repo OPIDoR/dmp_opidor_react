@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../assets/css/header.module.css";
 import logo from "../assets/images/logo.png";
+import { useTranslation } from "react-i18next";
+import { GlobalContext } from "../context/Global";
 
 function Header() {
+  const { t, i18n } = useTranslation();
+  const { setLng } = useContext(GlobalContext);
+
+  /**
+   * It changes the language of the app to the language that the user selects
+   * @param l - The language you want to change to.
+   */
+  const handleChangeL = (l) => {
+    i18n.changeLanguage(l);
+    setLng(l);
+    //window.location.reload(false);
+  };
   return (
     <header>
       <div className={styles.header}>
@@ -11,15 +25,23 @@ function Header() {
             <li className={styles.item}>
               <img className={styles.logo} src={logo} alt="banner" />
             </li>
-            <li className={styles.item}>AIDE EN LIGNE</li>
+            <li className={styles.item}> {t("AIDE EN LIGNE")}</li>
             <li className={`${styles.item} ${styles.dot}`} />
-            <li className={styles.item}>PGD ET MODEL</li>
+            <li className={styles.item}>{t("PGD ET MODEL")}</li>
             <li className={`${styles.item} ${styles.dot}`} />
-            <li className={styles.item}>APPROFONDIR</li>
+            <li className={styles.item}>{t("APPROFONDIR")}</li>
             <li className={styles.item}>
-              <button className={styles.button}>MON ESPACE</button>
+              <button className={styles.button}>{t("MON ESPACE")}</button>
             </li>
-            <li className={styles.item}>FR / ENG</li>
+            <li className={styles.item}>
+              <a href="#" onClick={() => handleChangeL("fr")}>
+                FR
+              </a>{" "}
+              /{" "}
+              <a href="#" onClick={() => handleChangeL("en")}>
+                ENG
+              </a>
+            </li>
           </ul>
         </nav>
       </div>

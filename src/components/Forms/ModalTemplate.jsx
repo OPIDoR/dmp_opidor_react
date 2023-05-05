@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import CustumButton from "../Styled/CustumButton";
+import { useTranslation } from "react-i18next";
 
 /**
  * It takes a template name as an argument, loads the template file, and then renders a modal with the template file as a prop.
@@ -15,6 +16,7 @@ import CustumButton from "../Styled/CustumButton";
  * @returns A React component.
  */
 function ModalTemplate({ value, template, keyValue, level, tooltip, header, schemaId }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
@@ -84,21 +86,21 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Etes-vous sûr ?"),
+      text: t("Voulez-vous vraiment supprimer cet élément ?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Annuler"),
+      confirmButtonText: t("Oui, supprimer !"),
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         filterDeleted[idx]["updateType"] = "delete";
         setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
       }
     });
   };
@@ -175,7 +177,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
           handleClick={() => {
             handleShow(true);
           }}
-          title="Ajouter un élément"
+          title={t("Ajouter un élément")}
           type="primary"
           position="start"
         ></CustumButton>
@@ -227,10 +229,10 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Fermer
+            {t("Fermer")}
           </Button>
           <Button variant="primary" onClick={handleAddToList}>
-            Enregistrer
+            {t("Enregistrer")}
           </Button>
         </Modal.Footer>
       </Modal>

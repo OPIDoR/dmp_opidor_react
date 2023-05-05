@@ -2,11 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 import { updateFormState } from "../../utils/GeneratorUtils";
+import { useTranslation } from "react-i18next";
 
 /* A React component that renders a form with a text input and a button. 
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
 function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
+  const { t } = useTranslation();
   const [formFields, setFormFields] = useState([""]);
   const { form, setForm } = useContext(GlobalContext);
 
@@ -68,10 +70,25 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
                 />
               </div>
               <div className="col-md-3">
-                <button style={{ marginRight: "4px" }} type="button" className="btn btn-primary px-3 m-2" onClick={addFields}>
+                <button
+                  style={{ marginRight: "4px" }}
+                  type="button"
+                  className="btn btn-primary px-3 m-2"
+                  onClick={addFields}
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={t("Ajouter")}
+                >
                   <i className="fa fa-plus" aria-hidden="true" />
                 </button>
-                <button type="button" className="btn btn-danger px-3 m-2" onClick={() => removeFields(index)}>
+                <button
+                  type="button"
+                  className="btn btn-danger px-3 m-2"
+                  onClick={() => removeFields(index)}
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title={t("Supprimer")}
+                >
                   <i className="fa fa-trash" aria-hidden="true" />
                 </button>
               </div>

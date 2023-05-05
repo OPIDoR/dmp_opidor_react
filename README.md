@@ -83,6 +83,7 @@ npm i react-bootstrap@0.33.1
 npm i react-hot-toast sweetalert react-loader-spinner dompurify axios react-select
 npm install --save @tinymce/tinymce-react
 npm i moment
+npm i i18next i18next-browser-languagedetector i18next-http-backend react-i18next
 ```
 
 For developement testing environment...
