@@ -1,46 +1,48 @@
-import { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../context/Global";
-import styles from "../assets/css/form.module.css";
-import { updateFormState } from "../../utils/GeneratorUtils";
+import React, { useContext, useEffect, useState } from 'react';
+import { GlobalContext } from '../context/Global.jsx';
+import { updateFormState } from '../../utils/GeneratorUtils';
+import styles from '../assets/css/form.module.css';
 
-/* A React component that renders a form with a text input and a button. 
+/* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
-  const [formFields, setFormFields] = useState([""]);
-  const { form, setForm } = useContext(GlobalContext);
-
+function InputTextDynamicaly({ label, propName, tooltip, fragmentId }) {
+  const [formFields, setFormFields] = useState(['']);
+  const { formData, setFormData } = useContext(GlobalContext);
+  
   /* A React hook that is called when the component is mounted and when the name variable changes. */
   useEffect(() => {
-    setFormFields(form?.[schemaId]?.[name] || [""]);
-  }, [name]);
+    setFormFields(formData?.[fragmentId]?.[propName] || [""]);
+  }, [propName]);
 
   /**
    * When the form changes, update the form fields and set the form to the new data.
    */
   const handleFormChange = (event, index) => {
-    let data = [...formFields];
+    const data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    setForm(updateFormState(form, schemaId, name, data));
+    setFormData(updateFormState(formData, fragmentId, propName, data));
   };
 
   /**
-   * When the addFields function is called, the setFormFields function is called with the current formFields array and a new empty string.
+   * When the addFields function is called, the setFormFields
+   * function is called with the current formFields array and a new empty string.
    */
   const addFields = () => {
-    setFormFields([...formFields, ""]);
+    setFormFields([...formFields, '']);
   };
 
   /**
-   * If the formFields array has more than one element, then remove the element at the index specified by the index parameter.
+   * If the formFields array has more than one element,
+   * then remove the element at the index specified by the index parameter.
    */
   const removeFields = (index) => {
     if (formFields.length > 1) {
-      let data = [...formFields];
+      const data = [...formFields];
       data.splice(index, 1);
       setFormFields(data);
-      setForm(updateFormState(form, schemaId, name, data));
+      setFormData(updateFormState(formData, fragmentId, propName, data));
     }
   };
 
@@ -63,7 +65,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
                 <input
                   className={`form-control ${styles.input_text}`}
                   value={form}
-                  name={name}
+                  name={propName}
                   onChange={(event) => handleFormChange(event, index)}
                 />
               </div>

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/steps.module.css";
 import CircleTitle from "../Styled/CircleTitle";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 
 /**
  * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management
@@ -64,7 +64,7 @@ function FirstStep({ handleNextStep }) {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
           Valider mon choix
         </button> */}
-        <CustumButton handleClick={handleNextStep} title="Valider mon choix" position="start"></CustumButton>
+        <CustomButton handleClick={handleNextStep} title="Valider mon choix" position="start"></CustomButton>
       </div>
     </div>
   );

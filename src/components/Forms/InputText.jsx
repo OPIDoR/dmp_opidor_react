@@ -1,39 +1,43 @@
-import React, { useContext, useEffect, useState } from "react";
-import { getCheckPatern } from "../../utils/GeneratorUtils";
-import { GlobalContext } from "../context/Global";
+import React, { useContext, useEffect, useState } from 'react';
+import { getCheckPattern } from '../../utils/GeneratorUtils';
+import { GlobalContext } from '../context/Global.jsx';
 import styles from "../assets/css/form.module.css";
 
 /**
- * It's a function that takes in a bunch of props and returns a div with a label, an input, and a small tag.
+ * It's a function that takes in a bunch of props and returns
+ * a div with a label, an input, and a small tag.
  * @returns A React Component
  */
-function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst, schemaId }) {
-  const { form, setForm, temp } = useContext(GlobalContext);
-  const [text, settext] = useState(null);
-  const [isRequired, setisRequired] = useState(false);
+function InputText({
+  label, type, placeholder, propName, changeValue, tooltip, hidden, isConst, fragmentId
+}) {
+  const { formData, setFormData, subData } = useContext(GlobalContext);
+  const [inputValue, setInputValue] = useState(null);
+  const [isRequired, setIsRequired] = useState(false);
+
+
+  useEffect(() => {
+    setInputValue(formData?.[fragmentId]?.[propName]);
+  }, [fragmentId, propName]);
 
   /* It's setting the state of the form to the value of the isConst variable. */
   useEffect(() => {
     if (isConst !== false) {
-      //TODO constant not updated
-      setForm({ [name]: isConst });
+      setFormData({ [propName]: isConst });
     }
   }, []);
 
-  useEffect(() => {
-    settext(form?.[schemaId]?.[name]);
-  }, [form[name]]);
-
   /**
-   * It takes a number, formats it to a string, and then sets the state of the text variable to that string.
+   * It takes a number, formats it to a string, and then sets the
+   * state of the text variable to that string.
    * @param e - The event object
    */
   const handleChangeInput = (e) => {
     const { value } = e.target;
-    const isPattern = getCheckPatern(type, value);
+    const isPattern = getCheckPattern(type, value);
     changeValue(e);
-    setisRequired(!isPattern);
-    settext(value);
+    setIsRequired(!isPattern);
+    setInputValue(value);
   };
   return (
     <div className="form-group">
@@ -48,12 +52,12 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
       </div>
       <input
         type={type}
-        value={isConst === false ? (temp ? temp[name] : text == null ? "" : text) : isConst}
+        value={isConst === false ? (subData ? subData[propName] : inputValue == null ? "" : inputValue) : isConst}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}
-        name={name}
+        name={propName}
         disabled={isConst === false ? false : true}
       />
     </div>

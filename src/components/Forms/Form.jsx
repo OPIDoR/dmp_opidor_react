@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
-import { loadForm, loadNewForm } from "../../services/DmpServiceApi";
+import { getFragment, loadNewForm } from "../../services/DmpServiceApi";
 import CustomSpinner from "../Shared/CustomSpinner";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 import CustomError from "../Shared/CustomError";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
@@ -31,7 +31,7 @@ loading state to `false`. */
       }
     }
     //loadNewForm(schemaId, searchProductPlan, researchOutputId, questionId, planId, "token")
-    loadForm(schemaId, "token")
+    getFragment(schemaId, "token")
       .then((el) => {
         setstandardTemplate(el);
       })
@@ -60,7 +60,7 @@ loading state to `false`. */
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <CustumButton handleClick={handleSaveForm} title="Enregistrer" position="center"></CustumButton>
+          <CustomButton handleClick={handleSaveForm} title="Enregistrer" position="center"></CustomButton>
         </div>
       )}
     </>
