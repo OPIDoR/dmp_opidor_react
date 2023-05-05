@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
  * @param keys - ["$..name", "$..age", "$..address.street"]
  * @returns The value of the key in the object.
  */
-export function parsePatern(data, keys) {
+export function parsePattern(data, keys) {
   //https://www.measurethat.net/Benchmarks/Show/2335/1/slice-vs-substr-vs-substring-with-no-end-index
   const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
   return keys
@@ -57,7 +57,7 @@ export function deleteByIndex(list, idx) {
 //If type is "email", it tests the value against a regular expression for
 // email addresses. If type is "uri", it tests the value against
 // a regular expression for uri's. If neither of these are true, it returns true.
-export function getCheckPatern(type, value) {
+export function getCheckPattern(type, value) {
   const regExEmail = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
   const regExUri =
     /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -74,17 +74,17 @@ export function getCheckPatern(type, value) {
 /**
  * It takes a standardTemplate object and a form object, and returns the first key of the form object that is required and empty
  * @param standardTemplate - {
- * @param form - {
+ * @param formData - form data
  * @returns The first key of the object that has a value of "" or "<p></p>\n"
  */
-export function checkRequiredForm(standardTemplate, form) {
-  if (!form) {
+export function checkRequiredForm(standardTemplate, formData) {
+  if (!formData) {
     return undefined;
   }
   const listRequired = standardTemplate?.required;
   //add not existe value to new object
   const newForm = listRequired.reduce((result, key) => {
-    result[key] = form[key] || "";
+    result[key] = formData[key] || "";
     return result;
   }, {});
   //check the empty object
@@ -126,45 +126,39 @@ export function formatNumberWithSpaces(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-/**
- * If the temp object has a property with the same name as the name parameter, and that property is an object, return the label property of that object.
- * Otherwise, if the temp object has a property with the same name as the name parameter, and that property is a string, return that string. Otherwise,
- * return the form object's property with the same name as the name parameter.
- * @param temp - the object that contains the label
- * @param form - the form object
- * @param name - the name of the field
- * @returns The label of the form field.
- */
-export function getDefaultLabel(temp, form, name) {
-  if (temp) {
-    if (typeof temp[name] === "object") {
-      return temp[name]?.label?.fr_FR;
-    } else if (typeof temp[name] === "string") {
-      return temp[name];
-    }
-  } else {
-    return form?.[name];
-  }
-}
 
 /**
- * It takes a form object, a schemaId, a keyValue, and a newObject, and returns a new form object with the newObject nested under the schemaId and
- * keyValue.
- * @param form - the form object
- * @param schemaId - 'schema1'
- * @param keyValue - 'name'
+ * It takes a form object, a schemaId, a propName, and a newObject, and returns a new form object with the newObject nested under the schemaId and
+ * propName.
+ * @param formData - the form data object
+ * @param fragmentId - fragment id
+ * @param propName - 'name'
  * @param newObject - {
- * @returns A new object with the form object spread into it, and then the schemaId object spread into it, and then the keyValue object spread into it.
+ * @returns A new object with the formData object spread into it, and then the fragmentId object spread into it, and then the propName object spread into it.
  */
-export function updateFormState(form, schemaId, keyValue, newObject) {
+export function updateFormState(formData, fragmentId, propName, newObject) {
   return {
-    ...form,
-    [schemaId]: {
-      ...form[schemaId],
-      [keyValue]: newObject,
+    ...formData,
+    [fragmentId]: {
+      ...formData[fragmentId],
+      [propName]: newObject,
     },
   };
 }
+
+
+export function createOptions(registryValues, locale) {
+  let options = registryValues.map((option) => {
+    const {label, ...optionValue} = option;
+    return {
+      value: label ? label[locale] : optionValue[locale],
+      label: label ? label[locale] : optionValue[locale],
+      object: optionValue,
+    }
+  });
+  return [ {value:'', label:''}, ...options ]
+}
+
 
 /**
  * The function returns true if there are no personnel data issues or if the query is not related to personnel data issues.

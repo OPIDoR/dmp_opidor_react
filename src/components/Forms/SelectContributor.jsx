@@ -1,76 +1,90 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import BuilderForm from "../Builder/BuilderForm";
-import Select from "react-select";
-import { deleteByIndex, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
-import { GlobalContext } from "../context/Global";
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
-import { getContributor, loadForm } from "../../services/DmpServiceApi";
-import styles from "../assets/css/form.module.css";
+import React, { useContext, useEffect, useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import Select from 'react-select';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
+import BuilderForm from '../Builder/BuilderForm.jsx';
+import { deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
+import { GlobalContext } from '../context/Global.jsx';
+import { getContributors, getSchema } from '../../services/DmpServiceApi';
+import styles from '../assets/css/form.module.css';
 
-/* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
-state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
-component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
-contributors and allows users to edit or delete them. */
-function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
-  const [list, setlist] = useState([]);
+function SelectContributor({
+  label,
+  propName,
+  changeValue,
+  templateId,
+  level,
+  tooltip,
+  header,
+  fragmentId,
+}) {
+  const [list, setList] = useState([]);
+
   const [show, setShow] = useState(false);
-  const [options, setoptions] = useState(null);
-  const [selectObject, setselectObject] = useState([]);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
-  const [index, setindex] = useState(null);
-  const [registerFile, setregisterFile] = useState(null);
-  const [role, setrole] = useState(null);
+  const [options, setOptions] = useState(null);
+  const [selectObject, setSelectObject] = useState([]);
+  const {
+    formData, setFormData, subData, setSubData, locale, dmpId,
+  } = useContext(GlobalContext);
+  const [index, setIndex] = useState(null);
+  const [template, setTemplate] = useState(null);
+  const [role, setRole] = useState(null);
+  const [contributorList, setContributorList] = useState([])
+
+  useEffect(() => {
+    setContributorList(formData?.[fragmentId]?.[propName] || {})
+  }, [fragmentId, propName]);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getContributor("token").then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.firstName + " " + option.lastName,
-        label: option.firstName + " " + option.lastName,
+    getContributors(dmpId, templateId).then((res) => {
+      const builtOptions = res.data.results.map((option) => ({
+        value: option.id,
+        label: option.text,
         object: option,
       }));
-      setoptions(options);
+      setOptions(builtOptions);
     });
   }, []);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    loadForm(registry, "token").then((res) => {
-      setrole(res.properties.role["const@fr_FR"]);
-      setregisterFile(res.properties.person.template_name);
-      const template = res.properties.person["template_name"];
-      loadForm(template, "token").then((res) => {
-        setregisterFile(res);
+    getSchema(templateId).then((res) => {
+      setRole(res.properties.role[`const@${locale}`]);
+      const personTemplateId = res.properties.person.schema_id;
+      setTemplate(personTemplateId);
+      getSchema(personTemplateId).then((resSchema) => {
+        setTemplate(resSchema.data);
       });
-      if (!form?.[schemaId]?.[keyValue]) {
+
+      if (!contributorList) {
         return;
       }
-      const patern = res.to_string;
-      if (!patern.length) {
+      const pattern = res.to_string;
+      if (!pattern.length) {
         return;
       }
-      setlist(form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete").map((el) => parsePatern(el, patern)));
+
+      setList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
     });
-  }, [form?.[schemaId]?.[keyValue], registry]);
+  }, [formData[propName], templateId]);
 
   /**
    * It closes the modal and resets the state of the modal.
    */
   const handleClose = () => {
     setShow(false);
-    setTemp(null);
-    setindex(null);
+    setSubData({});
+    setIndex(null);
   };
-
   /**
-   * The function handles showing a component by setting its state to true.
+   * The function takes a boolean value as an argument and sets the state of
+   * the show variable to the value of the argument.
+   * @param isOpen - boolean
    */
-  const handleShow = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShow(true);
+  const handleShow = (isOpen) => {
+    setShow(isOpen);
   };
 
   /**
@@ -78,94 +92,97 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
    * @param e - the event object
    */
   const handleChangeList = (e) => {
-    const patern = registerFile.to_string;
+    const pattern = template.to_string;
     const { object, value } = e;
-    if (patern.length > 0) {
-      setselectObject([...selectObject, object]);
-      const parsedPatern = parsePatern(object, registerFile.to_string);
-      setlist([...list, parsedPatern]);
+
+    if (pattern.length > 0) {
+      setSelectObject([...selectObject, object]);
+      const parsedPatern = parsePattern(object, template.to_string);
+      setList([...list, parsedPatern]);
       const newObject = { person: object, role: role };
-      const mergedList = form?.[schemaId]?.[keyValue] ? [...form[schemaId][keyValue], newObject] : [newObject];
-      setForm(updateFormState(form, schemaId, keyValue, mergedList));
+      const mergedList = contributorList ? [...contributorList, newObject] : [newObject];
+      setFormData(updateFormState(formData, fragmentId, propName, mergedList));
     } else {
-      changeValue({ target: { name, value } });
-      setlist([...list, value]);
+      changeValue({ target: { propName, value } });
+      setList([...list, value]);
     }
   };
 
   /**
-   * If the index is not null, then delete the item at the index, add the temp item to the end of the array,
+   * If the index is not null, then delete the item at the index,
+   * add the subData item to the end of the array,
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
     if (index !== null) {
-      //update
-      const objectPerson = { person: temp, role: role, updateType: "update" };
-      const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+      const objectPerson = { person: subData, role: role, action: 'update' };
+      const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
       const deleteIndex = deleteByIndex(filterDeleted, index);
       const concatedObject = [...deleteIndex, objectPerson];
-      setForm(updateFormState(form, schemaId, keyValue, concatedObject));
-      const parsedPatern = parsePatern(temp, registerFile.to_string);
-      setlist([...deleteByIndex([...list], index), parsedPatern]);
+      setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
+      const parsedPattern = parsePattern(subData, template.to_string);
+      setList([...deleteByIndex([...list], index), parsedPattern]);
     } else {
       handleSave();
     }
-    toast.success("Enregistrement a été effectué avec succès !");
-    setTemp(null);
+    toast.success('Enregistrement a été effectué avec succès !');
+    setSubData({});
     handleClose();
   };
 
   /**
-   * When the user clicks the save button, the function will take the temporary person object and add it to the form object, then it will parse the
-   * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
+   * When the user clicks the save button, the function will take the
+   * temporary person object and add it to the form object, then it will parse the
+   * temporary person object and add it to the list array, then it will close the
+   * modal and set the temporary person object to null.
    */
   const handleSave = () => {
-    const objectPerson = { person: temp, role: role };
-    setForm(updateFormState(form, schemaId, keyValue, [...(form[schemaId][keyValue] || []), objectPerson]));
-    const parsedPatern = parsePatern(temp, registerFile.to_string);
-    setlist([...list, parsedPatern]);
+    const objectPerson = { person: subData, role };
+    setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
+    const parsedPattern = parsePattern(subData, template.to_string);
+    setList([...list, parsedPattern]);
     handleClose();
-    setTemp(null);
+    setSubData({});
   };
 
   /**
-   * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
+   * I want to delete an item from a list and then update the state of the list.
    */
-  const handleDeleteListe = (e, idx) => {
+  const handleDeleteList = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
-      icon: "warning",
+      title: 'Ëtes-vous sûr ?',
+      text: 'Voulez-vous vraiment supprimer cet élément ?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Annuler',
+      confirmButtonText: 'Oui, supprimer !',
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = [...list];
-        setlist(deleteByIndex(newList, idx));
-        const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-        filterDeleted[idx]["updateType"] = "delete";
-        setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        setList(deleteByIndex(newList, idx));
+        const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
+        filterDeleted[idx]['action'] = 'delete';
+        setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
       }
     });
   };
 
   /**
-   * This function handles the edit functionality for a specific item in a form.
+   * It sets the state of the subData variable to the value of the form[propName][idx] variable.
+   * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-    setTemp(filterDeleted[idx]["person"]);
+    const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
+    setSubData(filterDeleted[idx]['person']);
     setShow(true);
-    setindex(idx);
+    setIndex(idx);
   };
 
   return (
@@ -188,14 +205,14 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
               styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
               onChange={handleChangeList}
               options={options}
-              name={name}
+              name={propName}
               defaultValue={{
-                label: temp ? temp[name] : "",
-                value: temp ? temp[name] : "",
+                label: subData ? subData[propName] : '',
+                value: subData ? subData[propName] : '',
               }}
             />
           </div>
-          <div className="col-md-1" style={{ marginTop: "8px" }}>
+          <div className="col-md-2" style={{ marginTop: '8px' }}>
             <span>
               <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
                 <i className="fas fa-plus-square" />
@@ -203,10 +220,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
             </span>
           </div>
         </div>
-        {form?.[schemaId]?.[keyValue] && list && (
-          <table style={{ marginTop: "20px" }} className="table table-bordered">
+        {contributorList && list && (
+          <table style={{ marginTop: '20px' }} className="table table-bordered">
             <thead>
-              {form?.[schemaId]?.[keyValue].length > 0 && header && form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
+              {contributorList.length > 0 && header && contributorList.some((el) => el.action !== "delete") && (
                 <tr>
                   <th scope="col">{header}</th>
                   <th scope="col"></th>
@@ -231,7 +248,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
                     </div>
                     <div className="col-md-1">
                       <span>
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
                           <i className="fa fa-times" />
                         </a>
                       </span>
@@ -244,10 +261,14 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
         )}
       </div>
       <>
-        {registerFile && (
+        {template && (
           <Modal show={show} onHide={handleClose}>
             <Modal.Body>
-              <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
+              <BuilderForm
+                shemaObject={template}
+                level={level + 1}
+                fragmentId={fragmentId}
+              ></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>

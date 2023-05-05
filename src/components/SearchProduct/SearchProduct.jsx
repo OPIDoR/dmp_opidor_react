@@ -151,7 +151,7 @@ when the component mounts. */
             </div>
           </div>
 
-          {/* <CustumButton title="Ajouter" position="start" type={"primary"} handleClick={handleSave}></CustumButton> */}
+          {/* <CustomButton title="Ajouter" position="start" type={"primary"} handleClick={handleSave}></CustomButton> */}
         </div>
       </Modal.Body>
       <Modal.Footer>

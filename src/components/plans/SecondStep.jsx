@@ -4,7 +4,7 @@ import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrgani
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 import CircleTitle from "../Styled/CircleTitle";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
@@ -284,7 +284,7 @@ function SecondStep() {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
         </button> */}
-        <CustumButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustumButton>
+        <CustomButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustomButton>
       </div>
     </div>
   );

@@ -1,31 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "../context/Global";
-import { Editor } from "@tinymce/tinymce-react";
-import styles from "../assets/css/form.module.css";
+import React, { useContext, useEffect, useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { GlobalContext } from '../context/Global.jsx';
+import styles from '../assets/css/form.module.css';
 
 /* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
 `tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
-function TinyArea({ label, name, changeValue, tooltip, level, schemaId }) {
-  const { form, temp } = useContext(GlobalContext);
-  const [text, settext] = useState("<p></p>");
+function TinyArea({
+  label, propName, changeValue, tooltip, level, fragmentId
+}) {
+  const { formData, subData } = useContext(GlobalContext);
+  const [text, setText] = useState('<p></p>');
 
   /* This is a useEffect hook that runs when the component mounts and whenever the `level` or `name` props change. It sets the initial value of the `text`
-state based on the `temp` or `form` context values for the given `name` and `schemaId`, or sets it to `<p></p>` if no value is found. If the `level`
+state based on the `temp` or `form` context values for the given `name` and `fragmentId`, or sets it to `<p></p>` if no value is found. If the `level`
 prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses the `temp` value or `<p></p>`. Finally, it sets the `text` state to the
 `updatedText` value. */
   useEffect(() => {
-    const defaultValue = temp ? temp[name] : form?.[schemaId]?.[name] ? form?.[schemaId]?.[name] : "<p></p>";
-    const updatedText = level === 1 ? defaultValue : temp ? temp[name] : "<p></p>";
-    settext(updatedText);
-  }, [level, name]);
+    if (level === 1) {
+      setText(formData?.[fragmentId]?.[propName] || "<p></p>")
+    } else {
+      setText(subData ? subData[propName] : "<p></p>")
+    }
+  }, [fragmentId, propName]);
 
-  /**
-   * The function handleChange updates the value of a text input and sets the state of a component.
-   */
-  const handleChange = (e) => {
-    changeValue({ target: { name: name, value: e } });
-    settext(e);
+  const handleChange = (newText) => {
+    changeValue({ target: { name: propName, value: newText } });
+    setText(newText);
   };
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -42,26 +43,19 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
 
         <div style={{ marginTop: "10px" }}>
           <Editor
-            apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
             onEditorChange={(newText) => handleChange(newText)}
             // onInit={(evt, editor) => (editorRef.current = editor)}
             value={text}
-            name={name}
+            name={propName}
             init={{
               branding: false,
               height: 200,
               menubar: false,
-              plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste code help wordcount",
-              ],
-              toolbar:
-                "undo redo | formatselect | " +
-                "bold italic backcolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
+              plugins: "table autoresize link advlist lists",
+              toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
               content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+              skin_url: '/tinymce/skins/oxide',
+              content_css: ['/tinymce/tinymce.css'],
             }}
           />
         </div>
