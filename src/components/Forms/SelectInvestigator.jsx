@@ -1,64 +1,84 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import BuilderForm from "../Builder/BuilderForm";
-import { parsePatern, updateFormState } from "../../utils/GeneratorUtils";
-import { GlobalContext } from "../context/Global";
-import toast from "react-hot-toast";
-import { getContributor, loadForm } from "../../services/DmpServiceApi";
-import styles from "../assets/css/form.module.css";
+import React, { useContext, useEffect, useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import toast from 'react-hot-toast';
+import BuilderForm from '../Builder/BuilderForm.jsx';
+import { parsePattern, updateFormState } from '../../utils/GeneratorUtils';
+import { GlobalContext } from '../context/Global.jsx';
+import { getContributors, getSchema } from '../../services/DmpServiceApi';
+import styles from '../assets/css/form.module.css';
 
-/* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
-the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
-select field. The selected option is displayed below the select field. */
-function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
+function SelectInvestigator({
+  label,
+  propName,
+  changeValue,
+  templateId,
+  level,
+  tooltip,
+  fragmentId,
+}) {
   const [show, setShow] = useState(false);
-  const [options, setoptions] = useState(null);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
-  const [index, setindex] = useState(null);
-  const [registerFile, setregisterFile] = useState(null);
-  const [role, setrole] = useState(null);
-  const [selectedValue, setselectedValue] = useState(null);
+  const [options, setOptions] = useState(null);
+  const {
+    formData, setFormData, subData, setSubData, locale, dmpId,
+  } = useContext(GlobalContext);
+  const [index, setIndex] = useState(null);
+  const [template, setTemplate] = useState({});
+  const [role, setRole] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [investigator, setInvestigator] = useState({})
+
+  useEffect(() => {
+    setInvestigator(formData?.[fragmentId]?.[propName])
+  });
+
+  useEffect(() => {
+    const pattern = template.to_string;
+    if (pattern && pattern.length > 0) {
+      setSelectedValue(parsePattern(investigator.person, pattern));
+    }
+  }, [investigator, template]);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getContributor("token").then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.firstName + " " + option.lastName,
-        label: option.firstName + " " + option.lastName,
+    getContributors(dmpId, templateId).then((res) => {
+      const builtOptions = res.data.results.map((option) => ({
+        value: option.id,
+        label: option.text,
         object: option,
       }));
-      setoptions(options);
+      setOptions(builtOptions);
     });
   }, []);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    loadForm(registry, "token").then((resRegistry) => {
-      setrole(resRegistry.properties.role["const@fr_FR"]);
-      setregisterFile(resRegistry.properties.person.template_name);
-      const template = resRegistry.properties.person["template_name"];
-      setrole(resRegistry.properties.role["const@fr_FR"]);
-      loadForm(template, "token").then((res) => {
-        setregisterFile(res);
-        if (!form?.[schemaId]?.[keyValue]) {
+    getSchema(templateId).then((res) => {
+      const resTemplate = res.data;
+      setRole(resTemplate.properties.role[`const@${locale}`]);
+      setTemplate(resTemplate);
+      const subTemplateId = resTemplate.properties.person.schema_id;
+      setRole(resTemplate.properties.role[`const@${locale}`]);
+      getSchema(subTemplateId).then((resSubTemplate) => {
+        setTemplate(resSubTemplate.data);
+        if (!investigator) {
           return;
         }
-        const patern = res.to_string;
-        if (!patern.length) {
+        const pattern = resSubTemplate.data.to_string;
+        if (!pattern.length) {
           return;
         }
-        setselectedValue(parsePatern(form?.[schemaId]?.[keyValue].person, patern));
+        setSelectedValue(parsePattern(investigator.person, pattern));
       });
     });
-  }, [registry]);
+  }, [templateId]);
 
   /**
    * It closes the modal and resets the state of the modal.
    */
   const handleClose = () => {
     setShow(false);
-    setTemp(null);
-    setindex(null);
+    setSubData({});
+    setIndex(null);
   };
 
   /**
@@ -70,57 +90,61 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     setShow(true);
   };
 
-  /**
-   * This function handles a change in a select input and updates the state accordingly.
-   */
   const handleChangeList = (e) => {
-    const patern = registerFile.to_string;
+    const pattern = template.to_string;
     const { object, value } = options[e.target.value];
-    setselectedValue(options[e.target.value].value);
-    if (patern.length > 0) {
-      setForm(updateFormState(form, schemaId, keyValue, { person: object, role: role }));
+    setSelectedValue(options[e.target.value].value);
+    if (pattern.length > 0) {
+      setFormData(updateFormState(formData, fragmentId, propName, { person: object, role: role }));
     } else {
-      changeValue({ target: { name, value } });
+      changeValue({ target: { propName, value } });
     }
   };
 
   /**
-   * If the index is not null, then delete the item at the index, add the temp item to the end of the array,
+   * If the index is not null, then delete the item at the index,
+   * add the subData item to the end of the array,
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
     if (index !== null) {
-      setForm(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
-      setselectedValue(parsePatern(temp, registerFile.to_string));
+      setFormData(updateFormState(formData, fragmentId, propName, { person: subData, role: role }));
+      setSelectedValue(parsePattern(subData, template.to_string));
     } else {
+      // save new
       handleSave();
     }
-    toast.success("Enregistrement a été effectué avec succès !");
-    setTemp(null);
+    toast.success('Enregistrement a été effectué avec succès !');
+    setSubData({});
     handleClose();
   };
 
   /**
-   * When the user clicks the save button, the function will take the temporary person object and add it to the form object, then it will parse the
-   * temporary person object and add it to the list array, then it will close the modal and set the temporary person object to null.
+   * When the user clicks the save button, the function will take the
+   * temporary person object and add it to the form object, then it will parse the
+   * temporary person object and add it to the list array, then it will close
+   * the modal and set the temporary person object to null.
    */
   const handleSave = () => {
-    setForm(updateFormState(form, schemaId, keyValue, { person: temp, role: role }));
+    setFormData(updateFormState(
+      formData, fragmentId, propName,
+      { ...investigator, person: { ...subData, action: 'create' }, role: role, action: 'update' }
+    ));
     handleClose();
-    setTemp(null);
-    setselectedValue(parsePatern(temp, registerFile.to_string));
+    setSubData({});
+    setSelectedValue(parsePattern(subData, template.to_string));
   };
-
   /**
-   * This function handles the edit functionality for a specific item in a form.
+   * It sets the state of the subData variable to the value of the form[propName][idx] variable.
+   * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
     e.stopPropagation();
     e.preventDefault();
-    setTemp(form?.[schemaId]?.[keyValue]["person"]);
+    setSubData(investigator.person);
     setShow(true);
-    setindex(idx);
+    setIndex(idx);
   };
 
   return (
@@ -164,17 +188,20 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
             <span className={styles.input_label}>Valeur sélectionnée :</span>
             <span className={styles.input_text}>{selectedValue}</span>
             <a href="#" onClick={(e) => handleEdit(e, 0)}>
-              {" "}
-              (modifié)
+              <i className="fas fa-edit" />
             </a>
           </div>
         )}
       </div>
       <>
-        {registerFile && (
+        {template && (
           <Modal show={show} onHide={handleClose}>
             <Modal.Body>
-              <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
+              <BuilderForm
+                shemaObject={template}
+                level={level + 1}
+                fragmentId={fragmentId}
+              ></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>

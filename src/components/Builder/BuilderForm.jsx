@@ -1,9 +1,13 @@
-import { useContext } from "react";
-import { GlobalContext } from "../context/Global";
-import HandleGenerateForms from "./HandleGenerateForms";
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
-function BuilderForm({ shemaObject, level, schemaId }) {
-  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
+import { GlobalContext } from '../context/Global.jsx';
+import HandleGenerateForms from './HandleGenerateForms.jsx';
+
+function BuilderForm({ shemaObject, level, fragmentId }) {
+  const {
+    formData, setFormData, subData, setSubData,
+  } = useContext(GlobalContext);
 
   /**
    * Object destructuring
@@ -12,17 +16,16 @@ function BuilderForm({ shemaObject, level, schemaId }) {
    * event target.
    * @param event - the event that is triggered when the input is changed
    */
-  // const changeValue = (event) => {
-  //   const { name, value } = event.target;
-  //   level === 1 ? setForm({ ...form, [name]: value }) : setTemp({ ...temp, [name]: value });
-  // };
-
   const changeValue = (event) => {
     const { name, value } = event.target;
-    const updatedForm = { ...form };
-    updatedForm[schemaId] = updatedForm[schemaId] || {};
-    updatedForm[schemaId][name] = value;
-    level === 1 ? setForm(updatedForm) : setTemp({ ...temp, [name]: value });
+    if (level === 1) {
+      const updatedFormData = { ...formData };
+      updatedFormData[fragmentId] = updatedFormData[fragmentId] || {};
+      updatedFormData[fragmentId][name] = value;
+      setFormData(updatedFormData);
+    } else {
+      setSubData({ ...subData, [name]: value });
+    }
   };
 
   /**
@@ -30,7 +33,20 @@ function BuilderForm({ shemaObject, level, schemaId }) {
    * @returns An array of React components.
    */
 
-  return <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} schemaId={schemaId}></HandleGenerateForms>;
+  return (
+    <HandleGenerateForms
+      shemaObject={shemaObject}
+      level={level}
+      changeValue={changeValue}
+      fragmentId={fragmentId}
+    ></HandleGenerateForms>
+  );
 }
+
+BuilderForm.propTypes = {
+  fragmentId: PropTypes.number,
+  shemaObject: PropTypes.object,
+  level: PropTypes.number,
+};
 
 export default BuilderForm;
