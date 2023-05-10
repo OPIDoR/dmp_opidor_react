@@ -62,12 +62,14 @@ Finally, it sets the loading state to false. */
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [researchOutputId, productData]);
+  }, [researchOutputId, productData, isCollapsed]);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
    */
   const handleCollapseByIndex = (idx) => {
+    console.log(isCollapsed);
+    console.log(researchOutputId);
     const updatedState = isCollapsed[researchOutputId].map((plan, planIndex) => {
       return Object.fromEntries(Object.entries(plan).map(([qIndex, value]) => [qIndex, planIndex === idx ? false : true]));
     });
