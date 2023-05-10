@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getCheckPatern } from "../../utils/GeneratorUtils";
+import { getCheckPatern, updateFormState } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 
@@ -15,8 +15,7 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
   /* It's setting the state of the form to the value of the isConst variable. */
   useEffect(() => {
     if (isConst !== false) {
-      //TODO constant not updated
-      setForm({ [name]: isConst });
+      setForm(updateFormState(form, schemaId, name, isConst));
     }
   }, []);
 

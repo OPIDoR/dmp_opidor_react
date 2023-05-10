@@ -204,7 +204,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         {el.user.surname} {el.user.firstname}
                       </strong>
                       <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
-                        le {moment(el.created_at).format("DD/MM/YYYY")} à {moment(el.created_at).format("hh:mm:ss")}
+                        {t("le")} {moment(el.created_at).format("DD/MM/YYYY")} {t("à")} {moment(el.created_at).format("hh:mm:ss")}
                       </div>
                     </div>
                     <div style={{ marginRight: "-20px" }}>
@@ -226,7 +226,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
 
             <div style={{ margin: "10px" }}>
               <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>
-                Ajoutez un commentaire à partager avec les collaborateurs
+                {t("Ajoutez un commentaire à partager avec les collaborateurs")}
               </p>
               <EditorComment initialValue={text} updateParentText={updateParentText} />
             </div>

@@ -1,25 +1,61 @@
 import axios from "axios";
-import { api_url } from "../config";
 
-// export async function getOrganizme(token) {
-//   try {
-//     const response = await axios.get("https://mocki.io/v1/fade6679-a726-4d00-b29d-2cb2fd67822e", {
-//       withCredentials: true,
-//       xsrfHeaderName: "X-XSRF-TOKEN",
-//       headers: {
-//         Bearer: `${token}`,
-//       },
-//     });
-//     return response
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+const dataTypeSearchProduct = [
+  {
+    en_GB: "Dataset",
+    fr_FR: "Jeu de données",
+  },
+  {
+    en_GB: "Software",
+    fr_FR: "Logiciel",
+  },
+  {
+    en_GB: "Model",
+    fr_FR: "Modèle",
+  },
+  {
+    en_GB: "Physical object",
+    fr_FR: "Objet physique",
+  },
+  {
+    en_GB: "Workflow",
+    fr_FR: "Workflow",
+  },
+  {
+    en_GB: "Audiovisual",
+    fr_FR: "Audiovisuel",
+  },
+  {
+    en_GB: "Collection",
+    fr_FR: "Collection",
+  },
+  {
+    en_GB: "Image",
+    fr_FR: "Image",
+  },
+  {
+    en_GB: "Interactive resource",
+    fr_FR: "Resource interactive",
+  },
+  {
+    en_GB: "Service",
+    fr_FR: "Service",
+  },
+  {
+    en_GB: "Sound",
+    fr_FR: "Son",
+  },
+  {
+    en_GB: "Text",
+    fr_FR: "Texte",
+  },
+];
 
 export async function getTypeSearchProduct(token) {
   try {
-    const response = await axios.get(`${api_url}9a58cd0e-13fd-4eae-91f2-b238e722dd18`);
-    return response;
+    //const response = await axios.get(`${api_url}9a58cd0e-13fd-4eae-91f2-b238e722dd18`);
+    //return response;
+    return { data: dataTypeSearchProduct };
   } catch (error) {
     console.error(error);
   }

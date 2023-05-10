@@ -1,5 +1,29 @@
 import axios from "axios";
-import { api_url } from "../config";
+
+const dataContributor = [
+  {
+    nameType: "Personne",
+    lastName: "FAURE",
+    firstName: "Benjamin",
+    mbox: "benji.f63@wanadoo.fr",
+  },
+  {
+    nameType: "Personne",
+    lastName: "LAIREZ",
+    firstName: "Pierre",
+    affiliationName: "Inria Saclay-Ile-de-France",
+    affiliationId: "200818248E",
+    affiliationIdType: "RNSR",
+  },
+  {
+    nameType: "Personne",
+    lastName: "CHENEVIER",
+    firstName: "Pascale",
+    affiliationName: "Systèmes Moléculaires et Matériaux pour l'Energie et la Santé",
+    affiliationId: null,
+    affiliationIdType: "RNSR",
+  },
+];
 // export async function getRegistry(t, token) {
 //   try {
 //     const response = await axios.get("https://jsonplaceholder.typicode.com/todos/1", {
@@ -72,8 +96,9 @@ export async function getRegistry(t, token) {
 
 export async function getContributor(token) {
   try {
-    const response = await axios.get(`${api_url}96771ddd-1144-4dd5-8462-50e31461c235`);
-    return response;
+    // const response = await axios.get(`${api_url}96771ddd-1144-4dd5-8462-50e31461c235`);
+    // return response;
+    return { data: dataContributor };
   } catch (error) {
     console.error(error);
   }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getRecommandation } from "../../services/DmpRecommandationApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, Description, MainNav, Close, ButtonComment, Title } from "./styles/RunsModalStyles";
 
 function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -65,17 +67,21 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
           <Title>Runs</Title>
           <NavBodyText>
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">Calculer le coût de stockage</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Calculer le coût de stockage")}</ButtonComment>
             </div>
             <Description>
-              Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL
+              {t(
+                "Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL"
+              )}
             </Description>
 
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">Notifier MESO@LR</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Notifier MESO@LR")}</ButtonComment>
             </div>
             <Description>
-              Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL
+              {t(
+                "Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL"
+              )}
             </Description>
           </NavBodyText>
         </NavBody>

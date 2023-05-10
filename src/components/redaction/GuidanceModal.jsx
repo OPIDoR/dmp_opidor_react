@@ -5,7 +5,7 @@ import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
 
-function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecommandation }) {
+function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecommandation, questionId }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -52,14 +52,14 @@ function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecom
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
-    getRecommandation("", "")
+    getRecommandation(questionId, "")
       .then((res) => {
         console.log(res.data);
         setData(res.data);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [questionId]);
 
   /* `getContent` is a function that returns JSX code. It creates a scrollable container (`<ScrollNav>`) that contains a body (`<NavBody>`) and text
 (`<NavBodyText>`). The text content is determined by the `data` state variable and the `indexTab` state variable. If

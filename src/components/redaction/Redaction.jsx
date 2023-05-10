@@ -348,6 +348,7 @@ Finally, it sets the loading state to false. */
                                           show={showModalRecommandation}
                                           setshowModalRecommandation={setshowModalRecommandation}
                                           setFillColorIconRecommandation={setFillColorIconRecommandation}
+                                          questionId={questionId}
                                         ></GuidanceModal>
                                       )}
 
