@@ -38,11 +38,11 @@ function SelectContributor({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getContributors(dmpId, templateId).then((res) => {
+    getContributors(dmpId).then((res) => {
       const builtOptions = res.data.results.map((option) => ({
         value: option.id,
         label: option.text,
-        object: option,
+        object: option.object,
       }));
       setOptions(builtOptions);
     });
@@ -99,7 +99,7 @@ function SelectContributor({
       setSelectObject([...selectObject, object]);
       const parsedPatern = parsePattern(object, template.to_string);
       setList([...list, parsedPatern]);
-      const newObject = { person: object, role: role };
+      const newObject = { person: {...object, action: "update"}, role: role, action: "create" };
       const mergedList = contributorList ? [...contributorList, newObject] : [newObject];
       setFormData(updateFormState(formData, fragmentId, propName, mergedList));
     } else {

@@ -51,10 +51,10 @@ export async function getRegistry(id) {
   return response;
 }
 
-export async function getContributors(dmpId, templateId) {
+export async function getContributors(dmpId) {
   let response;
   try {
-    response = await axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&schema_id=${templateId}`, createHeaders());
+    response = await axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`, createHeaders());
   } catch (error) {
     console.error(error);
     return error;
