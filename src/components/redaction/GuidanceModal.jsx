@@ -54,7 +54,6 @@ function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecom
     setLoading(true);
     getRecommandation(questionId, "")
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
       })
       .catch((error) => setError(error))
@@ -131,7 +130,6 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
             ))}
           </nav>
         )}
-
         <Close
           className="close"
           onClick={(e) => {
@@ -144,7 +142,6 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
           x
         </Close>
       </MainNav>
-
       <div>{data && getContent()}</div>
     </div>
   );

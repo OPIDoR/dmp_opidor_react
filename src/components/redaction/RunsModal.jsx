@@ -24,7 +24,6 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
     width: "550px",
     height: "380px",
     color: "var(--white)",
-    // overflow: "auto", // Add thi
   };
 
   /* A hook that is called when the component is mounted. */

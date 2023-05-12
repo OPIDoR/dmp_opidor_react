@@ -23,11 +23,6 @@ function Banner() {
               <img src={inraeImage} alt="" />
               <div className={styles.banner_details}>
                 <div>
-                  {/* <span>
-                    <a className="" href="#">
-                      <i className="fas fa-envelope" />
-                    </a>
-                  </span> */}
                   <BsEnvelopeFill size={20} />
                   <span className={styles.banner_span}>{t("Contact")}</span>
                 </div>

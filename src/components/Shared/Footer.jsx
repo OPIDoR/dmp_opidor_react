@@ -2,7 +2,6 @@ import React from "react";
 import styles from "../assets/css/footer.module.css";
 import { BsTwitter, BsWechat } from "react-icons/bs";
 import { BsGithub } from "react-icons/bs";
-
 import cnrs from "../assets/images/cnrs.png";
 import roadmap from "../assets/images/roadmap.png";
 import republique from "../assets/images/republique.png";
@@ -48,7 +47,6 @@ function Footer() {
               <li className={styles.item_footer}>{t("Politique de cookies")}</li>
               <li className={styles.item_footer}>
                 Github
-                {/* <img className={styles.icon_footer} src="../assets/images/github.png" alt="" /> */}
                 <BsGithub size={30} className={styles.icon_footer} />
               </li>
             </ul>
@@ -67,14 +65,8 @@ function Footer() {
               </li>
               <li className={styles.item_footer}></li>
               <li className={styles.item_footer_last}>
-                {/* <img className={styles.icon_footer} src="../assets/images/twitter.png" alt="" /> */}
-                {/* <a href="https://twitter.com/OPIDoR_INIST">
-                  <i className="fab fa-twitter"></i>
-                </a> */}
-
                 <BsTwitter size={30} className={styles.icon_footer} />
                 <BsWechat size={30} className={styles.icon_footer} />
-                {/* <img className={styles.icon_footer} src="../assets/images/messages.png" alt="" /> */}
                 <img src={cnrs} alt="" className={styles.logo_cnrs} />
                 <img src={roadmap} alt="" className={styles.logo_road} />
               </li>

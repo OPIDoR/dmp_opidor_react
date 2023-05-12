@@ -36,7 +36,13 @@ function RedactionLayout() {
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
 
+  /**
+   * The function handleClose sets the state of setShow to false.
+   */
   const handleClose = () => setShow(false);
+  /**
+   * The function sets the state of "show" to true.
+   */
   const handleShow = () => setShow(true);
 
   /**
@@ -88,6 +94,9 @@ function RedactionLayout() {
       .finally(() => setLoading(false));
   }, [productData]);
 
+  /**
+   * This function toggles the state of an element in an array based on its index.
+   */
   const handleCollapseByIndex = (index) => {
     setIsCollapsed((prevIsCollapsed) => {
       const newIsCollapsed = [...prevIsCollapsed];

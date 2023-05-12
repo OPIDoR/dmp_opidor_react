@@ -1,6 +1,5 @@
-import styled from "styled-components";
-
 import React from "react";
+import styled from "styled-components";
 
 function CustumButton({ handleClick, title, type, position }) {
   const Button =

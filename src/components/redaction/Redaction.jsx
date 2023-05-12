@@ -68,8 +68,6 @@ Finally, it sets the loading state to false. */
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
    */
   const handleCollapseByIndex = (idx) => {
-    console.log(isCollapsed);
-    console.log(researchOutputId);
     const updatedState = isCollapsed[researchOutputId].map((plan, planIndex) => {
       return Object.fromEntries(Object.entries(plan).map(([qIndex, value]) => [qIndex, planIndex === idx ? false : true]));
     });
@@ -147,6 +145,9 @@ Finally, it sets the loading state to false. */
     }
   };
 
+  /**
+   * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
+   */
   const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();

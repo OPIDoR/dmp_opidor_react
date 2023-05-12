@@ -19,6 +19,8 @@ function InputText({ label, type, placeholder, name, changeValue, tooltip, hidde
     }
   }, []);
 
+  /* This `useEffect` hook is watching for changes in the `form[name]` property and updating the `text` state with the value of `form[schemaId][name]`. It
+is used to keep the input field in sync with the form state. */
   useEffect(() => {
     settext(form?.[schemaId]?.[name]);
   }, [form[name]]);

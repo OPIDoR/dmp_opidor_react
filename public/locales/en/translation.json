@@ -74,5 +74,12 @@
   "à": "at",
   "Calculer le coût de stockage": "Calculate storage cost",
   "Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL": "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address",
-  "Notifier MESO@LR": "Notify MESO@LR"
+  "Notifier MESO@LR": "Notify MESO@LR",
+  "Choisir plan": "Choose plan",
+  "Choisir produit": "Choose product",
+  "Saisir UUID": "Enter UUID",
+  "Veuillez saisir l'UUID d'un produit de recherche": "Please fill a research output UUID",
+  "Veuillez saisir l'UUID d'un plan": "Please choose one of the plan you have access to",
+  "Veuillez saisir l'un des produits de recherche": "Please choose one of the research outputs",
+  "OU": "OR"
 }

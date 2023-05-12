@@ -47,24 +47,21 @@ when the component mounts. */
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const obj = {
-      plan_id: planId,
-      abbreviation: abbreviation,
-      title: title,
-      type: type,
-      hasPersonalData: isPersonnel,
-    };
-
+    // const obj = {
+    //   plan_id: planId,
+    //   abbreviation: abbreviation,
+    //   title: title,
+    //   type: type,
+    //   hasPersonalData: isPersonnel,
+    // };
     const objShow = {
       id: new Date().getTime(),
       abbreviation: abbreviation,
-
       metadata: {
         hasPersonalData: isPersonnel,
         abbreviation: abbreviation,
       },
     };
-
     postSearchProduct(objShow).then((res) => {
       setProductData(res.data.plan.research_outputs);
       setAbbreviation("");
@@ -86,7 +83,7 @@ when the component mounts. */
           placeholder={t("ajouter abbreviation")}
           type="text"
           onChange={(e) => setAbbreviation(e.target.value)}
-          maxlength="20"
+          maxLength="20"
         />
         <small className="form-text text-muted">{t("Limité à 20 caractères")}</small>
       </div>
@@ -117,7 +114,6 @@ when the component mounts. */
           />
         )}
       </div>
-
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label>{t("Votre produit de rechercher contient-il des données personnelles ?")}</label>
@@ -144,7 +140,6 @@ when the component mounts. */
           </div>
         </div>
       </div>
-
       <EndButton>
         <Button variant="secondary" onClick={handleClose} style={{ marginRight: "8px" }}>
           {t("Fermer")}
