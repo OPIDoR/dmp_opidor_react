@@ -8,8 +8,10 @@ import EditorComment from "./EditorComment";
 import Swal from "sweetalert2";
 import CustomError from "../Shared/CustomError";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard } from "./styles/CommentModalStyles";
+import { useTranslation } from "react-i18next";
 
 function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
+  const { t } = useTranslation();
   const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
   const [data, setData] = useState(null);
@@ -60,20 +62,20 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: "Ëtes-vous sûr ?",
-      text: "Voulez-vous vraiment supprimer cet élément ?",
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Annuler",
-      confirmButtonText: "Oui, supprimer !",
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = deleteByIndex(data, id);
         setData(newList);
         //deleteCommentById()
-        Swal.fire("Supprimé!", "Opération effectuée avec succès!.", "success");
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -202,7 +204,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         {el.user.surname} {el.user.firstname}
                       </strong>
                       <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
-                        le {moment(el.created_at).format("DD/MM/YYYY")} à {moment(el.created_at).format("hh:mm:ss")}
+                        {t("on")} {moment(el.created_at).format("DD/MM/YYYY")} {t("at")} {moment(el.created_at).format("hh:mm:ss")}
                       </div>
                     </div>
                     <div style={{ marginRight: "-20px" }}>
@@ -223,14 +225,12 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             </ScrollNav>
 
             <div style={{ margin: "10px" }}>
-              <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>
-                Ajoutez un commentaire à partager avec les collaborateurs
-              </p>
+              <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>{t("Add a comment to share with collaborators")}</p>
               <EditorComment initialValue={text} updateParentText={updateParentText} />
             </div>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
-                {isUpdate ? "Modifier" : "Enregistrer"}
+                {isUpdate ? t("Update") : t("Enregistrer")}
               </ButtonComment>
             </div>
           </NavBody>

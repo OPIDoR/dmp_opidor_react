@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import { useTranslation } from "react-i18next";
+
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
@@ -19,6 +21,7 @@ function SelectContributor({
   header,
   fragmentId,
 }) {
+  const { t } = useTranslation();
   const [list, setList] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -153,14 +156,14 @@ function SelectContributor({
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: 'Ëtes-vous sûr ?',
-      text: 'Voulez-vous vraiment supprimer cet élément ?',
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      cancelButtonText: 'Annuler',
-      confirmButtonText: 'Oui, supprimer !',
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = [...list];
@@ -168,6 +171,7 @@ function SelectContributor({
         const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
         filterDeleted[idx]['action'] = 'delete';
         setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -197,7 +201,7 @@ function SelectContributor({
             </span>
           )}
         </div>
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
@@ -272,10 +276,10 @@ function SelectContributor({
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Fermer
+                {t("Close")}
               </Button>
               <Button variant="primary" onClick={handleAddToList}>
-                Enregistrer
+                {t("Save")}
               </Button>
             </Modal.Footer>
           </Modal>

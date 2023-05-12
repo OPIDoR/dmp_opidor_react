@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getRecommandation } from "../../services/DmpRecommandationApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, Description, MainNav, Close, ButtonComment, Title } from "./styles/RunsModalStyles";
 
 function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +24,6 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
     width: "550px",
     height: "380px",
     color: "var(--white)",
-    // overflow: "auto", // Add thi
   };
 
   /* A hook that is called when the component is mounted. */
@@ -65,17 +66,21 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
           <Title>Runs</Title>
           <NavBodyText>
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">Calculer le coût de stockage</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>
             </div>
             <Description>
-              Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL
+              {t(
+                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
+              )}
             </Description>
 
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">Notifier MESO@LR</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Notify MESO@LR")}</ButtonComment>
             </div>
             <Description>
-              Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL
+              {t(
+                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
+              )}
             </Description>
           </NavBodyText>
         </NavBody>

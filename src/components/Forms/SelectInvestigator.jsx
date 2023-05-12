@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import toast from 'react-hot-toast';
+import { useTranslation } from "react-i18next";
+
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { parsePattern, updateFormState } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
@@ -16,6 +18,7 @@ function SelectInvestigator({
   tooltip,
   fragmentId,
 }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
   const {
@@ -163,7 +166,7 @@ function SelectInvestigator({
           )}
         </div>
 
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
@@ -208,10 +211,10 @@ function SelectInvestigator({
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                Fermer
+                {t("Close")}
               </Button>
               <Button variant="primary" onClick={handleAddToList}>
-                Enregistrer
+                {t("Save")}
               </Button>
             </Modal.Footer>
           </Modal>

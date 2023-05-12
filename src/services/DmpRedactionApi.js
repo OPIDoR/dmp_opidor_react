@@ -1,5 +1,4 @@
 import axios from "axios";
-import { api_url } from "../config";
 
 const dataObject = {
   sections: [
@@ -243,21 +242,13 @@ const dataObject = {
     ],
   },
 };
-// export async function getOrganizme(token) {
-//   try {
-//     const response = await axios.get("https://mocki.io/v1/fade6679-a726-4d00-b29d-2cb2fd67822e", {
-//       withCredentials: true,
-//       xsrfHeaderName: "X-XSRF-TOKEN",
-//       headers: {
-//         Bearer: `${token}`,
-//       },
-//     });
-//     return response
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 
+/**
+ * The function retrieves data from session storage or sets it if it doesn't exist.
+ * @param token - The `token` parameter is not used in the `getQuestion` function. It is not necessary for the function to work properly.
+ * @returns An object with a property "data" that contains either the parsed JSON data from sessionStorage if it exists, or the original dataObject if it
+ * does not.
+ */
 export async function getQuestion(token) {
   try {
     //const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);

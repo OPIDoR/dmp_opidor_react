@@ -4,15 +4,17 @@ import Info from "../Styled/Info";
 import bannerImage from "../assets/images/banner.png";
 import inraeImage from "../assets/images/inrae.png";
 import { BsEnvelopeFill, BsGlobe } from "react-icons/bs";
+import { useTranslation } from "react-i18next";
 
 function Banner() {
+  const { t } = useTranslation();
   return (
     <section>
       <div className={styles.banner}>
         <img className={styles.banner_logo} src={bannerImage} alt="image" />
         <div className={styles.banner_content}>
           <Info
-            text="Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h."
+            text={t("Attention Update scheduled for November 2, 2022, your favorite tool will be unavailable until 10 a.m.")}
             icon="fas fa-exclamation-triangle"
             type="warning"
           ></Info>
@@ -21,30 +23,32 @@ function Banner() {
               <img src={inraeImage} alt="" />
               <div className={styles.banner_details}>
                 <div>
-                  {/* <span>
-                    <a className="" href="#">
-                      <i className="fas fa-envelope" />
-                    </a>
-                  </span> */}
                   <BsEnvelopeFill size={20} />
-                  <span className={styles.banner_span}>Contact</span>
+                  <span className={styles.banner_span}>{t("Contact")}</span>
                 </div>
 
                 <div>
                   <BsGlobe size={20} />
-                  <span className={styles.banner_span}>Gestion et partage des données scientifiques</span>
+                  <span className={styles.banner_span}>{t("Management and sharing of scientific data")}</span>
                 </div>
                 <div>
                   <BsGlobe size={20} />
-                  <span className={styles.banner_span}>Portail Data INRAE</span>
+                  <span className={styles.banner_span}>{t("INRAE Data Portal")}</span>
                 </div>
               </div>
             </div>
             <div className={styles.banner_details}>
-              Pour être alerté.e des actualités sur DMP OPIDoR et les modèles de plans, rejoignez le groupe de messagerie DMPOPIDoR@inrae.fr
-              11.05.2022 - <strong>Mise à jour des modèles de plan de gestion de données INRAE</strong> pour les projets et pour ls structures :
-              chapitres «<strong>Sensibilité des données</strong>» (auparavant : «Confidentialité») et «
-              <strong>Stockage et sécurité des données</strong>», ainsi que des recommandations associées.
+              {t("To be alerted to news on DMP OPIDoR and plan models, join the messaging group")} DMPOPIDoR@inrae.fr 11.05.2022 -{" "}
+              <strong>{t("Update of INRAE data management plan templates")}</strong> {t("for projects and for structures: chapters")}{" "}
+              <strong>«{t("Data sensitivity")}</strong>» ({t("formerly")}
+              {" : "}«{t("Confidentiality")}»)
+              <strong>
+                {" "}
+                {t("and")}
+                {" «"}
+                {t("Data storage and security")}
+              </strong>
+              », {t("as well as associated recommendations")}.
             </div>
           </div>
         </div>

@@ -15,7 +15,7 @@ import React, {
     fragmentId, dmpId, locale = 'en_GB',
   }) {
     const {
-      formData, setFormData, setlocale, setdmpId,
+      formData, setFormData, setLocale, setdmpId,
     } = useContext(GlobalContext);
     const [loading, setLoading] = useState(false);
     const [error] = useState(null);
@@ -23,7 +23,7 @@ import React, {
     const [standardTemplate, setStandardTemplate] = useState(null);
     useEffect(() => {
       setLoading(true);
-      setlocale(locale);
+      setLocale(locale);
       setdmpId(dmpId);
       getFragment(fragmentId).then((res) => {
         setStandardTemplate(res.data.schema);

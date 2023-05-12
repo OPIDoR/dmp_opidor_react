@@ -6,6 +6,16 @@
   "type": "object",
   "class": "DataStorageStandard",
   "properties": {
+    "backupFrequency": {
+      "type": "string",
+      "description": "Fréquence de sauvegarde",
+      "label@fr_FR": "Fréquence des sauvegardes",
+      "label@en_GB": "Backup frequency",
+      "const@fr_FR": "Chaque heure",
+      "const@en_GB": "Hourly",
+      "form_label@fr_FR": "Fréquence des sauvegardes",
+      "form_label@en_GB": "Backup frequency"
+    },
     "estimatedVolume": {
       "type": "number",
       "description": "Volume estimé des données",
