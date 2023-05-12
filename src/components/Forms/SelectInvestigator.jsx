@@ -40,11 +40,11 @@ function SelectInvestigator({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getContributors(dmpId, templateId).then((res) => {
+    getContributors(dmpId).then((res) => {
       const builtOptions = res.data.results.map((option) => ({
         value: option.id,
         label: option.text,
-        object: option,
+        object: option.object,
       }));
       setOptions(builtOptions);
     });
@@ -93,9 +93,12 @@ function SelectInvestigator({
   const handleChangeList = (e) => {
     const pattern = template.to_string;
     const { object, value } = options[e.target.value];
-    setSelectedValue(options[e.target.value].value);
+    setSelectedValue(parsePattern(object, pattern));
     if (pattern.length > 0) {
-      setFormData(updateFormState(formData, fragmentId, propName, { person: object, role: role }));
+      setFormData(updateFormState(
+        formData, fragmentId, propName, 
+        { ...investigator, person: {...object, action: "update" }, role: role, action: "update" }
+      ));
     } else {
       changeValue({ target: { propName, value } });
     }
