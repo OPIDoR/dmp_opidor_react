@@ -62,20 +62,20 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Etes-vous sûr ?"),
-      text: t("Voulez-vous vraiment supprimer cet élément ?"),
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Annuler"),
-      confirmButtonText: t("Oui, supprimer !"),
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = deleteByIndex(data, id);
         setData(newList);
         //deleteCommentById()
-        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -204,7 +204,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         {el.user.surname} {el.user.firstname}
                       </strong>
                       <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
-                        {t("le")} {moment(el.created_at).format("DD/MM/YYYY")} {t("à")} {moment(el.created_at).format("hh:mm:ss")}
+                        {t("on")} {moment(el.created_at).format("DD/MM/YYYY")} {t("at")} {moment(el.created_at).format("hh:mm:ss")}
                       </div>
                     </div>
                     <div style={{ marginRight: "-20px" }}>
@@ -225,14 +225,12 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             </ScrollNav>
 
             <div style={{ margin: "10px" }}>
-              <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>
-                {t("Ajoutez un commentaire à partager avec les collaborateurs")}
-              </p>
+              <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>{t("Add a comment to share with collaborators")}</p>
               <EditorComment initialValue={text} updateParentText={updateParentText} />
             </div>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
-                {isUpdate ? t("Modifier") : t("Enregistrer")}
+                {isUpdate ? t("Update") : t("Enregistrer")}
               </ButtonComment>
             </div>
           </NavBody>

@@ -15,14 +15,14 @@ function SearchProduct({ planId, handleClose, show }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("Produit de recherche")}</Modal.Title>
+        <Modal.Title>{t("Research Product")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Tabs defaultActiveKey="create" id="uncontrolled-tab-example" className="mb-3">
-          <Tab eventKey="create" title={t("Créer")}>
+          <Tab eventKey="create" title={t("Create")}>
             <AddSearchProduct planId={planId} handleClose={handleClose} show={show} />
           </Tab>
-          <Tab eventKey="import" title={t("Importer")}>
+          <Tab eventKey="import" title={t("Import")}>
             <ImportSearchProduct planId={planId} handleClose={handleClose} show={show} />
           </Tab>
         </Tabs>

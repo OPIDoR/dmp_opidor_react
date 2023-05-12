@@ -80,22 +80,22 @@ when the component mounts. */
         <input
           value={abbreviation}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("ajouter abbreviation")}
+          placeholder={t("add abbreviation")}
           type="text"
           onChange={(e) => setAbbreviation(e.target.value)}
           maxLength="20"
         />
-        <small className="form-text text-muted">{t("Limité à 20 caractères")}</small>
+        <small className="form-text text-muted">{t("Limited to 20 characters")}</small>
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Titre")}</label>
+          <label>{t("Title")}</label>
         </div>
         <input
           value={title}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("ajouter titre")}
+          placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
@@ -116,7 +116,7 @@ when the component mounts. */
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t("Votre produit de rechercher contient-il des données personnelles ?")}</label>
+          <label>{t("Does your research product contain personal data?")}</label>
         </div>
         <div>
           <div className="form-check">
@@ -129,23 +129,23 @@ when the component mounts. */
               defaultChecked
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
-              {t("Oui")}
+              {t("Yes")}
             </label>
           </div>
           <div className="form-check">
             <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onClick={() => setisPersonnel(false)} />
             <label className="form-check-label" htmlFor="flexRadioDefault2">
-              {t("Non")}
+              {t("No")}
             </label>
           </div>
         </div>
       </div>
       <EndButton>
         <Button variant="secondary" onClick={handleClose} style={{ marginRight: "8px" }}>
-          {t("Fermer")}
+          {t("Close")}
         </Button>
         <Button variant="outline-primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
-          {t("Ajouter")}
+          {t("Add")}
         </Button>
       </EndButton>
     </div>

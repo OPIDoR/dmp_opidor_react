@@ -66,20 +66,20 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
           <Title>Runs</Title>
           <NavBodyText>
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">{t("Calculer le coût de stockage")}</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>
             </div>
             <Description>
               {t(
-                "Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL"
+                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
               )}
             </Description>
 
             <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">{t("Notifier MESO@LR")}</ButtonComment>
+              <ButtonComment className="btn btn-light">{t("Notify MESO@LR")}</ButtonComment>
             </div>
             <Description>
               {t(
-                "Les tarifs de stockage (en HT) du mésocentre sont soumis aux conditions générales de vente de l’Université de Montpellier : adresse URL"
+                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
               )}
             </Description>
           </NavBodyText>

@@ -111,14 +111,14 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Etes-vous sûr ?"),
-      text: t("Voulez-vous vraiment supprimer cet élément ?"),
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Annuler"),
-      confirmButtonText: t("Oui, supprimer !"),
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
       confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -127,7 +127,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
         const concatedObject = [...form[schemaId][keyValue]];
         concatedObject[idx]["updateType"] = "delete";
         setForm(updateFormState(form, schemaId, keyValue, concatedObject));
-        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -202,7 +202,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
             </span>
           )}
         </div>
-        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
+        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
@@ -272,10 +272,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              {t("Fermer")}
+              {t("Close")}
             </Button>
             <Button variant="primary" onClick={handleAddToList}>
-              {t("Enregistrer")}
+              {t("Save")}
             </Button>
           </Modal.Footer>
         </Modal>

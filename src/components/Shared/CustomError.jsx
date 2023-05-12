@@ -65,13 +65,13 @@ function CustomError() {
       <div className="row d-flex align-items-center justify-content-center">
         <div className="col-md-12 text-center">
           <BigText>Oops!</BigText>
-          <SmallText>404 - {t("PAGE NON TROUVÉE")}</SmallText>
+          <SmallText>404 - {t("PAGE NOT FOUND")}</SmallText>
         </div>
         <div className="col-md-12 text-center">
-          <p>{t("La page que vous recherchez a peut-être été supprimée, son nom a changé ou est temporairement indisponible")}.</p>
+          <p>{t("The page you are looking for may have been removed, its name changed, or is temporarily unavailable.")}.</p>
 
           <Button>
-            <a href="/">{t("Page d'accueil")}</a>
+            <a href="/">{t("Home page")}</a>
           </Button>
         </div>
       </div>

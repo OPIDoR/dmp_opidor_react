@@ -35,7 +35,7 @@ function Navbar() {
       >
         <a href="#">
           <ReasearchSVG />
-          {t("Produits de recherche")}
+          {t("Research products")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -62,7 +62,7 @@ function Navbar() {
       >
         <a href="#">
           <ContributorSVG />
-          {t("Contributeurs")}
+          {t("Contributors")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -101,7 +101,7 @@ function Navbar() {
       >
         <a href="#">
           <AssistanceSVG></AssistanceSVG>
-          {t("Demande d'assistance")}
+          {t("Request for assistance")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>
@@ -114,7 +114,7 @@ function Navbar() {
       >
         <a href="#">
           <DownloadSVG></DownloadSVG>
-          {t("Télécharger")}
+          {t("Download")}
         </a>
         <span className={styles.active_line} />
         <span className={styles.active_bullet}>●</span>

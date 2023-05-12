@@ -152,7 +152,7 @@ export async function postImportProduct(planId, uuid) {
     //const response = await axios.post("/research_outputs/import", objectProduct, "config");
     const jsonObject = {
       id: new Date().getTime(),
-      abbreviation: "test2",
+      abbreviation: "Import test",
       metadata: {
         hasPersonalData: false,
         abbreviation: "test1",

@@ -62,7 +62,7 @@ loading state to `false`. */
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <CustumButton handleClick={handleSaveForm} title={t("Enregistrer")} position="center"></CustumButton>
+          <CustumButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustumButton>
         </div>
       )}
     </>

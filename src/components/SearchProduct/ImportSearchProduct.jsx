@@ -69,7 +69,7 @@ function ImportSearchProduct({ planId, handleClose, show }) {
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Choisir plan")}</label>
+          <label>{t("Choose plan")}</label>
         </div>
         {dataPlans && (
           <Select
@@ -80,7 +80,7 @@ function ImportSearchProduct({ planId, handleClose, show }) {
             onChange={(e) => handleSelectPlan(e)}
           />
         )}
-        <small className="form-text text-muted">{t("Veuillez saisir l'UUID d'un plan")}</small>
+        <small className="form-text text-muted">{t("Please choose one of the plan you have access to")}</small>
       </div>
 
       <div className="form-group">
@@ -97,14 +97,14 @@ function ImportSearchProduct({ planId, handleClose, show }) {
             onChange={(e) => handleSelectProduct(e)}
           />
         )}
-        <small className="form-text text-muted">{t("Veuillez saisir l'un des produits de recherche")}</small>
+        <small className="form-text text-muted">{t("Please choose one of the research outputs")}</small>
       </div>
       <EndButton>
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
-          {t("Fermer")}
+          {t("Close")}
         </Button>
         <Button variant="outline-primary" style={{ backgroundColor: "var(--orange)", color: "white" }} onClick={handleImportPlan}>
-          {t("Importer")}
+          {t("Import")}
         </Button>
       </EndButton>
     </div>

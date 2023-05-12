@@ -30,11 +30,11 @@ function Footer() {
           <div>
             <h6 className={styles.title}>{t("NAVIGATION")}</h6>
             <ul>
-              <li className={styles.item_footer}>{t("Aide en ligne")}</li>
-              <li className={styles.item_footer}>{t("PGD et Modèles")}</li>
-              <li className={styles.item_footer}>{t("Approfondir")}</li>
-              <li className={styles.item_footer}>{t("Support technique / FAQ")}</li>
-              <li className={styles.item_footer}>{t("Actualités")}</li>
+              <li className={styles.item_footer}>{t("Online help")}</li>
+              <li className={styles.item_footer}>{t("PGD and Models")}</li>
+              <li className={styles.item_footer}>{t("Deepen")}</li>
+              <li className={styles.item_footer}>{t("Technical support / FAQs")}</li>
+              <li className={styles.item_footer}>{t("News")}</li>
             </ul>
           </div>
         </div>
@@ -42,9 +42,9 @@ function Footer() {
           <div>
             <h6 className={styles.title}>A PROPOS</h6>
             <ul>
-              <li className={styles.item_footer}>{t("A propos de DMP OPIDoR")}</li>
-              <li className={styles.item_footer}>{t("Conditions Générales d’Utilisation")}</li>
-              <li className={styles.item_footer}>{t("Politique de cookies")}</li>
+              <li className={styles.item_footer}>{t("About DMP OPIDoR")}</li>
+              <li className={styles.item_footer}>{t("Terms of Service")}</li>
+              <li className={styles.item_footer}>{t("Cookies policy")}</li>
               <li className={styles.item_footer}>
                 Github
                 <BsGithub size={30} className={styles.icon_footer} />

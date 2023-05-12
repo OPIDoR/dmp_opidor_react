@@ -138,7 +138,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
           )}
         </div>
 
-        <div className={styles.input_label}>{t("Sélectionnez une valeur de la liste")}.</div>
+        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
@@ -180,10 +180,10 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
-                {t("Fermer")}
+                {t("Close")}
               </Button>
               <Button variant="primary" onClick={handleAddToList}>
-                {t("Enregistrer")}
+                {t("Save")}
               </Button>
             </Modal.Footer>
           </Modal>

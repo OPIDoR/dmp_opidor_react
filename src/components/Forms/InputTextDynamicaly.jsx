@@ -77,7 +77,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
                   onClick={addFields}
                   data-toggle="tooltip"
                   data-placement="top"
-                  title={t("Ajouter")}
+                  title={t("Add")}
                 >
                   <i className="fa fa-plus" aria-hidden="true" />
                 </button>
@@ -87,7 +87,7 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
                   onClick={() => removeFields(index)}
                   data-toggle="tooltip"
                   data-placement="top"
-                  title={t("Supprimer")}
+                  title={t("Delete")}
                 >
                   <i className="fa fa-trash" aria-hidden="true" />
                 </button>

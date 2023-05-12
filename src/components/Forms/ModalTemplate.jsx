@@ -86,21 +86,21 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Etes-vous sûr ?"),
-      text: t("Voulez-vous vraiment supprimer cet élément ?"),
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Annuler"),
-      confirmButtonText: t("Oui, supprimer !"),
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
         const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
         filterDeleted[idx]["updateType"] = "delete";
         setForm(updateFormState(form, schemaId, keyValue, filterDeleted));
-        Swal.fire(t("Supprimé!"), t("Opération effectuée avec succès!."), "success");
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -177,7 +177,7 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
           handleClick={() => {
             handleShow(true);
           }}
-          title={t("Ajouter un élément")}
+          title={t("Add an element")}
           type="primary"
           position="start"
         ></CustumButton>
@@ -229,10 +229,10 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            {t("Fermer")}
+            {t("Close")}
           </Button>
           <Button variant="primary" onClick={handleAddToList}>
-            {t("Enregistrer")}
+            {t("Save")}
           </Button>
         </Modal.Footer>
       </Modal>

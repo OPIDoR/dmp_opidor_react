@@ -211,7 +211,7 @@ function RedactionLayout() {
                           e.preventDefault();
                         }}
                       >
-                        <div className={styles.nav_title}>{t("Créer")}</div>
+                        <div className={styles.nav_title}>{t("Create")}</div>
                         <div className={styles.nav_icon}>
                           <MdAddCircleOutline size={40}></MdAddCircleOutline>
                         </div>

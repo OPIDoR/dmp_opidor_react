@@ -177,7 +177,7 @@ function SecondStep() {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: t("Vous devez choisir un modèle"),
+        text: t("You must choose a model"),
       });
     }
   };

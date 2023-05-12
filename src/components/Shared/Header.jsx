@@ -25,13 +25,13 @@ function Header() {
             <li className={styles.item}>
               <img className={styles.logo} src={logo} alt="banner" />
             </li>
-            <li className={styles.item}> {t("AIDE EN LIGNE")}</li>
+            <li className={styles.item}> {t("ONLINE HELP")}</li>
             <li className={`${styles.item} ${styles.dot}`} />
-            <li className={styles.item}>{t("PGD ET MODEL")}</li>
+            <li className={styles.item}>{t("ONLINE HELP")}</li>
             <li className={`${styles.item} ${styles.dot}`} />
-            <li className={styles.item}>{t("APPROFONDIR")}</li>
+            <li className={styles.item}>{t("DEEPEN")}</li>
             <li className={styles.item}>
-              <button className={styles.button}>{t("MON ESPACE")}</button>
+              <button className={styles.button}>{t("MY SPACE")}</button>
             </li>
             <li className={styles.item}>
               <a href="#" onClick={() => handleChangeL("fr")}>

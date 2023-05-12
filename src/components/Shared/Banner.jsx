@@ -14,7 +14,7 @@ function Banner() {
         <img className={styles.banner_logo} src={bannerImage} alt="image" />
         <div className={styles.banner_content}>
           <Info
-            text={t("Attention Mise à jour prévue le 2 novembre 2022, votre outil préféré sera indisponible jusqu’à 10h.")}
+            text={t("Attention Update scheduled for November 2, 2022, your favorite tool will be unavailable until 10 a.m.")}
             icon="fas fa-exclamation-triangle"
             type="warning"
           ></Info>
@@ -29,26 +29,26 @@ function Banner() {
 
                 <div>
                   <BsGlobe size={20} />
-                  <span className={styles.banner_span}>{t("Gestion et partage des données scientifiques")}</span>
+                  <span className={styles.banner_span}>{t("Management and sharing of scientific data")}</span>
                 </div>
                 <div>
                   <BsGlobe size={20} />
-                  <span className={styles.banner_span}>{t("Portail Data INRAE")}</span>
+                  <span className={styles.banner_span}>{t("INRAE Data Portal")}</span>
                 </div>
               </div>
             </div>
             <div className={styles.banner_details}>
-              {t("Pour être alerté.e des actualités sur DMP OPIDoR et les modèles de plans, rejoignez le groupe de messagerie")} DMPOPIDoR@inrae.fr
-              11.05.2022 - <strong>{t("Mise à jour des modèles de plan de gestion de données INRAE")}</strong>{" "}
-              {t("pour les projets et pour ls structures : chapitres")} <strong>«{t("Sensibilité des données")}</strong>» ({t("auparavant")}
-              {" : "}«{t("Confidentialité")}»)
+              {t("To be alerted to news on DMP OPIDoR and plan models, join the messaging group")} DMPOPIDoR@inrae.fr 11.05.2022 -{" "}
+              <strong>{t("Update of INRAE data management plan templates")}</strong> {t("for projects and for structures: chapters")}{" "}
+              <strong>«{t("Data sensitivity")}</strong>» ({t("formerly")}
+              {" : "}«{t("Confidentiality")}»)
               <strong>
                 {" "}
-                {t("et")}
+                {t("and")}
                 {" «"}
-                {t("Stockage et sécurité des données")}
+                {t("Data storage and security")}
               </strong>
-              », {t("ainsi que des recommandations associées")}.
+              », {t("as well as associated recommendations")}.
             </div>
           </div>
         </div>
