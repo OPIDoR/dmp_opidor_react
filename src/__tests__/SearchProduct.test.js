@@ -38,7 +38,7 @@ describe("SearchProduct component", () => {
       target: { value: "test" },
     });
     fireEvent.change(screen.getByPlaceholderText("ajouter titre"), { target: { value: "Test Title" } });
-    fireEvent.click(screen.getByText("Non"));
+    fireEvent.click(screen.getByText("No"));
 
     expect(screen.getByPlaceholderText("ajouter abbreviation")).toHaveValue("test");
     expect(screen.getByPlaceholderText("ajouter titre")).toHaveValue("Test Title");

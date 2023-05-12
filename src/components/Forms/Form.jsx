@@ -6,10 +6,12 @@ import { getFragment, loadNewForm } from "../../services/DmpServiceApi";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomButton from "../Styled/CustomButton";
 import CustomError from "../Shared/CustomError";
+import { useTranslation } from "react-i18next";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
 function Form({ schemaId, searchProductPlan, researchOutputId, questionId, planId }) {
+  const { t } = useTranslation();
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -60,7 +62,7 @@ loading state to `false`. */
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <CustomButton handleClick={handleSaveForm} title="Enregistrer" position="center"></CustomButton>
+          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
         </div>
       )}
     </>

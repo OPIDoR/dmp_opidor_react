@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const ErrorContainer = styled.div`
@@ -58,18 +59,19 @@ const Button = styled.button`
 /* The `CustomError` function is defining a React component that renders an error page with a 404 message and a button to return to the homepage. It uses
 styled components to define the styling of the page elements. The component returns JSX code that defines the structure and content of the error page. */
 function CustomError() {
+  const { t } = useTranslation();
   return (
     <ErrorContainer className="container">
       <div className="row d-flex align-items-center justify-content-center">
         <div className="col-md-12 text-center">
           <BigText>Oops!</BigText>
-          <SmallText>404 - PAGE NOT FOUND</SmallText>
+          <SmallText>404 - {t("PAGE NOT FOUND")}</SmallText>
         </div>
         <div className="col-md-12 text-center">
-          <p>La page que vous recherchez a peut-être été supprimée, son nom a changé ou est temporairement indisponible.</p>
+          <p>{t("The page you are looking for may have been removed, its name changed, or is temporarily unavailable.")}.</p>
 
           <Button>
-            <a href="/">Page d'accueil </a>
+            <a href="/">{t("Home page")}</a>
           </Button>
         </div>
       </div>

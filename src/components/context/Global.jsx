@@ -1,6 +1,7 @@
 import React, {
   createContext, useEffect, useReducer, useState,
 } from 'react';
+import { useTranslation } from "react-i18next";
 
 /**
  * If the incomingFormData is null, remove the formData from localStorage,
@@ -31,10 +32,11 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useReducer(reducer, formLocalState || {});
   const [subData, setSubData] = useState({});
   const [context, setContext] = useState({ context: "research_project" });
-  const [locale, setlocale] = useState(null);
+  const [locale, setLocale] = useState(null);
   const [dmpId, setdmpId] = useState(null);
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
@@ -57,6 +59,14 @@ function Global({ children }) {
     localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
 
+  useEffect(() => {
+    const appLanguage = sessionStorage.getItem("locale");
+    if (appLanguage) {
+      setLocale(appLanguage);
+    }
+    sessionStorage.setItem("locale", i18n.language.split("-")[0]);
+  }, [locale]);
+
   /* It's setting the searchProduct in sessionStorage. */
   useEffect(() => {
     sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
@@ -70,7 +80,7 @@ function Global({ children }) {
         subData,
         setSubData,
         locale,
-        setlocale,
+        setLocale,
         dmpId,
         setdmpId,
         context,

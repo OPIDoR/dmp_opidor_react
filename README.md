@@ -41,6 +41,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Global from "./components/context/Global";
 import { Toaster } from "react-hot-toast";
+import "./i18n";
 ```
 
 - Add fontAwesome to index.html
@@ -61,15 +62,16 @@ import { Toaster } from "react-hot-toast";
 
 Dynamic form generation uses a number of open source projects to work properly:
 
+- [TinyMCE](https://www.tiny.cloud/docs/integrations/react/) - TinyMCE is a rich text editor extensible and Customizable.
+- [axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js.
 - [react-bootstrap](https://react-bootstrap.github.io/) - React-Bootstrap replaces the Bootstrap JavaScript. Each component has been built from scratch as a true React component, without unneeded dependencies like jQuery!
 - [dompurify](https://github.com/cure53/DOMPurify) - DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
-- [TinyMCE](https://www.tiny.cloud/docs/integrations/react/) - TinyMCE is a rich text editor extensible and Customizable.
-- [react-hot-toast](https://react-hot-toast.com/) - Add beautiful notifications to your React app with react-hot-toast. Lightweight. Smoking hot by default.
-- [react-select](https://react-select.com/home) - A flexible and beautiful Select Input control for ReactJS with multiselect, autocomplete, async and creatable support.
-- [sweetalert](https://sweetalert2.github.io/) - A BEAUTIFUL, RESPONSIVE, CUSTOMIZABLE, ACCESSIBLE (WAI-ARIA) REPLACEMENT FOR JAVASCRIPT'S POPUP BOXES
-- [react-loader-spinner](https://www.npmjs.com/package/react-loader-spinner) - React-spinner-loader provides simple React SVG spinner component which can be implemented for async await operation before data loads to the view.
-- [axios](https://github.com/axios/axios) - Promise based HTTP client for the browser and node.js.
+- [i18next](https://www.i18next.com/) - i18next is a localization framework for internationalization and translation in software development.
 - [moment](https://www.npmjs.com/package/moment) - JavaScript library for parsing, validating, manipulating, and formatting dates.
+- [react-hot-toast](https://react-hot-toast.com/) - Add beautiful notifications to your React app with react-hot-toast. Lightweight. Smoking hot by default.
+- [react-loader-spinner](https://www.npmjs.com/package/react-loader-spinner) - React-spinner-loader provides simple React SVG spinner component which can be implemented for async await operation before data loads to the view.
+- [react-select](https://react-select.com/home) - A flexible and beautiful Select Input control for ReactJS with multiselect, autocomplete, async and creatable support.
+- [sweetalert2](https://sweetalert2.github.io/) - A BEAUTIFUL, RESPONSIVE, CUSTOMIZABLE, ACCESSIBLE (WAI-ARIA) REPLACEMENT FOR JAVASCRIPT'S POPUP BOXES
 
 ## Installation
 
@@ -80,9 +82,9 @@ Install the dependencies .
 ```sh
 npm i bootstrap@3.3.0
 npm i react-bootstrap@0.33.1
-npm i react-hot-toast sweetalert react-loader-spinner dompurify axios react-select
+npm i react-hot-toast sweetalert react-loader-spinner dompurify axios react-select moment
 npm install --save @tinymce/tinymce-react
-npm i moment
+npm i i18next i18next-browser-languagedetector i18next-http-backend react-i18next
 ```
 
 For developement testing environment...
@@ -97,6 +99,14 @@ npm install --save-dev enzyme @cfaester/enzyme-adapter-react-18
 ```sh
 npm install --save-dev npm i enzyme-adapter-react-16
 ```
+
+## TinyMCE : Text editor
+
+Create new account [tiny.cloud](https://www.tiny.cloud/) for the text editor.
+
+Add domaine [tiny domaine](https://www.tiny.cloud/my-account/domains/).
+
+> Note: `localhost` add it for testing.
 
 ## Development
 

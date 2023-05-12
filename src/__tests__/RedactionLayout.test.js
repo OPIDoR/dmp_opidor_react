@@ -53,7 +53,6 @@ describe("RedactionLayout", () => {
     // Expect loading spinner to be removed
     expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
     // Expect tabs to be rendered with fetched data
-    console.log(screen.debug);
     expect(screen.getByText("Product 1")).toBeInTheDocument();
     expect(screen.getByText("Product 2")).toBeInTheDocument();
   });

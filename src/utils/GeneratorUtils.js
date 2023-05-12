@@ -184,6 +184,12 @@ export function roundedUpDivision(dividend, divisor) {
   return Math.ceil(dividend / divisor);
 }
 
+/**
+ * The function creates a dynamic object with a specified number of elements, where the first element is false and the rest are true.
+ * @param result - The parameter `result` is the number of elements that the `dynamicObject` array should contain.
+ * @returns The function `createDynamicObject` is returning an array of boolean values. The length of the array is determined by the `result` parameter
+ * passed to the function. The first element of the array is always `false`, and the rest of the elements are `true`.
+ */
 export function createDynamicObject(result) {
   let dynamicObject = [];
   for (let i = 0; i < result; i++) {

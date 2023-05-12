@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import { useTranslation } from "react-i18next";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { GlobalContext } from '../context/Global.jsx';
@@ -32,6 +33,7 @@ function ModalTemplate({
   header,
   fragmentId,
 }) {
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const { formData, setFormData, subData, setSubData, locale } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
@@ -112,18 +114,19 @@ function ModalTemplate({
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: 'Ëtes-vous sûr ?',
-      text: 'Voulez-vous vraiment supprimer cet élément ?',
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      cancelButtonText: 'Annuler',
-      confirmButtonText: 'Oui, supprimer !',
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
         filterDeleted[idx]['action'] = 'delete';
         setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -194,7 +197,7 @@ function ModalTemplate({
           handleNextStep={() => {
             handleShow(true);
           }}
-          title="Ajouter un élément"
+          title={t("Add an element")}
           type="primary"
           position="start"
         ></CustomButton>
@@ -209,10 +212,10 @@ function ModalTemplate({
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Fermer
+            {t("Close")}
           </Button>
           <Button variant="primary" onClick={handleAddToList}>
-            Enregistrer
+            {t("Save")}
           </Button>
         </Modal.Footer>
       </Modal>

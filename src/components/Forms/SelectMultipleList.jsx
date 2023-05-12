@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
+import { useTranslation } from "react-i18next";
+
 import { GlobalContext } from '../context/Global.jsx';
 import { getRegistry } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
@@ -15,6 +17,7 @@ function SelectMultipleList({
   header,
   fragmentId,
 }) {
+  const { t } = useTranslation();
   const [list, setList] = useState([]);
   const [options, setOptions] = useState(null);
   const { formData, subData, setSubData, locale } = useContext(GlobalContext);
@@ -64,14 +67,14 @@ function SelectMultipleList({
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: 'Ëtes-vous sûr ?',
-      text: 'Voulez-vous vraiment supprimer cet élément ?',
+      title: t("Are you sure ?"),
+      text: t("Are you sure you want to delete this item?"),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      cancelButtonText: 'Annuler',
-      confirmButtonText: 'Oui, supprimer !',
+      cancelButtonText: t("Cancel"),
+      confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
         const newList = [...list];
@@ -81,7 +84,7 @@ function SelectMultipleList({
         }
         setList(newList);
         setSubData({ ...subData, [propName]: newList });
-        Swal.fire('Supprimé!', 'Opération effectuée avec succès!.', 'success');
+        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -98,7 +101,7 @@ function SelectMultipleList({
             </span>
           )}
         </div>
-        <div className={styles.input_label}>Sélectionnez une valeur de la liste.</div>
+        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select

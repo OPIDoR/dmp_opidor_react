@@ -20,8 +20,10 @@ import CustomError from "../Shared/CustomError";
 import SearchProduct from "../SearchProduct/SearchProduct";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
+import { useTranslation } from "react-i18next";
 
 function RedactionLayout() {
+  const { t } = useTranslation();
   const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,13 @@ function RedactionLayout() {
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
 
+  /**
+   * The function handleClose sets the state of setShow to false.
+   */
   const handleClose = () => setShow(false);
+  /**
+   * The function sets the state of "show" to true.
+   */
   const handleShow = () => setShow(true);
 
   /**
@@ -86,12 +94,13 @@ function RedactionLayout() {
       .finally(() => setLoading(false));
   }, [productData]);
 
+  /**
+   * This function toggles the state of an element in an array based on its index.
+   */
   const handleCollapseByIndex = (index) => {
-    console.log(isCollapsed);
     setIsCollapsed((prevIsCollapsed) => {
       const newIsCollapsed = [...prevIsCollapsed];
       newIsCollapsed[index] = !newIsCollapsed[index];
-      console.log(newIsCollapsed);
       return newIsCollapsed;
     });
   };
@@ -202,7 +211,7 @@ function RedactionLayout() {
                           e.preventDefault();
                         }}
                       >
-                        <div className={styles.nav_title}>Créer</div>
+                        <div className={styles.nav_title}>{t("Create")}</div>
                         <div className={styles.nav_icon}>
                           <MdAddCircleOutline size={40}></MdAddCircleOutline>
                         </div>
