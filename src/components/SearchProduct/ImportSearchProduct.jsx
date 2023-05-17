@@ -74,7 +74,11 @@ function ImportSearchProduct({ planId, handleClose, show }) {
         {dataPlans && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={dataPlans}
             style={{ color: "red" }}
             onChange={(e) => handleSelectPlan(e)}
@@ -91,7 +95,11 @@ function ImportSearchProduct({ planId, handleClose, show }) {
         {dataProducts && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={dataProducts}
             style={{ color: "red" }}
             onChange={(e) => handleSelectProduct(e)}

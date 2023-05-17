@@ -207,7 +207,11 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
               menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                control: (base) => ({ ...base, borderRadius: "8px" }),
+              }}
               onChange={handleChangeList}
               options={options}
               name={name}
@@ -226,37 +230,38 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           </div>
         </div>
         {list && (
-          <table style={{ marginTop: "20px" }} className="table table-bordered">
+          <table style={{ marginTop: "20px" }} className="table">
             <thead>
               {form?.[schemaId]?.[keyValue]?.length > 0 && header && (
                 <tr>
                   <th scope="col">{header}</th>
-                  <th scope="col"></th>
                 </tr>
               )}
             </thead>
             <tbody>
               {list.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row">
-                    <p className={`m-2 ${styles.border}`}> {el} </p>
-                  </td>
-                  <td style={{ width: "10%" }}>
-                    <div className="col-md-1" style={{ marginTop: "8px" }}>
-                      {level === 1 && (
-                        <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                            <i className="fa fa-edit" />
-                          </a>
-                        </span>
-                      )}
-                    </div>
-                    <div className="col-md-1" style={{ marginTop: "8px" }}>
-                      <span>
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                          <i className="fa fa-times" />
-                        </a>
-                      </span>
+                  <td scope="row" style={{ width: "100%" }}>
+                    <div className={styles.border}>
+                      <div>{el} </div>
+                      <div className={styles.table_container}>
+                        <div className="col-md-1">
+                          {level === 1 && (
+                            <span>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                <i className="fa fa-edit" />
+                              </a>
+                            </span>
+                          )}
+                        </div>
+                        <div className="col-md-1">
+                          <span>
+                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                              <i className="fa fa-times" />
+                            </a>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </td>
                 </tr>

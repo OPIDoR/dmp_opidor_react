@@ -129,50 +129,6 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
             </span>
           )}
         </div>
-        {form?.[schemaId]?.[keyValue] && registerFile && (
-          <table style={{ marginTop: "20px" }} className="table table-bordered">
-            <thead>
-              {form?.[schemaId]?.[keyValue].length > 0 &&
-                registerFile &&
-                header &&
-                form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
-                  <tr>
-                    <th scope="col">{header}</th>
-                    <th scope="col"></th>
-                  </tr>
-                )}
-            </thead>
-            <tbody>
-              {form?.[schemaId]?.[keyValue]
-                .filter((el) => el.updateType !== "delete")
-                .map((el, idx) => (
-                  <tr key={idx}>
-                    <td scope="row">
-                      <div className={styles.border} dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
-                    </td>
-                    <td style={{ width: "10%" }}>
-                      <div className="col-md-1">
-                        {level === 1 && (
-                          <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                              <i className="fa fa-edit" />
-                            </a>
-                          </span>
-                        )}
-                      </div>
-                      <div className="col-md-1">
-                        <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                            <i className="fa fa-times" />
-                          </a>
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        )}
         <CustumButton
           handleClick={() => {
             handleShow(true);
@@ -181,6 +137,51 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
           type="primary"
           position="start"
         ></CustumButton>
+        {form?.[schemaId]?.[keyValue] && registerFile && (
+          <table style={{ marginTop: "20px" }} className="table">
+            <thead>
+              {form?.[schemaId]?.[keyValue].length > 0 &&
+                registerFile &&
+                header &&
+                form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
+                  <tr>
+                    <th scope="col">{header}</th>
+                  </tr>
+                )}
+            </thead>
+            <tbody>
+              {form?.[schemaId]?.[keyValue]
+                .filter((el) => el.updateType !== "delete")
+                .map((el, idx) => (
+                  <tr key={idx}>
+                    <td scope="row" style={{ width: "100%" }}>
+                      <div className={styles.border}>
+                        <div dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-edit" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-md-1">
+                            <span>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                <i className="fa fa-times" />
+                              </a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>

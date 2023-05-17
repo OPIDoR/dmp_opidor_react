@@ -227,7 +227,11 @@ function SecondStep() {
             {isShowOtherOrganisme && otherOrganisme && (
               <Select
                 menuPortalTarget={document.body}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                  singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                  control: (base) => ({ ...base, borderRadius: "8px" }),
+                }}
                 options={otherOrganisme}
                 onChange={handleChangeOtherOrganisme}
                 value={{
@@ -258,7 +262,11 @@ function SecondStep() {
             {isShowListFunder && listFunder && (
               <Select
                 menuPortalTarget={document.body}
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                  singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                  control: (base) => ({ ...base, borderRadius: "8px" }),
+                }}
                 options={listFunder}
                 onChange={handleChangeFunder}
                 value={{

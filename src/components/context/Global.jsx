@@ -57,6 +57,10 @@ the latest form data for a specific product. */
     sessionStorage.setItem("form", JSON.stringify(form));
   }, [form]);
 
+  /* This `useEffect` hook is watching for changes in the `lng` variable. If `lng` changes, it retrieves the `appLanguage` value from sessionStorage using
+the key "lng". If `appLanguage` is truthy (not null, undefined, 0, false, or an empty string), it updates the `lng` state by setting it to
+`appLanguage`. Then, it sets the "lng" key in sessionStorage to the language code (the first part of the language string) of the current i18n
+language. This is essentially saving the user's language preference in sessionStorage. */
   useEffect(() => {
     const appLanguage = sessionStorage.getItem("lng");
     if (appLanguage) {

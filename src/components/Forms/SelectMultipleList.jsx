@@ -115,6 +115,11 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select
               onChange={handleChangeList}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                control: (base) => ({ ...base, borderRadius: "8px" }),
+              }}
               options={options}
               name={name}
               defaultValue={{

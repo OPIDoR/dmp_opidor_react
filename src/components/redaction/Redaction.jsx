@@ -252,7 +252,6 @@ Finally, it sets the loading state to false. */
                       </a>
                     </div>
                   </div>
-
                   {el.questions.map((q, i) => (
                     <React.Fragment key={i}>
                       {showPersonnalData(hasPersonnelData, q) && (

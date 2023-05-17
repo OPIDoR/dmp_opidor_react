@@ -107,7 +107,11 @@ when the component mounts. */
         {data && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={data}
             style={{ color: "red" }}
             onChange={handleSelect}

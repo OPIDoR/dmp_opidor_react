@@ -70,7 +70,11 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           <div className={`col-md-12 ${styles.select_wrapper}`}>
             <Select
               menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                control: (base) => ({ ...base, borderRadius: "8px" }),
+              }}
               onChange={handleChangeList}
               options={options}
               name={name}

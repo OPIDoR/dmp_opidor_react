@@ -81,5 +81,10 @@
   "at": "à",
   "for projects and for structures: chapters": "pour les projets et pour ls structures : chapitres",
   "formerly": "auparavant",
-  "on": "le"
+  "on": "le",
+  "Please select your funding organization": "Veuillez sélectionner votre organisme de financement",
+  "Select project acronym, title or ID": "Sélectionnez l’acronyme, le titre ou l’identifiant du projet",
+  "Project Information": "Renseignements sur le projet",
+  "Plan Information": "Renseignements sur le plan",
+  "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé"
 }

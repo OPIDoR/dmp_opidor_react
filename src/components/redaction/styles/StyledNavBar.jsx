@@ -8,7 +8,7 @@ const StyledNavBar = styled.nav`
   float: left;
   z-index: 8000;
   margin-bottom: 0px;
-  border-radius: 20px 0px 0px 0px;
+  border-radius: 0px 0px 0px 0px;
   margin-left: 0px;
   float: left;
 
