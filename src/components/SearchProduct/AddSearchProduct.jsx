@@ -6,6 +6,7 @@ import { GlobalContext } from "../context/Global";
 import Select from "react-select";
 import { getTypeSearchProduct, postSearchProduct } from "../../services/DmpSearchProduct";
 import styled from "styled-components";
+import { createOptions } from "../../utils/GeneratorUtils";
 
 const EndButton = styled.div`
   display: flex;
@@ -16,22 +17,18 @@ function AddSearchProduct({ planId, handleClose, show }) {
   const { locale } = useContext(GlobalContext);
   const { t } = useTranslation();
   const { setProductData } = useContext(GlobalContext);
-  const [data, setData] = useState(null);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
   const [isPersonnel, setisPersonnel] = useState(true);
+  const [options, setOptions] = useState(null);
 
   /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeSearchProduct` function. It sets the fetched data to the
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
     getTypeSearchProduct().then((res) => {
-      const options = res.data.map((option) => ({
-        value: locale === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
-        label: locale === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
-      }));
-      setData(options);
+      setOptions(createOptions(res.data, locale));
     });
   }, []);
 
@@ -104,11 +101,11 @@ when the component mounts. */
           <strong className={stylesForm.dot_label}></strong>
           <label>{t("Type")}</label>
         </div>
-        {data && (
+        {options && (
           <Select
             menuPortalTarget={document.body}
             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
-            options={data}
+            options={options}
             style={{ color: "red" }}
             onChange={handleSelect}
           />
