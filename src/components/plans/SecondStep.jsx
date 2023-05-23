@@ -1,47 +1,48 @@
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
+import { useTranslation } from "react-i18next";
+
 import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrganisme, getOtherOrganismeById } from "../../services/DmpPlansApi";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
 import CustomButton from "../Styled/CustomButton";
 import CircleTitle from "../Styled/CircleTitle";
-import { useTranslation } from "react-i18next";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
 using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
 selected template ID to the next step. */
 function SecondStep() {
   const { t } = useTranslation();
-  const { context, setContext } = useContext(GlobalContext);
-  const [defaultModel, setdefaultModel] = useState(null);
-  const [defaultId, setdefaultId] = useState(null);
-  const [otherOrganisme, setOtherOrganisme] = useState(null);
+  const { researchContext, setResearchContext } = useContext(GlobalContext);
+  const [defaultModel, setDefaultModel] = useState(null);
+  const [defaultId, setDefaultId] = useState(null);
+  const [otherOrg, setOtherOrg] = useState(null);
   const [listFunder, setlistFunder] = useState(null);
-  const [listOrganisme, setListOrganisme] = useState(null);
-  const [isShowListOrganizme, setisShowListOrganizme] = useState(false);
-  const [isShowOrganizme, setisShowOrganizme] = useState(false);
-  const [isShowFunder, setisShowFunder] = useState(false);
+  const [listOrg, setListOrg] = useState(null);
+  const [isShowListOrg, setIsShowListOrg] = useState(false);
+  const [isShowOrg, setIsShowOrg] = useState(false);
+  const [isShowFunder, setIsShowFunder] = useState(false);
   const [funders, setFunders] = useState(null);
-  const [organismes, setorganismes] = useState(null);
-  const [valueOtherOrganisme, setvalueOtherOrganisme] = useState("Commencez à taper pour voir une liste de suggestions");
-  const [valueFunder, setvalueFunder] = useState("Commencez à taper pour voir une liste de suggestions");
-  const [isShowOtherOrganisme, setisShowOtherOrganisme] = useState(false);
-  const [isShowListFunder, setisShowListFunder] = useState(false);
+  const [orgs, setOrgs] = useState(null);
+  const [valueOtherOrg, setValueOtherOrg] = useState(t('Begin typing to see a list of suggestions.'));
+  const [valueFunder, setValueFunder] = useState(t('Begin typing to see a list of suggestions.'));
+  const [isShowOtherOrg, setIsShowOtherOrg] = useState(false);
+  const [isShowListFunder, setIsShowListFunder] = useState(false);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     getOrganisme().then((res) => {
-      setListOrganisme(res.data.templates);
+      setListOrg(res.data.templates);
     });
-  }, [context]);
+  }, [researchContext]);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     getDefaultModel().then((res) => {
-      setdefaultModel(res.data);
-      setContext({ ...context, template_id: res.data.id });
-      setdefaultId(res.data.id);
+      setDefaultModel(res.data);
+      setResearchContext({ ...researchContext, template_id: res.data.id });
+      setDefaultId(res.data.id);
     });
   }, []);
 
@@ -53,7 +54,7 @@ function SecondStep() {
         label: option.sort_name,
         object: option,
       }));
-      setOtherOrganisme(options);
+      setOtherOrg(options);
     });
   }, []);
 
@@ -70,76 +71,76 @@ function SecondStep() {
   }, []);
 
   /**
-   * If the value is 1, 2, or 3, then set the value of isShowListOrganizme to false, set the value of isShowOrganizme to false, set the value of organismes
-   * to null, set the value of isShowFunder to false, set the value of valueFunder to "Commencez à taper pour voir une liste de suggestions", set the value
+   * If the value is 1, 2, or 3, then set the value of isShowListOrg to false, set the value of isShowOrg to false, set the value of organismes
+   * to null, set the value of isShowFunder to false, set the value of valueFunder to t('Begin typing to see a list of suggestions.'), set the value
    * of isShowOtherOrganisme to true, and set the value of isShowListFunder to false.
    *
-   * If the value is 2, then set the value of isShowListOrganizme to true, set the value of isShowOrganizme to false, set the value of organismes to null,
-   * set the value of isShowFunder to false, set the value of valueFunder to "Commencez à taper pour voir une liste de suggestions", set the value of
+   * If the value is 2, then set the value of isShowListOrg to true, set the value of isShowOrg to false, set the value of organismes to null,
+   * set the value of isShowFunder to false, set the value of valueFunder to t('Begin typing to see a list of suggestions.'), set the value of
    * isShowOtherOrgan
    */
   const handleCheckOption = (val) => {
     switch (val) {
       case "1":
         //state
-        setContext({ ...context, ["template_id"]: defaultId });
+        setResearchContext({ ...researchContext, ["template_id"]: defaultId });
         //
-        setisShowListOrganizme(false);
-        setisShowOrganizme(false);
+        setIsShowListOrg(false);
+        setIsShowOrg(false);
 
         //condition 3
-        setorganismes(null);
-        setisShowFunder(false);
-        setvalueFunder("Commencez à taper pour voir une liste de suggestions");
-        setisShowOtherOrganisme(true);
-        setisShowListFunder(false);
+        setOrgs(null);
+        setIsShowFunder(false);
+        setValueFunder(t('Begin typing to see a list of suggestions.'));
+        setIsShowOtherOrg(true);
+        setIsShowListFunder(false);
 
         //condition 4
-        setvalueOtherOrganisme("Commencez à taper pour voir une liste de suggestions");
-        setisShowListFunder(false);
-        setisShowOtherOrganisme(false);
+        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
+        setIsShowListFunder(false);
+        setIsShowOtherOrg(false);
 
         break;
       case "2":
         //state
-        setContext({ ...context, ["template_id"]: null });
+        setResearchContext({ ...researchContext, ["template_id"]: null });
         //
-        setisShowListOrganizme(true);
-        setisShowOrganizme(false);
+        setIsShowListOrg(true);
+        setIsShowOrg(false);
         //condition 3
-        setorganismes(null);
-        setisShowFunder(false);
-        setvalueFunder("Commencez à taper pour voir une liste de suggestions");
-        setisShowOtherOrganisme(true);
-        setisShowListFunder(false);
+        setOrgs(null);
+        setIsShowFunder(false);
+        setValueFunder(t('Begin typing to see a list of suggestions.'));
+        setIsShowOtherOrg(true);
+        setIsShowListFunder(false);
         //condition 4
-        setvalueOtherOrganisme("Commencez à taper pour voir une liste de suggestions");
-        setisShowListFunder(false);
-        setisShowOtherOrganisme(false);
+        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
+        setIsShowListFunder(false);
+        setIsShowOtherOrg(false);
         break;
       case "3":
         //state
-        setContext({ ...context, ["template_id"]: null });
+        setResearchContext({ ...researchContext, ["template_id"]: null });
         //
-        setisShowListOrganizme(false);
-        setisShowOrganizme(false);
+        setIsShowListOrg(false);
+        setIsShowOrg(false);
         //condition 3
-        setorganismes(null);
-        setisShowFunder(false);
-        setvalueFunder("Commencez à taper pour voir une liste de suggestions");
-        setisShowOtherOrganisme(true);
-        setisShowListFunder(false);
+        setOrgs(null);
+        setIsShowFunder(false);
+        setValueFunder(t('Begin typing to see a list of suggestions.'));
+        setIsShowOtherOrg(true);
+        setIsShowListFunder(false);
         break;
       default:
         //state
-        setContext({ ...context, ["template_id"]: null });
+        setResearchContext({ ...researchContext, ["template_id"]: null });
         //
-        setisShowListOrganizme(false);
-        setisShowOrganizme(false);
+        setIsShowListOrg(false);
+        setIsShowOrg(false);
         //condition 4
-        setvalueOtherOrganisme("Commencez à taper pour voir une liste de suggestions");
-        setisShowListFunder(true);
-        setisShowOtherOrganisme(false);
+        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
+        setIsShowListFunder(true);
+        setIsShowOtherOrg(false);
         break;
     }
   };
@@ -150,10 +151,10 @@ function SecondStep() {
    * I'm using the react-select library to create a dropdown menu.
    */
   const handleChangeOtherOrganisme = (e) => {
-    getOtherOrganismeById("", e.object, context).then((res) => {
-      setorganismes(res.data.templates);
-      setisShowOrganizme(true);
-      setvalueOtherOrganisme(e.label);
+    getOtherOrganismeById("", e.object, researchContext).then((res) => {
+      setOrgs(res.data.templates);
+      setIsShowOrg(true);
+      setValueOtherOrg(e.label);
     });
   };
 
@@ -162,10 +163,10 @@ function SecondStep() {
    * ropdown and pass it to the function getFunderById.
    */
   const handleChangeFunder = (e) => {
-    getFunderById("", e.object, context).then((res) => {
+    getFunderById("", e.object, researchContext).then((res) => {
       setFunders(res.data.templates);
-      setisShowFunder(true);
-      setvalueFunder(e.label);
+      setIsShowFunder(true);
+      setValueFunder(e.label);
     });
   };
 
@@ -173,7 +174,7 @@ function SecondStep() {
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
    */
   const handleSendTemplateId = () => {
-    if (!context["template_id"]) {
+    if (!researchContext["template_id"]) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -207,11 +208,11 @@ function SecondStep() {
           </label>
 
           <div className={styles.list_organisme}>
-            {isShowListOrganizme &&
-              listOrganisme &&
-              listOrganisme.map((el) => (
+            {isShowListOrg &&
+              listOrg &&
+              listOrg.map((el) => (
                 <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                  <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
+                  <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
                   {/* <label htmlFor={el.id}>{el.title}</label> */}
                   <div className={styles.list_element}>{el.title}</div>
                 </label>
@@ -224,24 +225,24 @@ function SecondStep() {
             Autre organisme
           </label>
           <div className={styles.select}>
-            {isShowOtherOrganisme && otherOrganisme && (
+            {isShowOtherOrg && otherOrg && (
               <Select
                 menuPortalTarget={document.body}
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
-                options={otherOrganisme}
+                options={otherOrg}
                 onChange={handleChangeOtherOrganisme}
                 value={{
-                  label: valueOtherOrganisme,
-                  value: valueOtherOrganisme,
+                  label: valueOtherOrg,
+                  value: valueOtherOrg,
                 }}
               />
             )}
             <div className={styles.list_organisme}>
-              {isShowOrganizme &&
-                organismes &&
-                organismes.map((el) => (
+              {isShowOrg &&
+                orgs &&
+                orgs.map((el) => (
                   <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
+                    <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
                     <div className={styles.list_element}>{el.title}</div>
                   </label>
@@ -273,7 +274,7 @@ function SecondStep() {
                 funders &&
                 funders.map((el) => (
                   <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setContext({ ...context, ["template_id"]: el.id })} />
+                    <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
                     <div className={styles.list_element}>{el.title}</div>
                   </label>
