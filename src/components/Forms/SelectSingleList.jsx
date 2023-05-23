@@ -73,6 +73,12 @@ function SelectSingleList({
         <div className="row">
           <div className="col-md-10">
             <Select
+              menuPortalTarget={document.body}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                control: (base) => ({ ...base, borderRadius: "8px" }),
+              }}
               onChange={handleChangeList}
               options={options}
               name={propName}

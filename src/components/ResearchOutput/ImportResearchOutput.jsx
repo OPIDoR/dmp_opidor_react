@@ -12,7 +12,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function ImportSearchProduct({ planId, handleClose, show }) {
+function ImportResearchOutput({ planId, handleClose, show }) {
   const { setProductData } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [uuid, setUuid] = useState(null);
@@ -37,10 +37,8 @@ function ImportSearchProduct({ planId, handleClose, show }) {
    */
   const handleSelectPlan = (e) => {
     const planValue = e.value;
-    console.log(planValue);
     setPlan(planValue);
     getProducts(planValue, "").then((res) => {
-      console.log(res.data);
       const options = res.data.map((option) => ({
         value: option.uuid,
         label: option.title,
@@ -74,7 +72,11 @@ function ImportSearchProduct({ planId, handleClose, show }) {
         {dataPlans && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={dataPlans}
             style={{ color: "red" }}
             onChange={(e) => handleSelectPlan(e)}
@@ -91,7 +93,11 @@ function ImportSearchProduct({ planId, handleClose, show }) {
         {dataProducts && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={dataProducts}
             style={{ color: "red" }}
             onChange={(e) => handleSelectProduct(e)}
@@ -111,4 +117,4 @@ function ImportSearchProduct({ planId, handleClose, show }) {
   );
 }
 
-export default ImportSearchProduct;
+export default ImportResearchOutput;

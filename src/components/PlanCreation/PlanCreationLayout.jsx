@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Global from '../context/Global.jsx';
-import Plan from './Plan.jsx';
+import PlanCreation from './PlanCreation.jsx';
 import '../../i18n';
 
 class PlanCreationLayout extends React.Component {
   render() {
     return (
       <Global>
-        <Plan locale={this.props.locale} />
+        <PlanCreation locale={this.props.locale} />
       </Global>
     );
   }

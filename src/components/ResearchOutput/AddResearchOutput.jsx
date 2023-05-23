@@ -13,7 +13,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddSearchProduct({ planId, handleClose, show }) {
+function AddResearchOutput({ planId, handleClose, show }) {
   const { locale } = useContext(GlobalContext);
   const { t } = useTranslation();
   const { setProductData } = useContext(GlobalContext);
@@ -104,7 +104,11 @@ when the component mounts. */
         {options && (
           <Select
             menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+              control: (base) => ({ ...base, borderRadius: "8px" }),
+            }}
             options={options}
             style={{ color: "red" }}
             onChange={handleSelect}
@@ -149,4 +153,4 @@ when the component mounts. */
   );
 }
 
-export default AddSearchProduct;
+export default AddResearchOutput;

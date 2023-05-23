@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
  * displays a message to the user, and the FirstStep and SecondStep components are conditionally rendered based on the state of the firstStep and
  * secondStep variables. The handleNextStep function is used to update the state of these variables when the user clicks a
  */
-function Plan({ locale = 'en_GB' }) {
+function PlanCreation({ locale = 'en_GB' }) {
   const { t, i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
   const [firstStep, setFirstStep] = useState(true);
@@ -44,4 +44,4 @@ function Plan({ locale = 'en_GB' }) {
   );
 }
 
-export default Plan;
+export default PlanCreation;

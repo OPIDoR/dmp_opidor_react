@@ -144,6 +144,7 @@ function HandleGenerateForms({
             } else {
               data.push(
                 <ModalTemplate
+                  label={label}
                   key={key}
                   propName={key}
                   tooltip={tooltip}

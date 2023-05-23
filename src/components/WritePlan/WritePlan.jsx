@@ -10,8 +10,8 @@ import DOMPurify from "dompurify";
 import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
-import BellSVG from "../Styled/svg/BellSVG";
 import LightSVG from "../Styled/svg/LightSVG";
+import CommentSVG from "../Styled/svg/CommentSVG";
 import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
@@ -19,8 +19,10 @@ import Swal from "sweetalert2";
 import { deleteSearchProduct } from "../../services/DmpSearchProduct";
 import { showPersonnalData } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
-function Redaction({ researchOutputId, planId, hasPersonnelData }) {
+function WritePlan({ researchOutputId, planId, hasPersonnelData }) {
   const { t } = useTranslation();
   const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
@@ -149,29 +151,42 @@ Finally, it sets the loading state to false. */
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
+    console.log(researchOutputId);
+    console.log(planId);
+    console.log(initialData);
+    const index = initialData.plan.research_outputs
+      .map(function (img) {
+        return img.id;
+      })
+      .indexOf(researchOutputId);
+    console.log(index);
     e.preventDefault();
     e.stopPropagation();
-    Swal.fire({
-      title: t("Do you confirm the deletion"),
-      text: t("By deleting this search product, the associated answers will also be deleted"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Cancel"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        //delete
-        deleteSearchProduct(researchOutputId, planId).then((res) => {
-          //const objectList = { ...searchProduct };
-          //delete objectList[researchOutputId];
-          //setSearchProduct(objectList);
-          setProductData(res.data.plan.research_outputs);
-        });
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
-      }
-    });
+    if (index == 0) {
+      toast.error(t("You cannot delete the first element"));
+    } else {
+      Swal.fire({
+        title: t("Do you confirm the deletion"),
+        text: t("By deleting this search product, the associated answers will also be deleted"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: t("Cancel"),
+        confirmButtonText: t("Yes, delete!"),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //delete
+          deleteSearchProduct(researchOutputId, planId).then((res) => {
+            //const objectList = { ...searchProduct };
+            //delete objectList[researchOutputId];
+            //setSearchProduct(objectList);
+            setProductData(res.data.plan.research_outputs);
+          });
+          Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
+        }
+      });
+    }
   };
 
   return (
@@ -252,7 +267,6 @@ Finally, it sets the loading state to false. */
                       </a>
                     </div>
                   </div>
-
                   {el.questions.map((q, i) => (
                     <React.Fragment key={i}>
                       {showPersonnalData(hasPersonnelData, q) && (
@@ -266,7 +280,8 @@ Finally, it sets the loading state to false. */
                                       {el.number}.{q.number}
                                     </div>
                                     <div
-                                      style={{ marginTop: "12px", fontSize: "18px", fontWeight: "bold" }}
+                                      className={styles.panel_title}
+                                      style={{ margin: "0px !important", fontSize: "18px", fontWeight: "bold", marginRight: "10px" }}
                                       dangerouslySetInnerHTML={{
                                         __html: DOMPurify.sanitize([q.text]),
                                       }}
@@ -276,7 +291,8 @@ Finally, it sets the loading state to false. */
                                   <span className={styles.question_icons}>
                                     {/* 0 */}
                                     <div
-                                      className={styles.light_icon}
+                                      data-tooltip-id="scriptTip"
+                                      className={styles.panel_icon}
                                       onClick={(e) => {
                                         handleShowRunsClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
                                       }}
@@ -291,6 +307,7 @@ Finally, it sets the loading state to false. */
                                         }
                                       />
                                     </div>
+                                    <ReactTooltip id="scriptTip" place="bottom" effect="solid" variant="info" content={t("Script")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && showModalRuns && questionId && questionId == q.id && (
                                       <RunsModal
                                         show={showModalRuns}
@@ -300,12 +317,13 @@ Finally, it sets the loading state to false. */
                                     )}
                                     {/* 1 */}
                                     <div
-                                      className={styles.light_icon}
+                                      data-tooltip-id="commentTip"
+                                      className={styles.panel_icon}
                                       onClick={(e) => {
                                         handleShowCommentClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
                                       }}
                                     >
-                                      <LightSVG
+                                      <CommentSVG
                                         fill={
                                           isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
                                             ? fillColorIconComment
@@ -313,6 +331,7 @@ Finally, it sets the loading state to false. */
                                         }
                                       />
                                     </div>
+                                    <ReactTooltip id="commentTip" place="bottom" effect="solid" variant="info" content={t("Comment")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
                                       showModalComment &&
                                       questionId &&
@@ -330,12 +349,13 @@ Finally, it sets the loading state to false. */
                                       )}
                                     {/* 2 */}
                                     <div
-                                      className={styles.bell_icon}
+                                      data-tooltip-id="guidanceTip"
+                                      className={styles.panel_icon}
                                       onClick={(e) => {
                                         handleShowRecommandationClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
                                       }}
                                     >
-                                      <BellSVG
+                                      <LightSVG
                                         fill={
                                           isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
                                             ? fillColorIconRecommandation
@@ -343,6 +363,7 @@ Finally, it sets the loading state to false. */
                                         }
                                       />
                                     </div>
+                                    <ReactTooltip id="guidanceTip" place="bottom" effect="solid" variant="info" content={t("Recommandation")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
                                       showModalRecommandation &&
                                       questionId &&
@@ -405,4 +426,4 @@ Finally, it sets the loading state to false. */
   );
 }
 
-export default Redaction;
+export default WritePlan;

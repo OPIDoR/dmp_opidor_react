@@ -86,5 +86,12 @@
   "Indicate the context of your DMP" : "Indiquez le contexte de votre plan",
   "Research Project" : "Projet de recherche",
   "Research Structure" : "Structure de recherche",
-  "Confirm my choice" : "Valider mon choix"
+  "Confirm my choice" : "Valider mon choix",
+  "Please select your funding organization": "Veuillez sélectionner votre organisme de financement",
+  "Select project acronym, title or ID": "Sélectionnez l’acronyme, le titre ou l’identifiant du projet",
+  "Project Information": "Renseignements sur le projet",
+  "Plan Information": "Renseignements sur le plan",
+  "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
+  "You cannot delete the first element": "vous ne pouvez pas supprimer le premier élément",
+  "Selected value": "Valeur sélectionnée"
 }

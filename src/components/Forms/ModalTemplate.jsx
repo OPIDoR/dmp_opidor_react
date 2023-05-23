@@ -25,6 +25,7 @@ import styles from '../assets/css/form.module.css';
  * @returns A React component.
  */
 function ModalTemplate({
+  label,
   propName,
   value,
   templateId,
@@ -65,13 +66,8 @@ function ModalTemplate({
    */
   const handleAddToList = () => {
     if (!subData) return handleClose();
-
-    const checkForm = checkRequiredForm(template, subData);
-    if (checkForm)
-      return toast.error(
-        `Veuiller remplir le champs ${getLabelName(checkForm, template)}`
-      );
-
+    //const checkForm = checkRequiredForm(template, temp);
+    //if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, template)}`);
     if (index !== null) {
       const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
       const deleteIndex = deleteByIndex(filterDeleted, index);
@@ -145,47 +141,62 @@ function ModalTemplate({
 
   return (
     <>
-      <fieldset className="sub-fragment border p-2 mb-2">
-        <legend className="sub-fragment" data-toggle="tooltip" data-original-title={tooltip}>
-          {value[`form_label@${locale}`]}
-        </legend>
+      <div className={`p-2 mb-2`}>
+        <div className={styles.label_form}>
+          <strong className={styles.dot_label}></strong>
+          <label>{value[`form_label@${locale}`]}</label>
+          {tooltip && (
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
+          )}
+        </div>
+        <CustomButton
+          handleClick={() => {
+            handleShow(true);
+          }}
+          title={t("Add an element")}
+          type="primary"
+          position="start"
+        ></CustomButton>
         {fragmentsList && template && (
-          <table style={{ marginTop: '20px' }} className="table table-bordered">
+          <table style={{ marginTop: "20px" }} className="table">
             <thead>
               {fragmentsList.length > 0 &&
                 template &&
                 header &&
-                fragmentsList.some((el) => el.action !== 'delete') && (
+                fragmentsList.some((el) => el.action !== "delete") && (
                   <tr>
                     <th scope="col">{header}</th>
-                    <th scope="col">Actions</th>
                   </tr>
                 )}
             </thead>
             <tbody>
               {fragmentsList
-                .filter((el) => el.action !== 'delete')
+                .filter((el) => el.action !== "delete")
                 .map((el, idx) => (
                   <tr key={idx}>
-                    <td scope="row">
-                      <div dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></div>
-                    </td>
-                    <td style={{ width: "10%" }}>
-                      <div className="col-md-1">
-                        {level === 1 && (
-                          <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                              <i className="fa fa-edit" />
-                            </a>
-                          </span>
-                        )}
-                      </div>
-                      <div className="col-md-1">
-                        <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                            <i className="fa fa-times" />
-                          </a>
-                        </span>
+                    <td scope="row" style={{ width: "100%" }}>
+                      <div className={styles.border}>
+                        <div dangerouslySetInnerHTML={createMarkup(parsePatern(el, template.to_string))}></div>
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-edit" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-md-1">
+                            <span>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                <i className="fa fa-times" />
+                              </a>
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -193,17 +204,12 @@ function ModalTemplate({
             </tbody>
           </table>
         )}
-        <CustomButton
-          handleNextStep={() => {
-            handleShow(true);
-          }}
-          title={t("Add an element")}
-          type="primary"
-          position="start"
-        ></CustomButton>
-      </fieldset>
+      </div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
+        <Modal.Header>
+          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "20px !important" }}>
           <BuilderForm
             shemaObject={template}
             level={level + 1}

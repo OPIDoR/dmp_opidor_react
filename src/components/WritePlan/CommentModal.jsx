@@ -223,14 +223,13 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                 </NavBodyText>
               ))}
             </ScrollNav>
-
             <div style={{ margin: "10px" }}>
               <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>{t("Add a comment to share with collaborators")}</p>
               <EditorComment initialValue={text} updateParentText={updateParentText} />
             </div>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
-                {isUpdate ? t("Update") : t("Enregistrer")}
+                {isUpdate ? t("Update") : t("Save")}
               </ButtonComment>
             </div>
           </NavBody>
