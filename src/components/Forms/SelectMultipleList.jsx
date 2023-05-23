@@ -12,10 +12,11 @@ hooks to manage the state of the component and to fetch data from an API. It als
 deleting an item from the list. */
 
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [list, setlist] = useState([]);
   const [options, setoptions] = useState(null);
-  const { form, temp, setTemp, lng } = useContext(GlobalContext);
+  const { form, temp, setTemp } = useContext(GlobalContext);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -82,7 +83,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Cancel"),
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -118,7 +119,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                 singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px" }),
+                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
               }}
               options={options}
               name={name}

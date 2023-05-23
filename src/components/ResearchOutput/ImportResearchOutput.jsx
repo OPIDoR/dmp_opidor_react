@@ -75,7 +75,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
               singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px" }),
+              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
             }}
             options={dataPlans}
             style={{ color: "red" }}
@@ -96,7 +96,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
               singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px" }),
+              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
             }}
             options={dataProducts}
             style={{ color: "red" }}

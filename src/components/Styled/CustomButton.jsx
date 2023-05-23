@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-function CustumButton({ handleClick, title, type, position }) {
+/**
+ * This is a React component that renders a custom button with customizable properties such as title, type, and position.
+ * @returns A React functional component that renders a custom button with customizable properties such as handleClick, title, type, and position. The
+ * button is styled using CSS-in-JS with the help of the styled-components library. The component returns a div that contains a button element with an
+ * onClick event listener that triggers the handleClick function passed as a prop.
+ */
+function CustomButton({ handleClick, title, type, position }) {
   const Button =
     type === "primary"
       ? styled.button`
@@ -43,4 +49,4 @@ function CustumButton({ handleClick, title, type, position }) {
   );
 }
 
-export default CustumButton;
+export default CustomButton;

@@ -4,7 +4,7 @@ import { GlobalContext } from "../context/Global";
 import { checkRequiredForm } from "../../utils/GeneratorUtils";
 import { loadForm, loadNewForm } from "../../services/DmpServiceApi";
 import CustomSpinner from "../Shared/CustomSpinner";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 import CustomError from "../Shared/CustomError";
 import { useTranslation } from "react-i18next";
 
@@ -62,7 +62,7 @@ loading state to `false`. */
           <div className="m-4">
             <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
           </div>
-          <CustumButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustumButton>
+          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
         </div>
       )}
     </>

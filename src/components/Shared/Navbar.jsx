@@ -34,7 +34,7 @@ specific paths to tab indices, so that the correct tab is highlighted when the u
       {[
         { to: "/", svg: <InfoSVG />, text: t("Informations générales") },
         { to: "#", svg: <ReasearchSVG />, text: t("Research products") },
-        { to: "/redaction", svg: <RedactionSVG />, text: t("Rédiger") },
+        { to: "/redaction", svg: <RedactionSVG />, text: t("Redact") },
         { to: "#", svg: <ContributorSVG />, text: t("Contributors") },
         { to: "#", svg: <BudgetSVG />, text: t("Budget") },
         { to: "#", svg: <ShareSVG />, text: t("Partager") },

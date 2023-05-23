@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useReducer, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 /**
  * If the formInfo is null, remove the form from sessionStorage, otherwise return the form with the formInfo.
@@ -28,11 +27,9 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
-  const { t, i18n } = useTranslation();
   const [form, setForm] = useReducer(reducer, formLocalState || {});
   const [temp, setTemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
-  const [lng, setLng] = useState(null);
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
@@ -57,18 +54,6 @@ the latest form data for a specific product. */
     sessionStorage.setItem("form", JSON.stringify(form));
   }, [form]);
 
-  /* This `useEffect` hook is watching for changes in the `lng` variable. If `lng` changes, it retrieves the `appLanguage` value from sessionStorage using
-the key "lng". If `appLanguage` is truthy (not null, undefined, 0, false, or an empty string), it updates the `lng` state by setting it to
-`appLanguage`. Then, it sets the "lng" key in sessionStorage to the language code (the first part of the language string) of the current i18n
-language. This is essentially saving the user's language preference in sessionStorage. */
-  useEffect(() => {
-    const appLanguage = sessionStorage.getItem("lng");
-    if (appLanguage) {
-      setLng(appLanguage);
-    }
-    sessionStorage.setItem("lng", i18n.language.split("-")[0]);
-  }, [lng]);
-
   /* It's setting the searchProduct in sessionStorage. */
   useEffect(() => {
     sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
@@ -81,8 +66,6 @@ language. This is essentially saving the user's language preference in sessionSt
         setForm,
         temp,
         setTemp,
-        lng,
-        setLng,
         context,
         setContext,
         searchProduct,

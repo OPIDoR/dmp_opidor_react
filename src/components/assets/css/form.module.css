@@ -62,6 +62,9 @@ a {
   font-size: 16px;
   font-family: custumHelveticaLight;
   color: var(--primary);
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: var(--primary);
 }
 .input_label {
   margin: 10px 0px 10px 0px;

@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "../assets/css/header.module.css";
 import logo from "../assets/images/logo.png";
 import { useTranslation } from "react-i18next";
-import { GlobalContext } from "../context/Global";
 
 function Header() {
   const { t, i18n } = useTranslation();
-  const { setLng } = useContext(GlobalContext);
 
   /**
    * It changes the language of the app to the language that the user selects
@@ -14,8 +12,6 @@ function Header() {
    */
   const handleChangeL = (l) => {
     i18n.changeLanguage(l);
-    setLng(l);
-    //window.location.reload(false);
   };
   return (
     <header>

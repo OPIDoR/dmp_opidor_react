@@ -1,22 +1,28 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import HandleGenerateForms from "./HandleGenerateForms";
 
 function BuilderForm({ shemaObject, level, schemaId }) {
-  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
+  const { i18n } = useTranslation();
+  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng) => {
+      setCurrentLanguage(lng);
+    };
+    i18n.on("languageChanged", handleLanguageChanged);
+    // Clean up listener when the component is unmounted or the effect re-runs
+    return () => {
+      i18n.off("languageChanged", handleLanguageChanged);
+    };
+  }, [i18n]);
 
   /**
-   * Object destructuring
-   * If the level is 1, then set the form state to the value of the event target.
-   *  If the level is not 1, then set the objectToAdd state to the value of the
-   * event target.
-   * @param event - the event that is triggered when the input is changed
+   * The function updates a form object with a new value based on the name and value of an event target, and sets either the form or temporary state
+   * depending on the level.
    */
-  // const changeValue = (event) => {
-  //   const { name, value } = event.target;
-  //   level === 1 ? setForm({ ...form, [name]: value }) : setTemp({ ...temp, [name]: value });
-  // };
-
   const changeValue = (event) => {
     const { name, value } = event.target;
     const updatedForm = { ...form };
@@ -29,8 +35,15 @@ function BuilderForm({ shemaObject, level, schemaId }) {
    * It takes a JSON object and returns a React component
    * @returns An array of React components.
    */
-
-  return <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} schemaId={schemaId}></HandleGenerateForms>;
+  return (
+    <HandleGenerateForms
+      shemaObject={shemaObject}
+      level={level}
+      changeValue={changeValue}
+      schemaId={schemaId}
+      lng={currentLanguage}
+    ></HandleGenerateForms>
+  );
 }
 
 export default BuilderForm;

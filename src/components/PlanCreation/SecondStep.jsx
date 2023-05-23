@@ -4,7 +4,7 @@ import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrgani
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 import CircleTitle from "../Styled/CircleTitle";
 import { useTranslation } from "react-i18next";
 
@@ -230,7 +230,7 @@ function SecondStep() {
                 styles={{
                   menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                   singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                  control: (base) => ({ ...base, borderRadius: "8px" }),
+                  control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
                 }}
                 options={otherOrganisme}
                 onChange={handleChangeOtherOrganisme}
@@ -265,7 +265,7 @@ function SecondStep() {
                 styles={{
                   menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                   singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                  control: (base) => ({ ...base, borderRadius: "8px" }),
+                  control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
                 }}
                 options={listFunder}
                 onChange={handleChangeFunder}
@@ -294,7 +294,7 @@ function SecondStep() {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
         </button> */}
-        <CustumButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustumButton>
+        <CustomButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustomButton>
       </div>
     </div>
   );

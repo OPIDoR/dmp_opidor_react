@@ -10,7 +10,7 @@ import listContributor from "../../data/contributor.json";
 import TinyArea from "../Forms/TinyArea";
 import SelectInvestigator from "../Forms/SelectInvestigator";
 
-function HandleGenerateForms({ shemaObject, level, lng, changeValue, schemaId }) {
+function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng }) {
   const objectProp = shemaObject.properties;
   let data = [];
   // si type shema is an object
@@ -156,7 +156,6 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue, schemaId })
                 key={key}
                 tooltip={tooltip}
                 value={value}
-                lng={lng}
                 template={value.template_name}
                 keyValue={key}
                 level={level}

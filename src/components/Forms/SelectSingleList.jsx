@@ -4,14 +4,17 @@ import { getRegistry, getRegistryValue } from "../../services/DmpServiceApi";
 import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
+import { useTranslation } from "react-i18next";
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId }) {
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [options, setoptions] = useState(null);
-  const { form, temp, lng } = useContext(GlobalContext);
+  const { form, temp } = useContext(GlobalContext);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -73,7 +76,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                 singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px" }),
+                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
               }}
               onChange={handleChangeList}
               options={options}

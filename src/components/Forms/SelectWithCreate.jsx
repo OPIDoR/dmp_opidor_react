@@ -14,12 +14,13 @@ import { useTranslation } from "react-i18next";
 of the selected options and allows for editing and deleting of those options. The component uses hooks to manage state and makes use of external
 libraries such as React Bootstrap and SweetAlert for styling and displaying confirmation messages. */
 function SelectWithCreate({ label, registry, name, changeValue, template, keyValue, level, tooltip, header, schemaId }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
 
@@ -117,7 +118,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Cancel"),
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
       confirmButtonText: "Oui, supprimer !",
     }).then((result) => {
@@ -206,7 +207,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                 singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px" }),
+                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
               }}
               onChange={handleChangeList}
               options={options}

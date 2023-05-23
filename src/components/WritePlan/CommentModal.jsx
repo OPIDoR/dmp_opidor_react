@@ -68,7 +68,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Cancel"),
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {

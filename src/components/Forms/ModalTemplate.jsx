@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
-import CustumButton from "../Styled/CustumButton";
+import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -16,9 +16,10 @@ import { useTranslation } from "react-i18next";
  * @returns A React component.
  */
 function ModalTemplate({ label, value, template, keyValue, level, tooltip, header, schemaId }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [show, setShow] = useState(false);
-  const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
 
@@ -92,7 +93,7 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Cancel"),
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -129,14 +130,14 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
             </span>
           )}
         </div>
-        <CustumButton
+        <CustomButton
           handleClick={() => {
             handleShow(true);
           }}
           title={t("Add an element")}
           type="primary"
           position="start"
-        ></CustumButton>
+        ></CustomButton>
         {form?.[schemaId]?.[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
