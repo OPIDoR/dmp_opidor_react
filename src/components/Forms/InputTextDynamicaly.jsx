@@ -30,14 +30,18 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
   /**
    * When the addFields function is called, the setFormFields function is called with the current formFields array and a new empty string.
    */
-  const addFields = () => {
+  const addFields = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setFormFields([...formFields, ""]);
   };
 
   /**
    * If the formFields array has more than one element, then remove the element at the index specified by the index parameter.
    */
-  const removeFields = (index) => {
+  const removeFields = (e, index) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (formFields.length > 1) {
       let data = [...formFields];
       data.splice(index, 1);
@@ -60,38 +64,37 @@ function InputTextDynamicaly({ label, name, tooltip, schemaId }) {
       {formFields.map((form, index) => {
         return (
           <div key={index} style={{ margin: "10px" }}>
-            <div className="row">
-              <div className="col-md-9">
-                <input
-                  className={`form-control ${styles.input_text}`}
-                  value={form}
-                  name={name}
-                  onChange={(event) => handleFormChange(event, index)}
-                />
-              </div>
-              <div className="col-md-3">
-                <button
-                  style={{ marginRight: "4px" }}
+            <div className={styles.input_container}>
+              <input type="text" className={styles.input} value={form} name={name} onChange={(event) => handleFormChange(event, index)} />
+              {formFields.length !== 1 && (
+                <span className={styles.input_img} data-role="toggle">
+                  <a
+                    className="text-primary"
+                    type="button"
+                    href="#"
+                    onClick={(e) => removeFields(e, index)}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title={t("Delete")}
+                    style={{ marginRight: "8px" }}
+                  >
+                    <i className="fa fa-minus" aria-hidden="true" />
+                  </a>
+                </span>
+              )}
+              <span className={styles.input_img} data-role="toggle">
+                <a
+                  href="#"
+                  className="text-primary"
                   type="button"
-                  className="btn btn-primary px-3 m-2"
-                  onClick={addFields}
+                  onClick={(e) => addFields(e)}
                   data-toggle="tooltip"
                   data-placement="top"
                   title={t("Add")}
                 >
                   <i className="fa fa-plus" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger px-3 m-2"
-                  onClick={() => removeFields(index)}
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title={t("Delete")}
-                >
-                  <i className="fa fa-trash" aria-hidden="true" />
-                </button>
-              </div>
+                </a>
+              </span>
             </div>
           </div>
         );

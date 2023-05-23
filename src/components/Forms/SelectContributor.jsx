@@ -204,7 +204,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
           <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
               <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus-square" />
+                <i className="fas fa-plus" />
               </a>
             </span>
           </div>
@@ -253,7 +253,10 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
       <>
         {registerFile && (
           <Modal show={show} onHide={handleClose}>
-            <Modal.Body>
+            <Modal.Header>
+              <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ padding: "20px !important" }}>
               <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
             </Modal.Body>
             <Modal.Footer>

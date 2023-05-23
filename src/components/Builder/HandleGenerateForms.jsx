@@ -127,6 +127,7 @@ function HandleGenerateForms({ shemaObject, level, lng, changeValue, schemaId })
             } else {
               data.push(
                 <ModalTemplate
+                  label={label}
                   key={key}
                   tooltip={tooltip}
                   value={value}

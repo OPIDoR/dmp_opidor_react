@@ -142,29 +142,25 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       handleClose();
       return;
     }
-    const checkForm = checkRequiredForm(registerFile, temp);
-    if (checkForm) {
-      toast.error("Veuiller remplire le champs " + getLabelName(checkForm, registerFile));
-    } else {
-      if (index !== null) {
-        //add in update
-        const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
-        const deleteIndex = deleteByIndex(filterDeleted, index);
-        const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
-        setForm(updateFormState(form, schemaId, keyValue, concatedObject));
+    //const checkForm = checkRequiredForm(registerFile, temp);
+    if (index !== null) {
+      //add in update
+      const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
+      const deleteIndex = deleteByIndex(filterDeleted, index);
+      const concatedObject = [...deleteIndex, { ...temp, updateType: "update" }];
+      setForm(updateFormState(form, schemaId, keyValue, concatedObject));
 
-        const newList = deleteByIndex([...list], index);
-        const parsedPatern = parsePatern(temp, registerFile.to_string);
-        const copieList = [...newList, parsedPatern];
-        setlist(copieList);
-        setTemp(null);
-        handleClose();
-      } else {
-        //add in add
-        handleSave();
-      }
-      toast.success("Enregistrement a été effectué avec succès !");
+      const newList = deleteByIndex([...list], index);
+      const parsedPatern = parsePatern(temp, registerFile.to_string);
+      const copieList = [...newList, parsedPatern];
+      setlist(copieList);
+      setTemp(null);
+      handleClose();
+    } else {
+      //add in add
+      handleSave();
     }
+    toast.success("Enregistrement a été effectué avec succès !");
   };
 
   /**
@@ -224,7 +220,7 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
           <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
               <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus-square" />
+                <i className="fas fa-plus" />
               </a>
             </span>
           </div>
@@ -272,7 +268,10 @@ function SelectWithCreate({ label, registry, name, changeValue, template, keyVal
       </div>
       <>
         <Modal show={show} onHide={handleClose}>
-          <Modal.Body>
+          <Modal.Header>
+            <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ padding: "20px !important" }}>
             <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
           </Modal.Body>
           <Modal.Footer>

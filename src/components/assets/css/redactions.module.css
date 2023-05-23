@@ -36,14 +36,11 @@
   justify-content: center;
 }
 
-.light_icon {
+.panel_icon {
   color: var(--primary);
   margin: 0px 5px 0px 0px;
 }
-.bell_icon {
-  color: var(--primary);
-  margin: 0px 5px 0px 0px;
-}
+
 .down_icon {
   color: var(--orange);
 }
@@ -63,4 +60,8 @@
 .svg_size {
   height: 55px !important;
   width: 55px !important;
+}
+
+.panel_title p {
+  margin: 0 !important;
 }

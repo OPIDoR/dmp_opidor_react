@@ -23,10 +23,11 @@
 
 .funder {
   border: solid;
-  border-color: grey;
-  border-width: 1px;
-  margin: 1px 1px 10px 1px;
-  padding: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  border-width: 2px;
+  border-color: var(--primary);
+  margin: 0px 0px 20px 0px;
 }
 
 .legend {
@@ -81,4 +82,33 @@ a {
 .table_container {
   display: flex;
   margin-right: -20px;
+}
+
+.align_div {
+  display: flex;
+  align-items: center;
+}
+
+.input_container {
+  display: flex;
+  border: solid;
+  background: white;
+  border-radius: 2px 10px 10px 2px;
+  border-width: 2px;
+  border-color: var(--primary);
+}
+
+.input {
+  display: block;
+  width: calc(100% - 20px);
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+}
+
+.input_img {
+  flex-basis: 20px;
+  display: inline-block;
+  padding: 8px 10px 0px 0px;
+  cursor: pointer;
 }

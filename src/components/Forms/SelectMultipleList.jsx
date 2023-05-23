@@ -130,22 +130,31 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           </div>
         </div>
         <div style={{ margin: "20px 2px 20px 2px" }}>
-          {header && <p>{header}</p>}
-          {list &&
-            list.map((el, idx) => (
-              <div key={idx} className="row border">
-                <div className="col-md-11">
-                  <p className={`m2 ${styles.border}`}> {el} </p>
-                </div>
-                <div className="col-md-1" style={{ marginTop: "8px" }}>
-                  <span>
-                    <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                      <i className="fa fa-times" />
-                    </a>
-                  </span>
-                </div>
-              </div>
-            ))}
+          {list && (
+            <table style={{ marginTop: "0px" }} className="table">
+              <thead> {header && <p>{header}</p>}</thead>
+              <tbody>
+                {list.map((el, idx) => (
+                  <tr key={idx}>
+                    <td scope="row" style={{ width: "100%" }}>
+                      <div className={styles.border}>
+                        <div>{el} </div>
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            <span style={{ marginRight: "10px" }}>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                <i className="fa fa-times" />
+                              </a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>

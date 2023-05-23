@@ -11,6 +11,8 @@ const StyledNavBar = styled.nav`
   border-radius: 0px 0px 0px 0px;
   margin-left: 0px;
   float: left;
+  position: sticky;
+  top: 0;
 
   .navbar-nav {
     margin: 0px 0px 0px 0px;

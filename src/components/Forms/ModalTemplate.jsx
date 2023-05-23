@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
  * </code>
  * @returns A React component.
  */
-function ModalTemplate({ value, template, keyValue, level, tooltip, header, schemaId }) {
+function ModalTemplate({ label, value, template, keyValue, level, tooltip, header, schemaId }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const { form, setForm, temp, setTemp, lng } = useContext(GlobalContext);
@@ -43,8 +43,8 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
    */
   const handleAddToList = () => {
     if (!temp) return handleClose();
-    const checkForm = checkRequiredForm(registerFile, temp);
-    if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
+    //const checkForm = checkRequiredForm(registerFile, temp);
+    //if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
     if (index !== null) {
       //update
       const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");
@@ -184,13 +184,16 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
         )}
       </div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
+        <Modal.Header>
+          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "20px !important" }}>
           {keyValue === "funding" && index !== null && temp && (
             <div className={`col-md-12 ${styles.funder}`}>
               <fieldset className="sub-fragment registry">
                 <legend className={`sub-fragment registry ${styles.legend}`}>
                   Financeurs
-                  <a href="#">
+                  <a href="#" style={{ marginLeft: "10px" }}>
                     <span className="registry-info fas fa-info-circle" />
                   </a>
                 </legend>
@@ -207,21 +210,22 @@ function ModalTemplate({ value, template, keyValue, level, tooltip, header, sche
                     <span className="property-label">Type d'identifiant : </span>
                     <span className="property-value">{temp?.funder?.idType}</span>
                   </div>
-                  <fieldset className="fragment-display sub-fragment">
-                    <legend className={styles.legend}>Politique de données</legend>
-                    <div className="fragment-property">
-                      <span className="property-label">Titre : </span>
-                      <span className="property-value">{temp?.funder?.dataPolicy?.title}</span>
-                    </div>
-                    <div className="fragment-property">
-                      <span className="property-label">Identifiant : </span>
-                      <span className="property-value">{temp?.funder?.dataPolicy?.docIdentifier}</span>
-                    </div>
-                    <div className="fragment-property">
-                      <span className="property-label">Type d'identifiant : </span>
-                      <span className="property-value">{temp?.funder?.dataPolicy?.idType}</span>
-                    </div>
-                  </fieldset>
+                </div>
+              </fieldset>
+              <br></br>
+              <fieldset className="fragment-display sub-fragment">
+                <legend className={styles.legend}>Politique de données</legend>
+                <div className="fragment-property">
+                  <span className="property-label">Titre : </span>
+                  <span className="property-value">{temp?.funder?.dataPolicy?.title}</span>
+                </div>
+                <div className="fragment-property">
+                  <span className="property-label">Identifiant : </span>
+                  <span className="property-value">{temp?.funder?.dataPolicy?.docIdentifier}</span>
+                </div>
+                <div className="fragment-property">
+                  <span className="property-label">Type d'identifiant : </span>
+                  <span className="property-value">{temp?.funder?.dataPolicy?.idType}</span>
                 </div>
               </fieldset>
             </div>

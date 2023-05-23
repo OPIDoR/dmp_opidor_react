@@ -51,6 +51,7 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
               branding: false,
               height: 200,
               menubar: false,
+              statusbar: false,
               plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
