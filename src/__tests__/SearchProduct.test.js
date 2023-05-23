@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import SearchProduct from "../components/SearchProduct/SearchProduct.jsx";
+import ResearchOutputModal from "../components/ResearchOutput/ResearchOutputModal";
 import { GlobalContext } from "../components/context/Global";
 import { getTypeSearchProduct, postSearchProduct } from "../services/DmpSearchProduct";
 
@@ -12,11 +12,11 @@ const mockHandleClose = jest.fn();
 const renderSearchProduct = () =>
   render(
     <GlobalContext.Provider value={{ setProductData: jest.fn() }}>
-      <SearchProduct planId={1} handleClose={mockHandleClose} show={true} />
+      <ResearchOutputModal planId={1} handleClose={mockHandleClose} show={true} />
     </GlobalContext.Provider>
   );
 
-describe("SearchProduct component", () => {
+describe("ResearchOutputModal component", () => {
   beforeEach(() => {
     getTypeSearchProduct.mockResolvedValue({
       data: [{ fr_FR: "Type 1", en_GB: "Type 1" }],

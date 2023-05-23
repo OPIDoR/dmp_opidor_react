@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import Redaction from "../components/redaction/Redaction";
+import WritePlanLayout from "../components/WritePlan/WritePlanLayout";
 import { getQuestion } from "../services/DmpRedactionApi";
 import Global from "../components/context/Global";
 
@@ -268,7 +268,7 @@ describe("Redaction component", () => {
   test("renders without crashing", () => {
     render(
       <Global>
-        <Redaction researchId="1" planId="1" />
+        <WritePlanLayout researchId="1" planId="1" />
       </Global>
     );
   });

@@ -20,7 +20,7 @@ import { deleteSearchProduct } from "../../services/DmpSearchProduct";
 import { showPersonnalData } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
 
-function Redaction({ researchOutputId, planId, hasPersonnelData }) {
+function WritePlan({ researchOutputId, planId, hasPersonnelData }) {
   const { t } = useTranslation();
   const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
@@ -404,4 +404,4 @@ Finally, it sets the loading state to false. */
   );
 }
 
-export default Redaction;
+export default WritePlan;

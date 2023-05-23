@@ -3,7 +3,7 @@ import Banner from "../Shared/Banner";
 import Footer from "../Shared/Footer";
 import Header from "../Shared/Header";
 import Navbar from "../Shared/Navbar";
-import Redaction from "./Redaction";
+import WritePlan from "./WritePlan";
 import { BsBell } from "react-icons/bs";
 import { BsBellFill } from "react-icons/bs";
 import { BsCircle } from "react-icons/bs";
@@ -17,12 +17,12 @@ import StyledNavBar from "./styles/StyledNavBar";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import SearchProduct from "../SearchProduct/SearchProduct";
+import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
 
-function RedactionLayout() {
+function WritePlanLayout() {
   const { t } = useTranslation();
   const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -114,7 +114,7 @@ function RedactionLayout() {
       {!loading && error && <CustomError></CustomError>}
       {!loading && !error && productData && (
         <>
-          <SearchProduct planId={planId}></SearchProduct>
+          <ResearchOutputModal planId={planId}></ResearchOutputModal>
           <div className={styles.section}>
             <StyledNavBar className="navbar-inverse">
               <div className="">
@@ -222,11 +222,11 @@ function RedactionLayout() {
               </div>
             </StyledNavBar>
 
-            {show && <SearchProduct planId={planId} handleClose={handleClose} show={show}></SearchProduct>}
+            {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
 
             <div className={styles.main}>
               {researchOutputId && planId && (
-                <Redaction key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></Redaction>
+                <WritePlan key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></WritePlan>
               )}
             </div>
           </div>
@@ -237,4 +237,4 @@ function RedactionLayout() {
   );
 }
 
-export default RedactionLayout;
+export default WritePlanLayout;

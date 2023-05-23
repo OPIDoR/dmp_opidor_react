@@ -12,7 +12,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddSearchProduct({ planId, handleClose, show }) {
+function AddResearchOutput({ planId, handleClose, show }) {
   const { lng } = useContext(GlobalContext);
   const { t } = useTranslation();
   const { setProductData } = useContext(GlobalContext);
@@ -156,4 +156,4 @@ when the component mounts. */
   );
 }
 
-export default AddSearchProduct;
+export default AddResearchOutput;

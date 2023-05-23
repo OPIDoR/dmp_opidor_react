@@ -13,7 +13,7 @@ import Info from "../Styled/Info";
  * displays a message to the user, and the FirstStep and SecondStep components are conditionally rendered based on the state of the firstStep and
  * secondStep variables. The handleNextStep function is used to update the state of these variables when the user clicks a
  */
-function Plan() {
+function PlanCreation() {
   const [firstStep, setfirstStep] = useState(true);
   const [secondStep, setsecondStep] = useState(false);
 
@@ -42,4 +42,4 @@ function Plan() {
   );
 }
 
-export default Plan;
+export default PlanCreation;
