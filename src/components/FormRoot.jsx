@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import DynamicForm from './Builder/DynamicForm.jsx';
 import Global from './context/Global.jsx';
+import '../i18n';
 
 class FormRoot extends React.Component {
   render() {
