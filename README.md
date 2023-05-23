@@ -42,6 +42,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Global from "./components/context/Global";
 import { Toaster } from "react-hot-toast";
 import "./i18n";
+import "react-tooltip/dist/react-tooltip.css";
 ```
 
 - Add fontAwesome to index.html
@@ -83,7 +84,7 @@ Install the dependencies .
 npm i bootstrap@3.3.0
 npm i react-bootstrap@0.33.1
 npm i react-hot-toast sweetalert react-loader-spinner dompurify axios react-select moment
-npm install --save @tinymce/tinymce-react
+npm install --save @tinymce/tinymce-react react-tooltip
 npm i i18next i18next-browser-languagedetector i18next-http-backend react-i18next
 ```
 
