@@ -3,6 +3,7 @@ import React, {
   } from 'react';
   import PropTypes from 'prop-types';
   import toast from 'react-hot-toast';
+  import { useTranslation } from "react-i18next";
   
   import BuilderForm from './BuilderForm.jsx';
   import { GlobalContext } from '../context/Global.jsx';
@@ -14,6 +15,7 @@ import React, {
   function DynamicForm({
     fragmentId, dmpId, locale = 'en_GB',
   }) {
+    const { t, i18n } = useTranslation();
     const {
       formData, setFormData, setLocale, setdmpId,
     } = useContext(GlobalContext);
@@ -23,7 +25,10 @@ import React, {
     const [standardTemplate, setStandardTemplate] = useState(null);
     useEffect(() => {
       setLoading(true);
+      
       setLocale(locale);
+      i18n.changeLanguage(locale);
+
       setdmpId(dmpId);
       getFragment(fragmentId).then((res) => {
         setStandardTemplate(res.data.schema);
@@ -71,7 +76,7 @@ import React, {
                 fragmentId={fragmentId}
               ></BuilderForm>
             </div>
-            <CustomButton handleNextStep={handleSaveForm} title="Enregistrer" position="center"></CustomButton>
+            <CustomButton handleNextStep={handleSaveForm} title={t("Save")} position="center"></CustomButton>
           </div>
         )}
       </>
