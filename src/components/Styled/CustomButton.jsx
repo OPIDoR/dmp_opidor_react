@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function CustomButton({ handleNextStep, title, type, position }) {
+function CustomButton({ handleClick, title, type, position }) {
   const Button =
     type === "primary"
       ? styled.button`
@@ -31,12 +31,12 @@ function CustomButton({ handleNextStep, title, type, position }) {
           display: flex;
           justify-content: center;
         `;
-  const handleClick = (e) => {
-    handleNextStep(e);
+  const handleButtonAction = (e) => {
+    handleClick(e);
   };
   return (
     <DivButton>
-      <Button type="button" className="btn btn-primary" onClick={handleClick}>
+      <Button type="button" className="btn btn-primary" onClick={handleButtonAction}>
         {title}
       </Button>
     </DivButton>
