@@ -1,17 +1,19 @@
 import "./App.css";
-import Redaction from "./components/redaction/Redaction";
+import Redaction from "./components/WritePlan/WritePlan";
 import Form from "./components/Forms/Form";
-import Plan from "./components/plans/Plan";
+import PlanCreation from "./components/PlanCreation/PlanCreation";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import RedactionLayout from "./components/redaction/RedactionLayout";
+import WritePlanLayout from "./components/WritePlan/WritePlanLayout";
+import GeneralInfoLayout from "./components/GeneralInfo/GeneralInfoLayout";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<RedactionLayout />} />
+        <Route exact path="/redaction" element={<WritePlanLayout />} />
         <Route exact path="/form" element={<Form schemaId={"a"} />} />
-        <Route exact path="/plan" element={<Plan />} />
+        <Route exact path="/plan" element={<PlanCreation />} />
+        <Route exact path="/" element={<GeneralInfoLayout />} />
       </Routes>
     </Router>
   );

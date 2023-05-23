@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import Plan from "../components/plans/Plan";
+import Plan from "../components/PlanCreation/PlanCreation";
 import Global from "../components/context/Global";
 import { shallow } from "enzyme";
 

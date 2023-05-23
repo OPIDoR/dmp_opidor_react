@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import EditorComment from "../components/redaction/EditorComment";
+import EditorComment from "../components/WritePlan/EditorComment";
 import { Editor } from "@tinymce/tinymce-react";
 
 jest.mock("@tinymce/tinymce-react", () => {

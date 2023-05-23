@@ -2,7 +2,7 @@ import util from "util";
 import React from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
-import FirstStep from "../components/plans/FirstStep";
+import FirstStep from "../components/PlanCreation/FirstStep";
 import Adapter from "@cfaester/enzyme-adapter-react-18";
 import { configure } from "enzyme";
 import Global from "../components/context/Global";

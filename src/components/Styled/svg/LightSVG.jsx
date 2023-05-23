@@ -2,7 +2,7 @@ import React from "react";
 
 function LightSVG({ fill }) {
   return (
-    <svg id="light" enableBackground="new 0 0 24 24" height="47" viewBox="0 0 24 24" width="47" xmlns="http://www.w3.org/2000/svg" fill={fill}>
+    <svg id="light" enableBackground="new 0 0 24 24" height="45" viewBox="0 0 24 24" width="45" xmlns="http://www.w3.org/2000/svg" fill={fill}>
       <g>
         <path d="m13.5 24h-3c-.7 0-1.5-.6-1.5-1.8v-2.1c0-1-.5-1.9-1.3-2.6-1.8-1.4-2.7-3.4-2.7-5.6.1-3.8 3.2-6.8 6.9-6.9 1.9 0 3.7.7 5 2s2.1 3.1 2.1 5c0 2.1-.9 4.1-2.6 5.4-.9.7-1.4 1.8-1.4 2.8v2.3c0 .8-.7 1.5-1.5 1.5zm-1.5-18c-3.2 0-5.9 2.7-6 5.9 0 1.9.8 3.7 2.3 4.8 1.1.9 1.7 2.1 1.7 3.4v2.1c0 .2 0 .8.5.8h3c.3 0 .5-.2.5-.5v-2.3c0-1.3.7-2.7 1.8-3.6 1.4-1.1 2.2-2.8 2.2-4.6 0-1.6-.6-3.1-1.8-4.3-1.1-1.1-2.6-1.7-4.2-1.7z" />
       </g>

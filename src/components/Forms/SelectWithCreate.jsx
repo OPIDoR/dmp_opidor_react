@@ -147,31 +147,25 @@ function SelectWithCreate({
    */
   const handleAddToList = () => {
     if (!subData) return handleClose();
+    //const checkForm = checkRequiredForm(registerFile, temp);
+    if (index !== null) {
+      //add in update
+      const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
+      const deleteIndex = deleteByIndex(filterDeleted, index);
+      const concatedObject = [...deleteIndex, { ...subData, action: 'update' }];
+      setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
 
-    const checkForm = checkRequiredForm(template, subData);
-    if (checkForm) {
-      toast.error(
-        `Veuiller remplir le champs ${getLabelName(checkForm, template)}`,
-      );
+      const newList = deleteByIndex([...filteredList], index);
+      const parsedPattern = parsePattern(subData, template.to_string);
+      const copieList = [...newList, parsedPattern];
+      setFilteredList(copieList);
+      setSubData({});
+      handleClose();
     } else {
-      if (index !== null) {
-        //add in update
-        const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
-        const deleteIndex = deleteByIndex(filterDeleted, index);
-        const concatedObject = [...deleteIndex, { ...subData, action: 'update' }];
-        setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-
-        const newList = deleteByIndex([...filteredList], index);
-        const parsedPattern = parsePattern(subData, template.to_string);
-        const copieList = [...newList, parsedPattern];
-        setFilteredList(copieList);
-        setSubData({});
-        handleClose();
-      } else {
-        handleSave();
-      }
-      toast.success('Enregistrement a été effectué avec succès !');
+      //add in add
+      handleSave();
     }
+    toast.success("Enregistrement a été effectué avec succès !");
   };
 
   /**
@@ -210,7 +204,11 @@ function SelectWithCreate({
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <Select
               menuPortalTarget={document.body}
-              styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+              styles={{
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                control: (base) => ({ ...base, borderRadius: "8px" }),
+              }}
               onChange={handleChangeList}
               options={options}
               name={propName}
@@ -223,7 +221,7 @@ function SelectWithCreate({
           <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
               <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus-square" />
+                <i className="fas fa-plus" />
               </a>
             </span>
           </div>
@@ -234,32 +232,33 @@ function SelectWithCreate({
               {fragmentsList?.length > 0 && header && (
                 <tr>
                   <th scope="col">{header}</th>
-                  <th scope="col"></th>
                 </tr>
               )}
             </thead>
             <tbody>
               {filteredList.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row">
-                    <p className={`m-2 ${styles.border}`}> {el} </p>
-                  </td>
-                  <td style={{ width: "10%" }}>
-                    <div className="col-md-1" style={{ marginTop: "8px" }}>
-                      {level === 1 && (
-                        <span>
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                            <i className="fa fa-edit" />
-                          </a>
-                        </span>
-                      )}
-                    </div>
-                    <div className="col-md-1" style={{ marginTop: "8px" }}>
-                      <span>
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                          <i className="fa fa-times" />
-                        </a>
-                      </span>
+                  <td scope="row" style={{ width: "100%" }}>
+                    <div className={styles.border}>
+                      <div>{el} </div>
+                      <div className={styles.table_container}>
+                        <div className="col-md-1">
+                          {level === 1 && (
+                            <span>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                <i className="fa fa-edit" />
+                              </a>
+                            </span>
+                          )}
+                        </div>
+                        <div className="col-md-1">
+                          <span>
+                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                              <i className="fa fa-times" />
+                            </a>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -270,7 +269,10 @@ function SelectWithCreate({
       </fieldset>
       <>
         <Modal show={show} onHide={handleClose}>
-          <Modal.Body>
+          <Modal.Header>
+            <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ padding: "20px !important" }}>
             <BuilderForm
               shemaObject={template}
               level={level + 1}

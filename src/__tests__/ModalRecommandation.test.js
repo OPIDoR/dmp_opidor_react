@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, act, screen } from "@testing-library/react";
-import GuidanceModal from "../components/redaction/GuidanceModal";
+import GuidanceModal from "../components/WritePlan/GuidanceModal";
 import { getRecommandation } from "../services/DmpRecommandationApi";
 
 // Mock the getRecommandation function from DmpRecommandationApi
