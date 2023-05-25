@@ -23,7 +23,6 @@ function ImportResearchOutput({ planId, handleClose, show }) {
 
   useEffect(() => {
     getPlans("").then((res) => {
-      console.log(res.data);
       const options = res.data.map((option) => ({
         value: option.id,
         label: option.title,

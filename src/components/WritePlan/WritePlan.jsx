@@ -151,15 +151,11 @@ Finally, it sets the loading state to false. */
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
-    console.log(researchOutputId);
-    console.log(planId);
-    console.log(initialData);
     const index = initialData.plan.research_outputs
       .map(function (img) {
         return img.id;
       })
       .indexOf(researchOutputId);
-    console.log(index);
     e.preventDefault();
     e.stopPropagation();
     if (index == 0) {

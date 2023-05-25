@@ -14,6 +14,7 @@
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .form_margin {
@@ -114,4 +115,8 @@ a {
   display: inline-block;
   padding: 8px 10px 0px 0px;
   cursor: pointer;
+}
+
+.panel_title p {
+  margin: 0 !important;
 }

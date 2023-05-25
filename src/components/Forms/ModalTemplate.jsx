@@ -157,7 +157,7 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
                   <tr key={idx}>
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>
-                        <div dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
+                        <div className={styles.panel_title} dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
                         <div className={styles.table_container}>
                           <div className="col-md-1">
                             {level === 1 && (

@@ -47,7 +47,6 @@ specific paths to tab indices, so that the correct tab is highlighted when the u
             e.stopPropagation();
             e.preventDefault();
             setActiveTab(index);
-            console.log(index);
           }}
           className={index === activeTab ? styles.active : null}
         >

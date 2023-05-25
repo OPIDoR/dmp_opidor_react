@@ -34,6 +34,11 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
     color: "var(--white)",
   };
 
+  const style = {
+    margin: "0",
+    wordWrap: "break-word",
+  };
+
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
@@ -192,7 +197,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
               {data.map((el, idx) => (
                 <NavBodyText key={idx}>
                   <div
-                    style={{ wordWrap: "break-word" }}
+                    style={style}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([el.text]),
                     }}
