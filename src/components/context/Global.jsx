@@ -33,9 +33,10 @@ export const GlobalContext = createContext();
 function Global({ children }) {
   const [formData, setFormData] = useReducer(reducer, formLocalState || {});
   const [subData, setSubData] = useState({});
-  const [researchContext, setResearchContext] = useState({ researchContext: "research_project" });
+  const [researchContext, setResearchContext] = useState('research_project');
   const [locale, setLocale] = useState('en');
   const [dmpId, setdmpId] = useState(null);
+  const [currentOrg, setCurrentOrg] = useState({})
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
   const [plans, setPlans] = useState(null);
@@ -62,7 +63,6 @@ the key "lng". If `appLanguage` is truthy (not null, undefined, 0, false, or an 
 `appLanguage`. Then, it sets the "lng" key in sessionStorage to the language code (the first part of the language string) of the current i18n
 language. This is essentially saving the user's language preference in sessionStorage. */
   useEffect(() => {
-    console.log(locale);
     const appLanguage = sessionStorage.getItem("locale");
     if (appLanguage) {
       setLocale(appLanguage);
@@ -87,6 +87,8 @@ language. This is essentially saving the user's language preference in sessionSt
         setLocale,
         dmpId,
         setdmpId,
+        currentOrg,
+        setCurrentOrg,
         researchContext,
         setResearchContext,
         searchProduct,

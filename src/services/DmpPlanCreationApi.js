@@ -1,4 +1,22 @@
 import axios from "axios";
+import { toast } from "react-hot-toast";
+
+function createHeaders(csrf = null) {
+  if (csrf) {
+    return {
+      headers: {
+        'X-CSRF-Token': csrf,
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+}
 
 const dataDefaultModel = {
   id: 276,
@@ -158,36 +176,62 @@ const dataFunderById = {
 };
 
 /**
- * This function returns a default model data object or an error if it fails to retrieve the data.
+ * This function returns a default template data object or an error if it fails to retrieve the data.
  * @param token - The `token` parameter is not used in the `getDefaultModel` function. It is not necessary for the function to work properly.
  * @returns an object with a `data` property that contains the `dataDefaultModel` value.
  */
-export async function getDefaultModel(token) {
+export async function getDefaultTemplate() {
+  let response;
   try {
-    //const response = await axios.get(`${api_url}eac1ebae-cd6a-414c-8be6-91502c5abe7c`);
-    //return response;
-    return { data: dataDefaultModel };
+    response = await axios.get('/template_options/default', createHeaders());
   } catch (error) {
     console.error(error);
+    return error;
   }
+  return response;
 }
 
 /**
- * This function retrieves data for other organizations based on a token and context.
- * @param token - It is likely an authentication token used to access a protected API or resource. Without more context, it is difficult to determine the
- * exact purpose of the token.
- * @param context - The context parameter is likely used to specify the context or purpose for which the other organism options are being retrieved. It
- * could be a specific project or funding opportunity, for example.
- * @returns an object with a `data` property that contains the `dataOtherOrganisme` variable.
+ * This is an asynchronous function that retrieves data for an other organism by ID and name using a token and context.
+ * @param orgData - An object containing the id and name of the research organization.
+ * @param researchContext - The context parameter is a string that specifies the context in which the function is being called. It is used to determine the
+ * appropriate data to return.
+ * @returns An object with a "data" property, which contains the data for the "dataOtherOrganismeById" variable.
  */
-export async function getOtherOrganisme(token, context) {
+
+export async function getTemplatesByOrgId(orgData, researchContext) {
+  const { id, name } = orgData;
+  let response;
   try {
-    //const response = await axios.get(`/template_options?plan[research_org_id]=none&plan[funder_id]=none&plan[context]=:${context}`);
-    //return response;
-    return { data: dataOtherOrganisme };
+    response = await axios.get(
+      `/template_options?plan[research_org_id][id]=${id}&plan[research_org_id][name]=${name}&plan[research_org_id][sort_name]=${name}&plan[funder_id]=none&plan[context]=${researchContext}`
+    , createHeaders());
   } catch (error) {
     console.error(error);
+    return error;
   }
+  return response;
+}
+
+/**
+ * This function retrieves data for a funder by their ID and name.
+ * @param obj - An object containing the id and name of the funder being requested.
+ * @param context - The context parameter is a string that specifies the context in which the funder is being requested. It could be a project, a grant
+ * application, or any other relevant context.
+ * @returns An object with a "data" property that contains the dataFunderById variable.
+ */
+export async function getTemplatesByFunderId(funderData, researchContext) {
+  const { id, name } = funderData;
+  let response;
+  try {
+    response = await axios.get(
+      `/template_options?plan[research_org_id]=none&plan[funder_id][id]=${id}&plan[funder_id][name]=:funder_name&plan[funder_id][sort_name]=${name}&plan[context]=${researchContext}`
+    , createHeaders());
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
 }
 
 /**
@@ -195,14 +239,14 @@ export async function getOtherOrganisme(token, context) {
  * @param token - The `token` parameter is not used in the `getOrganisme` function. It is not necessary for the function to work properly.
  * @returns an object with a "data" property that contains the dataOrganisme variable.
  */
-export async function getOrganisme(token) {
+export async function getOrgs(researchContext) {
+  let response;
   try {
-    //const response = await axios.get(`${api_url}54f2e340-fbf3-4e1a-9e70-85cc7ecb3a13`);
-    //return response;
-    return { data: dataOrganisme };
+    response = await axios.get(`/orgs/list?context=${researchContext}&type=org`, createHeaders());
   } catch (error) {
     console.error(error);
   }
+  return response;
 }
 
 /**
@@ -210,54 +254,35 @@ export async function getOrganisme(token) {
  * @param token - The `token` parameter is not used in the `getFunder` function. It is not necessary for the function to work properly.
  * @returns an object with a "data" property that contains the value of the "dataFunder" variable.
  */
-export async function getFunder(token) {
+export async function getFunders(researchContext) {
+  let response;
   try {
-    //const response = await axios.get(`${api_url}eee52301-69a0-4d81-9b1f-3a28b563f6df`);
-    //return response;
-    return { data: dataFunder };
+    response = await axios.get(`/orgs/list?context=${researchContext}&type=funder`, createHeaders());
   } catch (error) {
     console.error(error);
   }
+  return response;
 }
 /**
- * This is an asynchronous function that retrieves data for an other organism by ID and name using a token and context.
- * @param token - It is likely an authentication token used to access a protected API endpoint or service.
- * @param obj - An object containing the id and name of the research organization.
- * @param context - The context parameter is a string that specifies the context in which the function is being called. It is used to determine the
- * appropriate data to return.
- * @returns An object with a "data" property, which contains the data for the "dataOtherOrganismeById" variable.
+ * Send choosen templateId to the back for the plan creation,
+ * Redirect to the newly created plan if necessary
+ * @param templateId identifier of the choosen template
+ * @returns 
  */
-
-export async function getOtherOrganismeById(token, obj, context) {
-  const { id, name } = obj;
+export async function createPlan(templateId) {
+  let response;
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
   try {
-    // const response = await axios.get(
-    //   `/template_options?plan[research_org_id][id]=:${id}&plan[research_org_id][name]=:${name}&plan[research_org_id][sort_name]=:${name}&plan[funder_id]=none&plan[context]=:${context}`
-    // );
-    //return response;
-    return { data: dataOtherOrganismeById };
+    response = await axios.post(`/plans`, { template_id: templateId }, createHeaders(csrf));
   } catch (error) {
-    console.error(error);
+    if (error.response) {
+      toast.error(error.response.message);
+    } else if (error.request) {
+      toast.error(error.request);
+    } else {
+      toast.error(error.message);
+    }
   }
-}
+  return response;
 
-/**
- * This function retrieves data for a funder by their ID and name.
- * @param token - It is likely an authentication token used to access a protected API endpoint or service.
- * @param obj - An object containing the id and name of the funder being requested.
- * @param context - The context parameter is a string that specifies the context in which the funder is being requested. It could be a project, a grant
- * application, or any other relevant context.
- * @returns An object with a "data" property that contains the dataFunderById variable.
- */
-export async function getFunderById(token, obj, context) {
-  const { id, name } = obj;
-  try {
-    // const response = await axios.get(
-    //   `/template_options?plan[research_org_id]=none&plan[funder_id][id]=:${id}&plan[funder_id][name]=:${name}&plan[funder_id][sort_name]=:${name}&plan[context]=:${context}`
-    // );
-    //return response;
-    return { data: dataFunderById };
-  } catch (error) {
-    console.error(error);
-  }
 }

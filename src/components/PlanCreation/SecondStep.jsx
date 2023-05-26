@@ -2,71 +2,62 @@ import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
 
-import { getDefaultModel, getFunder, getFunderById, getOrganisme, getOtherOrganisme, getOtherOrganismeById } from "../../services/DmpPlansApi";
+import {
+  getDefaultTemplate,
+  getFunders,
+  getTemplatesByFunderId,
+  getOrgs,
+  getTemplatesByOrgId,
+  createPlan
+} from "../../services/DmpPlanCreationApi";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
 import CustomButton from "../Styled/CustomButton";
 import CircleTitle from "../Styled/CircleTitle";
+import { toast } from "react-hot-toast";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
 using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
 selected template ID to the next step. */
 function SecondStep() {
   const { t } = useTranslation();
-  const { researchContext, setResearchContext } = useContext(GlobalContext);
-  const [defaultModel, setDefaultModel] = useState(null);
-  const [defaultId, setDefaultId] = useState(null);
-  const [otherOrg, setOtherOrg] = useState(null);
-  const [listFunder, setlistFunder] = useState(null);
-  const [listOrg, setListOrg] = useState(null);
-  const [isShowListOrg, setIsShowListOrg] = useState(false);
-  const [isShowOrg, setIsShowOrg] = useState(false);
-  const [isShowFunder, setIsShowFunder] = useState(false);
-  const [funders, setFunders] = useState(null);
-  const [orgs, setOrgs] = useState(null);
-  const [valueOtherOrg, setValueOtherOrg] = useState(t('Begin typing to see a list of suggestions.'));
-  const [valueFunder, setValueFunder] = useState(t('Begin typing to see a list of suggestions.'));
-  const [isShowOtherOrg, setIsShowOtherOrg] = useState(false);
-  const [isShowListFunder, setIsShowListFunder] = useState(false);
+  const { researchContext, setResearchContext, currentOrg } = useContext(GlobalContext);
+
+  const [isShowDefaultTemplate, setIsShownDefaultTemplate] = useState(true)
+  const [defaultTemplate, setDefaultTemplate] = useState(null);
+  const [defaultTemplateId, setDefaultTemplateId] = useState(null);
+
+  const [isShownMyOrg, setIsShownMyOrg] = useState(false);
+  const [myOrgTemplatesList, setMyOrgTemplatesList] = useState(null);
+
+  const [isShownOrgs, setIsShownOrgs] = useState(false);
+  const [orgsList, setOrgsList] = useState(null);
+  const [selectedOrg, setSelectedOrg] = useState(t('Begin typing to see a list of suggestions.'));
+  const [selectedOrgTemplates, setSelectedOrgTemplates] = useState(null);
+
+  const [isShownFunder, setIsShownFunder] = useState(false);
+  const [fundersList, setFundersList] = useState(null);
+  const [selectedFunder, setSelectedFunder] = useState(t('Begin typing to see a list of suggestions.'));
+  const [selectedFunderTemplates, setSelectedFunderTemplates] = useState(null);
+
+  const [selectedTemplate, setSelectedTemplate] = useState(null)
+
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    getOrganisme().then((res) => {
-      setListOrg(res.data.templates);
+    getTemplatesByOrgId(currentOrg, researchContext).then((res) => {
+      setMyOrgTemplatesList(res.data);
     });
-  }, [researchContext]);
+  }, [currentOrg, researchContext]);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    getDefaultModel().then((res) => {
-      setDefaultModel(res.data);
-      setResearchContext({ ...researchContext, template_id: res.data.id });
-      setDefaultId(res.data.id);
-    });
-  }, []);
-
-  /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
-  useEffect(() => {
-    getOtherOrganisme().then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.id,
-        label: option.sort_name,
-        object: option,
-      }));
-      setOtherOrg(options);
-    });
-  }, []);
-
-  /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
-  useEffect(() => {
-    getFunder().then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.id,
-        label: option.sort_name,
-        object: option,
-      }));
-      setlistFunder(options);
+    getDefaultTemplate().then((res) => {
+      setDefaultTemplate(res.data);
+      setResearchContext(researchContext);
+      setDefaultTemplateId(res.data.id);
+      setSelectedTemplate(res.data.id);
     });
   }, []);
 
@@ -81,68 +72,99 @@ function SecondStep() {
    */
   const handleCheckOption = (val) => {
     switch (val) {
-      case "1":
+      case "defaultTemplate":
         //state
-        setResearchContext({ ...researchContext, ["template_id"]: defaultId });
-        //
-        setIsShowListOrg(false);
-        setIsShowOrg(false);
-
-        //condition 3
-        setOrgs(null);
-        setIsShowFunder(false);
-        setValueFunder(t('Begin typing to see a list of suggestions.'));
-        setIsShowOtherOrg(true);
-        setIsShowListFunder(false);
-
-        //condition 4
-        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
-        setIsShowListFunder(false);
-        setIsShowOtherOrg(false);
+        setResearchContext(researchContext);
+        setSelectedTemplate(defaultTemplateId);
+        setIsShownDefaultTemplate(true);
+        // hide my org
+        setIsShownMyOrg(false);
+        // hide other org
+        setIsShownOrgs(false);
+        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
+        setSelectedOrgTemplates(null);
+        // hide funder
+        setIsShownFunder(false);
+        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
+        setIsShownFunder(false);
 
         break;
-      case "2":
+      case "myOrg": // my org
         //state
-        setResearchContext({ ...researchContext, ["template_id"]: null });
-        //
-        setIsShowListOrg(true);
-        setIsShowOrg(false);
-        //condition 3
-        setOrgs(null);
-        setIsShowFunder(false);
-        setValueFunder(t('Begin typing to see a list of suggestions.'));
-        setIsShowOtherOrg(true);
-        setIsShowListFunder(false);
-        //condition 4
-        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
-        setIsShowListFunder(false);
-        setIsShowOtherOrg(false);
+        setResearchContext(researchContext);
+        setSelectedTemplate(null);
+        setIsShownDefaultTemplate(false);
+        // show my org
+        setIsShownMyOrg(true);
+        // hide other org
+        setIsShownOrgs(false);
+        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
+        setSelectedOrgTemplates(null);
+        // hide funder
+        setIsShownFunder(false);
+        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
         break;
-      case "3":
+      case "orgs": // Other org
         //state
-        setResearchContext({ ...researchContext, ["template_id"]: null });
-        //
-        setIsShowListOrg(false);
-        setIsShowOrg(false);
-        //condition 3
-        setOrgs(null);
-        setIsShowFunder(false);
-        setValueFunder(t('Begin typing to see a list of suggestions.'));
-        setIsShowOtherOrg(true);
-        setIsShowListFunder(false);
+        setResearchContext(researchContext);
+        setSelectedTemplate(null);
+        setIsShownDefaultTemplate(false);
+        // hide my org
+        setIsShownMyOrg(false);
+        // show other org
+        if(!orgsList) handleFetchOrgs();
+        setIsShownOrgs(true);
+        setSelectedOrgTemplates(null);
+        // hide funder
+        setIsShownFunder(false);
+        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
+        setSelectedFunderTemplates(null);
         break;
-      default:
+      default: // Funder
         //state
-        setResearchContext({ ...researchContext, ["template_id"]: null });
-        //
-        setIsShowListOrg(false);
-        setIsShowOrg(false);
-        //condition 4
-        setValueOtherOrg(t('Begin typing to see a list of suggestions.'));
-        setIsShowListFunder(true);
-        setIsShowOtherOrg(false);
+        setResearchContext(researchContext);
+        setSelectedTemplate(null);
+        setIsShownDefaultTemplate(false);
+        // hide my org
+        setIsShownMyOrg(false);
+        // hide other org
+        setIsShownOrgs(false);
+        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
+        // show funder
+        if(!fundersList) handleFetchFunders();
+        setIsShownFunder(true);
+        setSelectedFunderTemplates(null);
         break;
     }
+  };
+
+  /**
+   * Calls ths API and fetch the orgs list according to the given context
+   */
+  const handleFetchOrgs = () => {
+    getOrgs(researchContext).then((res) => {
+      const options = res.data.map((option) => ({
+        value: option.id,
+        label: option.name,
+        object: option,
+      }));
+      setOrgsList(options);
+    });
+  };
+
+
+  /**
+   * Calls ths API and fetch the funders list according to the given context
+   */
+  const handleFetchFunders = () => {
+    getFunders(researchContext).then((res) => {
+      const options = res.data.map((option) => ({
+        value: option.id,
+        label: option.name,
+        object: option,
+      }));
+      setFundersList(options);
+    });
   };
 
   /**
@@ -150,11 +172,11 @@ function SecondStep() {
    * want to set the state of the component to the data I get from the API call.
    * I'm using the react-select library to create a dropdown menu.
    */
-  const handleChangeOtherOrganisme = (e) => {
-    getOtherOrganismeById("", e.object, researchContext).then((res) => {
-      setOrgs(res.data.templates);
-      setIsShowOrg(true);
-      setValueOtherOrg(e.label);
+  const handleSelectOrg = (e) => {
+    const orgData = e.object;
+    getTemplatesByOrgId(orgData, researchContext).then((res) => {
+      setSelectedOrg(orgData);
+      setSelectedOrgTemplates(res.data);
     });
   };
 
@@ -162,11 +184,11 @@ function SecondStep() {
    * I'm trying to get the value of the selected option from the d
    * ropdown and pass it to the function getFunderById.
    */
-  const handleChangeFunder = (e) => {
-    getFunderById("", e.object, researchContext).then((res) => {
-      setFunders(res.data.templates);
-      setIsShowFunder(true);
-      setValueFunder(e.label);
+  const handleSelectFunder = (e) => {
+    const funderData = e.object;
+    getTemplatesByFunderId(funderData, researchContext).then((res) => {
+      setSelectedFunder(funderData);
+      setSelectedFunderTemplates(res.data);
     });
   };
 
@@ -174,18 +196,24 @@ function SecondStep() {
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
    */
   const handleSendTemplateId = () => {
-    if (!researchContext["template_id"]) {
+    if (!selectedTemplate) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: t("You must choose a model"),
       });
+    } else {
+      createPlan(selectedTemplate).then((res) => {
+        window.location = `/plans/${res.data.id}`
+      }).catch((res) => {
+        toast.error(res.data.message);
+      })
     }
   };
 
   return (
     <div>
-      <CircleTitle number="2" title="Choisissez votre modèle"></CircleTitle>
+      <CircleTitle number="2" title={t('Choose your template')}></CircleTitle>
       <div className="column">
         <div className="form-check">
           <input
@@ -194,25 +222,32 @@ function SecondStep() {
             name="flexRadioDefault"
             id="flexRadioDefault1"
             defaultChecked
-            onClick={() => handleCheckOption("1")}
+            onClick={() => handleCheckOption("defaultTemplate")}
           />
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault1">
-            Modèle par défaut
+            {t('Default template')}
           </label>
-          <div className={styles.list_context}>{defaultModel && defaultModel?.title}</div>
+          {isShowDefaultTemplate &&
+            <div className={styles.list_context}>{defaultTemplate && defaultTemplate?.title}</div>
+          }
         </div>
         <div className="form-check">
-          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onClick={() => handleCheckOption("2")} />
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="flexRadioDefault" 
+            id="flexRadioDefault2" 
+            onClick={() => handleCheckOption("myOrg")} />
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
-            INRAE (votre organisme)
+            {currentOrg.name} ({t('your organisation')})
           </label>
 
           <div className={styles.list_organisme}>
-            {isShowListOrg &&
-              listOrg &&
-              listOrg.map((el) => (
+            {isShownMyOrg &&
+              myOrgTemplatesList &&
+              myOrgTemplatesList.map((el) => (
                 <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                  <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
+                  <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
                   {/* <label htmlFor={el.id}>{el.title}</label> */}
                   <div className={styles.list_element}>{el.title}</div>
                 </label>
@@ -220,12 +255,17 @@ function SecondStep() {
           </div>
         </div>
         <div className="form-check">
-          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onClick={() => handleCheckOption("3")} />
+          <input 
+            className="form-check-input" 
+            type="radio" 
+            name="flexRadioDefault" 
+            id="flexRadioDefault3" 
+            onClick={() => handleCheckOption("orgs")} />
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault3">
-            Autre organisme
+            {t('Other organisation')}
           </label>
           <div className={styles.select}>
-            {isShowOtherOrg && otherOrg && (
+            {isShownOrgs && orgsList && (
               <Select
                 menuPortalTarget={document.body}
                 styles={{
@@ -233,20 +273,20 @@ function SecondStep() {
                   singleValue: (base) => ({ ...base, color: "var(--primary)" }),
                   control: (base) => ({ ...base, borderRadius: "8px" }),
                 }}
-                options={otherOrg}
-                onChange={handleChangeOtherOrganisme}
+                options={orgsList}
+                onChange={handleSelectOrg}
                 value={{
-                  label: valueOtherOrg,
-                  value: valueOtherOrg,
+                  label: selectedOrg.name,
+                  value: selectedOrg.id,
                 }}
               />
             )}
             <div className={styles.list_organisme}>
-              {isShowOrg &&
-                orgs &&
-                orgs.map((el) => (
+              {selectedOrg &&
+                selectedOrgTemplates &&
+                selectedOrgTemplates.map((el) => (
                   <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
+                    <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
                     <div className={styles.list_element}>{el.title}</div>
                   </label>
@@ -255,12 +295,17 @@ function SecondStep() {
           </div>
         </div>
         <div className="form-check">
-          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" onClick={() => handleCheckOption("4")} />
+          <input 
+           className="form-check-input"
+           type="radio"
+           name="flexRadioDefault"
+           id="flexRadioDefault4"
+           onClick={() => handleCheckOption("funder")} />
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault4">
-            Financeur
+            {t('Funder')}
           </label>
           <div className={styles.select}>
-            {isShowListFunder && listFunder && (
+            {isShownFunder && fundersList && (
               <Select
                 menuPortalTarget={document.body}
                 styles={{
@@ -268,21 +313,21 @@ function SecondStep() {
                   singleValue: (base) => ({ ...base, color: "var(--primary)" }),
                   control: (base) => ({ ...base, borderRadius: "8px" }),
                 }}
-                options={listFunder}
-                onChange={handleChangeFunder}
+                options={fundersList}
+                onChange={handleSelectFunder}
                 value={{
-                  label: valueFunder,
-                  value: valueFunder,
+                  label: selectedFunder.name,
+                  value: selectedFunder.id,
                 }}
               />
             )}
 
             <div className={styles.list_organisme}>
-              {isShowFunder &&
-                funders &&
-                funders.map((el) => (
+              {selectedFunder &&
+                selectedFunderTemplates &&
+                selectedFunderTemplates.map((el) => (
                   <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setResearchContext({ ...researchContext, ["template_id"]: el.id })} />
+                    <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
                     {/* <label htmlFor={el.id}>{el.title}</label> */}
                     <div className={styles.list_element}>{el.title}</div>
                   </label>
@@ -295,7 +340,7 @@ function SecondStep() {
         {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
           Valider mon choix
         </button> */}
-        <CustomButton handleClick={handleSendTemplateId} title="Valider mon choix" position="start"></CustomButton>
+        <CustomButton handleClick={handleSendTemplateId} title={t("Confirm my choice")} position="start"></CustomButton>
       </div>
     </div>
   );

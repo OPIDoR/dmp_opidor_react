@@ -9,7 +9,10 @@ class PlanCreationLayout extends React.Component {
   render() {
     return (
       <Global>
-        <PlanCreation locale={this.props.locale} />
+        <PlanCreation 
+          locale={this.props.locale}
+          currentOrgId={this.props.currentOrgId} 
+          currentOrgName={this.props.currentOrgName}  />
       </Global>
     );
   }
@@ -17,5 +20,7 @@ class PlanCreationLayout extends React.Component {
 
 PlanCreationLayout.propTypes = {
   locale: PropTypes.string,
+  currentOrgId: PropTypes.number,
+  currentOrgName: PropTypes.string,
 };
 export default PlanCreationLayout;
