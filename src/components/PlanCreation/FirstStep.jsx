@@ -22,7 +22,7 @@ function FirstStep({ handleNextStep }) {
    * checkbox.
    */
   const handleCheck = (val) => {
-    setResearchContext({ researchContext: val });
+    setResearchContext(val);
   };
 
   return (
