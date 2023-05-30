@@ -67,7 +67,7 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId }) {
         return (
           <div key={index} style={{ margin: "10px" }}>
             <div className={styles.input_container}>
-              <input type="text" className={styles.input} value={form} name={name} onChange={(event) => handleFormChange(event, index)} />
+              <input type="text" className={styles.input} value={form} name={propName} onChange={(event) => handleFormChange(event, index)} />
               {formFields.length !== 1 && (
                 <span className={styles.input_img} data-role="toggle">
                   <a
