@@ -225,7 +225,7 @@ export async function getTemplatesByFunderId(funderData, researchContext) {
   let response;
   try {
     response = await axios.get(
-      `/template_options?plan[research_org_id]=none&plan[funder_id][id]=${id}&plan[funder_id][name]=:funder_name&plan[funder_id][sort_name]=${name}&plan[context]=${researchContext}`
+      `/template_options?plan[research_org_id]=none&plan[funder_id][id]=${id}&plan[funder_id][name]=${name}&plan[funder_id][sort_name]=${name}&plan[context]=${researchContext}`
     , createHeaders());
   } catch (error) {
     console.error(error);
