@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GlobalContext } from "../context/Global";
 import Banner from "../Shared/Banner";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
@@ -9,7 +8,6 @@ import Header from "../Shared/Header";
 import Navbar from "../Shared/Navbar";
 import { Panel, PanelGroup } from "react-bootstrap";
 import styles from "../assets/css/info.module.css";
-import DOMPurify from "dompurify";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
 import Select from "react-select";
@@ -29,8 +27,8 @@ export const ButtonSave = styled.button`
 `;
 
 function GeneralInfoLayout() {
-  const { t } = useTranslation();
-  const { lng } = useContext(GlobalContext);
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [dataFundingOrganization, setDataFundingOrganization] = useState([]);
   const [fundedProject, setFundedProject] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -141,7 +139,7 @@ object. */
                         styles={{
                           menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                           singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px" }),
+                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
                         }}
                         options={dataFundingOrganization}
                       />
@@ -158,7 +156,7 @@ object. */
                         styles={{
                           menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                           singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px" }),
+                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
                         }}
                         options={fundedProject}
                         style={{ color: "red" }}

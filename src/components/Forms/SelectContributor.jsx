@@ -160,9 +160,9 @@ function SelectContributor({
       text: t("Are you sure you want to delete this item?"),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: t("Cancel"),
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -209,7 +209,7 @@ function SelectContributor({
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                 singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px" }),
+                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
               }}
               onChange={handleChangeList}
               options={options}

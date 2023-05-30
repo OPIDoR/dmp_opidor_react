@@ -14,6 +14,7 @@
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .form_margin {
@@ -62,6 +63,9 @@ a {
   font-size: 16px;
   font-family: custumHelveticaLight;
   color: var(--primary);
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: var(--primary);
 }
 .input_label {
   margin: 10px 0px 10px 0px;
@@ -111,4 +115,8 @@ a {
   display: inline-block;
   padding: 8px 10px 0px 0px;
   cursor: pointer;
+}
+
+.panel_title p {
+  margin: 0 !important;
 }

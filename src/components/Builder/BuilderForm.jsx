@@ -10,11 +10,8 @@ function BuilderForm({ shemaObject, level, fragmentId }) {
   } = useContext(GlobalContext);
 
   /**
-   * Object destructuring
-   * If the level is 1, then set the form state to the value of the event target.
-   *  If the level is not 1, then set the objectToAdd state to the value of the
-   * event target.
-   * @param event - the event that is triggered when the input is changed
+   * The function updates a form object with a new value based on the name and value of an event target, and sets either the form or temporary state
+   * depending on the level.
    */
   const changeValue = (event) => {
     const { name, value } = event.target;
@@ -32,7 +29,6 @@ function BuilderForm({ shemaObject, level, fragmentId }) {
    * It takes a JSON object and returns a React component
    * @returns An array of React components.
    */
-
   return (
     <HandleGenerateForms
       shemaObject={shemaObject}

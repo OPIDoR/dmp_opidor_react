@@ -182,8 +182,8 @@ function HandleGenerateForms({
                 key={key}
                 propName={key}
                 tooltip={tooltip}
-                value={prop}
                 templateId={prop.schema_id}
+                keyValue={key}
                 level={level}
                 fragmentId={fragmentId}
               ></ModalTemplate>,
