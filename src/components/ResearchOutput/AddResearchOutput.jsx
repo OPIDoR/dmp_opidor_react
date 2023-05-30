@@ -15,7 +15,7 @@ const EndButton = styled.div`
 
 function AddResearchOutput({ planId, handleClose, show }) {
   const { locale } = useContext(GlobalContext);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { setProductData } = useContext(GlobalContext);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
@@ -107,7 +107,7 @@ when the component mounts. */
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
               singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px" }),
+              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
             }}
             options={options}
             style={{ color: "red" }}

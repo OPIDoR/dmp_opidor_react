@@ -34,7 +34,7 @@ function ModalTemplate({
   header,
   fragmentId,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [show, setShow] = useState(false);
   const { formData, setFormData, subData, setSubData, locale } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
@@ -113,9 +113,9 @@ function ModalTemplate({
       title: t("Are you sure ?"),
       text: t("Are you sure you want to delete this item?"),
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: t("Cancel"),
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -178,7 +178,7 @@ function ModalTemplate({
                   <tr key={idx}>
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>
-                        <div dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></div>
+                        <div className={styles.panel_title} dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></div>
                         <div className={styles.table_container}>
                           <div className="col-md-1">
                             {level === 1 && (

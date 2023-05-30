@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 import React, {
   createContext, useEffect, useReducer, useState,
 } from 'react';
+=======
+import React, { createContext, useEffect, useReducer, useState } from "react";
+>>>>>>> development
 
 /**
  * If the incomingFormData is null, remove the formData from localStorage,
@@ -57,19 +61,6 @@ function Global({ children }) {
     /* It's setting the form in localStorage. */
     localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
-
-  /* This `useEffect` hook is watching for changes in the `lng` variable. If `lng` changes, it retrieves the `appLanguage` value from sessionStorage using
-the key "lng". If `appLanguage` is truthy (not null, undefined, 0, false, or an empty string), it updates the `lng` state by setting it to
-`appLanguage`. Then, it sets the "lng" key in sessionStorage to the language code (the first part of the language string) of the current i18n
-language. This is essentially saving the user's language preference in sessionStorage. */
-  useEffect(() => {
-    const appLanguage = sessionStorage.getItem("locale");
-    if (appLanguage) {
-      setLocale(appLanguage);
-    } else {
-      sessionStorage.setItem("locale", locale.substring(0, 2));
-    }
-  }, [locale]);
 
   /* It's setting the searchProduct in sessionStorage. */
   useEffect(() => {

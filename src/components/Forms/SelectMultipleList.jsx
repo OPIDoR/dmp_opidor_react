@@ -17,7 +17,7 @@ function SelectMultipleList({
   header,
   fragmentId,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [list, setList] = useState([]);
   const [options, setOptions] = useState(null);
   const { formData, subData, setSubData, locale } = useContext(GlobalContext);
@@ -71,9 +71,9 @@ function SelectMultipleList({
       text: t("Are you sure you want to delete this item?"),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: t("Cancel"),
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: t("Close"),
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
@@ -109,7 +109,7 @@ function SelectMultipleList({
               styles={{
                 menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
                 singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px" }),
+                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
               }}
               options={options}
               name={propName}
