@@ -133,7 +133,7 @@ function SelectMultipleList({
                         <div className={styles.table_container}>
                           <div className="col-md-1">
                             <span style={{ marginRight: "10px" }}>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
                                 <i className="fa fa-times" />
                               </a>
                             </span>

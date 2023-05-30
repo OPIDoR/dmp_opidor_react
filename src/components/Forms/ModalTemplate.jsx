@@ -178,7 +178,7 @@ function ModalTemplate({
                   <tr key={idx}>
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>
-                        <div dangerouslySetInnerHTML={createMarkup(parsePatern(el, template.to_string))}></div>
+                        <div dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></div>
                         <div className={styles.table_container}>
                           <div className="col-md-1">
                             {level === 1 && (
@@ -191,7 +191,7 @@ function ModalTemplate({
                           </div>
                           <div className="col-md-1">
                             <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
                                 <i className="fa fa-times" />
                               </a>
                             </span>
