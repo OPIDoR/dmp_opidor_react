@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import React, {
   createContext, useEffect, useReducer, useState,
 } from 'react';
-=======
-import React, { createContext, useEffect, useReducer, useState } from "react";
->>>>>>> development
 
 /**
  * If the incomingFormData is null, remove the formData from localStorage,
