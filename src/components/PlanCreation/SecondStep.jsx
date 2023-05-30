@@ -264,35 +264,37 @@ function SecondStep() {
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault3">
             {t('Other organisation')}
           </label>
-          <div className={styles.select}>
-            {isShownOrgs && orgsList && (
-              <Select
-                menuPortalTarget={document.body}
-                styles={{
-                  menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                  singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                  control: (base) => ({ ...base, borderRadius: "8px" }),
-                }}
-                options={orgsList}
-                onChange={handleSelectOrg}
-                value={{
-                  label: selectedOrg.name,
-                  value: selectedOrg.id,
-                }}
-              />
-            )}
-            <div className={styles.list_organisme}>
-              {selectedOrg &&
-                selectedOrgTemplates &&
-                selectedOrgTemplates.map((el) => (
-                  <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
-                    {/* <label htmlFor={el.id}>{el.title}</label> */}
-                    <div className={styles.list_element}>{el.title}</div>
-                  </label>
-                ))}
+          { isShownOrgs && 
+            <div className={styles.select}>
+              {orgsList && (
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                    control: (base) => ({ ...base, borderRadius: "8px" }),
+                  }}
+                  options={orgsList}
+                  onChange={handleSelectOrg}
+                  value={{
+                    label: selectedOrg.name,
+                    value: selectedOrg.id,
+                  }}
+                />
+              )}
+              <div className={styles.list_organisme}>
+                {selectedOrg &&
+                  selectedOrgTemplates &&
+                  selectedOrgTemplates.map((el) => (
+                    <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
+                      <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
+                      {/* <label htmlFor={el.id}>{el.title}</label> */}
+                      <div className={styles.list_element}>{el.title}</div>
+                    </label>
+                  ))}
+              </div>
             </div>
-          </div>
+          }
         </div>
         <div className="form-check">
           <input 
@@ -304,36 +306,38 @@ function SecondStep() {
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault4">
             {t('Funder')}
           </label>
-          <div className={styles.select}>
-            {isShownFunder && fundersList && (
-              <Select
-                menuPortalTarget={document.body}
-                styles={{
-                  menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                  singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                  control: (base) => ({ ...base, borderRadius: "8px" }),
-                }}
-                options={fundersList}
-                onChange={handleSelectFunder}
-                value={{
-                  label: selectedFunder.name,
-                  value: selectedFunder.id,
-                }}
-              />
-            )}
+          { isShownFunder &&
+            <div className={styles.select}>
+              {fundersList && (
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                    control: (base) => ({ ...base, borderRadius: "8px" }),
+                  }}
+                  options={fundersList}
+                  onChange={handleSelectFunder}
+                  value={{
+                    label: selectedFunder.name,
+                    value: selectedFunder.id,
+                  }}
+                />
+              )}
 
-            <div className={styles.list_organisme}>
-              {selectedFunder &&
-                selectedFunderTemplates &&
-                selectedFunderTemplates.map((el) => (
-                  <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                    <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
-                    {/* <label htmlFor={el.id}>{el.title}</label> */}
-                    <div className={styles.list_element}>{el.title}</div>
-                  </label>
-                ))}
+              <div className={styles.list_organisme}>
+                {selectedFunder &&
+                  selectedFunderTemplates &&
+                  selectedFunderTemplates.map((el) => (
+                    <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
+                      <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
+                      {/* <label htmlFor={el.id}>{el.title}</label> */}
+                      <div className={styles.list_element}>{el.title}</div>
+                    </label>
+                  ))}
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
       <div className="row">
