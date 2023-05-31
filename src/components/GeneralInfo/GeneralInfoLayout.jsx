@@ -215,7 +215,28 @@ object. */
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible={true}>{projectFragmentId && <Form schemaId={"MetaStandard"}></Form>}</Panel.Body>
+              <Panel.Body collapsible={true}>
+                {projectFragmentId && (
+                  <>
+                    <div className="container" style={{ display: "flex", justifyContent: "end", marginLeft: "-110px" }}>
+                      <div className="form-check form-switch">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="flexSwitchCheckDefault"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                          Plan de test
+                        </label>
+                      </div>
+                    </div>
+                    <Form schemaId={"MetaStandard"}></Form>
+                  </>
+                )}
+              </Panel.Body>
             </Panel>
           </PanelGroup>
         </div>
