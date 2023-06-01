@@ -4,7 +4,7 @@ import Form from "./components/Forms/Form";
 import PlanCreation from "./components/PlanCreation/PlanCreation";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import WritePlanLayout from "./components/WritePlan/WritePlanLayout";
-import GeneralInfoLayout from "./components/GeneralInfo/GeneralInfoLayout";
+import GeneralInfo from "./components/GeneralInfo/GeneralInfo";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         <Route exact path="/redaction" element={<WritePlanLayout />} />
         <Route exact path="/form" element={<Form schemaId={"a"} />} />
         <Route exact path="/plan" element={<PlanCreation />} />
-        <Route exact path="/" element={<GeneralInfoLayout />} />
+        <Route exact path="/" element={<GeneralInfo />} />
       </Routes>
     </Router>
   );
