@@ -17,7 +17,7 @@ import React, {
   }) {
     const { t, i18n } = useTranslation();
     const {
-      formData, setFormData, setLocale, setdmpId,
+      formData, setFormData, setLocale, setDmpId,
     } = useContext(GlobalContext);
     const [loading, setLoading] = useState(false);
     const [error] = useState(null);
@@ -29,7 +29,7 @@ import React, {
       setLocale(locale);
       i18n.changeLanguage(locale);
 
-      setdmpId(dmpId);
+      setDmpId(dmpId);
       getFragment(fragmentId).then((res) => {
         setStandardTemplate(res.data.schema);
         setFormData({ [fragmentId]: res.data.fragment });
