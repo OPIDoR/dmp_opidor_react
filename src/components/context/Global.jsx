@@ -35,7 +35,7 @@ function Global({ children }) {
   const [subData, setSubData] = useState({});
   const [researchContext, setResearchContext] = useState('research_project');
   const [locale, setLocale] = useState('en');
-  const [dmpId, setdmpId] = useState(null);
+  const [dmpId, setDmpId] = useState(null);
   const [currentOrg, setCurrentOrg] = useState({})
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
@@ -73,7 +73,7 @@ function Global({ children }) {
         locale,
         setLocale,
         dmpId,
-        setdmpId,
+        setDmpId,
         currentOrg,
         setCurrentOrg,
         researchContext,
