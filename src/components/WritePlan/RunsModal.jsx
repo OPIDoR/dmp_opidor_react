@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getRecommandation } from "../../services/DmpRecommandationApi";
+import { getGuidance } from "../../services/DmpGuidanceApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, Description, MainNav, Close, ButtonComment, Title } from "./styles/RunsModalStyles";
@@ -29,7 +29,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
-    getRecommandation("", "")
+    getGuidance("", "")
       .then((res) => {
         setData(res.data);
       })
