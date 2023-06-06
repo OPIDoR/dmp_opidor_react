@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
-import { getRecommandation } from "../../services/DmpRecommandationApi";
+import { getGuidance } from "../../services/DmpGuidanceApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
@@ -52,7 +52,7 @@ function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecom
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
-    getRecommandation(questionId, "")
+    getGuidance(questionId, "")
       .then((res) => {
         setData(res.data);
       })

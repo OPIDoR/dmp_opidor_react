@@ -9,7 +9,7 @@ import styled from "styled-components";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import styles from "../assets/css/info.module.css";
-import { getFundedProject, getFundingOrganization, saveFunder } from "../../services/DmpGeneralInfoApi";
+import { getFundedProjects, getFunders, saveFunder } from "../../services/DmpGeneralInfoApi";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Builder/DynamicForm";
 
@@ -22,17 +22,17 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
+function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
-  const [isOpenFunder, setIsOpenFunder] = useState(false);
-  const [dataFundingOrganization, setDataFundingOrganization] = useState([]);
+  const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
+  const [funders, setFunders] = useState([]);
   const [fundedProject, setFundedProject] = useState([]);
   const [grantId, setGrantId] = useState(null);
 
-  const [isOpenProject, setIsOpenProject] = useState(true);
+  const [isOpenProjectForm, setIsOpenProjectForm] = useState(true);
 
-  const [isOpenPlan, setIsOpenPlan] = useState(true);
+  const [isOpenMetaForm, setIsOpenMetaForm] = useState(true);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -45,23 +45,24 @@ function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, l
   }, [dmpId, locale])
 
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
-component mounts, as the dependency array `[]` is empty. */
+  component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
-    getFundingOrganization().then((res) => {
+    getFunders().then((res) => {
       const options = res.data.map((option) => ({
         value: option.id,
         label: option.name,
       }));
-      setDataFundingOrganization(options);
+      setFunders(options);
     });
   }, []);
+
   /* This `useEffect` hook is fetching data for funded projects and setting the options for a `Select` component. It runs only once when the component
-mounts, as the dependency array `[]` is empty. It sets the loading state to `true` before making the API call, and then sets it to `false` after the
-API call is completed, regardless of whether it was successful or not. If there is an error during the API call, it sets the error state to the error
-object. */
+  mounts, as the dependency array `[]` is empty. It sets the loading state to `true` before making the API call, and then sets it to `false` after the
+  API call is completed, regardless of whether it was successful or not. If there is an error during the API call, it sets the error state to the error
+  object. */
   useEffect(() => {
     setLoading(true);
-    getFundedProject()
+    getFundedProjects()
       .then((res) => {
         const options = res.data["ANRProjects"].map((option) => ({
           value: option.value,
@@ -76,7 +77,7 @@ object. */
   /**
    * The function logs the value of an event and sets a grant ID to "ProjectStandard".
    */
-  const handleChangeFunder = (e) => {
+  const handleSelectFunder = (e) => {
     console.log(e.value);
     //setGrantId("ProjectStandard");
   };
@@ -84,7 +85,7 @@ object. */
   /**
    * The function `handleSaveFunder` saves a funder for a project fragment and sets the grant ID to "ProjectStandard".
    */
-  const handleSaveFunder = () => {
+  const handleSaveFunding = () => {
     saveFunder(grantId, projectFragmentId).then((res) => {
       console.log(res);
       setGrantId("ProjectStandard");
@@ -95,9 +96,15 @@ object. */
     <>
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError></CustomError>}
-      {!loading && !error && dataFundingOrganization && (
+      {!loading && !error && funders && (
         <div className="container">
-          <PanelGroup accordion id="funder-import" className={styles.panel} onClick={() => setIsOpenFunder(!isOpenFunder)} defaultActiveKey="1">
+          <PanelGroup
+            accordion
+            id="funder-import"
+            className={styles.panel}
+            onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
+            defaultActiveKey="1"
+          >
             <Panel
               eventKey={"1"}
               style={{
@@ -112,10 +119,9 @@ object. */
                     <div className={styles.question_text}>
                       <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                     </div>
-
                     <span className={styles.question_icons}>
                       {/* 3 */}
-                      {isOpenFunder ? (
+                      {isOpenFunderImport ? (
                         <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
                       ) : (
                         <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
@@ -143,7 +149,7 @@ object. */
                           singleValue: (base) => ({ ...base, color: "var(--primary)" }),
                           control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
                         }}
-                        options={dataFundingOrganization}
+                        options={funders}
                       />
                     )}
                   </div>
@@ -162,18 +168,24 @@ object. */
                         }}
                         options={fundedProject}
                         style={{ color: "red" }}
-                        onChange={(e) => handleChangeFunder(e)}
+                        onChange={(e) => handleSelectFunder(e)}
                       />
                     )}
                   </div>
-                  <ButtonSave className="btn btn-light" onClick={handleSaveFunder}>
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
                     {t("Save")}
                   </ButtonSave>
                 </div>
               </Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="project-form" className={styles.panel} onClick={() => setIsOpenProject(!isOpenProject)}>
+          <PanelGroup
+            accordion
+            id="project-form"
+            className={styles.panel}
+            onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}
+            defaultActiveKey="2"
+          >
             <Panel eventKey={"2"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
                 <Panel.Title className={styles.panel_title} toggle>
@@ -185,10 +197,10 @@ object. */
                     <span className={styles.question_icons}>
                       {/* 3 */}
 
-                      {isOpenProject ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                      ) : (
+                      {isOpenProjectForm ? (
                         <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                      ) : (
+                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                       )}
                     </span>
                   </div>
@@ -199,7 +211,13 @@ object. */
               </Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="meta-form" className={styles.panel} onClick={() => setIsOpenPlan(!isOpenPlan)}>
+          <PanelGroup
+            accordion
+            id="meta-form"
+            className={styles.panel}
+            onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}
+            defaultActiveKey="3"
+          >
             <Panel eventKey={"3"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
                 <Panel.Title toggle>
@@ -210,16 +228,31 @@ object. */
 
                     <span className={styles.question_icons}>
                       {/* 3 */}
-                      {isOpenPlan ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                      ) : (
+                      {isOpenMetaForm ? (
                         <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                      ) : (
+                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                       )}
                     </span>
                   </div>
                 </Panel.Title>
               </Panel.Heading>
               <Panel.Body collapsible={true}>
+                <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="flexSwitchCheckDefault"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                      Plan de test
+                    </label>
+                  </div>
+                </div>
                 {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} />}
               </Panel.Body>
             </Panel>
@@ -230,4 +263,4 @@ object. */
   );
 }
 
-export default GeneralInfoLayout;
+export default GeneralInfo;

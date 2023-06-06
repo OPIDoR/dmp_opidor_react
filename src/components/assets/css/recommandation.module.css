@@ -1,0 +1,16 @@
+.label_checkbox {
+  border-radius: 10px;
+  border: solid;
+  border-color: grey;
+  border-width: 1px;
+  margin: 1px 1px 1px 10px;
+  padding: 5px;
+  font-family: custumHelveticaLight;
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.label_checkbox.checked {
+  color: white;
+  background-color: var(--primary);
+}

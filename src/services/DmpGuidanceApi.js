@@ -1,17 +1,8 @@
-import React from "react";
-import { render, fireEvent, act, screen } from "@testing-library/react";
-import GuidanceModal from "../components/WritePlan/GuidanceModal";
-import { getGuidance } from "../services/DmpGuidanceApi";
+import axios from "axios";
 
-// Mock the getGuidance function from DmpGuidanceApi
-jest.mock("../services/DmpGuidanceApi", () => ({
-  getGuidance: jest.fn(),
-}));
-
-const sampleData = [
+const dataRecommendation = [
   {
     name: "Science Europe",
-    groups: {},
     annotations: [
       {
         id: 30869,
@@ -116,71 +107,20 @@ const sampleData = [
   },
 ];
 
-describe("ModalRecommandation component", () => {
-  beforeEach(() => {
-    getGuidance.mockImplementation(() => Promise.resolve({ data: sampleData }));
-  });
-
-  it("renders the component and fetches data", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
-    render(
-      <GuidanceModal
-        show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
-      />
-    );
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    // Expect tabs to be rendered with fetched data
-    expect(screen.getByText("Science Europe")).toBeInTheDocument();
-    expect(screen.getByText("CNRS")).toBeInTheDocument();
-  });
-
-  it("switches between tabs and displays content correctly", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
-    render(
-      <GuidanceModal
-        show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
-      />
-    );
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    fireEvent.click(screen.getByText("CNRS"));
-    // Expect the content of the active tab to be displayed
-    //expect(screen.getByText("<p>Afin de faciliter l'accessibilit&eacute; aux donn&eacute;es, il est recommand&eacute; d'attribuer des identifiants uniques et p&eacute;rennes.</p>")).toBeInTheDocument();
-    //expect(screen.queryByText("<p>Description g&eacute;n&eacute;rale du produit de recherche</p>")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText("Science Europe"));
-    // Expect the content of the active tab to be displayed
-    expect(screen.getByText("Description générale du produit de recherche")).toBeInTheDocument();
-    // expect(screen.queryByText("Sample description for Horizon Europe")).not.toBeInTheDocument();
-  });
-
-  it("closes the modal when clicking the close button", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
-    render(
-      <GuidanceModal
-        show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
-      />
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-    });
-
-    fireEvent.click(screen.getByText("x"));
-    expect(setShowModalRecommandation).toHaveBeenCalledWith(false);
-    expect(setFillColorIconRecommandation).toHaveBeenCalledWith("var(--primary)");
-  });
-});
+/**
+ * This function retrieves recommendations for a given question ID and token.
+ * @param questionId - The ID of the question for which the recommendation is being requested.
+ * @param token - The `token` parameter is likely an authentication token or access token that is used to authenticate the user making the API request.
+ * It is usually passed in the headers of the HTTP request to the API server.
+ * @returns An object with a "data" property that contains the data for the recommendation. The actual data is not shown in the code snippet, but it is
+ * likely stored in the "dataRecommendation" variable.
+ */
+export async function getGuidance(questionId, token) {
+  try {
+    //const response = await axios.get(`/questions/${questionId}/guidances`);
+    //return response;
+    return { data: dataRecommendation };
+  } catch (error) {
+    console.error(error);
+  }
+}

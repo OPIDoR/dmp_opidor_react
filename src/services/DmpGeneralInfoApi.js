@@ -15,7 +15,7 @@ const dataFundingOrganization = [
  * usually obtained after the user logs in and is used to verify the user's identity for subsequent requests.
  * @returns An object with a "data" property that contains the value of the "dataComent" variable.
  */
-export async function getFundingOrganization(token) {
+export async function getFunders(token) {
   try {
     //const response = await axios.get("note/");
     //return response;
@@ -26,10 +26,10 @@ export async function getFundingOrganization(token) {
 }
 /**
  * The function retrieves data on funded projects from a JSON file or API endpoint using an authentication token.
- * @param token - The `token` parameter is not used in the `getFundedProject` function. It is not necessary for the function to work properly.
+ * @param token - The `token` parameter is not used in the `getFundedProjects` function. It is not necessary for the function to work properly.
  * @returns an object with a `data` property that contains the response from the `ANRProjects.json` file.
  */
-export async function getFundedProject(token) {
+export async function getFundedProjects(token) {
   try {
     //const response = await axios.get("note/");
     //return response;
