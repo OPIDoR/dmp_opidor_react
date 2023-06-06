@@ -39,6 +39,7 @@ function WritePlan({ researchOutputId, planId, hasPersonnelData }) {
   const [data, setData] = useState(null);
   const [searchProduct, setSearchProduct] = useState(null);
   const [showProductInfo, setShowProductInfo] = useState(false);
+  const [questionGuidance, setQuestionGuidance] = useState([]);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
 promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the initialCollapse state to the result of
@@ -48,10 +49,12 @@ Finally, it sets the loading state to false. */
     setLoading(true);
     getQuestion("token")
       .then((res) => {
+        console.log(res);
         const searchProductFilter = res.data.plan.research_outputs.filter((el) => {
           return el.id === researchOutputId;
         });
         setSearchProduct(searchProductFilter[0]);
+        setQuestionGuidance(res?.data?.plan.questions_with_guidance || []);
         setInitialData(res.data);
         const result = res.data.sections;
         setData(result);
@@ -344,21 +347,25 @@ Finally, it sets the loading state to false. */
                                         ></CommentModal>
                                       )}
                                     {/* 2 */}
-                                    <div
-                                      data-tooltip-id="guidanceTip"
-                                      className={styles.panel_icon}
-                                      onClick={(e) => {
-                                        handleShowRecommandationClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
-                                      }}
-                                    >
-                                      <LightSVG
-                                        fill={
-                                          isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
-                                            ? fillColorIconRecommandation
-                                            : "var(--primary)"
-                                        }
-                                      />
-                                    </div>
+
+                                    {questionGuidance && questionGuidance.includes(q.id) && (
+                                      <div
+                                        data-tooltip-id="guidanceTip"
+                                        className={styles.panel_icon}
+                                        onClick={(e) => {
+                                          handleShowRecommandationClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
+                                        }}
+                                      >
+                                        <LightSVG
+                                          fill={
+                                            isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
+                                              ? fillColorIconRecommandation
+                                              : "var(--primary)"
+                                          }
+                                        />
+                                      </div>
+                                    )}
+
                                     <ReactTooltip id="guidanceTip" place="bottom" effect="solid" variant="info" content={t("Recommandation")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
                                       showModalRecommandation &&
@@ -371,7 +378,6 @@ Finally, it sets the loading state to false. */
                                           questionId={questionId}
                                         ></GuidanceModal>
                                       )}
-
                                     {/* 3 */}
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] ? (
                                       <TfiAngleDown

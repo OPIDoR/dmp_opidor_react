@@ -63,3 +63,15 @@ export async function getRecommendation(planId) {
     console.error(error);
   }
 }
+
+export async function postRecommandation(jsonObject, planId) {
+  try {
+    //const response = await axios.post(`/plans/${planId}/guidance_groups`, jsonObject, "config");
+    return {
+      data: [30661, 30663],
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}

@@ -14,3 +14,10 @@ a:hover {
 a:active {
   text-decoration: none;
 }
+
+.checkbox-custom-label {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  display: inline-block;
+}

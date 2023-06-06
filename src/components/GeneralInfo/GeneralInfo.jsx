@@ -118,7 +118,6 @@ function GeneralInfo() {
                     <div className={styles.question_text}>
                       <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                     </div>
-
                     <span className={styles.question_icons}>
                       {/* 3 */}
                       {isOpenFunderImport ? (
@@ -179,7 +178,13 @@ function GeneralInfo() {
               </Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="accordion-example" className={styles.panel} onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}>
+          <PanelGroup
+            accordion
+            id="accordion-example"
+            className={styles.panel}
+            onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}
+            defaultActiveKey="2"
+          >
             <Panel eventKey={"2"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
                 <Panel.Title toggle>
@@ -192,18 +197,24 @@ function GeneralInfo() {
                       {/* 3 */}
 
                       {isOpenProjectForm ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                      ) : (
                         <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                      ) : (
+                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                       )}
                     </span>
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible={true}>{true && <Form schemaId={"ProjectStandard"}></Form>}</Panel.Body>
+              <Panel.Body collapsible>{true && <Form schemaId={"ProjectStandard"}></Form>}</Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="accordion-example" className={styles.panel} onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}>
+          <PanelGroup
+            accordion
+            id="accordion-example"
+            className={styles.panel}
+            onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}
+            defaultActiveKey="3"
+          >
             <Panel eventKey={"3"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
                 <Panel.Title toggle>
@@ -215,9 +226,9 @@ function GeneralInfo() {
                     <span className={styles.question_icons}>
                       {/* 3 */}
                       {isOpenMetaForm ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                      ) : (
                         <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                      ) : (
+                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                       )}
                     </span>
                   </div>

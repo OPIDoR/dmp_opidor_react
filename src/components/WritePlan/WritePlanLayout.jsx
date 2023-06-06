@@ -36,6 +36,7 @@ function WritePlanLayout() {
   const [show, setShow] = useState(false);
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
+  const [triggerRender, setTriggerRender] = useState(0);
 
   /**
    * The function handleClose sets the state of setShow to false.
@@ -117,7 +118,7 @@ function WritePlanLayout() {
         <>
           <ResearchOutputModal planId={planId}></ResearchOutputModal>
           <div className="container">
-            <Recommandation />
+            <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
           </div>
           <div className={styles.section}>
             <StyledNavBar className="navbar-inverse">
@@ -228,7 +229,12 @@ function WritePlanLayout() {
             {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
             <div className={styles.main}>
               {researchOutputId && planId && (
-                <WritePlan key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></WritePlan>
+                <WritePlan
+                  key={renderKey + triggerRender}
+                  researchOutputId={researchOutputId}
+                  planId={planId}
+                  hasPersonnelData={hasPersonnelData}
+                ></WritePlan>
               )}
             </div>
           </div>
