@@ -9,23 +9,23 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({
-  label, type, placeholder, propName, changeValue, tooltip, hidden, isConst, fragmentId
+  label, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId
 }) {
-  const { formData, setFormData, subData } = useContext(GlobalContext);
+  const { formData, subData } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState(null);
   const [isRequired, setIsRequired] = useState(false);
 
 
   useEffect(() => {
-    setInputValue(formData?.[fragmentId]?.[propName]);
-  }, [fragmentId, propName]);
-
-  /* It's setting the state of the form to the value of the isConst variable. */
-  useEffect(() => {
-    if (isConst !== false) {
-      setFormData({ [propName]: isConst });
+    if (defaultValue !== null) {
+      setInputValue(defaultValue);
+    } else if(subData !== false ) {
+      setInputValue(subData[propName]);
+    } else {
+      console.log(formData?.[fragmentId]?.[propName]);
+      setInputValue(formData?.[fragmentId]?.[propName] || "");
     }
-  }, []);
+  }, [defaultValue, formData, fragmentId, propName]);
 
   /**
    * It takes a number, formats it to a string, and then sets the
@@ -52,13 +52,13 @@ function InputText({
       </div>
       <input
         type={type}
-        value={isConst === false ? (subData ? subData[propName] : inputValue == null ? "" : inputValue) : isConst}
+        value={inputValue}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}
         name={propName}
-        disabled={isConst === false ? false : true}
+        disabled={defaultValue === false ? false : true}
       />
     </div>
   );

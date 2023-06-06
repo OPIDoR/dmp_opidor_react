@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import { GlobalContext } from '../context/Global.jsx';
 import HandleGenerateForms from './HandleGenerateForms.jsx';
@@ -38,11 +37,5 @@ function BuilderForm({ shemaObject, level, fragmentId }) {
     ></HandleGenerateForms>
   );
 }
-
-BuilderForm.propTypes = {
-  fragmentId: PropTypes.number,
-  shemaObject: PropTypes.object,
-  level: PropTypes.number,
-};
 
 export default BuilderForm;

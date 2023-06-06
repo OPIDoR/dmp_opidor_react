@@ -66,7 +66,8 @@ function SelectWithCreate({
 
   useEffect(() => {
     setFragmentsList(formData?.[fragmentId]?.[propName] || []);
-  });
+  }, [fragmentId, propName]);
+
   useEffect(() => {
     const pattern = template.to_string;
     if (pattern && pattern.length > 0) {
