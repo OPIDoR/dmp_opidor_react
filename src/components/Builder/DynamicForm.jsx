@@ -1,37 +1,28 @@
 import React, {
     useContext, useEffect, useState,
   } from 'react';
-  import PropTypes from 'prop-types';
   import toast from 'react-hot-toast';
   import { useTranslation } from "react-i18next";
   
   import BuilderForm from './BuilderForm.jsx';
   import { GlobalContext } from '../context/Global.jsx';
-  import { checkRequiredForm, getLabelName, updateFormState } from '../../utils/GeneratorUtils';
   import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
   
-  function DynamicForm({
-    fragmentId, dmpId, locale = 'en_GB',
-  }) {
-    const { t, i18n } = useTranslation();
+  function DynamicForm({fragmentId}) {
+    const { t } = useTranslation();
     const {
-      formData, setFormData, setLocale, setDmpId,
+      formData, setFormData, 
     } = useContext(GlobalContext);
     const [loading, setLoading] = useState(false);
     const [error] = useState(null);
     // eslint-disable-next-line global-require
-    const [standardTemplate, setStandardTemplate] = useState(null);
+    const [template, setTemplate] = useState(null);
     useEffect(() => {
       setLoading(true);
-      
-      setLocale(locale);
-      i18n.changeLanguage(locale);
-
-      setDmpId(dmpId);
       getFragment(fragmentId).then((res) => {
-        setStandardTemplate(res.data.schema);
+        setTemplate(res.data.schema);
         setFormData({ [fragmentId]: res.data.fragment });
       }).catch(console.error)
         .finally(() => setLoading(false));
@@ -43,19 +34,14 @@ import React, {
      */
     const handleSaveForm = (e) => {
       e.preventDefault();
-      const checkForm = checkRequiredForm(standardTemplate, formData[fragmentId]);
-      if (checkForm) {
-        toast.error(`Veuiller remplir le champ ${getLabelName(checkForm, standardTemplate, locale)}`);
-      } else {
-        setLoading(true);
-        saveForm(fragmentId, formData[fragmentId]).then((res) => {
-          setFormData({ [fragmentId]: res.data.fragment });
-          toast.success(res.data.message);
-        }).catch((res) => {
-          toast.error(res.data.message);
-        })
-          .finally(() => setLoading(false));
-      }
+      setLoading(true);
+      saveForm(fragmentId, formData[fragmentId]).then((res) => {
+        setFormData({ [fragmentId]: res.data.fragment });
+        toast.success(res.data.message);
+      }).catch((res) => {
+        toast.error(res.data.message);
+      })
+        .finally(() => setLoading(false));
     };
   
     return (
@@ -66,12 +52,12 @@ import React, {
           </div>
         )}
         {!loading && error && <p>error</p>}
-        {!loading && !error && standardTemplate && (
+        {!loading && !error && template && (
           <div style={{ margin: '15px' }}>
             <div className="row"></div>
             <div className="m-4">
               <BuilderForm
-                shemaObject={standardTemplate}
+                shemaObject={template}
                 level={1}
                 fragmentId={fragmentId}
               ></BuilderForm>
@@ -82,12 +68,6 @@ import React, {
       </>
     );
   }
-  
-  DynamicForm.propTypes = {
-    fragmentId: PropTypes.number,
-    dmpId: PropTypes.number,
-    locale: PropTypes.string,
-  };
   
   export default DynamicForm;
   

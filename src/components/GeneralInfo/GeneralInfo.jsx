@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { BiInfoCircle } from "react-icons/bi";
-import { TfiAngleDown } from "react-icons/tfi";
-import { TfiAngleUp } from "react-icons/tfi";
+import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import Select from "react-select";
 import styled from "styled-components";
 
@@ -11,8 +10,8 @@ import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import styles from "../assets/css/info.module.css";
 import { getFundedProject, getFundingOrganization, saveFunder } from "../../services/DmpGeneralInfoApi";
-import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
+import DynamicForm from "../Builder/DynamicForm";
 
 export const ButtonSave = styled.button`+
   margin: 10px 2px 2px 0px;
@@ -26,21 +25,24 @@ export const ButtonSave = styled.button`+
 function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
+  const [isOpenFunder, setIsOpenFunder] = useState(false);
   const [dataFundingOrganization, setDataFundingOrganization] = useState([]);
   const [fundedProject, setFundedProject] = useState([]);
+  const [grantId, setGrantId] = useState(null);
+
+  const [isOpenProject, setIsOpenProject] = useState(true);
+
+  const [isOpenPlan, setIsOpenPlan] = useState(true);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isOpenFunder, setIsOpenFunder] = useState(false);
-  const [isOpenProject, setIsOpenProject] = useState(true);
-  const [isOpenPlan, setIsOpenPlan] = useState(true);
-  const [grantId, setGrantId] = useState(null);
 
   useEffect(() => {
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 
     setDmpId(dmpId);
-  }, [planId, dmpId, locale, isTestPlan])
+  }, [dmpId, locale])
 
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
 component mounts, as the dependency array `[]` is empty. */
@@ -69,7 +71,7 @@ object. */
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [locale]);
 
   /**
    * The function logs the value of an event and sets a grant ID to "ProjectStandard".
@@ -95,7 +97,7 @@ object. */
       {!loading && error && <CustomError></CustomError>}
       {!loading && !error && dataFundingOrganization && (
         <div className="container">
-          <PanelGroup accordion id="accordion-example" className={styles.panel} onClick={() => setIsOpenFunder(!isOpenFunder)} defaultActiveKey="1">
+          <PanelGroup accordion id="funder-import" className={styles.panel} onClick={() => setIsOpenFunder(!isOpenFunder)} defaultActiveKey="1">
             <Panel
               eventKey={"1"}
               style={{
@@ -171,10 +173,10 @@ object. */
               </Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="accordion-example" className={styles.panel} onClick={() => setIsOpenProject(!isOpenProject)}>
+          <PanelGroup accordion id="project-form" className={styles.panel} onClick={() => setIsOpenProject(!isOpenProject)}>
             <Panel eventKey={"2"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-                <Panel.Title toggle>
+                <Panel.Title className={styles.panel_title} toggle>
                   <div className={styles.question_title}>
                     <div className={styles.question_text}>
                       <div className={styles.title}>{t("Project Information")}</div>
@@ -192,10 +194,12 @@ object. */
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible={true}>{grantId && <Form schemaId={grantId}></Form>}</Panel.Body>
+              <Panel.Body collapsible={true}>
+                {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} />}
+              </Panel.Body>
             </Panel>
           </PanelGroup>
-          <PanelGroup accordion id="accordion-example" className={styles.panel} onClick={() => setIsOpenPlan(!isOpenPlan)}>
+          <PanelGroup accordion id="meta-form" className={styles.panel} onClick={() => setIsOpenPlan(!isOpenPlan)}>
             <Panel eventKey={"3"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
                 <Panel.Title toggle>
@@ -215,7 +219,9 @@ object. */
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible={true}>{projectFragmentId && <Form schemaId={"MetaStandard"}></Form>}</Panel.Body>
+              <Panel.Body collapsible={true}>
+                {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} />}
+              </Panel.Body>
             </Panel>
           </PanelGroup>
         </div>

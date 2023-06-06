@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-syntax */
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../Forms/InputText';
@@ -17,6 +16,7 @@ function HandleGenerateForms({
   shemaObject, level, changeValue, fragmentId,
 }) {
   const { locale, dmpId } = useContext(GlobalContext);
+  console.log(locale);
   if (!shemaObject) return false;
   const properties = shemaObject.properties;
   const data = [];
@@ -26,7 +26,7 @@ function HandleGenerateForms({
     for (const [key, prop] of Object.entries(properties)) {
       const label = prop[`form_label@${locale}`];
       const tooltip = prop[`tooltip@${locale}`];
-      const isConst = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : false;
+      const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
       // condition 1
       if (prop.type === 'string' || prop.type === 'number') {
         // Condition 1.1
@@ -82,7 +82,7 @@ function HandleGenerateForms({
               changeValue={changeValue}
               hidden={prop.hidden ? true : false}
               tooltip={tooltip}
-              isConst={isConst}
+              defaultValue={defaultValue}
               fragmentId={fragmentId}
             ></InputText>,
           );
@@ -230,12 +230,5 @@ function HandleGenerateForms({
   }
   return data;
 }
-
-HandleGenerateForms.propTypes = {
-  level: PropTypes.number,
-  shemaObject: PropTypes.object,
-  changeValue: PropTypes.func,
-  fragmentId: PropTypes.number,
-};
 
 export default HandleGenerateForms;
