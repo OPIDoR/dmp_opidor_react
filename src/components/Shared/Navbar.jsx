@@ -18,7 +18,7 @@ function Navbar() {
   // A map of paths to tab indices:
   const pathMap = {
     "/": 0,
-    "/redaction": 2,
+    "/redaction": 1,
   };
 
   /* This code is using the `useEffect` hook to update the active tab in the navbar based on the current path in the URL. It listens for changes to the
@@ -33,7 +33,6 @@ specific paths to tab indices, so that the correct tab is highlighted when the u
     <ul id="plan_navigation" className={`nav nav-tabs ${styles.plan_navigation}`} role="tablist">
       {[
         { to: "/", svg: <InfoSVG />, text: t("Informations générales") },
-        { to: "#", svg: <ReasearchSVG />, text: t("Research products") },
         { to: "/redaction", svg: <RedactionSVG />, text: t("Redact") },
         { to: "#", svg: <ContributorSVG />, text: t("Contributors") },
         { to: "#", svg: <BudgetSVG />, text: t("Budget") },

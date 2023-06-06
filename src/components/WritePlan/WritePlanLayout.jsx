@@ -21,6 +21,7 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
+import Recommandation from "./Recommandation";
 
 function WritePlanLayout() {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ function WritePlanLayout() {
   const [show, setShow] = useState(false);
   const [hasPersonnelData, setHasPersonnelData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
+  const [triggerRender, setTriggerRender] = useState(0);
 
   /**
    * The function handleClose sets the state of setShow to false.
@@ -115,6 +117,9 @@ function WritePlanLayout() {
       {!loading && !error && productData && (
         <>
           <ResearchOutputModal planId={planId}></ResearchOutputModal>
+          <div className="container">
+            <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
+          </div>
           <div className={styles.section}>
             <StyledNavBar className="navbar-inverse">
               <div className="">
@@ -221,12 +226,15 @@ function WritePlanLayout() {
                 </div>
               </div>
             </StyledNavBar>
-
             {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
-
             <div className={styles.main}>
               {researchOutputId && planId && (
-                <WritePlan key={renderKey} researchOutputId={researchOutputId} planId={planId} hasPersonnelData={hasPersonnelData}></WritePlan>
+                <WritePlan
+                  key={renderKey + triggerRender}
+                  researchOutputId={researchOutputId}
+                  planId={planId}
+                  hasPersonnelData={hasPersonnelData}
+                ></WritePlan>
               )}
             </div>
           </div>

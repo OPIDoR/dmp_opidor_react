@@ -15,9 +15,9 @@ function ResearchOutputModal({ planId, handleClose, show }) {
 
   return (
     <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+      {/* <Modal.Header closeButton>
         <Modal.Title>{t("Research Product")}</Modal.Title>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body style={{ padding: "20px !important" }}>
         <div className={`col-md-12 ${styles.funder}`}>
           <fieldset className="sub-fragment registry">
