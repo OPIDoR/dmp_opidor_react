@@ -9,18 +9,18 @@ import React, {
   import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
+  import styles from '../assets/css/form.module.css'
   
   function DynamicForm({fragmentId}) {
     const { t } = useTranslation();
     const {
       formData, setFormData, 
     } = useContext(GlobalContext);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error] = useState(null);
     // eslint-disable-next-line global-require
     const [template, setTemplate] = useState(null);
     useEffect(() => {
-      setLoading(true);
       getFragment(fragmentId).then((res) => {
         setTemplate(res.data.schema);
         setFormData({ [fragmentId]: res.data.fragment });
@@ -35,6 +35,7 @@ import React, {
     const handleSaveForm = (e) => {
       e.preventDefault();
       setLoading(true);
+      console.log(formData[fragmentId]);
       saveForm(fragmentId, formData[fragmentId]).then((res) => {
         setFormData({ [fragmentId]: res.data.fragment });
         toast.success(res.data.message);
@@ -47,8 +48,9 @@ import React, {
     return (
       <>
         {loading && (
-          <div className="overlay">
+          <div className={styles.overlay}>
             <CustomSpinner></CustomSpinner>
+            <span style={{ alignSelf: "end" }}>{t('Loading...')}</span>
           </div>
         )}
         {!loading && error && <p>error</p>}
@@ -62,7 +64,7 @@ import React, {
                 fragmentId={fragmentId}
               ></BuilderForm>
             </div>
-            <CustomButton handleNextStep={handleSaveForm} title={t("Save")} position="center"></CustomButton>
+            <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
           </div>
         )}
       </>

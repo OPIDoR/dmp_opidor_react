@@ -38,6 +38,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(locale);
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 
@@ -188,7 +189,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
           >
             <Panel eventKey={"2"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
               <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-                <Panel.Title className={styles.panel_title} toggle>
+                <Panel.Title className={styles.panel_title} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }} toggle>
                   <div className={styles.question_title}>
                     <div className={styles.question_text}>
                       <div className={styles.title}>{t("Project Information")}</div>
