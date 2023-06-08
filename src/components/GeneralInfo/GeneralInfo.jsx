@@ -38,7 +38,6 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log(locale);
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 

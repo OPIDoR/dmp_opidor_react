@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const NewsItem = ({ news }) => (
   <article className='news-item'>
@@ -11,13 +10,5 @@ const NewsItem = ({ news }) => (
   </article>
 );
 
-NewsItem.propTypes = {
-  news: PropTypes.shape({
-    title: PropTypes.string,
-    date: PropTypes.string,
-    link: PropTypes.string,
-    thumbnail: PropTypes.object,
-  }),
-};
 
 export default NewsItem;
