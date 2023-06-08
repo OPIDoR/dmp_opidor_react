@@ -9,7 +9,7 @@ import React, {
   import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
-  import styles from '../assets/css/form.module.css'
+  import styles from '../assets/css/overlay.module.css';
   
   function DynamicForm({fragmentId}) {
     const { t } = useTranslation();
