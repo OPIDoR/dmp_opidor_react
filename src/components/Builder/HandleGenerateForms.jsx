@@ -73,6 +73,7 @@ function HandleGenerateForms({
           data.push(
             <InputText
               key={key}
+              level={level}
               label={label}
               type={prop.format ? prop.format : prop.type}
               placeholder={''}

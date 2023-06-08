@@ -13,7 +13,6 @@
   "Close": "Fermer",
   "Choose plan": "Choisir plan",
   "Choose product": "Choisir produit",
-  "Close": "Fermer",
   "Collapse all": "Tout réduire",
   "Confidentiality": "Confidentialité",
   "Contact": "Contact",
@@ -101,5 +100,6 @@
   "Selected value": "Valeur sélectionnée",
   "Save my choise": "Enregistrer mon choix",
   "Select the guidance of your plan": "Sélectionnez les recommandations de votre plan",
-  "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations.": " Pour vous aider à rédiger votre plan, DMP OPIDoR vous propose des recommandations provenant de différents organismes - vous pouvez sélectionner jusqu’à 6 organismes."
+  "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations.": " Pour vous aider à rédiger votre plan, DMP OPIDoR vous propose des recommandations provenant de différents organismes - vous pouvez sélectionner jusqu’à 6 organismes.",
+  "Loading...": "Chargement ..."
 }

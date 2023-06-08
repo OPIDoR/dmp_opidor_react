@@ -9,21 +9,20 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({
-  label, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId
+  label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId
 }) {
   const { formData, subData } = useContext(GlobalContext);
-  const [inputValue, setInputValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
   const [isRequired, setIsRequired] = useState(false);
 
 
   useEffect(() => {
     if (defaultValue !== null) {
       setInputValue(defaultValue);
-    } else if(subData !== false ) {
-      setInputValue(subData[propName]);
-    } else {
-      console.log(formData?.[fragmentId]?.[propName]);
+    } else if (level === 1) {
       setInputValue(formData?.[fragmentId]?.[propName] || "");
+    } else {
+      setInputValue(subData[propName]);
     }
   }, [defaultValue, formData, fragmentId, propName]);
 
@@ -58,7 +57,7 @@ function InputText({
         placeholder={placeholder}
         onChange={handleChangeInput}
         name={propName}
-        disabled={defaultValue === false ? false : true}
+        // disabled={defaultValue === false ? false : true}
       />
     </div>
   );
