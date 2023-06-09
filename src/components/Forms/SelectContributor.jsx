@@ -29,6 +29,7 @@ function SelectContributor({
   const [selectObject, setSelectObject] = useState([]);
   const {
     formData, setFormData, subData, setSubData, locale, dmpId,
+    loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -53,25 +54,30 @@ function SelectContributor({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getSchema(templateId).then((res) => {
-      setRole(res.properties.role[`const@${locale}`]);
-      const personTemplateId = res.properties.person.schema_id;
-      setTemplate(personTemplateId);
-      getSchema(personTemplateId).then((resSchema) => {
-        setTemplate(resSchema.data);
+    if(!loadedTemplates[templateId]) {
+      getSchema(templateId).then((res) => {
+        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+        setRole(res.properties.role[`const@${locale}`]);
+        const personTemplateId = res.properties.person.schema_id;
+        getSchema(personTemplateId).then((resSchema) => {
+          setTemplate(resSchema.data);
+          setLoadedTemplates({...loadedTemplates, [personTemplateId] : res.data});
+        });
       });
+    } else {
+      const contributorTemplate = loadedTemplates[templateId];
+      const personTemplateId = contributorTemplate.properties.person.schema_id;
+      setTemplate(loadedTemplates[personTemplateId]);
+    }
 
-      if (!contributorList) {
-        return;
-      }
-      const pattern = res.to_string;
-      if (!pattern.length) {
-        return;
-      }
+    if (!contributorList || !template) return;
+    const pattern = template.to_string;
+    if (!pattern) {
+      return;
+    }
 
-      setList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
-    });
-  }, [formData[propName], templateId]);
+    setList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
+  }, [templateId]);
 
   /**
    * It closes the modal and resets the state of the modal.

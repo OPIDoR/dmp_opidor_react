@@ -14,15 +14,15 @@ import React, {
   function DynamicForm({fragmentId}) {
     const { t } = useTranslation();
     const {
-      formData, setFormData, 
+      formData, setFormData, loadedTemplates, setLoadedTemplates,
     } = useContext(GlobalContext);
     const [loading, setLoading] = useState(true);
     const [error] = useState(null);
-    // eslint-disable-next-line global-require
     const [template, setTemplate] = useState(null);
     useEffect(() => {
       getFragment(fragmentId).then((res) => {
         setTemplate(res.data.schema);
+        setLoadedTemplates({...loadedTemplates, [res.data.fragment.schema_id] : res.data.schema});
         setFormData({ [fragmentId]: res.data.fragment });
       }).catch(console.error)
         .finally(() => setLoading(false));

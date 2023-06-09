@@ -35,32 +35,38 @@ function SelectWithCreate({
   const [filteredList, setFilteredList] = useState([]);
   const {
     formData, setFormData, subData, setSubData, locale,
+    loadedRegistries, setLoadedRegistries, loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    getSchema(templateId).then((res) => {
-      setTemplate(res.data);
-    });
-  }, [templateId, formData]);
+    if(!loadedTemplates[templateId]) {
+      getSchema(templateId).then((res) => {
+        setTemplate(res.data);
+        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+      });
+    } else {
+      setTemplate(loadedTemplates[templateId]);
+    }
+  }, [templateId]);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    console.log(registryId, loadedRegistries);
+    if(loadedRegistries[registryId]) {
+      setOptions(createOptions(loadedRegistries[registryId], locale));
+    } else {
       getRegistry(registryId)
         .then((res) => {
+          setLoadedRegistries({...loadedRegistries, [registryId]: res.data});
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
           // handle errors
         });
-      return () => {
-        isMounted = false;
-      };
     }
   }, [registryId, locale]);
 
@@ -195,11 +201,16 @@ function SelectWithCreate({
 
   return (
     <>
-      <fieldset className="sub-fragment registry">
-        <legend className="sub-fragment" data-toggle="tooltip" data-original-title={tooltip}>
+      <div className="form-group">
+        <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          {label}
-        </legend>
+          <label>{label}</label>
+          {tooltip && (
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
+          )}
+        </div>
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row col-md-12">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
@@ -267,7 +278,7 @@ function SelectWithCreate({
             </tbody>
           </table>
         )}
-      </fieldset>
+      </div>
       <>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header>

@@ -13,7 +13,9 @@ function SelectSingleList({
   label, propName, changeValue, tooltip, registryId, fragmentId, registryType
 }) {
   const [options, setOptions] = useState([{value:'', label:''}]);
-  const { formData, subData, locale } = useContext(GlobalContext);
+  const { 
+    formData, subData, locale, loadedRegistries, setLoadedRegistries 
+  } = useContext(GlobalContext);
   const [error, setError] = useState(null);
 
   let value = registryType === 'complex' ? {} : '';
@@ -28,18 +30,18 @@ function SelectSingleList({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    console.log(registryId, loadedRegistries);
+    if(loadedRegistries[registryId]) {
+      setOptions(createOptions(loadedRegistries[registryId], locale));
+    } else {
       getRegistry(registryId)
         .then((res) => {
+          setLoadedRegistries({...loadedRegistries, [registryId]: res.data});
           setOptions(createOptions(res.data, locale));
         })
-        .catch((err) => {
-          setError(err);
+        .catch((error) => {
+          // handle errors
         });
-      return () => {
-        isMounted = false;
-      };
     }
   }, [registryId, locale]);
 
