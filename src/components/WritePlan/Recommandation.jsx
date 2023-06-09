@@ -10,6 +10,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import CustomError from "../Shared/CustomError";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const pannelTitle = {
   margin: "0px !important",
@@ -39,6 +40,13 @@ const pannelStyle = {
   fontSize: "large",
   borderRadius: "20px",
   boxShadow: "5px 5px 5px #e5e4e7",
+};
+
+const description = {
+  fontFamily: "custumHelveticaLight",
+  color: "var(--secondary)",
+  fontSize: "16px",
+  margin: "10px 150px 0px 150px",
 };
 
 function Recommandation({ planId, setTriggerRender }) {
@@ -109,16 +117,21 @@ API using the `getRecommendation` function and update the component state with t
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
   const handleSaveChoise = () => {
-    // add this to reload the WhritePlan component
-    setTriggerRender((prevState) => prevState + 1);
-    postRecommandation(idsRecommandations, planId)
-      .then((res) => {
-        console.log(res);
-      })
-      .then(() => {
-        setTriggerRender((prevState) => prevState + 1);
-        console.log(idsRecommandations);
-      });
+    if (idsRecommandations.length > 0) {
+      // add this to reload the WhritePlan component
+      setTriggerRender((prevState) => prevState + 1);
+      postRecommandation(idsRecommandations, planId)
+        .then((res) => {
+          console.log(res);
+        })
+        .then(() => {
+          setTriggerRender((prevState) => prevState + 1);
+          console.log(idsRecommandations);
+          toast.success(t("Registration was successful !"));
+        });
+    } else {
+      toast.error(t("Please select at least one recommendation"));
+    }
   };
 
   return (
@@ -152,7 +165,7 @@ API using the `getRecommendation` function and update the component state with t
         </Panel.Heading>
         {true && (
           <Panel.Body collapsible>
-            <div style={{ margin: "10px 180px 0px 180px" }}>
+            <div style={description}>
               <div>
                 {t(
                   "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations."
@@ -189,7 +202,10 @@ API using the `getRecommendation` function and update the component state with t
                               onChange={() => handleNestedCheckboxChange(key, value.id)}
                               id={`flexCheckNested${value.id}`}
                             />
-                            <label className="form-check-label" htmlFor={`flexCheckNested${value.id}`}>
+                            <label
+                              className={`form-check-label ${stylesRecomandation.title_group_recommandation}`}
+                              htmlFor={`flexCheckNested${value.id}`}
+                            >
                               {value.name}
                             </label>
                           </div>

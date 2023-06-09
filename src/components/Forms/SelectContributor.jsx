@@ -113,7 +113,7 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
     } else {
       handleSave();
     }
-    toast.success("Enregistrement a été effectué avec succès !");
+    toast.success(t("Registration was successful !"));
     setTemp(null);
     handleClose();
   };

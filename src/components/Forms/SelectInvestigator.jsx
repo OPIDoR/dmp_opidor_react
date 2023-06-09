@@ -98,7 +98,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
     } else {
       handleSave();
     }
-    toast.success("Enregistrement a été effectué avec succès !");
+    toast.success(t("Registration was successful !"));
     setTemp(null);
     handleClose();
   };
