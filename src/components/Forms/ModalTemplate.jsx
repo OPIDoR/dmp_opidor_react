@@ -36,15 +36,22 @@ function ModalTemplate({
 }) {
   const { t, i18n } = useTranslation();
   const [show, setShow] = useState(false);
-  const { formData, setFormData, subData, setSubData, locale } = useContext(GlobalContext);
+  const { 
+    formData, setFormData, subData, setSubData, locale, loadedTemplates, setLoadedTemplates,
+  } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([])
 
   const [template, setTemplate] = useState(null);
   useEffect(() => {
-    getSchema(templateId).then((res) => {
-      setTemplate(res.data);
-    });
+    if(!loadedTemplates[templateId]) {
+      getSchema(templateId).then((res) => {
+        setTemplate(res.data);
+        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+      });
+    } else {
+      setTemplate(loadedTemplates[templateId]);
+    }
   }, [templateId]);
 
   useEffect(() => {

@@ -23,6 +23,7 @@ function SelectInvestigator({
   const [options, setOptions] = useState(null);
   const {
     formData, setFormData, subData, setSubData, locale, dmpId,
+    loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
@@ -32,7 +33,7 @@ function SelectInvestigator({
 
   useEffect(() => {
     setInvestigator(formData?.[fragmentId]?.[propName])
-  });
+  }, [fragmentId, propName]);
 
   useEffect(() => {
     const pattern = template.to_string;
@@ -55,24 +56,29 @@ function SelectInvestigator({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    getSchema(templateId).then((res) => {
-      const resTemplate = res.data;
-      setRole(resTemplate.properties.role[`const@${locale}`]);
-      setTemplate(resTemplate);
-      const subTemplateId = resTemplate.properties.person.schema_id;
-      setRole(resTemplate.properties.role[`const@${locale}`]);
-      getSchema(subTemplateId).then((resSubTemplate) => {
-        setTemplate(resSubTemplate.data);
-        if (!investigator) {
-          return;
-        }
-        const pattern = resSubTemplate.data.to_string;
-        if (!pattern.length) {
-          return;
-        }
-        setSelectedValue(parsePattern(investigator.person, pattern));
+    if(!loadedTemplates[templateId]) {
+      getSchema(templateId).then((res) => {
+        const contributorTemplate = res.data
+        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+        setRole(contributorTemplate.properties.role[`const@${locale}`]);
+        const personTemplateId = contributorTemplate.properties.person.schema_id;
+        getSchema(personTemplateId).then((resSchema) => {
+          setTemplate(resSchema.data);
+          setLoadedTemplates({...loadedTemplates, [personTemplateId] : res.data});
+        });
       });
-    });
+    } else {
+      const contributorTemplate = loadedTemplates[templateId];
+      const personTemplateId = contributorTemplate.properties.person.schema_id;
+      setTemplate(loadedTemplates[personTemplateId]);
+    }
+    if (!investigator || !template) return;
+    const pattern = template.to_string;
+    console.log(template);
+    if (!pattern) {
+      return;
+    }
+    setSelectedValue(parsePattern(investigator.person, pattern));
   }, [templateId]);
 
   /**

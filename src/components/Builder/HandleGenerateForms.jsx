@@ -16,7 +16,6 @@ function HandleGenerateForms({
   shemaObject, level, changeValue, fragmentId,
 }) {
   const { locale, dmpId } = useContext(GlobalContext);
-  console.log(locale);
   if (!shemaObject) return false;
   const properties = shemaObject.properties;
   const data = [];

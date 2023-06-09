@@ -31,17 +31,22 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
-  const [formData, setFormData] = useReducer(reducer, formLocalState || {});
-  const [subData, setSubData] = useState({});
-  const [researchContext, setResearchContext] = useState('research_project');
   const [locale, setLocale] = useState('en');
   const [dmpId, setDmpId] = useState(null);
+  // Plan Creation
+  const [researchContext, setResearchContext] = useState('research_project');
   const [currentOrg, setCurrentOrg] = useState({})
+  // Dynamic form
+  const [formData, setFormData] = useReducer(reducer, formLocalState || {});
+  const [subData, setSubData] = useState({});
+  const [loadedRegistries, setLoadedRegistries] = useState({});
+  const [loadedTemplates, setLoadedTemplates] = useState({});
+  // Write Plan
   const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
   const [productId, setproductId] = useState(null);
-  const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
   const [productData, setProductData] = useState(null);
+
 
   useEffect(() => {
     if (productId) {
@@ -66,24 +71,29 @@ function Global({ children }) {
   return (
     <GlobalContext.Provider
       value={{
-        formData,
-        setFormData,
-        subData,
-        setSubData,
         locale,
         setLocale,
         dmpId,
         setDmpId,
+        // Plan Creation
         currentOrg,
         setCurrentOrg,
         researchContext,
         setResearchContext,
+        // Dynamic form
+        formData,
+        setFormData,
+        subData,
+        setSubData,
+        loadedRegistries,
+        setLoadedRegistries,
+        loadedTemplates,
+        setLoadedTemplates,
+        // Write Plan
         searchProduct,
         setSearchProduct,
         productId,
         setproductId,
-        plans,
-        setPlans,
         isCollapsed,
         setIsCollapsed,
         productData,

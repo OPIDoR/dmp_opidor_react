@@ -7,6 +7,7 @@ import DOMPurify from "dompurify";
  * @returns The value of the key in the object.
  */
 export function parsePattern(data, keys) {
+  if(keys.length === 0) return JSON.stringify(data);
   //https://www.measurethat.net/Benchmarks/Show/2335/1/slice-vs-substr-vs-substring-with-no-end-index
   const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
   return keys
