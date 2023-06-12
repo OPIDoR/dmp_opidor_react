@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Select from 'react-select';
 import { getRegistry } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  label, propName, changeValue, tooltip, registryId, fragmentId, registryType
+  label, propName, changeValue, tooltip, level, registryId, fragmentId, registryType
 }) {
   const [options, setOptions] = useState([{value:'', label:''}]);
   const { 
@@ -18,13 +18,14 @@ function SelectSingleList({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
 
-  let value = registryType === 'complex' ? {} : '';
-  if (subData) {
-    value = subData?.[propName] || value;
-  } else if (formData) {
-    value = formData?.[fragmentId]?.[propName] || value;
+  let value;
+  const nullValue  = registryType === 'complex' ? {} : '';
+  if (level === 1) {
+    value = formData?.[fragmentId]?.[propName] || nullValue;
+  } else {
+    value = subData?.[propName] || nullValue;
   }
-  const selectedOption = options.find((opt) => opt.value == value);
+  const selectedOption = options.find((opt) => opt.value === value);
   /*
   A hook that is called when the component is mounted.
   It is used to set the options of the select list.
@@ -74,17 +75,11 @@ function SelectSingleList({
         </div>
         <div className="row">
           <div className="col-md-10">
-            <Select
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
+            <CustomSelect
               onChange={handleChangeList}
               options={options}
               name={propName}
-              value={selectedOption}
+              selectedOption={selectedOption}
             />
           </div>
         </div>

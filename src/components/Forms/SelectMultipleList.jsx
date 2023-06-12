@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +6,7 @@ import { GlobalContext } from '../context/Global.jsx';
 import { getRegistry } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectMultipleList({
   label,
@@ -106,13 +106,8 @@ function SelectMultipleList({
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-12 ${styles.select_wrapper}`}>
-            <Select
+            <CustomSelect
               onChange={handleChangeList}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
               options={options}
               name={propName}
               defaultValue={{
