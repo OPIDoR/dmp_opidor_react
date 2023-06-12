@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Select from 'react-select';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
@@ -7,16 +6,15 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from '../context/Global.jsx';
 import {
-  checkRequiredForm,
   createOptions,
   deleteByIndex,
-  getLabelName,
   parsePattern,
   updateFormState,
 } from '../../utils/GeneratorUtils';
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { getRegistry, getSchema } from '../../services/DmpServiceApi';
 import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectWithCreate({
   label,
@@ -214,13 +212,7 @@ function SelectWithCreate({
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row col-md-12">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
-            <Select
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
+            <CustomSelect
               onChange={handleChangeList}
               options={options}
               name={propName}

@@ -3,11 +3,11 @@ import { Panel, PanelGroup } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { BiInfoCircle } from "react-icons/bi";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import Select from "react-select";
 import styled from "styled-components";
 
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
+import CustomSelect from "../Shared/CustomSelect";
 import styles from "../assets/css/info.module.css";
 import { getFundedProjects, getFunders, saveFunder } from "../../services/DmpGeneralInfoApi";
 import { GlobalContext } from "../context/Global";
@@ -142,13 +142,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
                       <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
                     </div>
                     {[] && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                        }}
+                      <CustomSelect
                         options={funders}
                       />
                     )}
@@ -159,15 +153,8 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
                       <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
                     </div>
                     {[] && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                        }}
+                      <CustomSelect
                         options={fundedProject}
-                        style={{ color: "red" }}
                         onChange={(e) => handleSelectFunder(e)}
                       />
                     )}

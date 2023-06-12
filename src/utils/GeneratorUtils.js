@@ -147,12 +147,17 @@ export function updateFormState(formData, fragmentId, propName, newObject) {
   };
 }
 
-
+/**
+ * This function reformats registry values for the select
+ * @param registryValues : the values of the registry
+ * @param locale : the form locale
+ * @returns a formatted list of values with an empty line for react select
+ */
 export function createOptions(registryValues, locale) {
   let options = registryValues.map((option) => {
-    const {label, ...optionValue} = option;
+    const {label, value, ...optionValue} = option;
     return {
-      value: label ? label[locale] : optionValue[locale],
+      value: value ? value : optionValue[locale],
       label: label ? label[locale] : optionValue[locale],
       object: optionValue,
     }

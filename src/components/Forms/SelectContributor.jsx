@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import Select from 'react-select';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
@@ -10,6 +9,7 @@ import { deleteByIndex, parsePattern, updateFormState } from '../../utils/Genera
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getSchema } from '../../services/DmpServiceApi';
 import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectContributor({
   label,
@@ -210,13 +210,7 @@ function SelectContributor({
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
-            <Select
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
+            <CustomSelect
               onChange={handleChangeList}
               options={options}
               name={propName}
