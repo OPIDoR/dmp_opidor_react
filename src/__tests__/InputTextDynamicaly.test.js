@@ -5,6 +5,7 @@ import { mount } from "enzyme";
 
 import Adapter from "@cfaester/enzyme-adapter-react-18";
 import { configure } from "enzyme";
+import i18n from "../i18nTest";
 configure({ adapter: new Adapter() });
 
 let shemaObject = {

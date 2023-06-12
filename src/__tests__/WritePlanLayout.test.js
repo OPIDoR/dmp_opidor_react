@@ -4,6 +4,8 @@ import WritePlanLayout from "../components/WritePlan/WritePlanLayout";
 import { getQuestion } from "../services/DmpRedactionApi";
 import { GlobalContext } from "../components/context/Global";
 import "@testing-library/jest-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import i18n from "../i18nTest";
 
 // Mock the getQuestion function from DmpRedactionApi
 jest.mock("../services/DmpRedactionApi", () => ({
@@ -40,14 +42,15 @@ describe("WritePlanLayout", () => {
   });
 
   it("renders the component and fetches data", async () => {
-    render(
-      <GlobalContext.Provider value={globalState}>
-        <WritePlanLayout />
-      </GlobalContext.Provider>
-    );
-
+    // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      render(
+        <Router>
+          <GlobalContext.Provider value={globalState}>
+            <WritePlanLayout />
+          </GlobalContext.Provider>
+        </Router>
+      );
     });
 
     // Expect loading spinner to be removed
@@ -58,14 +61,15 @@ describe("WritePlanLayout", () => {
   });
 
   it("handles pagination and tab changes correctly", async () => {
-    render(
-      <GlobalContext.Provider value={globalState}>
-        <WritePlanLayout />
-      </GlobalContext.Provider>
-    );
-
+    // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      render(
+        <Router>
+          <GlobalContext.Provider value={globalState}>
+            <WritePlanLayout />
+          </GlobalContext.Provider>
+        </Router>
+      );
     });
 
     // Click on the second tab (RO2)

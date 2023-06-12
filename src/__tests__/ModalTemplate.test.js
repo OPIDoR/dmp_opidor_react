@@ -1,7 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
 import HandleGenerateForms from "../components/Builder/HandleGenerateForms";
 import Global from "../components/context/Global";
+import i18n from "../i18nTest";
 
 let shemaObject = {
   $schema: "http://json-schema.org/draft-07/schema#",
@@ -38,17 +40,23 @@ let shemaObject = {
 };
 
 describe("Handle Generate TextArea", () => {
-  it("should render input elements correctly", () => {
+  it("should render input elements correctly", async () => {
     const level = 1;
     const lng = "fr";
     const changeValue = jest.fn();
     //GlobalContext.Provider value={temp}
-    render(
-      <Global>
-        <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
-      </Global>
-    );
-    expect(screen.getByText("Coûts liés au stockage et à la sauvegarde des données")).toBeInTheDocument();
-    expect(screen.getByText("Ajouter un élément")).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      render(
+        <Global>
+          <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
+        </Global>
+      );
+    });
+    await waitFor(() => {
+      expect(screen.getByText("Coûts liés au stockage et à la sauvegarde des données")).toBeInTheDocument();
+      // eslint-disable-next-line testing-library/no-wait-for-multiple-assertions
+      expect(screen.getByText("Add an element")).toBeInTheDocument();
+    });
   });
 });

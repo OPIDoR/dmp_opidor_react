@@ -1,9 +1,11 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen, act } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
 import WritePlanLayout from "../components/WritePlan/WritePlanLayout";
 import { getQuestion } from "../services/DmpRedactionApi";
 import Global from "../components/context/Global";
+import i18n from "../i18nTest";
 
 jest.mock("../services/DmpRedactionApi.js");
 
@@ -203,11 +205,11 @@ const mockSectionsData = {
     },
   ],
   plan: {
-    id: 1234,
+    id: 8888,
     dmp_id: 9876,
     research_outputs: [
       {
-        id: 1234,
+        id: 9999,
         abbreviation: "Output 1",
         answers: {
           12347: {
@@ -253,9 +255,9 @@ const mockSectionsData = {
         },
       },
     ],
+    questions_with_guidance: [30661, 30662],
   },
 };
-
 describe("Redaction component", () => {
   beforeEach(() => {
     getQuestion.mockResolvedValue(mockSectionsData);
@@ -265,35 +267,16 @@ describe("Redaction component", () => {
     jest.clearAllMocks();
   });
 
-  test("renders without crashing", () => {
-    render(
-      <Global>
-        <WritePlanLayout researchId="1" planId="1" />
-      </Global>
-    );
+  test("renders without crashing", async () => {
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act(async () => {
+      render(
+        <Router>
+          <Global>
+            <WritePlanLayout />
+          </Global>
+        </Router>
+      );
+    });
   });
-
-  // test("displays questions when data is fetched", async () => {
-  //   render(
-  //     <Global>
-  //       <Redaction researchId="1" planId="1" />
-  //     </Global>
-  //   );
-  //   await screen.findByText("1.1 Description générale du produit de recherche");
-  //   expect(screen.getByText("1.1")).toBeInTheDocument();
-  //   expect(screen.getByText("1.2")).toBeInTheDocument();
-  // });
-
-  // test("toggles question panel when clicked", async () => {
-  //   render(
-  //     <Global>
-  //       <Redaction researchId="1" planId="1" />
-  //     </Global>
-  //   );
-  //   await screen.findByText("1. Section 1");
-  //   const panelTitle = screen.getByText("1.1");
-  //   fireEvent.click(panelTitle);
-  //   await screen.findByText("Question 1");
-  //   fireEvent.click(panelTitle);
-  // });
 });
