@@ -7,7 +7,7 @@ import styles from "../assets/css/form.module.css";
  * It's a function that takes in a bunch of props and returns a div with a label, an input, and a small tag.
  * @returns A React Component
  */
-function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst, schemaId }) {
+function InputText({ label, type, placeholder, name, changeValue, tooltip, hidden, isConst, schemaId, readonly }) {
   const { form, setForm, temp } = useContext(GlobalContext);
   const [text, settext] = useState(null);
   const [isRequired, setisRequired] = useState(false);
@@ -55,7 +55,7 @@ is used to keep the input field in sync with the form state. */
         placeholder={placeholder}
         onChange={handleChangeInput}
         name={name}
-        disabled={isConst === false ? false : true}
+        disabled={isConst !== false || readonly === true}
       />
     </div>
   );

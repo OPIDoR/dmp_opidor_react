@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
-function Form({ schemaId, searchProductPlan, researchOutputId, questionId, planId }) {
+function Form({ schemaId, searchProductPlan, researchOutputId, questionId, planId, readonly }) {
   const { t } = useTranslation();
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
@@ -60,9 +60,9 @@ loading state to `false`. */
         <div style={{ margin: "15px" }}>
           <div className="row"></div>
           <div className="m-4">
-            <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId}></BuilderForm>
+            <BuilderForm shemaObject={standardTemplate} level={1} schemaId={schemaId} readonly={readonly}></BuilderForm>
           </div>
-          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
+          {!readonly && <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>}
         </div>
       )}
     </>

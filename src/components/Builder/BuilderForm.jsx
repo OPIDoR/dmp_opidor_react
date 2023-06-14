@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import HandleGenerateForms from "./HandleGenerateForms";
 
-function BuilderForm({ shemaObject, level, schemaId }) {
+function BuilderForm({ shemaObject, level, schemaId, readonly }) {
   const { i18n } = useTranslation();
   const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
@@ -42,6 +42,7 @@ function BuilderForm({ shemaObject, level, schemaId }) {
       changeValue={changeValue}
       schemaId={schemaId}
       lng={currentLanguage}
+      readonly={readonly}
     ></HandleGenerateForms>
   );
 }

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
-function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId }) {
+function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId, readonly }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [options, setoptions] = useState(null);
@@ -86,6 +86,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
                 label: getDefaultLabel(temp, form?.[schemaId], name),
                 value: getDefaultLabel(temp, form?.[schemaId], name),
               }}
+              isDisabled={readonly}
             />
           </div>
         </div>

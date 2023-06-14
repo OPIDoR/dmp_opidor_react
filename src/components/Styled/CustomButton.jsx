@@ -6,8 +6,8 @@ const Button = styled.button`
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 15px;
-  background-color: ${({ type }) => (type === "primary" ? "initial" : "var(--orange)")};
-  border-color: ${({ type }) => (type === "primary" ? "initial" : "var(--orange)")};
+  background-color: ${({ type }) => (type === "primary" ? "var(--secondary)" : "var(--orange)")};
+  border-color: ${({ type }) => (type === "primary" ? "var(--secondary)" : "var(--orange)")};
 `;
 
 const DivButton = styled.div`

@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-function WritePlan({ researchOutputId, planId, hasPersonnelData }) {
+function WritePlan({ researchOutputId, planId, hasPersonnelData, readonly }) {
   const { t } = useTranslation();
   const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,6 @@ Finally, it sets the loading state to false. */
     setLoading(true);
     getQuestion("token")
       .then((res) => {
-        console.log(res);
         const searchProductFilter = res.data.plan.research_outputs.filter((el) => {
           return el.id === researchOutputId;
         });
@@ -217,11 +216,13 @@ Finally, it sets the loading state to false. */
                   </span>
                 </div>
 
-                <div>
-                  <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
-                    {t("Delete")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
-                  </button>
-                </div>
+                {!readonly && (
+                  <div>
+                    <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
+                      {t("Delete")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
+                    </button>
+                  </div>
+                )}
               </div>
               {showProductInfo && (
                 <div style={{ margin: "0px 10px 30px 10px" }}>
@@ -289,31 +290,39 @@ Finally, it sets the loading state to false. */
 
                                   <span className={styles.question_icons}>
                                     {/* 0 */}
-                                    <div
-                                      data-tooltip-id="scriptTip"
-                                      className={styles.panel_icon}
-                                      onClick={(e) => {
-                                        handleShowRunsClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
-                                      }}
-                                    >
-                                      <BsGear
-                                        size={40}
-                                        style={{ marginTop: "6px", marginRight: "4px" }}
-                                        fill={
-                                          isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
-                                            ? fillColorIconRuns
-                                            : "var(--primary)"
-                                        }
-                                      />
-                                    </div>
-                                    <ReactTooltip id="scriptTip" place="bottom" effect="solid" variant="info" content={t("Script")} />
-                                    {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && showModalRuns && questionId && questionId == q.id && (
-                                      <RunsModal
-                                        show={showModalRuns}
-                                        setshowModalRuns={setshowModalRuns}
-                                        setFillColorIconRuns={setFillColorIconRuns}
-                                      ></RunsModal>
+                                    {!readonly && (
+                                      <>
+                                        <div
+                                          data-tooltip-id="scriptTip"
+                                          className={styles.panel_icon}
+                                          onClick={(e) => {
+                                            handleShowRunsClick(e, isCollapsed?.[researchOutputId]?.[idx]?.[i], q);
+                                          }}
+                                        >
+                                          <BsGear
+                                            size={40}
+                                            style={{ marginTop: "6px", marginRight: "4px" }}
+                                            fill={
+                                              isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
+                                                ? fillColorIconRuns
+                                                : "var(--primary)"
+                                            }
+                                          />
+                                        </div>
+                                        <ReactTooltip id="scriptTip" place="bottom" effect="solid" variant="info" content={t("Script")} />
+                                        {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
+                                          showModalRuns &&
+                                          questionId &&
+                                          questionId == q.id && (
+                                            <RunsModal
+                                              show={showModalRuns}
+                                              setshowModalRuns={setshowModalRuns}
+                                              setFillColorIconRuns={setFillColorIconRuns}
+                                            ></RunsModal>
+                                          )}
+                                      </>
                                     )}
+
                                     {/* 1 */}
                                     <div
                                       data-tooltip-id="commentTip"
@@ -344,6 +353,7 @@ Finally, it sets the loading state to false. */
                                           planId={planId}
                                           userId={""}
                                           questionId={q.id}
+                                          readonly={readonly}
                                         ></CommentModal>
                                       )}
                                     {/* 2 */}
@@ -410,6 +420,7 @@ Finally, it sets the loading state to false. */
                                   researchOutputId={researchOutputId}
                                   questionId={q.id}
                                   planId={planId}
+                                  readonly={readonly}
                                 ></Form>
                               </Panel.Body>
                             )}

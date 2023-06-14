@@ -2,11 +2,27 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/Global";
 import { Editor } from "@tinymce/tinymce-react";
 import styles from "../assets/css/form.module.css";
+import DOMPurify from "dompurify";
+import styled from "styled-components";
+
+const ReadDiv = styled.div`
+  border: solid;
+  border-color: var(--primary);
+  border-width: 1px;
+  padding: 20px;
+  margin-bottom: 10px;
+  color: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+`;
 
 /* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
 `tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
-function TinyArea({ label, name, changeValue, tooltip, level, schemaId }) {
+function TinyArea({ label, name, changeValue, tooltip, level, schemaId, readonly }) {
   const { form, temp } = useContext(GlobalContext);
   const [text, settext] = useState("<p></p>");
 
@@ -41,30 +57,39 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
         </div>
 
         <div style={{ marginTop: "10px" }}>
-          <Editor
-            apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
-            onEditorChange={(newText) => handleChange(newText)}
-            // onInit={(evt, editor) => (editorRef.current = editor)}
-            value={text}
-            name={name}
-            init={{
-              branding: false,
-              height: 200,
-              menubar: false,
-              statusbar: false,
-              plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table paste code help wordcount",
-              ],
-              toolbar:
-                "undo redo | formatselect | " +
-                "bold italic backcolor | alignleft aligncenter " +
-                "alignright alignjustify | bullist numlist outdent indent | " +
-                "removeformat | help",
-              content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-            }}
-          />
+          {!readonly && (
+            <Editor
+              apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
+              onEditorChange={(newText) => handleChange(newText)}
+              // onInit={(evt, editor) => (editorRef.current = editor)}
+              value={text}
+              name={name}
+              init={{
+                branding: false,
+                height: 200,
+                menubar: false,
+                statusbar: false,
+                plugins: [
+                  "advlist autolink lists link image charmap print preview anchor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table paste code help wordcount",
+                ],
+                toolbar:
+                  "undo redo | formatselect | " +
+                  "bold italic backcolor | alignleft aligncenter " +
+                  "alignright alignjustify | bullist numlist outdent indent | " +
+                  "removeformat | help",
+                content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+              }}
+            />
+          )}
+          {readonly && (
+            <ReadDiv
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize([text]),
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

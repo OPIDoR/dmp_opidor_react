@@ -31,7 +31,7 @@ i18n.use(initReactI18next).init({
 describe("Recommandation", () => {
   it("renders without crashing", async () => {
     const { getByText } = render(<Recommandation planId="1" setTriggerRender={() => {}} />);
-    // eslint-disable-next-line testing-library/prefer-find-by
+    // eslint-disable-next-line testing-library/prefer-find-by, testing-library/prefer-screen-queries
     const linkElement = await waitFor(() => getByText(/Select the guidance of your plan/i));
     expect(linkElement).toBeInTheDocument();
   });

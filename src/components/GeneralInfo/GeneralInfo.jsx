@@ -26,7 +26,7 @@ export const ButtonSave = styled.button`
   border-radius: 8px !important;
 `;
 
-function GeneralInfo() {
+function GeneralInfo({ readonly }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [funders, setFunders] = useState([]);
@@ -97,87 +97,90 @@ function GeneralInfo() {
       {!loading && error && <CustomError></CustomError>}
       {!loading && !error && funders && (
         <div className="container">
-          <PanelGroup
-            accordion
-            id="accordion-example"
-            className={styles.panel}
-            onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
-            defaultActiveKey="1"
-          >
-            <Panel
-              eventKey={"1"}
-              style={{
-                border: "2px solid var(--primary)",
-                borderRadius: "11px",
-                boxShadow: "10px 12px 8px #e5e4e7",
-              }}
+          {!readonly && (
+            <PanelGroup
+              accordion
+              id="accordion-example"
+              className={styles.panel}
+              onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
+              defaultActiveKey="1"
             >
-              <Panel.Heading style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
-                <Panel.Title toggle>
-                  <div className={styles.question_title}>
-                    <div className={styles.question_text}>
-                      <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+              <Panel
+                eventKey={"1"}
+                style={{
+                  border: "2px solid var(--primary)",
+                  borderRadius: "11px",
+                  boxShadow: "10px 12px 8px #e5e4e7",
+                }}
+              >
+                <Panel.Heading style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
+                  <Panel.Title toggle>
+                    <div className={styles.question_title}>
+                      <div className={styles.question_text}>
+                        <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+                      </div>
+                      <span className={styles.question_icons}>
+                        {/* 3 */}
+                        {isOpenFunderImport ? (
+                          <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
+                        ) : (
+                          <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
+                        )}
+                      </span>
                     </div>
-                    <span className={styles.question_icons}>
-                      {/* 3 */}
-                      {isOpenFunderImport ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
-                      ) : (
-                        <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
+                  </Panel.Title>
+                </Panel.Heading>
+                <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
+                  <div className={styles.container_anr}>
+                    <p className={styles.description_anr}>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur
+                      rutrum commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula. Etiam porta scelerisque massa in faucibus.
+                      Donec ac porta tellus. Praesent pulvinar tristique metus vulputate interdum.
+                    </p>
+                    <div className="form-group">
+                      <div className={styles.label_form_anr}>
+                        <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+                      </div>
+                      {[] && (
+                        <Select
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                            singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                            control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                          }}
+                          options={funders}
+                        />
                       )}
-                    </span>
-                  </div>
-                </Panel.Title>
-              </Panel.Heading>
-              <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
-                <div className={styles.container_anr}>
-                  <p className={styles.description_anr}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur
-                    rutrum commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula. Etiam porta scelerisque massa in faucibus. Donec
-                    ac porta tellus. Praesent pulvinar tristique metus vulputate interdum.
-                  </p>
-                  <div className="form-group">
-                    <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
                     </div>
-                    {[] && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                        }}
-                        options={funders}
-                      />
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
-                      <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
+                    <div className="form-group">
+                      <div className={styles.label_form_anr}>
+                        <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                        <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
+                      </div>
+                      {[] && (
+                        <Select
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                            singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                            control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                          }}
+                          options={fundedProject}
+                          style={{ color: "red" }}
+                          onChange={(e) => handleSelectFunder(e)}
+                        />
+                      )}
                     </div>
-                    {[] && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                        }}
-                        options={fundedProject}
-                        style={{ color: "red" }}
-                        onChange={(e) => handleSelectFunder(e)}
-                      />
-                    )}
+                    <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                      {t("Save")}
+                    </ButtonSave>
                   </div>
-                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                    {t("Save")}
-                  </ButtonSave>
-                </div>
-              </Panel.Body>
-            </Panel>
-          </PanelGroup>
+                </Panel.Body>
+              </Panel>
+            </PanelGroup>
+          )}
+
           <PanelGroup
             accordion
             id="accordion-example"
@@ -205,7 +208,7 @@ function GeneralInfo() {
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible>{true && <Form schemaId={"ProjectStandard"}></Form>}</Panel.Body>
+              <Panel.Body collapsible>{true && <Form schemaId={"ProjectStandard"} readonly={readonly}></Form>}</Panel.Body>
             </Panel>
           </PanelGroup>
           <PanelGroup
@@ -237,22 +240,25 @@ function GeneralInfo() {
               <Panel.Body collapsible={true}>
                 {projectFragmentId && (
                   <>
-                    <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
-                      <div className="form-check form-switch">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="flexSwitchCheckDefault"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                        />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-                          Plan de test
-                        </label>
+                    {!readonly && (
+                      <div className="container" style={{ display: "flex", justifyContent: "start", margin: "20px 0px 0px 10px " }}>
+                        <div className="form-check form-switch">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="flexSwitchCheckDefault"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          />
+                          <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                            Plan de test
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                    <Form schemaId={"MetaStandard"}></Form>
+                    )}
+
+                    <Form schemaId={"MetaStandard"} readonly={readonly}></Form>
                   </>
                 )}
               </Panel.Body>

@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
  * </code>
  * @returns A React component.
  */
-function ModalTemplate({ label, value, template, keyValue, level, tooltip, header, schemaId }) {
+function ModalTemplate({ label, value, template, keyValue, level, tooltip, header, schemaId, readonly }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [show, setShow] = useState(false);
@@ -130,14 +130,17 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
             </span>
           )}
         </div>
-        <CustomButton
-          handleClick={() => {
-            handleShow(true);
-          }}
-          title={t("Add an element")}
-          type="primary"
-          position="start"
-        ></CustomButton>
+        {!readonly && (
+          <CustomButton
+            handleClick={() => {
+              handleShow(true);
+            }}
+            title={t("Add an element")}
+            type="primary"
+            position="start"
+          ></CustomButton>
+        )}
+
         {form?.[schemaId]?.[keyValue] && registerFile && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
@@ -158,24 +161,41 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>
                         <div className={styles.panel_title} dangerouslySetInnerHTML={createMarkup(parsePatern(el, registerFile.to_string))}></div>
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
+
+                        {!readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-edit" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                            <div className="col-md-1">
                               <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                  <i className="fa fa-times" />
                                 </a>
                               </span>
-                            )}
+                            </div>
                           </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
+                        )}
+
+                        {readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span style={{ marginRight: "10px" }}>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-eye" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -231,15 +251,17 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
               </fieldset>
             </div>
           )}
-          <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
+          <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             {t("Close")}
           </Button>
-          <Button variant="primary" onClick={handleAddToList}>
-            {t("Save")}
-          </Button>
+          {!readonly && (
+            <Button variant="primary" onClick={handleAddToList}>
+              {t("Save")}
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

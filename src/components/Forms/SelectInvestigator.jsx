@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 /* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
 the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
 select field. The selected option is displayed below the select field. */
-function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId }) {
+function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId, readonly }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -142,7 +142,7 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             {options && (
-              <select id="company" className="form-control" onChange={handleChangeList}>
+              <select id="company" className="form-control" onChange={handleChangeList} disabled={readonly}>
                 <option></option>
                 {options.map((o, idx) => (
                   <option key={o.value} value={idx}>
@@ -153,23 +153,28 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
               </select>
             )}
           </div>
-          <div className="col-md-1" style={{ marginTop: "8px" }}>
-            <span>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus" />
-              </a>
-            </span>
-          </div>
+          {!readonly && (
+            <div className="col-md-1" style={{ marginTop: "8px" }}>
+              <span>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                  <i className="fas fa-plus" />
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         {selectedValue && (
           <div style={{ margin: "10px" }}>
             <span className={styles.input_label}>{t("Selected value")} :</span>
             <span className={styles.input_text}>{selectedValue}</span>
-            <span style={{ marginLeft: "10px" }}>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
-                <i className="fas fa-edit" />
-              </a>
-            </span>
+
+            {!readonly && (
+              <span style={{ marginLeft: "10px" }}>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
+                  <i className="fas fa-edit" />
+                </a>
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -180,15 +185,17 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
+              <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
-              <Button variant="primary" onClick={handleAddToList}>
-                {t("Save")}
-              </Button>
+              {!readonly && (
+                <Button variant="primary" onClick={handleAddToList}>
+                  {t("Save")}
+                </Button>
+              )}
             </Modal.Footer>
           </Modal>
         )}

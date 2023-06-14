@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
 component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
 contributors and allows users to edit or delete them. */
-function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId }) {
+function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId, readonly }) {
   const { t } = useTranslation();
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
@@ -199,15 +199,18 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
                 label: temp ? temp[name] : "",
                 value: temp ? temp[name] : "",
               }}
+              isDisabled={readonly}
             />
           </div>
-          <div className="col-md-1" style={{ marginTop: "8px" }}>
-            <span>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus" />
-              </a>
-            </span>
-          </div>
+          {!readonly && (
+            <div className="col-md-1" style={{ marginTop: "8px" }}>
+              <span>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                  <i className="fas fa-plus" />
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         {form?.[schemaId]?.[keyValue] && list && (
           <table style={{ marginTop: "20px" }} className="table">
@@ -224,24 +227,40 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
                   <td scope="row" style={{ width: "100%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
-                      <div className={styles.table_container}>
-                        <div className="col-md-1">
-                          {level === 1 && (
+
+                      {!readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-edit" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-md-1">
                             <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                <i className="fa fa-edit" />
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                <i className="fa fa-times" />
                               </a>
                             </span>
-                          )}
+                          </div>
                         </div>
-                        <div className="col-md-1">
-                          <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                              <i className="fa fa-times" />
-                            </a>
-                          </span>
+                      )}
+                      {readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span style={{ marginRight: "10px" }}>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-eye" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -257,15 +276,17 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <BuilderForm shemaObject={registerFile} level={level + 1}></BuilderForm>
+              <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
-              <Button variant="primary" onClick={handleAddToList}>
-                {t("Save")}
-              </Button>
+              {!readonly && (
+                <Button variant="primary" onClick={handleAddToList}>
+                  {t("Save")}
+                </Button>
+              )}
             </Modal.Footer>
           </Modal>
         )}

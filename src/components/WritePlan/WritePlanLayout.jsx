@@ -23,7 +23,7 @@ import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUti
 import { useTranslation } from "react-i18next";
 import Recommandation from "./Recommandation";
 
-function WritePlanLayout() {
+function WritePlanLayout({ readonly }) {
   const { t } = useTranslation();
   const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -117,9 +117,12 @@ function WritePlanLayout() {
       {!loading && !error && productData && (
         <>
           <ResearchOutputModal planId={planId}></ResearchOutputModal>
-          <div className="container">
-            <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
-          </div>
+          {!readonly && (
+            <div className="container">
+              <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
+            </div>
+          )}
+
           <div className={styles.section}>
             <StyledNavBar className="navbar-inverse">
               <div className="">
@@ -208,20 +211,22 @@ function WritePlanLayout() {
                         )}
                       </>
                     )}
-                    <li onClick={handleShow}>
-                      <a
-                        href="#"
-                        className={styles.nav_header}
-                        onClick={(e) => {
-                          e.preventDefault();
-                        }}
-                      >
-                        <div className={styles.nav_title}>{t("Create")}</div>
-                        <div className={styles.nav_icon}>
-                          <MdAddCircleOutline size={40}></MdAddCircleOutline>
-                        </div>
-                      </a>
-                    </li>
+                    {!readonly && (
+                      <li onClick={handleShow}>
+                        <a
+                          href="#"
+                          className={styles.nav_header}
+                          onClick={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          <div className={styles.nav_title}>{t("Create")}</div>
+                          <div className={styles.nav_icon}>
+                            <MdAddCircleOutline size={40}></MdAddCircleOutline>
+                          </div>
+                        </a>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>
@@ -230,6 +235,7 @@ function WritePlanLayout() {
             <div className={styles.main}>
               {researchOutputId && planId && (
                 <WritePlan
+                  readonly={readonly}
                   key={renderKey + triggerRender}
                   researchOutputId={researchOutputId}
                   planId={planId}

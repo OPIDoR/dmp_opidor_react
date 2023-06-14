@@ -11,7 +11,7 @@ receives several props such as `label`, `registry`, `name`, `changeValue`, `tool
 hooks to manage the state of the component and to fetch data from an API. It also uses the `Swal` library to display a confirmation message when
 deleting an item from the list. */
 
-function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId }) {
+function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId, readonly }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [list, setlist] = useState([]);
@@ -127,6 +127,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                 label: temp ? temp[name] : "",
                 value: temp ? temp[name] : "",
               }}
+              isDisabled={readonly}
             />
           </div>
         </div>
@@ -141,13 +142,15 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                       <div className={styles.border}>
                         <div>{el} </div>
                         <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            <span style={{ marginRight: "10px" }}>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
-                          </div>
+                          {!readonly && (
+                            <div className="col-md-1">
+                              <span style={{ marginRight: "10px" }}>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                  <i className="fa fa-times" />
+                                </a>
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>
