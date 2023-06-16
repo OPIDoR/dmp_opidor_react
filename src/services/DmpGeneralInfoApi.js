@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const dataFundingOrganization = [
   {
@@ -24,21 +25,6 @@ export async function getFunders(token) {
     console.log(error);
   }
 }
-/**
- * The function retrieves data on funded projects from a JSON file or API endpoint using an authentication token.
- * @param token - The `token` parameter is not used in the `getFundedProjects` function. It is not necessary for the function to work properly.
- * @returns an object with a `data` property that contains the response from the `ANRProjects.json` file.
- */
-export async function getFundedProjects(token) {
-  try {
-    //const response = await axios.get("note/");
-    //return response;
-    const response = await require(`../data/ANRProjects.json`);
-    return { data: response };
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 /**
  * The function `saveFunder` returns an empty array and catches any errors that occur during execution.
@@ -49,10 +35,14 @@ export async function getFundedProjects(token) {
  */
 export async function saveFunder(grantId, projectFragmentId) {
   try {
-    // const response = await axios.get(`/codebase/anr_search?project_id=:${grantId}&fragment_id=:${projectFragmentId}&script_id=4`);
-    // return response;
-    return { data: [] };
+    return await axios.get(`/codebase/anr_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_id=4`);
   } catch (error) {
-    console.error(error);
+    if (error.response) {
+      toast.error(error.response.data.error);
+    } else if (error.request) {
+      toast.error(error.request);
+    } else {
+      toast.error(error.message);
+    }
   }
 }
