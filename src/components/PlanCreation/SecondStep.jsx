@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import Select from "react-select";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -16,6 +15,7 @@ import styles from "../assets/css/steps.module.css";
 import CustomButton from "../Styled/CustomButton";
 import CircleTitle from "../Styled/CircleTitle";
 import { toast } from "react-hot-toast";
+import CustomSelect from "../Shared/CustomSelect";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
 using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
@@ -267,16 +267,10 @@ function SecondStep() {
           { isShownOrgs && 
             <div className={styles.select}>
               {orgsList && (
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                    control: (base) => ({ ...base, borderRadius: "8px" }),
-                  }}
+                <CustomSelect
                   options={orgsList}
                   onChange={handleSelectOrg}
-                  value={{
+                  selectedOption={{
                     label: selectedOrg.name,
                     value: selectedOrg.id,
                   }}
@@ -309,16 +303,10 @@ function SecondStep() {
           { isShownFunder &&
             <div className={styles.select}>
               {fundersList && (
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                    control: (base) => ({ ...base, borderRadius: "8px" }),
-                  }}
+                <CustomSelect
                   options={fundersList}
                   onChange={handleSelectFunder}
-                  value={{
+                  selectedOption={{
                     label: selectedFunder.name,
                     value: selectedFunder.id,
                   }}
