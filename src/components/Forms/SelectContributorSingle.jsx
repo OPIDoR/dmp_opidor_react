@@ -4,12 +4,13 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { parsePattern, updateFormState } from '../../utils/GeneratorUtils';
+import { parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
-import { getContributors, getSchema } from '../../services/DmpServiceApi';
+import { getContributors, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect.jsx';
 
-function SelectInvestigator({
+function SelectContributorSingle({
   label,
   propName,
   changeValue,
@@ -166,26 +167,21 @@ function SelectInvestigator({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-              ?
-            </span>
+            <span 
+              className="fas fa-info-circle" 
+              data-toggle="tooltip" data-placement="top" title={tooltip}
+            ></span>
           )}
         </div>
 
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
-            {options && (
-              <select id="company" className="form-control" onChange={handleChangeList}>
-                <option></option>
-                {options.map((o, idx) => (
-                  <option key={o.value} value={idx}>
-                    {o.label}
-                  </option>
-                ))}
-                ;
-              </select>
-            )}
+            <CustomSelect
+              onChange={handleChangeList}
+              options={options}
+              name={propName}
+            />
           </div>
           <div className="col-md-1" style={{ marginTop: "8px" }}>
             <span>
@@ -235,4 +231,4 @@ function SelectInvestigator({
   );
 }
 
-export default SelectInvestigator;
+export default SelectContributorSingle;

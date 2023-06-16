@@ -153,9 +153,10 @@ function ModalTemplate({
           <strong className={styles.dot_label}></strong>
           <label>{value[`form_label@${locale}`]}</label>
           {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-              ?
-            </span>
+            <span 
+              className="fas fa-info-circle" 
+              data-toggle="tooltip" data-placement="top" title={tooltip}
+            ></span>
           )}
         </div>
         <CustomButton

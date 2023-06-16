@@ -217,13 +217,13 @@ describe("HandleGenerateForms component", () => {
     expect(screen.getByText("Politique de sauvegarde")).toBeInTheDocument();
 
     //principalInvestigator (select investigator)
-    expect(wrapper.find("SelectInvestigator").prop("label")).toBe("Coordinateur du projet");
-    expect(wrapper.find("SelectInvestigator").prop("name")).toBe("principalInvestigator");
-    expect(wrapper.find("SelectInvestigator").prop("tooltip")).toBe("Aussi appelé Investigateur principal");
+    expect(wrapper.find("SelectContributorSingle").prop("label")).toBe("Coordinateur du projet");
+    expect(wrapper.find("SelectContributorSingle").prop("name")).toBe("principalInvestigator");
+    expect(wrapper.find("SelectContributorSingle").prop("tooltip")).toBe("Aussi appelé Investigateur principal");
 
     //contributor (Select contributor)
-    expect(wrapper.find("SelectContributor").prop("label")).toBe("Responsables du stockage des données");
-    expect(wrapper.find("SelectContributor").prop("name")).toBe("contributor");
+    expect(wrapper.find("SelectContributorMultiple").prop("label")).toBe("Responsables du stockage des données");
+    expect(wrapper.find("SelectContributorMultiple").prop("name")).toBe("contributor");
 
     //volumeUnit  (Select single)
     expect(wrapper.find("SelectSingleList").prop("label")).toBe("Unité");

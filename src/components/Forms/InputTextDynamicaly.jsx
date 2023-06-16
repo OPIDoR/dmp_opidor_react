@@ -58,9 +58,10 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId }) {
         <strong className={styles.dot_label}></strong>
         <label>{label}</label>
         {tooltip && (
-          <span className="" data-toggle="tooltip" data-placement="top" title={tooltip}>
-            ?
-          </span>
+          <span 
+            className="fas fa-info-circle" 
+            data-toggle="tooltip" data-placement="top" title={tooltip}
+          ></span>
         )}
       </div>
       {formFields.map((form, index) => {
