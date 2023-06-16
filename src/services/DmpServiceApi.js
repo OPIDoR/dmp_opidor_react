@@ -40,10 +40,21 @@ export async function getSchema(id) {
   return response;
 }
 
-export async function getRegistry(id) {
+export async function getRegistryById(id) {
   let response;
   try {
     response = await axios.get(`/registries/${id}`, createHeaders());
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
+}
+
+export async function getRegistryByName(name) {
+  let response;
+  try {
+    response = await axios.get(`/registries/by_name/${name}`, createHeaders());
   } catch (error) {
     console.error(error);
     return error;

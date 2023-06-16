@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getRegistry } from '../../services/DmpServiceApi';
+import { getRegistryById } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
@@ -31,11 +31,10 @@ function SelectSingleList({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    console.log(registryId, loadedRegistries);
     if(loadedRegistries[registryId]) {
       setOptions(createOptions(loadedRegistries[registryId], locale));
     } else {
-      getRegistry(registryId)
+      getRegistryById(registryId)
         .then((res) => {
           setLoadedRegistries({...loadedRegistries, [registryId]: res.data});
           setOptions(createOptions(res.data, locale));

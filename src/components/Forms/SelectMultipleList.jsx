@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from '../context/Global.jsx';
-import { getRegistry } from '../../services/DmpServiceApi';
+import { getRegistryById } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
@@ -27,11 +27,10 @@ function SelectMultipleList({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    console.log(registryId, loadedRegistries);
     if(loadedRegistries[registryId]) {
       setOptions(createOptions(loadedRegistries[registryId], locale));
     } else {
-      getRegistry(registryId)
+      getRegistryById(registryId)
         .then((res) => {
           setLoadedRegistries({...loadedRegistries, [registryId]: res.data});
           setOptions(createOptions(res.data, locale));

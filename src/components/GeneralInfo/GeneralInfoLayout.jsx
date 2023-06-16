@@ -3,6 +3,7 @@ import React from 'react';
 import Global from '../context/Global.jsx';
 import GeneralInfo from './GeneralInfo.jsx';
 import '../../i18n.js';
+import { Toaster } from 'react-hot-toast';
 
 
 function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
@@ -16,6 +17,7 @@ function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, l
         metaFragmentId={metaFragmentId}
         isTestPlan={isTestPlan}
       />
+      <Toaster position="top-center" reverseOrder={false} />
     </Global>
   )
 }
