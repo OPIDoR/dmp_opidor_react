@@ -98,9 +98,10 @@ function SelectMultipleList({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-              ?
-            </span>
+            <span 
+              className="fas fa-info-circle" 
+              data-toggle="tooltip" data-placement="top" title={tooltip}
+            ></span>
           )}
         </div>
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>

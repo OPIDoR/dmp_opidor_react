@@ -5,13 +5,13 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
+import { deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
-import { getContributors, getSchema } from '../../services/DmpServiceApi';
+import { getContributors, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
-function SelectContributor({
+function SelectContributorMultiple({
   label,
   propName,
   changeValue,
@@ -202,9 +202,10 @@ function SelectContributor({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-              ?
-            </span>
+            <span 
+              className="fas fa-info-circle" 
+              data-toggle="tooltip" data-placement="top" title={tooltip}
+            ></span>
           )}
         </div>
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
@@ -297,4 +298,4 @@ function SelectContributor({
   );
 }
 
-export default SelectContributor;
+export default SelectContributorMultiple;

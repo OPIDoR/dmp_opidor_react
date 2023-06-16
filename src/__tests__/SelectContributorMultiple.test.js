@@ -53,7 +53,7 @@ describe("HandleGenerateForms component", () => {
         <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
       </Global>
     );
-    expect(wrapper.find("SelectContributor").prop("label")).toBe("Responsables du stockage des données");
-    expect(wrapper.find("SelectContributor").prop("name")).toBe("contributor");
+    expect(wrapper.find("SelectContributorMultiple").prop("label")).toBe("Responsables du stockage des données");
+    expect(wrapper.find("SelectContributorMultiple").prop("name")).toBe("contributor");
   });
 });

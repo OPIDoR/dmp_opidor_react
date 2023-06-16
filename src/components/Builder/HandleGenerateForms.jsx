@@ -5,12 +5,12 @@ import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../Forms/InputText';
 import InputTextDynamicaly from '../Forms/InputTextDynamicaly';
 import ModalTemplate from '../Forms/ModalTemplate';
-import SelectContributor from '../Forms/SelectContributor';
+import SelectContributorMultiple from '../Forms/SelectContributorMultiple.jsx';
+import SelectContributorSingle from '../Forms/SelectContributorSingle.jsx';
 import SelectMultipleList from '../Forms/SelectMultipleList';
 import SelectSingleList from '../Forms/SelectSingleList';
 import SelectWithCreate from '../Forms/SelectWithCreate';
 import TinyArea from '../Forms/TinyArea';
-import SelectInvestigator from '../Forms/SelectInvestigator';
 
 function HandleGenerateForms({
   shemaObject, level, changeValue, fragmentId,
@@ -129,7 +129,7 @@ function HandleGenerateForms({
           if (prop.items.type === 'object') {
             if (key === 'contributor' && prop.items.class === 'Contributor') {
               data.push(
-                <SelectContributor
+                <SelectContributorMultiple
                   key={key}
                   label={label}
                   propName={key}
@@ -139,7 +139,7 @@ function HandleGenerateForms({
                   tooltip={tooltip}
                   header={prop[`table_header@${locale}`]}
                   fragmentId={fragmentId}
-                ></SelectContributor>,
+                ></SelectContributorMultiple>,
               );
             } else {
               data.push(
@@ -193,7 +193,7 @@ function HandleGenerateForms({
           if (prop.class === 'Contributor') {
             // console.log("TODO : condition funder à voir");
             data.push(
-              <SelectInvestigator
+              <SelectContributorSingle
                 key={key}
                 label={label}
                 propName={key}
@@ -203,7 +203,7 @@ function HandleGenerateForms({
                 level={level}
                 tooltip={tooltip}
                 fragmentId={fragmentId}
-              ></SelectInvestigator>,
+              ></SelectContributorSingle>,
             );
           }
         }
