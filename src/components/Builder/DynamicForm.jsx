@@ -50,11 +50,11 @@ import React, {
         {loading && (
           <div className={styles.overlay}>
             <CustomSpinner></CustomSpinner>
-            <span style={{ alignSelf: "end" }}>{t('Loading...')}</span>
+            {t('Loading...')}
           </div>
         )}
-        {!loading && error && <p>error</p>}
-        {!loading && !error && template && (
+        {error && <p>error</p>}
+        {!error && template && (
           <div style={{ margin: '15px' }}>
             <div className="row"></div>
             <div className="m-4">

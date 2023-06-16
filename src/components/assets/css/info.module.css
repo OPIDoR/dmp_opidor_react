@@ -87,6 +87,10 @@
   text-decoration: none;
 }
 
+.panel_body {
+  position: relative;
+}
+
 .container_anr {
   margin: 10px 50px 0px 50px;
 }
