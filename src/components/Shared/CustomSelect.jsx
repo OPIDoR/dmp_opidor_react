@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Select, { createFilter } from "react-select";
+import AsyncSelect from "react-select/async";
 import { VariableSizeList as List } from "react-window";
 
 function MenuList({ options, children, maxHeight, getValue }) {
@@ -53,9 +54,18 @@ function MenuList({ options, children, maxHeight, getValue }) {
 }
 
 
-function CustomSelect({propName = null, options, selectedOption = null, onChange, defaultValue}) {
+function CustomSelect({
+    propName = null,
+    options,
+    selectedOption = null,
+    onChange,
+    async = false, 
+    asyncCallback = null,
+    defaultValue
+}) {
+  const SelectComponent = async ? AsyncSelect : Select;
   return(
-    <Select
+    <SelectComponent
       menuPortalTarget={document.body}
       styles={{
         menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
@@ -68,7 +78,8 @@ function CustomSelect({propName = null, options, selectedOption = null, onChange
       options={options}
       onChange={onChange}
       value={selectedOption}
-      // defaultValue={defaultValue} 
+      // defaultValue={defaultValue}
+      loadOptions={async ? asyncCallback : undefined}
     />
   );
 }
