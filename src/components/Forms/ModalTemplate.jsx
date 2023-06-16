@@ -93,8 +93,9 @@ function ModalTemplate({
    * the subData is set to null, and the modal is closed.
    */
   const handleSave = () => {
-    const newObject = [...fragmentsList, { ...subData, action: 'create' }];
-    setFormData(updateFormState(formData, fragmentId, propName, newObject));
+    const newList = [...fragmentsList, { ...subData, action: 'create' }];
+    setFragmentsList(newList)
+    setFormData(updateFormState(formData, fragmentId, propName, newList));
     setSubData({});
     handleClose();
   };
@@ -159,14 +160,6 @@ function ModalTemplate({
             ></span>
           )}
         </div>
-        <CustomButton
-          handleClick={() => {
-            handleShow(true);
-          }}
-          title={t("Add an element")}
-          type="primary"
-          position="start"
-        ></CustomButton>
         {fragmentsList && template && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
@@ -212,6 +205,14 @@ function ModalTemplate({
             </tbody>
           </table>
         )}
+        <CustomButton
+          handleClick={() => {
+            handleShow(true);
+          }}
+          title={t("Add an element")}
+          type="primary"
+          position="start"
+        ></CustomButton>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
