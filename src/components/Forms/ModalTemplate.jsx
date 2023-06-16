@@ -210,7 +210,7 @@ function ModalTemplate({
             handleShow(true);
           }}
           title={t("Add an element")}
-          type="primary"
+          buttonType="primary"
           position="start"
         ></CustomButton>
       </div>

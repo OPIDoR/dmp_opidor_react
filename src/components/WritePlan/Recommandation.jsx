@@ -201,7 +201,7 @@ API using the `getRecommendation` function and update the component state with t
               )}
               <CustomButton
                 title={t("Save my choise")}
-                type={idsRecommandations.length > 0 ? "oorange" : "primary"}
+                buttonType={idsRecommandations.length > 0 ? "orange" : "primary"}
                 position="start"
                 handleClick={handleSaveChoise}
               ></CustomButton>
