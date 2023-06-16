@@ -80,6 +80,7 @@
 }
 .panel {
   margin: 20px;
+  position: relative;
 }
 .panel_title {
   background-color: white;

@@ -9,7 +9,6 @@ import React, {
   import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
-  import styles from '../assets/css/overlay.module.css';
   
   function DynamicForm({fragmentId}) {
     const { t } = useTranslation();
@@ -38,7 +37,6 @@ import React, {
       console.log(formData[fragmentId]);
       saveForm(fragmentId, formData[fragmentId]).then((res) => {
         setFormData({ [fragmentId]: res.data.fragment });
-        toast.success(res.data.message);
       }).catch((res) => {
         toast.error(res.data.message);
       })
@@ -47,12 +45,7 @@ import React, {
   
     return (
       <>
-        {loading && (
-          <div className={styles.overlay}>
-            <CustomSpinner></CustomSpinner>
-            {t('Loading...')}
-          </div>
-        )}
+        {loading && (<CustomSpinner></CustomSpinner>)}
         {error && <p>error</p>}
         {!error && template && (
           <div style={{ margin: '15px' }}>

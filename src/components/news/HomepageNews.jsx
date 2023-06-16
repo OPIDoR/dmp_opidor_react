@@ -34,12 +34,7 @@ function HomepageNews({locale}) {
 
   return (
     <>
-    {loading && (
-      <div className={styles.overlay}>
-        <CustomSpinner></CustomSpinner>
-        <span style={{ alignSelf: "end" }}>Loading...</span>
-      </div>
-    )}
+    {loading && (<CustomSpinner></CustomSpinner>)}
     {!loading && error && <p>error</p>}
     {!loading && !error && news.length > 0 && (
         <div id='homepage-news'>
