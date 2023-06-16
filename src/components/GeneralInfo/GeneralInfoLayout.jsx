@@ -6,7 +6,6 @@ import '../../i18n.js';
 
 
 function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
-  console.log("render");
   return(
     <Global>
       <GeneralInfo
