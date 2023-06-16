@@ -45,6 +45,10 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
+    fetchContributors();
+  }, []);
+
+  const fetchContributors = () => {
     getContributors(dmpId).then((res) => {
       const builtOptions = res.data.results.map((option) => ({
         value: option.id,
@@ -53,7 +57,7 @@ function SelectContributorSingle({
       }));
       setOptions(builtOptions);
     });
-  }, []);
+  }
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -75,7 +79,6 @@ function SelectContributorSingle({
     }
     if (!investigator || !template) return;
     const pattern = template.to_string;
-    console.log(template);
     if (!pattern) {
       return;
     }
@@ -181,6 +184,8 @@ function SelectContributorSingle({
               onChange={handleChangeList}
               options={options}
               name={propName}
+              // async={true}
+              // asyncCallback={fetchContributors}
             />
           </div>
           <div className="col-md-1" style={{ marginTop: "8px" }}>
@@ -193,7 +198,7 @@ function SelectContributorSingle({
         </div>
         {selectedValue && (
           <div style={{ margin: "10px" }}>
-            <span className={styles.input_label}>{t("Selected value")} :</span>
+            <span className={styles.input_label}>{t("Selected value")} : </span>
             <span className={styles.input_text}>{selectedValue}</span>
             <span style={{ marginLeft: "10px" }}>
               <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
