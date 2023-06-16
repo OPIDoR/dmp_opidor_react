@@ -22,7 +22,7 @@ function InputText({
     } else if (level === 1) {
       setInputValue(formData?.[fragmentId]?.[propName] || "");
     } else {
-      setInputValue(subData[propName]);
+      setInputValue(subData[propName] || "");
     }
   }, [defaultValue, formData, fragmentId, propName]);
 
