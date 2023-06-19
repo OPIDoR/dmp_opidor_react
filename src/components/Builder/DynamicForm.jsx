@@ -25,7 +25,7 @@ import React, {
         setFormData({ [fragmentId]: res.data.fragment });
       }).catch(console.error)
         .finally(() => setLoading(false));
-    }, [formData[fragmentId]]);
+    }, [fragmentId]);
   
     /**
      * It checks if the form is filled in correctly.
@@ -34,6 +34,7 @@ import React, {
     const handleSaveForm = (e) => {
       e.preventDefault();
       setLoading(true);
+      console.log(formData[fragmentId]);
       saveForm(fragmentId, formData[fragmentId]).then((res) => {
         setFormData({ [fragmentId]: res.data.fragment });
       }).catch((res) => {
