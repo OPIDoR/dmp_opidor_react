@@ -108,6 +108,10 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
         [projectFragmentId]: res.data.fragment.project,
         [metaFragmentId]: res.data.fragment.meta
       });
+      toast.success(t(
+        '\'{{projectTitle}}\' project data has successfully been imported',
+        { projectTitle: selectedProject.title }
+      ))
     }).catch((res) => {
       toast.error(res.error);
     }).finally(() => setLoading(false) )

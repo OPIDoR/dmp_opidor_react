@@ -5,6 +5,12 @@ import GeneralInfo from './GeneralInfo.jsx';
 import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
 
+const toastOptions = {
+  duration: 5000,
+  style: {
+    maxWidth: 500,
+  }
+}
 
 function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = false }) {
   return(
@@ -17,7 +23,7 @@ function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, l
         metaFragmentId={metaFragmentId}
         isTest={isTest}
       />
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

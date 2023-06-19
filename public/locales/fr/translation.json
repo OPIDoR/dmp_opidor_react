@@ -96,6 +96,7 @@
   "Project Information": "Renseignements sur le projet",
   "Plan Information": "Renseignements sur le plan",
   "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
+  "'{{projectTitle}}' project data has successfully been imported": "Données du projet '{{projectTitle}}' ont été importées avec succès.",
   "You cannot delete the first element": "vous ne pouvez pas supprimer le premier élément",
   "Selected value": "Valeur sélectionnée",
   "Save my choise": "Enregistrer mon choix",
