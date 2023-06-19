@@ -89,7 +89,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
    * The function `handleSaveFunder` saves a funder for a project fragment and sets the grant ID to "ProjectStandard".
    */
   const handleSaveFunding = () => {
-    saveFunder(selectedProject, projectFragmentId).then((res) => {
+    saveFunder(selectedProject.grantId, projectFragmentId).then((res) => {
       setFormData({ [projectFragmentId]: res.data.fragment });
     }).catch((res) => {
       toast.error(res.error);
