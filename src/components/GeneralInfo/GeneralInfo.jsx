@@ -119,13 +119,14 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
           borderRadius: "11px",
           boxShadow: "10px 12px 8px #e5e4e7",
         }}
+        onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
       >
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError></CustomError>}
       {!error && funders && (
         <>
           <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
-            <Panel.Title toggle onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}>
+            <Panel.Title toggle>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
                   <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
@@ -184,9 +185,10 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
       <Panel 
         expanded={isOpenProjectForm}
         className={styles.panel}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
+        onToggle={() => setIsOpenProjectForm(!isOpenProjectForm)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Panel.Title toggle onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}>
+          <Panel.Title toggle>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
                 <div className={styles.title}>{t("Project Information")}</div>
@@ -209,9 +211,10 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
       <Panel 
         expanded={isOpenMetaForm}
         className={styles.panel}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
+        onToggle={() => setIsOpenMetaForm(!isOpenMetaForm)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Panel.Title toggle onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}>
+          <Panel.Title toggle>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
                 <div className={styles.title}>{t("Plan Information")}</div>
