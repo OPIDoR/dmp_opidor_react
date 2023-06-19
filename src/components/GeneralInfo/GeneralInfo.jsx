@@ -104,7 +104,10 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
   const handleSaveFunding = () => {
     setLoading(true);
     saveFunder(selectedProject.grantId, projectFragmentId).then((res) => {
-      setFormData({ [projectFragmentId]: res.data.fragment });
+      setFormData({ 
+        [projectFragmentId]: res.data.fragment.project,
+        [metaFragmentId]: res.data.fragment.meta
+      });
     }).catch((res) => {
       toast.error(res.error);
     }).finally(() => setLoading(false) )
