@@ -82,10 +82,15 @@
   margin: 20px;
   position: relative;
 }
-.panel_title {
+
+:global(.panel-heading a) {
   background-color: white;
-  border-radius: 18px;
   text-decoration: none;
+  border-radius: 10px;
+}
+
+:global(.funder-import a) {
+  background-color: var(--primary);
 }
 
 .panel_body {
