@@ -6,7 +6,7 @@ import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
 
 
-function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
+function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = false }) {
   return(
     <Global>
       <GeneralInfo
@@ -15,7 +15,7 @@ function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, l
         dmpId={dmpId}
         projectFragmentId={projectFragmentId}
         metaFragmentId={metaFragmentId}
-        isTestPlan={isTestPlan}
+        isTest={isTest}
       />
       <Toaster position="top-center" reverseOrder={false} />
     </Global>

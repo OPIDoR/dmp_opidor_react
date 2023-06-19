@@ -1,6 +1,23 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
+function createHeaders(csrf = null) {
+  if (csrf) {
+    return {
+      headers: {
+        'X-CSRF-Token': csrf,
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+}
+
 const dataFundingOrganization = [
   {
     id: 1,
@@ -24,6 +41,24 @@ export async function getFunders(token) {
   } catch (error) {
     console.log(error);
   }
+}
+
+export async function saveIsTestPlan(planId, isTestPlan) {
+  let response;
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
+  try {
+    response = await axios.post(`/plans/${planId}/set_test`, {is_test: isTestPlan}, createHeaders(csrf));
+  } catch (error) {
+    if (error.response) {
+      toast.error(error.response.message);
+    } else if (error.request) {
+      toast.error(error.request);
+    } else {
+      toast.error(error.message);
+    }
+  }
+  return response;
+
 }
 
 /**

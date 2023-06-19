@@ -10,7 +10,7 @@ import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomSelect from "../Shared/CustomSelect";
 import styles from "../assets/css/info.module.css";
-import { getFunders, saveFunder } from "../../services/DmpGeneralInfoApi";
+import { getFunders, saveFunder, saveIsTestPlan } from "../../services/DmpGeneralInfoApi";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Builder/DynamicForm";
 import { getRegistryByName } from "../../services/DmpServiceApi";
@@ -24,9 +24,12 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = true }) {
+function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = true }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId, setFormData } = useContext(GlobalContext);
+
+  const [isTestPlan, setIsTestPlan] = useState(isTest);
+
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
   const [funders, setFunders] = useState([]);
   const [fundedProjects, setFundedProjects] = useState([]);
@@ -76,6 +79,16 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [locale]);
+
+  const handleClickIsTestPlan = (e) => {
+    const checked = e.target.checked;
+    saveIsTestPlan(planId, checked === true ? '1' : '0')
+      .then((res) => {
+        toast.success(res.data.msg);
+      }).catch((res) => {
+        toast.error(res.error);
+      })
+  };
 
   /**
    * The function logs the value of an event and sets a grant ID to "ProjectStandard".
@@ -221,9 +234,8 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
                 type="checkbox"
                 id="is_test"
                 checked={isTestPlan}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
+                onClick={() => setIsTestPlan(!isTestPlan)}
+                onChange={(e) => handleClickIsTestPlan(e)}
               />
               <label className="form-check-label" htmlFor="is_test">
                 Plan de test
