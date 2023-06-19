@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Panel, PanelGroup } from "react-bootstrap";
+import { Panel } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { BiInfoCircle } from "react-icons/bi";
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
+import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 
@@ -98,36 +98,30 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
 
   return (
     <div className="container">
-      <PanelGroup
-        accordion
-        id="funder-import"
+      <Panel
+        expanded={isOpenFunderImport}
         className={styles.panel}
-        onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
-        defaultActiveKey="1"
+        style={{
+          border: "2px solid var(--primary)",
+          borderRadius: "11px",
+          boxShadow: "10px 12px 8px #e5e4e7",
+        }}
       >
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError></CustomError>}
       {!error && funders && (
-        <Panel expanded={isOpenFunderImport}
-          eventKey={"1"}
-          style={{
-            border: "2px solid var(--primary)",
-            borderRadius: "11px",
-            boxShadow: "10px 12px 8px #e5e4e7",
-          }}
-        >
+        <>
           <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
-            <Panel.Title toggle>
+            <Panel.Title toggle onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
                   <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                 </div>
                 <span className={styles.question_icons}>
-                  {/* 3 */}
                   {isOpenFunderImport ? (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
+                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
                   ) : (
-                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} onClick={(e) => {}} />
+                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr}/>
                   )}
                 </span>
               </div>
@@ -171,87 +165,74 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
               )}
             </div>
           </Panel.Body>
-        </Panel>
+        </>
       )}
-        </PanelGroup>
-      <PanelGroup
-        accordion
-        id="project-form"
+      </Panel>
+      <Panel 
+        expanded={isOpenProjectForm}
         className={styles.panel}
-        onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}
-        defaultActiveKey="2"
-      >
-        <Panel eventKey={"2"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
-          <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-            <Panel.Title className={styles.panel_title} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }} toggle>
-              <div className={styles.question_title}>
-                <div className={styles.question_text}>
-                  <div className={styles.title}>{t("Project Information")}</div>
-                </div>
-
-                <span className={styles.question_icons}>
-                  {/* 3 */}
-
-                  {isOpenProjectForm ? (
-                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                  ) : (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                  )}
-                </span>
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
+        <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
+          <Panel.Title toggle onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}>
+            <div className={styles.question_title}>
+              <div className={styles.question_text}>
+                <div className={styles.title}>{t("Project Information")}</div>
               </div>
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body className={styles.panel_body} collapsible={true}>
-            {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} />}
-          </Panel.Body>
-        </Panel>
-      </PanelGroup>
-      <PanelGroup
-        accordion
-        id="meta-form"
-        className={styles.panel}
-        onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}
-        defaultActiveKey="3"
-      >
-        <Panel eventKey={"3"} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
-          <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-            <Panel.Title toggle>
-              <div className={styles.question_title}>
-                <div className={styles.question_text}>
-                  <div className={styles.title}>{t("Plan Information")}</div>
-                </div>
 
-                <span className={styles.question_icons}>
-                  {/* 3 */}
-                  {isOpenMetaForm ? (
-                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                  ) : (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                  )}
-                </span>
-              </div>
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body className={styles.panel_body} collapsible={true}>
-            <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
-              <div className="form-check form-switch">
-                <input
-                  type="checkbox"
-                  id="is_test"
-                  checked={isTestPlan}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                />
-                <label className="form-check-label" htmlFor="is_test">
-                  Plan de test
-                </label>
-              </div>
+              <span className={styles.question_icons}>
+                {isOpenProjectForm ? (
+                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                ) : (
+                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                )}
+              </span>
             </div>
-            {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} />}
-          </Panel.Body>
-        </Panel>
-      </PanelGroup>
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body className={styles.panel_body} collapsible={true}>
+          {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} />}
+        </Panel.Body>
+      </Panel>
+      <Panel 
+        expanded={isOpenMetaForm}
+        className={styles.panel}
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
+        <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
+          <Panel.Title toggle onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}>
+            <div className={styles.question_title}>
+              <div className={styles.question_text}>
+                <div className={styles.title}>{t("Plan Information")}</div>
+              </div>
+
+              <span className={styles.question_icons}>
+                {isOpenMetaForm ? (
+                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                ) : (
+                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                )}
+              </span>
+            </div>
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body className={styles.panel_body} collapsible={true}>
+          <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
+            <div className="form-check form-switch">
+              <input
+                type="checkbox"
+                id="is_test"
+                checked={isTestPlan}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              />
+              <label className="form-check-label" htmlFor="is_test">
+                Plan de test
+              </label>
+            </div>
+          </div>
+          {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} />}
+        </Panel.Body>
+      </Panel>
     </div>
   );
 }
