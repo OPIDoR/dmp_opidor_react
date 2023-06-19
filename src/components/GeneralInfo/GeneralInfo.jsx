@@ -103,11 +103,10 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
    */
   const handleSaveFunding = () => {
     saveFunder(selectedProject.grantId, projectFragmentId).then((res) => {
-      setLoading(true);
       setFormData({ [projectFragmentId]: res.data.fragment });
     }).catch((res) => {
       toast.error(res.error);
-    }).finally(() => setLoading(false));
+    })
   };
 
   return (
