@@ -24,7 +24,7 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = false }) {
+function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTestPlan = true }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId, setFormData } = useContext(GlobalContext);
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
@@ -108,7 +108,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError></CustomError>}
       {!error && funders && (
-        <Panel
+        <Panel expanded={isOpenFunderImport}
           eventKey={"1"}
           style={{
             border: "2px solid var(--primary)",
@@ -116,7 +116,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
             boxShadow: "10px 12px 8px #e5e4e7",
           }}
         >
-          <Panel.Heading style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
+          <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
             <Panel.Title toggle>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
@@ -236,14 +236,14 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
             <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
               <div className="form-check form-switch">
                 <input
-                  className="form-check-input"
                   type="checkbox"
-                  id="flexSwitchCheckDefault"
+                  id="is_test"
+                  checked={isTestPlan}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
                 />
-                <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                <label className="form-check-label" htmlFor="is_test">
                   Plan de test
                 </label>
               </div>
