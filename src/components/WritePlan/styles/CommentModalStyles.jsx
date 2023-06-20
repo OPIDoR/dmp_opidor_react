@@ -12,7 +12,7 @@ export const NavBodyText = styled.div`
   padding: 18px 18px 5px 18px; // Add padding if needed
   border-radius: 10px;
   margin: 10px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
 `;
 
@@ -55,7 +55,7 @@ export const ButtonComment = styled.button`
   color: #000;
   font-size: 18px;
   color: var(--primary) !important;
-  font-family: custumHelveticaLight !important;
+  font-family: "Helvetica Neue", sans-serif !important;
   border-radius: 8px !important;
 `;
 

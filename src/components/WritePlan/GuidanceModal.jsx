@@ -40,7 +40,7 @@ function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecom
     padding: "10px",
     borderRadius: "10px 10px 0px 0px",
     fontWeight: "bold",
-    // fontFamily: "custumHelveticaLight",
+    // fontFamily:'"Helvetica Neue", sans-serif',
     // fontSize: "15px",
   });
 

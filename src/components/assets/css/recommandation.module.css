@@ -5,7 +5,7 @@
   border-width: 1px;
   margin: 1px 1px 1px 10px;
   padding: 5px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   font-size: 16px;
 }

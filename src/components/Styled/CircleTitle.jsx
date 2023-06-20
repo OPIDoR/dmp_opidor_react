@@ -16,7 +16,7 @@ function CircleTitle({ number, title }) {
     text-align: center;
     margin: 5px;
     font-size: 30px;
-    font-family: tomarikDisplay;
+    font-family: "Helvetica Neue", sans-serif;
   `;
   const CircleText = styled.div`
     color: var(--primary);

@@ -13,7 +13,7 @@ export const NavBodyText = styled.div`
   background: white; // Set the background color to white
   padding: 18px; // Add padding if needed
   border-radius: 0px 10px 10px 10px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   min-height: 300px;
 `;
@@ -49,11 +49,11 @@ export const Close = styled.div`
   margin: 10px 0px 0px 0px;
   color: #fff;
   font-size: 25px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 `;
 
 export const Theme = styled.div`
   font-size: 25px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   font-weight: bold;
 `;
