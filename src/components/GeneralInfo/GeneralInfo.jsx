@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomSelect from "../Shared/CustomSelect";
-import styles from "../assets/css/info.module.css";
+import styles from "../assets/css/general_info.module.css";
 import { getFunders, saveFunder, saveIsTestPlan } from "../../services/DmpGeneralInfoApi";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Builder/DynamicForm";
@@ -20,7 +20,7 @@ export const ButtonSave = styled.button`+
   color: #000;
   font-size: 18px;
   color: var(--primary) !important;
-  font-family: custumHelveticaLight !important;
+  font-family: "Helvetica Neue", sans-serif !important;
   border-radius: 8px !important;
 `;
 

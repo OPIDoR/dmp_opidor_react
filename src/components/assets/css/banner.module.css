@@ -28,13 +28,13 @@
 }
 
 .banner_text {
-  font-family: custumHelveticaBold;
+  font-family:  "Helvetica Neue", sans-serif;
   padding-left: 180px;
   padding-right: 180px;
 }
 
 .banner_sous_text {
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   padding-left: 180px;
   padding-right: 180px;
   font-size: 16px;

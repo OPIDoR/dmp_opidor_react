@@ -16,7 +16,7 @@
 
 .collapse_title {
   margin: 20px 0px 20px 0px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 }
 .sous_title {
   font-weight: bold;
@@ -54,7 +54,7 @@
 .question_text {
   display: flex;
   align-items: center;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 }
 
 .svg_size {

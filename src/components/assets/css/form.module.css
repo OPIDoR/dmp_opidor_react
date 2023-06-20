@@ -43,7 +43,7 @@ a {
   font-size: 18px;
   color: var(--secondary);
   font-weight: bold;
-  font-family: custumHelveticaBold;
+  font-family:  "Helvetica Neue", sans-serif;
 }
 .dot_label {
   height: 10px;
@@ -61,7 +61,7 @@ a {
 }
 .input_text {
   font-size: 16px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   border-radius: 8px;
   border-width: 1px;
@@ -75,7 +75,7 @@ a {
 .preview {
   color: var(--primary);
   font-size: 16px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 }
 
 .title {

@@ -41,7 +41,7 @@
   border-width: 1px;
   margin: 1px 1px 1px 1px;
   padding: 5px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 }
 
 .element_organisme input[type="radio"]:checked + div {
@@ -58,5 +58,5 @@ label {
 /* select */
 .select {
   margin: 0px 0px 0px 20px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 }

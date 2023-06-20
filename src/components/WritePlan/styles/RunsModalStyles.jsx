@@ -5,7 +5,7 @@ export const ButtonComment = styled.button`
   color: #000;
   font-size: 18px;
   color: var(--primary) !important;
-  font-family: custumHelveticaLight !important;
+  font-family: "Helvetica Neue", sans-serif !important;
   border-radius: 8px !important;
 `;
 
@@ -20,7 +20,7 @@ export const NavBody = styled.div`
 export const NavBodyText = styled.div`
   padding: 0px 0px 0px 18px; // Add padding if needed
   border-radius: 0px 10px 10px 10px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   min-height: 300px;
 `;
@@ -34,19 +34,19 @@ export const Close = styled.div`
   margin: 8px 8px 0px 0px;
   color: #fff;
   font-size: 25px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 `;
 
 export const Title = styled.div`
   margin: 10px 0px 0px 30px;
   color: #fff;
   font-size: 20px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 `;
 
 export const Description = styled.div`
   margin: 10px 0px 0px 10px;
   color: #fff;
   font-size: 16px;
-  font-family: custumHelveticaLight;
+  font-family:  "Helvetica Neue", sans-serif;
 `;

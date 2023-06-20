@@ -19,7 +19,7 @@
 
 .text_blue {
   color: var(--primary);
-  font-family: custumHelveticaBold;
+  font-family:  "Helvetica Neue", sans-serif;
   text-align: left;
   margin-left: 12px;
   margin-top: 4px;

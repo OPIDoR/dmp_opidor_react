@@ -16,12 +16,12 @@ const pannelTitle = {
   fontSize: "18px",
   fontWeight: "bold",
   marginRight: "60px",
-  fontFamily: "custumHelveticaLight",
+  fontFamily: '"Helvetica Neue", sans-serif',
 };
 
 const questionText = {
   display: "flex",
-  fontFamily: "custumHelveticaBold",
+  fontFamily: '"Helvetica Neue", sans-serif',
   fontSize: "29px",
   alignItems: "center",
 };

@@ -1,28 +1,5 @@
 @import url("./variable.css");
 
-.redaction_bloc {
-  border-radius: 0px 8px 8px 8px;
-  border: solid;
-  border-color: var(--primary);
-  border-width: 1px;
-  margin: 0px;
-  padding: 35px;
-}
-.title {
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--orange);
-}
-
-.collapse_title {
-  margin: 20px 0px 20px 0px;
-  font-family: custumHelveticaLight;
-}
-.sous_title {
-  font-weight: bold;
-  font-size: 16px;
-  color: var(--secondary);
-}
 .question_title {
   display: flex;
   justify-content: space-between;
@@ -36,45 +13,25 @@
   justify-content: center;
 }
 
-.light_icon {
-  color: var(--primary);
-  margin: 0px 5px 0px 0px;
-}
-.bell_icon {
-  color: var(--primary);
-  margin: 0px 5px 0px 0px;
-}
 .down_icon {
   color: var(--orange);
 }
 .down_icon_anr {
   color: white;
 }
-.question_number {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--secondary);
-  margin-right: 10px;
-}
 
 .question_text {
   display: flex;
   align-items: center;
-  font-family: custumHelveticaLight;
+  font-family: "Helvetica Neue", sans-serif;
   margin: 35px;
 }
 
-.svg_size {
-  height: 55px !important;
-  width: 55px !important;
-}
 .title {
-  font-weight: bold;
   font-size: 30px;
   color: var(--orange);
 }
 .title_anr {
-  font-weight: bold;
   font-size: 30px;
   color: white;
 }
@@ -112,17 +69,8 @@
 .label_form_anr {
   font-size: 18px;
   color: var(--secondary);
-  font-weight: bold;
-  font-family: custumHelveticaBold;
+  font-family: "Helvetica Neue", sans-serif;
   margin: 20px 0px 15px 0px;
   display: flex;
   align-items: center;
-}
-.dot_label_anr {
-  height: 10px;
-  width: 10px;
-  background-color: white;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
 }
