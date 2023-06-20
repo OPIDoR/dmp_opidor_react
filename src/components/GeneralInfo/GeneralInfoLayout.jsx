@@ -7,9 +7,6 @@ import { Toaster } from 'react-hot-toast';
 
 const toastOptions = {
   duration: 5000,
-  style: {
-    maxWidth: 500,
-  }
 }
 
 function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = false }) {
