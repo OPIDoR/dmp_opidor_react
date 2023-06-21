@@ -13,7 +13,7 @@ import React, {
 const reducer = (formData, incomingFormData) => {
   if (incomingFormData === null) {
     localStorage.removeItem('formData');
-    sessionStorage.removeItem("searchProduct");
+    sessionStorage.removeItem("researchOutputs");
     return {};
   }
   return { ...formData, ...incomingFormData };
@@ -21,7 +21,7 @@ const reducer = (formData, incomingFormData) => {
 
 /* It's getting the form from localStorage. */
 const formLocalState = JSON.parse(localStorage.getItem('formData'));
-const pSearchLocalState = JSON.parse(sessionStorage.getItem("searchProduct"));
+const researchOutputsLocalState = JSON.parse(sessionStorage.getItem("researchOutputs"));
 export const GlobalContext = createContext();
 
 /**
@@ -42,16 +42,16 @@ function Global({ children }) {
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
   // Write Plan
-  const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
+  const [researchOutputs, setResearchOutputs] = useState(researchOutputsLocalState || {});
   const [productId, setproductId] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
-  const [productData, setProductData] = useState(null);
+  const [researchOutputsData, setResearchOutputsData] = useState(null);
 
 
   useEffect(() => {
     if (productId) {
-      setSearchProduct((prevSearchProduct) => ({
-        ...prevSearchProduct,
+      setResearchOutputs((prevResearchOutput) => ({
+        ...prevResearchOutput,
         [productId]: { ...formData },
       }));
     }
@@ -63,10 +63,10 @@ function Global({ children }) {
     localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
 
-  /* It's setting the searchProduct in sessionStorage. */
+  /* It's setting the researchOutputs in sessionStorage. */
   useEffect(() => {
-    sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
-  }, [searchProduct]);
+    sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
+  }, [researchOutputs]);
 
   return (
     <GlobalContext.Provider
@@ -90,14 +90,12 @@ function Global({ children }) {
         loadedTemplates,
         setLoadedTemplates,
         // Write Plan
-        searchProduct,
-        setSearchProduct,
         productId,
         setproductId,
         isCollapsed,
         setIsCollapsed,
-        productData,
-        setProductData,
+        researchOutputsData,
+        setResearchOutputsData,
       }}
     >
       {children}

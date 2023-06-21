@@ -16,11 +16,11 @@ const sampleData = [
 ];
 
 const globalState = {
-  searchProduct: {},
+  researchOutputs: {},
   setForm: jest.fn(),
-  setproductId: jest.fn(),
-  productData: sampleData,
-  setProductData: jest.fn(),
+  setResearchOutputId: jest.fn(),
+  researchOutputsData: sampleData,
+  setResearchOutputsData: jest.fn(),
 };
 
 describe("WritePlanLayout", () => {

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import Select from "react-select";
-import { getTypeSearchProduct, postSearchProduct } from "../../services/DmpSearchProduct";
+import { getTypeResearchOutput, postResearchOutput } from "../../services/DmpResearchOutput";
 import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
 
@@ -16,18 +16,18 @@ const EndButton = styled.div`
 function AddResearchOutput({ planId, handleClose, show }) {
   const { locale } = useContext(GlobalContext);
   const { t, i18n } = useTranslation();
-  const { setProductData } = useContext(GlobalContext);
+  const { setResearchOutputsData } = useContext(GlobalContext);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
   const [isPersonnel, setisPersonnel] = useState(true);
   const [options, setOptions] = useState(null);
 
-  /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeSearchProduct` function. It sets the fetched data to the
+  /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeResearchOutput` function. It sets the fetched data to the
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
-    getTypeSearchProduct().then((res) => {
+    getTypeResearchOutput().then((res) => {
       setOptions(createOptions(res.data, locale));
     });
   }, []);
@@ -59,8 +59,8 @@ when the component mounts. */
         abbreviation: abbreviation,
       },
     };
-    postSearchProduct(objShow).then((res) => {
-      setProductData(res.data.plan.research_outputs);
+    postResearchOutput(objShow).then((res) => {
+      setResearchOutputsData(res.data.plan.research_outputs);
       setAbbreviation("");
       setTitle("");
       handleClose();

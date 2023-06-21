@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import Select from "react-select";
-import { getPlans, getProducts, postImportProduct } from "../../services/DmpSearchProduct";
+import { getPlans, getProducts, postImportProduct } from "../../services/DmpResearchOutput";
 
 const EndButton = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const EndButton = styled.div`
 `;
 
 function ImportResearchOutput({ planId, handleClose, show }) {
-  const { setProductData } = useContext(GlobalContext);
+  const { setResearchOutputsData } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [uuid, setUuid] = useState(null);
   const [plan, setPlan] = useState(null);
@@ -56,7 +56,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
     e.preventDefault();
     e.stopPropagation();
     postImportProduct(plan, uuid).then((res) => {
-      setProductData(res.data.plan.research_outputs);
+      setResearchOutputsData(res.data.plan.research_outputs);
       handleClose();
     });
   };
