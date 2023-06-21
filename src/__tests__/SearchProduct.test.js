@@ -3,36 +3,36 @@ import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import ResearchOutputModal from "../components/ResearchOutput/ResearchOutputModal";
 import { GlobalContext } from "../components/context/Global";
-import { getTypeSearchProduct, postSearchProduct } from "../services/DmpSearchProduct";
+import { getTypeResearchOutput, postResearchOutput } from "../services/DmpResearchOutput";
 
-jest.mock("../services/DmpSearchProduct");
+jest.mock("../services/DmpResearchOutput");
 
 const mockHandleClose = jest.fn();
 
-const renderSearchProduct = () =>
+const renderResearchOutput = () =>
   render(
-    <GlobalContext.Provider value={{ setProductData: jest.fn() }}>
+    <GlobalContext.Provider value={{ setResearchOutputsData: jest.fn() }}>
       <ResearchOutputModal planId={1} handleClose={mockHandleClose} show={true} />
     </GlobalContext.Provider>
   );
 
 describe("ResearchOutputModal component", () => {
   beforeEach(() => {
-    getTypeSearchProduct.mockResolvedValue({
+    getTypeResearchOutput.mockResolvedValue({
       data: [{ fr_FR: "Type 1", en_GB: "Type 1" }],
     });
   });
 
   it("renders the component and loads type options", async () => {
-    renderSearchProduct();
+    renderResearchOutput();
 
     expect(screen.getByText("Produit de recherche")).toBeInTheDocument();
 
-    await waitFor(() => expect(getTypeSearchProduct).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(getTypeResearchOutput).toHaveBeenCalledTimes(1));
   });
 
   it("handles input changes and save button", async () => {
-    renderSearchProduct();
+    renderResearchOutput();
 
     fireEvent.change(screen.getByPlaceholderText("ajouter abbreviation"), {
       target: { value: "test" },
@@ -43,13 +43,13 @@ describe("ResearchOutputModal component", () => {
     expect(screen.getByPlaceholderText("ajouter abbreviation")).toHaveValue("test");
     expect(screen.getByPlaceholderText("ajouter titre")).toHaveValue("Test Title");
 
-    postSearchProduct.mockResolvedValue({
+    postResearchOutput.mockResolvedValue({
       data: { plan: { research_outputs: [] } },
     });
 
     fireEvent.click(screen.getByText("Ajouter"));
 
-    await waitFor(() => expect(postSearchProduct).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(postResearchOutput).toHaveBeenCalledTimes(1));
     expect(mockHandleClose).toHaveBeenCalled();
   });
 });

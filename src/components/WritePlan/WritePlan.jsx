@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getQuestion } from "../../services/DmpRedactionApi";
-import CustomSpinner from "../Shared/CustomSpinner";
+import DOMPurify from "dompurify";
 import { Panel, PanelGroup } from "react-bootstrap";
+import { BsGear } from "react-icons/bs";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
-import { BsGear } from "react-icons/bs";
-import styles from "../assets/css/redactions.module.css";
-import DOMPurify from "dompurify";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
+import { getQuestion } from "../../services/DmpRedactionApi";
+import CustomSpinner from "../Shared/CustomSpinner";
 import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
@@ -15,30 +19,27 @@ import CommentSVG from "../Styled/svg/CommentSVG";
 import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import Swal from "sweetalert2";
-import { deleteSearchProduct } from "../../services/DmpSearchProduct";
-import { showPersonnalData } from "../../utils/GeneratorUtils";
-import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import { deleteResearchOutput } from "../../services/DmpResearchOutput";
+import { showPersonalData } from "../../utils/GeneratorUtils";
+import styles from "../assets/css/redactions.module.css";
 
-function WritePlan({ researchOutputId, planId, hasPersonnelData }) {
+function WritePlan({ researchOutputId, planId, hasPersonalData }) {
   const { t } = useTranslation();
-  const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
+  const { isCollapsed, setIsCollapsed, setResearchOutputsData, researchOutputsData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [initialData, setInitialData] = useState(null);
-  const [initialCollapse, setinitialCollapse] = useState(null);
-  const [showModalRecommandation, setshowModalRecommandation] = useState(false);
-  const [showModalComment, setshowModalComment] = useState(false);
-  const [showModalRuns, setshowModalRuns] = useState(false);
-  const [fillColorIconRuns, setFillColorIconRuns] = useState("var(--primary)");
-  const [fillColorIconComment, setFillColorIconComment] = useState("var(--primary)");
-  const [fillColorIconRecommandation, setFillColorIconRecommandation] = useState("var(--primary)");
-  const [questionId, setquestionId] = useState(null);
+  const [initialCollapse, setInitialCollapse] = useState(null);
+  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showRunsModal, setShowRunsModal] = useState(false);
+  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--primary)");
+  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--primary)");
+  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--primary)");
+  const [questionId, setQuestionId] = useState(null);
   const [data, setData] = useState(null);
-  const [searchProduct, setSearchProduct] = useState(null);
-  const [showProductInfo, setShowProductInfo] = useState(false);
+  const [researchOutput, setResearchOutput] = useState(null);
+  const [showResearchOutputInfo, setShowResearchOutputInfo] = useState(false);
   const [questionGuidance, setQuestionGuidance] = useState([]);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
@@ -50,10 +51,10 @@ Finally, it sets the loading state to false. */
     getQuestion("token")
       .then((res) => {
         console.log(res);
-        const searchProductFilter = res.data.plan.research_outputs.filter((el) => {
+        const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
           return el.id === researchOutputId;
         });
-        setSearchProduct(searchProductFilter[0]);
+        setResearchOutput(researchOutputFilter[0]);
         setQuestionGuidance(res?.data?.plan.questions_with_guidance || []);
         setInitialData(res.data);
         const result = res.data.sections;
@@ -61,13 +62,13 @@ Finally, it sets the loading state to false. */
         if (!isCollapsed || !isCollapsed[researchOutputId]) {
           const allCollapses = res.data.sections.map((plan) => plan.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
           const updatedCollapseState = { ...isCollapsed, [researchOutputId]: allCollapses };
-          setinitialCollapse(updatedCollapseState);
+          setInitialCollapse(updatedCollapseState);
           setIsCollapsed(updatedCollapseState);
         }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [researchOutputId, productData, isCollapsed]);
+  }, [researchOutputId, researchOutputsData, isCollapsed]);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
@@ -105,14 +106,14 @@ Finally, it sets the loading state to false. */
   const handleShowCommentClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalRecommandation(false);
-      setshowModalRuns(false);
-      setshowModalComment(!showModalComment);
-      setFillColorIconComment((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setShowGuidanceModal(false);
+      setShowRunsModal(false);
+      setShowCommentModal(!showCommentModal);
+      setFillCommentIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
 
@@ -122,14 +123,14 @@ Finally, it sets the loading state to false. */
   const handleShowRecommandationClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalComment(false);
-      setshowModalRuns(false);
-      setshowModalRecommandation(!showModalRecommandation);
-      setFillColorIconRecommandation((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setShowCommentModal(false);
+      setShowRunsModal(false);
+      setShowGuidanceModal(!showGuidanceModal);
+      setFillGuidanceIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
     }
   };
 
@@ -139,14 +140,14 @@ Finally, it sets the loading state to false. */
   const handleShowRunsClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalComment(false);
-      setshowModalRecommandation(false);
-      setshowModalRuns(!showModalRuns);
-      setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillColorIconRuns((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
+      setShowCommentModal(false);
+      setShowGuidanceModal(false);
+      setShowRunsModal(!showRunsModal);
+      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+      setFillRunsIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
     }
   };
 
@@ -176,11 +177,8 @@ Finally, it sets the loading state to false. */
       }).then((result) => {
         if (result.isConfirmed) {
           //delete
-          deleteSearchProduct(researchOutputId, planId).then((res) => {
-            //const objectList = { ...searchProduct };
-            //delete objectList[researchOutputId];
-            //setSearchProduct(objectList);
-            setProductData(res.data.plan.research_outputs);
+          deleteResearchOutput(researchOutputId, planId).then((res) => {
+            setResearchOutputsData(res.data.plan.research_outputs);
           });
           Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
         }
@@ -202,14 +200,14 @@ Finally, it sets the loading state to false. */
                 <div
                   className="alert alert-info col-md-10"
                   style={{ display: "flex", justifyContent: "space-between" }}
-                  onClick={() => setShowProductInfo(!showProductInfo)}
+                  onClick={() => setShowResearchOutputInfo(!showResearchOutputInfo)}
                 >
-                  <strong>{searchProduct?.abbreviation}</strong>
+                  <strong>{researchOutput?.abbreviation}</strong>
                   <span
                     style={{ marginRight: "10px" }}
                     data-toggle="tooltip"
                     data-placement="top"
-                    title={`${t("Contains personal data")} : ${searchProduct?.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
+                    title={`${t("Contains personal data")} : ${researchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
                   >
                     <a href="#" onClick={(e) => e.preventDefault()}>
                       <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
@@ -223,14 +221,14 @@ Finally, it sets the loading state to false. */
                   </button>
                 </div>
               </div>
-              {showProductInfo && (
+              {showResearchOutputInfo && (
                 <div style={{ margin: "0px 10px 30px 10px" }}>
                   <div className={styles.sous_title}>
-                    - {t("Search Product Name")} : <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.abbreviation}</strong>
+                    - {t("Search Product Name")} : <strong style={{ fontSize: "20px" }}>{researchOutput?.metadata?.abbreviation}</strong>
                   </div>
                   <div className={styles.sous_title}>
                     - {t("Contains personal data")} :
-                    <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
+                    <strong style={{ fontSize: "20px" }}>{researchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
                   </div>
                 </div>
               )}
@@ -268,7 +266,7 @@ Finally, it sets the loading state to false. */
                   </div>
                   {el.questions.map((q, i) => (
                     <React.Fragment key={i}>
-                      {showPersonnalData(hasPersonnelData, q) && (
+                      {showPersonalData(hasPersonalData, q) && (
                         <PanelGroup accordion id="accordion-example">
                           <Panel eventKey={i} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
                             <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
@@ -301,17 +299,17 @@ Finally, it sets the loading state to false. */
                                         style={{ marginTop: "6px", marginRight: "4px" }}
                                         fill={
                                           isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
-                                            ? fillColorIconRuns
+                                            ? fillRunsIconColor
                                             : "var(--primary)"
                                         }
                                       />
                                     </div>
                                     <ReactTooltip id="scriptTip" place="bottom" effect="solid" variant="info" content={t("Script")} />
-                                    {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && showModalRuns && questionId && questionId == q.id && (
+                                    {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && showRunsModal && questionId && questionId == q.id && (
                                       <RunsModal
-                                        show={showModalRuns}
-                                        setshowModalRuns={setshowModalRuns}
-                                        setFillColorIconRuns={setFillColorIconRuns}
+                                        show={showRunsModal}
+                                        setshowModalRuns={setShowRunsModal}
+                                        setFillColorIconRuns={setFillRunsIconColor}
                                       ></RunsModal>
                                     )}
                                     {/* 1 */}
@@ -325,20 +323,20 @@ Finally, it sets the loading state to false. */
                                       <CommentSVG
                                         fill={
                                           isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
-                                            ? fillColorIconComment
+                                            ? fillCommentIconColor
                                             : "var(--primary)"
                                         }
                                       />
                                     </div>
                                     <ReactTooltip id="commentTip" place="bottom" effect="solid" variant="info" content={t("Comment")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
-                                      showModalComment &&
+                                      showCommentModal &&
                                       questionId &&
                                       questionId == q.id && (
                                         <CommentModal
-                                          show={showModalComment}
-                                          setshowModalComment={setshowModalComment}
-                                          setFillColorIconComment={setFillColorIconComment}
+                                          show={showCommentModal}
+                                          setshowModalComment={setShowCommentModal}
+                                          setFillColorIconComment={setFillCommentIconColor}
                                           answerId={""}
                                           researchOutputId={researchOutputId}
                                           planId={planId}
@@ -359,7 +357,7 @@ Finally, it sets the loading state to false. */
                                         <LightSVG
                                           fill={
                                             isCollapsed?.[researchOutputId]?.[idx]?.[i] === false && questionId && questionId === q.id
-                                              ? fillColorIconRecommandation
+                                              ? fillGuidanceIconColor
                                               : "var(--primary)"
                                           }
                                         />
@@ -368,13 +366,13 @@ Finally, it sets the loading state to false. */
 
                                     <ReactTooltip id="guidanceTip" place="bottom" effect="solid" variant="info" content={t("Recommandation")} />
                                     {isCollapsed?.[researchOutputId]?.[idx]?.[i] === false &&
-                                      showModalRecommandation &&
+                                      showGuidanceModal &&
                                       questionId &&
                                       questionId == q.id && (
                                         <GuidanceModal
-                                          show={showModalRecommandation}
-                                          setshowModalRecommandation={setshowModalRecommandation}
-                                          setFillColorIconRecommandation={setFillColorIconRecommandation}
+                                          show={showGuidanceModal}
+                                          setshowModalRecommandation={setShowGuidanceModal}
+                                          setFillColorIconRecommandation={setFillGuidanceIconColor}
                                           questionId={questionId}
                                         ></GuidanceModal>
                                       )}
@@ -406,7 +404,7 @@ Finally, it sets the loading state to false. */
                               <Panel.Body collapsible={isCollapsed && isCollapsed?.[researchOutputId]?.[idx]?.[i]}>
                                 <Form
                                   schemaId={q.madmp_schema_id}
-                                  searchProductPlan={initialData}
+                                  researchOutputPlan={initialData}
                                   researchOutputId={researchOutputId}
                                   questionId={q.id}
                                   planId={planId}
