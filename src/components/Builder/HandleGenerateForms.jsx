@@ -181,6 +181,7 @@ function HandleGenerateForms({
             data.push(
               <ModalTemplate
                 key={key}
+                label={label}
                 propName={key}
                 tooltip={tooltip}
                 templateId={prop.schema_id}
