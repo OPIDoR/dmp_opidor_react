@@ -165,6 +165,17 @@ export function createOptions(registryValues, locale) {
   return [ {value:'', label:''}, ...options ]
 }
 
+/**
+ * This function extracts the label from a template property.
+ * Returns the form_label if it exists, if not the label, if neither return a 'No label defined' value
+ * @param property : the template property to extract the label from
+ * @param locale : the locale of the form
+ * @returns if it exists a label in the form language
+ */
+export function createLabel(property, locale) {
+  return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined'
+}
+
 
 /**
  * The function returns true if there are no personnel data issues or if the query is not related to personnel data issues.
