@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen, act } from "@testing-library/react";
-import WritePlanLayout from "../components/WritePlan/WritePlanLayout";
+import WritePlan from "../components/WritePlan/WritePlan";
 import { getQuestion } from "../services/DmpRedactionApi";
 import { GlobalContext } from "../components/context/Global";
 import "@testing-library/jest-dom";
@@ -23,7 +23,7 @@ const globalState = {
   setResearchOutputsData: jest.fn(),
 };
 
-describe("WritePlanLayout", () => {
+describe("WritePlan", () => {
   beforeEach(() => {
     getQuestion.mockResolvedValue({
       data: {
@@ -42,7 +42,7 @@ describe("WritePlanLayout", () => {
   it("renders the component and fetches data", async () => {
     render(
       <GlobalContext.Provider value={globalState}>
-        <WritePlanLayout />
+        <WritePlan />
       </GlobalContext.Provider>
     );
 
@@ -60,7 +60,7 @@ describe("WritePlanLayout", () => {
   it("handles pagination and tab changes correctly", async () => {
     render(
       <GlobalContext.Provider value={globalState}>
-        <WritePlanLayout />
+        <WritePlan />
       </GlobalContext.Provider>
     );
 
