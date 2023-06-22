@@ -152,7 +152,7 @@ function ModalTemplate({
       <div className={`p-2 mb-2`}>
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{value[`form_label@${locale}`]}</label>
+          <label>{label}</label>
           {tooltip && (
             <span 
               className="fas fa-info-circle" 

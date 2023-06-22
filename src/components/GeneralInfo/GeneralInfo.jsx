@@ -24,7 +24,15 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = true }) {
+function GeneralInfo({
+  planId,
+  dmpId,
+  projectFragmentId,
+  metaFragmentId,
+  locale = 'en_GB',
+  researchContext = 'research_project',
+  isTest = true
+}) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId, setFormData } = useContext(GlobalContext);
 
@@ -41,6 +49,8 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const projectFormLabel = researchContext === 'research_project' ? t("Project Details") : t("Structure Details");
 
   useEffect(() => {
     setLocale(locale);
@@ -66,18 +76,20 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
   API call is completed, regardless of whether it was successful or not. If there is an error during the API call, it sets the error state to the error
   object. */
   useEffect(() => {
-    setLoading(true);
-    getRegistryByName('ANRProjects')
-      .then((res) => {
-        const options = res.data.map((option) => ({
-          value: option.value,
-          label: option.label[locale],
-          object: {grantId: option.value, title: option.label[locale]}
-        }));
-        setFundedProjects(options);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    if(researchContext === 'research_project' ) {
+      setLoading(true);
+      getRegistryByName('ANRProjects')
+        .then((res) => {
+          const options = res.data.map((option) => ({
+            value: option.value,
+            label: option.label[locale],
+            object: {grantId: option.value, title: option.label[locale]}
+          }));
+          setFundedProjects(options);
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
   }, [locale]);
 
   const handleClickIsTestPlan = (e) => {
@@ -119,77 +131,79 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
 
   return (
     <div className="container">
-      <Panel
-        expanded={isOpenFunderImport}
-        className={styles.panel}
-        style={{
-          border: "2px solid var(--primary)",
-          borderRadius: "11px",
-          boxShadow: "10px 12px 8px #e5e4e7",
-        }}
-        onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
-      >
-      {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
-      {!error && funders && (
-        <>
-          <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
-            <Panel.Title toggle>
-              <div className={styles.question_title}>
-                <div className={styles.question_text}>
-                  <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
-                </div>
-                <span className={styles.question_icons}>
-                  {isOpenFunderImport ? (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-                  ) : (
-                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr}/>
-                  )}
-                </span>
-              </div>
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
-            <div className={styles.container_anr}>
-              <p className={styles.description_anr}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur
-                rutrum commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula. Etiam porta scelerisque massa in faucibus. Donec
-                ac porta tellus. Praesent pulvinar tristique metus vulputate interdum.
-              </p>
-              {funders.length > 1 && (
-                <div className="form-group">
-                  <div className={styles.label_form_anr}>
-                    <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+      { researchContext === 'research_project' && (
+        <Panel
+          expanded={isOpenFunderImport}
+          className={styles.panel}
+          style={{
+            border: "2px solid var(--primary)",
+            borderRadius: "11px",
+            boxShadow: "10px 12px 8px #e5e4e7",
+          }}
+          onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
+        >
+        {loading && <CustomSpinner></CustomSpinner>}
+        {!loading && error && <CustomError></CustomError>}
+        {!error && funders && (
+          <>
+            <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
+              <Panel.Title toggle>
+                <div className={styles.question_title}>
+                  <div className={styles.question_text}>
+                    <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                   </div>
-                  <CustomSelect
-                    options={funders}
-                    onChange={(e) => handleSelectFunder(e)}
-                  />
+                  <span className={styles.question_icons}>
+                    {isOpenFunderImport ? (
+                      <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                    ) : (
+                      <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr}/>
+                    )}
+                  </span>
                 </div>
-              )}
-              {fundedProjects.length > 0 && (
-                <div className="form-group">
-                  <div className={styles.label_form_anr}>
-                    <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
-                    <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
-                  </div>
+              </Panel.Title>
+            </Panel.Heading>
+            <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
+              <div className={styles.container_anr}>
+                <p className={styles.description_anr}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur
+                  rutrum commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula. Etiam porta scelerisque massa in faucibus. Donec
+                  ac porta tellus. Praesent pulvinar tristique metus vulputate interdum.
+                </p>
+                {funders.length > 1 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+                    </div>
                     <CustomSelect
-                      options={fundedProjects}
-                      selectedOption={selectedProject ? {value: selectedProject.grantId, label: selectedProject.title } : null}
-                      onChange={(e) => setSelectedProject(e.object)}
+                      options={funders}
+                      onChange={(e) => handleSelectFunder(e)}
                     />
-                </div>
-              )}
-              {selectedProject && (
-                <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                  {t("Save")}
-                </ButtonSave>
-              )}
-            </div>
-          </Panel.Body>
-        </>
+                  </div>
+                )}
+                {fundedProjects.length > 0 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                      <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
+                    </div>
+                      <CustomSelect
+                        options={fundedProjects}
+                        selectedOption={selectedProject ? {value: selectedProject.grantId, label: selectedProject.title } : null}
+                        onChange={(e) => setSelectedProject(e.object)}
+                      />
+                  </div>
+                )}
+                {selectedProject && (
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                    {t("Save")}
+                  </ButtonSave>
+                )}
+              </div>
+            </Panel.Body>
+          </>
+        )}
+        </Panel>
       )}
-      </Panel>
       <Panel 
         expanded={isOpenProjectForm}
         className={styles.panel}
@@ -199,7 +213,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
           <Panel.Title toggle>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
-                <div className={styles.title}>{t("Project Information")}</div>
+                <div className={styles.title}>{projectFormLabel}</div>
               </div>
 
               <span className={styles.question_icons}>
@@ -249,7 +263,7 @@ function GeneralInfo({ planId, dmpId, projectFragmentId, metaFragmentId, locale 
                 onChange={(e) => handleClickIsTestPlan(e)}
               />
               <label className="form-check-label" htmlFor="is_test">
-                Plan de test
+                {t('Test Plan')}
               </label>
             </div>
           </div>

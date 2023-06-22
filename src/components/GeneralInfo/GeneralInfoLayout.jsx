@@ -9,7 +9,15 @@ const toastOptions = {
   duration: 5000,
 }
 
-function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, locale = 'en_GB', isTest = false }) {
+function GeneralInfoLayout({
+  planId,
+  dmpId,
+  projectFragmentId,
+  metaFragmentId,
+  locale = 'en_GB',
+  researchContext = 'research_project',
+  isTest = false
+}) {
   return(
     <Global>
       <GeneralInfo
@@ -18,6 +26,7 @@ function GeneralInfoLayout({ planId, dmpId, projectFragmentId, metaFragmentId, l
         dmpId={dmpId}
         projectFragmentId={projectFragmentId}
         metaFragmentId={metaFragmentId}
+        researchContext={researchContext}
         isTest={isTest}
       />
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />

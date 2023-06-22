@@ -11,6 +11,7 @@ import SelectMultipleList from '../Forms/SelectMultipleList';
 import SelectSingleList from '../Forms/SelectSingleList';
 import SelectWithCreate from '../Forms/SelectWithCreate';
 import TinyArea from '../Forms/TinyArea';
+import { createLabel } from '../../utils/GeneratorUtils.js';
 
 function HandleGenerateForms({
   shemaObject, level, changeValue, fragmentId,
@@ -23,7 +24,7 @@ function HandleGenerateForms({
   // retun est code html
   if (shemaObject.type === 'object') {
     for (const [key, prop] of Object.entries(properties)) {
-      const label = prop[`form_label@${locale}`];
+      const label = createLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
       // condition 1
