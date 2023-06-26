@@ -1,6 +1,6 @@
 @import url("./variable.css");
 
-.redaction_bloc {
+.write_plan_block {
   border-radius: 0px 8px 8px 8px;
   border: solid;
   border-color: var(--primary);

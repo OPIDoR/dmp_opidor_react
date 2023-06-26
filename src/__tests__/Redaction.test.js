@@ -2,10 +2,10 @@ import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import WritePlan from "../components/WritePlan/WritePlan";
-import { getQuestion } from "../services/DmpRedactionApi";
+import { getPlanData } from "../services/DmpWritePlanApi";
 import Global from "../components/context/Global";
 
-jest.mock("../services/DmpRedactionApi.js");
+jest.mock("../services/DmpWritePlanApi.js");
 
 // This test file covers the following test cases:
 
@@ -258,7 +258,7 @@ const mockSectionsData = {
 
 describe("Redaction component", () => {
   beforeEach(() => {
-    getQuestion.mockResolvedValue(mockSectionsData);
+    getPlanData.mockResolvedValue(mockSectionsData);
   });
 
   afterEach(() => {

@@ -58,8 +58,9 @@ const Button = styled.button`
 
 /* The `CustomError` function is defining a React component that renders an error page with a 404 message and a button to return to the homepage. It uses
 styled components to define the styling of the page elements. The component returns JSX code that defines the structure and content of the error page. */
-function CustomError() {
+function CustomError({error}) {
   const { t } = useTranslation();
+  console.log(error);
   return (
     <ErrorContainer className="container">
       <div className="row d-flex align-items-center justify-content-center">

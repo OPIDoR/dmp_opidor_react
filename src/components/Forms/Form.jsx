@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
-function Form({ schemaId, researchOutputPlan, researchOutputId, questionId, planId }) {
+function Form({ schemaId, planData, researchOutputId, questionId, planId }) {
   const { t } = useTranslation();
   const { form } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
@@ -24,8 +24,8 @@ loading state to `false`. */
   useEffect(() => {
     setLoading(true);
     //TODO : Adapter le comportement d'ouverture d'une question en fonction de la présence ou non d'une clé correspondant à l'identifiant de la question
-    if (researchOutputPlan) {
-      const answersList = researchOutputPlan?.plan?.research_outputs.filter((el) => el.id === planId);
+    if (planData) {
+      const answersList = planData?.plan?.research_outputs.filter((el) => el.id === planId);
       if (answersList[0]?.answers) {
         console.log("il existe une clé correspondant à l'identifiant de la question (`question_id`)");
       } else {

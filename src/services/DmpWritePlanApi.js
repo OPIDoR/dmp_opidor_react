@@ -1,5 +1,22 @@
 import axios from "axios";
 
+function createHeaders(csrf = null) {
+  if (csrf) {
+    return {
+      headers: {
+        'X-CSRF-Token': csrf,
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+}
+
 const dataObject = {
   sections: [
     {
@@ -246,23 +263,29 @@ const dataObject = {
 
 /**
  * The function retrieves data from session storage or sets it if it doesn't exist.
- * @param token - The `token` parameter is not used in the `getQuestion` function. It is not necessary for the function to work properly.
+ * @param token - The `token` parameter is not used in the `getPlanData` function. It is not necessary for the function to work properly.
  * @returns An object with a property "data" that contains either the parsed JSON data from sessionStorage if it exists, or the original dataObject if it
  * does not.
  */
-export async function getQuestion(token) {
+export async function getPlanData(planId) {
+  let response;
   try {
-    //const response = await axios.get(`${api_url}33e4891c-de58-4834-9221-f8a118e60670`);
-    const data = sessionStorage.getItem("data");
-    if (data) {
-      const saved = sessionStorage.getItem("data");
-      const initialValue = JSON.parse(saved);
-      return { data: initialValue };
-    } else {
-      sessionStorage.setItem("data", JSON.stringify(dataObject));
-      return { data: dataObject };
-    }
+    response = await axios.get(`/plans/${planId}/answers_data`, createHeaders());
   } catch (error) {
     console.error(error);
+    return error;
   }
+  return response;
+}
+
+export async function getSectionsData(templateId) {
+  let response;
+  try {
+    response = await axios.get(`/templates/${templateId}`, createHeaders());
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
+
 }
