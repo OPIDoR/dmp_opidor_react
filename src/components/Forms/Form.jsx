@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 
 /* This is a functional React component called `Form` that takes in several props (`schemaId`, `sections`, `researchOutputId`, `questionId`, and `planId`). It
 uses the `useContext` and `useState` hooks to access and update the global state of the application. */
-function Form({ schemaId, planData, researchOutputId, questionId, planId, readonly }) {
+function Form({ schemaId, researchOutputId, questionId, planId, readonly }) {
   const { t } = useTranslation();
-  const { form } = useContext(GlobalContext);
+  const { form, planData } = useContext(GlobalContext);
   const [standardTemplate, setstandardTemplate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

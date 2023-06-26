@@ -32,9 +32,11 @@ function Global({ children }) {
   const [context, setContext] = useState({ context: "research_project" });
   const [researchOutputs, setResearchOutputs] = useState(pSearchLocalState || {});
   const [displayedResearchOutputId, setDisplayedResearchOutputId] = useState(null);
-  const [plans, setPlans] = useState(null);
+  const [planData, setPlanData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
+  const [initialQuestionCollapse, setInitialQuestionCollapse] = useState(null);
   const [researchOutputsData, setResearchOutputsData] = useState(null);
+  const [questionsWithGuidance, setQuestionsWithGuidance] = useState(null);
 
   /* This `useEffect` hook is watching for changes in the `displayedResearchOutputId` and `form` variables. If `displayedResearchOutputId` is truthy (not null, undefined, 0, false, or an
 empty string), it updates the `researchOutputs` state by setting it to a new object that is a copy of the previous `researchOutputs` state with a new
@@ -72,12 +74,16 @@ the latest form data for a specific product. */
         setResearchOutputs,
         displayedResearchOutputId,
         setDisplayedResearchOutputId,
-        plans,
-        setPlans,
+        planData,
+        setPlanData,
         isCollapsed,
         setIsCollapsed,
+        initialQuestionCollapse,
+        setInitialQuestionCollapse,
         researchOutputsData,
         setResearchOutputsData,
+        questionsWithGuidance,
+        setQuestionsWithGuidance,
       }}
     >
       {children}
