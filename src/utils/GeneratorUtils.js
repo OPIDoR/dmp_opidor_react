@@ -174,7 +174,7 @@ export function updateFormState(form, schemaId, keyValue, newObject) {
  * @returns a boolean value. It will return `true` if `hasPersonnelData` is `false` or if `q.classname` is not equal to `"personal_data_issues"`.
  * Otherwise, it will return `false`.
  */
-export function showPersonnalData(hasPersonnelData, q) {
+export function showPersonalData(hasPersonnelData, q) {
   return !hasPersonnelData || q.classname !== "personal_data_issues";
 }
 
