@@ -16,29 +16,29 @@ import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import Swal from "sweetalert2";
-import { deleteSearchProduct } from "../../services/DmpSearchProduct";
+import { deleteResearchOutput } from "../../services/DmpResearchOutput";
 import { showPersonnalData } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-function SectionsContent({ researchOutputId, planId, hasPersonnelData, readonly }) {
+function SectionsContent({ researchOutputId, planId, hasPersonalData, readonly }) {
   const { t } = useTranslation();
-  const { isCollapsed, setIsCollapsed, setProductData, productData } = useContext(GlobalContext);
+  const { isCollapsed, setIsCollapsed, setResearchOutputsData, researchOutputsData } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [initialData, setInitialData] = useState(null);
-  const [initialCollapse, setinitialCollapse] = useState(null);
-  const [showModalRecommandation, setshowModalRecommandation] = useState(false);
-  const [showModalComment, setshowModalComment] = useState(false);
-  const [showModalRuns, setshowModalRuns] = useState(false);
+  const [planData, setPlanData] = useState(null);
+  const [initialCollapse, setInitialCollapse] = useState(null);
+  const [showModalRecommandation, setShowModalRecommandation] = useState(false);
+  const [showModalComment, setShowModalComment] = useState(false);
+  const [showModalRuns, setShowModalRuns] = useState(false);
   const [fillColorIconRuns, setFillColorIconRuns] = useState("var(--primary)");
   const [fillColorIconComment, setFillColorIconComment] = useState("var(--primary)");
   const [fillColorIconRecommandation, setFillColorIconRecommandation] = useState("var(--primary)");
-  const [questionId, setquestionId] = useState(null);
-  const [data, setData] = useState(null);
-  const [searchProduct, setSearchProduct] = useState(null);
-  const [showProductInfo, setShowProductInfo] = useState(false);
+  const [questionId, setQuestionId] = useState(null);
+  const [sectionsData, setSectionsData] = useState(null);
+  const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
+  const [showResearchOutputInfo, setShowResearchOutputInfo] = useState(false);
   const [questionGuidance, setQuestionGuidance] = useState([]);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getQuestion function, which is an async function that returns a
@@ -49,24 +49,24 @@ Finally, it sets the loading state to false. */
     setLoading(true);
     getQuestion("token")
       .then((res) => {
-        const searchProductFilter = res.data.plan.research_outputs.filter((el) => {
+        const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
           return el.id === researchOutputId;
         });
-        setSearchProduct(searchProductFilter[0]);
+        setDisplayedResearchOutput(researchOutputFilter[0]);
         setQuestionGuidance(res?.data?.plan.questions_with_guidance || []);
-        setInitialData(res.data);
+        setPlanData(res.data);
         const result = res.data.sections;
-        setData(result);
+        setSectionsData(result);
         if (!isCollapsed || !isCollapsed[researchOutputId]) {
           const allCollapses = res.data.sections.map((plan) => plan.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
           const updatedCollapseState = { ...isCollapsed, [researchOutputId]: allCollapses };
-          setinitialCollapse(updatedCollapseState);
+          setInitialCollapse(updatedCollapseState);
           setIsCollapsed(updatedCollapseState);
         }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [researchOutputId, productData, isCollapsed]);
+  }, [researchOutputId, researchOutputsData, isCollapsed]);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
@@ -104,11 +104,11 @@ Finally, it sets the loading state to false. */
   const handleShowCommentClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalRecommandation(false);
-      setshowModalRuns(false);
-      setshowModalComment(!showModalComment);
+      setShowModalRecommandation(false);
+      setShowModalRuns(false);
+      setShowModalComment(!showModalComment);
       setFillColorIconComment((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
       setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
@@ -121,11 +121,11 @@ Finally, it sets the loading state to false. */
   const handleShowRecommandationClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalComment(false);
-      setshowModalRuns(false);
-      setshowModalRecommandation(!showModalRecommandation);
+      setShowModalComment(false);
+      setShowModalRuns(false);
+      setShowModalRecommandation(!showModalRecommandation);
       setFillColorIconRecommandation((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
       setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
       setFillColorIconRuns((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
@@ -138,11 +138,11 @@ Finally, it sets the loading state to false. */
   const handleShowRunsClick = (e, collapse, q) => {
     e.stopPropagation();
     e.preventDefault();
-    setquestionId(q.id);
+    setQuestionId(q.id);
     if (collapse === false) {
-      setshowModalComment(false);
-      setshowModalRecommandation(false);
-      setshowModalRuns(!showModalRuns);
+      setShowModalComment(false);
+      setShowModalRecommandation(false);
+      setShowModalRuns(!showModalRuns);
       setFillColorIconRecommandation((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
       setFillColorIconComment((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
       setFillColorIconRuns((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
@@ -153,7 +153,7 @@ Finally, it sets the loading state to false. */
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
-    const index = initialData.plan.research_outputs
+    const index = planData.plan.research_outputs
       .map(function (img) {
         return img.id;
       })
@@ -175,11 +175,11 @@ Finally, it sets the loading state to false. */
       }).then((result) => {
         if (result.isConfirmed) {
           //delete
-          deleteSearchProduct(researchOutputId, planId).then((res) => {
-            //const objectList = { ...searchProduct };
+          deleteResearchOutput(researchOutputId, planId).then((res) => {
+            //const objectList = { ...researchOutputs };
             //delete objectList[researchOutputId];
-            //setSearchProduct(objectList);
-            setProductData(res.data.plan.research_outputs);
+            //setResearchOutputs(objectList);
+            setResearchOutputsData(res.data.plan.research_outputs);
           });
           Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
         }
@@ -192,7 +192,7 @@ Finally, it sets the loading state to false. */
       <div>
         {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <CustomError></CustomError>}
-        {!loading && !error && data && (
+        {!loading && !error && sectionsData && (
           <div>
             <div className="row"></div>
 
@@ -201,14 +201,14 @@ Finally, it sets the loading state to false. */
                 <div
                   className="alert alert-info col-md-10"
                   style={{ display: "flex", justifyContent: "space-between" }}
-                  onClick={() => setShowProductInfo(!showProductInfo)}
+                  onClick={() => setShowResearchOutputInfo(!showResearchOutputInfo)}
                 >
-                  <strong>{searchProduct?.abbreviation}</strong>
+                  <strong>{displayedResearchOutput?.abbreviation}</strong>
                   <span
                     style={{ marginRight: "10px" }}
                     data-toggle="tooltip"
                     data-placement="top"
-                    title={`${t("Contains personal data")} : ${searchProduct?.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
+                    title={`${t("Contains personal data")} : ${displayedResearchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
                   >
                     <a href="#" onClick={(e) => e.preventDefault()}>
                       <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
@@ -224,18 +224,18 @@ Finally, it sets the loading state to false. */
                   </div>
                 )}
               </div>
-              {showProductInfo && (
+              {showResearchOutputInfo && (
                 <div style={{ margin: "0px 10px 30px 10px" }}>
                   <div className={styles.sous_title}>
-                    - {t("Search Product Name")} : <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.abbreviation}</strong>
+                    - {t("Search Product Name")} : <strong style={{ fontSize: "20px" }}>{displayedResearchOutput?.metadata?.abbreviation}</strong>
                   </div>
                   <div className={styles.sous_title}>
                     - {t("Contains personal data")} :
-                    <strong style={{ fontSize: "20px" }}>{searchProduct?.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
+                    <strong style={{ fontSize: "20px" }}>{displayedResearchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
                   </div>
                 </div>
               )}
-              {data.map((el, idx) => (
+              {sectionsData.map((el, idx) => (
                 <React.Fragment key={idx}>
                   <p className={styles.title}>
                     {el.number}. {el.title}
@@ -269,7 +269,7 @@ Finally, it sets the loading state to false. */
                   </div>
                   {el.questions.map((q, i) => (
                     <React.Fragment key={i}>
-                      {showPersonnalData(hasPersonnelData, q) && (
+                      {showPersonnalData(hasPersonalData, q) && (
                         <PanelGroup accordion id="accordion-example">
                           <Panel eventKey={i} style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}>
                             <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
@@ -316,7 +316,7 @@ Finally, it sets the loading state to false. */
                                           questionId == q.id && (
                                             <RunsModal
                                               show={showModalRuns}
-                                              setshowModalRuns={setshowModalRuns}
+                                              setshowModalRuns={setShowModalRuns}
                                               setFillColorIconRuns={setFillColorIconRuns}
                                             ></RunsModal>
                                           )}
@@ -346,7 +346,7 @@ Finally, it sets the loading state to false. */
                                       questionId == q.id && (
                                         <CommentModal
                                           show={showModalComment}
-                                          setshowModalComment={setshowModalComment}
+                                          setshowModalComment={setShowModalComment}
                                           setFillColorIconComment={setFillColorIconComment}
                                           answerId={""}
                                           researchOutputId={researchOutputId}
@@ -383,7 +383,7 @@ Finally, it sets the loading state to false. */
                                       questionId == q.id && (
                                         <GuidanceModal
                                           show={showModalRecommandation}
-                                          setshowModalRecommandation={setshowModalRecommandation}
+                                          setshowModalRecommandation={setShowModalRecommandation}
                                           setFillColorIconRecommandation={setFillColorIconRecommandation}
                                           questionId={questionId}
                                         ></GuidanceModal>
@@ -416,7 +416,7 @@ Finally, it sets the loading state to false. */
                               <Panel.Body collapsible={isCollapsed && isCollapsed?.[researchOutputId]?.[idx]?.[i]}>
                                 <Form
                                   schemaId={q.madmp_schema_id}
-                                  searchProductPlan={initialData}
+                                  planData={planData}
                                   researchOutputId={researchOutputId}
                                   questionId={q.id}
                                   planId={planId}

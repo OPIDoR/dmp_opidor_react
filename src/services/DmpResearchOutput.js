@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const dataTypeSearchProduct = [
+const dataTypeResearchOutput = [
   {
     en_GB: "Dataset",
     fr_FR: "Jeu de données",
@@ -83,15 +83,15 @@ const products = [
 
 /**
  * This is an asynchronous function that returns a data object of a specific type of product search when given a token.
- * @param token - The `token` parameter is not used in the `getTypeSearchProduct` function. It is not necessary for the function to execute and can be
+ * @param token - The `token` parameter is not used in the `getResearchOutputTypes` function. It is not necessary for the function to execute and can be
  * removed.
- * @returns An object with a "data" property that contains the value of the "dataTypeSearchProduct" variable.
+ * @returns An object with a "data" property that contains the value of the "dataTypeResearchOutput" variable.
  */
-export async function getTypeSearchProduct(token) {
+export async function getResearchOutputTypes(token) {
   try {
     //const response = await axios.get(`${api_url}9a58cd0e-13fd-4eae-91f2-b238e722dd18`);
     //return response;
-    return { data: dataTypeSearchProduct };
+    return { data: dataTypeResearchOutput };
   } catch (error) {
     console.error(error);
   }
@@ -103,7 +103,7 @@ export async function getTypeSearchProduct(token) {
  * @returns An object with a "data" property, which is not defined in the code snippet. The value of "data" is likely intended to be the response data
  * from the axios post request, but it is not currently being assigned or returned correctly.
  */
-export async function postSearchProduct(jsonObject) {
+export async function postResearchOutput(jsonObject) {
   try {
     //const response = await axios.post("/research_outputs", jsonObject, "config");
     const saved = sessionStorage.getItem("data");
@@ -195,7 +195,7 @@ export async function postImportProduct(planId, uuid) {
  * @param id - The `id` parameter is the unique identifier of the research output that needs to be deleted.
  * @returns a Promise that resolves to the response object returned by the axios.delete() method.
  */
-export async function deleteSearchProduct(researchOutputId, planId) {
+export async function deleteResearchOutput(researchOutputId, planId) {
   try {
     //const response = await axios.delete(`/plans/${planId}/research_outputs/${id}`, "config");
     const saved = sessionStorage.getItem("data");

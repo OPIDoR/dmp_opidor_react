@@ -25,7 +25,7 @@ import Recommandation from "./Recommandation";
 
 function WritePlan({ readonly }) {
   const { t } = useTranslation();
-  const { setForm, searchProduct, setproductId, productData, setProductData } = useContext(GlobalContext);
+  const { setForm, researchOutputs, setDisplayedResearchOutputId, researchOutputsData, setResearchOutputsData } = useContext(GlobalContext);
   const [activeIndex, setActiveIndex] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,7 +34,7 @@ function WritePlan({ readonly }) {
   const itemsPerPage = 6;
   const [renderKey, setRenderKey] = useState(0);
   const [show, setShow] = useState(false);
-  const [hasPersonnelData, setHasPersonnelData] = useState(null);
+  const [hasPersonalData, setHasPersonalData] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
   const [triggerRender, setTriggerRender] = useState(0);
 
@@ -56,7 +56,7 @@ function WritePlan({ readonly }) {
     setRenderKey((prevKey) => prevKey + 1);
     handleIdsUpdate(element.id, true);
     setActiveIndex(element.id);
-    setHasPersonnelData(element?.metadata?.hasPersonalData);
+    setHasPersonalData(element?.metadata?.hasPersonalData);
   };
 
   /**
@@ -64,13 +64,13 @@ function WritePlan({ readonly }) {
    */
   const handleIdsUpdate = (id, isNull) => {
     // exist and not empty
-    if (searchProduct && searchProduct[id] && Object.keys(searchProduct[id]).length > 0) {
-      setForm(searchProduct[id]);
+    if (researchOutputs && researchOutputs[id] && Object.keys(researchOutputs[id]).length > 0) {
+      setForm(researchOutputs[id]);
     } else {
       isNull && setForm(null);
     }
     setResearchOutputId(id);
-    setproductId(id);
+    setDisplayedResearchOutputId(id);
   };
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
@@ -84,8 +84,8 @@ function WritePlan({ readonly }) {
         const resultId = result[0].id;
         setActiveIndex(result[0].id);
         setPlanId(res.data.plan.id);
-        setHasPersonnelData(result[0]?.metadata?.hasPersonalData);
-        !productData && setProductData(result);
+        setHasPersonalData(result[0]?.metadata?.hasPersonalData);
+        !researchOutputsData && setResearchOutputsData(result);
         handleIdsUpdate(resultId, false);
         if (result.length > itemsPerPage) {
           let resultDivision = roundedUpDivision(result.length, itemsPerPage);
@@ -94,7 +94,7 @@ function WritePlan({ readonly }) {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [productData]);
+  }, [researchOutputsData]);
 
   /**
    * This function toggles the state of an element in an array based on its index.
@@ -114,7 +114,7 @@ function WritePlan({ readonly }) {
       <Navbar></Navbar>
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError></CustomError>}
-      {!loading && !error && productData && (
+      {!loading && !error && researchOutputsData && (
         <>
           <ResearchOutputModal planId={planId}></ResearchOutputModal>
           {!readonly && (
@@ -128,14 +128,14 @@ function WritePlan({ readonly }) {
               <div className="">
                 <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                   <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
-                    {productData && (
+                    {researchOutputsData && (
                       <>
-                        {productData.length > itemsPerPage && isCollapsed ? (
+                        {researchOutputsData.length > itemsPerPage && isCollapsed ? (
                           <>
-                            {Array.from({ length: Math.ceil(productData.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
+                            {Array.from({ length: Math.ceil(researchOutputsData.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
                               const start = (page - 1) * itemsPerPage;
                               const end = start + itemsPerPage;
-                              const pageItems = productData.slice(start, end);
+                              const pageItems = researchOutputsData.slice(start, end);
 
                               return (
                                 <PanelGroup accordion id="accordion-example" key={i}>
@@ -151,7 +151,7 @@ function WritePlan({ readonly }) {
                                           handleCollapseByIndex(i);
                                         }}
                                       >
-                                        {start + 1} - {Math.min(end, productData.length)}
+                                        {start + 1} - {Math.min(end, researchOutputsData.length)}
                                       </Panel.Title>
                                     </Panel.Heading>
 
@@ -188,7 +188,7 @@ function WritePlan({ readonly }) {
                           </>
                         ) : (
                           <>
-                            {productData.map((el, idx) => (
+                            {researchOutputsData.map((el, idx) => (
                               <li
                                 key={idx}
                                 className={activeIndex == el.id ? "active" : ""}
@@ -239,7 +239,7 @@ function WritePlan({ readonly }) {
                   key={renderKey + triggerRender}
                   researchOutputId={researchOutputId}
                   planId={planId}
-                  hasPersonnelData={hasPersonnelData}
+                  hasPersonalData={hasPersonalData}
                 ></SectionsContent>
               )}
             </div>

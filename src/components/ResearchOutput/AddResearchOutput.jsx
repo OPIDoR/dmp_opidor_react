@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import Select from "react-select";
-import { getTypeSearchProduct, postSearchProduct } from "../../services/DmpSearchProduct";
+import { getResearchOutputTypes, postResearchOutput } from "../../services/DmpResearchOutput";
 import styled from "styled-components";
 
 const EndButton = styled.div`
@@ -15,18 +15,18 @@ const EndButton = styled.div`
 function AddResearchOutput({ planId, handleClose, show }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
-  const { setProductData } = useContext(GlobalContext);
+  const { setResearchOutputsData } = useContext(GlobalContext);
   const [data, setData] = useState(null);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
   const [isPersonnel, setisPersonnel] = useState(true);
 
-  /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeSearchProduct` function. It sets the fetched data to the
+  /* This is a `useEffect` hook that is used to fetch data from the server using the `getReseachOutputTypes` function. It sets the fetched data to the
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
-    getTypeSearchProduct().then((res) => {
+    getResearchOutputTypes().then((res) => {
       const options = res.data.map((option) => ({
         value: lng === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
         label: lng === "fr" ? option?.fr_FR || option?.label?.fr_FR : option?.en_GB || option?.label?.en_GB,
@@ -62,8 +62,8 @@ when the component mounts. */
         abbreviation: abbreviation,
       },
     };
-    postSearchProduct(objShow).then((res) => {
-      setProductData(res.data.plan.research_outputs);
+    postResearchOutput(objShow).then((res) => {
+      setResearchOutputsData(res.data.plan.research_outputs);
       setAbbreviation("");
       setTitle("");
       handleClose();

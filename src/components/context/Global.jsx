@@ -9,7 +9,7 @@ import React, { createContext, useEffect, useReducer, useState } from "react";
 let reducer = (form, formInfo) => {
   if (formInfo === null) {
     sessionStorage.removeItem("form");
-    sessionStorage.removeItem("searchProduct");
+    sessionStorage.removeItem("researchOutputs");
     return {};
   }
   return { ...form, ...formInfo };
@@ -17,7 +17,7 @@ let reducer = (form, formInfo) => {
 
 /* It's getting the form from sessionStorage. */
 const formLocalState = JSON.parse(sessionStorage.getItem("form"));
-const pSearchLocalState = JSON.parse(sessionStorage.getItem("searchProduct"));
+const pSearchLocalState = JSON.parse(sessionStorage.getItem("researchOutputs"));
 export const GlobalContext = createContext();
 
 /**
@@ -30,34 +30,34 @@ function Global({ children }) {
   const [form, setForm] = useReducer(reducer, formLocalState || {});
   const [temp, setTemp] = useState(null);
   const [context, setContext] = useState({ context: "research_project" });
-  const [searchProduct, setSearchProduct] = useState(pSearchLocalState || {});
-  const [productId, setproductId] = useState(null);
+  const [researchOutputs, setResearchOutputs] = useState(pSearchLocalState || {});
+  const [displayedResearchOutputId, setDisplayedResearchOutputId] = useState(null);
   const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
-  const [productData, setProductData] = useState(null);
+  const [researchOutputsData, setResearchOutputsData] = useState(null);
 
-  /* This `useEffect` hook is watching for changes in the `productId` and `form` variables. If `productId` is truthy (not null, undefined, 0, false, or an
-empty string), it updates the `searchProduct` state by setting it to a new object that is a copy of the previous `searchProduct` state with a new
-key-value pair where the key is `productId` and the value is a copy of the `form` state. This is essentially updating the `searchProduct` state with
+  /* This `useEffect` hook is watching for changes in the `displayedResearchOutputId` and `form` variables. If `displayedResearchOutputId` is truthy (not null, undefined, 0, false, or an
+empty string), it updates the `researchOutputs` state by setting it to a new object that is a copy of the previous `researchOutputs` state with a new
+key-value pair where the key is `displayedResearchOutputId` and the value is a copy of the `form` state. This is essentially updating the `researchOutputs` state with
 the latest form data for a specific product. */
   useEffect(() => {
-    if (productId) {
-      setSearchProduct((prevSearchProduct) => ({
-        ...prevSearchProduct,
-        [productId]: { ...form },
+    if (displayedResearchOutputId) {
+      setResearchOutputs((prevResearchOutput) => ({
+        ...prevResearchOutput,
+        [displayedResearchOutputId]: { ...form },
       }));
     }
-  }, [productId, form]);
+  }, [displayedResearchOutputId, form]);
 
   /* It's setting the form in sessionStorage. */
   useEffect(() => {
     sessionStorage.setItem("form", JSON.stringify(form));
   }, [form]);
 
-  /* It's setting the searchProduct in sessionStorage. */
+  /* It's setting the researchOutputs in sessionStorage. */
   useEffect(() => {
-    sessionStorage.setItem("searchProduct", JSON.stringify(searchProduct));
-  }, [searchProduct]);
+    sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
+  }, [researchOutputs]);
 
   return (
     <GlobalContext.Provider
@@ -68,16 +68,16 @@ the latest form data for a specific product. */
         setTemp,
         context,
         setContext,
-        searchProduct,
-        setSearchProduct,
-        productId,
-        setproductId,
+        researchOutputs,
+        setResearchOutputs,
+        displayedResearchOutputId,
+        setDisplayedResearchOutputId,
         plans,
         setPlans,
         isCollapsed,
         setIsCollapsed,
-        productData,
-        setProductData,
+        researchOutputsData,
+        setResearchOutputsData,
       }}
     >
       {children}
