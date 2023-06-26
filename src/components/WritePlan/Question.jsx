@@ -192,7 +192,7 @@ function Question({question, sectionId, researchOutputId, planId, hasPersonalDat
                     )}
                   {/* 2 */}
 
-                  {questionGuidance && questionGuidance.includes(question.id) && (
+                  {questionsWithGuidance && questionsWithGuidance.includes(question.id) && (
                     <div
                       data-tooltip-id="guidanceTip"
                       className={styles.panel_icon}
