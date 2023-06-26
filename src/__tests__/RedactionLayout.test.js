@@ -1,13 +1,13 @@
 import React from "react";
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import WritePlan from "../components/WritePlan/WritePlan";
-import { getQuestion } from "../services/DmpRedactionApi";
+import { getPlanData } from "../services/DmpWritePlanApi";
 import { GlobalContext } from "../components/context/Global";
 import "@testing-library/jest-dom";
 
-// Mock the getQuestion function from DmpRedactionApi
-jest.mock("../services/DmpRedactionApi", () => ({
-  getQuestion: jest.fn(),
+// Mock the getPlanData function from DmpWritePlanApi
+jest.mock("../services/DmpWritePlanApi", () => ({
+  getPlanData: jest.fn(),
 }));
 
 const sampleData = [
@@ -17,15 +17,15 @@ const sampleData = [
 
 const globalState = {
   researchOutputs: {},
-  setForm: jest.fn(),
-  setResearchOutputId: jest.fn(),
+  setFormData: jest.fn(),
+  setDisplayedResearchOutput: jest.fn(),
   researchOutputsData: sampleData,
   setResearchOutputsData: jest.fn(),
 };
 
 describe("WritePlan", () => {
   beforeEach(() => {
-    getQuestion.mockResolvedValue({
+    getPlanData.mockResolvedValue({
       data: {
         plan: {
           id: 1,

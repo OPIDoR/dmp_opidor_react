@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown } from "react-icons/tfi";
 import { TfiAngleUp } from "react-icons/tfi";
-import styles from "../assets/css/redactions.module.css";
+import styles from "../assets/css/write_plan.module.css";
 import LightSVG from "../Styled/svg/LightSVG";
 import stylesRecomandation from "../assets/css/recommandation.module.css";
 import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
