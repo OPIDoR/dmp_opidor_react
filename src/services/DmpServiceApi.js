@@ -29,6 +29,32 @@ export async function getFragment(id) {
   return response;
 }
 
+export async function loadNewForm(planId, questionId, researchOutputId, madmpSchemaId, dmpId, locale) {
+  let response;
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
+  try {
+    response = await axios.post(
+      '/madmp_fragments/create_json', {
+      madmp_fragment: {
+        answer: {
+          plan_id: planId,
+          question_id: questionId,
+          research_output_id: researchOutputId,
+        },
+        schema_id: madmpSchemaId,
+        dmp_id: dmpId,
+        template_locale: locale
+      }
+    },
+      createHeaders(csrf)
+    );
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+  return response;
+}
+
 export async function getSchema(id) {
   let response;
   try {

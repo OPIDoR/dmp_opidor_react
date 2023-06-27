@@ -6,26 +6,51 @@ import React, {
   
   import BuilderForm from './BuilderForm.jsx';
   import { GlobalContext } from '../context/Global.jsx';
-  import { getFragment, saveForm } from '../../services/DmpServiceApi.js';
+  import { getFragment, loadNewForm, saveForm } from '../../services/DmpServiceApi.js';
   import CustomSpinner from '../Shared/CustomSpinner.jsx';
   import CustomButton from '../Styled/CustomButton.jsx';
   
-  function DynamicForm({fragmentId}) {
+  function DynamicForm({
+    fragmentId,
+    planId = null,
+    questionId = null,
+    madmpSchemaId = null,
+    setFragmentId = null,
+    setAnswerId = null
+  }) {
     const { t } = useTranslation();
     const {
-      formData, setFormData, loadedTemplates, setLoadedTemplates,
+      locale,
+      formData, setFormData,
+      dmpId,
+      displayedResearchOutput,
+      loadedTemplates, setLoadedTemplates,
     } = useContext(GlobalContext);
     const [loading, setLoading] = useState(true);
     const [error] = useState(null);
     const [template, setTemplate] = useState(null);
+
     useEffect(() => {
-      getFragment(fragmentId).then((res) => {
-        setTemplate(res.data.schema);
-        setLoadedTemplates({...loadedTemplates, [res.data.fragment.schema_id] : res.data.schema});
-        setFormData({ [fragmentId]: res.data.fragment });
-      }).catch(console.error)
-        .finally(() => setLoading(false));
-    }, [fragmentId]);
+      if(fragmentId) {
+        getFragment(fragmentId).then((res) => {
+          setTemplate(res.data.schema);
+          setLoadedTemplates({...loadedTemplates, [res.data.fragment.schema_id] : res.data.schema});
+          setFormData({ [fragmentId]: res.data.fragment });
+        }).catch(console.error)
+          .finally(() => setLoading(false));
+      } else {
+        loadNewForm(planId, questionId, displayedResearchOutput.id, madmpSchemaId, dmpId, locale).then((res) => {
+          setTemplate(res.data.schema);
+          const fragment = res.data.fragment;
+          setLoadedTemplates({...loadedTemplates, [fragment.schema_id] : res.data.schema});
+          setFormData({ [fragment.id]: fragment });
+          setFragmentId(fragment.id);
+          setAnswerId(fragment.answer_id);
+        }).catch(console.error)
+          .finally(() => setLoading(false));
+
+      }
+    }, []);
   
     /**
      * It checks if the form is filled in correctly.

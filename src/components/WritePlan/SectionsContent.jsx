@@ -22,29 +22,21 @@ import Section from "./Section";
 function SectionsContent({ planId, templateId, hasPersonalData }) {
   const { t } = useTranslation();
   const { 
-    isCollapsed, setIsCollapsed,
-    setResearchOutputsData, researchOutputsData,
-    displayedResearchOutput
+    openedQuestions, setOpenedQuestions,
+    setResearchOutputsData,
+    displayedResearchOutput,
+    setQuestionsWithGuidance,
+    planData,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [planData, setPlanData] = useState(null);
-  const [initialCollapse, setInitialCollapse] = useState(null);
-  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showRunsModal, setShowRunsModal] = useState(false);
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--primary)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--primary)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--primary)");
-  const [questionId, setQuestionId] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
   const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
   const [showResearchOutputInfo, setShowResearchOutputInfo] = useState(false);
-  const [questionGuidance, setQuestionGuidance] = useState([]);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
-promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the initialCollapse state to the result of
-the promise. It then sets the isCollapsed state to the result of the promise. If the promise is rejected, it sets the error state to the error.
+promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
+If the promise is rejected, it sets the error state to the error.
 Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
@@ -54,77 +46,26 @@ Finally, it sets the loading state to false. */
         //   return el.id === displayedResearchOutput.id;
         // });
         // setCurrentResearchOutput(researchOutputFilter[0]);
-        // setQuestionGuidance(res?.data?.plan.questions_with_guidance || []);
-        // setPlanData(res.data);
+        // setQuestionsWithGuidance(res?.data?.plan.questions_with_guidance || []);
         setSectionsData(res.data);
-        if (!isCollapsed || !isCollapsed[displayedResearchOutput.id]) {
-          const allCollapses = res.data.map((section) => section.questions.reduce((acc, _, idx) => ({ ...acc, [idx]: true }), {}));
-          const updatedCollapseState = { ...isCollapsed, [displayedResearchOutput.id]: allCollapses };
-          setInitialCollapse(updatedCollapseState);
-          setIsCollapsed(updatedCollapseState);
+        if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
+          console.log(res.data);
+          // const allCollapses = res.data.map((section) => {
+          //   return {[section.id]: []};
+          // });
+          const updatedCollapseState = { ...openedQuestions, [displayedResearchOutput.id]: {} };
+          setOpenedQuestions(updatedCollapseState);
         }
       })
       .catch((error) => setError(error)) 
       .finally(() => setLoading(false));
   }, [displayedResearchOutput.id]);
 
-
-  /**
-   * The function handles the click event for showing comments and sets the state of various modal and icon colors.
-   */
-  const handleShowCommentClick = (e, collapse, q) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setQuestionId(q.id);
-    if (collapse === false) {
-      setShowGuidanceModal(false);
-      setShowRunsModal(false);
-      setShowCommentModal(!showCommentModal);
-      setFillCommentIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-    }
-  };
-
-  /**
-   * This function handles the click event for showing a recommendation modal and toggles the visibility of other modals.
-   */
-  const handleShowRecommandationClick = (e, collapse, q) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setQuestionId(q.id);
-    if (collapse === false) {
-      setShowCommentModal(false);
-      setShowRunsModal(false);
-      setShowGuidanceModal(!showGuidanceModal);
-      setFillGuidanceIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-    }
-  };
-
-  /**
-   * The function handles a click event to show or hide a modal for runs and updates the state of other modals accordingly.
-   */
-  const handleShowRunsClick = (e, collapse, q) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setQuestionId(q.id);
-    if (collapse === false) {
-      setShowCommentModal(false);
-      setShowGuidanceModal(false);
-      setShowRunsModal(!showRunsModal);
-      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-    }
-  };
-
   /**
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
-    const index = planData.plan.research_outputs
+    const index = planData.research_outputs
       .map(function (img) {
         return img.id;
       })
