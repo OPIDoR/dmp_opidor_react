@@ -22,13 +22,16 @@ function WritePlan({
   templateId,
 }) {
   const { t, i18n } = useTranslation();
-  const { 
+  const {
     setLocale, 
     setFormData,
+    setPlanData,
+    setDmpId,
     researchOutputs,
     displayedResearchOutput,
     setDisplayedResearchOutput,
-    researchOutputsData, setResearchOutputsData
+    researchOutputsData, setResearchOutputsData,
+    openedQuestions, setOpenedQuestions,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,7 +39,6 @@ function WritePlan({
   const [renderKey, setRenderKey] = useState(0);
   const [show, setShow] = useState(false);
   const [hasPersonalData, setHasPersonalData] = useState(null);
-  const [isCollapsed, setIsCollapsed] = useState(null);
   const [triggerRender, setTriggerRender] = useState(0);
 
   useEffect(() => {
@@ -82,6 +84,8 @@ function WritePlan({
     setLoading(true);
     getPlanData(planId)
       .then((res) => {
+        setPlanData(res.data);
+        setDmpId(res.data.dmp_id);
         const researchOutputs = res.data.research_outputs;
         setDisplayedResearchOutput(researchOutputs[0]);
         // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
@@ -89,7 +93,7 @@ function WritePlan({
         handleIdsUpdate(researchOutputs[0].id, false);
         // if (result.length > itemsPerPage) {
         //   let resultDivision = roundedUpDivision(result.length, itemsPerPage);
-        //   setIsCollapsed(createDynamicObject(resultDivision));
+        //   setOpenedQuestions(createDynamicObject(resultDivision));
         // }
       })
       .catch((error) => setError(error))
@@ -100,10 +104,10 @@ function WritePlan({
    * This function toggles the state of an element in an array based on its index.
    */
   const handleCollapseByIndex = (index) => {
-    setIsCollapsed((prevIsCollapsed) => {
-      const newIsCollapsed = [...prevIsCollapsed];
-      newIsCollapsed[index] = !newIsCollapsed[index];
-      return newIsCollapsed;
+    setOpenedQuestions((prevOpenedQuestions) => {
+      const newOpenedQuestions = [...prevOpenedQuestions];
+      newOpenedQuestions[index] = !newOpenedQuestions[index];
+      return newOpenedQuestions;
     });
   };
 
@@ -123,7 +127,7 @@ function WritePlan({
                   <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                     <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
                         <>
-                          {researchOutputsData.length > itemsPerPage && isCollapsed ? (
+                          {researchOutputsData.length > itemsPerPage && openedQuestions ? (
                             <>
                               {Array.from({ length: Math.ceil(researchOutputsData.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
                                 const start = (page - 1) * itemsPerPage;
@@ -149,7 +153,7 @@ function WritePlan({
                                       </Panel.Heading>
 
                                       <Panel.Body
-                                        collapsible={isCollapsed && isCollapsed?.[i]}
+                                        collapsible={openedQuestions && openedQuestions?.[i]}
                                         style={{ background: "var(--secondary)", padding: "0px 0px 0px 0px" }}
                                       >
                                         <ul className="nav navbar-nav" style={{ width: "100%" }}>

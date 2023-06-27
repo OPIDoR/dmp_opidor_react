@@ -9,21 +9,28 @@ import Question from "./Question";
 function Section({ section, hasPersonalData }) {
   const { t } = useTranslation();
   const { 
-    isCollapsed, setIsCollapsed,
+    openedQuestions, setOpenedQuestions,
     displayedResearchOutput
   } = useContext(GlobalContext);
 
-  const [initialCollapse, setInitialCollapse] = useState(null);
   const [sectionId] = useState(section.id);
 
   /**
    * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
    */
-  const handleCollapseByIndex = (idx) => {
-    const updatedState = isCollapsed[displayedResearchOutput.id].map((plan, planIndex) => {
-      return Object.fromEntries(Object.entries(plan).map(([qIndex, value]) => [qIndex, planIndex === idx ? false : true]));
-    });
-    setIsCollapsed({ ...isCollapsed, [displayedResearchOutput.id]: updatedState });
+  const toggleQuestionsInSection = (boolVal) => {
+    console.log(section);
+    const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
+    if(!updatedState[sectionId]) updatedState[sectionId] = {}
+    section.questions.forEach((question) => {
+      if(updatedState[sectionId]) {
+        updatedState[sectionId][question.id] = boolVal;
+      } else {
+        updatedState[sectionId] = {[question.id]: boolVal}
+      }
+    })
+    console.log(updatedState);
+    setOpenedQuestions({ ...openedQuestions, [displayedResearchOutput.id]: updatedState });
   };
 
   return (
@@ -39,7 +46,7 @@ function Section({ section, hasPersonalData }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              handleCollapseByIndex(sectionId);
+              toggleQuestionsInSection(true);
             }}
           >
             {t("Expand all")}
@@ -51,7 +58,7 @@ function Section({ section, hasPersonalData }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setIsCollapsed(initialCollapse);
+              toggleQuestionsInSection(false);
             }}
           >
             {t("Collapse all")}

@@ -42,10 +42,12 @@ function Global({ children }) {
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
   // Write Plan
+  const [planData, setPlanData] = useState(null);
   const [researchOutputs, setResearchOutputs] = useState(researchOutputsLocalState || {});
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
-  const [isCollapsed, setIsCollapsed] = useState(null);
+  const [openedQuestions, setOpenedQuestions] = useState(null);
   const [researchOutputsData, setResearchOutputsData] = useState(null);
+  const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
 
 
   useEffect(() => {
@@ -90,12 +92,16 @@ function Global({ children }) {
         loadedTemplates,
         setLoadedTemplates,
         // Write Plan
+        planData,
+        setPlanData,
         displayedResearchOutput,
         setDisplayedResearchOutput,
-        isCollapsed,
-        setIsCollapsed,
+        openedQuestions,
+        setOpenedQuestions,
         researchOutputsData,
         setResearchOutputsData,
+        questionsWithGuidance,
+        setQuestionsWithGuidance,
       }}
     >
       {children}
