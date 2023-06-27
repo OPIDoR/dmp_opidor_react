@@ -56,12 +56,14 @@ function SelectContributorMultiple({
   useEffect(() => {
     if(!loadedTemplates[templateId]) {
       getSchema(templateId).then((res) => {
-        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
-        setRole(res.properties.role[`const@${locale}`]);
-        const personTemplateId = res.properties.person.schema_id;
+        const contributorTemplate = res.data;
+        setLoadedTemplates({...loadedTemplates, [templateId] : contributorTemplate});
+        setRole(contributorTemplate.properties.role[`const@${locale}`]);
+        const personTemplateId = contributorTemplate.properties.person.schema_id;
         getSchema(personTemplateId).then((resSchema) => {
-          setTemplate(resSchema.data);
-          setLoadedTemplates({...loadedTemplates, [personTemplateId] : res.data});
+          const personTemplate = resSchema.data;
+          setTemplate(personTemplate);
+          setLoadedTemplates({...loadedTemplates, [personTemplateId] : personTemplate});
         });
       });
     } else {
