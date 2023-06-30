@@ -9,10 +9,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/redaction" element={<WritePlan />} />
-        <Route exact path="/form" element={<Form schemaId={"a"} />} />
+        <Route exact path="/redaction" element={<WritePlan readonly={false} />} />
+        <Route exact path="/form" element={<Form schemaId={"a"} readonly={true} />} />
         <Route exact path="/plan" element={<PlanCreation />} />
-        <Route exact path="/" element={<GeneralInfo />} />
+        <Route exact path="/" element={<GeneralInfo readonly={false} />} />
       </Routes>
     </Router>
   );

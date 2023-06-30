@@ -20,6 +20,7 @@ function WritePlan({
   locale = 'en_GB',
   planId,
   templateId,
+  readonly,
 }) {
   const { t, i18n } = useTranslation();
   const {
@@ -113,9 +114,10 @@ function WritePlan({
 
   return (
     <>
-          {/*<div className="container">
+          {/*
+          {!readonly && (<div className="container">
             <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
-      </div>*/}
+      </div>)}*/}
       <div className={styles.section}>
         {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <CustomError error={error}></CustomError>}
@@ -207,7 +209,9 @@ function WritePlan({
                             </>
                           )}
                         </>
-                      {/*<li onClick={handleShow}>
+                      {/*
+                      {!readonly && (
+                      <li onClick={handleShow}>
                         <a
                           href="#"
                           className={styles.nav_header}
@@ -220,7 +224,8 @@ function WritePlan({
                             <MdAddCircleOutline size={40}></MdAddCircleOutline>
                           </div>
                         </a>
-                        </li>*/}
+                        </li>
+                        )}*/}
                     </ul>
                   </div>
                 </div>
@@ -234,6 +239,7 @@ function WritePlan({
                   planId={planId}
                   templateId={templateId}
                   hasPersonalData={hasPersonalData}
+                  readonly={readonly}
                 ></SectionsContent>
               )}
             </div>

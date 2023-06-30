@@ -16,6 +16,7 @@ function SelectMultipleList({
   tooltip,
   header,
   fragmentId,
+  readonly,
 }) {
   const { t, i18n } = useTranslation();
   const [list, setList] = useState([]);
@@ -114,6 +115,7 @@ function SelectMultipleList({
                 label: subData ? subData[propName] : '',
                 value: subData ? subData[propName] : '',
               }}
+              isDisabled={readonly}
             />
           </div>
         </div>
@@ -128,13 +130,15 @@ function SelectMultipleList({
                       <div className={styles.border}>
                         <div>{el} </div>
                         <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            <span style={{ marginRight: "10px" }}>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
-                          </div>
+                          {!readonly && (
+                            <div className="col-md-1">
+                              <span style={{ marginRight: "10px" }}>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                                  <i className="fa fa-times" />
+                                </a>
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </td>

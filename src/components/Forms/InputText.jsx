@@ -9,7 +9,7 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({
-  label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId
+  label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId, readonly
 }) {
   const { formData, subData } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState("");
@@ -59,6 +59,7 @@ function InputText({
         onChange={handleChangeInput}
         name={propName}
         // disabled={defaultValue === false ? false : true}
+        disabled={readonly === true}
       />
     </div>
   );

@@ -10,7 +10,7 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  label, propName, changeValue, tooltip, level, registryId, fragmentId, registryType
+  label, propName, changeValue, tooltip, level, registryId, fragmentId, registryType, readonly
 }) {
   const [options, setOptions] = useState([{value:'', label:''}]);
   const { 
@@ -80,6 +80,7 @@ function SelectSingleList({
               options={options}
               name={propName}
               selectedOption={selectedOption}
+              isDisabled={readonly}
             />
           </div>
         </div>

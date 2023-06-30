@@ -8,7 +8,7 @@ import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
 import DynamicForm from "../Builder/DynamicForm";
 
-function Question({ question, sectionId, hasPersonalData }) {
+function Question({ question, sectionId, hasPersonalData, readonly }) {
   const {
     planData,
     openedQuestions, setOpenedQuestions,
@@ -135,7 +135,9 @@ function Question({ question, sectionId, hasPersonalData }) {
                 <span className={styles.question_icons}>
 
                     {/* 0 */}
-                    {/*<div
+                    {/*{!readonly && (
+                                      <>
+                                      <div
                       data-tooltip-id="scriptTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
@@ -159,7 +161,9 @@ function Question({ question, sectionId, hasPersonalData }) {
                         setshowModalRuns={setShowRunsModal}
                         setFillColorIconRuns={setFillRunsIconColor}
                       ></RunsModal>
-                    )}*/}
+                    )}
+                                      </>
+                                    )}*/}
                     {/* 1 */}
                     {/*<div
                       data-tooltip-id="commentTip"
@@ -190,6 +194,7 @@ function Question({ question, sectionId, hasPersonalData }) {
                           planId={planId}
                           userId={""}
                           questionId={question.id}
+                          readonly={readonly}
                         ></CommentModal>
                       )}*/}
                     {/* 2 */}
@@ -239,7 +244,7 @@ function Question({ question, sectionId, hasPersonalData }) {
               <>
               {
                 fragmentId ? (
-                  <DynamicForm fragmentId={fragmentId} />
+                  <DynamicForm fragmentId={fragmentId} readonly={readonly} />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
@@ -248,6 +253,7 @@ function Question({ question, sectionId, hasPersonalData }) {
                     madmpSchemaId={question.madmp_schema_id}
                     setFragmentId={setFragmentId}
                     setAnswerId={setAnswerId}
+                    readonly={readonly}
                   />
                 )
               }

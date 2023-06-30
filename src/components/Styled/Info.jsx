@@ -6,41 +6,27 @@ const Text = styled.span`
   font-size: 16px;
 `;
 
+const AlertContainer = styled.div`
+  margin: ${(props) => (props.type === "info" ? "0px 0px 0px -360px" : "10px 0px 10px 30px")};
+  background-color: ${(props) => (props.type === "info" ? "var(--primary)" : "var(--orange)")};
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 999;
+  color: ${(props) => (props.type === "info" ? "var(--white)" : "unset")};
+  text-align: ${(props) => (props.type === "info" ? "unset" : "start")};
+  width: ${(props) => (props.type === "info" ? "unset" : "62%")};
+`;
+
+const IconColor = styled.a`
+  color: ${(props) => (props.type === "info" ? "var(--white)" : "var(--yellow)")};
+  font-size: 20px;
+`;
+
 function Info({ text, icon, type }) {
-  const AlertContainer =
-    type === "info"
-      ? styled.div`
-          margin: 0px 0px 0px -360px;
-          background-color: var(--primary);
-          padding: 10px;
-          border-radius: 8px;
-          z-index: 999;
-          color: var(--white);
-        `
-      : styled.div`
-          text-align: start;
-          margin: 10px 0px 10px 30px;
-          background-color: var(--orange);
-          width: 62%;
-          padding: 10px;
-          border-radius: 8px;
-        `;
-
-  const IconColor =
-    type === "info"
-      ? styled.a`
-          color: var(--white);
-          font-size: 20px;
-        `
-      : styled.a`
-          color: var(--yellow);
-          font-size: 20px;
-        `;
-
   return (
     <AlertContainer type={type}>
       <span>
-        <IconColor>
+        <IconColor type={type}>
           <i className={icon} />
         </IconColor>
       </span>

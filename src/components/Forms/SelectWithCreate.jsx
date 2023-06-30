@@ -25,6 +25,7 @@ function SelectWithCreate({
   tooltip,
   header,
   fragmentId,
+  readonly,
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
@@ -169,7 +170,7 @@ function SelectWithCreate({
       //add in add
       handleSave();
     }
-    toast.success("Enregistrement a été effectué avec succès !");
+    toast.success(t("Registration was successful !"));
   };
 
   /**
@@ -220,15 +221,18 @@ function SelectWithCreate({
                 label: subData ? subData[propName] : '',
                 value: subData ? subData[propName] : '',
               }}
+              isDisabled={readonly}
             />
           </div>
-          <div className="col-md-1" style={{ marginTop: "8px" }}>
-            <span>
-              <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus" />
-              </a>
-            </span>
-          </div>
+          {!readonly && (
+            <div className="col-md-1" style={{ marginTop: "8px" }}>
+              <span>
+                <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
+                  <i className="fas fa-plus" />
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         {filteredList && (
           <table style={{ marginTop: "20px" }} className="table table-bordered">
@@ -245,24 +249,40 @@ function SelectWithCreate({
                   <td scope="row" style={{ width: "100%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
-                      <div className={styles.table_container}>
-                        <div className="col-md-1">
-                          {level === 1 && (
+
+                      {!readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-edit" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-md-1">
                             <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                <i className="fa fa-edit" />
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                                <i className="fa fa-times" />
                               </a>
                             </span>
-                          )}
+                          </div>
                         </div>
-                        <div className="col-md-1">
-                          <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                              <i className="fa fa-times" />
-                            </a>
-                          </span>
+                      )}
+                      {readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span style={{ marginRight: "10px" }}>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-eye" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -281,15 +301,18 @@ function SelectWithCreate({
               shemaObject={template}
               level={level + 1}
               fragmentId={fragmentId}
+              readonly={readonly}
             ></BuilderForm>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               {t("Close")}
             </Button>
-            <Button variant="primary" onClick={handleAddToList}>
-              {t("Save")}
-            </Button>
+            {!readonly && (
+              <Button variant="primary" onClick={handleAddToList}>
+                {t("Save")}
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </>

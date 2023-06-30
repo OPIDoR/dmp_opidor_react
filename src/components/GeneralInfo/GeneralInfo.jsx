@@ -31,7 +31,8 @@ function GeneralInfo({
   metaFragmentId,
   locale = 'en_GB',
   researchContext = 'research_project',
-  isTest = true
+  isTest = true,
+  readonly,
 }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId, setFormData } = useContext(GlobalContext);
@@ -131,7 +132,7 @@ function GeneralInfo({
 
   return (
     <div className="container">
-      { researchContext === 'research_project' && (
+      { !readonly && researchContext === 'research_project' && (
         <Panel
           expanded={isOpenFunderImport}
           className={styles.panel}
@@ -227,7 +228,7 @@ function GeneralInfo({
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body className={styles.panel_body} collapsible={true}>
-          {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} />}
+          {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
         </Panel.Body>
       </Panel>
       <Panel 
@@ -267,7 +268,7 @@ function GeneralInfo({
               </label>
             </div>
           </div>
-          {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} />}
+          {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
         </Panel.Body>
       </Panel>
     </div>

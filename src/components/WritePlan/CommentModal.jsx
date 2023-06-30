@@ -10,7 +10,7 @@ import CustomError from "../Shared/CustomError";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard } from "./styles/CommentModalStyles";
 import { useTranslation } from "react-i18next";
 
-function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId }) {
+function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId, readonly }) {
   const { t } = useTranslation();
   const editorContentRef = useRef(null);
   const [text, settext] = useState("<p></p>");
@@ -212,31 +212,37 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         {t("on")} {moment(el.created_at).format("DD/MM/YYYY")} {t("at")} {moment(el.created_at).format("hh:mm:ss")}
                       </div>
                     </div>
-                    <div style={{ marginRight: "-20px" }}>
-                      <div className="col-md-1">
-                        <span onClick={(e) => handleUpdate(e, el)}>
-                          <i className="fa fa-edit" />
-                        </span>
+                    {!readonly && (
+                      <div style={{ marginRight: "-20px" }}>
+                        <div className="col-md-1">
+                          <span onClick={(e) => handleUpdate(e, el)}>
+                            <i className="fa fa-edit" />
+                          </span>
+                        </div>
+                        <div className="col-md-1">
+                          <span onClick={(e) => handleDelete(e, idx)}>
+                            <i className="fa fa-times" />
+                          </span>
+                        </div>
                       </div>
-                      <div className="col-md-1">
-                        <span onClick={(e) => handleDelete(e, idx)}>
-                          <i className="fa fa-times" />
-                        </span>
-                      </div>
-                    </div>
+                    )}
                   </CommentsCard>
                 </NavBodyText>
               ))}
             </ScrollNav>
-            <div style={{ margin: "10px" }}>
-              <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>{t("Add a comment to share with collaborators")}</p>
-              <EditorComment initialValue={text} updateParentText={updateParentText} />
-            </div>
-            <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
-                {isUpdate ? t("Update") : t("Save")}
-              </ButtonComment>
-            </div>
+            {!readonly && (
+              <>
+                <div style={{ margin: "10px" }}>
+                  <p style={{ color: "var(--white)", fontWeight: "bold", marginTop: "30px" }}>{t("Add a comment to share with collaborators")}</p>
+                  <EditorComment initialValue={text} updateParentText={updateParentText} />
+                </div>
+                <div style={{ margin: 10 }}>
+                  <ButtonComment className="btn btn-light" onClick={(e) => handleSave(e)}>
+                    {isUpdate ? t("Update") : t("Save")}
+                  </ButtonComment>
+                </div>
+              </>
+            )}
           </NavBody>
         )}
       </>
