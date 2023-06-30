@@ -16,7 +16,8 @@ import React, {
     questionId = null,
     madmpSchemaId = null,
     setFragmentId = null,
-    setAnswerId = null
+    setAnswerId = null,
+    readonly,
   }) {
     const { t } = useTranslation();
     const {
@@ -80,6 +81,7 @@ import React, {
                 shemaObject={template}
                 level={1}
                 fragmentId={fragmentId}
+                readonly={readonly} 
               ></BuilderForm>
             </div>
             <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>

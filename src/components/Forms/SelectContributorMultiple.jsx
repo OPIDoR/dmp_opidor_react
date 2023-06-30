@@ -20,6 +20,7 @@ function SelectContributorMultiple({
   tooltip,
   header,
   fragmentId,
+  readonly,
 }) {
   const { t } = useTranslation();
   const [list, setList] = useState([]);
@@ -54,16 +55,16 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(!loadedTemplates[templateId]) {
+    if (!loadedTemplates[templateId]) {
       getSchema(templateId).then((res) => {
         const contributorTemplate = res.data;
-        setLoadedTemplates({...loadedTemplates, [templateId] : contributorTemplate});
+        setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
         setRole(contributorTemplate.properties.role[`const@${locale}`]);
         const personTemplateId = contributorTemplate.properties.person.schema_id;
         getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
           setTemplate(personTemplate);
-          setLoadedTemplates({...loadedTemplates, [personTemplateId] : personTemplate});
+          setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: personTemplate });
         });
       });
     } else {
@@ -110,7 +111,7 @@ function SelectContributorMultiple({
       setSelectObject([...selectObject, object]);
       const parsedPatern = parsePattern(object, template.to_string);
       setList([...list, parsedPatern]);
-      const newObject = { person: {...object, action: "update"}, role: role, action: "create" };
+      const newObject = { person: { ...object, action: "update" }, role: role, action: "create" };
       const mergedList = contributorList ? [...contributorList, newObject] : [newObject];
       setFormData(updateFormState(formData, fragmentId, propName, mergedList));
     } else {
@@ -204,8 +205,8 @@ function SelectContributorMultiple({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span 
-              className="fas fa-info-circle" 
+            <span
+              className="fas fa-info-circle"
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}
@@ -221,15 +222,18 @@ function SelectContributorMultiple({
                 label: subData ? subData[propName] : '',
                 value: subData ? subData[propName] : '',
               }}
+              isDisabled={readonly}
             />
           </div>
-          <div className="col-md-2" style={{ marginTop: '8px' }}>
-            <span>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus" />
-              </a>
-            </span>
-          </div>
+          {!readonly && (
+            <div className="col-md-1" style={{ marginTop: "8px" }}>
+              <span>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                  <i className="fas fa-plus" />
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         {contributorList && list && (
           <table style={{ marginTop: "20px" }} className="table">
@@ -246,24 +250,40 @@ function SelectContributorMultiple({
                   <td scope="row" style={{ width: "100%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
-                      <div className={styles.table_container}>
-                        <div className="col-md-1">
-                          {level === 1 && (
+
+                      {!readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-edit" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
+                          <div className="col-md-1">
                             <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                <i className="fa fa-edit" />
+                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                                <i className="fa fa-times" />
                               </a>
                             </span>
-                          )}
+                          </div>
                         </div>
-                        <div className="col-md-1">
-                          <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                              <i className="fa fa-times" />
-                            </a>
-                          </span>
+                      )}
+                      {readonly && (
+                        <div className={styles.table_container}>
+                          <div className="col-md-1">
+                            {level === 1 && (
+                              <span style={{ marginRight: "10px" }}>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                  <i className="fa fa-eye" />
+                                </a>
+                              </span>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -283,15 +303,18 @@ function SelectContributorMultiple({
                 shemaObject={template}
                 level={level + 1}
                 fragmentId={fragmentId}
+                readonly={readonly}
               ></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
-              <Button variant="primary" onClick={handleAddToList}>
-                {t("Save")}
-              </Button>
+              {!readonly && (
+                <Button variant="primary" onClick={handleAddToList}>
+                  {t("Save")}
+                </Button>
+              )}
             </Modal.Footer>
           </Modal>
         )}

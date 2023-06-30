@@ -25,6 +25,7 @@ function CustomButton({ handleClick, title, buttonType, position }) {
   const handleButtonAction = (e) => {
     handleClick(e);
   };
+
   return (
     <DivButton position={position}>
       <Button type="button" className="btn btn-primary" buttonType={buttonType}  onClick={handleButtonAction}>

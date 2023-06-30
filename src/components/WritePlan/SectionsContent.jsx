@@ -19,7 +19,7 @@ import { deleteResearchOutput } from "../../services/DmpResearchOutput";
 import styles from "../assets/css/write_plan.module.css";
 import Section from "./Section";
 
-function SectionsContent({ planId, templateId, hasPersonalData }) {
+function SectionsContent({ planId, templateId, hasPersonalData, readonly }) {
   const { t } = useTranslation();
   const { 
     openedQuestions, setOpenedQuestions,
@@ -122,11 +122,13 @@ Finally, it sets the loading state to false. */
                 </span>
               </div>
 
-              <div>
-                <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
-                  {t("Delete")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
-                </button>
-              </div>
+              {!readonly && (
+                  <div>
+                    <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
+                      {t("Delete")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>
+                    </button>
+                  </div>
+                )}
             </div>*/}
             {showResearchOutputInfo && (
               <div style={{ margin: "0px 10px 30px 10px" }}>
@@ -144,6 +146,7 @@ Finally, it sets the loading state to false. */
                 key={section.id}
                 section={section}
                 hasPersonalData={hasPersonalData}
+                readonly={readonly}
               ></Section>
             ))}
           </div>

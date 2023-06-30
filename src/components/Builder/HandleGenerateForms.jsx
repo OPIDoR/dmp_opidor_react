@@ -14,7 +14,7 @@ import TinyArea from '../Forms/TinyArea';
 import { createLabel } from '../../utils/GeneratorUtils.js';
 
 function HandleGenerateForms({
-  shemaObject, level, changeValue, fragmentId,
+  shemaObject, level, changeValue, fragmentId, readonly 
 }) {
   const { locale, dmpId } = useContext(GlobalContext);
   if (!shemaObject) return false;
@@ -42,6 +42,7 @@ function HandleGenerateForms({
               changeValue={changeValue}
               tooltip={tooltip}
               fragmentId={fragmentId}
+              readonly={readonly}
             ></TinyArea>,
           );
           // sethtmlGenerator(data);
@@ -63,6 +64,7 @@ function HandleGenerateForms({
               level={level}
               fragmentId={fragmentId}
               registryType="simple"
+              readonly={readonly}
             ></SelectSingleList>,
           );
         }
@@ -85,7 +87,8 @@ function HandleGenerateForms({
               tooltip={tooltip}
               defaultValue={defaultValue}
               fragmentId={fragmentId}
-            ></InputText>,
+              readonly={readonly}
+>>>>>>> development
           );
         }
       }
@@ -109,6 +112,7 @@ function HandleGenerateForms({
                 level={level}
                 header={prop[`table_header@${locale}`]}
                 fragmentId={fragmentId}
+                readonly={readonly}
               ></SelectWithCreate>,
             );
           } else {
@@ -122,7 +126,8 @@ function HandleGenerateForms({
                 tooltip={tooltip}
                 level={level}
                 fragmentId={fragmentId}
-              ></SelectMultipleList>,
+                readonly={readonly}
+>>>>>>> development
             );
           }
         } else {
@@ -140,6 +145,7 @@ function HandleGenerateForms({
                   tooltip={tooltip}
                   header={prop[`table_header@${locale}`]}
                   fragmentId={fragmentId}
+                  readonly={readonly}
                 ></SelectContributorMultiple>,
               );
             } else {
@@ -154,6 +160,7 @@ function HandleGenerateForms({
                   level={level}
                   header={prop[`table_header@${locale}`]}
                   fragmentId={fragmentId}
+                  readonly={readonly}
                 ></ModalTemplate>,
               );
             }
@@ -166,6 +173,7 @@ function HandleGenerateForms({
                 propName={key}
                 tooltip={tooltip}
                 fragmentId={fragmentId}
+                readonly={readonly}
               ></InputTextDynamicaly>,
             );
           }
@@ -188,7 +196,8 @@ function HandleGenerateForms({
                 keyValue={key}
                 level={level}
                 fragmentId={fragmentId}
-              ></ModalTemplate>,
+                readonly={readonly}
+>>>>>>> development
             );
           }
 
@@ -205,6 +214,7 @@ function HandleGenerateForms({
                 level={level}
                 tooltip={tooltip}
                 fragmentId={fragmentId}
+                readonly={readonly}
               ></SelectContributorSingle>,
             );
           }
@@ -223,6 +233,7 @@ function HandleGenerateForms({
                 level={level}
                 fragmentId={fragmentId}
                 registryType="complex"
+                readonly={readonly}
               ></SelectSingleList>,
             );
           }

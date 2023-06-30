@@ -7,7 +7,7 @@ import styles from '../assets/css/form.module.css';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, propName, tooltip, fragmentId }) {
+function InputTextDynamicaly({ label, propName, tooltip, fragmentId, readonly  }) {
   const { t } = useTranslation();
   const [formFields, setFormFields] = useState(['']);
   const { formData, setFormData } = useContext(GlobalContext);
@@ -68,36 +68,34 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId }) {
         return (
           <div key={index} style={{ margin: "10px" }}>
             <div className={styles.input_container}>
-              <input type="text" className={styles.input} value={form} name={propName} onChange={(event) => handleFormChange(event, index)} />
-              {formFields.length !== 1 && (
-                <span className={styles.input_img} data-role="toggle">
-                  <a
-                    className="text-primary"
-                    type="button"
-                    href="#"
-                    onClick={(e) => removeFields(e, index)}
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title={t("Delete")}
-                    style={{ marginRight: "8px" }}
-                  >
-                    <i className="fa fa-minus" aria-hidden="true" />
-                  </a>
-                </span>
+              <input 
+                type="text"
+                className={styles.input}
+                value={form} name={propName}
+                onChange={(event) => handleFormChange(event, index)}
+                disabled={readonly}
+                />
+
+              {!readonly && (
+                <>
+                  {formFields.length !== 1 && (
+                    <span className={styles.input_img} data-role="toggle">
+                      <a
+                        className="text-primary"
+                        type="button"
+                        href="#"
+                        onClick={(e) => removeFields(e, index)}
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title={t("Delete")}
+                        style={{ marginRight: "8px" }}
+                      >
+                        <i className="fa fa-minus" aria-hidden="true" />
+                      </a>
+                    </span>
+                  )}
+                </>
               )}
-              <span className={styles.input_img} data-role="toggle">
-                <a
-                  href="#"
-                  className="text-primary"
-                  type="button"
-                  onClick={(e) => addFields(e)}
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title={t("Add")}
-                >
-                  <i className="fa fa-plus" aria-hidden="true" />
-                </a>
-              </span>
             </div>
           </div>
         );

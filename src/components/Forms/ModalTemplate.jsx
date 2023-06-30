@@ -33,6 +33,7 @@ function ModalTemplate({
   tooltip,
   header,
   fragmentId,
+  readonly,
 }) {
   const { t, i18n } = useTranslation();
   const [show, setShow] = useState(false);
@@ -83,7 +84,7 @@ function ModalTemplate({
       setSubData({});
     } else {
       handleSave();
-      toast.success('Enregistrement a été effectué avec succès !');
+      toast.success(t("Registration was successful !"));
     }
     handleClose();
   };
@@ -180,24 +181,39 @@ function ModalTemplate({
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>
                         <div className={styles.panel_title} dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></div>
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
+                        {!readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-edit" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                            <div className="col-md-1">
                               <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                                  <i className="fa fa-times" />
                                 </a>
                               </span>
-                            )}
+                            </div>
                           </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
+                        )}
+                        {readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span style={{ marginRight: "10px" }}>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-eye" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -205,14 +221,16 @@ function ModalTemplate({
             </tbody>
           </table>
         )}
-        <CustomButton
-          handleClick={() => {
-            handleShow(true);
-          }}
-          title={t("Add an element")}
-          buttonType="primary"
-          position="start"
-        ></CustomButton>
+        {!readonly && (
+          <CustomButton
+            handleClick={() => {
+              handleShow(true);
+            }}
+            title={t("Add an element")}
+            buttonType="primary"
+            position="start"
+          ></CustomButton>
+        )}
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header>
@@ -223,15 +241,18 @@ function ModalTemplate({
             shemaObject={template}
             level={level + 1}
             fragmentId={fragmentId}
+            readonly={readonly}
           ></BuilderForm>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             {t("Close")}
           </Button>
-          <Button variant="primary" onClick={handleAddToList}>
-            {t("Save")}
-          </Button>
+          {!readonly && (
+            <Button variant="primary" onClick={handleAddToList}>
+              {t("Save")}
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

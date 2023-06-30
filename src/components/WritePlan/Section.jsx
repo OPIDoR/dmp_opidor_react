@@ -6,7 +6,7 @@ import styles from "../assets/css/write_plan.module.css";
 import Question from "./Question";
 
 
-function Section({ section, hasPersonalData }) {
+function Section({ section, hasPersonalData, readonly }) {
   const { t } = useTranslation();
   const { 
     openedQuestions, setOpenedQuestions,
@@ -71,6 +71,7 @@ function Section({ section, hasPersonalData }) {
           question={question}
           sectionId={sectionId}
           hasPersonalData={hasPersonalData}
+          readonly={readonly}
         ></Question>
       ))}
     </>

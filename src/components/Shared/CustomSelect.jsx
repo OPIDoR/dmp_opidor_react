@@ -61,7 +61,8 @@ function CustomSelect({
     onChange,
     async = false, 
     asyncCallback = null,
-    defaultValue
+    defaultValue,
+    isDisabled = false,
 }) {
   const SelectComponent = async ? AsyncSelect : Select;
   return(
@@ -80,6 +81,7 @@ function CustomSelect({
       value={selectedOption}
       // defaultValue={defaultValue}
       loadOptions={async ? asyncCallback : undefined}
+      isDisabled={isDisabled}
     />
   );
 }

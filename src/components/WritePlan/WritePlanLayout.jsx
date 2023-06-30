@@ -13,6 +13,7 @@ function WritePlanLayout({
   planId,
   templateId,
   locale = 'en_GB',
+  readonly, 
 }) {
   return(
     <Global>
@@ -20,6 +21,7 @@ function WritePlanLayout({
         planId={planId}
         templateId={templateId}
         locale={locale}
+        readonly={readonly}
       />
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>

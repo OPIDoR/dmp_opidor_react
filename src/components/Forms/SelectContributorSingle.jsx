@@ -18,6 +18,7 @@ function SelectContributorSingle({
   level,
   tooltip,
   fragmentId,
+  readonly, 
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
@@ -184,27 +185,32 @@ function SelectContributorSingle({
               onChange={handleChangeList}
               options={options}
               name={propName}
+              isDisabled={readonly}
               // async={true}
               // asyncCallback={fetchContributors}
             />
           </div>
-          <div className="col-md-1" style={{ marginTop: "8px" }}>
-            <span>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                <i className="fas fa-plus" />
-              </a>
-            </span>
-          </div>
+          {!readonly && (
+            <div className="col-md-1" style={{ marginTop: "8px" }}>
+              <span>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                  <i className="fas fa-plus" />
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         {selectedValue && (
           <div style={{ margin: "10px" }}>
             <span className={styles.input_label}>{t("Selected value")} : </span>
             <span className={styles.input_text}>{selectedValue}</span>
-            <span style={{ marginLeft: "10px" }}>
-              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
-                <i className="fas fa-edit" />
-              </a>
-            </span>
+            {!readonly && (
+              <span style={{ marginLeft: "10px" }}>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
+                  <i className="fas fa-edit" />
+                </a>
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -219,15 +225,18 @@ function SelectContributorSingle({
                 shemaObject={template}
                 level={level + 1}
                 fragmentId={fragmentId}
+                readonly={readonly}
               ></BuilderForm>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
-              <Button variant="primary" onClick={handleAddToList}>
-                {t("Save")}
-              </Button>
+              {!readonly && (
+                <Button variant="primary" onClick={handleAddToList}>
+                  {t("Save")}
+                </Button>
+              )}
             </Modal.Footer>
           </Modal>
         )}

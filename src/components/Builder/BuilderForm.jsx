@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { GlobalContext } from '../context/Global.jsx';
 import HandleGenerateForms from './HandleGenerateForms.jsx';
 
-function BuilderForm({ shemaObject, level, fragmentId }) {
+function BuilderForm({ shemaObject, level, fragmentId, readonly }) {
   const {
     formData, setFormData, subData, setSubData,
   } = useContext(GlobalContext);
@@ -34,6 +34,7 @@ function BuilderForm({ shemaObject, level, fragmentId }) {
       level={level}
       changeValue={changeValue}
       fragmentId={fragmentId}
+      readonly={readonly}
     ></HandleGenerateForms>
   );
 }
