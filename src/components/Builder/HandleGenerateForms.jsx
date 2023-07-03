@@ -88,7 +88,7 @@ function HandleGenerateForms({
               defaultValue={defaultValue}
               fragmentId={fragmentId}
               readonly={readonly}
->>>>>>> development
+            ></InputText>
           );
         }
       }
@@ -127,7 +127,7 @@ function HandleGenerateForms({
                 level={level}
                 fragmentId={fragmentId}
                 readonly={readonly}
->>>>>>> development
+              ></SelectMultipleList>
             );
           }
         } else {
@@ -197,7 +197,7 @@ function HandleGenerateForms({
                 level={level}
                 fragmentId={fragmentId}
                 readonly={readonly}
->>>>>>> development
+              ></ModalTemplate>
             );
           }
 
