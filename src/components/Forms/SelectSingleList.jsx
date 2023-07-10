@@ -10,11 +10,14 @@ import { useTranslation } from "react-i18next";
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
-function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId, readonly }) {
+function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaId, readonly, registries }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [options, setoptions] = useState(null);
   const { form, temp } = useContext(GlobalContext);
+  const shouldShowRef = registries && registries.length > 1;
+  const [showRef, setShowRef] = useState(shouldShowRef);
+  const [registryName, setRegistryName] = useState(registry);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -57,6 +60,11 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     }
   };
 
+  const handleChange = (e) => {
+    setShowRef(false);
+    setRegistryName(e.target.value);
+  };
+
   return (
     <>
       <div className="form-group">
@@ -69,27 +77,68 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
             </span>
           )}
         </div>
-        <div className="row">
-          <div className={`col-md-12 ${styles.select_wrapper}`}>
-            <Select
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
-              onChange={handleChangeList}
-              options={options}
-              name={name}
-              style={{ color: "red" }}
-              defaultValue={{
-                label: getDefaultLabel(temp, form?.[schemaId], name),
-                value: getDefaultLabel(temp, form?.[schemaId], name),
-              }}
-              isDisabled={readonly}
-            />
-          </div>
-        </div>
+
+        {showRef ? (
+          <>
+            <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
+            <div className="row">
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
+                <select className="form-control" aria-label="Default select example" onChange={handleChange}>
+                  <option selected>{t("Select a reference from the list")}</option>
+                  {registries.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {registries && registries.length > 1 && (
+              <div style={{ margin: "0px 0px 15px 0px" }}>
+                <span className={styles.input_label}>{t("Selected reference")} :</span>
+                <span className={styles.input_text}>{registryName}</span>
+                <span style={{ marginLeft: "10px" }}>
+                  <a
+                    className="text-primary"
+                    href="#"
+                    aria-hidden="true"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowRef(true);
+                    }}
+                  >
+                    <i className="fas fa-edit" />
+                  </a>
+                </span>
+              </div>
+            )}
+            <div className="row">
+              <div className={`col-md-12 ${styles.select_wrapper}`}>
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                    control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                  }}
+                  onChange={handleChangeList}
+                  options={options}
+                  name={name}
+                  style={{ color: "red" }}
+                  defaultValue={{
+                    label: getDefaultLabel(temp, form?.[schemaId], name),
+                    value: getDefaultLabel(temp, form?.[schemaId], name),
+                  }}
+                  isDisabled={readonly}
+                />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

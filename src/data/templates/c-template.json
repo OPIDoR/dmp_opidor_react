@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "../Documentation/Implementation/data_model/Json/",
+  "title": "ResearchOutputDescriptionStandard",
+  "description": "ResearchOutputDescriptionStandard template",
+  "type": "object",
+  "class": "ResearchOutputDescriptionStandard",
+  "properties": {
+    "volumeUnit": {
+      "type": "string",
+      "description": "Unité de volume",
+      "inputType": "dropdown",
+      "label@fr_FR": "Unité",
+      "label@en_GB": "Unit",
+      "registries": ["VolumeUnit", "VolumeUnit"],
+      "overridable": true,
+      "form_label@fr_FR": "Unité",
+      "form_label@en_GB": "Unit"
+    }
+  },
+  "required": ["title", "description", "type", "controlledKeyword", "language", "containsPersonalData", "containsSensitiveData", "hasEthicalIssues"],
+  "to_string": []
+}

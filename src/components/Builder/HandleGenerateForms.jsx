@@ -43,13 +43,15 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
         }
         // Condition 1.2
         // si inputType === dropdown
-        if (value.inputType === "dropdown" && value.hasOwnProperty("registry_name")) {
+        if (value.inputType === "dropdown" && (value.hasOwnProperty("registry_name") || value.hasOwnProperty("registries"))) {
+          let registryName = value.hasOwnProperty("registry_name") ? value["registry_name"] : value["registries"][0];
           data.push(
             <SelectSingleList
               label={label}
               name={key}
               key={key}
-              registry={value.registry_name}
+              registry={registryName}
+              registries={value["registries"]}
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
@@ -85,14 +87,16 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
       if (value.type === "array") {
         // condition 2.1
         // si inputType === dropdown et on n'a pas de registry_name
-        if (value.inputType === "dropdown" && value.hasOwnProperty("registry_name")) {
+        if (value.inputType === "dropdown" && (value.hasOwnProperty("registry_name") || value.hasOwnProperty("registries"))) {
+          let registryName = value.hasOwnProperty("registry_name") ? value["registry_name"] : value["registries"][0];
           if (value.items.template_name) {
             data.push(
               <SelectWithCreate
                 label={label}
                 name={key}
                 key={key}
-                registry={value.registry_name}
+                registry={registryName}
+                registries={value["registries"]}
                 changeValue={changeValue}
                 template={value.items.template_name}
                 level={level}
@@ -108,7 +112,8 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
                 label={label}
                 name={key}
                 key={key}
-                registry={value.registry_name}
+                registry={registryName}
+                registries={value["registries"]}
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
@@ -203,10 +208,12 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
         }
         // codition 3.2
         if (value.inputType === "dropdown") {
-          if (value.hasOwnProperty("registry_name")) {
+          if (value.hasOwnProperty("registry_name") || value.hasOwnProperty("registries")) {
+            let registryName = value.hasOwnProperty("registry_name") ? value["registry_name"] : value["registries"][0];
             data.push(
               <SelectSingleList
-                registry={value.registry_name}
+                registry={registryName}
+                registries={value["registries"]}
                 label={label}
                 name={key}
                 changeValue={changeValue}

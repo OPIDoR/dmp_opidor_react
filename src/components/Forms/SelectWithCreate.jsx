@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 /* The above code is a React component that renders a select input field with the ability to add new options to the select list. It also displays a table
 of the selected options and allows for editing and deleting of those options. The component uses hooks to manage state and makes use of external
 libraries such as React Bootstrap and SweetAlert for styling and displaying confirmation messages. */
-function SelectWithCreate({ label, registry, name, template, keyValue, level, tooltip, header, schemaId, readonly }) {
+function SelectWithCreate({ label, registry, name, template, keyValue, level, tooltip, header, schemaId, readonly, registries }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [list, setlist] = useState([]);
@@ -23,6 +23,9 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
   const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
+  const shouldShowRef = registries && registries.length > 1;
+  const [showRef, setShowRef] = useState(shouldShowRef);
+  const [registryName, setRegistryName] = useState(registry);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -56,12 +59,13 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
         setoptions(data);
       }
     };
-    getRegistryValue(registry, "token")
+
+    getRegistryValue(registryName, "token")
       .then((res) => {
         if (res) {
           setOptions(createOptions(res));
         } else {
-          return getRegistry(registry, "token").then((resRegistry) => {
+          return getRegistry(registryName, "token").then((resRegistry) => {
             setOptions(createOptions(resRegistry));
           });
         }
@@ -72,7 +76,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
     return () => {
       isMounted = false;
     };
-  }, [registry, lng]);
+  }, [registryName, lng]);
 
   /**
    * It closes the modal and resets the state of the modal.
@@ -187,6 +191,11 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
     setindex(idx);
   };
 
+  const handleChange = (e) => {
+    setShowRef(false);
+    setRegistryName(e.target.value);
+  };
+
   return (
     <>
       <div className="form-group">
@@ -199,36 +208,80 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
             </span>
           )}
         </div>
-        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
-        <div className="row">
-          <div className={`col-md-11 ${styles.select_wrapper}`}>
-            <Select
-              menuPortalTarget={document.body}
-              styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-              }}
-              onChange={handleChangeList}
-              options={options}
-              name={name}
-              defaultValue={{
-                label: temp ? temp[name] : "",
-                value: temp ? temp[name] : "",
-              }}
-              isDisabled={readonly}
-            />
-          </div>
-          {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+
+        {showRef ? (
+          <>
+            <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
+            <div className="row">
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
+                <select className="form-control" aria-label="Default select example" onChange={handleChange}>
+                  <option selected>{t("Select a reference from the list")}</option>
+                  {registries.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.input_label}>{t("Select a value from the list")}.</div>
+            {/* {JSON.stringify(registries)} */}
+            {registries && registries.length > 1 && (
+              <div style={{ margin: "0px 0px 15px 0px" }}>
+                <span className={styles.input_label}>{t("Selected reference")} :</span>
+                <span className={styles.input_text}>{registryName}</span>
+                <span style={{ marginLeft: "10px" }}>
+                  <a
+                    className="text-primary"
+                    href="#"
+                    aria-hidden="true"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowRef(true);
+                    }}
+                  >
+                    <i className="fas fa-edit" />
+                  </a>
+                </span>
+              </div>
+            )}
+
+            <div className="row">
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
+                <Select
+                  menuPortalTarget={document.body}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                    control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                  }}
+                  onChange={handleChangeList}
+                  options={options}
+                  name={name}
+                  defaultValue={{
+                    label: temp ? temp[name] : "",
+                    value: temp ? temp[name] : "",
+                  }}
+                  isDisabled={readonly}
+                />
+              </div>
+              {!readonly && (
+                <div className="col-md-1" style={{ marginTop: "8px" }}>
+                  <span>
+                    <a className="text-primary" href="#" onClick={(e) => handleShow(e)}>
+                      <i className="fas fa-plus" />
+                    </a>
+                  </span>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
         {list && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
