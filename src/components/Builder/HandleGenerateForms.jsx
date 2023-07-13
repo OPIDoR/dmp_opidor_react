@@ -2,13 +2,13 @@ import React from "react";
 import InputText from "../Forms/InputText";
 import InputTextDynamicaly from "../Forms/InputTextDynamicaly";
 import ModalTemplate from "../Forms/ModalTemplate";
-import SelectContributor from "../Forms/SelectContributor";
 import SelectMultipleList from "../Forms/SelectMultipleList";
 import SelectSingleList from "../Forms/SelectSingleList";
 import SelectWithCreate from "../Forms/SelectWithCreate";
 import listContributor from "../../data/contributor.json";
 import TinyArea from "../Forms/TinyArea";
-import SelectInvestigator from "../Forms/SelectInvestigator";
+import SelectContributorMultiple from "../Forms/SelectContributorMultiple";
+import SelectContributorSingle from "../Forms/SelectContributorSingle";
 
 function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, readonly }) {
   const objectProp = shemaObject.properties;
@@ -128,7 +128,7 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
           if (value.items.type === "object") {
             if (key === "contributor" && value.items.class === "Contributor") {
               data.push(
-                <SelectContributor
+                <SelectContributorMultiple
                   label={label}
                   name={key}
                   key={key}
@@ -141,7 +141,7 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
                   header={value["table_header@fr_FR"]}
                   schemaId={schemaId}
                   readonly={readonly}
-                ></SelectContributor>
+                ></SelectContributorMultiple>
               );
             } else {
               data.push(
@@ -190,7 +190,7 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
           if (value.class === "Contributor") {
             //console.log("TODO : condition funder à voir");
             data.push(
-              <SelectInvestigator
+              <SelectContributorSingle
                 label={label}
                 name={key}
                 key={key}
@@ -202,7 +202,7 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
                 tooltip={tooltip}
                 schemaId={schemaId}
                 readonly={readonly}
-              ></SelectInvestigator>
+              ></SelectContributorSingle>
             );
           }
         }

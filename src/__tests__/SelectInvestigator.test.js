@@ -56,8 +56,8 @@ describe("HandleGenerateForms component", () => {
         <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
       </Global>
     );
-    expect(wrapper.find("SelectInvestigator").prop("label")).toBe("Coordinateur du projet");
-    expect(wrapper.find("SelectInvestigator").prop("name")).toBe("principalInvestigator");
-    expect(wrapper.find("SelectInvestigator").prop("tooltip")).toBe("Aussi appelé Investigateur principal");
+    expect(wrapper.find("SelectContributorSingle").prop("label")).toBe("Coordinateur du projet");
+    expect(wrapper.find("SelectContributorSingle").prop("name")).toBe("principalInvestigator");
+    expect(wrapper.find("SelectContributorSingle").prop("tooltip")).toBe("Aussi appelé Investigateur principal");
   });
 });

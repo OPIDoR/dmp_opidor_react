@@ -172,7 +172,7 @@
       "label@fr_FR": "Equipements, plateaux techniques",
       "label@en_GB": "Equipments, technical platforms",
       "inputType": "dropdown",
-      "registry_name": "StorageServices",
+      "registries": ["StorageServices", "StorageServices1"],
       "overridable": true,
       "form_label@fr_FR": "Equipements, plateaux techniques utilisés pour le stockage et sauvegarde des données",
       "form_label@en_GB": "Equipments, technical platforms used for data storage and backup"

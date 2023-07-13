@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 /* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
 the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
 select field. The selected option is displayed below the select field. */
-function SelectInvestigator({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId, readonly }) {
+function SelectContributorSingle({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId, readonly }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -204,4 +204,4 @@ function SelectInvestigator({ label, name, changeValue, registry, keyValue, leve
   );
 }
 
-export default SelectInvestigator;
+export default SelectContributorSingle;

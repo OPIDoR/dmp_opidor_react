@@ -18,6 +18,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const shouldShowRef = registries && registries.length > 1;
   const [showRef, setShowRef] = useState(shouldShowRef);
   const [registryName, setRegistryName] = useState(registry);
+  const [selectMonted, setSelectMonted] = useState(false);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -37,6 +38,15 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     getRegistryValue(registry, "token").then((res) => {
       if (res) {
         setOptions(createOptions(res));
+        const listOptions = createOptions(res);
+        if (!temp && !form?.[schemaId]) {
+          if (name === "funder") {
+            changeValue({ target: { name: name, value: listOptions[0]?.object } });
+          } else {
+            changeValue({ target: { name: name, value: listOptions[0]?.value } });
+          }
+        }
+        setSelectMonted(true);
       } else {
         return getRegistry(registry, "token").then((resRegistry) => {
           setOptions(createOptions(resRegistry));
@@ -59,6 +69,8 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
       changeValue({ target: { name: name, value: e.value } });
     }
   };
+
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     setShowRef(false);
@@ -118,23 +130,25 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
             )}
             <div className="row">
               <div className={`col-md-12 ${styles.select_wrapper}`}>
-                <Select
-                  menuPortalTarget={document.body}
-                  styles={{
-                    menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                    singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                    control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                  }}
-                  onChange={handleChangeList}
-                  options={options}
-                  name={name}
-                  style={{ color: "red" }}
-                  defaultValue={{
-                    label: getDefaultLabel(temp, form?.[schemaId], name),
-                    value: getDefaultLabel(temp, form?.[schemaId], name),
-                  }}
-                  isDisabled={readonly}
-                />
+                {selectMonted && (
+                  <Select
+                    menuPortalTarget={document.body}
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                      singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                      control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                    }}
+                    onChange={handleChangeList}
+                    options={options}
+                    name={name}
+                    style={{ color: "red" }}
+                    defaultValue={{
+                      label: getDefaultLabel(temp, form?.[schemaId], name),
+                      value: getDefaultLabel(temp, form?.[schemaId], name),
+                    }}
+                    isDisabled={readonly}
+                  />
+                )}
               </div>
             </div>
           </>

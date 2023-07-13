@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
 component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
 contributors and allows users to edit or delete them. */
-function SelectContributor({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId, readonly }) {
+function SelectContributorMultiple({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId, readonly }) {
   const { t } = useTranslation();
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
@@ -295,4 +295,4 @@ function SelectContributor({ label, name, changeValue, registry, keyValue, level
   );
 }
 
-export default SelectContributor;
+export default SelectContributorMultiple;

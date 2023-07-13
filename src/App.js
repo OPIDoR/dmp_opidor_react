@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/redaction" element={<WritePlanLayout readonly={false} />} />
-        <Route exact path="/form" element={<Form schemaId={"c"} readonly={false} />} />
+        <Route exact path="/form" element={<Form schemaId={"a"} readonly={false} />} />
         <Route exact path="/plan" element={<PlanCreation />} />
         <Route exact path="/" element={<GeneralInfo readonly={true} />} />
       </Routes>
