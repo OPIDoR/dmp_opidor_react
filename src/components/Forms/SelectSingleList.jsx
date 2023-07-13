@@ -110,7 +110,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           <>
             {registries && registries.length > 1 && (
               <div style={{ margin: "0px 0px 15px 0px" }}>
-                <span className={styles.input_label}>{t("Selected reference")} :</span>
+                <span className={styles.input_label}>{t("Selected registry")} :</span>
                 <span className={styles.input_text}>{registryName}</span>
                 <span style={{ marginLeft: "10px" }}>
                   <a

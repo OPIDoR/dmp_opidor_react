@@ -231,7 +231,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
             {/* {JSON.stringify(registries)} */}
             {registries && registries.length > 1 && (
               <div style={{ margin: "0px 0px 15px 0px" }}>
-                <span className={styles.input_label}>{t("Selected reference")} :</span>
+                <span className={styles.input_label}>{t("Selected registry")} :</span>
                 <span className={styles.input_text}>{registryName}</span>
                 <span style={{ marginLeft: "10px" }}>
                   <a
@@ -244,7 +244,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
                       setShowRef(true);
                     }}
                   >
-                    <i className="fas fa-edit" />
+                    <i className="fas fa-times" />
                   </a>
                 </span>
               </div>
