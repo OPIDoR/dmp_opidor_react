@@ -158,6 +158,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
                 </span>
               </div>
             )}
+            <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
             <div className="row">
               <div className={`col-md-12 ${styles.select_wrapper}`}>
                 <Select

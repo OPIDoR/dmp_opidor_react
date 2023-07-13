@@ -227,10 +227,9 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
           </>
         ) : (
           <>
-            <div className={styles.input_label}>{t("Select a value from the list")}.</div>
             {/* {JSON.stringify(registries)} */}
             {registries && registries.length > 1 && (
-              <div style={{ margin: "0px 0px 15px 0px" }}>
+              <div style={{ margin: "15px 0px 15px 0px" }}>
                 <span className={styles.input_label}>{t("Selected registry")} :</span>
                 <span className={styles.input_text}>{registryName}</span>
                 <span style={{ marginLeft: "10px" }}>
@@ -249,6 +248,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
                 </span>
               </div>
             )}
+            <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
 
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
