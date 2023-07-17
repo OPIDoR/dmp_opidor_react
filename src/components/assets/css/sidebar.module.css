@@ -11,6 +11,52 @@
   height: 100%;
 }
 
+.research_outputs_accordion {
+  display: flex;
+  flex-direction: column;
+
+  align-self: flex-start;
+  overflow: hidden;
+  border-radius: 20px 0 0 20px;
+  position: relative;
+  width: 100%;
+
+  background-color: white;
+}
+
+.research_outputs_tabs {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 95%;
+  float: right;
+}
+
+.research_outputs_tab {
+  flex: 1 1 15%;
+  text-align: center;
+  border: none;
+  margin: 0;
+}
+
+.research_outputs_tab:not(:last-child) {
+  margin-bottom: 3px;
+}
+
+
+.research_outputs_tab.active > a,
+.research_outputs_tab >a:hover {
+  background-color: var(--primary);
+  color: white;
+  font-size: 16px;
+}
+
+.research_outputs_tab a {
+  padding: 20px;
+  font-weight: bold;
+  background-color: var(--secondary);
+}
+
 .nav_header {
   display: flex;
   flex-direction: column;
@@ -27,6 +73,7 @@
 .nav_title {
   display: flex;
   justify-content: center;
+  color: white;
   margin: 10px;
   font-size: 18px;
   font-weight: bold;

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import { GlobalContext } from "../context/Global";
-import StyledNavBar from "./styles/StyledNavBar";
+import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
 import { Panel, PanelGroup } from "react-bootstrap";
 import styles from "../assets/css/sidebar.module.css";
 import { BsBell, BsCheckCircleFill } from "react-icons/bs";
@@ -63,91 +63,85 @@ function ResearchOutputsTabs({ planId }) {
   return (
     <>
       {researchOutputs && researchOutputs.length > 1 && (
-        <StyledNavBar className="navbar-inverse">
-          <div className="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-            <ul className="nav navbar-nav" style={{ width: "100%", margin: "0px" }}>
-              <>
-                {researchOutputs.length > itemsPerPage && openedQuestions ? (
-                  <>
-                    {Array.from({ length: Math.ceil(researchOutputs.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
-                      const start = (page - 1) * itemsPerPage;
-                      const end = start + itemsPerPage;
-                      const pageItems = researchOutputs.slice(start, end);
+        <ResearchOutputsNavBar className="navbar-inverse">
+          <div className="collapse navbar-collapse">
+            {researchOutputs.length > itemsPerPage && openedQuestions ? (
+              <PanelGroup accordion id="accordion" className={styles.research_outputs_accordion}>
+                {Array.from({ length: Math.ceil(researchOutputs.length / itemsPerPage) }, (_, index) => index + 1).map((page, i) => {
+                  const start = (page - 1) * itemsPerPage;
+                  const end = start + itemsPerPage;
+                  const pageItems = researchOutputs.slice(start, end);
 
-                      return (
-                        <PanelGroup accordion id="accordion-example" key={i}>
-                          <Panel eventKey={i} style={{ borderWidth: "2px", borderColor: "var(--primary)" }}>
-                            <Panel.Heading style={{ background: "rgb(128, 177, 205)" }}>
-                              <Panel.Title
-                                toggle
-                                className={styles.nav_title}
-                                style={{ display: "flex", justifyContent: "center", color: "white" }}
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  handleCollapseByIndex(i);
-                                }}
-                              >
-                                {start + 1} - {Math.min(end, researchOutputs.length)}
-                              </Panel.Title>
-                            </Panel.Heading>
+                  return (
+                    <Panel key={i} eventKey={i} style={{ borderColor: "white" }}>
+                      <Panel.Heading style={{ background: "var(--primary)" }}>
+                        <Panel.Title
+                          toggle
+                          className={styles.nav_title}
+                        //onClick={(e) => {
+                        //  e.preventDefault();
+                        //  e.stopPropagation();
+                        //  handleCollapseByIndex(i);
+                        //}}
+                        >
+                          {start + 1} - {Math.min(end, researchOutputs.length)}
+                        </Panel.Title>
+                      </Panel.Heading>
 
-                            <Panel.Body
-                              collapsible={openedQuestions && openedQuestions?.[i]}
-                              style={{ background: "var(--secondary)", padding: "0px 0px 0px 0px" }}
-                            >
-                              <ul className="nav navbar-nav" style={{ width: "100%" }}>
-                                {pageItems.map((el, idx) => (
-                                  <li
-                                    key={idx}
-                                    className={displayedResearchOutput.id === el.id ? "active" : ""}
-                                    onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
-                                  >
-                                    <a href="#" className={styles.nav_header}>
-                                      <div className={styles.nav_title}>{el.abbreviation}</div>
-                                      <div className={styles.nav_icon}>
-                                        <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
-                                        <BsCheckCircleFill
-                                          size={40}
-                                          className={styles.space_right}
-                                          style={{ color: "var(--orange)" }}
-                                        ></BsCheckCircleFill>
-                                      </div>
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </Panel.Body>
-                          </Panel>
-                        </PanelGroup>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    {researchOutputs.map((el, idx) => (
-                      <li
-                        key={idx}
-                        className={displayedResearchOutput.id == el.id ? "active" : ""}
-                        onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
+                      <Panel.Body
+                        collapsible={true}
+                        style={{ padding: "0px 0px 0px 0px" }}
                       >
-                        <a href="#" className={styles.nav_header}>
-                          <div className={styles.nav_title}>{el.abbreviation}</div>
-                          <div className={styles.nav_icon}>
-                            <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
-                            <BsCheckCircleFill
-                              size={40}
-                              className={styles.space_right}
-                              style={{ color: "var(--orange)" }}
-                            ></BsCheckCircleFill>
-                          </div>
-                        </a>
-                      </li>
-                    ))}
-                  </>
-                )}
-              </>
-              {/*
+                        <ul className={`nav navbar-nav ${styles.research_outputs_tabs}`}>
+                          {pageItems.map((el, idx) => (
+                            <li
+                              key={idx}
+                              className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === el.id ? "active" : ""}`}
+                              onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
+                            >
+                              <a href="#">
+                                <div className={styles.nav_title}>{el.abbreviation}</div>
+                                <div className={styles.nav_icon}>
+                                  {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                                    <BsCheckCircleFill
+                                      size={40}
+                                      className={styles.space_right}
+                                      style={{ color: "var(--orange)" }}
+                                    ></BsCheckCircleFill> */}
+                                </div>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </Panel.Body>
+                    </Panel>
+                  );
+                })}
+              </PanelGroup>
+            ) : (
+              <ul className={`nav navbar-nav ${styles.research_outputs_tabs}`}>
+                {researchOutputs.map((el, idx) => (
+                  <li
+                    key={idx}
+                    className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === el.id ? "active" : ""}`}
+                    onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
+                  >
+                    <a href="#" className={styles.nav_header}>
+                      <div className={styles.nav_title}>{el.abbreviation}</div>
+                      <div className={styles.nav_icon}>
+                        {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                        <BsCheckCircleFill
+                          size={40}
+                          className={styles.space_right}
+                          style={{ color: "var(--orange)" }}
+                        ></BsCheckCircleFill> */}
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {/*
             {!readonly && (
             <li onClick={handleShow}>
               <a
@@ -164,9 +158,8 @@ function ResearchOutputsTabs({ planId }) {
               </a>
               </li>
               )}*/}
-            </ul>
           </div>
-        </StyledNavBar>
+        </ResearchOutputsNavBar>
       )}
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
     </>
