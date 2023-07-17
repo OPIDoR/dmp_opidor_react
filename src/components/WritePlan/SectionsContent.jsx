@@ -1,18 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BsGear } from "react-icons/bs";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import { getSectionsData } from "../../services/DmpWritePlanApi";
 import CustomSpinner from "../Shared/CustomSpinner";
-import GuidanceModal from "./GuidanceModal";
-import CommentModal from "./CommentModal";
-import RunsModal from "./RunsModal";
-import LightSVG from "../Styled/svg/LightSVG";
-import CommentSVG from "../Styled/svg/CommentSVG";
-import Form from "../Forms/Form";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import { deleteResearchOutput } from "../../services/DmpResearchOutput";
@@ -23,7 +15,7 @@ function SectionsContent({ planId, templateId, hasPersonalData, readonly }) {
   const { t } = useTranslation();
   const { 
     openedQuestions, setOpenedQuestions,
-    setResearchOutputsData,
+    setResearchOutputs,
     displayedResearchOutput,
     setQuestionsWithGuidance,
     planData,
@@ -31,7 +23,6 @@ function SectionsContent({ planId, templateId, hasPersonalData, readonly }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
-  const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
   const [showResearchOutputInfo, setShowResearchOutputInfo] = useState(false);
 
   /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
@@ -40,16 +31,15 @@ If the promise is rejected, it sets the error state to the error.
 Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
+    console.log(templateId);
     getSectionsData(templateId)
       .then((res) => {
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
         //   return el.id === displayedResearchOutput.id;
         // });
-        // setCurrentResearchOutput(researchOutputFilter[0]);
         // setQuestionsWithGuidance(res?.data?.plan.questions_with_guidance || []);
         setSectionsData(res.data);
         if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
-          console.log(res.data);
           // const allCollapses = res.data.map((section) => {
           //   return {[section.id]: []};
           // });
@@ -59,7 +49,7 @@ Finally, it sets the loading state to false. */
       })
       .catch((error) => setError(error)) 
       .finally(() => setLoading(false));
-  }, [displayedResearchOutput.id]);
+  }, [templateId]);
 
   /**
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
@@ -72,7 +62,7 @@ Finally, it sets the loading state to false. */
       .indexOf(displayedResearchOutput.id);
     e.preventDefault();
     e.stopPropagation();
-    if (index == 0) {
+    if (index === 0) {
       toast.error(t("You cannot delete the first element"));
     } else {
       Swal.fire({
@@ -88,7 +78,7 @@ Finally, it sets the loading state to false. */
         if (result.isConfirmed) {
           //delete
           deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
-            setResearchOutputsData(res.data.plan.research_outputs);
+            setResearchOutputs(res.data.plan.research_outputs);
           });
         }
       });
@@ -103,18 +93,18 @@ Finally, it sets the loading state to false. */
         <>
           <div className="row"></div>
           <div className={styles.write_plan_block}>
-            {/*<div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div
                 className="alert alert-info col-md-10"
                 style={{ display: "flex", justifyContent: "space-between" }}
                 onClick={() => setShowResearchOutputInfo(!showResearchOutputInfo)}
               >
-                <strong>{currentResearchOutput?.abbreviation}</strong>
+                <strong>{displayedResearchOutput.abbreviation}</strong>
                 <span
                   style={{ marginRight: "10px" }}
                   data-toggle="tooltip"
                   data-placement="top"
-                  title={`${t("Contains personal data")} : ${currentResearchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
+                  title={`${t("Contains personal data")} : ${displayedResearchOutput.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
                 >
                   <a href="#" onClick={(e) => e.preventDefault()}>
                     <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
@@ -129,15 +119,15 @@ Finally, it sets the loading state to false. */
                     </button>
                   </div>
                 )}
-            </div>*/}
+            </div>
             {showResearchOutputInfo && (
               <div style={{ margin: "0px 10px 30px 10px" }}>
                 <div className={styles.sous_title}>
-                  - {t("Research Output Name")} : <strong style={{ fontSize: "20px" }}>{currentResearchOutput?.metadata?.abbreviation}</strong>
+                  - {t("Research Output Name")} : <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.metadata?.abbreviation}</strong>
                 </div>
                 <div className={styles.sous_title}>
                   - {t("Contains personal data")} :
-                  <strong style={{ fontSize: "20px" }}>{currentResearchOutput?.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
+                  <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
                 </div>
               </div>
             )}

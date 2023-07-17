@@ -13,7 +13,7 @@ const EndButton = styled.div`
 `;
 
 function ImportResearchOutput({ planId, handleClose, show }) {
-  const { setResearchOutputsData } = useContext(GlobalContext);
+  const { setResearchOutputs } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [uuid, setUuid] = useState(null);
   const [plan, setPlan] = useState(null);
@@ -56,7 +56,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
     e.preventDefault();
     e.stopPropagation();
     postImportProduct(plan, uuid).then((res) => {
-      setResearchOutputsData(res.data.plan.research_outputs);
+      setResearchOutputs(res.data.plan.research_outputs);
       handleClose();
     });
   };
