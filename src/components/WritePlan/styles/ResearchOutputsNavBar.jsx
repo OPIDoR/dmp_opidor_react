@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-const StyledNavBar = styled.nav`
-  background-color: #80b1cd;
+const ResearchOutputsNavBar = styled.nav`
+  background-color: white;
   width: 220px;
   height: 100%;
   margin-left: -160px;
@@ -12,7 +12,7 @@ const StyledNavBar = styled.nav`
   margin-left: 0px;
   float: left;
   position: sticky;
-  top: 0;
+  top: 100px;
 
   .navbar-nav {
     margin: 0px 0px 0px 0px;
@@ -31,17 +31,14 @@ const StyledNavBar = styled.nav`
   /* ******************* active ******************************* */
   .navbar-nav > .active:first-child > a {
     background-color: #1c5170 !important;
-    border-radius: 0px 0px 0px 0px;
   }
 
   .navbar-nav > .active:not(:first-child):not(:last-child) > a {
     background-color: #1c5170 !important;
-    border-radius: 0px 0px 0px 0px;
   }
 
   .navbar-nav > .active:not(:first-child) > a {
     background-color: #1c5170 !important;
-    border-radius: 0px 0px 0px 20px;
   }
   /* ************************************************** */
 
@@ -72,6 +69,7 @@ const StyledNavBar = styled.nav`
   .navbar-collapse,
   nav.container-fluid {
     padding: 0 0px 0 0px;
+    flex-direction: column;
   }
 
   /*give sidebar 100% width;*/
@@ -86,4 +84,4 @@ const StyledNavBar = styled.nav`
   }
 `;
 
-export default StyledNavBar;
+export default ResearchOutputsNavBar;
