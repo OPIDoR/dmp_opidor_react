@@ -16,7 +16,7 @@ const EndButton = styled.div`
 function AddResearchOutput({ planId, handleClose, show }) {
   const { locale } = useContext(GlobalContext);
   const { t, i18n } = useTranslation();
-  const { setResearchOutputsData } = useContext(GlobalContext);
+  const { setResearchOutputs } = useContext(GlobalContext);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
@@ -60,7 +60,7 @@ when the component mounts. */
       },
     };
     postResearchOutput(objShow).then((res) => {
-      setResearchOutputsData(res.data.plan.research_outputs);
+      setResearchOutputs(res.data.plan.research_outputs);
       setAbbreviation("");
       setTitle("");
       handleClose();

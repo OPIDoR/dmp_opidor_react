@@ -18,11 +18,10 @@ const sampleData = [
 ];
 
 const globalState = {
-  researchOutputs: {},
+  researchOutputs: sampleData,
   setFormData: jest.fn(),
   setDisplayedResearchOutput: jest.fn(),
-  researchOutputsData: sampleData,
-  setResearchOutputsData: jest.fn(),
+  setResearchOutputs: jest.fn(),
 };
 
 describe("WritePlan", () => {

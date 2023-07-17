@@ -29,12 +29,16 @@ function Question({ question, sectionId, hasPersonalData, readonly }) {
   useEffect(() => {
     const answer = displayedResearchOutput.answers.find(answer => question.id === answer.question_id)
     if (answer) {
-      setAnswerId(answer.id);
+      setAnswerId(answer.answer_id);
       setFragmentId(answer.fragment_id);
+    } else {
+      setAnswerId(null);
+      setFragmentId(null);
+
     }
   }, [displayedResearchOutput]);
   /**
-   * `handlePanelUpdate` is a function that takes an event, an element index, and a question index,
+   * `handleQuestionCollapse` is a function that takes an event, an element index, and a question index,
    * and then sets the state of `openedQuestions` to the
    * opposite of what it was before.
    */
@@ -243,7 +247,7 @@ function Question({ question, sectionId, hasPersonalData, readonly }) {
             {isQuestionOpened() ?
               <>
               {
-                fragmentId ? (
+                fragmentId && answerId ? (
                   <DynamicForm fragmentId={fragmentId} readonly={readonly} />
                 ) : (
                   <DynamicForm

@@ -43,21 +43,11 @@ function Global({ children }) {
   const [loadedTemplates, setLoadedTemplates] = useState({});
   // Write Plan
   const [planData, setPlanData] = useState(null);
-  const [researchOutputs, setResearchOutputs] = useState(researchOutputsLocalState || {});
+  const [researchOutputs, setResearchOutputs] = useState(null);
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
   const [openedQuestions, setOpenedQuestions] = useState(null);
-  const [researchOutputsData, setResearchOutputsData] = useState(null);
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
 
-
-  useEffect(() => {
-    if (displayedResearchOutput) {
-      setResearchOutputs((prevResearchOutput) => ({
-        ...prevResearchOutput,
-        [displayedResearchOutput]: { ...formData },
-      }));
-    }
-  }, [displayedResearchOutput, formData]);
 
   /* It's setting the formData in sessionStorage. */
   useEffect(() => {
@@ -94,12 +84,12 @@ function Global({ children }) {
         // Write Plan
         planData,
         setPlanData,
+        researchOutputs,
+        setResearchOutputs,
         displayedResearchOutput,
         setDisplayedResearchOutput,
         openedQuestions,
         setOpenedQuestions,
-        researchOutputsData,
-        setResearchOutputsData,
         questionsWithGuidance,
         setQuestionsWithGuidance,
       }}
