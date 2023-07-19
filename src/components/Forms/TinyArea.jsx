@@ -53,7 +53,7 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
           <label>{label}</label>
           {tooltip && (
             <span 
-              className="fas fa-info-circle" 
+              className="fas fa-circle-info" 
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}

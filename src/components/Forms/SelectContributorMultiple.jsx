@@ -206,7 +206,7 @@ function SelectContributorMultiple({
           <label>{label}</label>
           {tooltip && (
             <span
-              className="fas fa-info-circle"
+              className="fas fa-circle-info"
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}
@@ -257,7 +257,7 @@ function SelectContributorMultiple({
                             {level === 1 && (
                               <span>
                                 <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
+                                  <i className="fa fa-pen-to-square" />
                                 </a>
                               </span>
                             )}

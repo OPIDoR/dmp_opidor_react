@@ -15,7 +15,7 @@ function Banner() {
         <div className={styles.banner_content}>
           <Info
             text={t("Attention Update scheduled for November 2, 2022, your favorite tool will be unavailable until 10 a.m.")}
-            icon="fas fa-exclamation-triangle"
+            icon="fas fa-triangle-exclamation"
             type="warning"
           ></Info>
           <div className={styles.banner_main}>

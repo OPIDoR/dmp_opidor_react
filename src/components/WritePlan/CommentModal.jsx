@@ -216,7 +216,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                       <div style={{ marginRight: "-20px" }}>
                         <div className="col-md-1">
                           <span onClick={(e) => handleUpdate(e, el)}>
-                            <i className="fa fa-edit" />
+                            <i className="fa fa-pen-to-square" />
                           </span>
                         </div>
                         <div className="col-md-1">
