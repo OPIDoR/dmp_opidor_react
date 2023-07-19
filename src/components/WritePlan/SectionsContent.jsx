@@ -107,7 +107,7 @@ Finally, it sets the loading state to false. */
                   title={`${t("Contains personal data")} : ${displayedResearchOutput.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
                 >
                   <a href="#" onClick={(e) => e.preventDefault()}>
-                    <i className="fas fa-info-circle" style={{ fontSize: "30px" }} />
+                    <i className="fas fa-circle-info" style={{ fontSize: "30px" }} />
                   </a>
                 </span>
               </div>

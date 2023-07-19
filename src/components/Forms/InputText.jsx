@@ -45,7 +45,7 @@ function InputText({
         <label>{label}</label>
         {tooltip && (
           <span 
-            className="fas fa-info-circle" 
+            className="fas fa-circle-info" 
             data-toggle="tooltip" data-placement="top" title={tooltip}
           ></span>
         )}
