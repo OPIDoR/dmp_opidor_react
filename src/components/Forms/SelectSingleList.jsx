@@ -15,8 +15,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const [lng] = useState(i18n.language.split("-")[0]);
   const [options, setoptions] = useState(null);
   const { form, temp } = useContext(GlobalContext);
-  const shouldShowRef = registries && registries.length > 1;
-  const [showRef, setShowRef] = useState(shouldShowRef);
   const [registryName, setRegistryName] = useState(registry);
   const [selectMonted, setSelectMonted] = useState(false);
 
@@ -35,7 +33,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         setoptions(data);
       }
     };
-    getRegistryValue(registry, "token").then((res) => {
+    getRegistryValue(registryName, "token").then((res) => {
       if (res) {
         setOptions(createOptions(res));
         const listOptions = createOptions(res);
@@ -48,7 +46,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         }
         setSelectMonted(true);
       } else {
-        return getRegistry(registry, "token").then((resRegistry) => {
+        return getRegistry(registryName, "token").then((resRegistry) => {
           setOptions(createOptions(resRegistry));
         });
       }
@@ -56,7 +54,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     return () => {
       isMounted = false;
     };
-  }, [registry, lng]);
+  }, [registryName, lng]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -73,8 +71,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   useEffect(() => {}, []);
 
   const handleChange = (e) => {
-    setShowRef(false);
-    setRegistryName(e.target.value);
+    setRegistryName(e.value);
   };
 
   return (
@@ -90,69 +87,65 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           )}
         </div>
 
-        {showRef ? (
-          <>
-            <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
-            <div className="row">
-              <div className={`col-md-11 ${styles.select_wrapper}`}>
-                <select className="form-control" aria-label="Default select example" onChange={handleChange}>
-                  <option selected>{t("Select a reference from the list")}</option>
-                  {registries.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {/* ************Select ref************** */}
+        <div className="row">
+          {registries && registries.length > 1 && (
+            <div className="col-md-6">
+              <>
+                <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <Select
+                      menuPortalTarget={document.body}
+                      styles={{
+                        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                      }}
+                      onChange={handleChange}
+                      options={registries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={name}
+                      isDisabled={readonly}
+                    />
+                  </div>
+                </div>
+              </>
             </div>
-          </>
-        ) : (
-          <>
-            {registries && registries.length > 1 && (
-              <div style={{ margin: "0px 0px 15px 0px" }}>
-                <span className={styles.input_label}>{t("Selected registry")} :</span>
-                <span className={styles.input_text}>{registryName}</span>
-                <span style={{ marginLeft: "10px" }}>
-                  <a
-                    className="text-primary"
-                    href="#"
-                    aria-hidden="true"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowRef(true);
-                    }}
-                  >
-                    <i className="fas fa-edit" />
-                  </a>
-                </span>
+          )}
+
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+            <>
+              <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
+              <div className="row">
+                <div className={`col-md-12 ${styles.select_wrapper}`}>
+                  {selectMonted && (
+                    <Select
+                      menuPortalTarget={document.body}
+                      styles={{
+                        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                      }}
+                      onChange={handleChangeList}
+                      options={options}
+                      name={name}
+                      style={{ color: "red" }}
+                      defaultValue={{
+                        label: getDefaultLabel(temp, form?.[schemaId], name),
+                        value: getDefaultLabel(temp, form?.[schemaId], name),
+                      }}
+                      isDisabled={readonly}
+                    />
+                  )}
+                </div>
               </div>
-            )}
-            <div className="row">
-              <div className={`col-md-12 ${styles.select_wrapper}`}>
-                {selectMonted && (
-                  <Select
-                    menuPortalTarget={document.body}
-                    styles={{
-                      menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                      singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                      control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                    }}
-                    onChange={handleChangeList}
-                    options={options}
-                    name={name}
-                    style={{ color: "red" }}
-                    defaultValue={{
-                      label: getDefaultLabel(temp, form?.[schemaId], name),
-                      value: getDefaultLabel(temp, form?.[schemaId], name),
-                    }}
-                    isDisabled={readonly}
-                  />
-                )}
-              </div>
-            </div>
-          </>
-        )}
+            </>
+          </div>
+        </div>
+        {/* *************ff************* */}
       </div>
     </>
   );

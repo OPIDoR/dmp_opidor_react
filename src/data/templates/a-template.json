@@ -139,6 +139,7 @@
       "label@fr_FR": "Unité",
       "label@en_GB": "Unit",
       "registry_name": "VolumeUnit",
+      "registries": ["VolumeUnit", "VolumeUnit1"],
       "overridable": true,
       "form_label@fr_FR": "Unité",
       "form_label@en_GB": "Unit"
@@ -188,6 +189,7 @@
       "label@fr_FR": "Supports de stockage",
       "label@en_GB": "Storage types",
       "registry_name": "StorageType",
+      "registries": ["StorageType", "StorageType1"],
       "overridable": true,
       "form_label@fr_FR": "Supports de stockage",
       "form_label@en_GB": "Storage types"
