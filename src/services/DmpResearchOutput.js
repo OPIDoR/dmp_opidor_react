@@ -82,22 +82,6 @@ const products = [
 ];
 
 /**
- * This is an asynchronous function that returns a data object of a specific type of product search when given a token.
- * @param token - The `token` parameter is not used in the `getTypeResearchOutput` function. It is not necessary for the function to execute and can be
- * removed.
- * @returns An object with a "data" property that contains the value of the "dataTypeResearchOutput" variable.
- */
-export async function getTypeResearchOutput(token) {
-  try {
-    //const response = await axios.get(`${api_url}9a58cd0e-13fd-4eae-91f2-b238e722dd18`);
-    //return response;
-    return { data: dataTypeResearchOutput };
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
  * This function sends a post request to a server with a JSON object and handles any errors that may occur.
  * @param jsonObject - This is an object containing the data to be sent in the POST request.
  * @returns An object with a "data" property, which is not defined in the code snippet. The value of "data" is likely intended to be the response data

@@ -39,22 +39,17 @@
   margin: 0;
 }
 
-.research_outputs_tab:not(:last-child) {
-  margin-bottom: 3px;
-}
-
-
-.research_outputs_tab.active > a,
-.research_outputs_tab >a:hover {
-  background-color: var(--primary);
-  color: white;
-  font-size: 16px;
-}
-
 .research_outputs_tab a {
   padding: 20px;
   font-weight: bold;
   background-color: var(--secondary);
+}
+
+.add_research_output_button {
+  width: 100%;
+  background-color: var(--secondary);
+  color: white;
+  border: none;
 }
 
 .nav_header {

@@ -3,10 +3,11 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
-import Select from "react-select";
 import { getTypeResearchOutput, postResearchOutput } from "../../services/DmpResearchOutput";
 import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
+import CustomSelect from "../Shared/CustomSelect";
+import { getRegistryByName } from "../../services/DmpServiceApi";
 
 const EndButton = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ function AddResearchOutput({ planId, handleClose, show }) {
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
-    getTypeResearchOutput().then((res) => {
+    getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
   }, []);
@@ -102,16 +103,9 @@ when the component mounts. */
           <label>{t("Type")}</label>
         </div>
         {options && (
-          <Select
-            menuPortalTarget={document.body}
-            styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-            }}
-            options={options}
-            style={{ color: "red" }}
+          <CustomSelect
             onChange={handleSelect}
+            options={options}
           />
         )}
       </div>
