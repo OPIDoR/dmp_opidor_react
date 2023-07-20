@@ -185,7 +185,7 @@ function RoutePage() {
                     </div>
                     <div className="row">
                       {/* form box */}
-                      <Link to="http://localhost:3000/form">
+                      <Link to="http://vtopidor.intra.inist.fr:3000/form">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
@@ -193,7 +193,7 @@ function RoutePage() {
                             </div>
                             <div className="feature-content">
                               <h5>Form</h5>
-                              <p>http://localhost:3000/form</p>
+                              <p>http://vtopidor.intra.inist.fr:3000/form</p>
                             </div>
                           </FeatureBox>
                         </div>
@@ -201,7 +201,7 @@ function RoutePage() {
 
                       {/* / */}
                       {/* info box */}
-                      <Link to="http://localhost:3000/info">
+                      <Link to="http://vtopidor.intra.inist.fr:3000/info">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
@@ -209,7 +209,7 @@ function RoutePage() {
                             </div>
                             <div className="feature-content">
                               <h5>Informations généraless</h5>
-                              <p>http://localhost:3000/info</p>
+                              <p>http://vtopidor.intra.inist.fr:3000/info</p>
                             </div>
                           </FeatureBox>
                         </div>
@@ -217,7 +217,7 @@ function RoutePage() {
 
                       {/* / */}
                       {/* redaction box */}
-                      <Link to="http://localhost:3000/redaction">
+                      <Link to="http://vtopidor.intra.inist.fr:3000/redaction">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
@@ -225,7 +225,7 @@ function RoutePage() {
                             </div>
                             <div className="feature-content">
                               <h5>Rédaction</h5>
-                              <p>http://localhost:3000/redaction</p>
+                              <p>http://vtopidor.intra.inist.fr:3000/redaction</p>
                             </div>
                           </FeatureBox>
                         </div>
