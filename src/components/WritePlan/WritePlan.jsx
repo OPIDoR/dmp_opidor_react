@@ -69,7 +69,7 @@ function WritePlan({
         {!loading && error && <CustomError error={error}></CustomError>}
         {!loading && !error && researchOutputs && (
           <>
-            <ResearchOutputsTabs planId={planId} />
+            <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
                 <SectionsContent

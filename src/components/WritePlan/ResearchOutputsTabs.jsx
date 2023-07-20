@@ -4,14 +4,17 @@ import { GlobalContext } from "../context/Global";
 import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
 import { Panel, PanelGroup } from "react-bootstrap";
 import styles from "../assets/css/sidebar.module.css";
+import { MdAddCircleOutline } from "react-icons/md";
 import { BsBell, BsCheckCircleFill } from "react-icons/bs";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
+import { useTranslation } from "react-i18next";
 
-function ResearchOutputsTabs({ planId }) {
+function ResearchOutputsTabs({ planId, readonly }) {
+  const { t } = useTranslation();
   const {
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs,
-    openedQuestions, setOpenedQuestions,
+    openedQuestions,
     setFormData,
   } = useContext(GlobalContext);
   const itemsPerPage = 5;
@@ -25,17 +28,6 @@ function ResearchOutputsTabs({ planId }) {
    * The function sets the state of "show" to true.
    */
   const handleShow = () => setShow(true);
-
-  /**
-   * This function toggles the state of an element in an array based on its index.
-   */
-  const handleCollapseByIndex = (index) => {
-    setOpenedQuestions((prevOpenedQuestions) => {
-      const newOpenedQuestions = [...prevOpenedQuestions];
-      newOpenedQuestions[index] = !newOpenedQuestions[index];
-      return newOpenedQuestions;
-    });
-  };
 
   /**
    * This function updates the displayed research output ID, product ID, and form based on the provided ID and whether or not it is null.
@@ -78,11 +70,6 @@ function ResearchOutputsTabs({ planId }) {
                         <Panel.Title
                           toggle
                           className={styles.nav_title}
-                        //onClick={(e) => {
-                        //  e.preventDefault();
-                        //  e.stopPropagation();
-                        //  handleCollapseByIndex(i);
-                        //}}
                         >
                           {start + 1} - {Math.min(end, researchOutputs.length)}
                         </Panel.Title>
@@ -141,23 +128,19 @@ function ResearchOutputsTabs({ planId }) {
                 ))}
               </ul>
             )}
-            {/*
             {!readonly && (
-            <li onClick={handleShow}>
-              <a
-                href="#"
-                className={styles.nav_header}
+              <button className={styles.add_research_output_button}
                 onClick={(e) => {
                   e.preventDefault();
+                  handleShow();
                 }}
               >
                 <div className={styles.nav_title}>{t("Create")}</div>
                 <div className={styles.nav_icon}>
                   <MdAddCircleOutline size={40}></MdAddCircleOutline>
                 </div>
-              </a>
-              </li>
-              )}*/}
+              </button>
+            )}
           </div>
         </ResearchOutputsNavBar>
       )}
