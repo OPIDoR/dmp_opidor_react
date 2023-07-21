@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
-import { getTypeResearchOutput, postResearchOutput } from "../../services/DmpResearchOutput";
+import { createResearchOutput } from "../../services/DmpResearchOutput";
 import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
@@ -15,14 +15,18 @@ const EndButton = styled.div`
 `;
 
 function AddResearchOutput({ planId, handleClose, show }) {
-  const { locale } = useContext(GlobalContext);
-  const { t, i18n } = useTranslation();
-  const { setResearchOutputs } = useContext(GlobalContext);
+  const { 
+    locale,
+    setDisplayedResearchOutput,
+    setResearchOutputs,
+  } = useContext(GlobalContext);
+  const { t } = useTranslation();
+  const [options, setOptions] = useState([{value:'', label:''}]);
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
-  const [isPersonnel, setisPersonnel] = useState(true);
-  const [options, setOptions] = useState(null);
+  const [isPersonnel, setIsPersonnel] = useState(false);
+  const selectedOption = options.find((opt) => opt.value === type);
 
   /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeResearchOutput` function. It sets the fetched data to the
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
@@ -45,25 +49,21 @@ when the component mounts. */
   const handleSave = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // const obj = {
-    //   plan_id: planId,
-    //   abbreviation: abbreviation,
-    //   title: title,
-    //   type: type,
-    //   hasPersonalData: isPersonnel,
-    // };
-    const objShow = {
-      id: new Date().getTime(),
-      abbreviation: abbreviation,
-      metadata: {
-        hasPersonalData: isPersonnel,
-        abbreviation: abbreviation,
-      },
+    const researchOutputInfo = {
+      plan_id: planId,
+      abbreviation,
+      title,
+      type,
+      hasPersonalData: isPersonnel,
     };
-    postResearchOutput(objShow).then((res) => {
-      setResearchOutputs(res.data.plan.research_outputs);
+    createResearchOutput(researchOutputInfo).then((res) => {
+      setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
+      // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
+      setResearchOutputs(res.data.research_outputs);
       setAbbreviation("");
       setTitle("");
+      setType("");
+      setIsPersonnel(false);
       handleClose();
     });
   };
@@ -76,7 +76,7 @@ when the component mounts. */
           <label>{t("Abbreviation")}</label>
         </div>
         <input
-          value={abbreviation}
+          value={abbreviation || ""}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -91,7 +91,7 @@ when the component mounts. */
           <label>{t("Title")}</label>
         </div>
         <input
-          value={title}
+          value={title || ""}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
@@ -106,33 +106,36 @@ when the component mounts. */
           <CustomSelect
             onChange={handleSelect}
             options={options}
+            selectedOption={selectedOption}
           />
         )}
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t("Does your research product contain personal data?")}</label>
+          <label>{t("Does your research output contain personal data?")}</label>
         </div>
-        <div>
           <div className="form-check">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              onClick={() => setisPersonnel(true)}
-              defaultChecked
-            />
-            <label className="form-check-label" htmlFor="flexRadioDefault1">
-              {t("Yes")}
-            </label>
-          </div>
-          <div className="form-check">
-            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onClick={() => setisPersonnel(false)} />
-            <label className="form-check-label" htmlFor="flexRadioDefault2">
-              {t("No")}
-            </label>
-          </div>
+          <input
+            className="form-check-input"
+            type="radio"
+            name="hasPersonalData"
+            onClick={() => setIsPersonnel(true)}
+            defaultChecked
+          />
+          <label className="form-check-label" htmlFor="flexRadioDefault1">
+            {t("Yes")}
+          </label>
+        </div>
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="hasPersonalData"
+            onClick={() => setIsPersonnel(false)}
+          />
+          <label className="form-check-label" htmlFor="flexRadioDefault2">
+            {t("No")}
+          </label>
         </div>
       </div>
       <EndButton>

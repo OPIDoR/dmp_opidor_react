@@ -112,7 +112,7 @@ Finally, it sets the loading state to false. */
                 </span>
               </div>
 
-              {!readonly && (
+              {!readonly && displayedResearchOutput.order !== 1 && (
                   <div>
                     <button className="btn btn-default" onClick={handleDelete} style={{ margin: " 15px 0px 0px 11px" }}>
                       {t("Delete")} <i className="fa fa-trash" style={{ marginLeft: "10px" }}></i>

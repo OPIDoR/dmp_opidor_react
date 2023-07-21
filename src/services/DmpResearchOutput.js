@@ -1,4 +1,22 @@
 import axios from "axios";
+import { toast } from "react-hot-toast";
+
+function createHeaders(csrf = null) {
+  if (csrf) {
+    return {
+      headers: {
+        'X-CSRF-Token': csrf,
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
+  return {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+}
 
 const dataTypeResearchOutput = [
   {
@@ -87,38 +105,21 @@ const products = [
  * @returns An object with a "data" property, which is not defined in the code snippet. The value of "data" is likely intended to be the response data
  * from the axios post request, but it is not currently being assigned or returned correctly.
  */
-export async function postResearchOutput(jsonObject) {
+export async function createResearchOutput(jsonObject) {
+  let response;
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
   try {
-    //const response = await axios.post("/research_outputs", jsonObject, "config");
-    const saved = sessionStorage.getItem("data");
-    const copieData = { ...JSON.parse(saved) };
-    const newList = [...copieData.plan.research_outputs, jsonObject];
-    copieData["plan"]["research_outputs"] = newList;
-    sessionStorage.setItem("data", JSON.stringify(copieData));
-    return { data: copieData };
+    response = await axios.post(`/research_outputs`, jsonObject, createHeaders(csrf));
   } catch (error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      //toast.error("error server");
-      console.log(error.response.data);
-      console.log(error.response.message);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+      toast.error(error.response.message);
     } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the
-      // browser and an instance of
-      // http.ClientRequest in node.js
-      // toast.error("error request");
-      console.log(error.request);
+      toast.error(error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
-      console.log("Error", error.message);
+      toast.error(error.message);
     }
-    console.log(error.config);
-    return error;
   }
+  return response;
 }
 
 /**
