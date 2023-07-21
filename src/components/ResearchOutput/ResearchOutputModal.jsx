@@ -16,7 +16,7 @@ function ResearchOutputModal({ planId, handleClose, show }) {
   return (
     <Modal show={show} onHide={handleClose}>
       {/* <Modal.Header closeButton>
-        <Modal.Title>{t("Research Product")}</Modal.Title>
+        <Modal.Title>{t("Research Output")}</Modal.Title>
       </Modal.Header> */}
       <Modal.Body style={{ padding: "20px !important" }}>
         <div className={`col-md-12 ${styles.info_box}`}>
