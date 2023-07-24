@@ -1,0 +1,13 @@
+
+.research-outputs-accordion {
+  display: flex;
+  flex-direction: column;
+
+  align-self: flex-start;
+  overflow: hidden;
+  border-radius: 20px 0 0 20px;
+  position: relative;
+  width: 100%;
+
+  background-color: white;
+}

@@ -59,7 +59,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
 
   return (
     <>
-      {researchOutputs && researchOutputs.length > 1 && (
+      {researchOutputs && (
         <ResearchOutputsNavBar className="navbar-inverse">
           <div className="collapse navbar-collapse">
             {researchOutputs.length > itemsPerPage && openedQuestions ? (

@@ -3,12 +3,12 @@ import DOMPurify from "dompurify";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 
-import { showPersonalData } from "../../utils/GeneratorUtils";
+import { showQuestion } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
 import DynamicForm from "../Builder/DynamicForm";
 
-function Question({ question, sectionId, hasPersonalData, readonly }) {
+function Question({ question, sectionId, readonly }) {
   const {
     planData,
     openedQuestions, setOpenedQuestions,
@@ -113,7 +113,7 @@ function Question({ question, sectionId, hasPersonalData, readonly }) {
 
   return (
     <>
-      {showPersonalData(hasPersonalData, question) && (
+      {showQuestion(question, displayedResearchOutput.hasPersonalData) && (
         <Panel
           expanded={isQuestionOpened()}
           className={styles.panel}
@@ -254,7 +254,7 @@ function Question({ question, sectionId, hasPersonalData, readonly }) {
                     fragmentId={null}
                     planId={planData.id}
                     questionId={question.id}
-                    madmpSchemaId={question.madmp_schema_id}
+                    madmpSchemaId={question.madmp_schema.id}
                     setFragmentId={setFragmentId}
                     setAnswerId={setAnswerId}
                     readonly={readonly}

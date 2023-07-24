@@ -178,15 +178,18 @@ export function createLabel(property, locale) {
 
 
 /**
- * The function returns true if there are no personnel data issues or if the query is not related to personnel data issues.
+ * The function determines if a question in show according to the passed parameters.
+ * @param question - The parameter "question" is likely an object that contains information about the query being made. It is used in the function to check if the
+ * classname property of the question object is equal to "personal_data_issues".
  * @param hasPersonalData - A boolean value indicating whether the person has any personal data or not.
- * @param q - The parameter "q" is likely an object that contains information about the query being made. It is used in the function to check if the
- * classname property of the q object is equal to "personal_data_issues".
  * @returns a boolean value. It will return `true` if `hasPersonalData` is `false` or if `q.classname` is not equal to `"personal_data_issues"`.
  * Otherwise, it will return `false`.
  */
-export function showPersonalData(hasPersonalData, q) {
-  return !hasPersonalData || q.classname !== "personal_data_issues";
+export function showQuestion(question, hasPersonalData) {
+  if(question.madmp_schema.classname === "personal_data_issues") {
+    return hasPersonalData;
+  }
+  return true;
 }
 
 /**
