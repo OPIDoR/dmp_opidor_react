@@ -44,7 +44,7 @@ loading state to `false`. */
   /**
    * It checks if the form is filled in correctly.
    * @param e - the event object
-   */ ee;
+   */
   const handleSaveForm = (e) => {
     e.preventDefault();
     //const checkForm = checkRequiredForm(standardTemplate, form);
