@@ -11,7 +11,7 @@ import { deleteResearchOutput } from "../../services/DmpResearchOutput";
 import styles from "../assets/css/write_plan.module.css";
 import Section from "./Section";
 
-function SectionsContent({ planId, templateId, hasPersonalData, readonly }) {
+function SectionsContent({ planId, templateId, readonly }) {
   const { t } = useTranslation();
   const { 
     openedQuestions, setOpenedQuestions,
@@ -99,12 +99,12 @@ Finally, it sets the loading state to false. */
                 style={{ display: "flex", justifyContent: "space-between" }}
                 onClick={() => setShowResearchOutputInfo(!showResearchOutputInfo)}
               >
-                <strong>{displayedResearchOutput.abbreviation}</strong>
+                <strong>{displayedResearchOutput.title}</strong>
                 <span
                   style={{ marginRight: "10px" }}
                   data-toggle="tooltip"
                   data-placement="top"
-                  title={`${t("Contains personal data")} : ${displayedResearchOutput.metadata?.hasPersonalData ? t("Yes") : t("No")} `}
+                  title={`${t("Contains personal data")} : ${displayedResearchOutput.hasPersonalData ? t("Yes") : t("No")} `}
                 >
                   <a href="#" onClick={(e) => e.preventDefault()}>
                     <i className="fas fa-circle-info" style={{ fontSize: "30px" }} />
@@ -123,11 +123,11 @@ Finally, it sets the loading state to false. */
             {showResearchOutputInfo && (
               <div style={{ margin: "0px 10px 30px 10px" }}>
                 <div className={styles.sous_title}>
-                  - {t("Research Output Name")} : <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.metadata?.abbreviation}</strong>
+                  - {t("Research Output Name")} : <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.abbreviation}</strong>
                 </div>
                 <div className={styles.sous_title}>
                   - {t("Contains personal data")} :
-                  <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.metadata?.hasPersonalData ? t("Yes") : t("No")}</strong>
+                  <strong style={{ fontSize: "20px" }}>{displayedResearchOutput.hasPersonalData ? t("Yes") : t("No")}</strong>
                 </div>
               </div>
             )}
@@ -135,7 +135,6 @@ Finally, it sets the loading state to false. */
               <Section
                 key={section.id}
                 section={section}
-                hasPersonalData={hasPersonalData}
                 readonly={readonly}
               ></Section>
             ))}

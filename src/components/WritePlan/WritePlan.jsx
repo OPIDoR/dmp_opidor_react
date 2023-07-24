@@ -29,7 +29,6 @@ function WritePlan({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [renderKey, setRenderKey] = useState(0);
-  const [hasPersonalData, setHasPersonalData] = useState(null);
 
   useEffect(() => {
     setLocale(locale);
@@ -45,7 +44,6 @@ function WritePlan({
         setPlanData(res.data);
         setDmpId(res.data.dmp_id);
         setDisplayedResearchOutput(res.data.research_outputs[0]);
-        // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
         !researchOutputs && setResearchOutputs(res.data.research_outputs);
         setFormData(null);
         // if (result.length > itemsPerPage) {
@@ -75,7 +73,6 @@ function WritePlan({
                 <SectionsContent
                   planId={planId}
                   templateId={templateId}
-                  hasPersonalData={hasPersonalData}
                   readonly={readonly}
                 ></SectionsContent>
               )}

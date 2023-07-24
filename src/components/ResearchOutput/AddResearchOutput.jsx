@@ -25,7 +25,7 @@ function AddResearchOutput({ planId, handleClose, show }) {
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
-  const [isPersonnel, setIsPersonnel] = useState(false);
+  const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
 
   /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeResearchOutput` function. It sets the fetched data to the
@@ -54,7 +54,7 @@ when the component mounts. */
       abbreviation,
       title,
       type,
-      hasPersonalData: isPersonnel,
+      hasPersonalData,
     };
     createResearchOutput(researchOutputInfo).then((res) => {
       setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
@@ -63,7 +63,7 @@ when the component mounts. */
       setAbbreviation("");
       setTitle("");
       setType("");
-      setIsPersonnel(false);
+      setHasPersonalData(false);
       handleClose();
     });
   };
@@ -119,7 +119,7 @@ when the component mounts. */
             className="form-check-input"
             type="radio"
             name="hasPersonalData"
-            onClick={() => setIsPersonnel(true)}
+            onClick={() => setHasPersonalData(true)}
             defaultChecked
           />
           <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -131,7 +131,7 @@ when the component mounts. */
             className="form-check-input"
             type="radio"
             name="hasPersonalData"
-            onClick={() => setIsPersonnel(false)}
+            onClick={() => setHasPersonalData(false)}
           />
           <label className="form-check-label" htmlFor="flexRadioDefault2">
             {t("No")}
