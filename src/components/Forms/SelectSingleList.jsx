@@ -68,8 +68,9 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     }
   };
 
-  useEffect(() => {}, []);
-
+  /**
+   * The handleChange function updates the registry name based on the value of the input field.
+   */
   const handleChange = (e) => {
     setRegistryName(e.value);
   };

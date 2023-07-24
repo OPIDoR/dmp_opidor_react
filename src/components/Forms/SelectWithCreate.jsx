@@ -189,6 +189,9 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
     setindex(idx);
   };
 
+  /**
+   * The handleChange function updates the registry name based on the value of the input field.
+   */
   const handleChange = (e) => {
     setRegistryName(e.value);
   };

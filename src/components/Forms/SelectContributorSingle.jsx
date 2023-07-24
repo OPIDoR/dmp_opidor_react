@@ -4,17 +4,20 @@ import BuilderForm from "../Builder/BuilderForm";
 import { parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import toast from "react-hot-toast";
-import { getContributor, loadForm } from "../../services/DmpServiceApi";
+import { getContributor, loadForm, getRegistryValue } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 
 /* The above code is a React component that renders a select input field with options fetched from an API. It also allows the user to add new options to
 the select field by opening a modal form and saving the new option to the API. The component also handles editing and deleting existing options in the
 select field. The selected option is displayed below the select field. */
 function SelectContributorSingle({ label, name, changeValue, registry, keyValue, level, tooltip, schemaId, readonly }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
+  const [optionsRole, setOptionsRole] = useState(null);
   const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
@@ -36,10 +39,19 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     loadForm(registry, "token").then((resRegistry) => {
-      setrole(resRegistry.properties.role["const@fr_FR"]);
+      //setrole(resRegistry.properties.role["const@fr_FR"]);
+      //load role
+
+      getRegistryValue("Role").then((resRole) => {
+        const options = resRole.map((option) => ({
+          value: lng === "fr" ? option?.fr_FR : option?.en_GB,
+          label: lng === "fr" ? option?.fr_FR : option?.en_GB,
+        }));
+        setOptionsRole(options);
+        setrole(options[0]?.value);
+      });
       setregisterFile(resRegistry.properties.person.template_name);
       const template = resRegistry.properties.person["template_name"];
-      setrole(resRegistry.properties.role["const@fr_FR"]);
       loadForm(template, "token").then((res) => {
         setregisterFile(res);
         if (!form?.[schemaId]?.[keyValue]) {
@@ -125,6 +137,15 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
     setindex(idx);
   };
 
+  /**
+   * The handleChangeRole function updates the role value in the form state based on the selected value from a dropdown menu.
+   */
+  const handleChangeRole = (e) => {
+    setrole(e.value);
+    const newObject = form?.[schemaId]?.[keyValue].person;
+    setForm(updateFormState(form, schemaId, keyValue, { person: newObject, role: e.value }));
+  };
+
   return (
     <>
       <div className="form-group">
@@ -138,45 +159,70 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
           )}
         </div>
 
-        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
-          <div className={`col-md-11 ${styles.select_wrapper}`}>
-            {options && (
-              <select id="company" className="form-control" onChange={handleChangeList} disabled={readonly}>
-                <option></option>
-                {options.map((o, idx) => (
-                  <option key={o.value} value={idx}>
-                    {o.label}
-                  </option>
-                ))}
-                ;
-              </select>
-            )}
-          </div>
-          {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+          <div className="col-md-6">
+            <div className={styles.input_label}>{t("Select a value from the list")}.</div>
+            <div className="row">
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
+                {options && (
+                  <select id="company" className="form-control" onChange={handleChangeList} disabled={readonly}>
+                    <option></option>
+                    {options.map((o, idx) => (
+                      <option key={o.value} value={idx}>
+                        {o.label}
+                      </option>
+                    ))}
+                    ;
+                  </select>
+                )}
+              </div>
+              {!readonly && (
+                <div className="col-md-1" style={{ marginTop: "8px" }}>
+                  <span>
+                    <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                      <i className="fas fa-plus" />
+                    </a>
+                  </span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        {selectedValue && (
-          <div style={{ margin: "10px" }}>
-            <span className={styles.input_label}>{t("Selected value")} :</span>
-            <span className={styles.input_text}>{selectedValue}</span>
+            {selectedValue && (
+              <div style={{ margin: "10px" }}>
+                <span className={styles.input_label}>{t("Selected value")} :</span>
+                <span className={styles.input_text}>{selectedValue}</span>
 
-            {!readonly && (
-              <span style={{ marginLeft: "10px" }}>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
-                  <i className="fas fa-edit" />
-                </a>
-              </span>
+                {!readonly && (
+                  <span style={{ marginLeft: "10px" }}>
+                    <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, 0)}>
+                      <i className="fas fa-edit" />
+                    </a>
+                  </span>
+                )}
+              </div>
             )}
           </div>
-        )}
+          <div className="col-md-6">
+            <div className={styles.input_label}>{t("Select a role from list")}.</div>
+            {optionsRole && (
+              <Select
+                menuPortalTarget={document.body}
+                styles={{
+                  menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                  singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                  control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                }}
+                onChange={handleChangeRole}
+                defaultValue={{
+                  label: optionsRole[0]?.label,
+                  value: optionsRole[0]?.value,
+                }}
+                options={optionsRole}
+                name={name}
+                isDisabled={readonly}
+              />
+            )}
+          </div>
+        </div>
       </div>
       <>
         {registerFile && (

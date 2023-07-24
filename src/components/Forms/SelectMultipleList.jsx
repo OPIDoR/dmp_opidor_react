@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 receives several props such as `label`, `registry`, `name`, `changeValue`, `tooltip`, `header`, and `schemaId`. It uses the `useState` and `useEffect`
 hooks to manage the state of the component and to fetch data from an API. It also uses the `Swal` library to display a confirmation message when
 deleting an item from the list. */
-
 function SelectMultipleList({ label, registry, name, changeValue, tooltip, header, keyValue, schemaId, readonly, registries }) {
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
@@ -100,6 +99,9 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
     });
   };
 
+  /**
+   * The handleChange function updates the registry name based on the value of the input field.
+   */
   const handleChange = (e) => {
     setRegistryName(e.value);
   };
@@ -144,7 +146,6 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
               </>
             </div>
           )}
-
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <>
               <div className={styles.input_label}>{t("Then select a value from the list")}.</div>

@@ -6,7 +6,7 @@ import { deleteByIndex, parsePatern, updateFormState } from "../../utils/Generat
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import { getContributor, loadForm } from "../../services/DmpServiceApi";
+import { getContributor, getRegistryValue, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,8 @@ state and make API calls to retrieve data. It also uses the react-bootstrap Moda
 component allows users to select contributors from a list or add new contributors by filling out a form. It also displays a table of selected
 contributors and allows users to edit or delete them. */
 function SelectContributorMultiple({ label, name, changeValue, registry, keyValue, level, tooltip, header, schemaId, readonly }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [lng] = useState(i18n.language.split("-")[0]);
   const [list, setlist] = useState([]);
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
@@ -24,6 +25,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [role, setrole] = useState(null);
+  const [optionsRole, setOptionsRole] = useState(null);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -40,7 +42,14 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     loadForm(registry, "token").then((res) => {
-      setrole(res.properties.role["const@fr_FR"]);
+      getRegistryValue("Role").then((resRole) => {
+        const options = resRole.map((option) => ({
+          value: lng === "fr" ? option?.fr_FR : option?.en_GB,
+          label: lng === "fr" ? option?.fr_FR : option?.en_GB,
+        }));
+        setOptionsRole(options);
+        setrole(options[0]?.value);
+      });
       setregisterFile(res.properties.person.template_name);
       const template = res.properties.person["template_name"];
       loadForm(template, "token").then((res) => {
@@ -55,7 +64,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
       }
       setlist(form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete").map((el) => parsePatern(el, patern)));
     });
-  }, [form?.[schemaId]?.[keyValue], registry]);
+  }, [form, form?.[schemaId]?.[keyValue], registry]);
 
   /**
    * It closes the modal and resets the state of the modal.
@@ -170,6 +179,27 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
     setindex(idx);
   };
 
+  /**
+   * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
+   */
+  const handleChangeRole = (e, index) => {
+    // setrole(e.value);
+    const dataCopy = { ...form };
+    dataCopy[schemaId][keyValue][index].role = e.value;
+    setForm(dataCopy);
+  };
+  /**
+   * The function `extractRole` extracts the text inside parentheses from a given string.
+   * @returns The function `extractRole` returns the text inside the parentheses in the input string `str`. If there is a match, it returns the matched
+   * text, otherwise it returns `null`.
+   */
+
+  const extractRole = (str) => {
+    const regex = /\(([^)]+)\)/;
+    const match = str.match(regex);
+    return match ? match[1] : null;
+  };
+
   return (
     <>
       <div className="form-group">
@@ -224,7 +254,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
             <tbody>
               {list.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row" style={{ width: "100%" }}>
+                  <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
 
@@ -262,6 +292,26 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
                         </div>
                       )}
                     </div>
+                  </td>
+                  <td>
+                    {optionsRole && (
+                      <Select
+                        menuPortalTarget={document.body}
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                        }}
+                        onChange={(e) => handleChangeRole(e, idx)}
+                        defaultValue={{
+                          label: extractRole(el) || optionsRole[0]?.label,
+                          value: extractRole(el) || optionsRole[0]?.value,
+                        }}
+                        options={optionsRole}
+                        name={name}
+                        isDisabled={readonly}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

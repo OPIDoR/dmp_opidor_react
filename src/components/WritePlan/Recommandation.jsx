@@ -122,11 +122,10 @@ API using the `getRecommendation` function and update the component state with t
       setTriggerRender((prevState) => prevState + 1);
       postRecommandation(idsRecommandations, planId)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
         })
         .then(() => {
           setTriggerRender((prevState) => prevState + 1);
-          console.log(idsRecommandations);
           toast.success(t("Registration was successful !"));
         });
     } else {
@@ -142,21 +141,15 @@ API using the `getRecommendation` function and update the component state with t
             <div style={questionTitle}>
               <div style={questionText}>
                 <div>
-                  <LightSVG
-                    fill={"var(--orange)"}
-                    style={{ minWidth: "35px" }}
-                    size={35}
-                    className={styles.down_icon}
-                    onClick={(e) => console.log("z")}
-                  />
+                  <LightSVG fill={"var(--orange)"} style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                 </div>
                 <div style={pannelTitle} />
                 {t("Select the guidance of your plan")}
                 <span className={styles.question_icons}>
                   {isOpen ? (
-                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} onClick={(e) => console.log("z")} />
+                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                   ) : (
-                    <TfiAngleDown size={35} style={{ minWidth: "35px" }} className={styles.down_icon} onClick={(e) => console.log("z")} />
+                    <TfiAngleDown size={35} style={{ minWidth: "35px" }} className={styles.down_icon} />
                   )}
                 </span>
               </div>

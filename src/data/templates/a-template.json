@@ -189,7 +189,7 @@
       "label@fr_FR": "Supports de stockage",
       "label@en_GB": "Storage types",
       "registry_name": "StorageType",
-      "registries": ["StorageType", "StorageType1"],
+      "registries": ["StorageType"],
       "overridable": true,
       "form_label@fr_FR": "Supports de stockage",
       "form_label@en_GB": "Storage types"
