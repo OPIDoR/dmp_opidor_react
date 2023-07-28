@@ -5,6 +5,8 @@ import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
+import { Modal, Button } from "react-bootstrap";
+import RorList from "../ROR/RorList";
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -17,6 +19,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const { form, temp } = useContext(GlobalContext);
   const [registryName, setRegistryName] = useState(registry);
   const [selectMonted, setSelectMonted] = useState(false);
+  const [showRor, setShowRor] = useState(false);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -61,6 +64,10 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    * @param e - the event object
    */
   const handleChangeList = (e) => {
+    console.log(e.value);
+    if (e.value === "ROR ID") {
+      setShowRor(true);
+    }
     if (name === "funder") {
       changeValue({ target: { name: name, value: e.object } });
     } else {
@@ -73,6 +80,13 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    */
   const handleChange = (e) => {
     setRegistryName(e.value);
+  };
+
+  /**
+   * The `handleClose` function sets the value of `showRor` to `false`.
+   */
+  const handleClose = () => {
+    setShowRor(false);
   };
 
   return (
@@ -146,8 +160,27 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
             </>
           </div>
         </div>
-        {/* *************ff************* */}
+        {/* *************Select ref************* */}
       </div>
+
+      <Modal show={showRor} onHide={handleClose} size="lg" aria-labelledby="example-modal-sizes-title-lg" centered>
+        <Modal.Header>
+          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "20px !important" }}>
+          <RorList></RorList>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            {t("Close")}
+          </Button>
+          {!readonly && (
+            <Button variant="primary" onClick={handleClose}>
+              {t("Save")}
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

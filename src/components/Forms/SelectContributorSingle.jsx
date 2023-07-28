@@ -177,7 +177,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
                 )}
               </div>
               {!readonly && (
-                <div className="col-md-1" style={{ marginTop: "8px" }}>
+                <div className="col-md-1" style={{ margin: "7px 0px 0px -20px" }}>
                   <span>
                     <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
                       <i className="fas fa-plus" />

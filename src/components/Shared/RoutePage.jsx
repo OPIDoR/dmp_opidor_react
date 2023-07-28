@@ -145,30 +145,7 @@ function RoutePage() {
               <Cover as="img" src={bannerImage} alt="cover" />
             </ContactControlCover>
             <div className="row">
-              <div className="col-md-4 col-md-5 col-xs-12">
-                <div className="row">
-                  <div className="col-xs-3">Url :</div>
-                  <div className="col-xs-9">
-                    <Link href="https://dmp.opidor.fr/" target="_blank" rel="noopener noreferrer">
-                      https://dmp.opidor.fr/
-                    </Link>
-                  </div>
-                  <div className="col-xs-3">Git :</div>
-                  <div className="col-xs-9">
-                    <Link href="https://github.com/OPIDoR/dmp_opidor_react/tree/standalone" target="_blank" rel="noopener noreferrer">
-                      dmp_opidor_react
-                    </Link>
-                  </div>
-
-                  <div className="col-xs-3">Doc:</div>
-                  <div className="col-xs-9">
-                    <Link href="https://github.com/OPIDoR/dmp_opidor_react/tree/standalone" target="_blank" rel="noopener noreferrer">
-                      DMP OPIDOR React Documentation
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-8 col-md-7 col-xs-12">
+              <div>
                 <Section className="services-section" id="services">
                   <div className="container">
                     <div className="row">
@@ -182,10 +159,33 @@ function RoutePage() {
                           </p>
                         </SectionTitle>
                       </div>
+                      <div className="row" style={{ marginTop: "40px" }}>
+                        <div className="row">
+                          <strong>Url :</strong>
+                          <div>
+                            <Link href="https://dmp.opidor.fr/" target="_blank" rel="noopener noreferrer">
+                              https://dmp.opidor.fr/
+                            </Link>
+                          </div>
+                          <strong>Git :</strong>
+                          <div>
+                            <Link href="https://github.com/OPIDoR/dmp_opidor_react/tree/standalone" target="_blank" rel="noopener noreferrer">
+                              dmp_opidor_react
+                            </Link>
+                          </div>
+
+                          <strong>Doc:</strong>
+                          <div>
+                            <Link href="https://github.com/OPIDoR/dmp_opidor_react/tree/standalone" target="_blank" rel="noopener noreferrer">
+                              DMP OPIDOR React Documentation
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="row">
                       {/* form box */}
-                      <Link to="http://vtopidor.intra.inist.fr:3000/form">
+                      <a href="http://vtopidor.intra.inist.fr:3000/form">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
@@ -197,15 +197,15 @@ function RoutePage() {
                             </div>
                           </FeatureBox>
                         </div>
-                      </Link>
+                      </a>
 
                       {/* / */}
                       {/* info box */}
-                      <Link to="http://vtopidor.intra.inist.fr:3000/info">
+                      <a href="http://vtopidor.intra.inist.fr:3000/info" target="_blank" rel="noopener noreferrer">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
-                              <i className="fa fa-user" />
+                              <i className="fa fa-info" />
                             </div>
                             <div className="feature-content">
                               <h5>Informations généraless</h5>
@@ -213,15 +213,15 @@ function RoutePage() {
                             </div>
                           </FeatureBox>
                         </div>
-                      </Link>
+                      </a>
 
                       {/* / */}
                       {/* redaction box */}
-                      <Link to="http://vtopidor.intra.inist.fr:3000/redaction">
+                      <a href="http://vtopidor.intra.inist.fr:3000/redaction" target="_blank" rel="noopener noreferrer">
                         <div className="col-sm-6 col-lg-4">
                           <FeatureBox>
                             <div className="icon">
-                              <i className="fa fa-comment" />
+                              <i className="fa fa-edit" />
                             </div>
                             <div className="feature-content">
                               <h5>Rédaction</h5>
@@ -229,7 +229,23 @@ function RoutePage() {
                             </div>
                           </FeatureBox>
                         </div>
-                      </Link>
+                      </a>
+
+                      {/* / */}
+                      {/* redaction box */}
+                      <a href="http://vtopidor.intra.inist.fr:3000/ror" target="_blank" rel="noopener noreferrer">
+                        <div className="col-sm-6 col-lg-4">
+                          <FeatureBox>
+                            <div className="icon">
+                              <i className="fa fa-comment" />
+                            </div>
+                            <div className="feature-content">
+                              <h5>ROR</h5>
+                              <p>http://vtopidor.intra.inist.fr:3000/ror</p>
+                            </div>
+                          </FeatureBox>
+                        </div>
+                      </a>
 
                       {/* / */}
                     </div>

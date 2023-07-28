@@ -96,5 +96,13 @@
   "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations.": " Pour vous aider à rédiger votre plan, DMP OPIDoR vous propose des recommandations provenant de différents organismes - vous pouvez sélectionner jusqu’à 6 organismes.",
   "Select a reference from the list": "Sélectionnez un référentiel dans la liste",
   "Selected registry": "Référentiel sélectionné",
-  "Select a role from list": "Sélectionner un rôle dans la liste"
+  "Select a role from list": "Sélectionner un rôle dans la liste",
+  "Select a country": "Sélectionner un pays",
+  "Search ...": "Recherche...",
+  "Previous": "Précédent",
+  "Next": "Suivant",
+  "Organization name": "Nom de l'organisme",
+  "Acronym": "Sigle",
+  "Country": "Pays",
+  "Location": "Localisation"
 }
