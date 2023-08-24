@@ -7,6 +7,7 @@ import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
 import { Modal, Button } from "react-bootstrap";
 import RorList from "../ROR/RorList";
+import OrcidList from "../ORCID/OrcidList";
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -20,6 +21,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const [registryName, setRegistryName] = useState(registry);
   const [selectMonted, setSelectMonted] = useState(false);
   const [showRor, setShowRor] = useState(false);
+  const [showOrcid, setShowOrcid] = useState(false);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
@@ -64,9 +66,11 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    * @param e - the event object
    */
   const handleChangeList = (e) => {
-    console.log(e.value);
     if (e.value === "ROR ID") {
       setShowRor(true);
+    }
+    if (e.value === "ORCID iD") {
+      setShowOrcid(true);
     }
     if (name === "funder") {
       changeValue({ target: { name: name, value: e.object } });
@@ -87,6 +91,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    */
   const handleClose = () => {
     setShowRor(false);
+    setShowOrcid(false);
   };
 
   return (
@@ -163,12 +168,13 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         {/* *************Select ref************* */}
       </div>
 
-      <Modal show={showRor} onHide={handleClose} size="lg" aria-labelledby="example-modal-sizes-title-lg" centered>
+      <Modal show={showRor || showOrcid} onHide={handleClose} className="custom-modal-width">
         <Modal.Header>
           <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ padding: "20px !important" }}>
-          <RorList></RorList>
+          {showRor && <RorList></RorList>}
+          {showOrcid && <OrcidList></OrcidList>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

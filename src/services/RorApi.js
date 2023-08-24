@@ -30,3 +30,24 @@ export async function getRor(query, filter) {
     throw error;
   }
 }
+
+export async function getOrcide(query, filter) {
+  try {
+    let url = "/api/madmp/v1/services/orcid";
+
+    let params = {};
+    if (query) {
+      params.query = query;
+    }
+    if (filter) {
+      params.filter = filter;
+    }
+
+    //const response = await axios.get(url, { params });
+    const result = await require(`../data/orcid.json`);
+    return { data: result };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
