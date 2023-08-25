@@ -15,7 +15,7 @@ const BigText = styled.div`
   font-size: 200px;
   font-weight: 900;
   font-family: sans-serif;
-  background: url(https://i.imgur.com/mEPnGth.jpg) no-repeat;
+  background: url(https://www.inist.fr/wp-content/uploads/2018/09/012_3132-scaled.jpg) no-repeat;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: cover;

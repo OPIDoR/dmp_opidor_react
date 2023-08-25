@@ -55,7 +55,7 @@ loading state to `false`. */
   return (
     <>
       {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
+      {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && standardTemplate && (
         <div style={{ margin: "15px" }}>
           <div className="row"></div>

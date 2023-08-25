@@ -172,7 +172,7 @@ API using the `getRecommendation` function and update the component state with t
                 )}
               </div>
               {loading && <CustomSpinner></CustomSpinner>}
-              {!loading && error && <CustomError></CustomError>}
+              {!loading && error && <CustomError error={error}></CustomError>}
               {!loading && !error && data && (
                 <div className="container" style={{ margin: "20px" }}>
                   {Object.entries(data.all).map(([key, values], index) => (

@@ -144,7 +144,7 @@ function GeneralInfo({
           onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
         >
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError></CustomError>}
+        {!loading && error && <CustomError error={error}></CustomError>}
         {!error && funders && (
           <>
             <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>

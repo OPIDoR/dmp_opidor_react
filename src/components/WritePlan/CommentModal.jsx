@@ -190,7 +190,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
 
       <>
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError></CustomError>}
+        {!loading && error && <CustomError error={error}></CustomError>}
         {!loading && !error && data && (
           <NavBody>
             <ScrollNav>

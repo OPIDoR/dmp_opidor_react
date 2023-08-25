@@ -60,7 +60,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
         </Close>
       </MainNav>
       {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
+      {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && data && (
         <NavBody>
           <Title>Runs</Title>
