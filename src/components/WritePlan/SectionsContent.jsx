@@ -16,7 +16,7 @@ function SectionsContent({ planId, templateId, readonly }) {
   const { 
     openedQuestions, setOpenedQuestions,
     setResearchOutputs,
-    displayedResearchOutput,
+    displayedResearchOutput, setDisplayedResearchOutput,
     setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
@@ -55,34 +55,28 @@ Finally, it sets the loading state to false. */
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
-    const index = planData.research_outputs
-      .map(function (img) {
-        return img.id;
-      })
-      .indexOf(displayedResearchOutput.id);
     e.preventDefault();
     e.stopPropagation();
-    if (index === 0) {
-      toast.error(t("You cannot delete the first element"));
-    } else {
-      Swal.fire({
-        title: t("Do you confirm the deletion"),
-        text: t("By deleting this search product, the associated answers will also be deleted"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: t("Close"),
-        confirmButtonText: t("Yes, delete!"),
-      }).then((result) => {
-        if (result.isConfirmed) {
-          //delete
-          deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
-            setResearchOutputs(res.data.plan.research_outputs);
-          });
-        }
-      });
-    }
+    Swal.fire({
+      title: t("Do you confirm the deletion"),
+      text: t("By deleting this search product, the associated answers will also be deleted"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: t("Close"),
+      confirmButtonText: t("Yes, delete!"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //delete
+        deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
+          setResearchOutputs(res.data.research_outputs);
+          setDisplayedResearchOutput(res.data.research_outputs[0])
+          toast.success(t("Research output was successfully deleted."));
+        })
+        .catch((error) => setError(error)) ;
+      }
+    });
   };
 
   return (
