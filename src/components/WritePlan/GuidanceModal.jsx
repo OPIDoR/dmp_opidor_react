@@ -111,7 +111,7 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
     >
       <MainNav>
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError></CustomError>}
+        {!loading && error && <CustomError error={error}></CustomError>}
         {!loading && !error && data && (
           <nav style={navBar}>
             {data.map((el, idx) => (

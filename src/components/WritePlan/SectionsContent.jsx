@@ -82,7 +82,7 @@ Finally, it sets the loading state to false. */
   return (
     <>
       {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
+      {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && sectionsData && (
         <>
           <div className="row"></div>
