@@ -6,11 +6,9 @@
 
 .border {
   border: solid;
-  border-color: var(--primary);
   border-width: 1px;
   padding: 10px 10px 10px 15px;
   margin-bottom: 10px;
-  color: var(--primary);
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
