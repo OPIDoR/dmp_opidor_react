@@ -56,21 +56,26 @@ const Button = styled.button`
   }
 `;
 
-/* The `CustomError` function is defining a React component that renders an error page with a 404 message and a button to return to the homepage. It uses
-styled components to define the styling of the page elements. The component returns JSX code that defines the structure and content of the error page. */
-function CustomError({error}) {
+/**
+ * CustomError component displays an error message and options for handling the error.
+ * @param {string} code - The error code to be displayed. Defaults to '404'.
+ * @param {string} message - The error message to be displayed. Defaults to a predefined message.
+ * @param {any} error - The error object (if available) for further analysis.
+ * @returns {JSX.Element} - A JSX component displaying the error message and options.
+ */
+function CustomError({ code = '500', message, error }) {
   const { t } = useTranslation();
-  console.log(error);
+  const defaultMessage = t("It seems that a problem has appeared");
+
   return (
     <ErrorContainer className="container">
       <div className="row d-flex align-items-center justify-content-center">
         <div className="col-md-12 text-center">
           <BigText>Oops!</BigText>
-          <SmallText>404 - {t("PAGE NOT FOUND")}</SmallText>
+          <SmallText>{code} - {message || t("Internal Server Error")}</SmallText>
         </div>
         <div className="col-md-12 text-center">
-          <p>{t("The page you are looking for may have been removed, its name changed, or is temporarily unavailable.")}.</p>
-
+          <p>{error || defaultMessage}.</p>
           <Button>
             <a href="/">{t("Home page")}</a>
           </Button>
