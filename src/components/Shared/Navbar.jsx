@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "../assets/css/navbar.module.css";
-import ReasearchSVG from "../Styled/svg/ReasearchSVG";
-import ContributorSVG from "../Styled/svg/ContributorSVG";
-import AssistanceSVG from "../Styled/svg/AssistanceSVG";
-import BudgetSVG from "../Styled/svg/BudgetSVG";
-import RedactionSVG from "../Styled/svg/RedactionSVG";
-import DownloadSVG from "../Styled/svg/DownloadSVG";
-import ShareSVG from "../Styled/svg/ShareSVG";
-import InfoSVG from "../Styled/svg/InfoSVG";
+import { AssistanceSVG, BudgetSVG, RedactionSVG, ShareSVG, InfoSVG } from "../Styled/svg/";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
+
+import { FiDownload } from "react-icons/fi";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 function Navbar() {
   const location = useLocation();
@@ -34,11 +30,11 @@ specific paths to tab indices, so that the correct tab is highlighted when the u
       {[
         { to: "/", svg: <InfoSVG />, text: t("Informations générales") },
         { to: "/redaction", svg: <RedactionSVG />, text: t("Redact") },
-        { to: "#", svg: <ContributorSVG />, text: t("Contributors") },
+        { to: "#", svg: <HiOutlineUserGroup />, text: t("Contributors") },
         { to: "#", svg: <BudgetSVG />, text: t("Budget") },
         { to: "#", svg: <ShareSVG />, text: t("Partager") },
         { to: "#", svg: <AssistanceSVG />, text: t("Request for assistance") },
-        { to: "#", svg: <DownloadSVG />, text: t("Download") },
+        { to: "#", svg: <FiDownload />, text: t("Download") },
       ].map(({ to, svg, text }, index) => (
         <li
           key={index}
