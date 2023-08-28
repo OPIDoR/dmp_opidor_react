@@ -6,46 +6,27 @@
   "type": "object",
   "class": "DataStorageStandard",
   "properties": {
-    "principalInvestigator": {
-      "type": "object",
-      "class": "Contributor",
-      "properties": {
-        "dbid": {
-          "type": "number"
-        }
-      },
-      "template_name": "PrincipalInvestigator",
-      "required": ["dbid"],
-      "description": "Coordinateur principal du projet",
-      "label@fr_FR": "Coordinateur du projet",
-      "label@en_GB": "Project coordinator",
-      "tooltip@fr_FR": "Aussi appelé Investigateur principal",
-      "tooltip@en_GB": "also called Principal investigator",
-      "form_label@fr_FR": "Coordinateur du projet",
-      "form_label@en_GB": "Project coordinator"
-    },
-    "contributor": {
+    "funding": {
       "type": "array",
-      "table_header@fr_FR": "Nom (rôle)",
-      "table_header@en_GB": "Name (role)",
+      "table_header@fr_FR": "Financeur : identifiant du financement",
+      "table_header@en_GB": "Funder: funding identifier",
       "items": {
         "type": "object",
-        "class": "Contributor",
+        "class": "Funding",
         "properties": {
           "dbid": {
             "type": "number"
           }
         },
-        "template_name": "DataStorageManager",
+        "template_name": "FundingStandard",
         "required": ["dbid"]
       },
-      "description": "Personne(s) responsable(s) du suivi du stockage des données",
-      "label@fr_FR": "Responsables du stockage des données",
-      "label@en_GB": "Persons in charge of storage",
-      "tooltip@fr_FR": "Le responsable peut être une personne, une équipe, un service",
-      "tooltip@en_GB": "Person in charge can be a person, a team, a department",
-      "form_label@fr_FR": "Responsables du stockage des données",
-      "form_label@en_GB": "Persons in charge of storage"
+      "minItems": 1,
+      "description": "Source(s) de financement d'un projet ou d'une activité de recherche",
+      "label@fr_FR": "Sources de financement",
+      "label@en_GB": "Funding",
+      "form_label@fr_FR": "Indiquer les sources de financement du projet",
+      "form_label@en_GB": "Indicate the funding of the project"
     }
   },
   "required": ["description"],

@@ -17,7 +17,7 @@ function App() {
         <Route exact path="/form" element={<Form schemaId={"c"} readonly={false} />} />
         <Route exact path="/plan" element={<PlanCreation />} />
         <Route exact path="/" element={<RoutePage />} />
-        <Route exact path="/info" element={<GeneralInfo readonly={true} />} />
+        <Route exact path="/info" element={<GeneralInfo readonly={false} />} />
         <Route exact path="/ror" element={<RorList />} />
         <Route exact path="/orcid" element={<OrcidList />} />
       </Routes>

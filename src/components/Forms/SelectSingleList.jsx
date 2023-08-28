@@ -19,7 +19,7 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const [options, setoptions] = useState(null);
   const { form, temp } = useContext(GlobalContext);
   const [registryName, setRegistryName] = useState(registry);
-  const [selectMonted, setSelectMonted] = useState(false);
+  const [selectMonted, setSelectMonted] = useState(true);
   const [showRor, setShowRor] = useState(false);
   const [showOrcid, setShowOrcid] = useState(false);
 
@@ -68,9 +68,11 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const handleChangeList = (e) => {
     if (e.value === "ROR ID") {
       setShowRor(true);
+      setShowOrcid(false);
     }
     if (e.value === "ORCID iD") {
       setShowOrcid(true);
+      setShowRor(false);
     }
     if (name === "funder") {
       changeValue({ target: { name: name, value: e.object } });
@@ -167,15 +169,22 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         </div>
         {/* *************Select ref************* */}
       </div>
+      {showRor && (
+        <>
+          <RorList></RorList>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button variant="secondary" onClick={handleClose}>
+              {t("Close")}
+            </Button>
+          </div>
+        </>
+      )}
 
-      <Modal show={showRor || showOrcid} onHide={handleClose} className="custom-modal-width">
+      <Modal show={showOrcid} onHide={handleClose} className="custom-modal-width">
         <Modal.Header>
           <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ padding: "20px !important" }}>
-          {showRor && <RorList></RorList>}
-          {showOrcid && <OrcidList></OrcidList>}
-        </Modal.Body>
+        <Modal.Body style={{ padding: "20px !important" }}>{showOrcid && <OrcidList></OrcidList>}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             {t("Close")}
