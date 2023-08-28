@@ -20,6 +20,8 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   const [isUpdate, setisUpdate] = useState(false);
   const [comment, setComment] = useState(null);
 
+  console.log(researchOutputId)
+
   const modalStyles = {
     display: show ? "block" : "none",
     position: "absolute",
