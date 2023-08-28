@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import BuilderForm from './BuilderForm.jsx';
 import { GlobalContext } from '../context/Global.jsx';
-import { getFragment, loadNewForm, saveForm } from '../../services/DmpServiceApi.js';
+import { getFragment, getSchema, loadNewForm, saveForm } from '../../services/DmpServiceApi.js';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import { unionBy } from 'lodash';
@@ -36,7 +36,11 @@ function DynamicForm({
   useEffect(() => {
     if (fragmentId) {
       if (formData[fragmentId]) {
-        setTemplate(loadedTemplates[formData[fragmentId].schema_id]);
+        console.log(loadedTemplates);
+        getSchema(formData[fragmentId].schema_id).then((res) => {
+          setTemplate(res.data);
+          setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
+        });
         setLoading(false);
       } else {
         getFragment(fragmentId).then((res) => {
