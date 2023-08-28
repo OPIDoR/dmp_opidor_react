@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
-import { TfiAngleDown } from "react-icons/tfi";
-import { TfiAngleUp } from "react-icons/tfi";
+import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
+import { PiLightbulbLight } from "react-icons/pi";
 import styles from "../assets/css/write_plan.module.css";
-import LightSVG from "../Styled/svg/LightSVG";
 import stylesRecomandation from "../assets/css/recommandation.module.css";
 import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomError from "../Shared/CustomError";
+import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -142,7 +140,7 @@ API using the `getRecommendation` function and update the component state with t
             <div style={questionTitle}>
               <div style={questionText}>
                 <div>
-                  <LightSVG
+                  <PiLightbulbLight
                     fill={"var(--orange)"}
                     style={{ minWidth: "35px" }}
                     size={35}

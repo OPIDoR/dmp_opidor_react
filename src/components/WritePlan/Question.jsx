@@ -1,19 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
-import { Panel, PanelGroup } from "react-bootstrap";
-import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
+import { Panel } from "react-bootstrap";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
+import { BsGear } from "react-icons/bs";
+import { PiLightbulbLight } from "react-icons/pi";
 
 import { showQuestion } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
 import DynamicForm from "../Builder/DynamicForm";
+import GuidanceModal from "./GuidanceModal";
+import CommentModal from "./CommentModal";
+import RunsModal from "./RunsModal";
+import { CommentSVG } from "../Styled/svg";
 
 function Question({ question, sectionId, readonly }) {
   const {
     planData,
-    openedQuestions, setOpenedQuestions,
+    openedQuestions,
+    setOpenedQuestions,
     displayedResearchOutput,
-    questionsWithGuidance
+    questionsWithGuidance,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
@@ -24,92 +33,103 @@ function Question({ question, sectionId, readonly }) {
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--primary)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--primary)");
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--primary)");
-
+  const { t } = useTranslation();
 
   useEffect(() => {
-    const answer = displayedResearchOutput.answers.find(answer => question.id === answer.question_id)
-    if (answer) {
-      setAnswerId(answer.answer_id);
-      setFragmentId(answer.fragment_id);
-    } else {
-      setAnswerId(null);
-      setFragmentId(null);
+    const answer = displayedResearchOutput?.answers?.find(
+      (answer) => question?.id === answer?.question_id
+    );
+    setAnswerId(answer?.answer_id);
+    setFragmentId(answer?.fragment_id);
+  }, [displayedResearchOutput, question.id]);
 
-    }
-  }, [displayedResearchOutput]);
   /**
-   * `handleQuestionCollapse` is a function that takes an event, an element index, and a question index,
-   * and then sets the state of `openedQuestions` to the
-   * opposite of what it was before.
+   * Handles toggling the open/collapse state of a question.
+   * This function is called when a question is collapsed or expanded.
+   * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = () => {
-    console.log(sectionId, questionId);
+    closeAllModals();
+
     const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
-    if (updatedState[sectionId]) {
-      updatedState[sectionId][questionId] = !updatedState[sectionId][questionId];
-    } else {
-      updatedState[sectionId] = { [questionId]: true }
+
+    if (!updatedState[sectionId]) {
+      updatedState[sectionId] = {
+        [questionId]: false,
+      };
     }
-    setOpenedQuestions({ ...openedQuestions, [displayedResearchOutput.id]: updatedState });
+
+    updatedState[sectionId] = {
+      ...updatedState[sectionId],
+      [questionId]: !updatedState[sectionId]?.[questionId] ?? true,
+    };
+
+    setOpenedQuestions({
+      ...openedQuestions,
+      [displayedResearchOutput.id]: updatedState,
+    });
+  };
+
+  const closeAllModals = () => {
+    setShowCommentModal(false);
+    setFillCommentIconColor("var(--primary)");
+
+    setShowGuidanceModal(false);
+    setFillGuidanceIconColor("var(--primary)");
+
+    setShowRunsModal(false);
+    setFillRunsIconColor("var(--primary)");
   };
 
   /**
-   * The function handles the click event for showing comments and sets the state of various modal and icon colors.
+   * Handles the click event for showing modals and updating icon colors based on the modal type.
+   *
+   * @param {Event} e - The click event object.
+   * @param {boolean} collapse - A flag indicating whether the collapse condition is met.
+   * @param {object} q - The question object associated with the click event.
+   * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
    */
-  const handleShowCommentClick = (e, collapse, q) => {
+  const handleClick = (e, collapse, q, modalType) => {
     e.stopPropagation();
     e.preventDefault();
-    // setQuestionId(q.id);
-    if (collapse === false) {
-      setShowGuidanceModal(false);
-      setShowRunsModal(false);
-      setShowCommentModal(!showCommentModal);
-      setFillCommentIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
+
+    // setQuestionId(q.id)
+
+    // Check if the current modal type is the same as the one that is about to be opened
+    const isModalOpen =
+      (modalType === "comment" && showCommentModal) ||
+      (modalType === "guidance" && showGuidanceModal) ||
+      (modalType === "runs" && showRunsModal);
+
+    // If the current modal is the same as the one about to be opened, close it
+    if (isModalOpen) {
+      return closeAllModals();
     }
+
+    // Open the specified modal and update icon colors
+    setShowCommentModal(modalType === "comment");
+    setFillCommentIconColor(
+      modalType === "comment" ? "var(--orange)" : "var(--primary)"
+    );
+
+    setShowGuidanceModal(modalType === "guidance");
+    setFillGuidanceIconColor(
+      modalType === "guidance" ? "var(--orange)" : "var(--primary)"
+    );
+
+    setShowRunsModal(modalType === "runs");
+    setFillRunsIconColor(
+      modalType === "runs" ? "var(--orange)" : "var(--primary)"
+    );
   };
 
   /**
-   * This function handles the click event for showing a recommendation modal and toggles the visibility of other modals.
+   * Checks if a specific question is opened based on its identifiers within the nested object structure.
+   *
+   * @returns {boolean} True if the question is opened, false otherwise.
    */
-  const handleShowRecommandationClick = (e, collapse, q) => {
-    e.stopPropagation();
-    e.preventDefault();
-    // setQuestionId(q.id);
-    if (collapse === false) {
-      setShowCommentModal(false);
-      setShowRunsModal(false);
-      setShowGuidanceModal(!showGuidanceModal);
-      setFillGuidanceIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-    }
-  };
-
-  /**
-   * The function handles a click event to show or hide a modal for runs and updates the state of other modals accordingly.
-   */
-  const handleShowRunsClick = (e, collapse, q) => {
-    e.stopPropagation();
-    e.preventDefault();
-    // setQuestionId(q.id);
-    if (collapse === false) {
-      setShowCommentModal(false);
-      setShowGuidanceModal(false);
-      setShowRunsModal(!showRunsModal);
-      setFillGuidanceIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillCommentIconColor((prev) => (prev === "var(--orange)" ? "var(--primary)" : "var(--primary)"));
-      setFillRunsIconColor((prev) => (prev === "var(--primary)" ? "var(--orange)" : "var(--primary)"));
-    }
-  };
-
-  const isQuestionOpened = () => {
-    if (openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId]) {
-      return true;
-    }
-    return false
-  }
+  const isQuestionOpened = () =>
+    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId];
 
   return (
     <>
@@ -117,7 +137,11 @@ function Question({ question, sectionId, readonly }) {
         <Panel
           expanded={isQuestionOpened()}
           className={styles.panel}
-          style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
+          style={{
+            borderRadius: "10px",
+            borderWidth: "2px",
+            borderColor: "var(--primary)",
+          }}
           onToggle={() => handleQuestionCollapse()}
         >
           <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
@@ -129,7 +153,12 @@ function Question({ question, sectionId, readonly }) {
                   </div>
                   <div
                     className={styles.panel_title}
-                    style={{ margin: "0px !important", fontSize: "18px", fontWeight: "bold", marginRight: "10px" }}
+                    style={{
+                      margin: "0px !important",
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      marginRight: "10px",
+                    }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([question.text]),
                     }}
@@ -137,117 +166,156 @@ function Question({ question, sectionId, readonly }) {
                 </div>
 
                 <span className={styles.question_icons}>
-
-                    {/* 0 */}
-                    {/*{!readonly && (
-                                      <>
-                                      <div
-                      data-tooltip-id="scriptTip"
-                      className={styles.panel_icon}
-                      onClick={(e) => {
-                        handleShowRunsClick(e, openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId], question);
-                      }}
-                    >
-                      <BsGear
-                        size={40}
-                        style={{ marginTop: "6px", marginRight: "4px" }}
-                        fill={
-                          openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false && questionId && questionId === question.id
-                            ? fillRunsIconColor
-                            : "var(--primary)"
-                        }
+                  {!readonly && (
+                    <>
+                      <div
+                        data-tooltip-id="scriptTip"
+                        className={styles.panel_icon}
+                        onClick={(e) => {
+                          handleClick(e, isQuestionOpened(), question, "runs");
+                        }}
+                        style={{
+                          width: 32,
+                        }}
+                      >
+                        {isQuestionOpened() && (
+                          <BsGear
+                            size={32}
+                            style={{ marginTop: "6px" }}
+                            fill={
+                              isQuestionOpened()
+                                ? fillRunsIconColor
+                                : "var(--primary)"
+                            }
+                          />
+                        )}
+                      </div>
+                      <ReactTooltip
+                        id="scriptTip"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t("Script")}
                       />
-                    </div>
-                    <ReactTooltip id="scriptTip" place="bottom" effect="solid" variant="info" content={t("Script")} />
-                    {openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false && showRunsModal && questionId && questionId == question.id && (
-                      <RunsModal
-                        show={showRunsModal}
-                        setshowModalRuns={setShowRunsModal}
-                        setFillColorIconRuns={setFillRunsIconColor}
-                      ></RunsModal>
-                    )}
-                                      </>
-                                    )}*/}
-                    {/* 1 */}
-                    {/*<div
-                      data-tooltip-id="commentTip"
-                      className={styles.panel_icon}
-                      onClick={(e) => {
-                        handleShowCommentClick(e, openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId], question);
-                      }}
-                    >
+                      {isQuestionOpened() && (
+                        <RunsModal
+                          show={showRunsModal}
+                          setshowModalRuns={setShowRunsModal}
+                          setFillColorIconRuns={setFillRunsIconColor}
+                        ></RunsModal>
+                      )}
+                    </>
+                  )}
+
+                  <div
+                    data-tooltip-id="commentTip"
+                    className={styles.panel_icon}
+                    onClick={(e) => {
+                      handleClick(e, isQuestionOpened(), question, "comment");
+                    }}
+                    style={{
+                      width: 32,
+                    }}
+                  >
+                    {isQuestionOpened() && (
                       <CommentSVG
+                        size={32}
+                        style={{ marginTop: "6px" }}
                         fill={
-                          openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false && questionId && questionId === question.id
+                          isQuestionOpened()
                             ? fillCommentIconColor
                             : "var(--primary)"
                         }
                       />
-                    </div>
-                    <ReactTooltip id="commentTip" place="bottom" effect="solid" variant="info" content={t("Comment")} />
-                    {openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false &&
-                      showCommentModal &&
-                      questionId &&
-                      questionId == question.id && (
-                        <CommentModal
-                          show={showCommentModal}
-                          setshowModalComment={setShowCommentModal}
-                          setFillColorIconComment={setFillCommentIconColor}
-                          answerId={""}
-                          displayedResearchOutput.id={displayedResearchOutput.id}
-                          planId={planId}
-                          userId={""}
-                          questionId={question.id}
-                          readonly={readonly}
-                        ></CommentModal>
-                      )}*/}
-                    {/* 2 */}
+                    )}
+                  </div>
+                  <ReactTooltip
+                    id="commentTip"
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={t("Comment")}
+                  />
+                  {isQuestionOpened() && (
+                    <CommentModal
+                      show={showCommentModal}
+                      setshowModalComment={setShowCommentModal}
+                      setFillColorIconComment={setFillCommentIconColor}
+                      answerId={""}
+                      // displayedResearchOutput.id={displayedResearchOutput.id}
+                      // planId={planId}
+                      userId={""}
+                      questionId={question.id}
+                      readonly={readonly}
+                    ></CommentModal>
+                  )}
 
-                    {/*{questionsWithGuidance && questionsWithGuidance.includes(question.id) && (
-                      <div
-                        data-tooltip-id="guidanceTip"
-                        className={styles.panel_icon}
-                        onClick={(e) => {
-                          handleShowRecommandationClick(e, openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId], question);
-                        }}
-                      >
-                        <LightSVG
+                  {
+                    /*questionsWithGuidance && questionsWithGuidance.includes(question.id) &&*/ <div
+                      data-tooltip-id="guidanceTip"
+                      className={styles.panel_icon}
+                      onClick={(e) => {
+                        handleClick(
+                          e,
+                          isQuestionOpened(),
+                          question,
+                          "guidance"
+                        );
+                      }}
+                      style={{
+                        width: 32,
+                      }}
+                    >
+                      {isQuestionOpened() && (
+                        <PiLightbulbLight
+                          size={32}
+                          style={{ marginTop: "6px" }}
                           fill={
-                            openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false && questionId && questionId === question.id
+                            isQuestionOpened()
                               ? fillGuidanceIconColor
                               : "var(--primary)"
                           }
                         />
-                      </div>
-                    )}
+                      )}
+                    </div>
+                  }
 
-                    <ReactTooltip id="guidanceTip" place="bottom" effect="solid" variant="info" content={t("Recommandation")} />
-                    {openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId] === false &&
-                      showGuidanceModal &&
-                      questionId &&
-                      questionId == question.id && (
-                        <GuidanceModal
-                          show={showGuidanceModal}
-                          setshowModalRecommandation={setShowGuidanceModal}
-                          setFillColorIconRecommandation={setFillGuidanceIconColor}
-                          questionId={questionId}
-                        ></GuidanceModal>
-                      )}*/}
-                    {/* 3 */}
+                  <ReactTooltip
+                    id="guidanceTip"
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={t("Recommandation")}
+                  />
+                  {isQuestionOpened() && (
+                    <GuidanceModal
+                      show={showGuidanceModal}
+                      setshowModalRecommandation={setShowGuidanceModal}
+                      setFillColorIconRecommandation={setFillGuidanceIconColor}
+                      questionId={questionId}
+                    ></GuidanceModal>
+                  )}
                   {isQuestionOpened() ? (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleUp
+                      style={{ minWidth: "32px" }}
+                      size={32}
+                      className={styles.down_icon}
+                    />
                   ) : (
-                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleDown
+                      style={{ minWidth: "32px" }}
+                      size={32}
+                      className={styles.down_icon}
+                    />
                   )}
                 </span>
               </div>
             </Panel.Title>
           </Panel.Heading>
           <Panel.Body className={styles.panel_body} collapsible={true}>
-            {isQuestionOpened() ?
+            {isQuestionOpened() ? (
               <>
-              {
-                fragmentId && answerId ? (
+                {fragmentId && answerId ? (
                   <DynamicForm fragmentId={fragmentId} readonly={readonly} />
                 ) : (
                   <DynamicForm
@@ -259,16 +327,16 @@ function Question({ question, sectionId, readonly }) {
                     setAnswerId={setAnswerId}
                     readonly={readonly}
                   />
-                )
-              }
-              </> : <></>
-            }
+                )}
+              </>
+            ) : (
+              <></>
+            )}
           </Panel.Body>
         </Panel>
       )}
     </>
   );
-
 }
 
 export default Question;
