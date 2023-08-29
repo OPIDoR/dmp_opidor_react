@@ -121,6 +121,9 @@ function GeneralInfo({
         [projectFragmentId]: res.data.fragment.project,
         [metaFragmentId]: res.data.fragment.meta
       });
+      if(res.data.plan_title) {
+        document.getElementById('plan-title').innerHTML = res.data.plan_title;
+      }
       toast.success(t(
         '\'{{projectTitle}}\' project data has successfully been imported',
         { projectTitle: selectedProject.title }

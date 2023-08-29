@@ -36,7 +36,6 @@ function DynamicForm({
   useEffect(() => {
     if (fragmentId) {
       if (formData[fragmentId]) {
-        console.log(loadedTemplates);
         getSchema(formData[fragmentId].schema_id).then((res) => {
           setTemplate(res.data);
           setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
@@ -74,8 +73,10 @@ function DynamicForm({
   const handleSaveForm = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formData[fragmentId]);
     saveForm(fragmentId, formData[fragmentId]).then((res) => {
+      if(res.data.plan_title) {
+        document.getElementById('plan-title').innerHTML = res.data.plan_title;
+      }
       setFormData({ [fragmentId]: res.data.fragment });
     }).catch((res) => {
       toast.error(res.data.message);
