@@ -159,8 +159,8 @@ component is initially rendered. */
                 </tr>
               </thead>
               <tbody>
-                {currentData.map((el) => (
-                  <tr key={el.ror}>
+                {currentData.map((el, idx) => (
+                  <tr key={idx}>
                     <td scope="row">
                       <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
                         {el.name[Object.keys(el.name)[0]]}

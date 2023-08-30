@@ -5,7 +5,7 @@ import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
-import { Modal, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import RorList from "../ROR/RorList";
 import OrcidList from "../ORCID/OrcidList";
 
@@ -66,19 +66,19 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    * @param e - the event object
    */
   const handleChangeList = (e) => {
-    if (e.value === "ROR ID") {
-      setShowRor(true);
+    const isRorID = e.value === "ROR ID";
+    const isOrcidID = e.value === "ORCID iD";
+
+    setShowRor(isRorID);
+    setShowOrcid(isOrcidID);
+
+    if (!isRorID && !isOrcidID) {
+      setShowRor(false);
       setShowOrcid(false);
     }
-    if (e.value === "ORCID iD") {
-      setShowOrcid(true);
-      setShowRor(false);
-    }
-    if (name === "funder") {
-      changeValue({ target: { name: name, value: e.object } });
-    } else {
-      changeValue({ target: { name: name, value: e.value } });
-    }
+
+    const targetValue = name === "funder" ? e.object : e.value;
+    changeValue({ target: { name, value: targetValue } });
   };
 
   /**
@@ -88,9 +88,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     setRegistryName(e.value);
   };
 
-  /**
-   * The `handleClose` function sets the value of `showRor` to `false`.
-   */
   const handleClose = () => {
     setShowRor(false);
     setShowOrcid(false);
@@ -169,6 +166,16 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         </div>
         {/* *************Select ref************* */}
       </div>
+      {showOrcid && (
+        <>
+          <OrcidList></OrcidList>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button variant="secondary" onClick={handleClose}>
+              {t("Close")}
+            </Button>
+          </div>
+        </>
+      )}
       {showRor && (
         <>
           <RorList></RorList>
@@ -179,23 +186,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
           </div>
         </>
       )}
-
-      <Modal show={showOrcid} onHide={handleClose} className="custom-modal-width">
-        <Modal.Header>
-          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ padding: "20px !important" }}>{showOrcid && <OrcidList></OrcidList>}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {t("Close")}
-          </Button>
-          {!readonly && (
-            <Button variant="primary" onClick={handleClose}>
-              {t("Save")}
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
     </>
   );
 }

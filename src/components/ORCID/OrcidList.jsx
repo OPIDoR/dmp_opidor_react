@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getOrcide, getRor } from "../../services/RorApi";
+import { getOrcide } from "../../services/RorApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
-import Select from "react-select";
 import { GlobalContext } from "../context/Global";
 import Pagination from "../ROR/Pagination";
 
@@ -32,22 +31,8 @@ component is initially rendered. */
     setLoading(true);
     getOrcide()
       .then((res) => {
-        console.log(res);
         setData(res.data);
         setallInitialData(res.data);
-        // const options = res.data.map((option) => ({
-        //   value: option.country.code,
-        //   label: option.country.name,
-        //   object: option,
-        // }));
-        // // get distinct array of objects
-        // let distinctArr = Object.values(
-        //   options.reduce((acc, cur) => {
-        //     if (!acc[cur.value]) acc[cur.value] = cur;
-        //     return acc;
-        //   }, {})
-        // );
-        // setContries(distinctArr);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -65,7 +50,6 @@ component is initially rendered. */
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    console.log(el);
     setSelectedKey(selectedKey === el.orcid ? null : el.orcid);
     const obj = { affiliationId: el.orcid, affiliationName: el?.institutionName[0] };
     setTemp({ ...temp, ...obj });
@@ -135,8 +119,8 @@ component is initially rendered. */
                     <td scope="row">{el.orcid}</td>
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td scope="row">
-                      {el?.institutionName.map((e) => (
-                        <>{e}</>
+                      {el?.institutionName.map((e, idx) => (
+                        <React.Fragment key={idx}>{e}</React.Fragment>
                       ))}
                     </td>
                     <td>
