@@ -14,7 +14,7 @@ import Select from "react-select";
 import styled from "styled-components";
 import { useEffect } from "react";
 import { BiInfoCircle } from "react-icons/bi";
-import { getFundedProjects, getFunders, getFundingOrganization, saveFunder } from "../../services/DmpGeneralInfoApi";
+import { getFundedProjects, getFunders, saveFunder } from "../../services/DmpGeneralInfoApi";
 import Form from "../Forms/Form";
 
 export const ButtonSave = styled.button`
@@ -83,7 +83,6 @@ function GeneralInfo({ readonly }) {
    */
   const handleSaveFunding = () => {
     saveFunder(grantId, projectFragmentId).then((res) => {
-      console.log(res);
       setGrantId("ProjectStandard");
     });
   };

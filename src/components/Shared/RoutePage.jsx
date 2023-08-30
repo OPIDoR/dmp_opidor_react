@@ -138,9 +138,9 @@ function RoutePage() {
         <div className="col-md-12">
           <div className="contact">
             <ContactControlCover>
-              <IconLg className="icon icon-folder" data-toggle="tooltip" data-placement="top" title data-original-title="Archive" />
-              <IconLg className="icon icon-delete" data-toggle="tooltip" data-placement="top" title data-original-title="Delete" />
-              <IconLg className="icon icon-close" data-toggle="tooltip" data-placement="top" title data-original-title="Close" />
+              <IconLg className="icon icon-folder" data-toggle="tooltip" data-placement="top" data-original-title="Archive" />
+              <IconLg className="icon icon-delete" data-toggle="tooltip" data-placement="top" data-original-title="Delete" />
+              <IconLg className="icon icon-close" data-toggle="tooltip" data-placement="top" data-original-title="Close" />
 
               <Cover as="img" src={bannerImage} alt="cover" />
             </ContactControlCover>

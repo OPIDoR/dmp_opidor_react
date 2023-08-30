@@ -25,7 +25,6 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
       if (value.type === "string" || value.type === "number") {
         // Condition 1.1
         // si inputType === textarea
-
         if (value.inputType === "textarea") {
           data.push(
             <TinyArea
@@ -62,7 +61,6 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
         }
         // Condition 1.3
         // si on pas inputType propriete
-
         if (!value.hasOwnProperty("inputType")) {
           data.push(
             <InputText
@@ -212,6 +210,7 @@ function HandleGenerateForms({ shemaObject, level, changeValue, schemaId, lng, r
             let registryName = value.hasOwnProperty("registry_name") ? value["registry_name"] : value["registries"][0];
             data.push(
               <SelectSingleList
+                key={key}
                 registry={registryName}
                 registries={value["registries"]}
                 label={label}

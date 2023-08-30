@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import BuilderForm from "../Builder/BuilderForm";
 import Select from "react-select";
-import { checkRequiredForm, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
+import { deleteByIndex, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import { Modal, Button } from "react-bootstrap";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
@@ -20,7 +20,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, isEmail } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [registryName, setRegistryName] = useState(registry);
@@ -141,6 +141,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (!temp) {
       handleClose();
       return;
@@ -330,26 +331,25 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
           </table>
         )}
       </div>
-      <>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header>
-            <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ padding: "20px !important" }}>
-            <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              {t("Close")}
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "20px !important" }}>
+          <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            {t("Close")}
+          </Button>
+          {!readonly && (
+            <Button variant="primary" onClick={handleAddToList}>
+              {t("Save")}
             </Button>
-            {!readonly && (
-              <Button variant="primary" onClick={handleAddToList}>
-                {t("Save")}
-              </Button>
-            )}
-          </Modal.Footer>
-        </Modal>
-      </>
+          )}
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

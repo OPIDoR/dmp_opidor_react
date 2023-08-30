@@ -35,6 +35,7 @@ function Global({ children }) {
   const [plans, setPlans] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(null);
   const [productData, setProductData] = useState(null);
+  const [isEmail, setIsEmail] = useState(false);
 
   /* This `useEffect` hook is watching for changes in the `productId` and `form` variables. If `productId` is truthy (not null, undefined, 0, false, or an
 empty string), it updates the `searchProduct` state by setting it to a new object that is a copy of the previous `searchProduct` state with a new
@@ -78,6 +79,8 @@ the latest form data for a specific product. */
         setIsCollapsed,
         productData,
         setProductData,
+        isEmail,
+        setIsEmail,
       }}
     >
       {children}

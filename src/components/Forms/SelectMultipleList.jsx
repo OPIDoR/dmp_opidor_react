@@ -43,7 +43,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           });
         }
       })
-      .catch((error) => {
+      .catch(() => {
         // handle errors
       });
     return () => {
@@ -176,7 +176,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
         <div style={{ margin: "20px 2px 20px 2px" }}>
           {list && (
             <table style={{ marginTop: "0px" }} className="table">
-              <thead> {header && <p>{header}</p>}</thead>
+              <thead>{header && <p>{header}</p>}</thead>
               <tbody>
                 {list.map((el, idx) => (
                   <tr key={idx}>

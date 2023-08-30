@@ -5,7 +5,6 @@ import { getDefaultLabel } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
 import RorList from "../ROR/RorList";
 import OrcidList from "../ORCID/OrcidList";
 
@@ -22,9 +21,11 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const [selectMonted, setSelectMonted] = useState(true);
   const [showRor, setShowRor] = useState(false);
   const [showOrcid, setShowOrcid] = useState(false);
+  const [renderKey, setRenderKey] = useState(0);
 
   /* A hook that is called when the component is mounted. It is used to set the options of the select list. */
   useEffect(() => {
+    setRenderKey((prevKey) => prevKey + 1);
     let isMounted = true;
     const createOptions = (data) => {
       return data.map((option) => ({
@@ -41,14 +42,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
     getRegistryValue(registryName, "token").then((res) => {
       if (res) {
         setOptions(createOptions(res));
-        const listOptions = createOptions(res);
-        if (!temp && !form?.[schemaId]) {
-          if (name === "funder") {
-            changeValue({ target: { name: name, value: listOptions[0]?.object } });
-          } else {
-            changeValue({ target: { name: name, value: listOptions[0]?.value } });
-          }
-        }
         setSelectMonted(true);
       } else {
         return getRegistry(registryName, "token").then((resRegistry) => {
@@ -86,11 +79,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
    */
   const handleChange = (e) => {
     setRegistryName(e.value);
-  };
-
-  const handleClose = () => {
-    setShowRor(false);
-    setShowOrcid(false);
   };
 
   return (
@@ -140,24 +128,26 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
               <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
               <div className="row">
                 <div className={`col-md-12 ${styles.select_wrapper}`}>
-                  {selectMonted && (
-                    <Select
-                      menuPortalTarget={document.body}
-                      styles={{
-                        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-                        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
-                      }}
-                      onChange={handleChangeList}
-                      options={options}
-                      name={name}
-                      style={{ color: "red" }}
-                      defaultValue={{
-                        label: getDefaultLabel(temp, form?.[schemaId], name),
-                        value: getDefaultLabel(temp, form?.[schemaId], name),
-                      }}
-                      isDisabled={readonly}
-                    />
+                  {selectMonted && options && (
+                    <>
+                      <Select
+                        menuPortalTarget={document.body}
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+                        }}
+                        onChange={handleChangeList}
+                        options={options}
+                        name={name}
+                        style={{ color: "red" }}
+                        defaultValue={{
+                          label: getDefaultLabel(temp, form?.[schemaId], name),
+                          value: getDefaultLabel(temp, form?.[schemaId], name),
+                        }}
+                        isDisabled={readonly}
+                      />
+                    </>
                   )}
                 </div>
               </div>
@@ -166,26 +156,28 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
         </div>
         {/* *************Select ref************* */}
       </div>
-      {showOrcid && (
-        <>
-          <OrcidList></OrcidList>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="secondary" onClick={handleClose}>
+      <React.Fragment key={renderKey + 1}>
+        {showOrcid && (
+          <>
+            <OrcidList></OrcidList>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {/* <Button variant="secondary" onClick={handleClose}>
               {t("Close")}
-            </Button>
-          </div>
-        </>
-      )}
-      {showRor && (
-        <>
-          <RorList></RorList>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="secondary" onClick={handleClose}>
+            </Button> */}
+            </div>
+          </>
+        )}
+        {showRor && (
+          <>
+            <RorList></RorList>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {/* <Button variant="secondary" onClick={handleClose}>
               {t("Close")}
-            </Button>
-          </div>
-        </>
-      )}
+            </Button> */}
+            </div>
+          </>
+        )}
+      </React.Fragment>
     </>
   );
 }

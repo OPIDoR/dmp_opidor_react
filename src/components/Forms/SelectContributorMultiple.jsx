@@ -21,7 +21,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, isEmail } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [role, setrole] = useState(null);
@@ -110,6 +110,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       //update
       const objectPerson = { person: temp, role: role, updateType: "update" };
@@ -193,7 +194,6 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
    * @returns The function `extractRole` returns the text inside the parentheses in the input string `str`. If there is a match, it returns the matched
    * text, otherwise it returns `null`.
    */
-
   const extractRole = (str) => {
     const regex = /\(([^)]+)\)/;
     const match = str.match(regex);
@@ -319,28 +319,27 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
           </table>
         )}
       </div>
-      <>
-        {registerFile && (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header>
-              <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ padding: "20px !important" }}>
-              <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                {t("Close")}
+
+      {registerFile && (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header>
+            <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ padding: "20px !important" }}>
+            <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              {t("Close")}
+            </Button>
+            {!readonly && (
+              <Button variant="primary" onClick={handleAddToList}>
+                {t("Save")}
               </Button>
-              {!readonly && (
-                <Button variant="primary" onClick={handleAddToList}>
-                  {t("Save")}
-                </Button>
-              )}
-            </Modal.Footer>
-          </Modal>
-        )}
-      </>
+            )}
+          </Modal.Footer>
+        </Modal>
+      )}
     </>
   );
 }

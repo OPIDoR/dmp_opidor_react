@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import BuilderForm from "../Builder/BuilderForm";
 import { GlobalContext } from "../context/Global";
-import { checkRequiredForm, createMarkup, deleteByIndex, getLabelName, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
+import { createMarkup, deleteByIndex, parsePatern, updateFormState } from "../../utils/GeneratorUtils";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { loadForm } from "../../services/DmpServiceApi";
@@ -19,7 +19,7 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
   const { t, i18n } = useTranslation();
   const [lng] = useState(i18n.language.split("-")[0]);
   const [show, setShow] = useState(false);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, isEmail } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
 
@@ -43,9 +43,10 @@ function ModalTemplate({ label, value, template, keyValue, level, tooltip, heade
    * If the temp variable is not empty, check if the form is valid, if it is, add the temp variable to the form, if it's not, show an error message.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (!temp) return handleClose();
-    //const checkForm = checkRequiredForm(registerFile, temp);
-    //if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
+    // const checkForm = checkRequiredForm(registerFile, temp);
+    // if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, registerFile)}`);
     if (index !== null) {
       //update
       const filterDeleted = form?.[schemaId]?.[keyValue].filter((el) => el.updateType !== "delete");

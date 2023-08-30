@@ -108,8 +108,8 @@ component is initially rendered. */
               <thead className="thead-dark">
                 <tr>
                   <th scope="col">{t("ID")}</th>
-                  <th scope="col">{t("Nom / prénom")}</th>
-                  <th scope="col">{t("Établissement")}</th>
+                  <th scope="col">{t("Last / First name")}</th>
+                  <th scope="col">{t("Establishment")}</th>
                   <th scope="col"></th>
                 </tr>
               </thead>

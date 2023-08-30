@@ -104,5 +104,8 @@
   "Organization name": "Nom de l'organisme",
   "Acronym": "Sigle",
   "Country": "Pays",
-  "Location": "Localisation"
+  "Location": "Localisation",
+  "Last / First name": "Nom / prénom",
+  "Establishment": "Établissement",
+  "Invalid email": "Email invalide"
 }

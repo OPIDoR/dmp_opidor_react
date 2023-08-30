@@ -21,7 +21,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
   const [show, setShow] = useState(false);
   const [options, setoptions] = useState(null);
   const [selectObject, setselectObject] = useState([]);
-  const { form, setForm, temp, setTemp } = useContext(GlobalContext);
+  const { form, setForm, temp, setTemp, isEmail } = useContext(GlobalContext);
   const [index, setindex] = useState(null);
   const [registerFile, setregisterFile] = useState(null);
   const [role, setrole] = useState(null);
@@ -49,7 +49,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
           label: lng === "fr" ? option?.fr_FR : option?.en_GB,
         }));
         setOptionsRole(options);
-        setrole(form?.[schemaId]?.[keyValue].role || options[0]?.value);
+        setrole(form?.[schemaId]?.[keyValue]?.role || options[0]?.value);
       });
       setregisterFile(resRegistry.properties.person.template_name);
       const template = resRegistry.properties.person["template_name"];
@@ -111,6 +111,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       //update
       const objectPerson = { person: temp, role: role, updateType: "update" };
@@ -179,7 +180,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
   /**
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
-  const handleChangeRole = (e, index) => {
+  const handleChangeRole = (e) => {
     setrole(e.value);
     const dataCopy = { ...form };
     dataCopy[schemaId][keyValue].role = e.value;
@@ -207,6 +208,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             {/* {JSON.stringify(options)} */}
+
             <Select
               menuPortalTarget={document.body}
               styles={{
@@ -237,7 +239,9 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
         {form?.[schemaId]?.[keyValue] && list && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
-              <th scope="col">{t("Selected value")}</th>
+              <tr>
+                <th scope="col">{t("Selected value")}</th>
+              </tr>
             </thead>
             <tbody>
               {list.map((el, idx) => (

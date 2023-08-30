@@ -8,6 +8,7 @@ function BuilderForm({ shemaObject, level, schemaId, readonly }) {
   const { form, setForm, temp, setTemp } = useContext(GlobalContext);
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
+  /* The `useEffect` hook in this code is used to subscribe to the "languageChanged" event provided by the `i18n` object from the `react-i18next` library. */
   useEffect(() => {
     const handleLanguageChanged = (lng) => {
       setCurrentLanguage(lng);
