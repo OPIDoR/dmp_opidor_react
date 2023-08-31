@@ -38,7 +38,10 @@ function ModalTemplate({
   const { t, i18n } = useTranslation();
   const [show, setShow] = useState(false);
   const { 
-    formData, setFormData, subData, setSubData, locale, loadedTemplates, setLoadedTemplates,
+    formData, setFormData,
+    subData, setSubData,
+    loadedTemplates, setLoadedTemplates,
+    isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([])
@@ -73,6 +76,7 @@ function ModalTemplate({
    * add the subData variable to the form, if it's not, show an error message.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (!subData) return handleClose();
     //const checkForm = checkRequiredForm(template, temp);
     //if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, template)}`);
