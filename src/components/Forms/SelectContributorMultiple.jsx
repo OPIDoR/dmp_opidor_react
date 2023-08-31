@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { getContributor, getRegistryValue, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
+import ImportExternal from "../ExternalImport/ImportExternal";
 
 /* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
 state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
@@ -243,80 +244,82 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
           )}
         </div>
         {form?.[schemaId]?.[keyValue] && list && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              {form?.[schemaId]?.[keyValue].length > 0 && header && form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
-                <tr>
-                  <th scope="col">{header}</th>
-                </tr>
-              )}
-            </thead>
-            <tbody>
-              {list.map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{el} </div>
+          <div style={{ padding: "0px 70px 0px 0px" }}>
+            <table style={{ marginTop: "20px" }} className="table">
+              <thead>
+                {form?.[schemaId]?.[keyValue].length > 0 && header && form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
+                  <tr>
+                    <th scope="col">{header}</th>
+                  </tr>
+                )}
+              </thead>
+              <tbody>
+                {list.map((el, idx) => (
+                  <tr key={idx}>
+                    <td scope="row" style={{ width: "50%" }}>
+                      <div className={styles.border}>
+                        <div>{el} </div>
 
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
+                        {!readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-edit" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                            <div className="col-md-1">
                               <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                  <i className="fa fa-times" />
                                 </a>
                               </span>
-                            )}
+                            </div>
                           </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
+                        )}
+                        {readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span style={{ marginRight: "10px" }}>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-eye" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      {optionsRole && (
+                        <Select
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                            singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                            control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                          }}
+                          onChange={(e) => handleChangeRole(e, idx)}
+                          defaultValue={{
+                            label: extractRole(el) || optionsRole[0]?.label,
+                            value: extractRole(el) || optionsRole[0]?.value,
+                          }}
+                          options={optionsRole}
+                          name={name}
+                          isDisabled={readonly}
+                        />
                       )}
-                      {readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-eye" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {optionsRole && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
-                        }}
-                        onChange={(e) => handleChangeRole(e, idx)}
-                        defaultValue={{
-                          label: extractRole(el) || optionsRole[0]?.label,
-                          value: extractRole(el) || optionsRole[0]?.value,
-                        }}
-                        options={optionsRole}
-                        name={name}
-                        isDisabled={readonly}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
@@ -326,6 +329,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
             <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ padding: "20px !important" }}>
+            <ImportExternal></ImportExternal>
             <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
           </Modal.Body>
           <Modal.Footer>

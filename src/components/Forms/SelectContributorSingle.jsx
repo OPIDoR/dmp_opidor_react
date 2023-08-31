@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { getContributor, getRegistryValue, loadForm } from "../../services/DmpServiceApi";
 import styles from "../assets/css/form.module.css";
 import { useTranslation } from "react-i18next";
+import ImportExternal from "../ExternalImport/ImportExternal";
 
 /* The above code is a React component that renders a form input field for selecting contributors. It uses the useState and useEffect hooks to manage
 state and make API calls to retrieve data. It also uses the react-bootstrap Modal component to display a form for adding new contributors. The
@@ -186,11 +187,6 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
     dataCopy[schemaId][keyValue].role = e.value;
     setForm(dataCopy);
   };
-  /**
-   * The function `extractRole` extracts the text inside parentheses from a given string.
-   * @returns The function `extractRole` returns the text inside the parentheses in the input string `str`. If there is a match, it returns the matched
-   * text, otherwise it returns `null`.
-   */
 
   return (
     <>
@@ -237,78 +233,80 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
           )}
         </div>
         {form?.[schemaId]?.[keyValue] && list && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              <tr>
-                <th scope="col">{t("Selected value")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {list.map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{el} </div>
-
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                      {readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-eye" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {optionsRole && (
-                      <Select
-                        menuPortalTarget={document.body}
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                          singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
-                        }}
-                        onChange={(e) => handleChangeRole(e, idx)}
-                        defaultValue={{
-                          label: role || optionsRole[0]?.label,
-                          value: role || optionsRole[0]?.value,
-                        }}
-                        options={optionsRole}
-                        name={name}
-                        isDisabled={readonly}
-                      />
-                    )}
-                  </td>
+          <div style={{ padding: "0px 70px 0px 0px" }}>
+            <table style={{ marginTop: "20px" }} className="table">
+              <thead>
+                <tr>
+                  <th scope="col">{t("Selected value")}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {list.map((el, idx) => (
+                  <tr key={idx}>
+                    <td scope="row" style={{ width: "50%" }}>
+                      <div className={styles.border}>
+                        <div>{el} </div>
+
+                        {!readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-edit" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                            <div className="col-md-1">
+                              <span>
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteListe(e, idx)}>
+                                  <i className="fa fa-times" />
+                                </a>
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span style={{ marginRight: "10px" }}>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-eye" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      {optionsRole && (
+                        <Select
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                            singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                            control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                          }}
+                          onChange={(e) => handleChangeRole(e, idx)}
+                          defaultValue={{
+                            label: role || optionsRole[0]?.label,
+                            value: role || optionsRole[0]?.value,
+                          }}
+                          options={optionsRole}
+                          name={name}
+                          isDisabled={readonly}
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
       <>
@@ -318,6 +316,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
+              <ImportExternal></ImportExternal>
               <BuilderForm shemaObject={registerFile} level={level + 1} readonly={readonly}></BuilderForm>
             </Modal.Body>
             <Modal.Footer>

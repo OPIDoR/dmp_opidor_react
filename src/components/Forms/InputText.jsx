@@ -44,6 +44,15 @@ changes. */
 assigning a value to the `inputValue` variable based on certain conditions. */
   const inputValue = isConst !== undefined && isConst !== false ? isConst : temp && temp[name] !== undefined ? temp[name] : text;
 
+  /* The `useEffect` hook in the code snippet is used to perform a side effect in a functional component. In this case, the effect is triggered whenever
+the `inputValue` variable changes. */
+  useEffect(() => {
+    if (type === "email") {
+      const isPattern = getCheckEmailPatern(type, inputValue);
+      setIsEmail(isPattern);
+    }
+  }, [inputValue]);
+
   return (
     <div className="form-group">
       <div className={styles.label_form}>

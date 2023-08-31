@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getOrcide } from "../../services/RorApi";
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import { GlobalContext } from "../context/Global";
-import Pagination from "../ROR/Pagination";
+import { getRor } from "../../../services/RorApi";
+import Select from "react-select";
 
-function OrcidList() {
+import CustomSpinner from "../../Shared/CustomSpinner";
+import CustomError from "../../Shared/CustomError";
+import { GlobalContext } from "../../context/Global";
+import Pagination from "../Pagination";
+
+function RorList() {
   const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setcurrentData] = useState([]);
   const [allInitialData, setallInitialData] = useState([]);
+  const [contries, setContries] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
   const { temp, setTemp } = useContext(GlobalContext);
 
@@ -29,10 +32,23 @@ component is initially rendered. */
    */
   const getData = () => {
     setLoading(true);
-    getOrcide()
+    getRor()
       .then((res) => {
         setData(res.data);
         setallInitialData(res.data);
+        const options = res.data.map((option) => ({
+          value: option.country.code,
+          label: option.country.name,
+          object: option,
+        }));
+        // get distinct array of objects
+        let distinctArr = Object.values(
+          options.reduce((acc, cur) => {
+            if (!acc[cur.value]) acc[cur.value] = cur;
+            return acc;
+          }, {})
+        );
+        setContries(distinctArr);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -50,9 +66,20 @@ component is initially rendered. */
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    setSelectedKey(selectedKey === el.orcid ? null : el.orcid);
-    const obj = { affiliationId: el.orcid, affiliationName: el?.institutionName[0] };
+    console.log(el);
+    setSelectedKey(selectedKey === el.ror ? null : el.ror);
+    const obj = { affiliationId: el.ror, affiliationName: el.name[Object.keys(el.name)[0]], affiliationIdType: "ROR ID" };
     setTemp({ ...temp, ...obj });
+  };
+
+  /**
+   * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
+   */
+  const handleChangeCounty = (e) => {
+    const filterPays = allInitialData.filter((el) => {
+      return el.country.code == e.value;
+    });
+    setData(filterPays);
   };
 
   /**
@@ -61,11 +88,7 @@ component is initially rendered. */
   const handleChangeText = (e) => {
     const text = e.target.value;
     const filterText = allInitialData.filter((el) => {
-      return (
-        el.familyNames.toLowerCase().includes(text.toLowerCase()) ||
-        el.givenNames.toLowerCase().includes(text.toLowerCase()) ||
-        el.orcid.toLowerCase().includes(text.toLowerCase())
-      );
+      return el.name[Object.keys(el.name)[0]].toLowerCase().includes(text.toLowerCase()) || el.ror.toLowerCase().includes(text.toLowerCase());
     });
     setData(filterText);
   };
@@ -76,6 +99,28 @@ component is initially rendered. */
       {!loading && error && <CustomError></CustomError>}
       {!loading && !error && data && (
         <>
+          <div className="row" style={{ margin: "10px" }}>
+            <div className="">
+              <div className="row">
+                <div>
+                  <Select
+                    menuPortalTarget={document.body}
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                      singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                      control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                    }}
+                    onChange={handleChangeCounty}
+                    defaultValue={{
+                      label: t("Select a country"),
+                      value: t("Select a country"),
+                    }}
+                    options={contries}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="row" style={{ margin: "10px" }}>
             <div>
               <div className="row">
@@ -107,34 +152,43 @@ component is initially rendered. */
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col">{t("ID")}</th>
-                  <th scope="col">{t("Last / First name")}</th>
-                  <th scope="col">{t("Establishment")}</th>
+                  <th scope="col">{t("Organization name")}</th>
+                  <th scope="col">{t("Acronym")}</th>
+                  <th scope="col">{t("Country")}</th>
+                  <th scope="col">{t("Location")}</th>
+                  <th scope="col">ROR</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.map((el, idx) => (
                   <tr key={idx}>
-                    <td scope="row">{el.orcid}</td>
-                    <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td scope="row">
-                      {el?.institutionName.map((e, idx) => (
-                        <React.Fragment key={idx}>{e}</React.Fragment>
-                      ))}
+                      <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
+                        {el.name[Object.keys(el.name)[0]]}
+                      </a>
                     </td>
+                    <td>{el.acronyms}</td>
+                    <td>{el.country.code}</td>
+                    <td scope="row">
+                      {Object.values(el.addresses[0])
+                        .filter((value) => value)
+                        .join(", ")}
+                    </td>
+                    <td>{el.ror}</td>
                     <td>
-                      <input className="text-center" type="checkbox" checked={selectedKey === el.orcid} onChange={() => setSelectedValue(el)} />
+                      <input className="text-center" type="checkbox" checked={selectedKey === el.ror} onChange={() => setSelectedValue(el)} />
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
           <div className="row text-center">
             <div className="mx-auto"></div>
             <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={5} />
+              <Pagination items={data} onChangePage={onChangePage} pageSize={8} />
             </div>
           </div>
         </>
@@ -143,4 +197,4 @@ component is initially rendered. */
   );
 }
 
-export default OrcidList;
+export default RorList;
