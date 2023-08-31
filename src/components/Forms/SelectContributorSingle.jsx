@@ -233,7 +233,7 @@ function SelectContributorSingle({ label, name, changeValue, registry, keyValue,
           )}
         </div>
         {form?.[schemaId]?.[keyValue] && list && (
-          <div style={{ padding: "0px 70px 0px 0px" }}>
+          <div style={{ padding: "0px 80px 0px 10px" }}>
             <table style={{ marginTop: "20px" }} className="table">
               <thead>
                 <tr>

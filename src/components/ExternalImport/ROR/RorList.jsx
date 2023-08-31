@@ -156,7 +156,7 @@ component is initially rendered. */
                   <th scope="col">{t("Acronym")}</th>
                   <th scope="col">{t("Country")}</th>
                   <th scope="col">{t("Location")}</th>
-                  <th scope="col">ROR</th>
+                  {/* <th scope="col">ROR</th> */}
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -175,7 +175,7 @@ component is initially rendered. */
                         .filter((value) => value)
                         .join(", ")}
                     </td>
-                    <td>{el.ror}</td>
+                    {/* <td>{el.ror}</td> */}
                     <td>
                       <input className="text-center" type="checkbox" checked={selectedKey === el.ror} onChange={() => setSelectedValue(el)} />
                     </td>

@@ -198,7 +198,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
   };
 
   return (
-    <>
+    <div>
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
@@ -350,7 +350,7 @@ function SelectWithCreate({ label, registry, name, template, keyValue, level, to
           )}
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
 

@@ -108,7 +108,7 @@ component is initially rendered. */
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col">{t("ID")}</th>
+                  {/* <th scope="col">{t("ID")}</th> */}
                   <th scope="col">{t("Last / First name")}</th>
                   <th scope="col">{t("Establishment")}</th>
                   <th scope="col"></th>
@@ -117,7 +117,7 @@ component is initially rendered. */
               <tbody>
                 {currentData.map((el, idx) => (
                   <tr key={idx}>
-                    <td scope="row">{el.orcid}</td>
+                    {/* <td scope="row">{el.orcid}</td> */}
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td scope="row">
                       {el?.institutionName.map((e, idx) => (

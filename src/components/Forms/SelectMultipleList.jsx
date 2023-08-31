@@ -106,7 +106,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
     setRegistryName(e.value);
   };
   return (
-    <>
+    <div>
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
@@ -203,7 +203,7 @@ function SelectMultipleList({ label, registry, name, changeValue, tooltip, heade
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

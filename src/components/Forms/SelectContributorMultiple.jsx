@@ -54,6 +54,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
       setregisterFile(res.properties.person.template_name);
       const template = res.properties.person["template_name"];
       loadForm(template, "token").then((res) => {
+        console.log(res);
         setregisterFile(res);
       });
       if (!form?.[schemaId]?.[keyValue]) {
@@ -244,7 +245,7 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
           )}
         </div>
         {form?.[schemaId]?.[keyValue] && list && (
-          <div style={{ padding: "0px 70px 0px 0px" }}>
+          <div style={{ padding: "0px 80px 0px 10px" }}>
             <table style={{ marginTop: "20px" }} className="table">
               <thead>
                 {form?.[schemaId]?.[keyValue].length > 0 && header && form?.[schemaId]?.[keyValue].some((el) => el.updateType !== "delete") && (
