@@ -72,6 +72,15 @@ export function getCheckPattern(type, value) {
   }
 }
 
+export function getCheckEmailPatern(type, value) {
+  const regExEmail = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+  if (type === "email") {
+    return regExEmail.test(value);
+  } else {
+    return true;
+  }
+}
+
 /**
  * It takes a standardTemplate object and a form object, and returns the first key of the form object that is required and empty
  * @param standardTemplate - {

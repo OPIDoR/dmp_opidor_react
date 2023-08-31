@@ -11,7 +11,7 @@ import styles from "../assets/css/form.module.css";
 function InputText({
   label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId, readonly
 }) {
-  const { formData, subData } = useContext(GlobalContext);
+  const { formData, subData, setIsEmail } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState("");
   const [isRequired, setIsRequired] = useState(false);
 
@@ -34,10 +34,12 @@ function InputText({
   const handleChangeInput = (e) => {
     const { value } = e.target;
     const isPattern = getCheckPattern(type, value);
+    setIsEmail(isPattern);
     changeValue(e);
     setIsRequired(!isPattern);
     setInputValue(value);
   };
+
   return (
     <div className="form-group">
       <div className={styles.label_form}>
@@ -64,5 +66,4 @@ function InputText({
     </div>
   );
 }
-
 export default InputText;

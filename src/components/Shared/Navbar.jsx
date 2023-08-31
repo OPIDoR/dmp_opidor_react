@@ -32,7 +32,7 @@ specific paths to tab indices, so that the correct tab is highlighted when the u
   return (
     <ul id="plan_navigation" className={`nav nav-tabs ${styles.plan_navigation}`} role="tablist">
       {[
-        { to: "/", svg: <InfoSVG />, text: t("Informations générales") },
+        { to: "/info", svg: <InfoSVG />, text: t("Informations générales") },
         { to: "/redaction", svg: <RedactionSVG />, text: t("Redact") },
         { to: "#", svg: <ContributorSVG />, text: t("Contributors") },
         { to: "#", svg: <BudgetSVG />, text: t("Budget") },

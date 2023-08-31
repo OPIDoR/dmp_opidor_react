@@ -50,15 +50,18 @@ function HandleGenerateForms({
         // Condition 1.2
         // si inputType === dropdown
         if (
-          prop.inputType === 'dropdown'
-          && Object.prototype.hasOwnProperty.call(prop, 'registry_id')
-        ) {
+          prop.inputType === "dropdown" && (
+            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
+            )
+          ) {
+          let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
           data.push(
             <SelectSingleList
               key={key}
               label={label}
               propName={key}
-              registryId={prop.registry_id}
+              registryName={registryName}
+              registries={prop["registries"]}
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
@@ -97,16 +100,19 @@ function HandleGenerateForms({
         // condition 2.1
         // si inputType === dropdown et on n'a pas de registry_name
         if (
-          prop.inputType === 'dropdown'
-          && Object.prototype.hasOwnProperty.call(prop, 'registry_id')
-        ) {
-          if (prop.items.schema_id) {
+          prop.inputType === "dropdown" && (
+            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"
+            )
+          )) {
+          let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
+          if (prop.items.template_name) {
             data.push(
               <SelectWithCreate
                 key={key}
                 label={label}
                 propName={key}
-                registryId={prop.registry_id}
+                registryName={registryName}
+                registries={prop["registries"]}
                 changeValue={changeValue}
                 templateId={prop.items.schema_id}
                 level={level}
@@ -121,7 +127,8 @@ function HandleGenerateForms({
                 key={key}
                 label={label}
                 propName={key}
-                registryId={prop.registry_id}
+                registryName={registryName}
+                registries={prop["registries"]}
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
@@ -220,12 +227,14 @@ function HandleGenerateForms({
           }
         }
         // codition 3.2
-        if (prop.inputType === 'dropdown') {
-          if (Object.prototype.hasOwnProperty.call(prop, 'registry_id')) {
+        if (prop.inputType === "dropdown") {
+          if (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")) {
+            let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
             data.push(
               <SelectSingleList
                 key={key}
-                registryId={prop.registry_id}
+                registryName={registryName}
+                registries={prop["registries"]}
                 label={label}
                 propName={key}
                 changeValue={changeValue}

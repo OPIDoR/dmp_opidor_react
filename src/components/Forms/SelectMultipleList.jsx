@@ -3,14 +3,15 @@ import Swal from 'sweetalert2';
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from '../context/Global.jsx';
-import { getRegistryById } from '../../services/DmpServiceApi';
+import { getRegistryById, getRegistryByName } from '../../services/DmpServiceApi';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectMultipleList({
   label,
-  registryId,
+  registryName,
+  registries,
   propName,
   changeValue,
   tooltip,
@@ -24,29 +25,33 @@ function SelectMultipleList({
   const { 
     formData, subData, setSubData, locale, loadedRegistries, setLoadedRegistries 
   } = useContext(GlobalContext);
+  const [selectedRegistry, setRegistryName] = useState(registryName);
+  const [selectMonted, setSelectMonted] = useState(true);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(loadedRegistries[registryId]) {
-      setOptions(createOptions(loadedRegistries[registryId], locale));
+    if(loadedRegistries[registryName]) {
+      setOptions(createOptions(loadedRegistries[registryName], locale));
+      setSelectMonted(true);
     } else {
-      getRegistryById(registryId)
+      getRegistryByName(registryName)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [registryId]: res.data});
+          setLoadedRegistries({...loadedRegistries, [registryName]: res.data});
           setOptions(createOptions(res.data, locale));
+          setSelectMonted(true);
         })
         .catch((error) => {
           // handle errors
         });
     }
-  }, [registryId, locale]);
+  }, [registryName, locale]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
-  const handleChangeList = (e) => {
+  const handleSelectRegistryValue = (e) => {
     const copyList = [...(list || []), e.value];
     changeValue({ target: { propName, value: [...copyList] } });
     setList(copyList);
@@ -91,6 +96,14 @@ function SelectMultipleList({
     });
   };
 
+  /**
+   * The handleSelectRegistry function updates the registry name based on the value of the input field.
+   */
+  const handleSelectRegistry = (e) => {
+    setRegistryName(e.value);
+  };
+
+
   return (
     <>
       <div className="form-group">
@@ -104,21 +117,58 @@ function SelectMultipleList({
             ></span>
           )}
         </div>
-        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
-        <div className="row">
-          <div className={`col-md-12 ${styles.select_wrapper}`}>
-            <CustomSelect
-              onChange={handleChangeList}
-              options={options}
-              name={propName}
-              defaultValue={{
-                label: subData ? subData[propName] : '',
-                value: subData ? subData[propName] : '',
-              }}
-              isDisabled={readonly}
-            />
+
+        {/* ************Select ref************** */}
+        <div className="row"><div className="row">
+          {registries && registries.length > 1 && (
+            <div className="col-md-6">
+              <>
+                <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <CustomSelect
+                      onChange={handleSelectRegistry}
+                      options={registries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={propName}
+                      selectedOption={selectedRegistry}
+                      isDisabled={readonly}
+                    />
+                  </div>
+                </div>
+              </>
+            </div>
+          )}
+
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+            <>
+              <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
+              <div className="row">
+                <div className={`col-md-12 ${styles.select_wrapper}`}>
+                  {selectMonted && options && (
+                    <>
+                      <CustomSelect
+                        onChange={handleSelectRegistryValue}
+                        options={options}
+                        name={propName}
+                        defaultValue={{
+                          label: subData ? subData[propName] : '',
+                          value: subData ? subData[propName] : '',
+                        }}
+                        isDisabled={readonly}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </>
           </div>
         </div>
+        </div>
+        {/* *************Select ref************* */}
+
         <div style={{ margin: "20px 2px 20px 2px" }}>
           {list && (
             <table style={{ marginTop: "0px" }} className="table">

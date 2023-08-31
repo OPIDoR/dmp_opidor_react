@@ -5,9 +5,9 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
+import { createOptions, deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
-import { getContributors, getSchema } from '../../services/DmpServiceApi.js';
+import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
@@ -31,18 +31,27 @@ function SelectContributorMultiple({
   const {
     formData, setFormData, subData, setSubData, locale, dmpId,
     loadedTemplates, setLoadedTemplates,
+    loadedRegistries, setLoadedRegistries,
+    isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [role, setRole] = useState(null);
   const [contributorList, setContributorList] = useState([])
+  const [roleOptions, setRoleOptions] = useState(null);
 
   useEffect(() => {
     setContributorList(formData?.[fragmentId]?.[propName] || {})
   }, [fragmentId, propName]);
 
+
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
+    fetchContributors();
+    fetchRoles();
+  }, []);
+
+  const fetchContributors = () => {
     getContributors(dmpId).then((res) => {
       const builtOptions = res.data.results.map((option) => ({
         value: option.id,
@@ -51,7 +60,16 @@ function SelectContributorMultiple({
       }));
       setOptions(builtOptions);
     });
-  }, []);
+  }
+
+  const fetchRoles = () => {
+    getRegistryByName('Role').then((res) => {
+      setLoadedRegistries({...loadedRegistries, ['Role']: res.data});
+      const options = createOptions(res.data, locale)
+      setRoleOptions(options);
+      setRole(formData?.[fragmentId]?.[propName]?.role || options[0]?.value);
+    });
+  }
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -119,6 +137,15 @@ function SelectContributorMultiple({
       setList([...list, value]);
     }
   };
+  
+  /**
+   * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
+   */
+  const handleSelectRole = (e, index) => {
+    const dataCopy = { ...formData };
+    dataCopy[fragmentId][propName][index].role = e.value;
+    setFormData(dataCopy);
+  };
 
   /**
    * If the index is not null, then delete the item at the index,
@@ -127,6 +154,7 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleAddToList = () => {
+    if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       const objectPerson = { person: subData, role: role, action: 'update' };
       const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
@@ -205,10 +233,9 @@ function SelectContributorMultiple({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span
-              className="fas fa-circle-info"
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
+            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
+              ?
+            </span>
           )}
         </div>
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
@@ -247,7 +274,7 @@ function SelectContributorMultiple({
             <tbody>
               {list.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row" style={{ width: "100%" }}>
+                  <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
 
@@ -285,6 +312,18 @@ function SelectContributorMultiple({
                         </div>
                       )}
                     </div>
+                  </td>
+                  <td>
+                    {roleOptions && (
+                      <CustomSelect
+                        onChange={handleSelectRole}
+                        options={roleOptions}
+                        name={propName}
+                        isDisabled={readonly}
+                        // async={true}
+                        // asyncCallback={fetchContributors}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

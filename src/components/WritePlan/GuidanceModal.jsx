@@ -78,20 +78,20 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
               />
             ) : (
               <>
-                {data?.[indexTab].groups.map((el) => (
-                  <>
+                {data?.[indexTab].groups.map((el, idx) => (
+                  <React.Fragment key={idx}>
                     <Theme>{el?.theme}</Theme>
-                    {el?.guidances.map((g) => (
-                      <>
+                    {el?.guidances.map((g, idx) => (
+                      <React.Fragment key={idx}>
                         <div
                           dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(g.text),
                           }}
                         />
                         <hr></hr>
-                      </>
+                      </React.Fragment>
                     ))}
-                  </>
+                  </React.Fragment>
                 ))}
               </>
             )}
