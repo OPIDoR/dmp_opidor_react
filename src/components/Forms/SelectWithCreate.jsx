@@ -18,7 +18,6 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectWithCreate({
   label,
-  registryName,
   registries,
   propName,
   templateId,
@@ -43,7 +42,7 @@ function SelectWithCreate({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [selectedRegistry, setSelectedRegistry] = useState(registryName);
+  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
