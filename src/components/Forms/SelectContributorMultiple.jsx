@@ -24,8 +24,6 @@ function SelectContributorMultiple({
   readonly,
 }) {
   const { t } = useTranslation();
-  const [list, setList] = useState([]);
-
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
   const [selectObject, setSelectObject] = useState([]);
@@ -65,7 +63,7 @@ function SelectContributorMultiple({
 
   const fetchRoles = () => {
     getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({...loadedRegistries, ['Role']: res.data});
+      setLoadedRegistries({...loadedRegistries, 'Role': res.data});
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
       setRole(formData?.[fragmentId]?.[propName]?.role || options[0]?.value);
@@ -98,7 +96,7 @@ function SelectContributorMultiple({
       return;
     }
 
-    setList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
+    setContributorList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
   }, [templateId]);
 
   /**
@@ -129,13 +127,13 @@ function SelectContributorMultiple({
     if (pattern.length > 0) {
       setSelectObject([...selectObject, object]);
       const parsedPatern = parsePattern(object, template.to_string);
-      setList([...list, parsedPatern]);
+      setContributorList([...contributorList, parsedPatern]);
       const newObject = { person: { ...object, action: "update" }, role: role, action: "create" };
       const mergedList = contributorList ? [...contributorList, newObject] : [newObject];
       setFormData(updateFormState(formData, fragmentId, propName, mergedList));
     } else {
       changeValue({ target: { propName, value } });
-      setList([...list, value]);
+      setContributorList([...contributorList, value]);
     }
   };
   
@@ -163,7 +161,7 @@ function SelectContributorMultiple({
       const concatedObject = [...deleteIndex, objectPerson];
       setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
       const parsedPattern = parsePattern(subData, template.to_string);
-      setList([...deleteByIndex([...list], index), parsedPattern]);
+      setContributorList([...deleteByIndex([...contributorList], index), parsedPattern]);
     } else {
       handleSave();
     }
@@ -182,7 +180,7 @@ function SelectContributorMultiple({
     const objectPerson = { person: subData, role };
     setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
     const parsedPattern = parsePattern(subData, template.to_string);
-    setList([...list, parsedPattern]);
+    setContributorList([...contributorList, parsedPattern]);
     handleClose();
     setSubData({});
   };
@@ -204,12 +202,11 @@ function SelectContributorMultiple({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const newList = [...list];
-        setList(deleteByIndex(newList, idx));
+        const newList = [...contributorList];
+        setContributorList(deleteByIndex(newList, idx));
         const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
         filterDeleted[idx]['action'] = 'delete';
         setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -263,7 +260,7 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        {contributorList && list && (
+        {contributorList && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               {contributorList.length > 0 && header && contributorList.some((el) => el.action !== "delete") && (
@@ -273,7 +270,7 @@ function SelectContributorMultiple({
               )}
             </thead>
             <tbody>
-              {list.map((el, idx) => (
+              {contributorList.map((el, idx) => (
                 <tr key={idx}>
                   <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
@@ -325,7 +322,7 @@ function SelectContributorMultiple({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
+              {/* <ImportExternal></ImportExternal> */}
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}

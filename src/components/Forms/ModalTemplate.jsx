@@ -7,10 +7,8 @@ import { useTranslation } from "react-i18next";
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { GlobalContext } from '../context/Global.jsx';
 import {
-  checkRequiredForm,
   createMarkup,
   deleteByIndex,
-  getLabelName,
   updateFormState,
   parsePattern,
 } from '../../utils/GeneratorUtils';
@@ -135,7 +133,6 @@ function ModalTemplate({
         const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
         filterDeleted[idx]['action'] = 'delete';
         setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };

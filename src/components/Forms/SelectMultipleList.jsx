@@ -88,7 +88,6 @@ function SelectMultipleList({
         }
         setSelectedValues(newList);
         setSubData({ ...subData, [propName]: newList });
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
