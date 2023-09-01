@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getRegistryById, getRegistryByName } from '../../services/DmpServiceApi';
-import { createOptions } from '../../utils/GeneratorUtils';
+import { getRegistryById, getRegistryByName, getSchema } from '../../services/DmpServiceApi';
+import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
@@ -13,49 +13,67 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  label, propName, changeValue, tooltip, level, registryName, registries, fragmentId, registryType, readonly
+  label, propName, changeValue, tooltip, level, registryName, registries, fragmentId, registryType, templateId, readonly
 }) {
   const { t, i18n } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
   const { 
-    formData, subData, locale, loadedRegistries, setLoadedRegistries 
+    formData, setFormData,
+    subData,
+    locale,
+    loadedTemplates, setLoadedTemplates,
+    loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
-  const [selectedRegistry, setRegistryName] = useState(registryName);
-  const [selectMonted, setSelectMonted] = useState(true);
+  const [template, setTemplate] = useState({});
+  const [selectedRegistry, setSelectedRegistry] = useState(registryName);
+  const [selectedValue, setSelectedValue] = useState( registryType === 'complex' ? {} : '');
   const [showRor, setShowRor] = useState(false);
   const [showOrcid, setShowOrcid] = useState(false);
   const [renderKey, setRenderKey] = useState(0);
 
-  let value;
   const nullValue  = registryType === 'complex' ? {} : '';
-  if (level === 1) {
-    value = formData?.[fragmentId]?.[propName] || nullValue;
-  } else {
-    value = subData?.[propName] || nullValue;
-  }
-  const selectedOption = options.find((opt) => opt.value === value);
+  const selectedOption = options.find((opt) => opt.value === selectedValue);
+
+  useEffect(() => {
+    if (level === 1) {
+      setSelectedValue(formData?.[fragmentId]?.[propName] || nullValue);
+    } else {
+      setSelectedValue(subData?.[propName] || nullValue);
+    }
+  }, [])
+
   /*
   A hook that is called when the component is mounted.
   It is used to set the options of the select list.
   */
   useEffect(() => {
     setRenderKey((prevKey) => prevKey + 1);
-    if(loadedRegistries[registryName]) {
-      setOptions(createOptions(loadedRegistries[registryName], locale));
-      setSelectMonted(true);
+    if(loadedRegistries[selectedRegistry]) {
+      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryByName(registryName)
+      getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [registryName]: res.data});
+          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));
-          setSelectMonted(true);
         })
         .catch((error) => {
           // handle errors
         });
     }
-  }, [registryName, locale]);
+  }, [selectedRegistry]);
+
+  useEffect(() => {
+    if(registryType !== 'complex') { return; }
+    if (!loadedTemplates[templateId]) {
+      getSchema(templateId).then((res) => {
+        setTemplate(res.data)
+        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+      });
+    } else {
+      setTemplate(loadedTemplates[templateId]);
+    }
+  }, [registryType, templateId])
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -64,33 +82,32 @@ function SelectSingleList({
   const handleSelectRegistryValue = (e) => {
     if (!e) return { target: { name: propName, value: '' } }
     
-    const isRorID = e.value === "ROR ID";
-    const isOrcidID = e.value === "ORCID iD";
+    // const isRorID = e.value === "ROR ID";
+    // const isOrcidID = e.value === "ORCID iD";
 
-    setShowRor(isRorID);
-    setShowOrcid(isOrcidID);
+    // setShowRor(isRorID);
+    // setShowOrcid(isOrcidID);
 
-    if (!isRorID && !isOrcidID) {
-      setShowRor(false);
-      setShowOrcid(false);
-    }
+    // if (!isRorID && !isOrcidID) {
+    //   setShowRor(false);
+    //   setShowOrcid(false);
+    // }
 
     if (registryType === 'complex') {
-      value = value.id ? {...value, action: "update"} : {...value, action: "create"};
-      changeValue({ target: { name: propName, value: { ...value,  ...e.object } } });
+      const action = selectedValue.id ? 'update' : 'create';
+      const value = {...selectedValue,  ...e.object, action};
+      setSelectedValue(value);
+      setFormData(updateFormState(formData, fragmentId, propName, value));
     } else {
       changeValue({ target: { name: propName, value: e.value } });
     }
-
-    const targetValue = propName === "funder" ? e.object : e.value;
-    changeValue({ target: { propName, value: targetValue } });
   };
 
   /**
    * The handleChange function updates the registry name based on the value of the input field.
    */
   const handleSelectRegistry = (e) => {
-    setRegistryName(e.value);
+    setSelectedRegistry(e.value);
   };
 
   return (
@@ -107,7 +124,7 @@ function SelectSingleList({
           )}
         </div>
 
-        {/* ************Select ref************** */}
+        {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
             <div className="col-md-6">
@@ -122,7 +139,7 @@ function SelectSingleList({
                         label: registry,
                       }))}
                       name={propName}
-                      selectedOption={selectedRegistry}
+                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
                       isDisabled={readonly}
                     />
                   </div>
@@ -136,7 +153,7 @@ function SelectSingleList({
               <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
               <div className="row">
                 <div className={`col-md-12 ${styles.select_wrapper}`}>
-                  {selectMonted && options && (
+                  {selectedRegistry && options && (
                     <>
                       <CustomSelect
                         onChange={handleSelectRegistryValue}
@@ -152,7 +169,26 @@ function SelectSingleList({
             </>
           </div>
         </div>
-        {/* *************Select ref************* */}
+        
+        {registryType === 'complex' && selectedValue && (
+          <table style={{ marginTop: "20px" }} className="table">
+            <thead>
+              <tr>
+                <th scope="col">{t("Selected value")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[selectedValue].map((el, idx) => (
+                <tr key={idx}>
+                  <td scope="row" style={{ width: "50%" }}>
+                    {parsePattern(el, template.to_string)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {/* *************Select registry************* */}
       </div>
       <React.Fragment key={renderKey + 1}>
         {showOrcid && (
