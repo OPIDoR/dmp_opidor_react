@@ -4,8 +4,6 @@ import { createOptions, parsePattern, updateFormState } from '../../utils/Genera
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
-import RorList from '../ROR/RorList';
-import OrcidList from '../ORCID/OrcidList';
 import { useTranslation } from 'react-i18next';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -111,7 +109,7 @@ function SelectSingleList({
   };
 
   return (
-    <>
+    <div>
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
@@ -190,29 +188,7 @@ function SelectSingleList({
         )}
         {/* *************Select registry************* */}
       </div>
-      <React.Fragment key={renderKey + 1}>
-        {showOrcid && (
-          <>
-            <OrcidList></OrcidList>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              {/* <Button variant="secondary" onClick={handleClose}>
-              {t("Close")}
-            </Button> */}
-            </div>
-          </>
-        )}
-        {showRor && (
-          <>
-            <RorList></RorList>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              {/* <Button variant="secondary" onClick={handleClose}>
-              {t("Close")}
-            </Button> */}
-            </div>
-          </>
-        )}
-      </React.Fragment>
-    </>
+    </div>
   );
 }
 

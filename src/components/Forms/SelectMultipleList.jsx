@@ -103,7 +103,7 @@ function SelectMultipleList({
 
 
   return (
-    <>
+    <div>
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
@@ -197,7 +197,7 @@ function SelectMultipleList({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

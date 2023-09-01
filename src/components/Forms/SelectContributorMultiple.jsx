@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
+import ImportExternal from "../ExternalImport/ImportExternal";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { createOptions, deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
@@ -277,42 +278,28 @@ function SelectContributorMultiple({
                   <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
                       <div>{el} </div>
-
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
+                        {!readonly && (
+                          <div className={styles.table_container}>
+                            <div className="col-md-1">
+                              {level === 1 && (
+                                <span>
+                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
+                                    <i className="fa fa-pen-to-square" />
+                                  </a>
+                                </span>
+                              )}
+                            </div>
+                            <div className="col-md-1">
                               <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-pen-to-square" />
+                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
+                                  <i className="fa fa-times" />
                                 </a>
                               </span>
-                            )}
+                            </div>
                           </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-times" />
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                      {readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-eye" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
+                        )}
+                      </div>
+                    </td>
                   <td>
                     {roleOptions && (
                       <CustomSelect
@@ -338,6 +325,7 @@ function SelectContributorMultiple({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
+              <ImportExternal></ImportExternal>
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}

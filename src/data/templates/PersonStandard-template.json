@@ -6,6 +6,18 @@
   "type": "object",
   "class": "PersonStandard",
   "properties": {
+    "personalData": {
+      "type": "object",
+      "label@fr_FR": "Données Personnelles",
+      "label@en_GB": "Personal Data",
+      "$ref": "/datagroups/personalData"
+    },
+    "affiliation": {
+      "type": "object",
+      "label@fr_FR": "Affiliation",
+      "label@en_GB": "Affiliation",
+      "$ref": "/datagroups/affiliation"
+    },
     "nameType": {
       "type": "string",
       "description": "Type du nom",
@@ -14,7 +26,8 @@
       "label@en_GB": "Type (organisation or person)",
       "registry_name": "NameTypeValues",
       "form_label@fr_FR": "Type (organisation ou personne)",
-      "form_label@en_GB": "Type (organisation or person)"
+      "form_label@en_GB": "Type (organisation or person)",
+      "dataGroup": "personalData"
     },
     "lastName": {
       "type": "string",
@@ -23,8 +36,9 @@
       "label@en_GB": "Last name",
       "example@fr_FR": "Dupont, Service d'Ingénierie des Systèmes d’Information, Comité d'éthique",
       "example@en_GB": "Dupont, Information Systems Engineering Department, Ethics comittee",
-      "form_label@fr_FR": "* Nom",
-      "form_label@en_GB": "* Last name"
+      "form_label@fr_FR": "Nom",
+      "form_label@en_GB": "Last name",
+      "dataGroup": "personalData"
     },
     "firstName": {
       "type": "string",
@@ -34,7 +48,8 @@
       "tooltip@fr_FR": "Saisir un prénom, s'il s'agit d'une personne physique",
       "tooltip@en_GB": "Enter a first name, if it is a natural person",
       "form_label@fr_FR": "Prénom",
-      "form_label@en_GB": "First name"
+      "form_label@en_GB": "First name",
+      "dataGroup": "personalData"
     },
     "mbox": {
       "type": "string",
@@ -42,8 +57,9 @@
       "description": "Adresse mail de la personne",
       "label@fr_FR": "Email",
       "label@en_GB": "Email",
-      "form_label@fr_FR": "* Email",
-      "form_label@en_GB": "* Email"
+      "form_label@fr_FR": "Email",
+      "form_label@en_GB": "Email",
+      "dataGroup": "personalData"
     },
     "personId": {
       "type": "string",
@@ -52,8 +68,9 @@
       "label@en_GB": "Identifier",
       "example@fr_FR": "https://orcid.org/0000-0002-9148-9926",
       "example@en_GB": "https://orcid.org/0000-0002-9148-9926",
-      "form_label@fr_FR": "* Identifiant",
-      "form_label@en_GB": "* Identifier"
+      "form_label@fr_FR": "Identifiant",
+      "form_label@en_GB": "Identifier",
+      "dataGroup": "personalData"
     },
     "idType": {
       "type": "string",
@@ -63,8 +80,9 @@
       "label@en_GB": "Identifier type",
       "registry_name": "AgentIdSystem",
       "overridable": true,
-      "form_label@fr_FR": "* Type d'identifiant",
-      "form_label@en_GB": "* Identifier type"
+      "form_label@fr_FR": "Type d'identifiant",
+      "form_label@en_GB": "Identifier type",
+      "dataGroup": "personalData"
     },
     "affiliationName": {
       "type": "string",
@@ -76,7 +94,8 @@
       "example@fr_FR": "INIST Institut de l'information scientifique et technique",
       "example@en_GB": "INIST Institut de l'information scientifique et technique ",
       "form_label@fr_FR": "Nom de l'affiliation",
-      "form_label@en_GB": "Affiliation name"
+      "form_label@en_GB": "Affiliation name",
+      "dataGroup": "affiliation"
     },
     "affiliationId": {
       "type": "string",
@@ -86,7 +105,8 @@
       "example@fr_FR": "198822446E",
       "example@en_GB": "198822446E",
       "form_label@fr_FR": "Identifiant de l'affiliation",
-      "form_label@en_GB": "Affiliation identifier"
+      "form_label@en_GB": "Affiliation identifier",
+      "dataGroup": "affiliation"
     },
     "affiliationIdType": {
       "type": "string",
@@ -97,7 +117,8 @@
       "registry_name": "AgentIdSystem",
       "overridable": true,
       "form_label@fr_FR": "Type d'identifiant de l'affiliation",
-      "form_label@en_GB": "Affiliation identifier type"
+      "form_label@en_GB": "Affiliation identifier type",
+      "dataGroup": "affiliation"
     }
   },
   "required": ["nameType", "lastName", "firstName", "personId", "idType", "affiliationName", "affiliationId", "affiliationIdType"],
