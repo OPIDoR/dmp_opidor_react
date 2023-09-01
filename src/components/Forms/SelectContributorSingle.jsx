@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
+import ImportExternal from "../ExternalImport/ImportExternal";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
@@ -324,6 +325,7 @@ function SelectContributorSingle({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
+              <ImportExternal></ImportExternal>
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}

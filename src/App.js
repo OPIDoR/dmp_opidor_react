@@ -5,8 +5,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import WritePlan from "./components/WritePlan/WritePlan";
 import GeneralInfo from "./components/GeneralInfo/GeneralInfo";
 import RoutePage from "./components/Shared/RoutePage";
-import RorList from "./components/ROR/RorList";
-import OrcidList from "./components/ORCID/OrcidList";
 
 function App() {
   return (
@@ -17,8 +15,8 @@ function App() {
         <Route exact path="/plan" element={<PlanCreation />} />
         <Route exact path="/" element={<RoutePage />} />
         <Route exact path="/info" element={<GeneralInfo readonly={false} />} />
-        <Route exact path="/ror" element={<RorList />} />
-        <Route exact path="/orcid" element={<OrcidList />} />
+        {/* <Route exact path="/ror" element={<RorList />} />
+        <Route exact path="/orcid" element={<OrcidList />} /> */}
       </Routes>
     </Router>
   );

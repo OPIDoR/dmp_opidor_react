@@ -72,7 +72,7 @@ export function getCheckPattern(type, value) {
   }
 }
 
-export function getCheckEmailPatern(type, value) {
+export function getCheckEmailPattern(type, value) {
   const regExEmail = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
   if (type === "email") {
     return regExEmail.test(value);

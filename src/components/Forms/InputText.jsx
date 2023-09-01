@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getCheckPattern } from '../../utils/GeneratorUtils';
+import { getCheckEmailPattern, getCheckPattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from "../assets/css/form.module.css";
 
@@ -39,6 +39,15 @@ function InputText({
     setIsRequired(!isPattern);
     setInputValue(value);
   };
+
+ /* The `useEffect` hook in the code snippet is used to perform a side effect in a functional component. In this case, the effect is triggered whenever
+the `inputValue` variable changes. */
+  useEffect(() => {
+    if (type === "email") {
+      const isPattern = getCheckEmailPattern(type, inputValue);
+      setIsEmail(isPattern);
+    }
+  }, [inputValue]);
 
   return (
     <div className="form-group">
