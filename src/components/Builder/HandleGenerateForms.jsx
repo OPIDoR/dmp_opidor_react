@@ -27,6 +27,7 @@ function HandleGenerateForms({
       const label = createLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
+      if(key === 'funder') { console.log(prop)}
       // condition 1
       if (prop.type === 'string' || prop.type === 'number') {
         // Condition 1.1
@@ -61,7 +62,7 @@ function HandleGenerateForms({
               label={label}
               propName={key}
               registryName={registryName}
-              registries={prop["registries"]}
+              registries={prop["registries"] || [prop["registry_name"]]}
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
@@ -101,18 +102,18 @@ function HandleGenerateForms({
         // si inputType === dropdown et on n'a pas de registry_name
         if (
           prop.inputType === "dropdown" && (
-            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"
-            )
-          )) {
+            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
+          )
+        ) {
           let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
-          if (prop.items.template_name) {
+          if (prop.items.schema_id) {
             data.push(
               <SelectWithCreate
                 key={key}
                 label={label}
                 propName={key}
                 registryName={registryName}
-                registries={prop["registries"]}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 templateId={prop.items.schema_id}
                 level={level}
@@ -128,7 +129,7 @@ function HandleGenerateForms({
                 label={label}
                 propName={key}
                 registryName={registryName}
-                registries={prop["registries"]}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
@@ -234,7 +235,7 @@ function HandleGenerateForms({
               <SelectSingleList
                 key={key}
                 registryName={registryName}
-                registries={prop["registries"]}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 label={label}
                 propName={key}
                 changeValue={changeValue}
@@ -242,6 +243,7 @@ function HandleGenerateForms({
                 level={level}
                 fragmentId={fragmentId}
                 registryType="complex"
+                templateId={prop.schema_id}
                 readonly={readonly}
               ></SelectSingleList>,
             );

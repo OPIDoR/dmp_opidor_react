@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
  * @param keys - ["$..name", "$..age", "$..address.street"]
  * @returns The value of the key in the object.
  */
-export function parsePattern(data, keys) {
+export function parsePattern(data, keys = []) {
   if(keys.length === 0) return JSON.stringify(data);
   //https://www.measurethat.net/Benchmarks/Show/2335/1/slice-vs-substr-vs-substring-with-no-end-index
   const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
@@ -164,9 +164,9 @@ export function updateFormState(formData, fragmentId, propName, newObject) {
  */
 export function createOptions(registryValues, locale) {
   let options = registryValues.map((option) => {
-    const {label, value, ...optionValue} = option;
+    const {label,  ...optionValue} = option;
     return {
-      value: value ? value : optionValue[locale],
+      value: label ? label[locale] : optionValue[locale],
       label: label ? label[locale] : optionValue[locale],
       object: optionValue,
     }

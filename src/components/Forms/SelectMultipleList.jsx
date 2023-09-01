@@ -18,54 +18,52 @@ function SelectMultipleList({
   header,
   fragmentId,
   readonly,
+  level,
 }) {
   const { t, i18n } = useTranslation();
-  const [list, setList] = useState([]);
+  const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState(null);
   const { 
     formData, subData, setSubData, locale, loadedRegistries, setLoadedRegistries 
   } = useContext(GlobalContext);
-  const [selectedRegistry, setRegistryName] = useState(registryName);
-  const [selectMonted, setSelectMonted] = useState(true);
+  const [selectedRegistry, setSelectedRegistry] = useState(registryName);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(loadedRegistries[registryName]) {
-      setOptions(createOptions(loadedRegistries[registryName], locale));
-      setSelectMonted(true);
+    if(loadedRegistries[selectedRegistry]) {
+      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryByName(registryName)
+      getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [registryName]: res.data});
+          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));
-          setSelectMonted(true);
         })
         .catch((error) => {
           // handle errors
         });
     }
-  }, [registryName, locale]);
+  }, [selectedRegistry]);
+
+  /* A hook that is called when the component is mounted.
+  It is used to set the options of the select list. */
+  useEffect(() => {
+    if (level === 1) {
+      setSelectedValues(formData?.[fragmentId]?.[propName]);
+    } else {
+      setSelectedValues(subData[propName]);
+    }
+  }, [fragmentId, propName, level]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    const copyList = [...(list || []), e.value];
-    changeValue({ target: { propName, value: [...copyList] } });
-    setList(copyList);
+    const copyList = [...(selectedValues || []), e.value];
+    changeValue({ target: { name: propName, value: [...copyList] } });
+    setSelectedValues(copyList);
   };
-
-  /* A hook that is called when the component is mounted.
-  It is used to set the options of the select list. */
-  useEffect(() => {
-    if (subData) {
-      setList(subData[propName]);
-    } else {
-      setList(formData?.[fragmentId]?.[propName]);
-    }
-  }, [fragmentId, propName]);
 
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
@@ -84,12 +82,12 @@ function SelectMultipleList({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const newList = [...list];
+        const newList = [...selectedValues];
         // only splice array when item is found
         if (idx > -1) {
           newList.splice(idx, 1); // 2nd parameter means remove one item only
         }
-        setList(newList);
+        setSelectedValues(newList);
         setSubData({ ...subData, [propName]: newList });
         Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
@@ -100,7 +98,7 @@ function SelectMultipleList({
    * The handleSelectRegistry function updates the registry name based on the value of the input field.
    */
   const handleSelectRegistry = (e) => {
-    setRegistryName(e.value);
+    setSelectedRegistry(e.value);
   };
 
 
@@ -118,7 +116,7 @@ function SelectMultipleList({
           )}
         </div>
 
-        {/* ************Select ref************** */}
+        {/* ************Select registry************** */}
         <div className="row"><div className="row">
           {registries && registries.length > 1 && (
             <div className="col-md-6">
@@ -133,7 +131,7 @@ function SelectMultipleList({
                         label: registry,
                       }))}
                       name={propName}
-                      selectedOption={selectedRegistry}
+                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
                       isDisabled={readonly}
                     />
                   </div>
@@ -147,7 +145,7 @@ function SelectMultipleList({
               <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
               <div className="row">
                 <div className={`col-md-12 ${styles.select_wrapper}`}>
-                  {selectMonted && options && (
+                  {selectedRegistry && options && (
                     <>
                       <CustomSelect
                         onChange={handleSelectRegistryValue}
@@ -167,14 +165,14 @@ function SelectMultipleList({
           </div>
         </div>
         </div>
-        {/* *************Select ref************* */}
+        {/* *************Select registry************* */}
 
         <div style={{ margin: "20px 2px 20px 2px" }}>
-          {list && (
+          {selectedValues && (
             <table style={{ marginTop: "0px" }} className="table">
               {header && <thead>{header}</thead>}
               <tbody>
-                {list.map((el, idx) => (
+                {selectedValues.map((el, idx) => (
                   <tr key={idx}>
                     <td scope="row" style={{ width: "100%" }}>
                       <div className={styles.border}>

@@ -12,7 +12,7 @@ import {
   updateFormState,
 } from '../../utils/GeneratorUtils';
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { getRegistryById, getSchema } from '../../services/DmpServiceApi';
+import { getRegistryById, getRegistryByName, getSchema } from '../../services/DmpServiceApi';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
@@ -60,19 +60,19 @@ function SelectWithCreate({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(loadedRegistries[registryName]) {
-      setOptions(createOptions(loadedRegistries[registryName], locale));
+    if(loadedRegistries[selectedRegistry]) {
+      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryById(registryName)
+      getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [registryName]: res.data});
+          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
           // handle errors
         });
     }
-  }, [registryName, locale]);
+  }, [selectedRegistry, locale]);
 
   useEffect(() => {
     setFragmentsList(formData?.[fragmentId]?.[propName] || []);
