@@ -40,6 +40,7 @@ function SelectContributorSingle({
 
   useEffect(() => {
     setContributor(formData?.[fragmentId]?.[propName])
+    setRole(formData?.[fragmentId]?.[propName]?.role)
   }, [fragmentId, propName]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ function SelectContributorSingle({
 
   const fetchRoles = () => {
     getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({...loadedRegistries, ['Role']: res.data});
+      setLoadedRegistries({...loadedRegistries, 'Role': res.data});
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
       setRole(formData?.[fragmentId]?.[propName]?.role || options[0]?.value);
@@ -139,7 +140,6 @@ function SelectContributorSingle({
       if (result.isConfirmed) {
         setSelectedValue(null);
         // changeValue({ target: { name: propName, value: { ...value,  ...e.object } } });
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
@@ -200,8 +200,8 @@ function SelectContributorSingle({
       { ...contributor, person: { ...subData, action: 'create' }, role: role, action: 'update' }
     ));
     handleClose();
-    setSubData({});
     setSelectedValue(parsePattern(subData, template.to_string));
+    setSubData({});
   };
   /**
    * It sets the state of the subData variable to the value of the form[propName][idx] variable.
@@ -256,6 +256,7 @@ function SelectContributorSingle({
             <thead>
               <tr>
                 <th scope="col">{t("Selected value")}</th>
+                <th scope="col">{t("Role")}</th>
               </tr>
             </thead>
             <tbody>
@@ -305,6 +306,7 @@ function SelectContributorSingle({
                       <CustomSelect
                         onChange={handleSelectRole}
                         options={roleOptions}
+                        selectedOption={{label: role, value: role}}
                         name={propName}
                         isDisabled={readonly}
                         // async={true}
@@ -325,7 +327,7 @@ function SelectContributorSingle({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
+              {/* <ImportExternal></ImportExternal> */}
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}

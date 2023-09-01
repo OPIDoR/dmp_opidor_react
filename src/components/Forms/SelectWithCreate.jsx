@@ -144,7 +144,6 @@ function SelectWithCreate({
         const concatedObject = [...formData[fragmentId][propName]];
         concatedObject[idx]['action'] = 'delete';
         setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
       }
     });
   };
