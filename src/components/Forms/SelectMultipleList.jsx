@@ -10,7 +10,6 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectMultipleList({
   label,
-  registryName,
   registries,
   propName,
   changeValue,
@@ -26,7 +25,7 @@ function SelectMultipleList({
   const { 
     formData, subData, setSubData, locale, loadedRegistries, setLoadedRegistries 
   } = useContext(GlobalContext);
-  const [selectedRegistry, setSelectedRegistry] = useState(registryName);
+  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */

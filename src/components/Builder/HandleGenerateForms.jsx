@@ -55,13 +55,11 @@ function HandleGenerateForms({
             prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
             )
           ) {
-          let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
           data.push(
             <SelectSingleList
               key={key}
               label={label}
               propName={key}
-              registryName={registryName}
               registries={prop["registries"] || [prop["registry_name"]]}
               changeValue={changeValue}
               tooltip={tooltip}
@@ -105,14 +103,12 @@ function HandleGenerateForms({
             prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
           )
         ) {
-          let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
           if (prop.items.schema_id) {
             data.push(
               <SelectWithCreate
                 key={key}
                 label={label}
                 propName={key}
-                registryName={registryName}
                 registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 templateId={prop.items.schema_id}
@@ -128,7 +124,6 @@ function HandleGenerateForms({
                 key={key}
                 label={label}
                 propName={key}
-                registryName={registryName}
                 registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 tooltip={tooltip}
@@ -209,7 +204,7 @@ function HandleGenerateForms({
             );
           }
 
-          if (prop.class === 'Contributor') {
+          if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
             // console.log("TODO : condition funder à voir");
             data.push(
               <SelectContributorSingle
@@ -230,11 +225,9 @@ function HandleGenerateForms({
         // codition 3.2
         if (prop.inputType === "dropdown") {
           if (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")) {
-            let registryName = prop.hasOwnProperty("registry_name") ? prop["registry_name"] : prop["registries"][0];
             data.push(
               <SelectSingleList
                 key={key}
-                registryName={registryName}
                 registries={prop["registries"] || [prop["registry_name"]]}
                 label={label}
                 propName={key}

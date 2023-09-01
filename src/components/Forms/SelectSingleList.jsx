@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getRegistryById, getRegistryByName, getSchema } from '../../services/DmpServiceApi';
+import { getRegistryByName, getSchema } from '../../services/DmpServiceApi';
 import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
@@ -11,7 +11,7 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  label, propName, changeValue, tooltip, level, registryName, registries, fragmentId, registryType, templateId, readonly
+  label, propName, changeValue, tooltip, level, registries, fragmentId, registryType, templateId, readonly
 }) {
   const { t, i18n } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
@@ -24,20 +24,20 @@ function SelectSingleList({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState({});
-  const [selectedRegistry, setSelectedRegistry] = useState(registryName);
+  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const [selectedValue, setSelectedValue] = useState( registryType === 'complex' ? {} : '');
-  const [showRor, setShowRor] = useState(false);
-  const [showOrcid, setShowOrcid] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
+  const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : '');
 
   const nullValue  = registryType === 'complex' ? {} : '';
-  const selectedOption = options.find((opt) => opt.value === selectedValue);
 
   useEffect(() => {
     if (level === 1) {
       setSelectedValue(formData?.[fragmentId]?.[propName] || nullValue);
     } else {
       setSelectedValue(subData?.[propName] || nullValue);
+    }
+    if(registryType !== 'complex') {
+      setSelectedOption({value: selectedValue, label: selectedValue})
     }
   }, [])
 
@@ -46,7 +46,6 @@ function SelectSingleList({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    setRenderKey((prevKey) => prevKey + 1);
     if(loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
@@ -79,17 +78,6 @@ function SelectSingleList({
    */
   const handleSelectRegistryValue = (e) => {
     if (!e) return { target: { name: propName, value: '' } }
-    
-    // const isRorID = e.value === "ROR ID";
-    // const isOrcidID = e.value === "ORCID iD";
-
-    // setShowRor(isRorID);
-    // setShowOrcid(isOrcidID);
-
-    // if (!isRorID && !isOrcidID) {
-    //   setShowRor(false);
-    //   setShowOrcid(false);
-    // }
 
     if (registryType === 'complex') {
       const action = selectedValue.id ? 'update' : 'create';
@@ -97,6 +85,7 @@ function SelectSingleList({
       setSelectedValue(value);
       setFormData(updateFormState(formData, fragmentId, propName, value));
     } else {
+      setSelectedOption({value: e.value, label: e.value})
       changeValue({ target: { name: propName, value: e.value } });
     }
   };
