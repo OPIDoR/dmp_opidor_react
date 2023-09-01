@@ -8,13 +8,14 @@ import Pagination from "../Pagination";
 
 function OrcidList() {
   const { t } = useTranslation();
+  const { temp, setTemp } = useContext(GlobalContext);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setcurrentData] = useState([]);
   const [allInitialData, setallInitialData] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
-  const { temp, setTemp } = useContext(GlobalContext);
+  const [text, setText] = useState("");
 
   /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
 function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
@@ -50,7 +51,6 @@ component is initially rendered. */
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    console.log(el);
     setSelectedKey(selectedKey === el.orcid ? null : el.orcid);
     const obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: "Personne", idType: "ORCID iD" };
     setTemp({ ...temp, ...obj });
@@ -61,14 +61,19 @@ component is initially rendered. */
    */
   const handleChangeText = (e) => {
     const text = e.target.value;
+    setText(text);
     const filterText = allInitialData.filter((el) => {
-      return (
-        el.familyNames.toLowerCase().includes(text.toLowerCase()) ||
-        el.givenNames.toLowerCase().includes(text.toLowerCase()) ||
-        el.orcid.toLowerCase().includes(text.toLowerCase())
-      );
+      return el.familyNames.toLowerCase().includes(text.toLowerCase()) || el.givenNames.toLowerCase().includes(text.toLowerCase());
     });
     setData(filterText);
+  };
+
+  /**
+   * The function `handleDeleteText` clears the text and then retrieves data.
+   */
+  const handleDeleteText = () => {
+    setText("");
+    getData();
   };
 
   return (
@@ -85,18 +90,19 @@ component is initially rendered. */
                     <input
                       type="text"
                       className="form-control"
-                      name="x"
-                      placeholder={t("Search ...")}
+                      value={text}
+                      placeholder={t("recherche par <nom> <prénom>")}
                       onChange={(e) => handleChangeText(e)}
                       style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                     />
                     <span className="input-group-btn">
                       <button
+                        onClick={handleDeleteText}
                         className="btn btn-default"
                         type="button"
                         style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                       >
-                        <span className="glyphicon glyphicon-search" />
+                        <span className="fa fa-times" />
                       </button>
                     </span>
                   </div>

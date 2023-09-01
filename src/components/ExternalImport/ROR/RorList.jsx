@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getRor } from "../../../services/RorApi";
 import Select from "react-select";
-
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
 import { GlobalContext } from "../../context/Global";
@@ -10,6 +9,7 @@ import Pagination from "../Pagination";
 
 function RorList() {
   const { t } = useTranslation();
+  const { temp, setTemp } = useContext(GlobalContext);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +17,7 @@ function RorList() {
   const [allInitialData, setallInitialData] = useState([]);
   const [contries, setContries] = useState([]);
   const [selectedKey, setSelectedKey] = useState(null);
-  const { temp, setTemp } = useContext(GlobalContext);
+  const [text, setText] = useState("");
 
   /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
 function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
@@ -87,10 +87,24 @@ component is initially rendered. */
    */
   const handleChangeText = (e) => {
     const text = e.target.value;
-    const filterText = allInitialData.filter((el) => {
-      return el.name[Object.keys(el.name)[0]].toLowerCase().includes(text.toLowerCase()) || el.ror.toLowerCase().includes(text.toLowerCase());
+    setText(text);
+    console.log(allInitialData);
+    const filteredData = allInitialData.filter((el) => {
+      return (
+        el.name[Object.keys(el.name)[0]].toLowerCase().includes(text.toLowerCase()) ||
+        el.acronyms?.[0]?.toLowerCase()?.includes(text.toLowerCase()) ||
+        false
+      );
     });
-    setData(filterText);
+    setData(filteredData);
+  };
+
+  /**
+   * The function `handleDeleteText` clears the text and then retrieves data.
+   */
+  const handleDeleteText = () => {
+    setText("");
+    getData();
   };
 
   return (
@@ -99,6 +113,34 @@ component is initially rendered. */
       {!loading && error && <CustomError></CustomError>}
       {!loading && !error && data && (
         <>
+          <div className="row" style={{ margin: "10px" }}>
+            <div>
+              <div className="row">
+                <div>
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={text}
+                      placeholder={t("recherche <nom de l'organisation> ou <acronyme>")}
+                      onChange={(e) => handleChangeText(e)}
+                      style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                    />
+                    <span className="input-group-btn">
+                      <button
+                        className="btn btn-default"
+                        type="button"
+                        onClick={handleDeleteText}
+                        style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                      >
+                        <span className="fa fa-times" />
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="row" style={{ margin: "10px" }}>
             <div className="">
               <div className="row">
@@ -121,33 +163,7 @@ component is initially rendered. */
               </div>
             </div>
           </div>
-          <div className="row" style={{ margin: "10px" }}>
-            <div>
-              <div className="row">
-                <div>
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="x"
-                      placeholder={t("Search ...")}
-                      onChange={(e) => handleChangeText(e)}
-                      style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
-                    />
-                    <span className="input-group-btn">
-                      <button
-                        className="btn btn-default"
-                        type="button"
-                        style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
-                      >
-                        <span className="glyphicon glyphicon-search" />
-                      </button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
           <div>
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">

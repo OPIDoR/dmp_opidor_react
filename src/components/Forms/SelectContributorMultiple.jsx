@@ -54,7 +54,6 @@ function SelectContributorMultiple({ label, name, changeValue, registry, keyValu
       setregisterFile(res.properties.person.template_name);
       const template = res.properties.person["template_name"];
       loadForm(template, "token").then((res) => {
-        console.log(res);
         setregisterFile(res);
       });
       if (!form?.[schemaId]?.[keyValue]) {

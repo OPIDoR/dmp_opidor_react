@@ -13,7 +13,6 @@
   "Close": "Fermer",
   "Choose plan": "Choisir plan",
   "Choose product": "Choisir produit",
-  "Close": "Fermer",
   "Collapse all": "Tout réduire",
   "Confidentiality": "Confidentialité",
   "Contact": "Contact",
@@ -107,5 +106,9 @@
   "Location": "Localisation",
   "Last / First name": "Nom / prénom",
   "Establishment": "Établissement",
-  "Invalid email": "Email invalide"
+  "Invalid email": "Email invalide",
+  "Import personal data from ORCID": "Importer les données personnelles depuis ORCID",
+  "Import affiliation from RoR": "Importer les données d'affiliation depuis RoR",
+  "search by <last name> <first name>": "recherche par <nom> <prénom>",
+  "search for <organization name> or <acronym>": "recherche <nom de l'organisation> ou <acronyme>"
 }
