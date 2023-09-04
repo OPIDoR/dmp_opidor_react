@@ -7,14 +7,14 @@ const Text = styled.span`
 `;
 
 const AlertContainer = styled.div`
-  margin: ${(props) => (props.type === "info" ? "0px 0px 0px -360px" : "10px 0px 10px 30px")};
-  background-color: ${(props) => (props.type === "info" ? "var(--primary)" : "var(--orange)")};
+  margin: ${(props) => (props.$type === "info" ? "0px 0px 0px -360px" : "10px 0px 10px 30px")};
+  background-color: ${(props) => (props.$type === "info" ? "var(--primary)" : "var(--orange)")};
   padding: 10px;
   border-radius: 8px;
   z-index: 999;
-  color: ${(props) => (props.type === "info" ? "var(--white)" : "unset")};
-  text-align: ${(props) => (props.type === "info" ? "unset" : "start")};
-  width: ${(props) => (props.type === "info" ? "unset" : "62%")};
+  color: ${(props) => (props.$type === "info" ? "var(--white)" : "unset")};
+  text-align: ${(props) => (props.$type === "info" ? "unset" : "start")};
+  width: ${(props) => (props.$type === "info" ? "unset" : "62%")};
 `;
 
 const IconColor = styled.a`
@@ -24,9 +24,9 @@ const IconColor = styled.a`
 
 function Info({ text, icon, type }) {
   return (
-    <AlertContainer type={type}>
+    <AlertContainer $type={type}>
       <span>
-        <IconColor type={type}>
+        <IconColor $type={type}>
           <i className={icon} />
         </IconColor>
       </span>
