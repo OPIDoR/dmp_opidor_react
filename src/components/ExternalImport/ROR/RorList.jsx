@@ -66,7 +66,6 @@ component is initially rendered. */
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    console.log(el);
     setSelectedKey(selectedKey === el.ror ? null : el.ror);
     const obj = { affiliationId: el.ror, affiliationName: el.name[Object.keys(el.name)[0]], affiliationIdType: "ROR ID" };
     setTemp({ ...temp, ...obj });
@@ -76,7 +75,13 @@ component is initially rendered. */
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
   const handleChangeCounty = (e) => {
-    const filterPays = allInitialData.filter((el) => {
+    if (e === null) {
+      // Handle the cleared selection if needed
+      // For instance, reset data to its original state
+      getData();
+      return;
+    }
+    const filterPays = data.filter((el) => {
       return el.country.code == e.value;
     });
     setData(filterPays);
@@ -88,7 +93,6 @@ component is initially rendered. */
   const handleChangeText = (e) => {
     const text = e.target.value;
     setText(text);
-    console.log(allInitialData);
     const filteredData = allInitialData.filter((el) => {
       return (
         el.name[Object.keys(el.name)[0]].toLowerCase().includes(text.toLowerCase()) ||
@@ -146,6 +150,7 @@ component is initially rendered. */
               <div className="row">
                 <div>
                   <Select
+                    isClearable={true}
                     menuPortalTarget={document.body}
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9999 }),

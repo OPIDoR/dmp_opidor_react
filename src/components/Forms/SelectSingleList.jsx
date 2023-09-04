@@ -66,7 +66,6 @@ function SelectSingleList({ label, name, changeValue, tooltip, registry, schemaI
   const handleChangeList = (e) => {
     const targetValue = name === "funder" ? e.object : e.value;
     changeValue({ target: { name, value: targetValue } });
-    console.log(e);
     setCurrentValue({ label: e.label, value: e.value });
   };
 
