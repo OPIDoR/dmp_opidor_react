@@ -19,6 +19,7 @@ function HandleGenerateForms({
   const { locale, dmpId } = useContext(GlobalContext);
   if (!shemaObject) return false;
   const properties = shemaObject.properties;
+  const defaults = shemaObject.default || {};
   const data = [];
   // si type shema is an object
   // retun est code html
@@ -136,13 +137,12 @@ function HandleGenerateForms({
         } else {
           // si on a type === array et items.type === object
           if (prop.items.type === 'object') {
-            if (key === 'contributor' && prop.items.class === 'Contributor') {
+            if (key === 'contributor' && (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard')) {
               data.push(
                 <SelectContributorMultiple
                   key={key}
                   label={label}
                   propName={key}
-                  changeValue={changeValue}
                   templateId={prop.items.schema_id}
                   level={level}
                   tooltip={tooltip}
