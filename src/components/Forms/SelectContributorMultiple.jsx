@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { createOptions, deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
+import { createContributorsOptions, createOptions, deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
@@ -15,7 +15,6 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 function SelectContributorMultiple({
   label,
   propName,
-  changeValue,
   templateId,
   level,
   tooltip,
@@ -26,7 +25,6 @@ function SelectContributorMultiple({
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
-  const [selectObject, setSelectObject] = useState([]);
   const {
     formData, setFormData, subData, setSubData, locale, dmpId,
     loadedTemplates, setLoadedTemplates,
@@ -52,12 +50,7 @@ function SelectContributorMultiple({
 
   const fetchContributors = () => {
     getContributors(dmpId).then((res) => {
-      const builtOptions = res.data.results.map((option) => ({
-        value: option.id,
-        label: option.text,
-        object: option.object,
-      }));
-      setOptions(builtOptions);
+      setOptions(createContributorsOptions(res.data.results));
     });
   }
 
@@ -107,34 +100,18 @@ function SelectContributorMultiple({
     setSubData({});
     setIndex(null);
   };
-  /**
-   * The function takes a boolean value as an argument and sets the state of
-   * the show variable to the value of the argument.
-   * @param isOpen - boolean
-   */
-  const handleShow = (isOpen) => {
-    setShow(isOpen);
-  };
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
-  const handleChangeList = (e) => {
-    const pattern = template.to_string;
-    const { object, value } = e;
-
-    if (pattern.length > 0) {
-      setSelectObject([...selectObject, object]);
-      const parsedPatern = parsePattern(object, template.to_string);
-      setContributorList([...contributorList, parsedPatern]);
-      const newObject = { person: { ...object, action: "update" }, role: role, action: "create" };
-      const mergedList = contributorList ? [...contributorList, newObject] : [newObject];
-      setFormData(updateFormState(formData, fragmentId, propName, mergedList));
-    } else {
-      changeValue({ target: { propName, value } });
-      setContributorList([...contributorList, value]);
-    }
+  const handleSelectContributor = (e) => {
+    const { object } = e;
+    const currentList = formData?.[fragmentId]?.[propName] || [];
+    const newObject = { person: { ...object, action: "update" }, role: role, action: "create" };
+    const mergedList = [...currentList, newObject];
+    setContributorList([...contributorList, newObject])
+    setFormData(updateFormState(formData, fragmentId, propName, mergedList));
   };
   
   /**
@@ -160,8 +137,7 @@ function SelectContributorMultiple({
       const deleteIndex = deleteByIndex(filterDeleted, index);
       const concatedObject = [...deleteIndex, objectPerson];
       setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-      const parsedPattern = parsePattern(subData, template.to_string);
-      setContributorList([...deleteByIndex([...contributorList], index), parsedPattern]);
+      setContributorList([...deleteByIndex([...contributorList], index), subData]);
     } else {
       handleSave();
     }
@@ -179,8 +155,7 @@ function SelectContributorMultiple({
   const handleSave = () => {
     const objectPerson = { person: subData, role };
     setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
-    const parsedPattern = parsePattern(subData, template.to_string);
-    setContributorList([...contributorList, parsedPattern]);
+    setContributorList([...contributorList, objectPerson]);
     handleClose();
     setSubData({});
   };
@@ -240,7 +215,7 @@ function SelectContributorMultiple({
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
-              onChange={handleChangeList}
+              onChange={handleSelectContributor}
               options={options}
               name={propName}
               defaultValue={{
@@ -253,19 +228,20 @@ function SelectContributorMultiple({
           {!readonly && (
             <div className="col-md-1" style={{ marginTop: "8px" }}>
               <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
+                <a className="text-primary" href="#" aria-hidden="true" onClick={() => setShow(true)}>
                   <i className="fas fa-plus" />
                 </a>
               </span>
             </div>
           )}
         </div>
-        {contributorList && (
+        {template && contributorList && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               {contributorList.length > 0 && header && contributorList.some((el) => el.action !== "delete") && (
                 <tr>
                   <th scope="col">{header}</th>
+                  <th scope="col">{t("Role")}</th>
                 </tr>
               )}
             </thead>
@@ -274,7 +250,7 @@ function SelectContributorMultiple({
                 <tr key={idx}>
                   <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
-                      <div>{el} </div>
+                      <div>{parsePattern(el.person, template.to_string)} </div>
                         {!readonly && (
                           <div className={styles.table_container}>
                             <div className="col-md-1">
@@ -300,8 +276,9 @@ function SelectContributorMultiple({
                   <td>
                     {roleOptions && (
                       <CustomSelect
-                        onChange={handleSelectRole}
+                        onChange={(e) => handleSelectRole(e, idx)}
                         options={roleOptions}
+                        selectedOption={{label: el.role, value: el.role}}
                         name={propName}
                         isDisabled={readonly}
                         // async={true}

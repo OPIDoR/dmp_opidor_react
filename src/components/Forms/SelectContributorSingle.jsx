@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
+import { createContributorsOptions, createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
@@ -58,12 +58,7 @@ function SelectContributorSingle({
 
   const fetchContributors = () => {
     getContributors(dmpId).then((res) => {
-      const builtOptions = res.data.results.map((option) => ({
-        value: option.id,
-        label: option.text,
-        object: option.object,
-      }));
-      setOptions(builtOptions);
+      setOptions(createContributorsOptions(res.data.results));
     });
   }
 
