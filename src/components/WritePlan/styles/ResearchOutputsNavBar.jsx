@@ -6,7 +6,7 @@ const ResearchOutputsNavBar = styled.nav`
   height: 100%;
   margin-left: -160px;
   float: left;
-  z-index: 8000;
+  z-index: 10;
   margin-bottom: 0px;
   border-radius: 0px 0px 0px 0px;
   margin-left: 0px;
