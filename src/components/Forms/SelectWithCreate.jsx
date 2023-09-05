@@ -237,7 +237,7 @@ function SelectWithCreate({
                         label: registry,
                       }))}
                       name={propName}
-                      value={selectedRegistry}
+                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
                       isDisabled={readonly}
                     />
                   </div>
