@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/AxiosClient';
 
 function createHeaders(csrf = null) {
   if (csrf) {
