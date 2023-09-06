@@ -221,7 +221,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         </div>
                         <div className="col-md-1">
                           <span onClick={(e) => handleDelete(e, idx)}>
-                            <i className="fa fa-times" />
+                            <i className="fa fa-xmark" />
                           </span>
                         </div>
                       </div>

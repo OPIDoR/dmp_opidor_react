@@ -265,7 +265,7 @@ function SelectContributorMultiple({
                             <div className="col-md-1">
                               <span>
                                 <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                  <i className="fa fa-times" />
+                                  <i className="fa fa-xmark" />
                                 </a>
                               </span>
                             </div>
