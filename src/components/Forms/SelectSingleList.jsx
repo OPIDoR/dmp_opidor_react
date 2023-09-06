@@ -36,10 +36,13 @@ function SelectSingleList({
     } else {
       setSelectedValue(subData?.[propName] || nullValue);
     }
+  }, [formData, subData])
+
+  useEffect(() => {
     if(registryType !== 'complex') {
       setSelectedOption({value: selectedValue, label: selectedValue})
     }
-  }, [])
+  }, [selectedValue])
 
   /*
   A hook that is called when the component is mounted.
@@ -85,7 +88,6 @@ function SelectSingleList({
       setSelectedValue(value);
       setFormData(updateFormState(formData, fragmentId, propName, value));
     } else {
-      setSelectedOption({value: e.value, label: e.value})
       changeValue({ target: { name: propName, value: e.value } });
     }
   };

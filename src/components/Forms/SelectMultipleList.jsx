@@ -52,7 +52,7 @@ function SelectMultipleList({
     } else {
       setSelectedValues(subData[propName]);
     }
-  }, [fragmentId, propName, level]);
+  }, [formData, subData]);
 
   /**
    * It takes the value of the input field and adds it to the list array.

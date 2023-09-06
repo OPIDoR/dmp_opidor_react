@@ -39,7 +39,7 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
     } else {
       setText(subData ? subData[propName] : "<p></p>")
     }
-  }, [fragmentId, propName]);
+  }, [fragmentId, propName, formData, subData]);
 
   const handleChange = (newText) => {
     changeValue({ target: { name: propName, value: newText } });
