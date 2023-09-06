@@ -165,7 +165,13 @@ function Question({ question, sectionId, readonly }) {
                   />
                 </div>
 
-                <span className={styles.question_icons}>
+                <span
+                  className={styles.question_icons}
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
                   {!readonly && (
                     <>
                       <div
@@ -174,9 +180,7 @@ function Question({ question, sectionId, readonly }) {
                         onClick={(e) => {
                           handleClick(e, isQuestionOpened(), question, "runs");
                         }}
-                        style={{
-                          width: 32,
-                        }}
+                        style={{ marginLeft: "5px" }}
                       >
                         {isQuestionOpened() && (
                           <BsGear
@@ -213,9 +217,7 @@ function Question({ question, sectionId, readonly }) {
                     onClick={(e) => {
                       handleClick(e, isQuestionOpened(), question, "comment");
                     }}
-                    style={{
-                      width: 32,
-                    }}
+                    style={{ marginLeft: "5px" }}
                   >
                     {isQuestionOpened() && (
                       <CommentSVG
@@ -241,10 +243,9 @@ function Question({ question, sectionId, readonly }) {
                       show={showCommentModal}
                       setshowModalComment={setShowCommentModal}
                       setFillColorIconComment={setFillCommentIconColor}
-                      answerId={""}
-                      // displayedResearchOutput.id={displayedResearchOutput.id}
-                      // planId={planId}
-                      userId={""}
+                      answerId={answerId}
+                      researchOutputId={displayedResearchOutput.id}
+                      planId={planData.id}
                       questionId={question.id}
                       readonly={readonly}
                     ></CommentModal>
@@ -262,9 +263,7 @@ function Question({ question, sectionId, readonly }) {
                           "guidance"
                         );
                       }}
-                      style={{
-                        width: 32,
-                      }}
+                      style={{ marginLeft: "5px" }}
                     >
                       {isQuestionOpened() && (
                         <PiLightbulbLight
@@ -290,20 +289,20 @@ function Question({ question, sectionId, readonly }) {
                   {isQuestionOpened() && (
                     <GuidanceModal
                       show={showGuidanceModal}
-                      setshowModalRecommandation={setShowGuidanceModal}
+                      setShowModalRecommandation={setShowGuidanceModal}
                       setFillColorIconRecommandation={setFillGuidanceIconColor}
                       questionId={questionId}
                     ></GuidanceModal>
                   )}
                   {isQuestionOpened() ? (
                     <TfiAngleUp
-                      style={{ minWidth: "32px" }}
+                      style={{ marginLeft: "5px" }}
                       size={32}
                       className={styles.down_icon}
                     />
                   ) : (
                     <TfiAngleDown
-                      style={{ minWidth: "32px" }}
+                      style={{ marginLeft: "5px" }}
                       size={32}
                       className={styles.down_icon}
                     />
