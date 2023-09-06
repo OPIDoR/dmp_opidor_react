@@ -15,7 +15,7 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId, readonly  }
   /* A React hook that is called when the component is mounted and when the name variable changes. */
   useEffect(() => {
     setFormFields(formData?.[fragmentId]?.[propName] || [""]);
-  }, [propName]);
+  }, [propName, formData]);
 
   /**
    * When the form changes, update the form fields and set the form to the new data.

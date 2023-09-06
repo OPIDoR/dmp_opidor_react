@@ -24,7 +24,7 @@ function InputText({
     } else {
       setInputValue(subData[propName] || "");
     }
-  }, [defaultValue, formData, fragmentId, propName]);
+  }, [defaultValue, formData, subData, fragmentId, propName]);
 
   /**
    * It takes a number, formats it to a string, and then sets the
