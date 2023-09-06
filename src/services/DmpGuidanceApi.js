@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/AxiosClient';
 
 const dataRecommendation = [
   {
@@ -116,11 +116,11 @@ const dataRecommendation = [
  * likely stored in the "dataRecommendation" variable.
  */
 export async function getGuidance(questionId, token) {
+  let response = {};
   try {
-    //const response = await axios.get(`/questions/${questionId}/guidances`);
-    //return response;
-    return { data: dataRecommendation };
+    response = await axios.get(`/questions/${questionId}/guidances`);
   } catch (error) {
-    console.error(error);
+    return error;
   }
+  return response;
 }
