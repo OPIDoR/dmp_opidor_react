@@ -4,7 +4,7 @@ import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
 import styles from "../assets/css/write_plan.module.css";
 import stylesRecomandation from "../assets/css/recommandation.module.css";
-import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
+import { getRecommendations, postRecommandation } from "../../services/DmpRecommandationApi";
 import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
@@ -49,24 +49,25 @@ const description = {
 
 function Recommandation({ planId, setTriggerRender }) {
   const { t } = useTranslation();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [idsRecommandations, setIdsRecommandations] = useState([]);
 
-  /* This is a React hook called `useEffect` that is used to perform side effects in functional components. In this case, it is used to fetch data from an
-API using the `getRecommendation` function and update the component state with the fetched data using the `setData` function. */
+  /**
+   * Fetches recommendations and updates state variables.
+   */
   useEffect(() => {
     setLoading(true);
-    getRecommendation(planId)
+    getRecommendations(planId)
       .then((res) => {
         setData(res.data);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [planId]);
 
   /**
    * This function handles changes to a checkbox and updates the state accordingly, including updating nested checkboxes and an array of recommendation
