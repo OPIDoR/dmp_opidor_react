@@ -7,6 +7,7 @@ export const NavBody = styled.div`
   min-height: 320px;
   margin-right: 20px;
 `;
+
 export const NavBodyText = styled.div`
   background: white; // Set the background color to white
   padding: 18px 18px 5px 18px; // Add padding if needed
@@ -14,6 +15,13 @@ export const NavBodyText = styled.div`
   margin: 10px;
   font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
+`;
+
+export const Title = styled.div`
+  margin: 10px 0px 0px 30px;
+  color: #fff;
+  font-size: 20px;
+  font-family:  "Helvetica Neue", sans-serif;
 `;
 
 export const ScrollNav = styled.div`
@@ -41,7 +49,7 @@ export const ScrollNav = styled.div`
 
 export const MainNav = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
 `;
 
 export const Close = styled.div`
