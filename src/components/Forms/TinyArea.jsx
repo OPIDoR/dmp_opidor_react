@@ -5,7 +5,6 @@ import styles from '../assets/css/form.module.css';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
-
 const ReadDiv = styled.div`
   border: solid;
   border-color: var(--primary);
