@@ -63,19 +63,21 @@ const Button = styled.button`
  * @param {any} error - The error object (if available) for further analysis.
  * @returns {JSX.Element} - A JSX component displaying the error message and options.
  */
-function CustomError({ code = '500', message, error }) {
+function CustomError({ error }) {
   const { t } = useTranslation();
   const defaultMessage = t("It seems that a problem has appeared");
+  const errorMessage = error?.message || t("Internal Server Error");
+  const errorDescription = error?.error || defaultMessage;
 
   return (
     <ErrorContainer className="container">
       <div className="row d-flex align-items-center justify-content-center">
         <div className="col-md-12 text-center">
           <BigText>Oops!</BigText>
-          <SmallText>{code} - {message || t("Internal Server Error")}</SmallText>
+          <SmallText>{error?.code || ''} {errorMessage ? `- ${errorMessage}` : ''}</SmallText>
         </div>
         <div className="col-md-12 text-center">
-          <p>{error || defaultMessage}.</p>
+          <p>{errorDescription}</p>
           <Button>
             <a href="/">{t("Home page")}</a>
           </Button>
