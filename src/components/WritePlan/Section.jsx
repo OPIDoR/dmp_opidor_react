@@ -11,8 +11,10 @@ function Section({ section, readonly }) {
   const sectionId = useState(section.id);
 
   /**
-   * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
-   */
+ * Toggle the state of questions within a section to the provided boolean value.
+ *
+ * @param {boolean} boolVal - The boolean value to set for all questions in the section.
+ */
   const toggleQuestionsInSection = (boolVal) => {
     const updatedState = {
       ...openedQuestions[displayedResearchOutput.id],
