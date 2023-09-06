@@ -170,22 +170,14 @@ function SectionsContent({ planId, templateId, readonly }) {
                 </Panel.Title>
               </Panel.Heading>
               <PanelBody>
-                <p>
-                  <small className="text-muted">
-                    - {t("Research Output Name")}:{" "}
-                    <strong>{displayedResearchOutput.abbreviation}</strong>
-                  </small>
-                </p>
-                <p>
-                  <small className="text-muted">
-                    - {t("Contains personal data")}:{" "}
-                    <strong>
-                      {displayedResearchOutput.hasPersonalData
-                        ? t("Yes")
-                        : t("No")}
-                    </strong>
-                  </small>
-                </p>
+                <ul>
+                  <li>
+                    {t("Research Output Name")}: <strong>{displayedResearchOutput.abbreviation}</strong>
+                    </li>
+                  <li>
+                    {t("Contains personal data")}: <strong>{displayedResearchOutput.hasPersonalData ? t("Yes") : t("No")}</strong>
+                  </li>
+                </ul>
               </PanelBody>
             </Panel>
             {sectionsData.map((section) => (
