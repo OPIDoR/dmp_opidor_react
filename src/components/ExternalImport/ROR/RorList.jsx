@@ -43,13 +43,13 @@ component is initially rendered. */
           object: option,
         }));
         // get distinct array of objects
-        let distinctArr = Object.values(
+        let distinctCountries = Object.values(
           options.reduce((acc, cur) => {
             if (!acc[cur.value]) acc[cur.value] = cur;
             return acc;
           }, {})
         );
-        setCountries(distinctArr);
+        setCountries(distinctCountries);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));

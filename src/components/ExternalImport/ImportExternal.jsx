@@ -27,11 +27,11 @@ function ImportExternal() {
   return (
     <div key={renderKey} style={{ margin: "15px" }}>
       <div style={{ marginBottom: "25px" }}>
-        <ReactTooltip id="orcid" place="left" effect="solid" variant="info" content={t("ORCID id")} />
+        <ReactTooltip id="orcid" place="top" effect="solid" variant="info" content={t("ORCID id")} />
         <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px" }} onClick={toggleOrcid}>
           {t("Import personal data from ORCID")}
         </button>
-        <ReactTooltip id="ror" place="right" effect="solid" variant="info" content={t("ROR id")} />
+        <ReactTooltip id="ror" place="top" effect="solid" variant="info" content={t("ROR id")} />
         <button data-tooltip-id="ror" type="button" className="btn btn-dark" onClick={toggleRor}>
           {t("Import affiliation from RoR")}
         </button>
