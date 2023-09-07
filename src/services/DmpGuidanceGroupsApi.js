@@ -54,7 +54,7 @@ const dataRecommendation = {
  * @returns An object with a "data" property that contains the data for the recommendation. The actual data is not shown in the code snippet, but it is
  * likely stored in the "dataRecommendation" variable.
  */
-export async function getRecommendation(planId) {
+export async function getGuidanceGroups(planId) {
   try {
     //const response = await axios.get(`/plans/:${planId}/guidance_groups`);
     //return response;
@@ -64,7 +64,7 @@ export async function getRecommendation(planId) {
   }
 }
 
-export async function postRecommandation(jsonObject, planId) {
+export async function postGuidanceGroups(jsonObject, planId) {
   try {
     //const response = await axios.post(`/plans/${planId}/guidance_groups`, jsonObject, "config");
     return {

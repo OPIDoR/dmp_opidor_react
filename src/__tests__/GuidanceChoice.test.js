@@ -5,7 +5,7 @@ import { initReactI18next } from "react-i18next";
 import Adapter from "@cfaester/enzyme-adapter-react-18";
 import { configure } from "enzyme";
 import { act } from "react-dom/test-utils";
-import Recommandation from "../components/WritePlan/Recommandation";
+import GuidanceChoice from "../components/WritePlan/GuidanceChoice";
 import { render, waitFor } from "@testing-library/react";
 
 // set up enzyme's react adapter
@@ -28,9 +28,9 @@ i18n.use(initReactI18next).init({
 
 // Mocking the getRecommendation function
 
-describe("Recommandation", () => {
+describe("GuidanceChoice", () => {
   it("renders without crashing", async () => {
-    const { getByText } = render(<Recommandation planId="1" setTriggerRender={() => {}} />);
+    const { getByText } = render(<GuidanceChoice planId="1" setTriggerRender={() => {}} />);
     // eslint-disable-next-line testing-library/prefer-find-by, testing-library/prefer-screen-queries
     const linkElement = await waitFor(() => getByText(/Select the guidance of your plan/i));
     expect(linkElement).toBeInTheDocument();
