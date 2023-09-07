@@ -15,6 +15,7 @@ function WritePlan({
   locale = 'en_GB',
   planId,
   templateId,
+  userId,
   readonly,
 }) {
   const { t, i18n } = useTranslation();
@@ -25,12 +26,14 @@ function WritePlan({
     setDmpId,
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs, setResearchOutputs,
+    setUserId,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [renderKey, setRenderKey] = useState(0);
 
   useEffect(() => {
+    setUserId(userId);
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])

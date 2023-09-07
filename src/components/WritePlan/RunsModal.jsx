@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { IoClose } from "react-icons/io5";
 import { getGuidance } from "../../services/DmpGuidanceApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
@@ -46,7 +47,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
       }}
     >
       <MainNav>
-        <div></div>
+        <Title>Runs</Title>
         <Close
           className="close"
           onClick={(e) => {
@@ -56,14 +57,13 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
             setFillColorIconRuns("var(--primary)");
           }}
         >
-          x
+          <IoClose size={24} />
         </Close>
       </MainNav>
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && data && (
         <NavBody>
-          <Title>Runs</Title>
           <NavBodyText>
             <div style={{ margin: 10 }}>
               <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>

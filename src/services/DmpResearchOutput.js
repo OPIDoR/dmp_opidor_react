@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '../utils/AxiosClient';
 import { toast } from "react-hot-toast";
 
 function createHeaders(csrf = null) {

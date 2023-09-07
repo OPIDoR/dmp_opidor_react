@@ -6,7 +6,7 @@ function AssistanceSVG() {
     <svg
       className={styles.svg_size}
       version="1.1"
-      id="Capa_1"
+      id="assistance-svg"
       xmlns="http://www.w3.org/2000/svg"
       x="0px"
       y="0px"
@@ -89,21 +89,6 @@ function AssistanceSVG() {
           <path fill="currentColor" d="M210,254H64c-5.522,0-10,4.477-10,10s4.478,10,10,10h146c5.523,0,10-4.477,10-10S215.522,254,210,254z" />
         </g>
       </g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
-      <g></g>
     </svg>
   );
 }
