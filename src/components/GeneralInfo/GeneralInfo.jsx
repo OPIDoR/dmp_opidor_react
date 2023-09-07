@@ -121,6 +121,9 @@ function GeneralInfo({
         [projectFragmentId]: res.data.fragment.project,
         [metaFragmentId]: res.data.fragment.meta
       });
+      if(res.data.plan_title) {
+        document.getElementById('plan-title').innerHTML = res.data.plan_title;
+      }
       toast.success(t(
         '\'{{projectTitle}}\' project data has successfully been imported',
         { projectTitle: selectedProject.title }
@@ -144,7 +147,7 @@ function GeneralInfo({
           onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
         >
         {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError></CustomError>}
+        {!loading && error && <CustomError error={error}></CustomError>}
         {!error && funders && (
           <>
             <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>

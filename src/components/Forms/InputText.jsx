@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getCheckPattern } from '../../utils/GeneratorUtils';
+import { getCheckEmailPattern, getCheckPattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from "../assets/css/form.module.css";
 
@@ -11,7 +11,7 @@ import styles from "../assets/css/form.module.css";
 function InputText({
   label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId, readonly
 }) {
-  const { formData, subData } = useContext(GlobalContext);
+  const { formData, subData, setIsEmail } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState("");
   const [isRequired, setIsRequired] = useState(false);
 
@@ -34,10 +34,21 @@ function InputText({
   const handleChangeInput = (e) => {
     const { value } = e.target;
     const isPattern = getCheckPattern(type, value);
+    setIsEmail(isPattern);
     changeValue(e);
     setIsRequired(!isPattern);
     setInputValue(value);
   };
+
+ /* The `useEffect` hook in the code snippet is used to perform a side effect in a functional component. In this case, the effect is triggered whenever
+the `inputValue` variable changes. */
+  useEffect(() => {
+    if (type === "email") {
+      const isPattern = getCheckEmailPattern(type, inputValue);
+      setIsEmail(isPattern);
+    }
+  }, [inputValue]);
+
   return (
     <div className="form-group">
       <div className={styles.label_form}>
@@ -64,5 +75,4 @@ function InputText({
     </div>
   );
 }
-
 export default InputText;

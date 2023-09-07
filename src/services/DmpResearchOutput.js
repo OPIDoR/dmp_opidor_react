@@ -181,18 +181,20 @@ export async function postImportProduct(planId, uuid) {
  * @returns a Promise that resolves to the response object returned by the axios.delete() method.
  */
 export async function deleteResearchOutput(researchOutputId, planId) {
+  let response;
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
   try {
-    //const response = await axios.delete(`/plans/${planId}/research_outputs/${id}`, "config");
-    const saved = sessionStorage.getItem("data");
-    const copieData = { ...JSON.parse(saved) };
-    const newList = copieData.plan.research_outputs;
-    const updatedArray = newList.filter((object) => object.id !== researchOutputId);
-    copieData["plan"]["research_outputs"] = updatedArray;
-    sessionStorage.setItem("data", JSON.stringify(copieData));
-    return { data: copieData };
+    response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, createHeaders(csrf));
   } catch (error) {
-    console.error(error);
+    if (error.response) {
+      toast.error(error.response.message);
+    } else if (error.request) {
+      toast.error(error.request);
+    } else {
+      toast.error(error.message);
+    }
   }
+  return response;
 }
 
 /**

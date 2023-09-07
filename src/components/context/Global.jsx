@@ -41,6 +41,7 @@ function Global({ children }) {
   const [subData, setSubData] = useState({});
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
+  const [isEmail, setIsEmail] = useState(false);
   // Write Plan
   const [planData, setPlanData] = useState(null);
   const [researchOutputs, setResearchOutputs] = useState(null);
@@ -82,6 +83,8 @@ function Global({ children }) {
         setLoadedRegistries,
         loadedTemplates,
         setLoadedTemplates,
+        isEmail,
+        setIsEmail,
         // Write Plan
         planData,
         setPlanData,
