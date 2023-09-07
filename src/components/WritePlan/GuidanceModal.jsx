@@ -6,7 +6,7 @@ import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
 
-function GuidanceModal({ show, setShowModalRecommandation, setFillColorIconRecommandation, questionId }) {
+function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -141,8 +141,8 @@ function GuidanceModal({ show, setShowModalRecommandation, setFillColorIconRecom
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            setShowModalRecommandation(false);
-            setFillColorIconRecommandation("var(--primary)");
+            setShowGuidanceModal(false);
+            setFillColorGuidanceIcon("var(--primary)");
           }}
           key="closeModal"
         >

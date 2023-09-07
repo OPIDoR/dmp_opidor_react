@@ -116,19 +116,19 @@ const sampleData = [
   },
 ];
 
-describe("ModalRecommandation component", () => {
+describe("GuidanceModal component", () => {
   beforeEach(() => {
     getGuidance.mockImplementation(() => Promise.resolve({ data: sampleData }));
   });
 
   it("renders the component and fetches data", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
+    const setShowGuidanceModal = jest.fn();
+    const setFillColorGuidanceIcon = jest.fn();
     render(
       <GuidanceModal
         show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
+        setShowGuidanceModal={setShowGuidanceModal}
+        setFillColorGuidanceIcon={setFillColorGuidanceIcon}
       />
     );
     await act(async () => {
@@ -141,13 +141,13 @@ describe("ModalRecommandation component", () => {
   });
 
   it("switches between tabs and displays content correctly", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
+    const setShowGuidanceModal = jest.fn();
+    const setFillColorGuidanceIcon = jest.fn();
     render(
       <GuidanceModal
         show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
+        setShowGuidanceModal={setShowGuidanceModal}
+        setFillColorGuidanceIcon={setFillColorGuidanceIcon}
       />
     );
     await act(async () => {
@@ -165,13 +165,13 @@ describe("ModalRecommandation component", () => {
   });
 
   it("closes the modal when clicking the close button", async () => {
-    const setShowModalRecommandation = jest.fn();
-    const setFillColorIconRecommandation = jest.fn();
+    const setShowGuidanceModal = jest.fn();
+    const setFillColorGuidanceIcon = jest.fn();
     render(
       <GuidanceModal
         show={true}
-        setshowModalRecommandation={setShowModalRecommandation}
-        setFillColorIconRecommandation={setFillColorIconRecommandation}
+        setShowGuidanceModal={setShowGuidanceModal}
+        setFillColorGuidanceIcon={setFillColorGuidanceIcon}
       />
     );
 
@@ -180,7 +180,7 @@ describe("ModalRecommandation component", () => {
     });
 
     fireEvent.click(screen.getByText("x"));
-    expect(setShowModalRecommandation).toHaveBeenCalledWith(false);
-    expect(setFillColorIconRecommandation).toHaveBeenCalledWith("var(--primary)");
+    expect(setShowGuidanceModal).toHaveBeenCalledWith(false);
+    expect(setFillColorGuidanceIcon).toHaveBeenCalledWith("var(--primary)");
   });
 });

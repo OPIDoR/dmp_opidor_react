@@ -15,8 +15,8 @@
   background-color: var(--primary);
 }
 
-.title_group_recommandation {
-  font-family: custumHelveticaLight;
+.guidance_group_title {
+  font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   font-size: 16px;
   margin: 10px;

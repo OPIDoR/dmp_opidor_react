@@ -284,13 +284,13 @@ function Question({ question, sectionId, readonly }) {
                     place="bottom"
                     effect="solid"
                     variant="info"
-                    content={t("Recommandation")}
+                    content={t("Guidances")}
                   />
                   {isQuestionOpened() && (
                     <GuidanceModal
                       show={showGuidanceModal}
-                      setShowModalRecommandation={setShowGuidanceModal}
-                      setFillColorIconRecommandation={setFillGuidanceIconColor}
+                      setShowGuidanceModal={setShowGuidanceModal}
+                      setFillColorGuidanceIcon={setFillGuidanceIconColor}
                       questionId={questionId}
                     ></GuidanceModal>
                   )}

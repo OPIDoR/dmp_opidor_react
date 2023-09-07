@@ -7,7 +7,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
-import Recommandation from "./Recommandation";
+import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import styles from "../assets/css/sidebar.module.css";
 
@@ -63,7 +63,7 @@ function WritePlan({
     <>
       {/*
           {!readonly && (<div className="container">
-            <Recommandation planId={planId} setTriggerRender={setTriggerRender} />
+            <GuidanceChoice planId={planId} setTriggerRender={setTriggerRender} />
       </div>)}*/}
       <div className={styles.section}>
         {loading && <CustomSpinner></CustomSpinner>}

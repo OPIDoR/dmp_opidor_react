@@ -3,8 +3,8 @@ import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
 import styles from "../assets/css/write_plan.module.css";
-import stylesRecomandation from "../assets/css/recommandation.module.css";
-import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
+import guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
+import { getGuidanceGroups, postGuidanceGroups } from "../../services/DmpGuidanceGroupsApi";
 import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
@@ -41,27 +41,27 @@ const pannelStyle = {
 };
 
 const description = {
-  fontFamily: "custumHelveticaLight",
+  fontFamily: "\"Helvetica Neue\", sans-serif;",
   color: "var(--secondary)",
   fontSize: "16px",
   margin: "10px 150px 0px 150px",
 };
 
-function Recommandation({ planId, setTriggerRender }) {
+function GuidanceChoice({ planId, setTriggerRender }) {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [idsRecommandations, setIdsRecommandations] = useState([]);
+  const [guidanceGroupsIds, setGuidanceGroupsIds] = useState([]);
 
   /**
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
     setLoading(true);
-    getRecommendation(planId)
+    getGuidanceGroups(planId)
       .then((res) => {
         setData(res.data);
       })
@@ -81,11 +81,11 @@ function Recommandation({ planId, setTriggerRender }) {
       // Update the nested checkboxes
       data.all[key].forEach((value) => {
         newState[key][value.id] = newValue;
-        // Update the idsRecommandations array
+        // Update the guidanceGroupsIds array
         if (newValue) {
-          setIdsRecommandations((prev) => [...prev, value.id]);
+          setGuidanceGroupsIds((prev) => [...prev, value.id]);
         } else {
-          setIdsRecommandations((prev) => prev.filter((id) => id !== value.id));
+          setGuidanceGroupsIds((prev) => prev.filter((id) => id !== value.id));
         }
       });
 
@@ -101,11 +101,11 @@ function Recommandation({ planId, setTriggerRender }) {
       const newState = { ...prevState };
       const newValue = !newState[parentKey][id];
       newState[parentKey][id] = newValue;
-      // Update the idsRecommandations array
+      // Update the guidanceGroupsIds array
       if (newValue) {
-        setIdsRecommandations((prev) => [...prev, id]);
+        setGuidanceGroupsIds((prev) => [...prev, id]);
       } else {
-        setIdsRecommandations((prev) => prev.filter((existingId) => existingId !== id));
+        setGuidanceGroupsIds((prev) => prev.filter((existingId) => existingId !== id));
       }
 
       return newState;
@@ -116,10 +116,10 @@ function Recommandation({ planId, setTriggerRender }) {
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
   const handleSaveChoise = () => {
-    if (idsRecommandations.length > 0) {
+    if (guidanceGroupsIds.length > 0) {
       // add this to reload the WhritePlan component
       setTriggerRender((prevState) => prevState + 1);
-      postRecommandation(idsRecommandations, planId)
+      postGuidanceGroups(guidanceGroupsIds, planId)
         .then((res) => {
           //console.log(res);
         })
@@ -183,8 +183,8 @@ function Recommandation({ planId, setTriggerRender }) {
                         id={`flexCheck${index}`}
                       />
                       <label
-                        className={`${stylesRecomandation.label_checkbox} ${
-                          checkboxStates[key] && checkboxStates[key]["parent"] ? stylesRecomandation.checked : ""
+                        className={`${guidanceChoiceStyles.label_checkbox} ${
+                          checkboxStates[key] && checkboxStates[key]["parent"] ? guidanceChoiceStyles.checked : ""
                         }`}
                         htmlFor={`flexCheck${index}`}
                       >
@@ -201,7 +201,7 @@ function Recommandation({ planId, setTriggerRender }) {
                               id={`flexCheckNested${value.id}`}
                             />
                             <label
-                              className={`form-check-label ${stylesRecomandation.title_group_recommandation}`}
+                              className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
                               htmlFor={`flexCheckNested${value.id}`}
                             >
                               {value.name}
@@ -215,7 +215,7 @@ function Recommandation({ planId, setTriggerRender }) {
               )}
               <CustomButton
                 title={t("Save my choise")}
-                buttonType={idsRecommandations.length > 0 ? "orange" : "primary"}
+                buttonType={guidanceGroupsIds.length > 0 ? "orange" : "primary"}
                 position="start"
                 handleClick={handleSaveChoise}
               ></CustomButton>
@@ -227,4 +227,4 @@ function Recommandation({ planId, setTriggerRender }) {
   );
 }
 
-export default Recommandation;
+export default GuidanceChoice;
