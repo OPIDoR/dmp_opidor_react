@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getOrcide } from "../../../services/RorApi";
+import { getOrcid } from "../../../services/ImportServicesApi";
 import { GlobalContext } from "../../context/Global";
 import CustomError from "../../Shared/CustomError";
 import CustomSpinner from "../../Shared/CustomSpinner";
@@ -30,7 +30,7 @@ component is initially rendered. */
    */
   const getData = () => {
     setLoading(true);
-    getOrcide()
+    getOrcid()
       .then((res) => {
         setData(res.data);
         setallInitialData(res.data);
@@ -91,18 +91,18 @@ component is initially rendered. */
                       type="text"
                       className="form-control"
                       value={text}
-                      placeholder={t("recherche par <nom> <prénom>")}
+                      placeholder={t("search by <last name> <first name>")}
                       onChange={(e) => handleChangeText(e)}
-                      style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                     />
                     <span className="input-group-btn">
                       <button
                         onClick={handleDeleteText}
                         className="btn btn-default"
                         type="button"
-                        style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                       >
-                        <span className="fa fa-times" />
+                        <span className="fa fa-xmark" />
                       </button>
                     </span>
                   </div>

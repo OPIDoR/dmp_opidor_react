@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getRor } from "../../../services/RorApi";
+import { getRor } from "../../../services/ImportServicesApi";
 import Select from "react-select";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
@@ -9,33 +9,34 @@ import Pagination from "../Pagination";
 
 function RorList() {
   const { t } = useTranslation();
-  const { temp, setTemp } = useContext(GlobalContext);
-  const [data, setData] = useState(null);
+  const pageSize = 8;
+  const { subData, setSubData } = useContext(GlobalContext);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentData, setcurrentData] = useState([]);
-  const [allInitialData, setallInitialData] = useState([]);
-  const [contries, setContries] = useState([]);
-  const [selectedKey, setSelectedKey] = useState(null);
+  const [currentData, setCurrentData] = useState([]);
+  const [initialData, setInitialData] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [selectedOrg, setSelectedOrg] = useState(null);
   const [text, setText] = useState("");
 
   /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
 function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
 component is initially rendered. */
   useEffect(() => {
-    getData();
+    getData('*', '');
   }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = () => {
+  const getData = (query, filter) => {
     setLoading(true);
-    getRor()
+    getRor(query, filter)
       .then((res) => {
         setData(res.data);
-        setallInitialData(res.data);
+        if(query === '*') { setInitialData(res.data); }
         const options = res.data.map((option) => ({
           value: option.country.code,
           label: option.country.name,
@@ -48,7 +49,7 @@ component is initially rendered. */
             return acc;
           }, {})
         );
-        setContries(distinctArr);
+        setCountries(distinctArr);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -59,59 +60,57 @@ component is initially rendered. */
    */
   const onChangePage = (pageOfItems) => {
     // update state with new page of items
-    setcurrentData(pageOfItems);
+    setCurrentData(pageOfItems);
   };
 
   /**
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    console.log(el);
-    setSelectedKey(selectedKey === el.ror ? null : el.ror);
+    setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
     const obj = { affiliationId: el.ror, affiliationName: el.name[Object.keys(el.name)[0]], affiliationIdType: "ROR ID" };
-    setTemp({ ...temp, ...obj });
+    setSubData({ ...subData, ...obj });
   };
 
   /**
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
-  const handleChangeCounty = (e) => {
-    const filterPays = allInitialData.filter((el) => {
-      return el.country.code == e.value;
+  const handleChangeCountry = (e) => {
+    const filteredByCountry = initialData.filter((el) => {
+      return el.country.code === e.value;
     });
-    setData(filterPays);
+    setData(filteredByCountry);
   };
 
   /**
-   * The handleChangeText function filters data based on a text input value and updates the state with the filtered results.
+   * The handleSearchTerm function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleChangeText = (e) => {
-    const text = e.target.value;
-    setText(text);
-    console.log(allInitialData);
-    const filteredData = allInitialData.filter((el) => {
-      return (
-        el.name[Object.keys(el.name)[0]].toLowerCase().includes(text.toLowerCase()) ||
-        el.acronyms?.[0]?.toLowerCase()?.includes(text.toLowerCase()) ||
-        false
-      );
-    });
-    setData(filteredData);
+  const handleSearchTerm = () => {
+    getData(text);
   };
+
+  /**
+   * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
+   */
+  const handleKeyDown = (e) => {
+    if(e.key === 'Enter') {
+      getData(text);
+    }
+  }
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
    */
   const handleDeleteText = () => {
     setText("");
-    getData();
+    setData(initialData);
   };
 
   return (
-    <>
-      {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
-      {!loading && !error && data && (
+    <div style={{ position: "relative" }}>
+      { loading &&  <CustomSpinner></CustomSpinner>}
+      { error && <CustomError></CustomError>}
+      { !error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
@@ -122,18 +121,29 @@ component is initially rendered. */
                       type="text"
                       className="form-control"
                       value={text}
-                      placeholder={t("recherche <nom de l'organisation> ou <acronyme>")}
-                      onChange={(e) => handleChangeText(e)}
-                      style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                      onChange={(e) => setText(e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e)}
+                      placeholder={t("search for <organization name> or <acronym>")}
+                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
-                        onClick={handleDeleteText}
-                        style={{ borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                        onClick={handleSearchTerm}
+                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
                       >
-                        <span className="fa fa-times" />
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }}/>
+                      </button>
+                    </span>
+                    <span className="input-group-btn">
+                      <button
+                        className="btn btn-default"
+                        type="button"
+                        onClick={handleDeleteText}
+                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                      >
+                        <span className="fa fa-xmark" />
                       </button>
                     </span>
                   </div>
@@ -141,75 +151,75 @@ component is initially rendered. */
               </div>
             </div>
           </div>
-          <div className="row" style={{ margin: "10px" }}>
-            <div className="">
-              <div className="row">
-                <div>
-                  <Select
-                    menuPortalTarget={document.body}
-                    styles={{
-                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                      singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                      control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
-                    }}
-                    onChange={handleChangeCounty}
-                    defaultValue={{
-                      label: t("Select a country"),
-                      value: t("Select a country"),
-                    }}
-                    options={contries}
-                  />
+          {countries.length > 1 && (
+            <div className="row" style={{ margin: "10px" }}>
+              <div className="">
+                <div className="row">
+                  <div>
+                    <Select
+                      menuPortalTarget={document.body}
+                      styles={{
+                        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
+                        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                      }}
+                      onChange={handleChangeCountry}
+                      defaultValue={{
+                        label: t("Select a country"),
+                        value: t("Select a country"),
+                      }}
+                      options={countries}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          <div>
-            <table className="table table-bordered table-hover">
-              <thead className="thead-dark">
-                <tr>
-                  <th scope="col">{t("Organization name")}</th>
-                  <th scope="col">{t("Acronym")}</th>
-                  <th scope="col">{t("Country")}</th>
-                  <th scope="col">{t("Location")}</th>
-                  {/* <th scope="col">ROR</th> */}
-                  <th scope="col"></th>
+          <table className="table table-bordered table-hover">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">{t("Organization name")}</th>
+                <th scope="col">{t("Acronym")}</th>
+                <th scope="col">{t("Country")}</th>
+                <th scope="col">{t("Location")}</th>
+                {/* <th scope="col">ROR</th> */}
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentData.map((el, idx) => (
+                <tr key={idx}>
+                  <td scope="row">
+                    <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
+                      {el.name[Object.keys(el.name)[0]]}
+                    </a>
+                  </td>
+                  <td>{el.acronyms}</td>
+                  <td>{el.country.code}</td>
+                  <td scope="row">
+                    {Object.values(el.addresses[0])
+                      .filter((value) => value)
+                      .join(", ")}
+                  </td>
+                  {/* <td>{el.ror}</td> */}
+                  <td>
+                    <input className="text-center" type="checkbox" checked={selectedOrg === el.ror} onChange={() => setSelectedValue(el)} />
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {currentData.map((el, idx) => (
-                  <tr key={idx}>
-                    <td scope="row">
-                      <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
-                        {el.name[Object.keys(el.name)[0]]}
-                      </a>
-                    </td>
-                    <td>{el.acronyms}</td>
-                    <td>{el.country.code}</td>
-                    <td scope="row">
-                      {Object.values(el.addresses[0])
-                        .filter((value) => value)
-                        .join(", ")}
-                    </td>
-                    {/* <td>{el.ror}</td> */}
-                    <td>
-                      <input className="text-center" type="checkbox" checked={selectedKey === el.ror} onChange={() => setSelectedValue(el)} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
 
           <div className="row text-center">
             <div className="mx-auto"></div>
             <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={8} />
+              <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
             </div>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 
