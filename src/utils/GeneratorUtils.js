@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
  * @param keys - ["$..name", "$..age", "$..address.street"]
  * @returns The value of the key in the object.
  */
-export function parsePattern(data, keys) {
+export function parsePattern(data, keys = []) {
   if(keys.length === 0) return JSON.stringify(data);
   //https://www.measurethat.net/Benchmarks/Show/2335/1/slice-vs-substr-vs-substring-with-no-end-index
   const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
@@ -67,6 +67,15 @@ export function getCheckPattern(type, value) {
     return regExEmail.test(value);
   } else if (type === "uri") {
     return regExUri.test(value);
+  } else {
+    return true;
+  }
+}
+
+export function getCheckEmailPattern(type, value) {
+  const regExEmail = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+  if (type === "email") {
+    return regExEmail.test(value);
   } else {
     return true;
   }
@@ -155,13 +164,26 @@ export function updateFormState(formData, fragmentId, propName, newObject) {
  */
 export function createOptions(registryValues, locale) {
   let options = registryValues.map((option) => {
-    const {label, value, ...optionValue} = option;
+    const {label,  ...optionValue} = option;
     return {
-      value: value ? value : optionValue[locale],
+      value: label ? label[locale] : optionValue[locale],
       label: label ? label[locale] : optionValue[locale],
       object: optionValue,
     }
   });
+  return [ {value:'', label:''}, ...options ]
+}
+
+/**
+ * This method builds a select options list from a contributor array
+ * @param contributorsList : a list of contributor to build the options from
+ */
+export function createContributorsOptions(contributorsList) {
+  let options = contributorsList.map((option) => ({
+    value: option.id,
+    label: option.text,
+    object: option.object,
+  }));
   return [ {value:'', label:''}, ...options ]
 }
 

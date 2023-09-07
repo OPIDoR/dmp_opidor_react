@@ -1,0 +1,24 @@
+{
+  "StorageServices1": [
+    {
+      "label": {
+        "en_GB": "Test1",
+        "fr_FR": "Test1"
+      },
+      "title": "T1",
+      "technicalResourceId": "https://cat.opidor.fr/index.php/ABiMS",
+      "idType": "URL",
+      "serviceContact": "support.abims@sb-roscoff.fr"
+    },
+    {
+      "label": {
+        "en_GB": "Test2",
+        "fr_FR": "Test2"
+      },
+      "title": "T2",
+      "technicalResourceId": "https://cat.opidor.fr/index.php/Adisp",
+      "idType": "URL",
+      "serviceContact": "http://www.progedo-adisp.fr/contact.php"
+    }
+  ]
+}

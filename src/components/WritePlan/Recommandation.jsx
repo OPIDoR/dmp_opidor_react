@@ -121,11 +121,10 @@ function Recommandation({ planId, setTriggerRender }) {
       setTriggerRender((prevState) => prevState + 1);
       postRecommandation(idsRecommandations, planId)
         .then((res) => {
-          console.log(res);
+          //console.log(res);
         })
         .then(() => {
           setTriggerRender((prevState) => prevState + 1);
-          console.log(idsRecommandations);
           toast.success(t("Registration was successful !"));
         });
     } else {
@@ -153,9 +152,9 @@ function Recommandation({ planId, setTriggerRender }) {
                 {t("Select the guidance of your plan")}
                 <span className={styles.question_icons}>
                   {isOpen ? (
-                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} onClick={(e) => console.log("z")} />
+                    <TfiAngleUp style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
                   ) : (
-                    <TfiAngleDown size={35} style={{ minWidth: "35px" }} className={styles.down_icon} onClick={(e) => console.log("z")} />
+                    <TfiAngleDown size={35} style={{ minWidth: "35px" }} className={styles.down_icon} />
                   )}
                 </span>
               </div>
@@ -171,7 +170,7 @@ function Recommandation({ planId, setTriggerRender }) {
                 )}
               </div>
               {loading && <CustomSpinner></CustomSpinner>}
-              {!loading && error && <CustomError></CustomError>}
+              {!loading && error && <CustomError error={error}></CustomError>}
               {!loading && !error && data && (
                 <div className="container" style={{ margin: "20px" }}>
                   {Object.entries(data.all).map(([key, values], index) => (

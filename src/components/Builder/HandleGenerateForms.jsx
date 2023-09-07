@@ -19,6 +19,7 @@ function HandleGenerateForms({
   const { locale, dmpId } = useContext(GlobalContext);
   if (!shemaObject) return false;
   const properties = shemaObject.properties;
+  const defaults = shemaObject.default || {};
   const data = [];
   // si type shema is an object
   // retun est code html
@@ -27,6 +28,7 @@ function HandleGenerateForms({
       const label = createLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
+      if(key === 'funder') { console.log(prop)}
       // condition 1
       if (prop.type === 'string' || prop.type === 'number') {
         // Condition 1.1
@@ -50,15 +52,16 @@ function HandleGenerateForms({
         // Condition 1.2
         // si inputType === dropdown
         if (
-          prop.inputType === 'dropdown'
-          && Object.prototype.hasOwnProperty.call(prop, 'registry_id')
-        ) {
+          prop.inputType === "dropdown" && (
+            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
+            )
+          ) {
           data.push(
             <SelectSingleList
               key={key}
               label={label}
               propName={key}
-              registryId={prop.registry_id}
+              registries={prop["registries"] || [prop["registry_name"]]}
               changeValue={changeValue}
               tooltip={tooltip}
               level={level}
@@ -97,8 +100,9 @@ function HandleGenerateForms({
         // condition 2.1
         // si inputType === dropdown et on n'a pas de registry_name
         if (
-          prop.inputType === 'dropdown'
-          && Object.prototype.hasOwnProperty.call(prop, 'registry_id')
+          prop.inputType === "dropdown" && (
+            prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")
+          )
         ) {
           if (prop.items.schema_id) {
             data.push(
@@ -106,7 +110,7 @@ function HandleGenerateForms({
                 key={key}
                 label={label}
                 propName={key}
-                registryId={prop.registry_id}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 templateId={prop.items.schema_id}
                 level={level}
@@ -121,7 +125,7 @@ function HandleGenerateForms({
                 key={key}
                 label={label}
                 propName={key}
-                registryId={prop.registry_id}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 changeValue={changeValue}
                 tooltip={tooltip}
                 level={level}
@@ -133,13 +137,12 @@ function HandleGenerateForms({
         } else {
           // si on a type === array et items.type === object
           if (prop.items.type === 'object') {
-            if (key === 'contributor' && prop.items.class === 'Contributor') {
+            if (key === 'contributor' && (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard')) {
               data.push(
                 <SelectContributorMultiple
                   key={key}
                   label={label}
                   propName={key}
-                  changeValue={changeValue}
                   templateId={prop.items.schema_id}
                   level={level}
                   tooltip={tooltip}
@@ -201,7 +204,7 @@ function HandleGenerateForms({
             );
           }
 
-          if (prop.class === 'Contributor') {
+          if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
             // console.log("TODO : condition funder à voir");
             data.push(
               <SelectContributorSingle
@@ -220,12 +223,12 @@ function HandleGenerateForms({
           }
         }
         // codition 3.2
-        if (prop.inputType === 'dropdown') {
-          if (Object.prototype.hasOwnProperty.call(prop, 'registry_id')) {
+        if (prop.inputType === "dropdown") {
+          if (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries")) {
             data.push(
               <SelectSingleList
                 key={key}
-                registryId={prop.registry_id}
+                registries={prop["registries"] || [prop["registry_name"]]}
                 label={label}
                 propName={key}
                 changeValue={changeValue}
@@ -233,6 +236,7 @@ function HandleGenerateForms({
                 level={level}
                 fragmentId={fragmentId}
                 registryType="complex"
+                templateId={prop.schema_id}
                 readonly={readonly}
               ></SelectSingleList>,
             );

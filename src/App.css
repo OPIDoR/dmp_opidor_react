@@ -21,3 +21,7 @@ a:active {
   cursor: pointer;
   display: inline-block;
 }
+
+.modal-dialog {
+  width: 60% !important; /* Adjust as per your requirement */
+}
