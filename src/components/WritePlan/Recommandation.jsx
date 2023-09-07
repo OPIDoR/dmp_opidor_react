@@ -4,7 +4,7 @@ import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
 import styles from "../assets/css/write_plan.module.css";
 import stylesRecomandation from "../assets/css/recommandation.module.css";
-import { getRecommendations, postRecommandation } from "../../services/DmpRecommandationApi";
+import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
 import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
@@ -61,7 +61,7 @@ function Recommandation({ planId, setTriggerRender }) {
    */
   useEffect(() => {
     setLoading(true);
-    getRecommendations(planId)
+    getRecommendation(planId)
       .then((res) => {
         setData(res.data);
       })
