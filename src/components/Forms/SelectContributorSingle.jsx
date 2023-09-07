@@ -41,7 +41,7 @@ function SelectContributorSingle({
   useEffect(() => {
     setContributor(formData?.[fragmentId]?.[propName])
     setRole(formData?.[fragmentId]?.[propName]?.role)
-  }, [fragmentId, propName]);
+  }, [fragmentId, propName, formData]);
 
   useEffect(() => {
     const pattern = template.to_string;
@@ -322,7 +322,7 @@ function SelectContributorSingle({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              {/* <ImportExternal></ImportExternal> */}
+              <ImportExternal></ImportExternal>
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}

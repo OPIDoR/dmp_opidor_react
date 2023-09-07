@@ -39,7 +39,7 @@ function SelectContributorMultiple({
 
   useEffect(() => {
     setContributorList(formData?.[fragmentId]?.[propName] || {})
-  }, [fragmentId, propName]);
+  }, [fragmentId, propName, formData]);
 
 
   /* A hook that is called when the component is mounted. */
@@ -299,7 +299,7 @@ function SelectContributorMultiple({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              {/* <ImportExternal></ImportExternal> */}
+              <ImportExternal></ImportExternal>
               <BuilderForm
                 shemaObject={template}
                 level={level + 1}
