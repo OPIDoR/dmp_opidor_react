@@ -1,24 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
-import { getComments, postComment, updateComment, deleteCommentById } from "../../services/DmpComentApi";
-import moment from "moment";
+import React, { useEffect, useRef, useState, useContext} from "react";
+import { getComments, postComment, updateComment, archiveComment } from "../../services/DmpComentApi";
+import { format } from "date-fns";
+import { fr, enGB } from 'date-fns/locale'
+import toast from 'react-hot-toast';
 import DOMPurify from "dompurify";
+import { IoClose } from "react-icons/io5";
+import { GlobalContext } from "../context/Global";
 import CustomSpinner from "../Shared/CustomSpinner";
-import { deleteByIndex } from "../../utils/GeneratorUtils";
 import EditorComment from "./EditorComment";
 import Swal from "sweetalert2";
 import CustomError from "../Shared/CustomError";
-import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard } from "./styles/CommentModalStyles";
+import { NavBody, NavBodyText, ScrollNav, MainNav, Close, ButtonComment, CommentsCard, Title } from "./styles/CommentModalStyles";
 import { useTranslation } from "react-i18next";
+import { BiEdit } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa6";
 
-function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, userId, readonly }) {
-  const { t } = useTranslation();
+const locales = { fr, en: enGB };
+
+function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
+  const { t, i18n } = useTranslation();
   const editorContentRef = useRef(null);
-  const [text, settext] = useState("<p></p>");
-  const [data, setData] = useState(null);
+  const [text, setText] = useState(null);
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isUpdate, setisUpdate] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [comment, setComment] = useState(null);
+
+  const { userId } = useContext(GlobalContext);
 
   const modalStyles = {
     display: show ? "block" : "none",
@@ -42,13 +51,13 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
-    getComments("", "")
-      .then((res) => {
-        setData(res.data);
+    getComments(answerId)
+      .then(({ data }) => {
+        setComments(data.notes);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [answerId]);
 
   /**
    * "updateParentText" is a function that takes in a parameter called "updatedText" and then sets the value of "editorContentRef.current" to
@@ -66,6 +75,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   const handleDelete = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
+
     Swal.fire({
       title: t("Are you sure ?"),
       text: t("Are you sure you want to delete this item?"),
@@ -77,13 +87,36 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const newList = deleteByIndex(data, id);
-        setData(newList);
-        //deleteCommentById()
-        Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
+        archiveComment(id, {
+          archived_by: userId,
+        }).then(() => {
+          const index = comments.findIndex((el) => el.id === id);
+
+          if (!index < 0) {
+            Swal.fire({
+              title: t("Deleted!"),
+              message: t("A problem has occurred while updating the comments"),
+              icon: 'error',
+            });
+            return;
+          }
+
+          Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
+
+          const updatedComments = [...comments];
+          updatedComments.splice(index, 1);
+          setComments(updatedComments);
+        }).catch(() => {
+          Swal.fire({
+            title: t("Deleted!"),
+            message: t("A problem has occurred while updating the comments"),
+            icon: 'error',
+          });
+        })
       }
     });
   };
+
   /**
    * When the user clicks the update button, the text of the comment is set to the text of
    *  the comment that was clicked, the isUpdate state is set to true,
@@ -92,78 +125,97 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   const handleUpdate = (e, element) => {
     e.preventDefault();
     e.stopPropagation();
-    settext(element.text);
-    setisUpdate(true);
+    setText(element.text);
+    setIsUpdate(true);
     setComment(element);
   };
 
-  /**
-   * If the id of the item matches the id of the updatedObject, then return a new object
-   *  that is a copy of the item with the updatedObject properties
-   * merged into it. Otherwise, return the item.
-   */
-  const updateObjectById = (id, updatedObject) => {
-    const newData = data.map((item) => {
-      if (item.id === id) {
-        return { ...item, ...updatedObject };
+  const update = async (commentText, commentData) => {
+    let response;
+      try {
+        response = await updateComment({
+          ...commentData,
+          text: commentText,
+        });
+      } catch (error) {
+        return toast.error(t('An error has occurred while sending the comment.'));
       }
-      return item;
-    });
-    setData(newData);
-  };
+
+      if (!response) {
+        return toast.error(t('An error has occurred while sending the comment.'));
+      }
+
+      const { data } = response;
+
+      const updatedComment = {
+        ...comment,
+        ...data?.note,
+      };
+
+      const index = comments.findIndex(item => item.id === updatedComment.id);
+      if (index === -1) { return; }
+
+      const updatedComments = [...comments];
+      updatedComments[index] = updatedComment;
+
+      setComments(updatedComments);
+
+      setIsUpdate(false);
+
+      return toast.success(t('Comment sent successfully.'));
+  }
+
+  const createComment = async (newText) => {
+    const note = {
+      answer_id: answerId,
+      research_output_id: researchOutputId,
+      plan_id: planId,
+      question_id: questionId,
+      text: newText,
+      user_id: userId,
+    };
+
+    let response;
+    try {
+      response = await postComment({ note });
+    } catch (error) {
+      return toast.error(t('An error has occurred while sending the comment.'));
+    }
+
+    if (!response) {
+      return toast.error(t('An error has occurred while sending the comment.'));
+    }
+
+    const { data } = response;
+
+    const newNote = {
+      ...note,
+      ...data?.note,
+    };
+    setComments((prevData) => [newNote, ...prevData]);
+
+    setText(null);
+    setIsUpdate(false);
+
+    return toast.success(t('Comment sent successfully.'));
+  }
 
   /**
    * I'm trying to update the state of the component with the new data.
    */
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     const newText = editorContentRef.current;
-    const currentTime = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
 
-    if (isUpdate) {
-      const updatedObject = {
-        ...comment,
-        text: newText,
-        updated_at: currentTime,
-      };
-      //updateComment()
-      updateObjectById(updatedObject.id, updatedObject);
-    } else {
-      const newNote = {
-        note: {
-          answer_id: answerId,
-          research_output_id: researchOutputId,
-          plan_id: planId,
-          user_id: userId,
-          question_id: questionId,
-          text: newText,
-        },
-      };
-
-      postComment(newNote).then((res) => {
-        const objectToShow = {
-          ...newNote.note,
-          id: res.note.id,
-          user_id: 1,
-          archived: false,
-          answer_id: 11549,
-          archived_by: null,
-          created_at: currentTime,
-          updated_at: currentTime,
-          user: {
-            firstname: "DMP",
-            surname: "Administrator",
-            email: "info-opidor@inist.fr",
-          },
-        };
-        setData((prevData) => [...prevData, objectToShow]);
-      });
+    if (!newText) {
+      return toast.error(t('Unable to send the comment, please enter a valid comment.'));
     }
 
-    settext("<p></p>");
-    setisUpdate(false);
+    setText("<p></p>");
+
+    return isUpdate ? update(newText, comment) : createComment(newText);
   };
 
   return (
@@ -175,6 +227,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       }}
     >
       <MainNav>
+        <Title>Comments ({ comments.length || 0 })</Title>
         <Close
           className="close"
           onClick={(e) => {
@@ -184,17 +237,17 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             setFillColorIconComment("var(--primary)");
           }}
         >
-          x
+          <IoClose size={24} />
         </Close>
       </MainNav>
 
       <>
         {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <CustomError error={error}></CustomError>}
-        {!loading && !error && data && (
+        {!loading && !error && comments && (
           <NavBody>
             <ScrollNav>
-              {data.map((el, idx) => (
+              {comments.map((el, idx) => (
                 <NavBodyText key={idx}>
                   <div
                     style={style}
@@ -209,21 +262,13 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
                         {el.user.surname} {el.user.firstname}
                       </strong>
                       <div style={{ marginLeft: "4px", fontStyle: "italic" }}>
-                        {t("on")} {moment(el.created_at).format("DD/MM/YYYY")} {t("at")} {moment(el.created_at).format("hh:mm:ss")}
+                        {t("on")} {format(new Date(el.created_at), "dd/MM/yyyy", { locale: locales[i18n.resolvedLanguage || 'fr'] })} {t("at")} {format(new Date(el.created_at), "hh:mm:ss", { locale: locales[i18n.resolvedLanguage || 'fr'] })}
                       </div>
                     </div>
-                    {!readonly && (
-                      <div style={{ marginRight: "-20px" }}>
-                        <div className="col-md-1">
-                          <span onClick={(e) => handleUpdate(e, el)}>
-                            <i className="fa fa-pen-to-square" />
-                          </span>
-                        </div>
-                        <div className="col-md-1">
-                          <span onClick={(e) => handleDelete(e, idx)}>
-                            <i className="fa fa-xmark" />
-                          </span>
-                        </div>
+                    {!readonly && userId === el.user.id && (
+                      <div>
+                        <BiEdit size={22} onClick={(e) => handleUpdate(e, el)} />
+                        <FaTrash size={22} onClick={(e) => handleDelete(e, el.id)} />
                       </div>
                     )}
                   </CommentsCard>

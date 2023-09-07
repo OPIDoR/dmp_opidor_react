@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
-import { TfiAngleDown } from "react-icons/tfi";
-import { TfiAngleUp } from "react-icons/tfi";
+import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
+import { PiLightbulbLight } from "react-icons/pi";
 import styles from "../assets/css/write_plan.module.css";
-import LightSVG from "../Styled/svg/LightSVG";
 import stylesRecomandation from "../assets/css/recommandation.module.css";
-import { getRecommendation, postRecommandation } from "../../services/DmpRecommandationApi";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomError from "../Shared/CustomError";
+import { getRecommendations, postRecommandation } from "../../services/DmpRecommandationApi";
+import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -51,24 +49,25 @@ const description = {
 
 function Recommandation({ planId, setTriggerRender }) {
   const { t } = useTranslation();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [idsRecommandations, setIdsRecommandations] = useState([]);
 
-  /* This is a React hook called `useEffect` that is used to perform side effects in functional components. In this case, it is used to fetch data from an
-API using the `getRecommendation` function and update the component state with the fetched data using the `setData` function. */
+  /**
+   * Fetches recommendations and updates state variables.
+   */
   useEffect(() => {
     setLoading(true);
-    getRecommendation(planId)
+    getRecommendations(planId)
       .then((res) => {
         setData(res.data);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [planId]);
 
   /**
    * This function handles changes to a checkbox and updates the state accordingly, including updating nested checkboxes and an array of recommendation
@@ -141,7 +140,13 @@ API using the `getRecommendation` function and update the component state with t
             <div style={questionTitle}>
               <div style={questionText}>
                 <div>
-                  <LightSVG fill={"var(--orange)"} style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                  <PiLightbulbLight
+                    fill={"var(--orange)"}
+                    style={{ minWidth: "35px" }}
+                    size={35}
+                    className={styles.down_icon}
+                    onClick={(e) => console.log("z")}
+                  />
                 </div>
                 <div style={pannelTitle} />
                 {t("Select the guidance of your plan")}

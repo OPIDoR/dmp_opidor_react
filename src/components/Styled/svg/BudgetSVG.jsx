@@ -3,7 +3,7 @@ import styles from "../../assets/css/write_plan.module.css";
 
 function BudgetSVG() {
   return (
-    <svg className={styles.svg_size} viewBox="0 0 511 511.99978" xmlns="http://www.w3.org/2000/svg">
+    <svg className={styles.svg_size} id="budget-svg" viewBox="0 0 511 511.99978" xmlns="http://www.w3.org/2000/svg">
       <path
         fill="currentColor"
         d="m235.792969 347.265625c3.902343-3.910156 3.902343-10.238281 0-14.148437-3.90625-3.898438-10.234375-3.898438-14.144531 0-3.898438 3.910156-3.898438 10.238281 0 14.148437 3.910156 3.898437 10.238281 3.898437 14.144531 0zm0 0"

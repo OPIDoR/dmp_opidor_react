@@ -5,32 +5,29 @@ import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
 import Question from "./Question";
 
-
 function Section({ section, readonly }) {
   const { t } = useTranslation();
-  const { 
-    openedQuestions, setOpenedQuestions,
-    displayedResearchOutput
-  } = useContext(GlobalContext);
-
-  const [sectionId] = useState(section.id);
+  const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
+  const sectionId = useState(section.id);
 
   /**
-   * If the idx passed in is the same as the elIndex, then set the value to false, otherwise set it to true.
-   */
+ * Toggle the state of questions within a section to the provided boolean value.
+ *
+ * @param {boolean} boolVal - The boolean value to set for all questions in the section.
+ */
   const toggleQuestionsInSection = (boolVal) => {
-    console.log(section);
-    const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
-    if(!updatedState[sectionId]) updatedState[sectionId] = {}
-    section.questions.forEach((question) => {
-      if(updatedState[sectionId]) {
-        updatedState[sectionId][question.id] = boolVal;
-      } else {
-        updatedState[sectionId] = {[question.id]: boolVal}
-      }
-    })
-    console.log(updatedState);
-    setOpenedQuestions({ ...openedQuestions, [displayedResearchOutput.id]: updatedState });
+    const updatedState = {
+      ...openedQuestions[displayedResearchOutput.id],
+      [sectionId]: section.questions.reduce((acc, question) => {
+        acc[question.id] = boolVal;
+        return acc;
+      }, {})
+    };
+
+    setOpenedQuestions({
+      ...openedQuestions,
+      [displayedResearchOutput.id]: updatedState
+    });
   };
 
   return (
@@ -40,9 +37,10 @@ function Section({ section, readonly }) {
       </p>
       <div className="column">
         <div className={styles.collapse_title}>
-          <a
-            href="#"
-            className={styles.sous_title}
+          <button
+            type="button"
+            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -50,11 +48,12 @@ function Section({ section, readonly }) {
             }}
           >
             {t("Expand all")}
-          </a>
+          </button>
           <span className={styles.sous_title}> | </span>
-          <a
-            href="#"
-            className={styles.sous_title}
+          <button
+            type="button"
+            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -62,7 +61,7 @@ function Section({ section, readonly }) {
             }}
           >
             {t("Collapse all")}
-          </a>
+          </button>
         </div>
       </div>
       {section.questions.map((question) => (
@@ -71,7 +70,7 @@ function Section({ section, readonly }) {
           question={question}
           sectionId={sectionId}
           readonly={readonly}
-        ></Question>
+        />
       ))}
     </>
   );

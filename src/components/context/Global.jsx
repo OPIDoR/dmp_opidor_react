@@ -48,6 +48,7 @@ function Global({ children }) {
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
   const [openedQuestions, setOpenedQuestions] = useState(null);
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
+  const [userId, setUserId] = useState(-1);
 
 
   /* It's setting the formData in sessionStorage. */
@@ -95,6 +96,8 @@ function Global({ children }) {
         setOpenedQuestions,
         questionsWithGuidance,
         setQuestionsWithGuidance,
+        userId,
+        setUserId,
       }}
     >
       {children}

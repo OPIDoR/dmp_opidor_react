@@ -1,11 +1,12 @@
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
 import { getGuidance } from "../../services/DmpGuidanceApi";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
 
-function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecommandation, questionId }) {
+function GuidanceModal({ show, setShowModalRecommandation, setFillColorIconRecommandation, questionId }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -51,20 +52,23 @@ function GuidanceModal({ show, setshowModalRecommandation, setFillColorIconRecom
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    setLoading(true);
-    getGuidance(questionId, "")
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    if (questionId) {
+      setLoading(true);
+      getGuidance(questionId, "")
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
   }, [questionId]);
 
-  /* `getContent` is a function that returns JSX code. It creates a scrollable container (`<ScrollNav>`) that contains a body (`<NavBody>`) and text
-(`<NavBodyText>`). The text content is determined by the `data` state variable and the `indexTab` state variable. If
-`data[indexTab].annotations[0].text` exists, it is displayed using `dangerouslySetInnerHTML` to sanitize and render the HTML content. Otherwise, the
-function maps through the `data[indexTab].groups` array to display each group's `theme` and `guidances` using `dangerouslySetInnerHTML` to sanitize
-and render the HTML content. A horizontal line (`<hr>`) is added between each guidance. */
+  /**
+  * getContent function returns JSX with a scrollable container (<ScrollNav>) containing a body (<NavBody>) and text (<NavBodyText>).
+  * Text is based on data and indexTab. If data[indexTab].annotations[0].text exists, it's displayed using dangerouslySetInnerHTML for HTML rendering.
+  * Otherwise, the function maps data[indexTab].groups to show each group's theme and guidances using dangerouslySetInnerHTML.
+  * Horizontal lines (<hr>) separate each guidance.
+  */
   const getContent = () => {
     return (
       <ScrollNav>
@@ -72,6 +76,7 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
           <NavBodyText>
             {data?.[indexTab]?.annotations[0]?.text ? (
               <div
+                key={`annotation-${indexTab}`}
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(data?.[indexTab]?.annotations[0]["text"]),
                 }}
@@ -79,19 +84,20 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
             ) : (
               <>
                 {data?.[indexTab].groups.map((el, idx) => (
-                  <React.Fragment key={idx}>
-                    <Theme>{el?.theme}</Theme>
-                    {el?.guidances.map((g, idx) => (
-                      <React.Fragment key={idx}>
+                  <>
+                    <Theme key={`theme-${idx}`}>{el?.theme}</Theme>
+                    {el?.guidances.map((g, id) => (
+                      <>
                         <div
+                          key={`guidance-${id}`}
                           dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(g.text),
                           }}
                         />
-                        <hr></hr>
-                      </React.Fragment>
+                        <hr key={`hr-${id}`} />
+                      </>
                     ))}
-                  </React.Fragment>
+                  </>
                 ))}
               </>
             )}
@@ -110,13 +116,13 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
       }}
     >
       <MainNav>
-        {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError error={error}></CustomError>}
+        {loading && <CustomSpinner />}
+        {!loading && error && <CustomError error={error} />}
         {!loading && !error && data && (
           <nav style={navBar}>
             {data.map((el, idx) => (
               <span
-                key={idx}
+                key={`tab-${idx}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -135,11 +141,12 @@ and render the HTML content. A horizontal line (`<hr>`) is added between each gu
           onClick={(e) => {
             e.stopPropagation();
             e.preventDefault();
-            setshowModalRecommandation(false);
+            setShowModalRecommandation(false);
             setFillColorIconRecommandation("var(--primary)");
           }}
+          key="closeModal"
         >
-          x
+          <IoClose size={24} />
         </Close>
       </MainNav>
       <div>{data && getContent()}</div>

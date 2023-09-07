@@ -1,37 +1,5 @@
-import axios from "axios";
-
-const dataComent = [
-  {
-    id: 418,
-    user_id: 1,
-    text: "<p>Mon commentaire <strong>avec du formatage</strong></p>",
-    archived: false,
-    answer_id: 11549,
-    archived_by: null,
-    created_at: "2023-03-17T12:56:27.448Z",
-    updated_at: "2023-03-17T12:56:27.448Z",
-    user: {
-      firstname: "DMP",
-      surname: "Administrator",
-      email: "info-opidor@inist.fr",
-    },
-  },
-  {
-    id: 419,
-    user_id: 1,
-    text: "<p>Mon commentaire</p>",
-    archived: false,
-    answer_id: 11549,
-    archived_by: null,
-    created_at: "2023-03-17T13:00:18.641Z",
-    updated_at: "2023-03-17T13:00:18.641Z",
-    user: {
-      firstname: "DMP",
-      surname: "Administrator",
-      email: "info-opidor@inist.fr",
-    },
-  },
-];
+import axios from '../utils/AxiosClient';
+import createHeaders from "../utils/HeaderBuilder";
 
 /**
  * The function "getComments" returns a mock data object for comments.
@@ -41,14 +9,16 @@ const dataComent = [
  * usually obtained after the user logs in and is used to verify the user's identity for subsequent requests.
  * @returns An object with a "data" property that contains the value of the "dataComent" variable.
  */
-export async function getComments(t, token) {
+export async function getComments(answerId) {
+  let response;
   try {
-    //const response = await axios.get("note/");
-    //return response;
-    return { data: dataComent };
+    response = await axios.get(`/answers/${answerId}/notes`, {
+      headers: createHeaders(),
+    });
   } catch (error) {
-    console.log(error);
+    return error;
   }
+  return response;
 }
 
 /**
@@ -58,19 +28,10 @@ export async function getComments(t, token) {
  * @returns an object with a nested object "note" that has two properties: "id" and "text". The "id" property has a value of 134 and the "text" property
  * has a value of "<p>Mon commentaire</p>".
  */
-export async function postComment(jsonObject) {
-  try {
-    //const response = await axios.post("/notes", jsonObject, "config");
-    return {
-      note: {
-        id: 134,
-        text: "<p>Mon commentaire</p>",
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
+export async function postComment(comment) {
+  return axios.post("/notes", comment, {
+    headers: createHeaders({}, true),
+  });
 }
 
 /**
@@ -79,18 +40,10 @@ export async function postComment(jsonObject) {
  * @param id - The id parameter is the identifier of the comment that needs to be updated. It is used to specify which comment to update in the backend.
  * @returns An object with a nested object "note" containing a "text" property with the value "<p>Mon commentaire</p>".
  */
-export async function updateComment(jsonObject, id) {
-  try {
-    //const response = await axios.post("note/" + id, jsonObject, "config");
-    return {
-      note: {
-        text: "<p>Mon commentaire</p>",
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
+export async function updateComment(comment) {
+  return axios.put(`/notes/${comment?.id}`, comment, {
+    headers: createHeaders({}, true),
+  });
 }
 
 /**
@@ -100,11 +53,8 @@ export async function updateComment(jsonObject, id) {
  * @returns a Promise that resolves to the response object returned by the axios.delete() method if the request is successful. If there is an error, the
  * function logs the error to the console but does not return anything.
  */
-export async function deleteCommentById(id) {
-  try {
-    const response = await axios.delete("note/" + id, "config");
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
+export async function archiveComment(id, comment) {
+  return  axios.patch(`/notes/${id}/archive`, comment, {
+    headers: createHeaders({}, true),
+  });
 }

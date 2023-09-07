@@ -10,7 +10,6 @@ const EditorComment = ({ initialValue, updateParentText }) => {
   };
   return (
     <Editor
-      apiKey={"xvzn7forg8ganzrt5s9id02obr84ky126f85409p7ny84ava"}
       onEditorChange={handleEditorChange}
       initialValue={initialValue}
       init={{
@@ -28,6 +27,8 @@ const EditorComment = ({ initialValue, updateParentText }) => {
           "alignright alignjustify | bullist numlist outdent indent | " +
           "removeformat | help",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        skin_url: '/tinymce/skins/oxide',
+        content_css: ['/tinymce/tinymce.css'],
       }}
     />
   );
