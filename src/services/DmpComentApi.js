@@ -10,15 +10,11 @@ import createHeaders from "../utils/HeaderBuilder";
  * @returns An object with a "data" property that contains the value of the "dataComent" variable.
  */
 export async function getComments(answerId) {
-  let response;
-  try {
-    response = await axios.get(`/answers/${answerId}/notes`, {
-      headers: createHeaders(),
-    });
-  } catch (error) {
-    return error;
-  }
-  return response;
+  if (!answerId) { return; }
+
+  return axios.get(`/answers/${answerId}/notes`, {
+    headers: createHeaders(),
+  });;
 }
 
 /**
