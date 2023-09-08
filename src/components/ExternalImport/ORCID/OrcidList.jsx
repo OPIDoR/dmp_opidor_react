@@ -8,32 +8,33 @@ import Pagination from "../Pagination";
 
 function OrcidList() {
   const { t } = useTranslation();
-  const { temp, setTemp } = useContext(GlobalContext);
-  const [data, setData] = useState(null);
+  const pageSize = 8;
+  const { subData, setSubData } = useContext(GlobalContext);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [currentData, setcurrentData] = useState([]);
-  const [allInitialData, setallInitialData] = useState([]);
-  const [selectedKey, setSelectedKey] = useState(null);
+  const [currentData, setCurrentData] = useState([]);
+  const [initialData, setInitialData] = useState([]);
+  const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
 
   /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
 function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
 component is initially rendered. */
   useEffect(() => {
-    getData();
+    getData('*');
   }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = () => {
+  const getData = (search) => {
     setLoading(true);
-    getOrcid()
+    getOrcid(search)
       .then((res) => {
         setData(res.data);
-        setallInitialData(res.data);
+        if(search === '*') { setInitialData(res.data); }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -44,43 +45,47 @@ component is initially rendered. */
    */
   const onChangePage = (pageOfItems) => {
     // update state with new page of items
-    setcurrentData(pageOfItems);
+    setCurrentData(pageOfItems);
   };
 
   /**
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = (el) => {
-    setSelectedKey(selectedKey === el.orcid ? null : el.orcid);
-    const obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: "Personne", idType: "ORCID iD" };
-    setTemp({ ...temp, ...obj });
+    setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
+    const obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
+    setSubData({ ...subData, ...obj });
   };
 
   /**
    * The handleChangeText function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleChangeText = (e) => {
-    const text = e.target.value;
-    setText(text);
-    const filterText = allInitialData.filter((el) => {
-      return el.familyNames.toLowerCase().includes(text.toLowerCase()) || el.givenNames.toLowerCase().includes(text.toLowerCase());
-    });
-    setData(filterText);
+  const handleSearchTerm = (e) => {
+    getData(text);
   };
+
+  /**
+   * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
+   */
+  const handleKeyDown = (e) => {
+    if(e.key === 'Enter') {
+      getData(text);
+    }
+  }
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
    */
   const handleDeleteText = () => {
     setText("");
-    getData();
+    setData(initialData);
   };
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError></CustomError>}
-      {!loading && !error && data && (
+      { error && <CustomError></CustomError>}
+      { !error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
@@ -92,15 +97,26 @@ component is initially rendered. */
                       className="form-control"
                       value={text}
                       placeholder={t("search by <last name> <first name>")}
-                      onChange={(e) => handleChangeText(e)}
+                      onChange={(e) => setText(e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e)}
                       style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
                     />
+                    <span className="input-group-btn">
+                      <button
+                        className="btn btn-default"
+                        type="button"
+                        onClick={handleSearchTerm}
+                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                      >
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }}/>
+                      </button>
+                    </span>
                     <span className="input-group-btn">
                       <button
                         onClick={handleDeleteText}
                         className="btn btn-default"
                         type="button"
-                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -125,13 +141,11 @@ component is initially rendered. */
                   <tr key={idx}>
                     {/* <td scope="row">{el.orcid}</td> */}
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
-                    <td scope="row">
-                      {el?.institutionName.map((e, idx) => (
-                        <React.Fragment key={idx}>{e}</React.Fragment>
-                      ))}
+                    <td>
+                      {el?.institutionName.join(' / ')}
                     </td>
                     <td>
-                      <input className="text-center" type="checkbox" checked={selectedKey === el.orcid} onChange={() => setSelectedValue(el)} />
+                      <input className="text-center" type="checkbox" checked={selectedPerson === el.orcid} onChange={() => setSelectedValue(el)} />
                     </td>
                   </tr>
                 ))}
@@ -141,12 +155,12 @@ component is initially rendered. */
           <div className="row text-center">
             <div className="mx-auto"></div>
             <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={5} />
+              <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
             </div>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 

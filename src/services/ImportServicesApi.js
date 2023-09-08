@@ -48,23 +48,19 @@ export async function getRor(query, filter) {
   return response;
 }
 
-export async function getOrcid(query, filter) {
+export async function getOrcid(search) {
+  let response;
+  let url = "/api/v1/madmp/services/orcid";
+
+  let params = {};
+  if (search) {
+    params.search = search;
+  }
   try {
-    let url = "/api/v1/madmp/services/ror";
-
-    let params = {};
-    if (query) {
-      params.query = query;
-    }
-    if (filter) {
-      params.filter = filter;
-    }
-
-    //const response = await axios.get(url, { params });
-    const result = await require(`../data/orcid.json`);
-    return { data: result };
+    response = await axios.get(url, { params, ...createHeaders() });
   } catch (error) {
     console.error(error);
-    throw error;
+    return error;
   }
+  return response;
 }
