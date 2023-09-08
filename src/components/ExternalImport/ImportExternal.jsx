@@ -8,11 +8,6 @@ function ImportExternal() {
   const { t } = useTranslation();
   const [showRor, setShowRor] = useState(false);
   const [showOrcid, setShowOrcid] = useState(false);
-  const [renderKey, setRenderKey] = useState(0);
-
-  useEffect(() => {
-    setRenderKey(renderKey + 1);
-  }, []);
 
   const toggleOrcid = () => {
     setShowOrcid(!showOrcid);
@@ -25,32 +20,30 @@ function ImportExternal() {
   };
 
   return (
-    <div key={renderKey} style={{ margin: "15px" }}>
+    <div style={{ margin: "0 15px" }}>
       <div style={{ marginBottom: "25px" }}>
         <ReactTooltip id="orcid" place="top" effect="solid" variant="info" content={t("ORCID id")} />
-        <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px" }} onClick={toggleOrcid}>
+        <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px", color: "white", backgroundColor: "var(--primary)" }} onClick={toggleOrcid}>
           {t("Import personal data from ORCID")}
         </button>
         <ReactTooltip id="ror" place="top" effect="solid" variant="info" content={t("ROR id")} />
-        <button data-tooltip-id="ror" type="button" className="btn btn-dark" onClick={toggleRor}>
+        <button data-tooltip-id="ror" type="button" className="btn btn-dark" style={{ color: "white", backgroundColor: "var(--primary)" }} onClick={toggleRor}>
           {t("Import affiliation from RoR")}
         </button>
       </div>
 
-      <React.Fragment key={renderKey + 1}>
-        {showOrcid && (
-          <>
-            <OrcidList></OrcidList>
-            <div style={{ display: "flex", justifyContent: "center" }}></div>
-          </>
-        )}
-        {showRor && (
-          <>
-            <RorList></RorList>
-            <div style={{ display: "flex", justifyContent: "center" }}></div>
-          </>
-        )}
-      </React.Fragment>
+      {showOrcid && (
+        <>
+          <OrcidList></OrcidList>
+          <div style={{ display: "flex", justifyContent: "center" }}></div>
+        </>
+      )}
+      {showRor && (
+        <>
+          <RorList></RorList>
+          <div style={{ display: "flex", justifyContent: "center" }}></div>
+        </>
+      )}
     </div>
   );
 }
