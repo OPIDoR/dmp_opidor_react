@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen, act } from "@testing-library/react";
 import WritePlan from "../components/WritePlan/WritePlan";
-import { getPlanData } from "../services/DmpWritePlanApi";
+import { writePlan } from "../services";
 import { GlobalContext } from "../components/context/Global";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -26,7 +26,7 @@ const globalState = {
 
 describe("WritePlan", () => {
   beforeEach(() => {
-    getPlanData.mockResolvedValue({
+    writePlan.getPlanData.mockResolvedValue({
       data: {
         plan: {
           id: 1,

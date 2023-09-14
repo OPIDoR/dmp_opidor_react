@@ -12,7 +12,7 @@ import {
   updateFormState,
 } from '../../utils/GeneratorUtils';
 import BuilderForm from '../Builder/BuilderForm.jsx';
-import { getRegistryById, getRegistryByName, getSchema } from '../../services/DmpServiceApi';
+import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
@@ -47,7 +47,7 @@ function SelectWithCreate({
   It is used to set the options of the select list. */
   useEffect(() => {
     if(!loadedTemplates[templateId]) {
-      getSchema(templateId).then((res) => {
+      service.getSchema(templateId).then((res) => {
         setTemplate(res.data);
         setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
       });
@@ -62,7 +62,7 @@ function SelectWithCreate({
     if(loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryByName(selectedRegistry)
+      service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));

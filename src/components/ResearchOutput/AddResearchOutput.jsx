@@ -3,11 +3,11 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
-import { createResearchOutput } from "../../services/DmpResearchOutput";
+import { researchOutput } from "../../services";
 import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
-import { getRegistryByName } from "../../services/DmpServiceApi";
+import { service } from "../../services";
 
 const EndButton = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ function AddResearchOutput({ planId, handleClose, show }) {
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
-    getRegistryByName('ResearchDataType').then((res) => {
+    service.getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
   }, []);
@@ -56,7 +56,7 @@ when the component mounts. */
       type,
       hasPersonalData,
     };
-    createResearchOutput(researchOutputInfo).then((res) => {
+    researchOutput.createResearchOutput(researchOutputInfo).then((res) => {
       setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
       // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
       setResearchOutputs(res.data.research_outputs);

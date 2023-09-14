@@ -7,7 +7,7 @@ import ImportExternal from "../ExternalImport/ImportExternal";
 import BuilderForm from '../Builder/BuilderForm.jsx';
 import { createContributorsOptions, createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
-import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
+import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import Swal from 'sweetalert2';
@@ -57,13 +57,13 @@ function SelectContributorSingle({
   }, []);
 
   const fetchContributors = () => {
-    getContributors(dmpId).then((res) => {
+    service.getContributors(dmpId).then((res) => {
       setOptions(createContributorsOptions(res.data.results));
     });
   }
 
   const fetchRoles = () => {
-    getRegistryByName('Role').then((res) => {
+    service.getRegistryByName('Role').then((res) => {
       setLoadedRegistries({...loadedRegistries, 'Role': res.data});
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
@@ -74,12 +74,12 @@ function SelectContributorSingle({
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     if(!loadedTemplates[templateId]) {
-      getSchema(templateId).then((res) => {
+      service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data
         setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
         setRole(contributorTemplate.properties.role[`const@${locale}`]);
         const personTemplateId = contributorTemplate.properties.person.schema_id;
-        getSchema(personTemplateId).then((resSchema) => {
+        service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({...loadedTemplates, [personTemplateId] : res.data});
         });

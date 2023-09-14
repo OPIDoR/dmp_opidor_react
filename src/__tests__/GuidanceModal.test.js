@@ -1,11 +1,11 @@
 import React from "react";
 import { render, fireEvent, act, screen } from "@testing-library/react";
 import GuidanceModal from "../components/WritePlan/GuidanceModal";
-import { getGuidance } from "../services/DmpGuidanceApi";
+import { guidances } from "../services";
 
 // Mock the getGuidance function from DmpGuidanceApi
 jest.mock("../services/DmpGuidanceApi", () => ({
-  getGuidance: jest.fn(),
+  getGuidances: jest.fn(),
 }));
 
 const sampleData = [
@@ -118,7 +118,7 @@ const sampleData = [
 
 describe("GuidanceModal component", () => {
   beforeEach(() => {
-    getGuidance.mockImplementation(() => Promise.resolve({ data: sampleData }));
+    guidances.getGuidances.mockImplementation(() => Promise.resolve({ data: sampleData }));
   });
 
   it("renders the component and fetches data", async () => {
