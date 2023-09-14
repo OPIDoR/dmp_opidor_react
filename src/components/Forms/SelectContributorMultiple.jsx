@@ -178,7 +178,7 @@ function SelectContributorMultiple({
       if (result.isConfirmed) {
         const newList = [...contributorList];
         setContributorList(deleteByIndex(newList, idx));
-        const updatedList = {...contributorList};
+        const updatedList = { ...contributorList };
         updatedList[idx]['action'] = 'delete';
         // setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
         handleChangeValue(propName, updatedList)
@@ -201,8 +201,8 @@ function SelectContributorMultiple({
 
 
   const handleModalValueChange = (propName, value) => {
-    console.log({ ...modalData,  [propName]: value});
-    setModalData({ ...modalData,  [propName]: value});
+    console.log({ ...modalData, [propName]: value });
+    setModalData({ ...modalData, [propName]: value });
   }
 
   return (
@@ -252,7 +252,7 @@ function SelectContributorMultiple({
               )}
             </thead>
             <tbody>
-              {contributorList.map((el, idx) => ( el.action !== "delete" ?
+              {contributorList.map((el, idx) => (el.action !== "delete" ?
                 <tr key={idx}>
                   <td scope="row" style={{ width: "50%" }}>
                     <div className={styles.border}>
@@ -305,7 +305,7 @@ function SelectContributorMultiple({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
+              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
               <FormBuilder
                 fragment={modalData}
                 handleChangeValue={handleModalValueChange}

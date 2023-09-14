@@ -7,10 +7,9 @@ import CustomError from "../../Shared/CustomError";
 import { GlobalContext } from "../../context/Global";
 import Pagination from "../Pagination";
 
-function RorList() {
+function RorList({fragment, setFragment}) {
   const { t } = useTranslation();
   const pageSize = 8;
-  const { subData, setSubData } = useContext(GlobalContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -69,7 +68,7 @@ component is initially rendered. */
   const setSelectedValue = (el) => {
     setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
     const obj = { affiliationId: el.ror, affiliationName: el.name[Object.keys(el.name)[0]], affiliationIdType: "ROR ID" };
-    setSubData({ ...subData, ...obj });
+    setFragment({ ...fragment, ...obj });
   };
 
   /**
