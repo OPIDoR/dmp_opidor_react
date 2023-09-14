@@ -7,11 +7,11 @@ import { Panel } from "react-bootstrap";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 
-import { getSectionsData } from "../../services/DmpWritePlanApi";
+import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import { deleteResearchOutput } from "../../services/DmpResearchOutput";
+import { researchOutput } from "../../services";
 import styles from "../assets/css/write_plan.module.css";
 import Section from "./Section";
 import PanelBody from "react-bootstrap/lib/PanelBody";
@@ -37,7 +37,7 @@ function SectionsContent({ planId, templateId, readonly }) {
   useEffect(() => {
     setLoading(true);
     console.log(templateId);
-    getSectionsData(templateId)
+    writePlan.getSectionsData(templateId)
       .then((res) => {
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
         //   return el.id === displayedResearchOutput.id;
@@ -77,7 +77,7 @@ function SectionsContent({ planId, templateId, readonly }) {
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
-        deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
+        researchOutput.deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
           setResearchOutputs(res.data.research_outputs);
           setDisplayedResearchOutput(res.data.research_outputs[0])
           toast.success(t("Research output was successfully deleted."));

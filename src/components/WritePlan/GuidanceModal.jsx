@@ -1,7 +1,7 @@
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { getGuidance } from "../../services/DmpGuidanceApi";
+import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
@@ -52,15 +52,15 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (questionId) {
-      setLoading(true);
-      getGuidance(questionId, "")
-        .then((res) => {
-          setData(res.data);
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }
+    if (!questionId) { return; }
+
+    setLoading(true);
+    guidances.getGuidances(questionId)
+      .then((res) => {
+        setData(res.data.guidanceGroups);
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, [questionId]);
 
   /**

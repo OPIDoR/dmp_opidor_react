@@ -10,10 +10,10 @@ import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomSelect from "../Shared/CustomSelect";
 import styles from "../assets/css/general_info.module.css";
-import { getFunders, saveFunder, saveIsTestPlan } from "../../services/DmpGeneralInfoApi";
+import { generalInfo } from "../../services";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Builder/DynamicForm";
-import { getRegistryByName } from "../../services/DmpServiceApi";
+import { service } from "../../services";
 
 export const ButtonSave = styled.button`+
   margin: 10px 2px 2px 0px;
@@ -63,10 +63,10 @@ function GeneralInfo({
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
-    getFunders().then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.id,
-        label: option.name,
+    generalInfo.getFunders().then(({ data }) => {
+      const options = data.map(({ id, name }) => ({
+        value: id,
+        label: name,
       }));
       setFunders(options);
     });
@@ -79,7 +79,7 @@ function GeneralInfo({
   useEffect(() => {
     if(researchContext === 'research_project' ) {
       setLoading(true);
-      getRegistryByName('ANRProjects')
+      service.getRegistryByName('ANRProjects')
         .then((res) => {
           const options = res.data.map((option) => ({
             value: option.value,
@@ -93,14 +93,27 @@ function GeneralInfo({
     }
   }, [locale]);
 
-  const handleClickIsTestPlan = (e) => {
+  const handleClickIsTestPlan = async (e) => {
     const checked = e.target.checked;
-    saveIsTestPlan(planId, checked === true ? '1' : '0')
-      .then((res) => {
-        toast.success(res.data.msg);
-      }).catch((res) => {
-        toast.error(res.error);
-      })
+
+    let response;
+    try {
+      response = await generalInfo.saveIsTestPlan(planId, checked === true ? '1' : '0');
+    } catch (error) {
+      let errorMessage = t("An error occurred during the change of status of the plan");
+
+      if (error.response) {
+        errorMessage = error.response.message;
+      } else if (error.request) {
+        errorMessage = error.request;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      return toast.error(errorMessage);
+    }
+
+    return toast.success(response?.data?.msg);
   };
 
   /**
@@ -114,23 +127,39 @@ function GeneralInfo({
   /**
    * The function `handleSaveFunder` saves a funder for a project fragment and sets the grant ID to "ProjectStandard".
    */
-  const handleSaveFunding = () => {
+  const handleSaveFunding = async () => {
     setLoading(true);
-    saveFunder(selectedProject.grantId, projectFragmentId).then((res) => {
-      setFormData({ 
-        [projectFragmentId]: res.data.fragment.project,
-        [metaFragmentId]: res.data.fragment.meta
-      });
-      if(res.data.plan_title) {
-        document.getElementById('plan-title').innerHTML = res.data.plan_title;
+
+    let response;
+    try {
+      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId);
+    } catch (error) {
+      let errorMessage = t("An error occurred during the saving of the funders");
+
+      if (error.response) {
+        errorMessage = error.response.message;
+      } else if (error.request) {
+        errorMessage = error.request;
+      } else if (error.message) {
+        errorMessage = error.message;
       }
-      toast.success(t(
-        '\'{{projectTitle}}\' project data has successfully been imported',
-        { projectTitle: selectedProject.title }
-      ), {style: { maxWidth: 500 }});
-    }).catch((res) => {
-      toast.error(res.error);
-    }).finally(() => setLoading(false) )
+
+      return toast.error(errorMessage);
+    }
+
+    setFormData({ 
+      [projectFragmentId]: response.data.fragment.project,
+      [metaFragmentId]: response.data.fragment.meta
+    });
+    if(response.data.plan_title) {
+      document.getElementById('plan-title').innerHTML = response.data.plan_title;
+    }
+    toast.success(t(
+      '\'{{projectTitle}}\' project data has successfully been imported',
+      { projectTitle: selectedProject.title }
+    ), {style: { maxWidth: 500 }});
+
+    setLoading(false);
   };
 
   return (

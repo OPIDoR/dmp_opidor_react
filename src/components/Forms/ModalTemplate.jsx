@@ -12,7 +12,7 @@ import {
   updateFormState,
   parsePattern,
 } from '../../utils/GeneratorUtils';
-import { getSchema } from '../../services/DmpServiceApi';
+import { service } from '../../services';
 import CustomButton from '../Styled/CustomButton.jsx';
 import styles from '../assets/css/form.module.css';
 
@@ -47,7 +47,7 @@ function ModalTemplate({
   const [template, setTemplate] = useState(null);
   useEffect(() => {
     if(!loadedTemplates[templateId]) {
-      getSchema(templateId).then((res) => {
+      service.getSchema(templateId).then((res) => {
         setTemplate(res.data);
         setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
       });

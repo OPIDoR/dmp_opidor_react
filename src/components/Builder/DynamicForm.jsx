@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import BuilderForm from './BuilderForm.jsx';
 import { GlobalContext } from '../context/Global.jsx';
-import { getFragment, getSchema, loadNewForm, saveForm } from '../../services/DmpServiceApi.js';
+import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import { unionBy } from 'lodash';
@@ -36,13 +36,13 @@ function DynamicForm({
   useEffect(() => {
     if (fragmentId) {
       if (formData[fragmentId]) {
-        getSchema(formData[fragmentId].schema_id).then((res) => {
+        service.getSchema(formData[fragmentId].schema_id).then((res) => {
           setTemplate(res.data);
           setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
         });
         setLoading(false);
       } else {
-        getFragment(fragmentId).then((res) => {
+        service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.schema);
           setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
@@ -50,7 +50,7 @@ function DynamicForm({
           .finally(() => setLoading(false));
       }
     } else {
-      loadNewForm(planId, questionId, displayedResearchOutput.id, madmpSchemaId, dmpId, locale).then((res) => {
+      service.loadNewForm(planId, questionId, displayedResearchOutput.id, madmpSchemaId, dmpId, locale).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
         setTemplate(res.data.schema);
         const fragment = res.data.fragment;
@@ -70,18 +70,34 @@ function DynamicForm({
    * It checks if the form is filled in correctly.
    * @param e - the event object
    */
-  const handleSaveForm = (e) => {
+  const handleSaveForm = async (e) => {
     e.preventDefault();
     setLoading(true);
-    saveForm(fragmentId, formData[fragmentId]).then((res) => {
-      if(res.data.plan_title) {
-        document.getElementById('plan-title').innerHTML = res.data.plan_title;
+
+    let response;
+    try {
+      response = await service.saveForm(fragmentId, formData[fragmentId]);
+    } catch (error) {
+      let errorMessage = t("An error occured during form saving");
+
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.request) {
+        errorMessage = error.request;
+      } else if (error.message) {
+        errorMessage = error.message;
       }
-      setFormData({ [fragmentId]: res.data.fragment });
-    }).catch((res) => {
-      toast.error(res.data.message);
-    })
-      .finally(() => setLoading(false));
+
+      toast.error(errorMessage);
+      return setLoading(false);
+    }
+
+    if(response.data.plan_title) {
+      document.getElementById('plan-title').innerHTML = response.data.plan_title;
+    }
+    setFormData({ [fragmentId]: response.data.fragment });
+
+    setLoading(false);
   };
 
   return (

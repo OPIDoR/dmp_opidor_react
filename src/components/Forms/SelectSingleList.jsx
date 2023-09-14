@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getRegistryByName, getSchema } from '../../services/DmpServiceApi';
+import { service } from '../../services';
 import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
@@ -52,7 +52,7 @@ function SelectSingleList({
     if(loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryByName(selectedRegistry)
+      service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));
@@ -66,7 +66,7 @@ function SelectSingleList({
   useEffect(() => {
     if(registryType !== 'complex') { return; }
     if (!loadedTemplates[templateId]) {
-      getSchema(templateId).then((res) => {
+      service.getSchema(templateId).then((res) => {
         setTemplate(res.data)
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
       });

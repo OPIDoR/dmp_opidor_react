@@ -1,11 +1,10 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen, act } from "@testing-library/react";
+import { render, act } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
 import WritePlan from "../components/WritePlan/WritePlan";
-import { getPlanData } from "../services/DmpWritePlanApi";
+import { writePlan } from "../services";
 import Global from "../components/context/Global";
-import i18n from "../i18nTest";
 
 jest.mock("../services/DmpWritePlanApi.js");
 
@@ -260,7 +259,7 @@ const mockSectionsData = {
 };
 describe("Redaction component", () => {
   beforeEach(() => {
-    getPlanData.mockResolvedValue(mockSectionsData);
+    writePlan.getPlanData.mockResolvedValue(mockSectionsData);
   });
 
   afterEach(() => {

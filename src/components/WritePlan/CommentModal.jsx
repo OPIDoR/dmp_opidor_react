@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext} from "react";
-import { getComments, postComment, updateComment, archiveComment } from "../../services/DmpComentApi";
+import { comments as commentsService } from "../../services";
 import { format } from "date-fns";
 import { fr, enGB } from 'date-fns/locale'
 import toast from 'react-hot-toast';
@@ -51,11 +51,15 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     setLoading(true);
-    getComments(answerId)
+    commentsService.get(answerId)
       .then(({ data }) => {
         setComments(data.notes);
       })
-      .catch((error) => setError(error))
+      .catch((error) => setError({
+        code: error?.response?.status,
+        message: error?.response?.statusText,
+        error: error?.response?.data?.message || '',
+      }))
       .finally(() => setLoading(false));
   }, [answerId]);
 
@@ -87,7 +91,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        archiveComment(id, {
+        commentsService.archive(id, {
           archived_by: userId,
         }).then(() => {
           const index = comments.findIndex((el) => el.id === id);
@@ -133,7 +137,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
   const update = async (commentText, commentData) => {
     let response;
       try {
-        response = await updateComment({
+        response = await commentsService.update({
           ...commentData,
           text: commentText,
         });
@@ -177,7 +181,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
 
     let response;
     try {
-      response = await postComment({ note });
+      response = await commentsService.create({ note });
     } catch (error) {
       return toast.error(t('An error has occurred while sending the comment.'));
     }

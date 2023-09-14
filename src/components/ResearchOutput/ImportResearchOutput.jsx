@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import Select from "react-select";
-import { getPlans, getProducts, postImportProduct } from "../../services/DmpResearchOutput";
+import { researchOutput } from "../../services";
 
 const EndButton = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   const [dataProducts, setDataProducts] = useState([]);
 
   useEffect(() => {
-    getPlans("").then((res) => {
+    researchOutput.getPlans("").then((res) => {
       const options = res.data.map((option) => ({
         value: option.id,
         label: option.title,
@@ -37,7 +37,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   const handleSelectPlan = (e) => {
     const planValue = e.value;
     setPlan(planValue);
-    getProducts(planValue, "").then((res) => {
+    researchOutput.getProducts(planValue, "").then((res) => {
       const options = res.data.map((option) => ({
         value: option.uuid,
         label: option.title,
@@ -55,7 +55,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   const handleImportPlan = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    postImportProduct(plan, uuid).then((res) => {
+    researchOutput.postImportProduct(plan, uuid).then((res) => {
       setResearchOutputs(res.data.plan.research_outputs);
       handleClose();
     });
