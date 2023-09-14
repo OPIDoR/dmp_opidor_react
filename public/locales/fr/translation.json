@@ -131,5 +131,7 @@
   "Import affiliation from RoR": "Importer les données d'affiliation depuis RoR",
   "search by <last name> <first name>": "recherche par <nom> <prénom>",
   "search for <organization name> or <acronym>": "recherche <nom de l'organisation> ou <acronyme>",
-  "Person": "Personne"
+  "Person": "Personne",
+  "Display all guidances": "Afficher toutes les recommendations",
+  "Display importants guidances": "Afficher les recommendations importantes"
 }

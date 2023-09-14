@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import SectionsContent from "./SectionsContent";
-import { getPlanData } from "../../services/DmpWritePlanApi";
+import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
@@ -42,7 +42,7 @@ function WritePlan({
   //TODO update this , it can make error
   useEffect(() => {
     setLoading(true);
-    getPlanData(planId)
+    writePlan.getPlanData(planId)
       .then((res) => {
         setPlanData(res.data);
         setDmpId(res.data.dmp_id);
@@ -61,10 +61,11 @@ function WritePlan({
 
   return (
     <>
-      {/*
-          {!readonly && (<div className="container">
-            <GuidanceChoice planId={planId} setTriggerRender={setTriggerRender} />
-      </div>)}*/}
+      {!readonly && (
+        <div className="container">
+          <GuidanceChoice planId={planId} />
+        </div>
+      )}
       <div className={styles.section}>
         {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <CustomError error={error}></CustomError>}
