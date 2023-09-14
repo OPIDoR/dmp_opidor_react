@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getRegistryByName, getSchema } from '../../services/DmpServiceApi';
-import { createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
@@ -11,13 +11,11 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  label, propName, changeValue, tooltip, level, registries, fragmentId, registryType, templateId, readonly
+  value, label, propName, handleChangeValue, tooltip, registries, fragmentId, fragment = {}, registryType, templateId, readonly
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
   const { 
-    formData, setFormData,
-    subData,
     locale,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
@@ -31,12 +29,8 @@ function SelectSingleList({
   const nullValue  = registryType === 'complex' ? {} : '';
 
   useEffect(() => {
-    if (level === 1) {
-      setSelectedValue(formData?.[fragmentId]?.[propName] || nullValue);
-    } else {
-      setSelectedValue(subData?.[propName] || nullValue);
-    }
-  }, [formData, subData])
+    setSelectedValue(value || nullValue);
+  }, [value])
 
   useEffect(() => {
     if(registryType !== 'complex') {
@@ -86,9 +80,10 @@ function SelectSingleList({
       const action = selectedValue.id ? 'update' : 'create';
       const value = {...selectedValue,  ...e.object, action};
       setSelectedValue(value);
-      setFormData(updateFormState(formData, fragmentId, propName, value));
+      // setFormData(updateFormState(fragment, fragmentId, propName, value));
+      handleChangeValue(propName, value)
     } else {
-      changeValue({ target: { name: propName, value: e.value } });
+      handleChangeValue(propName, e.value);
     }
   };
 
