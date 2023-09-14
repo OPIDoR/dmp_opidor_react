@@ -38,7 +38,6 @@ function Global({ children }) {
   const [currentOrg, setCurrentOrg] = useState({})
   // Dynamic form
   const [formData, setFormData] = useReducer(reducer, {});
-  const [subData, setSubData] = useState({});
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
   const [isEmail, setIsEmail] = useState(false);
@@ -77,8 +76,6 @@ function Global({ children }) {
         // Dynamic form
         formData,
         setFormData,
-        subData,
-        setSubData,
         loadedRegistries,
         setLoadedRegistries,
         loadedTemplates,
