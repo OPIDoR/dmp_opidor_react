@@ -4,12 +4,11 @@ import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 
-import BuilderForm from '../Builder/BuilderForm.jsx';
+import FormBuilder from '../Builder/FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
 import {
   createMarkup,
   deleteByIndex,
-  updateFormState,
   parsePattern,
 } from '../../utils/GeneratorUtils';
 import { getSchema } from '../../services/DmpServiceApi';
@@ -23,9 +22,10 @@ import styles from '../assets/css/form.module.css';
  * @returns A React component.
  */
 function ModalTemplate({
+  values,
+  handleChangeValue,
   label,
   propName,
-  value,
   templateId,
   level,
   tooltip,
@@ -33,23 +33,22 @@ function ModalTemplate({
   fragmentId,
   readonly,
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
-  const { 
-    formData, setFormData,
-    subData, setSubData,
+  const {
     loadedTemplates, setLoadedTemplates,
     isEmail,
   } = useContext(GlobalContext);
+  const [modalData, setModalData] = useState({});
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([])
 
   const [template, setTemplate] = useState(null);
   useEffect(() => {
-    if(!loadedTemplates[templateId]) {
+    if (!loadedTemplates[templateId]) {
       getSchema(templateId).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
       });
     } else {
       setTemplate(loadedTemplates[templateId]);
@@ -57,59 +56,50 @@ function ModalTemplate({
   }, [templateId]);
 
   useEffect(() => {
-    setFragmentsList(formData?.[fragmentId]?.[propName] || [])
-  }, [fragmentId, propName])
+    setFragmentsList(values || [])
+  }, [values])
 
   /**
    * The function sets the show state to false
    */
   const handleClose = () => {
     setShow(false);
-    setSubData({});
+    setModalData({});
     setIndex(null);
   };
 
   /**
-   * If the subData variable is not empty, check if the form is valid, if it is,
-   * add the subData variable to the form, if it's not, show an error message.
+   * If the modalData variable is not empty, check if the form is valid, if it is,
+   * add the modalData variable to the form, if it's not, show an error message.
    */
-  const handleAddToList = () => {
+  const handleSave = () => {
     if (!isEmail) return toast.error(t("Invalid email"));
-    if (!subData) return handleClose();
-    //const checkForm = checkRequiredForm(template, temp);
-    //if (checkForm) return toast.error(`Veuiller remplire le champs ${getLabelName(checkForm, template)}`);
+    if (!modalData) return handleClose();
     if (index !== null) {
       const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
       const deleteIndex = deleteByIndex(filterDeleted, index);
-      const concatedObject = [...deleteIndex, { ...subData, action: 'update' }];
-      setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-      setSubData({});
+      const addedObject = [...deleteIndex, { ...modalData, action: 'update' }];
+      // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
+      handleChangeValue(propName, addedObject)
+      setModalData({});
     } else {
-      handleSave();
-      toast.success(t("Registration was successful !"));
+      handleSaveNew();
     }
+    toast.success(t("Save was successful !"));
     handleClose();
   };
 
   /**
    * When the user clicks the save button, the form is updated with the new data,
-   * the subData is set to null, and the modal is closed.
+   * the modalData is set to null, and the modal is closed.
    */
-  const handleSave = () => {
-    const newList = [...fragmentsList, { ...subData, action: 'create' }];
-    setFragmentsList(newList)
-    setFormData(updateFormState(formData, fragmentId, propName, newList));
-    setSubData({});
+  const handleSaveNew = () => {
+    const newFragmentList = [...fragmentsList, { ...modalData, action: 'create' }];
+    setFragmentsList(newFragmentList)
+    // setFormData(updateFormState(formData, fragmentId, propName, newFragmentList));
+    handleChangeValue(propName, newFragmentList)
+    setModalData({});
     handleClose();
-  };
-
-  /**
-   * The function takes a boolean value as an argument and sets the state
-   * of the show variable to the value of the argument.
-   * @param isOpen - boolean
-   */
-  const handleShow = (isOpen) => {
-    setShow(isOpen);
   };
 
   /**
@@ -130,9 +120,10 @@ function ModalTemplate({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
-        filterDeleted[idx]['action'] = 'delete';
-        setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
+        const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
+        filteredList[idx]['action'] = 'delete';
+        // setFormData(updateFormState(formData, fragmentId, propName, filterList));
+        handleChangeValue(propName, filteredList)
       }
     });
   };
@@ -143,11 +134,15 @@ function ModalTemplate({
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
-    setSubData(filterDeleted[idx]);
+    setModalData(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);
   };
+
+  const handleModalValueChange = (propName, value) => {
+    console.log({ ...modalData, [propName]: value });
+    setModalData({ ...modalData, [propName]: value });
+  }
 
   return (
     <>
@@ -156,8 +151,8 @@ function ModalTemplate({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
+            <span
+              className="fas fa-circle-info"
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}
@@ -177,8 +172,7 @@ function ModalTemplate({
             </thead>
             <tbody>
               {fragmentsList
-                .filter((el) => el.action !== "delete")
-                .map((el, idx) => (
+                .map((el, idx) => (el.action !== "delete" ?
                   <tr key={idx}>
                     <td scope="row" style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></td>
                     <td className="actions">
@@ -200,7 +194,7 @@ function ModalTemplate({
                         </a>
                       )}
                     </td>
-                  </tr>
+                  </tr> : null
                 ))}
             </tbody>
           </table>
@@ -208,7 +202,8 @@ function ModalTemplate({
         {!readonly && (
           <CustomButton
             handleClick={() => {
-              handleShow(true);
+              setShow(true);
+              setIndex(null);
             }}
             title={t("Add an element")}
             buttonType="primary"
@@ -221,19 +216,21 @@ function ModalTemplate({
           <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ padding: "20px !important" }}>
-          <BuilderForm
-            shemaObject={template}
+          <FormBuilder
+            fragment={modalData}
+            handleChangeValue={handleModalValueChange}
+            template={template}
             level={level + 1}
             fragmentId={fragmentId}
             readonly={readonly}
-          ></BuilderForm>
+          ></FormBuilder>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             {t("Close")}
           </Button>
           {!readonly && (
-            <Button variant="primary" onClick={handleAddToList}>
+            <Button variant="primary" onClick={handleSave}>
               {t("Save")}
             </Button>
           )}

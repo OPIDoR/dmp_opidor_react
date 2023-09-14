@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
@@ -23,9 +22,8 @@ const ReadDiv = styled.div`
 `tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
 function TinyArea({
-  label, propName, changeValue, tooltip, level, fragmentId, readonly
+  value, handleChangeValue, label, propName, tooltip, readonly
 }) {
-  const { formData, subData } = useContext(GlobalContext);
   const [text, setText] = useState('<p></p>');
 
   /* This is a useEffect hook that runs when the component mounts and whenever the `level` or `name` props change. It sets the initial value of the `text`
@@ -33,17 +31,15 @@ state based on the `temp` or `form` context values for the given `name` and `fra
 prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses the `temp` value or `<p></p>`. Finally, it sets the `text` state to the
 `updatedText` value. */
   useEffect(() => {
-    if (level === 1) {
-      setText(formData?.[fragmentId]?.[propName] || "<p></p>")
-    } else {
-      setText(subData ? subData[propName] : "<p></p>")
-    }
-  }, [fragmentId, propName, formData, subData]);
+    console.log(value, value || "<p></p>");
+    setText(value || "<p></p>")
+  }, [value]);
 
   const handleChange = (newText) => {
-    changeValue({ target: { name: propName, value: newText } });
+    handleChangeValue(propName, newText)
     setText(newText);
   };
+
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
@@ -63,7 +59,7 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
             <Editor
             onEditorChange={(newText) => handleChange(newText)}
             // onInit={(evt, editor) => (editorRef.current = editor)}
-            value={text}
+            initialValue={text} 
             name={propName}
             init={{
               branding: false,
