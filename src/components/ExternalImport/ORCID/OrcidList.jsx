@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getOrcid } from "../../../services/ImportServicesApi";
-import { GlobalContext } from "../../context/Global";
 import CustomError from "../../Shared/CustomError";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import Pagination from "../Pagination";
 
-function OrcidList() {
+function OrcidList({fragment, setFragment}) {
   const { t } = useTranslation();
   const pageSize = 8;
-  const { subData, setSubData } = useContext(GlobalContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,13 +15,6 @@ function OrcidList() {
   const [initialData, setInitialData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
-
-  /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
-function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
-component is initially rendered. */
-  useEffect(() => {
-    getData('*');
-  }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -54,7 +45,7 @@ component is initially rendered. */
   const setSelectedValue = (el) => {
     setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
     const obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
-    setSubData({ ...subData, ...obj });
+    setFragment({ ...fragment, ...obj });
   };
 
   /**

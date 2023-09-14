@@ -298,7 +298,7 @@ function SelectContributorSingle({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
+              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
               <FormBuilder
                 fragment={modalData}
                 handleChangeValue={handleModalValueChange}
