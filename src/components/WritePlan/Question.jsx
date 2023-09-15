@@ -252,7 +252,7 @@ function Question({ question, sectionId, readonly }) {
                   )}
 
                   {
-                    /*questionsWithGuidance && questionsWithGuidance.includes(question.id) &&*/ <div
+                    questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && <div
                       data-tooltip-id="guidanceTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
@@ -292,6 +292,7 @@ function Question({ question, sectionId, readonly }) {
                       setShowGuidanceModal={setShowGuidanceModal}
                       setFillColorGuidanceIcon={setFillGuidanceIconColor}
                       questionId={questionId}
+                      planId={planData.id}
                     ></GuidanceModal>
                   )}
                   {isQuestionOpened() ? (
