@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoClose } from "react-icons/io5";
-import { getGuidance } from "../../services/DmpGuidanceApi";
+import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, Description, MainNav, Close, ButtonComment, Title } from "./styles/RunsModalStyles";
@@ -29,13 +29,13 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    setLoading(true);
-    getGuidance("", "")
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    // setLoading(true);
+    // guidances.getGuidances("")
+    //   .then((res) => {
+    //     setData(res.data);
+    //   })
+    //   .catch((error) => setError(error))
+    //   .finally(() => setLoading(false));
   }, []);
 
   return (

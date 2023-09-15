@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import SectionsContent from "./SectionsContent";
-import { getPlanData } from "../../services/DmpWritePlanApi";
+import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
@@ -27,6 +27,7 @@ function WritePlan({
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs, setResearchOutputs,
     setUserId,
+    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,12 +43,13 @@ function WritePlan({
   //TODO update this , it can make error
   useEffect(() => {
     setLoading(true);
-    getPlanData(planId)
+    writePlan.getPlanData(planId)
       .then((res) => {
         setPlanData(res.data);
         setDmpId(res.data.dmp_id);
         setDisplayedResearchOutput(res.data.research_outputs[0]);
         !researchOutputs && setResearchOutputs(res.data.research_outputs);
+        setQuestionsWithGuidance(res?.data?.questions_with_guidance || []);
         setFormData(null);
         // if (result.length > itemsPerPage) {
         //   let resultDivision = roundedUpDivision(result.length, itemsPerPage);
@@ -61,10 +63,11 @@ function WritePlan({
 
   return (
     <>
-      {/*
-          {!readonly && (<div className="container">
-            <GuidanceChoice planId={planId} setTriggerRender={setTriggerRender} />
-      </div>)}*/}
+      {!readonly && (
+        <div className="container">
+          <GuidanceChoice planId={planId} />
+        </div>
+      )}
       <div className={styles.section}>
         {loading && <CustomSpinner></CustomSpinner>}
         {!loading && error && <CustomError error={error}></CustomError>}

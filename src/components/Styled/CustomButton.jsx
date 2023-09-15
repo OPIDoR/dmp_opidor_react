@@ -15,6 +15,7 @@ const DivButton = styled.div`
   display: flex;
   justify-content: ${(props) => (props.$position === "start" ? "start" : "center") };
 `;
+
 /**
  * This is a React component that renders a custom button with customizable properties such as title, type, and position.
  * @returns A React functional component that renders a custom button with customizable properties such as handleClick, title, type, and position. The
@@ -28,7 +29,7 @@ function CustomButton({ handleClick, title, buttonType, position }) {
 
   return (
     <DivButton $position={position}>
-      <Button type="button" className="btn btn-primary" $buttonType={buttonType}  onClick={handleButtonAction}>
+      <Button type="button" className="btn btn-primary" $buttonType={buttonType} onClick={handleButtonAction}>
         {title}
       </Button>
     </DivButton>
