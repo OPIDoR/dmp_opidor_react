@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
+import { GlobalContext } from '../context/Global.jsx';
 import styles from "../assets/css/write_plan.module.css";
 import guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import { guidances } from "../../services";
@@ -33,6 +34,9 @@ function GuidanceChoice({ planId }) {
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const {
+    setQuestionsWithGuidance
+  } = useContext(GlobalContext);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -41,9 +45,9 @@ function GuidanceChoice({ planId }) {
     setLoading(true);
     guidances.getGuidanceGroups(planId)
       .then((res) => {
-        const { guidanceGroups } = res.data;
-        setData(guidanceGroups);
-        const states = handleGuidanceGroups(guidanceGroups);
+        const { guidance_groups } = res.data;
+        setData(guidance_groups);
+        const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
       })
       .catch((error) => setError(error))
@@ -126,9 +130,10 @@ function GuidanceChoice({ planId }) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
 
-    const { guidanceGroups } = response.data;
-    setData(guidanceGroups);
-    const states = handleGuidanceGroups(guidanceGroups);
+    const { guidance_groups, questions_with_guidance } = response.data;
+    setData(guidance_groups);
+    setQuestionsWithGuidance(questions_with_guidance);
+    const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
 
     toast.success(t("Registration was successful !"));
