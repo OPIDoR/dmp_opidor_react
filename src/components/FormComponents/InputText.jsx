@@ -9,7 +9,7 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({
-  value,handleChangeValue,  label, type, placeholder, propName, tooltip, hidden, defaultValue, readonly
+  value,handleChangeValue,  label, type, placeholder, propName, tooltip, hidden = false, defaultValue, readonly
 }) {
   const { setIsEmail } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState("");
@@ -49,6 +49,7 @@ the `inputValue` variable changes. */
 
   return (
     <div className="form-group">
+      {hidden === false && (
       <div className={styles.label_form}>
         <strong className={styles.dot_label}></strong>
         <label>{label}</label>
@@ -59,11 +60,11 @@ the `inputValue` variable changes. */
           ></span>
         )}
       </div>
+      )}
       <input
-        type={type}
+        type={hidden ? 'hidden' : type}
         value={inputValue}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
-        hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}
         name={propName}

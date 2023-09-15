@@ -221,13 +221,12 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
               value={fragment[key]}
               handleChangeValue={handleChangeValue}
               label={label}
-              type={prop.format ? prop.format : prop.type}
+              type={prop.format || prop.type}
               placeholder={''}
               isSmall={false}
-              smallText={''}
               propName={key}
               changeValue={handleChangeValue}
-              hidden={prop.hidden ? true : false}
+              hidden={prop.hidden}
               tooltip={tooltip}
               defaultValue={defaultValue}
               readonly={readonly}
