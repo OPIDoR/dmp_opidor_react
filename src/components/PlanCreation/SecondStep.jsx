@@ -1,14 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  getDefaultTemplate,
-  getFunders,
-  getTemplatesByFunderId,
-  getOrgs,
-  getTemplatesByOrgId,
-  createPlan
-} from "../../services/DmpPlanCreationApi";
+import { planCreation } from "../../services";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import styles from "../assets/css/steps.module.css";
@@ -46,19 +39,21 @@ function SecondStep() {
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    getTemplatesByOrgId(currentOrg, researchContext).then((res) => {
+    planCreation.getTemplatesByOrgId(currentOrg, researchContext).then((res) => {
       setMyOrgTemplatesList(res.data);
+    }).catch((error) => {
+      toast.error(t("An error occurred during recovery of the organism template"));
     });
   }, [currentOrg, researchContext]);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    getDefaultTemplate().then((res) => {
+    planCreation.getDefaultTemplate().then((res) => {
       setDefaultTemplate(res.data);
       setResearchContext(researchContext);
       setDefaultTemplateId(res.data.id);
       setSelectedTemplate(res.data.id);
-    });
+    }).catch((error) => t("An error occurred while retrieving the default template"));
   }, []);
 
   /**
@@ -142,7 +137,7 @@ function SecondStep() {
    * Calls ths API and fetch the orgs list according to the given context
    */
   const handleFetchOrgs = () => {
-    getOrgs(researchContext).then((res) => {
+    planCreation.getOrgs(researchContext).then((res) => {
       const options = res.data.map((option) => ({
         value: option.id,
         label: option.name,
@@ -156,15 +151,20 @@ function SecondStep() {
   /**
    * Calls ths API and fetch the funders list according to the given context
    */
-  const handleFetchFunders = () => {
-    getFunders(researchContext).then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.id,
-        label: option.name,
-        object: option,
-      }));
-      setFundersList(options);
-    });
+  const handleFetchFunders = async () => {
+    let response;
+    try {
+      response = await planCreation.getFunders(researchContext);
+    } catch (error) {
+      return t("A mistake was made during the recovery of the funders");
+    }
+
+    const options = response.data.map((option) => ({
+      value: option.id,
+      label: option.name,
+      object: option,
+    }));
+    setFundersList(options);
   };
 
   /**
@@ -174,9 +174,11 @@ function SecondStep() {
    */
   const handleSelectOrg = (e) => {
     const orgData = e.object;
-    getTemplatesByOrgId(orgData, researchContext).then((res) => {
+    planCreation.getTemplatesByOrgId(orgData, researchContext).then((res) => {
       setSelectedOrg(orgData);
       setSelectedOrgTemplates(res.data);
+    }).catch((error) => {
+      toast.error(t("An error occurred during the recovery of the organism templates"));
     });
   };
 
@@ -184,31 +186,50 @@ function SecondStep() {
    * I'm trying to get the value of the selected option from the d
    * ropdown and pass it to the function getFunderById.
    */
-  const handleSelectFunder = (e) => {
+  const handleSelectFunder = async (e) => {
     const funderData = e.object;
-    getTemplatesByFunderId(funderData, researchContext).then((res) => {
-      setSelectedFunder(funderData);
-      setSelectedFunderTemplates(res.data);
-    });
+
+    let response;
+    try {
+      response = await planCreation.getTemplatesByFunderId(funderData, researchContext);
+    } catch(error) {
+      return t("A mistake was made when retrieving the funders templates");
+    }
+
+    setSelectedFunder(funderData);
+    setSelectedFunderTemplates(response.data);
   };
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
    */
-  const handleSendTemplateId = () => {
+  const handleSendTemplateId = async () => {
     if (!selectedTemplate) {
-      Swal.fire({
+      return Swal.fire({
         icon: "error",
         title: "Oops...",
         text: t("You must choose a model"),
       });
-    } else {
-      createPlan(selectedTemplate).then((res) => {
-        window.location = `/plans/${res.data.id}`
-      }).catch((res) => {
-        toast.error(res.data.message);
-      })
     }
+
+    let response;
+    try {
+      response = await planCreation.createPlan(selectedTemplate);
+    } catch (error) {
+      let errorMessage = t("An error occurred while creating the plan");
+
+      if (error.response) {
+        errorMessage = error.response.message;
+      } else if (error.request) {
+        errorMessage = error.request;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
+    }
+
+    window.location = `/plans/${response.data.id}`
   };
 
   return (

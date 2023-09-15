@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getRor } from "../../../services/ImportServicesApi";
+import { externalServices } from "../../../services";
 import Select from "react-select";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
@@ -31,28 +31,37 @@ component is initially rendered. */
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = (query, filter) => {
+  const getData = async (query, filter) => {
     setLoading(true);
-    getRor(query, filter)
-      .then((res) => {
-        setData(res.data);
-        if(query === '*') { setInitialData(res.data); }
-        const options = res.data.map((option) => ({
-          value: option.country.code,
-          label: option.country.name,
-          object: option,
-        }));
-        // get distinct array of objects
-        let distinctCountries = Object.values(
-          options.reduce((acc, cur) => {
-            if (!acc[cur.value]) acc[cur.value] = cur;
-            return acc;
-          }, {})
-        );
-        setCountries(distinctCountries);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+
+    let response;
+    try {
+      response = await services.getRor(query, filter);
+    } catch (error) {
+      setError(error);
+      return setLoading(false);
+    }
+
+    setData(response.data);
+
+    if(query === '*') { setInitialData(response.data); }
+
+    const options = response.data.map((option) => ({
+      value: option.country.code,
+      label: option.country.name,
+      object: option,
+    }));
+
+    // get distinct array of objects
+    let distinctCountries = Object.values(
+      options.reduce((acc, cur) => {
+        if (!acc[cur.value]) acc[cur.value] = cur;
+        return acc;
+      }, {})
+    );
+    setCountries(distinctCountries);
+
+    setLoading(false);
   };
 
   /**

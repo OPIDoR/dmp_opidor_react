@@ -1,73 +1,6 @@
 import axios from '../utils/AxiosClient';
+import createHeaders from '../utils/HeaderBuilder';
 import { toast } from "react-hot-toast";
-
-function createHeaders(csrf = null) {
-  if (csrf) {
-    return {
-      headers: {
-        'X-CSRF-Token': csrf,
-        'Content-Type': 'application/json',
-      },
-    };
-  }
-
-  return {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-}
-
-const dataTypeResearchOutput = [
-  {
-    en_GB: "Dataset",
-    fr_FR: "Jeu de données",
-  },
-  {
-    en_GB: "Software",
-    fr_FR: "Logiciel",
-  },
-  {
-    en_GB: "Model",
-    fr_FR: "Modèle",
-  },
-  {
-    en_GB: "Physical object",
-    fr_FR: "Objet physique",
-  },
-  {
-    en_GB: "Workflow",
-    fr_FR: "Workflow",
-  },
-  {
-    en_GB: "Audiovisual",
-    fr_FR: "Audiovisuel",
-  },
-  {
-    en_GB: "Collection",
-    fr_FR: "Collection",
-  },
-  {
-    en_GB: "Image",
-    fr_FR: "Image",
-  },
-  {
-    en_GB: "Interactive resource",
-    fr_FR: "Resource interactive",
-  },
-  {
-    en_GB: "Service",
-    fr_FR: "Service",
-  },
-  {
-    en_GB: "Sound",
-    fr_FR: "Son",
-  },
-  {
-    en_GB: "Text",
-    fr_FR: "Texte",
-  },
-];
 
 const plans = [
   {
@@ -105,11 +38,10 @@ const products = [
  * @returns An object with a "data" property, which is not defined in the code snippet. The value of "data" is likely intended to be the response data
  * from the axios post request, but it is not currently being assigned or returned correctly.
  */
-export async function createResearchOutput(jsonObject) {
+const createResearchOutput = async (jsonObject) => {
   let response;
-  const csrf = document.querySelector('meta[name="csrf-token"]').content;
   try {
-    response = await axios.post(`/research_outputs`, jsonObject, createHeaders(csrf));
+    response = await axios.post(`/research_outputs`, jsonObject, { headers: createHeaders({}, true)});
   } catch (error) {
     if (error.response) {
       toast.error(error.response.message);
@@ -128,7 +60,7 @@ export async function createResearchOutput(jsonObject) {
  * @param uuid - The uuid parameter is a unique identifier for a product that is being imported.
  * @returns an object with a "data" property that contains the updated data stored in the session storage.
  */
-export async function postImportProduct(planId, uuid) {
+const postImportProduct = async (planId, uuid) => {
   try {
     //   const objectProduct = {
     //     "plan_id": planId,
@@ -180,11 +112,10 @@ export async function postImportProduct(planId, uuid) {
  * @param id - The `id` parameter is the unique identifier of the research output that needs to be deleted.
  * @returns a Promise that resolves to the response object returned by the axios.delete() method.
  */
-export async function deleteResearchOutput(researchOutputId, planId) {
+const deleteResearchOutput = async (researchOutputId, planId) => {
   let response;
-  const csrf = document.querySelector('meta[name="csrf-token"]').content;
   try {
-    response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, createHeaders(csrf));
+    response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, { headers: createHeaders({}, true)});
   } catch (error) {
     if (error.response) {
       toast.error(error.response.message);
@@ -199,12 +130,10 @@ export async function deleteResearchOutput(researchOutputId, planId) {
 
 /**
  * This function retrieves plans using a token and returns them as data.
- * @param token - The `token` parameter is not used in the provided code snippet. It is likely intended to be used for authentication or authorization
- * purposes when making the API request to retrieve the plans data.
  * @returns An object with a "data" property that contains the "plans" data. However, the "plans" variable is not defined in the code snippet, so it is
  * unclear what data is being returned.
  */
-export async function getPlans(token) {
+const getPlans = async () => {
   try {
     //const response = await axios.get("/plans");
     //return response;
@@ -218,12 +147,10 @@ export async function getPlans(token) {
  * This function retrieves products data using an ID and token.
  * @param id - The `id` parameter is likely an identifier for a specific plan or research output. It is used in the commented out axios request to
  * retrieve data from an API endpoint.
- * @param token - The `token` parameter is likely an authentication token that is used to authenticate the user making the request to the server. It is
- * usually passed in the headers of the HTTP request to the server.
  * @returns An object with a "data" property that contains the "products" data. However, the "products" variable is not defined in the code snippet, so
  * it is unclear what data is being returned.
  */
-export async function getProducts(id, token) {
+const getProducts = async (id) => {
   try {
     //const response = await axios.get(`/plans/${id}/research_outputs`);
     //return response;
@@ -232,3 +159,12 @@ export async function getProducts(id, token) {
     console.error(error);
   }
 }
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
+  createResearchOutput,
+  postImportProduct,
+  deleteResearchOutput,
+  getPlans,
+  getProducts,
+};

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getOrcid } from "../../../services/ImportServicesApi";
+import { externalServices } from "../../../services";
 import { GlobalContext } from "../../context/Global";
 import CustomError from "../../Shared/CustomError";
 import CustomSpinner from "../../Shared/CustomSpinner";
@@ -29,15 +29,21 @@ component is initially rendered. */
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = (search) => {
+  const getData = async (search) => {
     setLoading(true);
-    getOrcid(search)
-      .then((res) => {
-        setData(res.data);
-        if(search === '*') { setInitialData(res.data); }
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+
+    let response;
+    try {
+      response = await services.getOrcid(search);
+    } catch (error) {
+      setError(error);
+      return setLoading(false);
+    }
+
+    setData(response.data);
+    if(search === '*') { setInitialData(response.data); }
+
+    setLoading(false);
   };
 
   /**

@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from '../context/Global.jsx';
-import { getRegistryById, getRegistryByName } from '../../services/DmpServiceApi';
+import { service } from '../../services';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
@@ -33,7 +33,7 @@ function SelectMultipleList({
     if(loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
-      getRegistryByName(selectedRegistry)
+      service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
           setOptions(createOptions(res.data, locale));
