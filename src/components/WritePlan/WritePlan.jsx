@@ -27,6 +27,7 @@ function WritePlan({
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs, setResearchOutputs,
     setUserId,
+    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,6 +49,7 @@ function WritePlan({
         setDmpId(res.data.dmp_id);
         setDisplayedResearchOutput(res.data.research_outputs[0]);
         !researchOutputs && setResearchOutputs(res.data.research_outputs);
+        setQuestionsWithGuidance(res?.data?.questions_with_guidance || []);
         setFormData(null);
         // if (result.length > itemsPerPage) {
         //   let resultDivision = roundedUpDivision(result.length, itemsPerPage);
