@@ -10,7 +10,7 @@ import { PiLightbulbLight } from "react-icons/pi";
 import { showQuestion } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
-import DynamicForm from "../Builder/DynamicForm";
+import DynamicForm from "../Forms/DynamicForm";
 import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";

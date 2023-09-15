@@ -6,15 +6,14 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from '../context/Global.jsx';
 import {
-  createMarkup,
   createOptions,
   deleteByIndex,
-  parsePattern,
 } from '../../utils/GeneratorUtils';
-import FormBuilder from '../Builder/FormBuilder.jsx';
+import FormBuilder from '../Forms/FormBuilder.jsx';
 import { getRegistryByName, getSchema } from '../../services/DmpServiceApi';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
+import FragmentList from './FragmentList.jsx';
 
 function SelectWithCreate({
   values,
@@ -102,7 +101,7 @@ function SelectWithCreate({
    * then sets the state to the new array.
    * @param idx - the index of the item in the array
    */
-  const handleDeleteList = (e, idx) => {
+  const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
@@ -256,45 +255,15 @@ function SelectWithCreate({
             </>
           </div>
         </div>
-        {fragmentsList && template && (
-          <table style={{ marginTop: "20px" }} className="table table-bordered">
-            <thead>
-              {fragmentsList?.length > 0  && 
-               fragmentsList.some((el) => el.action !== "delete") && (
-                <tr>
-                  <th scope="col">{header}</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              )}
-            </thead>
-            <tbody>
-              {fragmentsList
-                .map((el, idx) => ( el.action !== "delete" ?
-                  <tr key={idx}>
-                    <td scope="row" style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></td>
-                    <td className="actions">
-                      {!readonly && (
-                        <>
-                          {level === 1 && (
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                              <i className="fa fa-pen-to-square" />
-                            </a>
-                          )}
-                          <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                            <i className="fa fa-xmark" />
-                          </a>
-                        </>
-                      )}
-                      {readonly && level === 1 && (
-                        <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                          <i className="fa fa-eye" />
-                        </a>
-                      )}
-                    </td>
-                  </tr> : null
-              ))}
-            </tbody>
-          </table>
+        {template && (
+          <FragmentList
+            fragmentsList={fragmentsList}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            templateToString={template.to_string}
+            tableHeader={header}
+            readonly={readonly}
+          ></FragmentList>
         )}
       </div>
       <Modal show={show} onHide={handleClose}>

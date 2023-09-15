@@ -4,13 +4,14 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
-import FormBuilder from '../Builder/FormBuilder.jsx';
+import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createContributorsOptions, createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import Swal from 'sweetalert2';
+import ContributorList from './ContributorList';
 
 function SelectContributorSingle({
   value,
@@ -109,7 +110,7 @@ function SelectContributorSingle({
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
-  const handleDeleteList = (e, idx) => {
+  const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
@@ -156,7 +157,7 @@ function SelectContributorSingle({
     if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       // setFormData(updateFormState(value, fragmentId, propName, { person: modalData, role: role }));
-      handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update'}})
+      handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update' } })
     } else {
       // save new
       handleSaveNew();
@@ -196,8 +197,8 @@ function SelectContributorSingle({
 
 
   const handleModalValueChange = (propName, value) => {
-    console.log({ ...modalData,  [propName]: value});
-    setModalData({ ...modalData,  [propName]: value});
+    console.log({ ...modalData, [propName]: value });
+    setModalData({ ...modalData, [propName]: value });
   }
 
   return (
@@ -236,59 +237,18 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
-        {contributor && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              <tr>
-                <th scope="col">{t("Selected value")}</th>
-                <th scope="col">{t("Role")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[contributor].map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{parsePattern(el.person, template.to_string)} </div>
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-pen-to-square" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-xmark" />
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {roleOptions && (
-                      <CustomSelect
-                        onChange={handleSelectRole}
-                        options={roleOptions}
-                        selectedOption={{ label: defaultRole, value: defaultRole }}
-                        name={propName}
-                        isDisabled={readonly}
-                      // async={true}
-                      // asyncCallback={fetchContributors}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {template && (
+          <ContributorList
+            contributorList={[contributor]}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            roleOptions={roleOptions}
+            handleSelectRole={handleSelectRole}
+            defaultRole={defaultRole}
+            templateToString={template.to_string}
+            tableHeader={t('Selected value')}
+            readonly={readonly}
+          ></ContributorList>
         )}
       </div>
       <>

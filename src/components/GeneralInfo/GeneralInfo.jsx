@@ -12,7 +12,7 @@ import CustomSelect from "../Shared/CustomSelect";
 import styles from "../assets/css/general_info.module.css";
 import { getFunders, saveFunder, saveIsTestPlan } from "../../services/DmpGeneralInfoApi";
 import { GlobalContext } from "../context/Global";
-import DynamicForm from "../Builder/DynamicForm";
+import DynamicForm from "../Forms/DynamicForm";
 import { getRegistryByName } from "../../services/DmpServiceApi";
 
 export const ButtonSave = styled.button`+
