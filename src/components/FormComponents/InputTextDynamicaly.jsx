@@ -1,21 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
-import { GlobalContext } from '../context/Global.jsx';
-import { updateFormState } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, propName, tooltip, fragmentId, readonly  }) {
+function InputTextDynamicaly({ values, handleChangeValue, label, propName, tooltip, fragmentId, readonly  }) {
   const { t } = useTranslation();
   const [formFields, setFormFields] = useState(['']);
-  const { formData, setFormData } = useContext(GlobalContext);
   
   /* A React hook that is called when the component is mounted and when the name variable changes. */
   useEffect(() => {
-    setFormFields(formData?.[fragmentId]?.[propName] || [""]);
-  }, [propName, formData]);
+    setFormFields(values || [""]);
+  }, [values]);
 
   /**
    * When the form changes, update the form fields and set the form to the new data.
@@ -24,7 +21,9 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId, readonly  }
     const data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    setFormData(updateFormState(formData, fragmentId, propName, data));
+    // setFormData(updateFormState(formData, fragmentId, propName, data));
+    handleChangeValue(propName, data)
+
   };
 
   /**
@@ -48,7 +47,8 @@ function InputTextDynamicaly({ label, propName, tooltip, fragmentId, readonly  }
       const data = [...formFields];
       data.splice(index, 1);
       setFormFields(data);
-      setFormData(updateFormState(formData, fragmentId, propName, data));
+      // setFormData(updateFormState(formData, fragmentId, propName, data));
+      handleChangeValue(propName, data)
     }
   };
 
