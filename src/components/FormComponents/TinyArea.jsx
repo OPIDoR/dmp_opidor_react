@@ -31,7 +31,6 @@ state based on the `temp` or `form` context values for the given `name` and `fra
 prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses the `temp` value or `<p></p>`. Finally, it sets the `text` state to the
 `updatedText` value. */
   useEffect(() => {
-    console.log(value, value || "<p></p>");
     setText(value || "<p></p>")
   }, [value]);
 

@@ -72,7 +72,6 @@ function DynamicForm({
   const handleChangeValue = (propName, value) => {
     const updatedFragment = { ...fragment };
     updatedFragment[propName] = value;
-    console.log(updatedFragment);
     setFragment(updatedFragment);
     setFormData({ ...formData,  [fragmentId] : updatedFragment});
   }
