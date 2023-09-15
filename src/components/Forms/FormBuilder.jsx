@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
 
 import { GlobalContext } from '../context/Global.jsx';
-import InputText from '../Forms/InputText';
-import InputTextDynamicaly from '../Forms/InputTextDynamicaly';
-import ModalTemplate from '../Forms/ModalTemplate';
-import SelectContributorMultiple from '../Forms/SelectContributorMultiple.jsx';
-import SelectContributorSingle from '../Forms/SelectContributorSingle.jsx';
-import SelectMultipleList from '../Forms/SelectMultipleList';
-import SelectSingleList from '../Forms/SelectSingleList';
-import SelectWithCreate from '../Forms/SelectWithCreate';
-import TinyArea from '../Forms/TinyArea';
+import InputText from '../FormComponents/InputText.jsx';
+import InputTextDynamicaly from '../FormComponents/InputTextDynamicaly';
+import ModalTemplate from '../FormComponents/ModalTemplate';
+import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
+import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
+import SelectMultipleList from '../FormComponents/SelectMultipleList';
+import SelectSingleList from '../FormComponents/SelectSingleList';
+import SelectWithCreate from '../FormComponents/SelectWithCreate';
+import TinyArea from '../FormComponents/TinyArea';
 import { createLabel } from '../../utils/GeneratorUtils.js';
 
 function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level, readonly }) {

@@ -5,12 +5,14 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
-import FormBuilder from '../Builder/FormBuilder.jsx';
+import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createContributorsOptions, createOptions, deleteByIndex, parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { getContributors, getRegistryByName, getSchema } from '../../services/DmpServiceApi.js';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
+import FragmentList from './FragmentList';
+import ContributorList from './ContributorList';
 
 function SelectContributorMultiple({
   values,
@@ -162,7 +164,7 @@ function SelectContributorMultiple({
   /**
    * I want to delete an item from a list and then update the state of the list.
    */
-  const handleDeleteList = (e, idx) => {
+  const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
@@ -241,61 +243,18 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        {template && contributorList && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              {contributorList.length > 0 && header && contributorList.some((el) => el.action !== "delete") && (
-                <tr>
-                  <th scope="col">{header}</th>
-                  <th scope="col">{t("Role")}</th>
-                </tr>
-              )}
-            </thead>
-            <tbody>
-              {contributorList.map((el, idx) => (el.action !== "delete" ?
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{parsePattern(el.person, template.to_string)} </div>
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-pen-to-square" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-xmark" />
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {roleOptions && (
-                      <CustomSelect
-                        onChange={handleSelectRole}
-                        options={roleOptions}
-                        selectedOption={{ label: defaultRole, value: defaultRole }}
-                        name={propName}
-                        isDisabled={readonly}
-                      // async={true}
-                      // asyncCallback={fetchContributors}
-                      />
-                    )}
-                  </td>
-                </tr> : null
-              ))}
-            </tbody>
-          </table>
+        {template && (
+          <ContributorList
+            contributorList={contributorList}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            roleOptions={roleOptions}
+            handleSelectRole={handleSelectRole}
+            defaultRole={defaultRole}
+            templateToString={template.to_string}
+            tableHeader={header}
+            readonly={readonly}
+          ></ContributorList>
         )}
       </div>
       <>
