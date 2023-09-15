@@ -1,17 +1,21 @@
 import DOMPurify from "dompurify";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
+import { GlobalContext } from "../context/Global";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
 
-function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId }) {
+function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [indexTab, setIndexTab] = useState(0);
+  const {
+    questionsWithGuidance
+  } = useContext(GlobalContext);
 
   const modalStyles = {
     display: show ? "block" : "none",
@@ -26,7 +30,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     width: "600px",
     height: "400px",
     color: "var(--white)",
-    // overflow: "auto", // Add thi
   };
 
   const navStyles = (tab) => ({
@@ -41,8 +44,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     padding: "10px",
     borderRadius: "10px 10px 0px 0px",
     fontWeight: "bold",
-    // fontFamily:'"Helvetica Neue", sans-serif',
-    // fontSize: "15px",
   });
 
   const navBar = {
@@ -52,16 +53,17 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (!questionId) { return; }
+   if (!questionId) { return; }
+   if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
-    guidances.getGuidances(questionId)
+    guidances.getGuidances(planId, questionId)
       .then((res) => {
-        setData(res.data.guidanceGroups);
+        setData(res.data.guidances);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [questionId]);
+  }, [planId, questionId]);
 
   /**
   * getContent function returns JSX with a scrollable container (<ScrollNav>) containing a body (<NavBody>) and text (<NavBodyText>).
@@ -74,27 +76,27 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
       <ScrollNav>
         <NavBody>
           <NavBodyText>
-            {data?.[indexTab]?.annotations[0]?.text ? (
+            {data?.[indexTab]?.annotations?.[0]?.text ? (
               <div
-                key={`annotation-${indexTab}`}
+                key={`guidance-annotation-${indexTab}`}
                 dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(data?.[indexTab]?.annotations[0]["text"]),
+                  __html: DOMPurify.sanitize(data?.[indexTab]?.annotations?.[0]["text"]),
                 }}
               />
             ) : (
               <>
-                {data?.[indexTab].groups.map((el, idx) => (
+                {Object.keys(data?.[indexTab]?.groups).map((theme, idx) => (
                   <>
-                    <Theme key={`theme-${idx}`}>{el?.theme}</Theme>
-                    {el?.guidances.map((g, id) => (
+                    <Theme key={`guidance-theme-${idx}`} alt={theme}>{theme}</Theme>
+                    {data?.[indexTab].groups[theme]?.map((g, id) => (
                       <>
                         <div
-                          key={`guidance-${id}`}
+                          key={`guidance-content-${id}`}
                           dangerouslySetInnerHTML={{
                             __html: DOMPurify.sanitize(g.text),
                           }}
                         />
-                        <hr key={`hr-${id}`} />
+                        {id > 0 && <hr key={`guidance-hr-${id}`} />}
                       </>
                     ))}
                   </>
@@ -122,7 +124,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
           <nav style={navBar}>
             {data.map((el, idx) => (
               <span
-                key={`tab-${idx}`}
+                key={`guidance-tab-${idx}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
