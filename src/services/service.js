@@ -1,6 +1,5 @@
 import axios from 'axios';
-import toast from 'react-hot-toast';
-import { createHeaders } from '../utils/HeaderBuilder';
+import createHeaders from '../utils/HeaderBuilder';
 
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
