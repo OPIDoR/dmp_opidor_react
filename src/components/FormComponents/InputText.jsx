@@ -9,22 +9,20 @@ import styles from "../assets/css/form.module.css";
  * @returns A React Component
  */
 function InputText({
-  label, level, type, placeholder, propName, changeValue, tooltip, hidden, defaultValue, fragmentId, readonly
+  value,handleChangeValue,  label, type, placeholder, propName, tooltip, hidden = false, defaultValue, readonly
 }) {
-  const { formData, subData, setIsEmail } = useContext(GlobalContext);
+  const { setIsEmail } = useContext(GlobalContext);
   const [inputValue, setInputValue] = useState("");
   const [isRequired, setIsRequired] = useState(false);
 
 
   useEffect(() => {
     if (defaultValue !== null) {
-      setInputValue(defaultValue);
-    } else if (level === 1) {
-      setInputValue(formData?.[fragmentId]?.[propName] || "");
+      setInputValue(value || defaultValue);
     } else {
-      setInputValue(subData[propName] || "");
+      setInputValue(value || "");
     }
-  }, [defaultValue, formData, subData, fragmentId, propName]);
+  }, [value]);
 
   /**
    * It takes a number, formats it to a string, and then sets the
@@ -35,7 +33,7 @@ function InputText({
     const { value } = e.target;
     const isPattern = getCheckPattern(type, value);
     setIsEmail(isPattern);
-    changeValue(e);
+    handleChangeValue(propName, value)
     setIsRequired(!isPattern);
     setInputValue(value);
   };
@@ -51,6 +49,7 @@ the `inputValue` variable changes. */
 
   return (
     <div className="form-group">
+      {hidden === false && (
       <div className={styles.label_form}>
         <strong className={styles.dot_label}></strong>
         <label>{label}</label>
@@ -61,11 +60,11 @@ the `inputValue` variable changes. */
           ></span>
         )}
       </div>
+      )}
       <input
-        type={type}
+        type={hidden ? 'hidden' : type}
         value={inputValue}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
-        hidden={hidden}
         placeholder={placeholder}
         onChange={handleChangeInput}
         name={propName}

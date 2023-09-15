@@ -9,21 +9,20 @@ import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 
 function SelectMultipleList({
+  values,
   label,
   registries,
   propName,
-  changeValue,
+  handleChangeValue,
   tooltip,
   header,
-  fragmentId,
   readonly,
-  level,
 }) {
   const { t, i18n } = useTranslation();
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState(null);
   const { 
-    formData, subData, setSubData, locale, loadedRegistries, setLoadedRegistries 
+    locale, loadedRegistries, setLoadedRegistries 
   } = useContext(GlobalContext);
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
 
@@ -47,21 +46,17 @@ function SelectMultipleList({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if (level === 1) {
-      setSelectedValues(formData?.[fragmentId]?.[propName]);
-    } else {
-      setSelectedValues(subData[propName]);
-    }
-  }, [formData, subData]);
+    setSelectedValues(values || []);
+  }, [values]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    const copyList = [...(selectedValues || []), e.value];
-    changeValue({ target: { name: propName, value: [...copyList] } });
-    setSelectedValues(copyList);
+    const newList = [...(selectedValues || []), e.value];
+    handleChangeValue(propName, newList);
+    setSelectedValues(newList);
   };
 
   /**
@@ -87,7 +82,6 @@ function SelectMultipleList({
           newList.splice(idx, 1); // 2nd parameter means remove one item only
         }
         setSelectedValues(newList);
-        setSubData({ ...subData, [propName]: newList });
       }
     });
   };
@@ -149,10 +143,10 @@ function SelectMultipleList({
                         onChange={handleSelectRegistryValue}
                         options={options}
                         name={propName}
-                        defaultValue={{
-                          label: subData ? subData[propName] : '',
-                          value: subData ? subData[propName] : '',
-                        }}
+                        // defaultValue={{
+                        //   label: fragment ? fragment[propName] : '',
+                        //   value: fragment ? fragment[propName] : '',
+                        // }}
                         isDisabled={readonly}
                       />
                     </>

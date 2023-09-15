@@ -5,7 +5,7 @@ import HandleGenerateForms from "../components/Builder/HandleGenerateForms";
 import Global from "../components/context/Global";
 import i18n from "../i18nTest";
 
-let shemaObject = {
+let template = {
   $schema: "http://json-schema.org/draft-07/schema#",
   $id: "../Documentation/Implementation/data_model/Json/",
   title: "DataStorageStandard",
@@ -49,7 +49,7 @@ describe("Handle Generate TextArea", () => {
     await act(async () => {
       render(
         <Global>
-          <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
+          <HandleGenerateForms template={template} level={level} lng={lng} changeValue={changeValue} />
         </Global>
       );
     });

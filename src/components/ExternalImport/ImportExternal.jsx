@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import OrcidList from "./ORCID/OrcidList";
 import RorList from "./ROR/RorList";
 import { useTranslation } from "react-i18next";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-function ImportExternal() {
+function ImportExternal({fragment, setFragment}) {
   const { t } = useTranslation();
   const [showRor, setShowRor] = useState(false);
   const [showOrcid, setShowOrcid] = useState(false);
@@ -34,13 +34,19 @@ function ImportExternal() {
 
       {showOrcid && (
         <>
-          <OrcidList></OrcidList>
+          <OrcidList
+            fragment={fragment}
+            setFragment={setFragment}
+          ></OrcidList>
           <div style={{ display: "flex", justifyContent: "center" }}></div>
         </>
       )}
       {showRor && (
         <>
-          <RorList></RorList>
+          <RorList
+            fragment={fragment}
+            setFragment={setFragment}
+          ></RorList>
           <div style={{ display: "flex", justifyContent: "center" }}></div>
         </>
       )}
