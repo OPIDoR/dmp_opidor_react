@@ -139,7 +139,6 @@ function ModalTemplate({
   };
 
   const handleModalValueChange = (propName, value) => {
-    console.log({ ...modalData, [propName]: value });
     setModalData({ ...modalData, [propName]: value });
   }
 

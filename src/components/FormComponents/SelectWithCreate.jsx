@@ -168,7 +168,6 @@ function SelectWithCreate({
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(idx, fragmentsList);
     setModalData(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);
@@ -182,7 +181,6 @@ function SelectWithCreate({
   };
 
   const handleModalValueChange = (propName, value) => {
-    console.log({ ...modalData,  [propName]: value});
     setModalData({ ...modalData,  [propName]: value});
   }
 

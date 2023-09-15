@@ -36,7 +36,6 @@ function SectionsContent({ planId, templateId, readonly }) {
   Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
-    console.log(templateId);
     getSectionsData(templateId)
       .then((res) => {
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
