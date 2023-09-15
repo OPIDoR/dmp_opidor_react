@@ -24,19 +24,9 @@ const ReadDiv = styled.div`
 function TinyArea({
   value, handleChangeValue, label, propName, tooltip, readonly
 }) {
-  const [text, setText] = useState('<p></p>');
-
-  /* This is a useEffect hook that runs when the component mounts and whenever the `level` or `name` props change. It sets the initial value of the `text`
-state based on the `temp` or `form` context values for the given `name` and `fragmentId`, or sets it to `<p></p>` if no value is found. If the `level`
-prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses the `temp` value or `<p></p>`. Finally, it sets the `text` state to the
-`updatedText` value. */
-  useEffect(() => {
-    setText(value || "<p></p>")
-  }, [value]);
 
   const handleChange = (newText) => {
     handleChangeValue(propName, newText)
-    setText(newText);
   };
 
   return (
@@ -46,8 +36,8 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
+            <span
+              className="fas fa-circle-info"
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}
@@ -56,26 +46,26 @@ prop is 1, it uses the `defaultValue` as the `updatedText`, otherwise it uses th
         <div style={{ marginTop: "10px" }}>
           {!readonly && (
             <Editor
-            onEditorChange={(newText) => handleChange(newText)}
-            // onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue={text} 
-            name={propName}
-            init={{
-              branding: false,
-              height: 200,
-              menubar: false,
-              plugins: "table autoresize link advlist lists",
-              toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
-              content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-              skin_url: '/tinymce/skins/oxide',
-              content_css: ['/tinymce/tinymce.css'],
-            }}
+              onEditorChange={(newText) => handleChange(newText)}
+              // onInit={(evt, editor) => (editorRef.current = editor)}
+              value={value}
+              name={propName}
+              init={{
+                branding: false,
+                height: 200,
+                menubar: false,
+                plugins: "table autoresize link advlist lists",
+                toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
+                content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                skin_url: '/tinymce/skins/oxide',
+                content_css: ['/tinymce/tinymce.css'],
+              }}
             />
           )}
           {readonly && (
             <ReadDiv
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize([text]),
+                __html: DOMPurify.sanitize([value]),
               }}
             />
           )}
