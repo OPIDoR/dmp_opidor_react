@@ -23,7 +23,6 @@ function SectionsContent({ planId, templateId, readonly }) {
     setOpenedQuestions,
     setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
-    setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
@@ -36,13 +35,11 @@ function SectionsContent({ planId, templateId, readonly }) {
   Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
-    console.log(templateId);
     writePlan.getSectionsData(templateId)
       .then((res) => {
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
         //   return el.id === displayedResearchOutput.id;
         // });
-        // setQuestionsWithGuidance(res?.data?.plan.questions_with_guidance || []);
         setSectionsData(res.data);
         if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
           // const allCollapses = res.data.map((section) => {
