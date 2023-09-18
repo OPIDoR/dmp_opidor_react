@@ -14,7 +14,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddResearchOutput({ planId, handleClose, show }) {
+function AddResearchOutput({ planId, handleClose }) {
   const { 
     locale,
     setDisplayedResearchOutput,
@@ -25,7 +25,7 @@ function AddResearchOutput({ planId, handleClose, show }) {
   const [abbreviation, setAbbreviation] = useState(null);
   const [title, setTitle] = useState(null);
   const [type, setType] = useState(null);
-  const [hasPersonalData, setHasPersonalData] = useState(false);
+  const [hasPersonalData, setHasPersonalData] = useState(true);
   const selectedOption = options.find((opt) => opt.value === type);
 
   /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeResearchOutput` function. It sets the fetched data to the
@@ -54,16 +54,13 @@ when the component mounts. */
       abbreviation,
       title,
       type,
-      hasPersonalData,
+      research_output_parameters: {
+        hasPersonalData
+      }
     };
     researchOutput.createResearchOutput(researchOutputInfo).then((res) => {
       setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
-      // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
       setResearchOutputs(res.data.research_outputs);
-      setAbbreviation("");
-      setTitle("");
-      setType("");
-      setHasPersonalData(false);
       handleClose();
     });
   };
