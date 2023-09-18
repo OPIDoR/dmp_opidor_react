@@ -54,7 +54,7 @@ when the component mounts. */
       abbreviation,
       title,
       type,
-      research_output_parameters: {
+      configuration: {
         hasPersonalData
       }
     };
