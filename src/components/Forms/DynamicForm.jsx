@@ -41,6 +41,7 @@ function DynamicForm({
           setTemplate(res.data);
           setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
         });
+        setFragment(formData[fragmentId])
         setLoading(false);
       } else {
         service.getFragment(fragmentId).then((res) => {
