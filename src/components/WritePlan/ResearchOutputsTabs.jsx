@@ -27,6 +27,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
    * The function handleClose sets the state of setShow to false.
    */
   const handleClose = () => setShow(false);
+
   /**
    * The function sets the state of "show" to true.
    */

@@ -94,15 +94,13 @@ function SectionsContent({ planId, templateId, readonly }) {
   };
 
   const handleClose = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     setShow(false);
     setEdit(false);
   }
 
   return (
     <>
-      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={true} edit={true} />}
+      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && sectionsData && (
