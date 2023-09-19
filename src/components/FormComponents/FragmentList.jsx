@@ -2,11 +2,10 @@ import React from 'react';
 import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
 
 
-function FragmentList({fragmentsList, template, tableHeader, readonly, level, handleEdit, handleDelete}) {
-
+function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form', templateToString = [], tableHeader = null, readonly = false }) {
   return (
     <>
-      {fragmentsList && template && (
+      {fragmentsList  && (
         <table style={{ marginTop: "20px" }} className="table table-hover">
           <thead>
             {fragmentsList.length > 0 &&
@@ -20,30 +19,29 @@ function FragmentList({fragmentsList, template, tableHeader, readonly, level, ha
           </thead>
           <tbody>
             {fragmentsList
-              .filter((el) => el.action !== "delete")
-              .map((el, idx) => (
+              .map((el, idx) => (el.action !== "delete" ?
                 <tr key={idx}>
-                  <td style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, template.to_string))}></td>
+                  <td scope="row" style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, templateToString))}></td>
                   <td className="actions">
                     {!readonly && (
                       <>
-                        {level === 1 && (
+                        {parent === 'form' && (
                           <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
                             <i className="fa fa-pen-to-square" />
                           </a>
                         )}
                         <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDelete(e, idx)}>
-                          <i className="fa fa-times" />
+                          <i className="fa fa-xmark" />
                         </a>
                       </>
                     )}
-                    {readonly && level === 1 && (
+                    {readonly && parent === 'form' && (
                       <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
                         <i className="fa fa-eye" />
                       </a>
                     )}
                   </td>
-                </tr>
+                </tr> : null
               ))}
           </tbody>
         </table>

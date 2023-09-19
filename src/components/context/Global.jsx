@@ -12,16 +12,16 @@ import React, {
  */
 const reducer = (formData, incomingFormData) => {
   if (incomingFormData === null) {
-    localStorage.removeItem('formData');
-    sessionStorage.removeItem("researchOutputs");
+    // localStorage.removeItem('formData');
+    // sessionStorage.removeItem("researchOutputs");
     return {};
   }
   return { ...formData, ...incomingFormData };
 };
 
 /* It's getting the form from localStorage. */
-const formLocalState = JSON.parse(localStorage.getItem('formData'));
-const researchOutputsLocalState = JSON.parse(sessionStorage.getItem("researchOutputs"));
+// const formLocalState = JSON.parse(localStorage.getItem('formData'));
+// const researchOutputsLocalState = JSON.parse(sessionStorage.getItem("researchOutputs"));
 export const GlobalContext = createContext();
 
 /**
@@ -37,8 +37,7 @@ function Global({ children }) {
   const [researchContext, setResearchContext] = useState('research_project');
   const [currentOrg, setCurrentOrg] = useState({})
   // Dynamic form
-  const [formData, setFormData] = useReducer(reducer, formLocalState || {});
-  const [subData, setSubData] = useState({});
+  const [formData, setFormData] = useReducer(reducer, {});
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
   const [isEmail, setIsEmail] = useState(false);
@@ -52,15 +51,15 @@ function Global({ children }) {
 
 
   /* It's setting the formData in sessionStorage. */
-  useEffect(() => {
-    /* It's setting the form in localStorage. */
-    localStorage.setItem('formData', JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   /* It's setting the form in localStorage. */
+  //   localStorage.setItem('formData', JSON.stringify(formData));
+  // }, [formData]);
 
   /* It's setting the researchOutputs in sessionStorage. */
-  useEffect(() => {
-    sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
-  }, [researchOutputs]);
+  // useEffect(() => {
+  //   sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
+  // }, [researchOutputs]);
 
   return (
     <GlobalContext.Provider
@@ -77,8 +76,6 @@ function Global({ children }) {
         // Dynamic form
         formData,
         setFormData,
-        subData,
-        setSubData,
         loadedRegistries,
         setLoadedRegistries,
         loadedTemplates,
