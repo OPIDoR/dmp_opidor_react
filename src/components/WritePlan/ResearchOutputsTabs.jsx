@@ -27,6 +27,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
    * The function handleClose sets the state of setShow to false.
    */
   const handleClose = () => setShow(false);
+
   /**
    * The function sets the state of "show" to true.
    */
@@ -157,7 +158,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
           </div>
         </ResearchOutputsNavBar>
       )}
-      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
+      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
     </>
   );
 }
