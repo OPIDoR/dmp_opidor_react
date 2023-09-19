@@ -33,7 +33,7 @@ function ResearchOutputModal({ planId, handleClose, show }) {
         </div>
         <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey="create" id="create-research-output-tabs">
           <Tab eventKey="create" title={t("Create")}>
-            <AddResearchOutput planId={planId} handleClose={handleClose} show={show} />
+            <AddResearchOutput planId={planId} handleClose={handleClose} />
           </Tab>
           {/* <Tab eventKey="import" title={t("Import")}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />
