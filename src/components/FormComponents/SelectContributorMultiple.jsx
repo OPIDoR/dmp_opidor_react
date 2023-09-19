@@ -5,14 +5,17 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
-import BuilderForm from '../Builder/BuilderForm.jsx';
-import { createContributorsOptions, createOptions, deleteByIndex, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
+import FormBuilder from '../Forms/FormBuilder.jsx';
+import { createContributorsOptions, createOptions, deleteByIndex, parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
+import ContributorList from './ContributorList';
 
 function SelectContributorMultiple({
+  values,
+  handleChangeValue,
   label,
   propName,
   templateId,
@@ -26,20 +29,21 @@ function SelectContributorMultiple({
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
   const {
-    formData, setFormData, subData, setSubData, locale, dmpId,
+    locale, dmpId,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
     isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [role, setRole] = useState(null);
+  const [modalData, setModalData] = useState({});
+  const [defaultRole, setDefaultRole] = useState(null);
   const [contributorList, setContributorList] = useState([])
   const [roleOptions, setRoleOptions] = useState(null);
 
   useEffect(() => {
-    setContributorList(formData?.[fragmentId]?.[propName] || {})
-  }, [fragmentId, propName, formData]);
+    setContributorList(values || [])
+  }, [values]);
 
 
   /* A hook that is called when the component is mounted. */
@@ -59,7 +63,7 @@ function SelectContributorMultiple({
       setLoadedRegistries({...loadedRegistries, 'Role': res.data});
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setRole(formData?.[fragmentId]?.[propName]?.role || options[0]?.value);
+      setDefaultRole(options[0]?.value);
     });
   }
 
@@ -69,7 +73,7 @@ function SelectContributorMultiple({
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
-        setRole(contributorTemplate.properties.role[`const@${locale}`]);
+        setDefaultRole(contributorTemplate.properties.role[`const@${locale}`]);
         const personTemplateId = contributorTemplate.properties.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
@@ -82,14 +86,6 @@ function SelectContributorMultiple({
       const personTemplateId = contributorTemplate.properties.person.schema_id;
       setTemplate(loadedTemplates[personTemplateId]);
     }
-
-    if (!contributorList || !template) return;
-    const pattern = template.to_string;
-    if (!pattern) {
-      return;
-    }
-
-    setContributorList(contributorList.filter((el) => el.action !== 'delete').map((el) => parsePattern(el, pattern)));
   }, [templateId]);
 
   /**
@@ -97,7 +93,7 @@ function SelectContributorMultiple({
    */
   const handleClose = () => {
     setShow(false);
-    setSubData({});
+    setModalData({});
     setIndex(null);
   };
 
@@ -107,42 +103,44 @@ function SelectContributorMultiple({
    */
   const handleSelectContributor = (e) => {
     const { object } = e;
-    const currentList = formData?.[fragmentId]?.[propName] || [];
-    const newObject = { person: { ...object, action: "update" }, role: role, action: "create" };
-    const mergedList = [...currentList, newObject];
-    setContributorList([...contributorList, newObject])
-    setFormData(updateFormState(formData, fragmentId, propName, mergedList));
+    const currentList = contributorList;
+    const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
+    const newContributorList = [...currentList, addedContributor];
+    setContributorList([...contributorList, addedContributor])
+    // setFormData(updateFormState(formData, fragmentId, propName, mergedList));
+    handleChangeValue(propName, newContributorList)
   };
-  
+
   /**
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e, index) => {
-    const dataCopy = { ...formData };
+    const dataCopy = contributorList;
     dataCopy[fragmentId][propName][index].role = e.value;
-    setFormData(dataCopy);
+    // setFormData(dataCopy);
+    handleChangeValue(propName, dataCopy)
+
   };
 
   /**
    * If the index is not null, then delete the item at the index,
-   * add the subData item to the end of the array,
+   * add the modalData item to the end of the array,
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
-  const handleAddToList = () => {
+  const handleSave = () => {
     if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
-      const objectPerson = { person: subData, role: role, action: 'update' };
-      const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
-      const deleteIndex = deleteByIndex(filterDeleted, index);
-      const concatedObject = [...deleteIndex, objectPerson];
-      setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-      setContributorList([...deleteByIndex([...contributorList], index), subData]);
+      const updatedContributor = { person: modalData, role: defaultRole, action: modalData.action || 'update' };
+      // setFormData(updateFormState(formData, fragmentId, propName, newContributorList));
+      handleChangeValue(propName, [...values, updatedContributor])
+
+      setContributorList([...contributorList, modalData]);
     } else {
-      handleSave();
+      handleSaveNew();
     }
     toast.success('Enregistrement a été effectué avec succès !');
-    setSubData({});
+    setModalData({});
     handleClose();
   };
 
@@ -152,18 +150,20 @@ function SelectContributorMultiple({
    * temporary person object and add it to the list array, then it will close the
    * modal and set the temporary person object to null.
    */
-  const handleSave = () => {
-    const objectPerson = { person: subData, role };
-    setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
+  const handleSaveNew = () => {
+    const objectPerson = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
+    // setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
+    handleChangeValue(propName, [...(contributorList || []), objectPerson])
+
     setContributorList([...contributorList, objectPerson]);
     handleClose();
-    setSubData({});
+    setModalData({});
   };
 
   /**
    * I want to delete an item from a list and then update the state of the list.
    */
-  const handleDeleteList = (e, idx) => {
+  const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
@@ -179,25 +179,31 @@ function SelectContributorMultiple({
       if (result.isConfirmed) {
         const newList = [...contributorList];
         setContributorList(deleteByIndex(newList, idx));
-        const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
-        filterDeleted[idx]['action'] = 'delete';
-        setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
+        const updatedList = { ...contributorList };
+        updatedList[idx]['action'] = 'delete';
+        // setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
+        handleChangeValue(propName, updatedList)
+
       }
     });
   };
 
   /**
-   * It sets the state of the subData variable to the value of the form[propName][idx] variable.
+   * It sets the state of the modalData variable to the value of the form[propName][idx] variable.
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    const filterDeleted = contributorList.filter((el) => el.action !== 'delete');
-    setSubData(filterDeleted[idx]['person']);
+    setModalData(contributorList[idx]['person']);
     setShow(true);
     setIndex(idx);
   };
+
+
+  const handleModalValueChange = (propName, value) => {
+    setModalData({ ...modalData, [propName]: value });
+  }
 
   return (
     <>
@@ -219,8 +225,8 @@ function SelectContributorMultiple({
               options={options}
               name={propName}
               defaultValue={{
-                label: subData ? subData[propName] : '',
-                value: subData ? subData[propName] : '',
+                label: modalData ? modalData[propName] : '',
+                value: modalData ? modalData[propName] : '',
               }}
               isDisabled={readonly}
             />
@@ -235,61 +241,18 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        {template && contributorList && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              {contributorList.length > 0 && header && contributorList.some((el) => el.action !== "delete") && (
-                <tr>
-                  <th scope="col">{header}</th>
-                  <th scope="col">{t("Role")}</th>
-                </tr>
-              )}
-            </thead>
-            <tbody>
-              {contributorList.map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{parsePattern(el.person, template.to_string)} </div>
-                        {!readonly && (
-                          <div className={styles.table_container}>
-                            <div className="col-md-1">
-                              {level === 1 && (
-                                <span>
-                                  <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                    <i className="fa fa-pen-to-square" />
-                                  </a>
-                                </span>
-                              )}
-                            </div>
-                            <div className="col-md-1">
-                              <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                  <i className="fa fa-xmark" />
-                                </a>
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  <td>
-                    {roleOptions && (
-                      <CustomSelect
-                        onChange={(e) => handleSelectRole(e, idx)}
-                        options={roleOptions}
-                        selectedOption={{label: el.role, value: el.role}}
-                        name={propName}
-                        isDisabled={readonly}
-                        // async={true}
-                        // asyncCallback={fetchContributors}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {template && (
+          <ContributorList
+            contributorList={contributorList}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            roleOptions={roleOptions}
+            handleSelectRole={handleSelectRole}
+            defaultRole={defaultRole}
+            templateToString={template.to_string}
+            tableHeader={header}
+            readonly={readonly}
+          ></ContributorList>
         )}
       </div>
       <>
@@ -299,20 +262,22 @@ function SelectContributorMultiple({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
-              <BuilderForm
-                shemaObject={template}
-                level={level + 1}
+              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
+              <FormBuilder
+                fragment={modalData}
+                handleChangeValue={handleModalValueChange}
                 fragmentId={fragmentId}
+                template={template}
+                level={level + 1}
                 readonly={readonly}
-              ></BuilderForm>
+              ></FormBuilder>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
               {!readonly && (
-                <Button variant="primary" onClick={handleAddToList}>
+                <Button variant="primary" onClick={handleSave}>
                   {t("Save")}
                 </Button>
               )}

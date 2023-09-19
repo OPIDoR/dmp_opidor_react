@@ -4,51 +4,48 @@ import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 import ImportExternal from "../ExternalImport/ImportExternal";
 
-import BuilderForm from '../Builder/BuilderForm.jsx';
-import { createContributorsOptions, createOptions, parsePattern, updateFormState } from '../../utils/GeneratorUtils.js';
+import FormBuilder from '../Forms/FormBuilder.jsx';
+import { createContributorsOptions, createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import Swal from 'sweetalert2';
+import ContributorList from './ContributorList';
 
 function SelectContributorSingle({
-  label,
+  value,
   propName,
-  changeValue,
+  label,
+  handleChangeValue,
   templateId,
   level,
   tooltip,
   fragmentId,
-  readonly, 
+  readonly,
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
   const {
-    formData, setFormData, subData, setSubData, locale, dmpId,
+    locale,
+    dmpId,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
     isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [role, setRole] = useState(null);
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [modalData, setModalData] = useState({})
+  const [defaultRole, setDefaultRole] = useState(null);
   const [contributor, setContributor] = useState({})
   const [roleOptions, setRoleOptions] = useState(null);
 
   useEffect(() => {
-    setContributor(formData?.[fragmentId]?.[propName])
-    setRole(formData?.[fragmentId]?.[propName]?.role)
-  }, [fragmentId, propName, formData]);
+    setContributor(value)
+    setDefaultRole(value?.role)
+  }, [value]);
 
-  useEffect(() => {
-    const pattern = template.to_string;
-    if (pattern && pattern.length > 0) {
-      setSelectedValue(parsePattern(contributor.person, pattern));
-    }
-  }, [contributor, template]);
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -67,7 +64,7 @@ function SelectContributorSingle({
       setLoadedRegistries({...loadedRegistries, 'Role': res.data});
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setRole(formData?.[fragmentId]?.[propName]?.role || options[0]?.value);
+      setDefaultRole(value?.role || options[0]?.value);
     });
   }
 
@@ -76,12 +73,12 @@ function SelectContributorSingle({
     if(!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data
-        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
-        setRole(contributorTemplate.properties.role[`const@${locale}`]);
+        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setDefaultRole(contributorTemplate.properties.role[`const@${locale}`]);
         const personTemplateId = contributorTemplate.properties.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
-          setLoadedTemplates({...loadedTemplates, [personTemplateId] : res.data});
+          setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: res.data });
         });
       });
     } else {
@@ -89,12 +86,6 @@ function SelectContributorSingle({
       const personTemplateId = contributorTemplate.properties.person.schema_id;
       setTemplate(loadedTemplates[personTemplateId]);
     }
-    if (!contributor || !template) return;
-    const pattern = template.to_string;
-    if (!pattern) {
-      return;
-    }
-    setSelectedValue(parsePattern(contributor.person, pattern));
   }, [templateId]);
 
   /**
@@ -102,7 +93,7 @@ function SelectContributorSingle({
    */
   const handleClose = () => {
     setShow(false);
-    setSubData({});
+    setModalData({});
     setIndex(null);
   };
 
@@ -115,11 +106,11 @@ function SelectContributorSingle({
     setShow(true);
   };
 
-  
+
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
-  const handleDeleteList = (e, idx) => {
+  const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
@@ -133,53 +124,46 @@ function SelectContributorSingle({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        setSelectedValue(null);
         // changeValue({ target: { name: propName, value: { ...value,  ...e.object } } });
       }
     });
   };
 
   const handleSelectContributor = (e) => {
-    const pattern = template.to_string;
-    const { object, value } = options[e.target.value];
-    setSelectedValue(parsePattern(object, pattern));
-    if (pattern.length > 0) {
-      setFormData(updateFormState(
-        formData, fragmentId, propName, 
-        { ...contributor, person: {...object, action: "update" }, role: role, action: "update" }
-      ));
-    } else {
-      changeValue({ target: { propName, value } });
-    }
+    const { object } = e;
+    // setFormData(updateFormState(
+    //   formData, fragmentId, propName, 
+    //   { ...contributor, person: {...object, action: "update" }, role: role, action: "update" }
+    // ));
+    handleChangeValue(propName, { ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
   };
-  
+
   /**
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e) => {
-    setRole(e.value);
-    const dataCopy = { ...formData };
-    dataCopy[fragmentId][propName].role = e.value;
-    setFormData(dataCopy);
+    setDefaultRole(e.value);
+    // setFormData(dataCopy);
+    handleChangeValue(propName, { ...value, role: e.value })
   };
 
   /**
    * If the index is not null, then delete the item at the index,
-   * add the subData item to the end of the array,
+   * add the modalData item to the end of the array,
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
-  const handleAddToList = () => {
+  const handleSave = () => {
     if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
-      setFormData(updateFormState(formData, fragmentId, propName, { person: subData, role: role }));
-      setSelectedValue(parsePattern(subData, template.to_string));
+      // setFormData(updateFormState(value, fragmentId, propName, { person: modalData, role: role }));
+      handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update' } })
     } else {
       // save new
-      handleSave();
+      handleSaveNew();
     }
     toast.success('Enregistrement a été effectué avec succès !');
-    setSubData({});
+    setModalData({});
     handleClose();
   };
 
@@ -189,26 +173,32 @@ function SelectContributorSingle({
    * temporary person object and add it to the list array, then it will close
    * the modal and set the temporary person object to null.
    */
-  const handleSave = () => {
-    setFormData(updateFormState(
-      formData, fragmentId, propName,
-      { ...contributor, person: { ...subData, action: 'create' }, role: role, action: 'update' }
-    ));
+  const handleSaveNew = () => {
+    // setFormData(updateFormState(
+    //   value, fragmentId, propName,
+    //   { ...contributor, person: { ...modalData, action: 'create' }, role: role, action: 'update' }
+    // ));
+    handleChangeValue(propName, { ...contributor, person: { ...modalData, action: 'create' }, role: defaultRole, action: 'update' })
+
     handleClose();
-    setSelectedValue(parsePattern(subData, template.to_string));
-    setSubData({});
+    setModalData({});
   };
   /**
-   * It sets the state of the subData variable to the value of the form[propName][idx] variable.
+   * It sets the state of the modalData variable to the value of the form[propName][idx] variable.
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
     e.stopPropagation();
     e.preventDefault();
-    setSubData(contributor.person);
+    setModalData(contributor.person);
     setShow(true);
     setIndex(idx);
   };
+
+
+  const handleModalValueChange = (propName, value) => {
+    setModalData({ ...modalData, [propName]: value });
+  }
 
   return (
     <>
@@ -217,8 +207,8 @@ function SelectContributorSingle({
           <strong className={styles.dot_label}></strong>
           <label>{label}</label>
           {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
+            <span
+              className="fas fa-circle-info"
               data-toggle="tooltip" data-placement="top" title={tooltip}
             ></span>
           )}
@@ -228,12 +218,12 @@ function SelectContributorSingle({
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
-              onChange={handleSelectContributor}
+              onChange={(e) => handleSelectContributor(e)}
               options={options}
               name={propName}
               isDisabled={readonly}
-              // async={true}
-              // asyncCallback={fetchContributors}
+            // async={true}
+            // asyncCallback={fetchContributors}
             />
           </div>
           {!readonly && (
@@ -246,73 +236,18 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
-        {selectedValue && (
-          <table style={{ marginTop: "20px" }} className="table">
-            <thead>
-              <tr>
-                <th scope="col">{t("Selected value")}</th>
-                <th scope="col">{t("Role")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[selectedValue].map((el, idx) => (
-                <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
-                    <div className={styles.border}>
-                      <div>{el} </div>
-
-                      {!readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-edit" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                          <div className="col-md-1">
-                            <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                <i className="fa fa-xmark" />
-                              </a>
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                      {readonly && (
-                        <div className={styles.table_container}>
-                          <div className="col-md-1">
-                            {level === 1 && (
-                              <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                  <i className="fa fa-eye" />
-                                </a>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {roleOptions && (
-                      <CustomSelect
-                        onChange={handleSelectRole}
-                        options={roleOptions}
-                        selectedOption={{label: role, value: role}}
-                        name={propName}
-                        isDisabled={readonly}
-                        // async={true}
-                        // asyncCallback={fetchContributors}
-                      />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {template && (
+          <ContributorList
+            contributorList={[contributor]}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            roleOptions={roleOptions}
+            handleSelectRole={handleSelectRole}
+            defaultRole={defaultRole}
+            templateToString={template.to_string}
+            tableHeader={t('Selected value')}
+            readonly={readonly}
+          ></ContributorList>
         )}
       </div>
       <>
@@ -322,20 +257,22 @@ function SelectContributorSingle({
               <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal></ImportExternal>
-              <BuilderForm
-                shemaObject={template}
-                level={level + 1}
+              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
+              <FormBuilder
+                fragment={modalData}
+                handleChangeValue={handleModalValueChange}
                 fragmentId={fragmentId}
+                template={template}
+                level={level + 1}
                 readonly={readonly}
-              ></BuilderForm>
+              ></FormBuilder>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 {t("Close")}
               </Button>
               {!readonly && (
-                <Button variant="primary" onClick={handleAddToList}>
+                <Button variant="primary" onClick={handleSave}>
                   {t("Save")}
                 </Button>
               )}

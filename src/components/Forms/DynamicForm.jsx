@@ -4,7 +4,7 @@ import React, {
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 
-import BuilderForm from './BuilderForm.jsx';
+import FormBuilder from './FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
@@ -32,6 +32,7 @@ function DynamicForm({
   const [loading, setLoading] = useState(true);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [fragment, setFragment] = useState({});
 
   useEffect(() => {
     if (fragmentId) {
@@ -40,12 +41,14 @@ function DynamicForm({
           setTemplate(res.data);
           setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
         });
+        setFragment(formData[fragmentId])
         setLoading(false);
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.schema);
           setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
+          setFragment(res.data.fragment);
         }).catch(console.error)
           .finally(() => setLoading(false));
       }
@@ -57,6 +60,7 @@ function DynamicForm({
         const answerId = res.data.answer_id
         setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
         setFormData({ [fragment.id]: fragment });
+        setFragment(fragment);
         setFragmentId(fragment.id);
         setAnswerId(answerId);
         updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
@@ -65,6 +69,13 @@ function DynamicForm({
         .finally(() => setLoading(false));
     }
   }, []);
+
+  const handleChangeValue = (propName, value) => {
+    const updatedFragment = { ...fragment };
+    updatedFragment[propName] = value;
+    setFragment(updatedFragment);
+    setFormData({ ...formData,  [fragmentId] : updatedFragment});
+  }
 
   /**
    * It checks if the form is filled in correctly.
@@ -104,16 +115,18 @@ function DynamicForm({
     <>
       {loading && (<CustomSpinner></CustomSpinner>)}
       {error && <p>error</p>}
-      {!error && template && (
+      {!error && template && fragment && (
         <div style={{ margin: '15px' }}>
           <div className="row"></div>
           <div className="m-4">
-            <BuilderForm
-              shemaObject={template}
+            <FormBuilder
+              fragment={fragment}
+              handleChangeValue={handleChangeValue}
+              template={template}
               level={1}
               fragmentId={fragmentId}
               readonly={readonly}
-            ></BuilderForm>
+            ></FormBuilder>
           </div>
           <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
         </div>

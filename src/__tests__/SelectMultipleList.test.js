@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
   resources: {},
 });
 
-let shemaObject = {
+let template = {
   $schema: "http://json-schema.org/draft-07/schema#",
   $id: "../Documentation/Implementation/data_model/Json/",
   title: "BackupPolicyStandard",
@@ -48,7 +48,7 @@ describe("HandleGenerateForms component", () => {
     const changeValue = jest.fn();
     const wrapper = mount(
       <Global>
-        <HandleGenerateForms shemaObject={shemaObject} level={level} lng={lng} changeValue={changeValue} />
+        <HandleGenerateForms template={template} level={level} lng={lng} changeValue={changeValue} />
       </Global>
     );
     expect(wrapper.find("SelectMultipleList").prop("label")).toBe("Supports de stockage");
