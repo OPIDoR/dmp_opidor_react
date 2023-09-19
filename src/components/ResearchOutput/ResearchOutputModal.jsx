@@ -10,7 +10,7 @@ import styles from "../assets/css/modal.module.css";
 props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to translate the text displayed in the modal. The `Tabs` component from
 `react-bootstrap` is used to create the two tabs, and the `AddResearchOutput` and `ImportResearchOutput` components are rendered within each tab. The
 `planId`, `handleClose`, and `show` props are passed down to these child components. */
-function ResearchOutputModal({ planId, handleClose, show }) {
+function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
   const { t } = useTranslation();
 
   return (
@@ -31,9 +31,9 @@ function ResearchOutputModal({ planId, handleClose, show }) {
           </fieldset>
           <br></br>
         </div>
-        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey="create" id="create-research-output-tabs">
-          <Tab eventKey="create" title={t("Create")}>
-            <AddResearchOutput planId={planId} handleClose={handleClose} />
+        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={edit ? "edit" : "create"} id="create-edit-research-output-tabs">
+          <Tab eventKey={edit ? "edit" : "create"} title={t(edit ? "Edit" : "Create")}>
+            <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
           </Tab>
           {/* <Tab eventKey="import" title={t("Import")}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />

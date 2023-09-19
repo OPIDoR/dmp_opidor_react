@@ -38,21 +38,9 @@ const products = [
  * @returns An object with a "data" property, which is not defined in the code snippet. The value of "data" is likely intended to be the response data
  * from the axios post request, but it is not currently being assigned or returned correctly.
  */
-const createResearchOutput = async (jsonObject) => {
-  let response;
-  try {
-    response = await axios.post(`/research_outputs`, jsonObject, { headers: createHeaders({}, true)});
-  } catch (error) {
-    if (error.response) {
-      toast.error(error.response.message);
-    } else if (error.request) {
-      toast.error(error.request);
-    } else {
-      toast.error(error.message);
-    }
-  }
-  return response;
-}
+const create = async (jsonObject) => axios.post(`/research_outputs`, jsonObject, { headers: createHeaders({}, true)});
+
+const update = async (id, jsonObject) => axios.patch(`/research_outputs/${id}`, jsonObject, { headers: createHeaders({}, true)});
 
 /**
  * This function adds a new object to a list in session storage.
@@ -162,7 +150,8 @@ const getProducts = async (id) => {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  createResearchOutput,
+  create,
+  update,
   postImportProduct,
   deleteResearchOutput,
   getPlans,
