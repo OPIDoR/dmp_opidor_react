@@ -157,7 +157,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
           </div>
         </ResearchOutputsNavBar>
       )}
-      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show}></ResearchOutputModal>}
+      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
     </>
   );
 }
