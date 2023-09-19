@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { externalServices } from "../../../services";
 import Select from "react-select";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
-import { GlobalContext } from "../../context/Global";
 import Pagination from "../Pagination";
 
 function RorList({fragment, setFragment}) {
@@ -35,7 +34,7 @@ component is initially rendered. */
 
     let response;
     try {
-      response = await services.getRor(query, filter);
+      response = await externalServices.getRor(query, filter);
     } catch (error) {
       setError(error);
       return setLoading(false);
