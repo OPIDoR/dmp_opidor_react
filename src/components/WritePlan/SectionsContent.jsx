@@ -14,6 +14,7 @@ import CustomError from "../Shared/CustomError";
 import { researchOutput } from "../../services";
 import styles from "../assets/css/write_plan.module.css";
 import Section from "./Section";
+import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import PanelBody from "react-bootstrap/lib/PanelBody";
 
 function SectionsContent({ planId, templateId, readonly }) {
@@ -23,9 +24,10 @@ function SectionsContent({ planId, templateId, readonly }) {
     setOpenedQuestions,
     setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
-    planData,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
 
@@ -84,8 +86,23 @@ function SectionsContent({ planId, templateId, readonly }) {
     });
   };
 
+  const handleEdit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShow(true);
+    setEdit(true);
+  };
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShow(false);
+    setEdit(false);
+  }
+
   return (
     <>
+      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={true} edit={true} />}
       {loading && <CustomSpinner></CustomSpinner>}
       {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && sectionsData && (
@@ -125,7 +142,7 @@ function SectionsContent({ planId, templateId, readonly }) {
                             padding: 0,
                             margin: "2px 5px 0 5px",
                           }}
-                          // onClick={handleEdit}
+                          onClick={handleEdit}
                           id="editBtn"
                         >
                           <AiOutlineEdit size={22} />
@@ -159,10 +176,16 @@ function SectionsContent({ planId, templateId, readonly }) {
               <PanelBody>
                 <ul>
                   <li>
+                    {t("Title")}: <strong>{displayedResearchOutput.title}</strong>
+                  </li>
+                  <li>
                     {t("Research Output Name")}: <strong>{displayedResearchOutput.abbreviation}</strong>
-                    </li>
+                  </li>
                   <li>
                     {t("Contains personal data")}: <strong>{displayedResearchOutput.hasPersonalData ? t("Yes") : t("No")}</strong>
+                  </li>
+                  <li>
+                    {t("Type")}: <strong>{t(displayedResearchOutput.type || '-')}</strong>
                   </li>
                 </ul>
               </PanelBody>
