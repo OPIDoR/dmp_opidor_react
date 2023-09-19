@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
+import { toast } from "react-hot-toast";
 
 const EndButton = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ when the component mounts. */
   /**
    * The function handles saving data by creating an object and posting it to a server, then updating state variables and closing a modal.
    */
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.stopPropagation();
     const researchOutputInfo = {
       plan_id: planId,
@@ -66,15 +67,43 @@ when the component mounts. */
     };
 
     if (edit) {
-      // researchOutput.update(researchOutputInfo).then(console.log)
-      return;
+      let res;
+      try {
+        res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
+      } catch (error) {
+        if (error.response) {
+          toast.error(error.response.message);
+        } else if (error.request) {
+          toast.error(error.request);
+        } else {
+          toast.error(error.message);
+        }
+        return handleClose();
+      }
+
+      setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === displayedResearchOutput.id));
+      setResearchOutputs(res?.data?.research_outputs);
+      return handleClose();
     }
 
-    return researchOutput.createResearchOutput(researchOutputInfo).then((res) => {
-      setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
-      setResearchOutputs(res.data.research_outputs);
-      handleClose();
-    });
+    let res;
+    try {
+      res = await researchOutput.create(researchOutputInfo);
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.message);
+      } else if (error.request) {
+        toast.error(error.request);
+      } else {
+        toast.error(error.message);
+      }
+      return handleClose();
+    }
+
+    setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === res?.data?.created_ro_id));
+    setResearchOutputs(res?.data?.research_outputs);
+
+    return handleClose();
   };
 
   return (
@@ -138,7 +167,7 @@ when the component mounts. */
           {t("Close")}
         </Button>
         <Button variant="outline-primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
-          {t("Add")}
+          {t(edit ? "Edit" : "Add")}
         </Button>
       </EndButton>
     </div>
