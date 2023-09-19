@@ -14,10 +14,10 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddResearchOutput({ planId, handleClose, show }) {
+function AddResearchOutput({ planId, handleClose, edit = false }) {
   const { 
     locale,
-    setDisplayedResearchOutput,
+    displayedResearchOutput, setDisplayedResearchOutput,
     setResearchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
@@ -32,6 +32,13 @@ function AddResearchOutput({ planId, handleClose, show }) {
 `data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
 when the component mounts. */
   useEffect(() => {
+    if (edit) {
+      setAbbreviation(displayedResearchOutput.abbreviation);
+      setTitle(displayedResearchOutput.title);
+      setHasPersonalData(displayedResearchOutput.hasPersonalData);
+      setType(displayedResearchOutput.type);
+    }
+
     service.getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
@@ -47,7 +54,6 @@ when the component mounts. */
    * The function handles saving data by creating an object and posting it to a server, then updating state variables and closing a modal.
    */
   const handleSave = (e) => {
-    e.preventDefault();
     e.stopPropagation();
     const researchOutputInfo = {
       plan_id: planId,
@@ -56,7 +62,13 @@ when the component mounts. */
       type,
       hasPersonalData,
     };
-    researchOutput.createResearchOutput(researchOutputInfo).then((res) => {
+
+    if (edit) {
+      // researchOutput.update(researchOutputInfo).then(console.log)
+      return;
+    }
+
+    return researchOutput.createResearchOutput(researchOutputInfo).then((res) => {
       setDisplayedResearchOutput(res.data.research_outputs.find(ro => ro.id === res.data.created_ro_id));
       // setHasPersonalData(researchOutputs[0].id;?.metadata?.hasPersonalData);
       setResearchOutputs(res.data.research_outputs);
@@ -115,26 +127,12 @@ when the component mounts. */
           <label>{t("Does your research output contain personal data?")}</label>
         </div>
           <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="hasPersonalData"
-            onClick={() => setHasPersonalData(true)}
-            defaultChecked
-          />
-          <label className="form-check-label" htmlFor="flexRadioDefault1">
-            {t("Yes")}
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="hasPersonalData"
-            onClick={() => setHasPersonalData(false)}
-          />
-          <label className="form-check-label" htmlFor="flexRadioDefault2">
-            {t("No")}
+          <label className={stylesForm.switch}>
+            <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }}/>
+            <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
+              <span className={stylesForm.switchOn}>{t('Yes')}</span>
+              <span className={stylesForm.switchOff}>{t('No')}</span>
+            </div>
           </label>
         </div>
       </div>
