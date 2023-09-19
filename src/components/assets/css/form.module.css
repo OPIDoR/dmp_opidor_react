@@ -118,3 +118,79 @@ a {
 .panel_title p {
   margin: 0 !important;
 }
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.switchSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ca2222;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.switchSlider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .switchSlider {
+  background-color: #2ab934;
+}
+
+input:focus + .switchSlider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .switchSlider:before {
+  -webkit-transform: translateX(55px);
+  -ms-transform: translateX(55px);
+  transform: translateX(55px);
+}
+
+.switchOn {
+  display: none;
+}
+
+.switchOn, .switchOff {
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+}
+
+input:checked+ .switchSlider .switchOn {
+  display: block;
+}
+
+input:checked + .switchSlider .switchOff {
+  display: none;
+}
+.switchSlider.switchRound {
+  border-radius: 34px;
+}
+
+.switchSlider.switchRound:before {
+  border-radius: 50%;
+}
