@@ -33,7 +33,6 @@ function GuidanceChoice({ planId }) {
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [showAll, setShowAll] = useState(false);
   const {
     setQuestionsWithGuidance
   } = useContext(GlobalContext);
@@ -45,38 +44,9 @@ function GuidanceChoice({ planId }) {
     setLoading(true);
     guidances.getGuidanceGroups(planId)
       .then((res) => {
-        const { guidance_groups } = res.data;
-        // const guidance_groups = [
-        //   {
-        //     "name": "Inist-CNRS Institut de l'Information Scientifique et Technique",
-        //     "id": 1,
-        //     "important": true,
-        //     "guidances": [
-        //       {
-        //         "id": 1,
-        //         "name": "Generic Guidance (provided by the example curation centre)",
-        //         "selected": true
-        //       },
-        //       {
-        //         "id": 2,
-        //         "name": "Generic Guidance",
-        //         "selected": true
-        //       }
-        //     ]
-        //   },
-        //   {
-        //     "name": "Government Agency",
-        //     "id": 2,
-        //     "important": false,
-        //     "guidances": [
-        //       {
-        //         "id": 2,
-        //         "name": "Government Agency Advice (Funder specific guidance)",
-        //         "selected": false
-        //       }
-        //     ]
-        //   }
-        // ];
+        let { guidance_groups } = res.data;
+        guidance_groups = guidance_groups
+        .sort((a, b) => (b.important === true ? -1 : 1));
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -204,7 +174,7 @@ function GuidanceChoice({ planId }) {
               {!loading && !error && data && (
                 <div className="container" style={{ margin: "20px" }}>
                   {
-                    data.filter(({ important }) => showAll || important === true).map((group, index) => (
+                    data.map((group, index) => (
                       <div key={`guidance-group-${index}`} className="form-check" style={{ margin: "5px" }}>
                         {
                           !checkboxStates[group.id].checked ? (
@@ -278,14 +248,6 @@ function GuidanceChoice({ planId }) {
                   position="start"
                   handleClick={handleSaveChoise}
                 />
-                {data.length !== countSelectedGuidances() && (
-                  <CustomButton
-                    title={t(showAll ? "Display importants guidances" : "Display all guidances")}
-                    position="end"
-                    buttonType="primary"
-                    handleClick={() => setShowAll(!showAll)}
-                  />
-                )}
               </div>
             </div>
           </Panel.Body>
