@@ -46,6 +46,37 @@ function GuidanceChoice({ planId }) {
     guidances.getGuidanceGroups(planId)
       .then((res) => {
         const { guidance_groups } = res.data;
+        // const guidance_groups = [
+        //   {
+        //     "name": "Inist-CNRS Institut de l'Information Scientifique et Technique",
+        //     "id": 1,
+        //     "important": true,
+        //     "guidances": [
+        //       {
+        //         "id": 1,
+        //         "name": "Generic Guidance (provided by the example curation centre)",
+        //         "selected": true
+        //       },
+        //       {
+        //         "id": 2,
+        //         "name": "Generic Guidance",
+        //         "selected": true
+        //       }
+        //     ]
+        //   },
+        //   {
+        //     "name": "Government Agency",
+        //     "id": 2,
+        //     "important": false,
+        //     "guidances": [
+        //       {
+        //         "id": 2,
+        //         "name": "Government Agency Advice (Funder specific guidance)",
+        //         "selected": false
+        //       }
+        //     ]
+        //   }
+        // ];
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -247,12 +278,14 @@ function GuidanceChoice({ planId }) {
                   position="start"
                   handleClick={handleSaveChoise}
                 />
-                <CustomButton
-                  title={t(showAll ? "Display importants guidances" : "Display all guidances")}
-                  position="end"
-                  buttonType="primary"
-                  handleClick={() => setShowAll(!showAll)}
-                />
+                {data.length !== countSelectedGuidances() && (
+                  <CustomButton
+                    title={t(showAll ? "Display importants guidances" : "Display all guidances")}
+                    position="end"
+                    buttonType="primary"
+                    handleClick={() => setShowAll(!showAll)}
+                  />
+                )}
               </div>
             </div>
           </Panel.Body>
