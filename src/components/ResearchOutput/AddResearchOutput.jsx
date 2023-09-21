@@ -20,6 +20,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     locale,
     displayedResearchOutput, setDisplayedResearchOutput,
     setResearchOutputs,
+    setUrlParams,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
@@ -83,6 +84,9 @@ when the component mounts. */
 
       setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === displayedResearchOutput.id));
       setResearchOutputs(res?.data?.research_outputs);
+
+      setUrlParams({ research_output: displayedResearchOutput.id });
+
       return handleClose();
     }
 
@@ -102,6 +106,8 @@ when the component mounts. */
 
     setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === res?.data?.created_ro_id));
     setResearchOutputs(res?.data?.research_outputs);
+
+    setUrlParams({ research_output: res?.data?.created_ro_id });
 
     return handleClose();
   };
@@ -166,7 +172,7 @@ when the component mounts. */
         <Button variant="secondary" onClick={handleClose} style={{ marginRight: "8px" }}>
           {t("Close")}
         </Button>
-        <Button variant="outline-primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
+        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
           {t(edit ? "Edit" : "Add")}
         </Button>
       </EndButton>
