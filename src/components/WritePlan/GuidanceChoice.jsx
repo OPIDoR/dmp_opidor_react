@@ -45,8 +45,8 @@ function GuidanceChoice({ planId }) {
     guidances.getGuidanceGroups(planId)
       .then((res) => {
         let { guidance_groups } = res.data;
-        guidance_groups = guidance_groups
-          .sort((a, b) => (a.important === true ? -1 : 1));
+        guidance_groups = sortGuidances(guidance_groups);
+
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -54,6 +54,12 @@ function GuidanceChoice({ planId }) {
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [planId]);
+
+  const sortGuidances = (guidances) => {
+    return guidances = guidances
+      .sort((a) => (a.important === true ? -1 : 1))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
 
   const handleGuidanceGroups = (guidanceGroups) => {
     const states = {};
@@ -132,8 +138,7 @@ function GuidanceChoice({ planId }) {
     }
 
     let { guidance_groups } = response.data;
-    guidance_groups = guidance_groups
-      .sort((a, b) => (a.important === true ? -1 : 1));
+    guidance_groups = sortGuidances(guidance_groups);
 
     const {  questions_with_guidance } = response.data;
     setData(guidance_groups);
