@@ -43,13 +43,29 @@ function WritePlan({
   //TODO update this , it can make error
   useEffect(() => {
     setLoading(true);
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    const researchOutputId = queryParameters.get('research_output');
+
     writePlan.getPlanData(planId)
       .then((res) => {
         setPlanData(res.data);
         setDmpId(res.data.dmp_id);
-        setDisplayedResearchOutput(res.data.research_outputs[0]);
-        !researchOutputs && setResearchOutputs(res.data.research_outputs);
-        setQuestionsWithGuidance(res?.data?.questions_with_guidance || []);
+
+        const { research_outputs, questions_with_guidance } = res.data;
+
+        let currentResearchOutput = research_outputs?.[0];
+        if (researchOutputId) {
+          const researchOutput = research_outputs
+            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+          if (researchOutput) {
+            currentResearchOutput = researchOutput;
+          }
+        }
+
+        setDisplayedResearchOutput(currentResearchOutput);
+        !researchOutputs && setResearchOutputs(research_outputs);
+        setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
         // if (result.length > itemsPerPage) {
         //   let resultDivision = roundedUpDivision(result.length, itemsPerPage);
