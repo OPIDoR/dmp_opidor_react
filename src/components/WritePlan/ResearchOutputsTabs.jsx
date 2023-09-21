@@ -17,6 +17,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
     researchOutputs,
     openedQuestions,
     setFormData,
+    setUrlParams,
   } = useContext(GlobalContext);
   const itemsPerPage = 5;
   const [show, setShow] = useState(false);
@@ -55,6 +56,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
     e.preventDefault();
     // handleIdsUpdate(selectedResearchOutput.id, true);
     setDisplayedResearchOutput(selectedResearchOutput);
+    setUrlParams({ research_output: selectedResearchOutput.id });
     // setHasPersonalData(element?.metadata?.hasPersonalData);
   };
 
