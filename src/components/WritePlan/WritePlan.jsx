@@ -80,7 +80,7 @@ function WritePlan({
                   planId={planId}
                   templateId={templateId}
                   readonly={readonly}
-                ></SectionsContent>
+                />
               )}
             </div>
           </>
