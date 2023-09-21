@@ -46,7 +46,7 @@ function GuidanceChoice({ planId }) {
       .then((res) => {
         let { guidance_groups } = res.data;
         guidance_groups = guidance_groups
-        .sort((a, b) => (b.important === true ? -1 : 1));
+          .sort((a, b) => (a.important === true ? -1 : 1));
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -131,7 +131,11 @@ function GuidanceChoice({ planId }) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
 
-    const { guidance_groups, questions_with_guidance } = response.data;
+    let { guidance_groups } = response.data;
+    guidance_groups = guidance_groups
+      .sort((a, b) => (a.important === true ? -1 : 1));
+
+    const {  questions_with_guidance } = response.data;
     setData(guidance_groups);
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
