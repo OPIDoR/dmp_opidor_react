@@ -33,7 +33,6 @@ function GuidanceChoice({ planId }) {
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [showAll, setShowAll] = useState(false);
   const {
     setQuestionsWithGuidance
   } = useContext(GlobalContext);
@@ -45,7 +44,9 @@ function GuidanceChoice({ planId }) {
     setLoading(true);
     guidances.getGuidanceGroups(planId)
       .then((res) => {
-        const { guidance_groups } = res.data;
+        let { guidance_groups } = res.data;
+        guidance_groups = guidance_groups
+        .sort((a, b) => (b.important === true ? -1 : 1));
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -173,7 +174,7 @@ function GuidanceChoice({ planId }) {
               {!loading && !error && data && (
                 <div className="container" style={{ margin: "20px" }}>
                   {
-                    data.filter(({ important }) => showAll || important === true).map((group, index) => (
+                    data.map((group, index) => (
                       <div key={`guidance-group-${index}`} className="form-check" style={{ margin: "5px" }}>
                         {
                           !checkboxStates[group.id].checked ? (
@@ -246,12 +247,6 @@ function GuidanceChoice({ planId }) {
                   buttonType={countSelectedGuidances() > 0 ? "orange" : "primary"}
                   position="start"
                   handleClick={handleSaveChoise}
-                />
-                <CustomButton
-                  title={t(showAll ? "Display importants guidances" : "Display all guidances")}
-                  position="end"
-                  buttonType="primary"
-                  handleClick={() => setShowAll(!showAll)}
                 />
               </div>
             </div>
