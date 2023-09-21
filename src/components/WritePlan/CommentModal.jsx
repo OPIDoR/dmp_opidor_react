@@ -53,7 +53,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
     setLoading(true);
     commentsService.get(answerId)
       .then(({ data }) => {
-        setComments(data.notes);
+        setComments(data?.notes || []);
       })
       .catch((error) => setError({
         code: error?.response?.status,
