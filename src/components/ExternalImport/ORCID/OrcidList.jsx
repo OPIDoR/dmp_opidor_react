@@ -127,25 +127,23 @@ function OrcidList({fragment, setFragment}) {
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  {/* <th scope="col">{t("ID")}</th> */}
+                  <th scope="col"></th>
                   <th scope="col">{t("Last / First name")}</th>
                   <th scope="col">{t("Establishment")}</th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                {currentData.map((el, idx) => (
+                {currentData.length > 0 ? currentData.map((el, idx) => (
                   <tr key={idx}>
-                    {/* <td scope="row">{el.orcid}</td> */}
+                    <td>
+                      <input className="text-center" type="checkbox" checked={selectedPerson === el.orcid} onChange={() => setSelectedValue(el)} />
+                    </td>
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td>
                       {el?.institutionName.join(' / ')}
                     </td>
-                    <td>
-                      <input className="text-center" type="checkbox" checked={selectedPerson === el.orcid} onChange={() => setSelectedValue(el)} />
-                    </td>
                   </tr>
-                ))}
+                )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
               </tbody>
             </table>
           </div>

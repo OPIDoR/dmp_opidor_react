@@ -18,12 +18,6 @@ function RorList({fragment, setFragment}) {
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [text, setText] = useState("");
 
-  /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
-function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
-component is initially rendered. */
-  useEffect(() => {
-    getData('*', '');
-  }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -186,35 +180,33 @@ component is initially rendered. */
           <table className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
+                <th scope="col"></th>
                 <th scope="col">{t("Organization name")}</th>
                 <th scope="col">{t("Acronym")}</th>
                 <th scope="col">{t("Country")}</th>
                 <th scope="col">{t("Location")}</th>
-                {/* <th scope="col">ROR</th> */}
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              {currentData.map((el, idx) => (
+              {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row">
+                  <td>
+                    <input className="text-center" type="checkbox" checked={selectedOrg === el.ror} onChange={() => setSelectedValue(el)} />
+                  </td>
+                  <td>
                     <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
                       {el.name[Object.keys(el.name)[0]]}
                     </a>
                   </td>
                   <td>{el.acronyms}</td>
                   <td>{el.country.code}</td>
-                  <td scope="row">
+                  <td>
                     {Object.values(el.addresses[0])
                       .filter((value) => value)
                       .join(", ")}
                   </td>
-                  {/* <td>{el.ror}</td> */}
-                  <td>
-                    <input className="text-center" type="checkbox" checked={selectedOrg === el.ror} onChange={() => setSelectedValue(el)} />
-                  </td>
                 </tr>
-              ))}
+              )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
             </tbody>
           </table>
 
