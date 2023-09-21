@@ -22,14 +22,14 @@ function MenuList({ options, children, maxHeight, getValue }) {
   function Row({data, index, style}) {
     const rowRef = useRef();
     // const isEven = index % 2 === 0;
-    
+
     useEffect(() => {
       if (rowRef.current) {
         setRowHeight(index, rowRef.current.clientHeight);
       }
       // eslint-disable-next-line
     }, [rowRef]);
-  
+
     return(
       <div
         ref={rowRef}
@@ -50,7 +50,6 @@ function MenuList({ options, children, maxHeight, getValue }) {
       {({ index, style }) => <Row data={children} index={index} style={style}/>}
     </List>
   );
-
 }
 
 
