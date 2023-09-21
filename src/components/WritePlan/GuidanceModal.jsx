@@ -76,27 +76,35 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
       <ScrollNav>
         <NavBody>
           <NavBodyText>
-            {data?.[indexTab]?.annotations?.[0]?.text ? (
-              <div
-                key={`guidance-annotation-${indexTab}`}
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(data?.[indexTab]?.annotations?.[0]["text"]),
-                }}
-              />
+            {data?.[indexTab]?.annotations?.length > 0 ? (
+              <>
+                {data?.[indexTab]?.annotations?.map((annotation, id) => (
+                  <div
+                    key={`guidance-${indexTab}-annotation-${id}`}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(annotation.text),
+                    }}
+                  />
+                ))}
+              </>
             ) : (
               <>
-                {Object.keys(data?.[indexTab]?.groups).map((theme, idx) => (
+                {Object.keys(data?.[indexTab]?.groups).length > 0 && Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
                   <>
-                    <Theme key={`guidance-theme-${idx}`} alt={theme}>{theme}</Theme>
-                    {data?.[indexTab].groups[theme]?.map((g, id) => (
+                    {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
                       <>
-                        <div
-                          key={`guidance-content-${id}`}
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(g.text),
-                          }}
-                        />
-                        {id > 0 && <hr key={`guidance-hr-${id}`} />}
+                        <Theme key={`guidance-theme-${themeId}`} alt={theme}>{theme}</Theme>
+                        {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
+                            <>
+                              <div
+                              key={`guidance-theme-${themeId}-id-${id}`}
+                              dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(g.text),
+                              }}
+                            />
+                            {id > 0 && <hr key={`guidance-hr-${id}`} />}
+                          </>
+                        ))}
                       </>
                     ))}
                   </>
@@ -133,7 +141,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                 }}
                 style={navStyles(el.name)}
               >
-                {el.name}
+                {el.name.length < 15 ? el.name : `${el.name.substring(0, 15)}...`}
               </span>
             ))}
           </nav>
