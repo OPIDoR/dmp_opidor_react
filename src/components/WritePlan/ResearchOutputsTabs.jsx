@@ -9,6 +9,7 @@ import { BsBell, BsCheckCircleFill } from "react-icons/bs";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
 import { chunk } from "lodash";
+import consumer from "../../cable";
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
@@ -53,9 +54,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
    */
   const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
     e.preventDefault();
-    // handleIdsUpdate(selectedResearchOutput.id, true);
     setDisplayedResearchOutput(selectedResearchOutput);
-    // setHasPersonalData(element?.metadata?.hasPersonalData);
   };
 
   return (
