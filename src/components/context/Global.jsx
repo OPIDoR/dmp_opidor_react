@@ -61,6 +61,12 @@ function Global({ children }) {
   //   sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
   // }, [researchOutputs]);
 
+  const setUrlParams = (data) => {
+    const params = Object.fromEntries(new URLSearchParams(window.location.search));
+    const urlParams = new URLSearchParams({ ...params, ...data });
+    return window.history.replaceState(null, null, `${window.location.pathname}?${urlParams.toString()}`);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -95,6 +101,7 @@ function Global({ children }) {
         setQuestionsWithGuidance,
         userId,
         setUserId,
+        setUrlParams,
       }}
     >
       {children}
