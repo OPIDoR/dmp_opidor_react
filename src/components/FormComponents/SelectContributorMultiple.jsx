@@ -116,7 +116,7 @@ function SelectContributorMultiple({
    */
   const handleSelectRole = (e, index) => {
     const dataCopy = contributorList;
-    dataCopy[fragmentId][propName][index].role = e.value;
+    dataCopy[index]= {...dataCopy[index], role: e.value, action: dataCopy[index].action || 'update' };
     // setFormData(dataCopy);
     handleChangeValue(propName, dataCopy)
 
