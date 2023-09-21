@@ -172,7 +172,7 @@ function Question({ question, sectionId, readonly }) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {!readonly && (
+                  {/* {!readonly && (
                     <>
                       <div
                         data-tooltip-id="scriptTip"
@@ -209,7 +209,7 @@ function Question({ question, sectionId, readonly }) {
                         ></RunsModal>
                       )}
                     </>
-                  )}
+                  )} */}
 
                   <div
                     data-tooltip-id="commentTip"
