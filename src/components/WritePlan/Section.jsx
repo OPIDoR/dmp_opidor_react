@@ -69,6 +69,7 @@ function Section({ section, readonly }) {
           key={question.id}
           question={question}
           sectionId={sectionId}
+          sectionNumber={section.number}
           readonly={readonly}
         />
       ))}

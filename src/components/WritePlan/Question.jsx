@@ -16,7 +16,7 @@ import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
 
-function Question({ question, sectionId, readonly }) {
+function Question({ question, sectionId, sectionNumber, readonly }) {
   const {
     planData,
     openedQuestions,
@@ -149,7 +149,7 @@ function Question({ question, sectionId, readonly }) {
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
                   <div className={styles.question_number}>
-                    {question.number}
+                    {sectionNumber}.{question.number}
                   </div>
                   <div
                     className={styles.panel_title}
