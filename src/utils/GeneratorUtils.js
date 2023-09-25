@@ -7,22 +7,21 @@ import DOMPurify from "dompurify";
  * @returns The value of the key in the object.
  */
 export function parsePattern(data, keys = []) {
-  if(!keys || keys.length === 0) return JSON.stringify(data);
+  if (keys.length === 0) return JSON.stringify(data);
+  const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
 
-  const isArrayMatch = /^(.*?)\[(\d+)\]$/;
+  return keys.map(value => {
+    if (!value.startsWith("$.")) { return value; }
 
-  const extractValue = (key, data) => {
-    const match = key.match(isArrayMatch);
-    if (match) {
-      const [, objKey, arrIndex] = match;
-      return data?.[objKey]?.[arrIndex];
-    }
-    return data?.[key];
-  };
-
-  return keys
-    .map((value) => (value.startsWith("$.") ? extractValue(value.substr(2).trim(), data) : value))
-    .join('');
+    return value.substr(2).trim().split(".").reduce((acc, cur) => {
+      const match = cur.match(isArrayMatch);
+      if (match) {
+        const [, objeKey, arrIndex] = match;
+        return acc?.[objeKey]?.[arrIndex];
+      }
+      return acc?.[cur];
+    }, data) || '';
+  }).join('');
 }
 
 /**
