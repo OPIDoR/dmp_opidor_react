@@ -12,7 +12,6 @@ function OrcidList({fragment, setFragment}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setCurrentData] = useState([]);
-  const [initialData, setInitialData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
 
@@ -32,7 +31,8 @@ function OrcidList({fragment, setFragment}) {
     }
 
     setData(response.data);
-    if(search === '*') { setInitialData(response.data); }
+
+    if(response.data.length === 0) { setCurrentData([]); }
 
     setLoading(false);
   };
@@ -75,7 +75,8 @@ function OrcidList({fragment, setFragment}) {
    */
   const handleDeleteText = () => {
     setText("");
-    setData(initialData);
+    setData([]);
+    setCurrentData([]);
   };
 
   return (

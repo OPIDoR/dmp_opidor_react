@@ -13,7 +13,6 @@ function RorList({fragment, setFragment}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setCurrentData] = useState([]);
-  const [initialData, setInitialData] = useState([]);
   const [countries, setCountries] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [text, setText] = useState("");
@@ -36,7 +35,7 @@ function RorList({fragment, setFragment}) {
 
     setData(response.data);
 
-    if(query === '*') { setInitialData(response.data); }
+    if(response.data.length === 0) { setCurrentData([]); }
 
     const options = response.data.map((option) => ({
       value: option.country.code,
@@ -77,7 +76,7 @@ function RorList({fragment, setFragment}) {
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
   const handleChangeCountry = (e) => {
-    const filteredByCountry = initialData.filter((el) => {
+    const filteredByCountry = data.filter((el) => {
       return el.country.code === e.value;
     });
     setData(filteredByCountry);
@@ -104,7 +103,8 @@ function RorList({fragment, setFragment}) {
    */
   const handleDeleteText = () => {
     setText("");
-    setData(initialData);
+    setData([]);
+    setCurrentData([]);
   };
 
   return (
