@@ -32,7 +32,6 @@ function SelectContributorSingle({
     dmpId,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
-    isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
@@ -154,7 +153,6 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       // setFormData(updateFormState(value, fragmentId, propName, { person: modalData, role: role }));
       handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update' } })
