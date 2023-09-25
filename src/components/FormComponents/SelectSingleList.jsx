@@ -166,7 +166,7 @@ function SelectSingleList({
             <tbody>
               {[selectedValue].map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row" style={{ width: "50%" }}>
+                  <td style={{ width: "50%" }}>
                     {parsePattern(el, template.to_string)}
                   </td>
                 </tr>
