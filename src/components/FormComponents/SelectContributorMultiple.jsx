@@ -116,7 +116,7 @@ function SelectContributorMultiple({
    */
   const handleSelectRole = (e, index) => {
     const dataCopy = contributorList;
-    dataCopy[fragmentId][propName][index].role = e.value;
+    dataCopy[index]= {...dataCopy[index], role: e.value, action: dataCopy[index].action || 'update' };
     // setFormData(dataCopy);
     handleChangeValue(propName, dataCopy)
 
@@ -177,13 +177,11 @@ function SelectContributorMultiple({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const newList = [...contributorList];
-        setContributorList(deleteByIndex(newList, idx));
-        const updatedList = { ...contributorList };
+        const updatedList = [ ...contributorList ];
         updatedList[idx]['action'] = 'delete';
+        setContributorList(deleteByIndex(contributorList, idx));
         // setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
         handleChangeValue(propName, updatedList)
-
       }
     });
   };

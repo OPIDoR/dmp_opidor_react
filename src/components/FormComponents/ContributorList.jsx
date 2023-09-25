@@ -60,7 +60,7 @@ function ContributorList({
                 <td>
                   {roleOptions && (
                     <CustomSelect
-                      onChange={handleSelectRole}
+                      onChange={(e) => handleSelectRole(e, idx)}
                       options={roleOptions}
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"

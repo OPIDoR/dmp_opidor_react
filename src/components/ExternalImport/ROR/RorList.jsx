@@ -1,29 +1,25 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { externalServices } from "../../../services";
 import Select from "react-select";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
 import Pagination from "../Pagination";
+import { FaLink } from "react-icons/fa6";
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
-function RorList({fragment, setFragment}) {
+function RorList({ fragment, setFragment }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setCurrentData] = useState([]);
-  const [initialData, setInitialData] = useState([]);
   const [countries, setCountries] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [text, setText] = useState("");
 
-  /* The `useEffect` hook is used to perform side effects in a functional component. In this case, it is used to fetch data by calling the `getData`
-function when the component is mounted for the first time (empty dependency array `[]`). This ensures that the data is fetched only once when the
-component is initially rendered. */
-  useEffect(() => {
-    getData('*', '');
-  }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -41,8 +37,9 @@ component is initially rendered. */
     }
 
     setData(response.data);
+    setFilteredData(response.data);
 
-    if(query === '*') { setInitialData(response.data); }
+    if (response.data.length === 0) { setCurrentData([]); }
 
     const options = response.data.map((option) => ({
       value: option.country.code,
@@ -83,10 +80,10 @@ component is initially rendered. */
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
   const handleChangeCountry = (e) => {
-    const filteredByCountry = initialData.filter((el) => {
+    const filteredByCountry = data.filter((el) => {
       return el.country.code === e.value;
     });
-    setData(filteredByCountry);
+    setFilteredData(filteredByCountry);
   };
 
   /**
@@ -100,7 +97,7 @@ component is initially rendered. */
    * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
    */
   const handleKeyDown = (e) => {
-    if(e.key === 'Enter') {
+    if (e.key === 'Enter') {
       getData(text);
     }
   }
@@ -110,14 +107,15 @@ component is initially rendered. */
    */
   const handleDeleteText = () => {
     setText("");
-    setData(initialData);
+    setData([]);
+    setCurrentData([]);
   };
 
   return (
     <div style={{ position: "relative" }}>
-      { loading &&  <CustomSpinner></CustomSpinner>}
-      { error && <CustomError></CustomError>}
-      { !error && (
+      {loading && <CustomSpinner></CustomSpinner>}
+      {error && <CustomError></CustomError>}
+      {!error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
@@ -140,7 +138,7 @@ component is initially rendered. */
                         onClick={handleSearchTerm}
                         style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }}/>
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -186,42 +184,50 @@ component is initially rendered. */
           <table className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
+                <th scope="col"></th>
                 <th scope="col">{t("Organization name")}</th>
                 <th scope="col">{t("Acronym")}</th>
                 <th scope="col">{t("Country")}</th>
                 <th scope="col">{t("Location")}</th>
-                {/* <th scope="col">ROR</th> */}
-                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-              {currentData.map((el, idx) => (
+              {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
-                  <td scope="row">
+                  <td>
+                    {selectedOrg === el.ror ?
+                      <FaCheckCircle
+                        className="text-center"
+                        style={{ color: 'green' }}
+                      /> :
+                      <FaPlusSquare
+                        className="text-center"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setSelectedValue(el)} />
+                    }
+                  </td>
+                  <td>
+                    {el.name[Object.keys(el.name)[0]]}&nbsp;
                     <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
-                      {el.name[Object.keys(el.name)[0]]}
+                      <FaLink></FaLink>
                     </a>
                   </td>
                   <td>{el.acronyms}</td>
                   <td>{el.country.code}</td>
-                  <td scope="row">
+                  <td>
                     {Object.values(el.addresses[0])
                       .filter((value) => value)
                       .join(", ")}
                   </td>
-                  {/* <td>{el.ror}</td> */}
-                  <td>
-                    <input className="text-center" type="checkbox" checked={selectedOrg === el.ror} onChange={() => setSelectedValue(el)} />
-                  </td>
                 </tr>
-              ))}
+              )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
             </tbody>
           </table>
 
           <div className="row text-center">
             <div className="mx-auto"></div>
             <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
+              <Pagination items={filteredData} onChangePage={onChangePage} pageSize={pageSize} />
             </div>
           </div>
         </>

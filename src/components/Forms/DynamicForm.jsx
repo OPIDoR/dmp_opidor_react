@@ -70,6 +70,10 @@ function DynamicForm({
     }
   }, []);
 
+  useEffect(() => {
+    setFragment(formData[fragmentId])
+  }, [formData[fragmentId]]);
+
   const handleChangeValue = (propName, value) => {
     const updatedFragment = { ...fragment };
     updatedFragment[propName] = value;

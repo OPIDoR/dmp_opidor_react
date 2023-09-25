@@ -9,7 +9,6 @@ function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form'
         <table style={{ marginTop: "20px" }} className="table table-hover">
           <thead>
             {fragmentsList.length > 0 &&
-              tableHeader &&
               fragmentsList.some((el) => el.action !== "delete") && (
                 <tr>
                   <th scope="col">{tableHeader}</th>
