@@ -7,24 +7,22 @@ import DOMPurify from "dompurify";
  * @returns The value of the key in the object.
  */
 export function parsePattern(data, keys = []) {
-  if(keys.length === 0) return JSON.stringify(data);
-  //https://www.measurethat.net/Benchmarks/Show/2335/1/slice-vs-substr-vs-substring-with-no-end-index
-  const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
+  if(!keys || keys.length === 0) return JSON.stringify(data);
+
+  const isArrayMatch = /^(.*?)\[(\d+)\]$/;
+
+  const extractValue = (key, data) => {
+    const match = key.match(isArrayMatch);
+    if (match) {
+      const [, objKey, arrIndex] = match;
+      return data?.[objKey]?.[arrIndex];
+    }
+    return data?.[key];
+  };
+
   return keys
-    .map((value) => {
-      if (value.startsWith("$.")) {
-        const path = value.substr(2).trim().split(".");
-        return path.reduce((acc, cur) => {
-          if (isArrayMatch.test(cur)) {
-            const arrayMatch = isArrayMatch.exec(cur);
-            return acc?.[arrayMatch?.[1]][arrayMatch?.[2]];
-          }
-          return acc?.[cur];
-        }, data);
-      }
-      return value;
-    })
-    .join("");
+    .map((value) => (value.startsWith("$.") ? extractValue(value.substr(2).trim(), data) : value))
+    .join('');
 }
 
 /**

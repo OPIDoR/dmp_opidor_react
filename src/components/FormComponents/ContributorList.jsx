@@ -4,7 +4,6 @@ import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { useTranslation } from 'react-i18next';
 
-
 function ContributorList({
   contributorList,
   handleEdit,
@@ -13,7 +12,7 @@ function ContributorList({
   defaultRole,
   handleSelectRole,
   parent = 'form',
-  templateToString = [],
+  templateToString = null,
   tableHeader = null,
   readonly = false
 }) {
@@ -33,9 +32,9 @@ function ContributorList({
           <tbody>
             {contributorList.map((el, idx) => (el.action !== "delete" ?
               <tr key={idx}>
-                <td scope="row" style={{ width: "50%" }}>
+                <td style={{ width: "50%" }}>
                   <div className={styles.border}>
-                    <div>{parsePattern(el.person, templateToString)} </div>
+                    <div>{parsePattern(el.person, templateToString || ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
                       <div className={styles.table_container}>
                         <div className="col-md-1">
