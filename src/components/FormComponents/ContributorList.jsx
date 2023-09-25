@@ -12,7 +12,7 @@ function ContributorList({
   defaultRole,
   handleSelectRole,
   parent = 'form',
-  templateToString = null,
+  templateToString = [],
   tableHeader = null,
   readonly = false
 }) {
@@ -34,7 +34,7 @@ function ContributorList({
               <tr key={idx}>
                 <td style={{ width: "50%" }}>
                   <div className={styles.border}>
-                    <div>{parsePattern(el.person, templateToString || ['$.lastName', ' ', '$.firstName'])} </div>
+                    <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
                       <div className={styles.table_container}>
                         <div className="col-md-1">
