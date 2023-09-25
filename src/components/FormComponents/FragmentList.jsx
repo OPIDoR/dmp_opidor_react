@@ -1,7 +1,6 @@
 import React from 'react';
 import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
 
-
 function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form', templateToString = [], tableHeader = null, readonly = false }) {
   return (
     <>
