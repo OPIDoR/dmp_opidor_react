@@ -32,7 +32,6 @@ function SelectContributorMultiple({
     locale, dmpId,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
-    isEmail,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -129,7 +128,6 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (!isEmail) return toast.error(t("Invalid email"));
     if (index !== null) {
       const updatedContributor = { person: modalData, role: defaultRole, action: modalData.action || 'update' };
       // setFormData(updateFormState(formData, fragmentId, propName, newContributorList));
