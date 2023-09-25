@@ -36,7 +36,6 @@ function ModalTemplate({
   const [show, setShow] = useState(false);
   const {
     loadedTemplates, setLoadedTemplates,
-    isEmail,
   } = useContext(GlobalContext);
   const [modalData, setModalData] = useState({});
   const [index, setIndex] = useState(null);
@@ -72,7 +71,6 @@ function ModalTemplate({
    * add the modalData variable to the form, if it's not, show an error message.
    */
   const handleSave = () => {
-    if (!isEmail) return toast.error(t("Invalid email"));
     if (!modalData) return handleClose();
     if (index !== null) {
       const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');

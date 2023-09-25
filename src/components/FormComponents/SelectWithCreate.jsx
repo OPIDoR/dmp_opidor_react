@@ -33,7 +33,6 @@ function SelectWithCreate({
     locale,
     loadedRegistries, setLoadedRegistries,
     loadedTemplates, setLoadedTemplates,
-    isEmail,
   } = useContext(GlobalContext);
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState(null);
@@ -130,7 +129,6 @@ function SelectWithCreate({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (!isEmail) return toast.error(t("Invalid email"));
     if (!modalData) return handleClose();
     //const checkForm = checkRequiredForm(registerFile, temp);
     if (index !== null) {
