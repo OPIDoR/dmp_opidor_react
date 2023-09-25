@@ -4,8 +4,9 @@ import { externalServices } from "../../../services";
 import CustomError from "../../Shared/CustomError";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import Pagination from "../Pagination";
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
-function OrcidList({fragment, setFragment}) {
+function OrcidList({ fragment, setFragment }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -32,7 +33,7 @@ function OrcidList({fragment, setFragment}) {
 
     setData(response.data);
 
-    if(response.data.length === 0) { setCurrentData([]); }
+    if (response.data.length === 0) { setCurrentData([]); }
 
     setLoading(false);
   };
@@ -65,7 +66,7 @@ function OrcidList({fragment, setFragment}) {
    * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
    */
   const handleKeyDown = (e) => {
-    if(e.key === 'Enter') {
+    if (e.key === 'Enter') {
       getData(text);
     }
   }
@@ -82,8 +83,8 @@ function OrcidList({fragment, setFragment}) {
   return (
     <div style={{ position: "relative" }}>
       {loading && <CustomSpinner></CustomSpinner>}
-      { error && <CustomError></CustomError>}
-      { !error && (
+      {error && <CustomError></CustomError>}
+      {!error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
@@ -106,7 +107,7 @@ function OrcidList({fragment, setFragment}) {
                         onClick={handleSearchTerm}
                         style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }}/>
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -137,7 +138,16 @@ function OrcidList({fragment, setFragment}) {
                 {currentData.length > 0 ? currentData.map((el, idx) => (
                   <tr key={idx}>
                     <td>
-                      <input className="text-center" type="checkbox" checked={selectedPerson === el.orcid} onChange={() => setSelectedValue(el)} />
+                      {selectedPerson === el.orcid ?
+                        <FaCheckCircle
+                          className="text-center"
+                          style={{ color: 'green' }}
+                        /> :
+                        <FaPlusSquare
+                          className="text-center"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => setSelectedValue(el)} />
+                      }
                     </td>
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td>
