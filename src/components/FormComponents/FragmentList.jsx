@@ -20,7 +20,7 @@ function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form'
             {fragmentsList
               .map((el, idx) => (el.action !== "delete" ?
                 <tr key={idx}>
-                  <td scope="row" style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, templateToString))}></td>
+                  <td style={{ width: "100%" }} dangerouslySetInnerHTML={createMarkup(parsePattern(el, templateToString))}></td>
                   <td className="actions">
                     {!readonly && (
                       <>
