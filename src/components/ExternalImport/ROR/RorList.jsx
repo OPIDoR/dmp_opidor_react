@@ -12,6 +12,7 @@ function RorList({ fragment, setFragment }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentData, setCurrentData] = useState([]);
@@ -36,6 +37,7 @@ function RorList({ fragment, setFragment }) {
     }
 
     setData(response.data);
+    setFilteredData(response.data);
 
     if (response.data.length === 0) { setCurrentData([]); }
 
@@ -81,7 +83,7 @@ function RorList({ fragment, setFragment }) {
     const filteredByCountry = data.filter((el) => {
       return el.country.code === e.value;
     });
-    setData(filteredByCountry);
+    setFilteredData(filteredByCountry);
   };
 
   /**
@@ -225,7 +227,7 @@ function RorList({ fragment, setFragment }) {
           <div className="row text-center">
             <div className="mx-auto"></div>
             <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
+              <Pagination items={filteredData} onChangePage={onChangePage} pageSize={pageSize} />
             </div>
           </div>
         </>
