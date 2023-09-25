@@ -126,9 +126,9 @@ function DynamicForm({
               level={1}
               fragmentId={fragmentId}
               readonly={readonly}
-            ></FormBuilder>
+            />
           </div>
-          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center"></CustomButton>
+          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center" />
         </div>
       )}
     </>
