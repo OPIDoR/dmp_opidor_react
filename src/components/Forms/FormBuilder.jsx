@@ -18,6 +18,7 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
   const properties = template.properties;
   const defaults = template.default || {};
   const data = [];
+
   // si type shema is an object
   // retun est code html
   if (template.type === 'object') {
@@ -25,7 +26,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
       const label = createLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
-
 
       /**
        * REGISTRIES
@@ -113,7 +113,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
 
       // CONTRIBUTOR
       if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
-        // console.log("TODO : condition funder à voir");
         data.push(
           <SelectContributorSingle
             key={key}
