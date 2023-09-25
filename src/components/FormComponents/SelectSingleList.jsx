@@ -155,7 +155,7 @@ function SelectSingleList({
             </>
           </div>
         </div>
-        
+
         {registryType === 'complex' && selectedValue && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
