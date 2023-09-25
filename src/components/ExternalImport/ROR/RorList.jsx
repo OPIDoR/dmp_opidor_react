@@ -79,11 +79,16 @@ function RorList({ fragment, setFragment }) {
   /**
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
-  const handleChangeCountry = (e) => {
-    const filteredByCountry = data.filter((el) => {
-      return el.country.code === e.value;
-    });
-    setFilteredData(filteredByCountry);
+  const handleChangeCountry = async (e) => {
+    let response;
+    try {
+      response = await externalServices.getRor(text, `country.country_code:${e.value}`);
+    } catch (error) {
+      setError(error);
+      return setLoading(false);
+    }
+
+    setFilteredData(response.data);
   };
 
   /**
