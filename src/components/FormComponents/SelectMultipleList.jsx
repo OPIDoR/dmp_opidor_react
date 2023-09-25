@@ -113,7 +113,7 @@ function SelectMultipleList({
           {registries && registries.length > 1 && (
             <div className="col-md-6">
               <>
-                <div className={styles.input_label}>{t("Select a reference from the list")}.</div>
+                <div className={styles.input_label}>{t("Select a registry")}.</div>
                 <div className="row">
                   <div className={`col-md-11 ${styles.select_wrapper}`}>
                     <CustomSelect
@@ -134,7 +134,9 @@ function SelectMultipleList({
 
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <>
-              <div className={styles.input_label}>{t("Then select a value from the list")}.</div>
+              <div className={styles.input_label}>
+                { registries.length > 1 ? t("Then select a value from the list") :t("Select a value from the list") }
+              </div>
               <div className="row">
                 <div className={`col-md-12 ${styles.select_wrapper}`}>
                   {selectedRegistry && options && (

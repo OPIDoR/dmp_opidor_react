@@ -144,7 +144,7 @@ function SelectContributorSingle({
   const handleSelectRole = (e) => {
     setDefaultRole(e.value);
     // setFormData(dataCopy);
-    handleChangeValue(propName, { ...value, role: e.value })
+    handleChangeValue(propName, { ...value, role: e.value, action: 'update' })
   };
 
   /**
