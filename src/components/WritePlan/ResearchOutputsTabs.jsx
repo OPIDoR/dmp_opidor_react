@@ -56,11 +56,8 @@ function ResearchOutputsTabs({ planId, readonly }) {
   const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
     e.preventDefault();
     setDisplayedResearchOutput(selectedResearchOutput);
-<<<<<<< HEAD
     setUrlParams({ research_output: selectedResearchOutput.id });
     // setHasPersonalData(element?.metadata?.hasPersonalData);
-=======
->>>>>>> 233f81f56cc6e60199a62095c52283bf99f6a6ae
   };
 
   return (
