@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import styles from "../assets/css/write_plan.module.css";
 import { Panel } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
@@ -13,23 +13,26 @@ import consumer from "../../cable";
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
   const {
-    displayedResearchOutput, setDisplayedResearchOutput,
+    displayedResearchOutput, setDisplayedResearchOutput
   } = useContext(GlobalContext);
+  const subscriptionRef = useRef(null);
 
   useEffect(() => {
-    consumer.subscriptions.create({ channel: "ResearchOutputChannel", id: displayedResearchOutput.id },
+    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
+    subscriptionRef.current = consumer.subscriptions.create({ channel: "ResearchOutputChannel", id: displayedResearchOutput.id },
       {
         connected: () => console.log("connected!"),
         disconnected: () => console.log("disconnected !"),
         received: data => setDisplayedResearchOutput({ ...displayedResearchOutput, ...data }),
       });
-  }, [displayedResearchOutput.id])
+  }, [displayedResearchOutput, setDisplayedResearchOutput])
 
   useEffect(() => {
     return () => {
       consumer.disconnect();
     }
   }, [])
+
 
   return (
     <Panel

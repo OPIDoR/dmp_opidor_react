@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import SectionsContent from "./SectionsContent";
@@ -6,7 +6,6 @@ import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import { createDynamicObject, roundedUpDivision } from "../../utils/GeneratorUtils";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import styles from "../assets/css/sidebar.module.css";
@@ -18,7 +17,7 @@ function WritePlan({
   userId,
   readonly,
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const {
     setLocale,
     setFormData,
@@ -31,7 +30,6 @@ function WritePlan({
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [renderKey, setRenderKey] = useState(0);
 
   useEffect(() => {
     setUserId(userId);
@@ -67,10 +65,6 @@ function WritePlan({
         !researchOutputs && setResearchOutputs(research_outputs);
         setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
-        // if (result.length > itemsPerPage) {
-        //   let resultDivision = roundedUpDivision(result.length, itemsPerPage);
-        //   setOpenedQuestions(createDynamicObject(resultDivision));
-        // }
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
