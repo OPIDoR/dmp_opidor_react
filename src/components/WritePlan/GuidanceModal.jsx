@@ -1,36 +1,25 @@
 import DOMPurify from "dompurify";
-import React, { useContext, useEffect, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, ScrollNav, MainNav, Close, Theme } from "./styles/GuidanceModalStyles";
+import { NavBody, NavBodyText, ScrollNav, Theme } from "./styles/GuidanceModalStyles";
+import InnerModal from "../Shared/InnerModal/InnerModal";
 
 function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Science Europe");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [indexTab, setIndexTab] = useState(0);
+  const modalRef = useRef(null);
+
   const {
     questionsWithGuidance
   } = useContext(GlobalContext);
-
-  const modalStyles = {
-    display: show ? "block" : "none",
-    position: "absolute",
-    zIndex: 99,
-    background: "var(--primary)",
-    padding: "10px",
-    borderRadius: "10px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "-785px",
-    marginTop: "388px",
-    width: "600px",
-    height: "400px",
-    color: "var(--white)",
-  };
 
   const navStyles = (tab) => ({
     color: activeTab === tab ? "var(--primary)" : "var(--white)",
@@ -119,14 +108,21 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   };
 
   return (
-    <div
-      style={modalStyles}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-    >
-      <MainNav>
+    <InnerModal show={show} ref={modalRef}>
+      <InnerModal.Header
+        closeButton
+        expandButton
+        ref={modalRef}
+        onClose={() => {
+          setShowGuidanceModal(false);
+          setFillColorGuidanceIcon("var(--primary)");
+        }}
+      >
+        <InnerModal.Title>
+          {t('Guidances')}
+        </InnerModal.Title>
+      </InnerModal.Header>
+      <InnerModal.Body>
         {loading && <CustomSpinner />}
         {!loading && error && <CustomError error={error} />}
         {!loading && !error && data && (
@@ -147,21 +143,9 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
             ))}
           </nav>
         )}
-        <Close
-          className="close"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setShowGuidanceModal(false);
-            setFillColorGuidanceIcon("var(--primary)");
-          }}
-          key="closeModal"
-        >
-          <IoClose size={24} />
-        </Close>
-      </MainNav>
-      <div>{data && getContent()}</div>
-    </div>
+        <div>{data && getContent()}</div>
+      </InnerModal.Body>
+    </InnerModal>
   );
 }
 
