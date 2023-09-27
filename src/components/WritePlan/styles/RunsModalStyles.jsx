@@ -17,31 +17,13 @@ export const NavBody = styled.div`
   max-height: 10px;
   margin-right: 20px;
 `;
+
 export const NavBodyText = styled.div`
   padding: 0px 0px 0px 18px; // Add padding if needed
   border-radius: 0px 10px 10px 10px;
   font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   min-height: 300px;
-`;
-
-export const MainNav = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const Close = styled.div`
-  margin: 8px 8px 0px 0px;
-  color: #fff;
-  font-size: 25px;
-  font-family:  "Helvetica Neue", sans-serif;
-`;
-
-export const Title = styled.div`
-  margin: 10px 0px 0px 30px;
-  color: #fff;
-  font-size: 20px;
-  font-family:  "Helvetica Neue", sans-serif;
 `;
 
 export const Description = styled.div`
