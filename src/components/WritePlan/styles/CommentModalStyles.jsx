@@ -1,31 +1,19 @@
 import styled from "styled-components";
 
-export const NavBody = styled.div`
-  color: #000;
-  padding: 0px;
-  margin-top: 4px;
-  min-height: 320px;
-  margin-right: 20px;
-`;
-
 export const NavBodyText = styled.div`
-  background: white; // Set the background color to white
-  padding: 18px 18px 5px 18px; // Add padding if needed
+  background: var(--white);
+  padding: 18px 18px 5px 18px;
   border-radius: 10px;
-  margin: 10px;
-  font-family:  "Helvetica Neue", sans-serif;
+  margin: 0 10px 10px 0;
+  font-family: "Helvetica Neue", sans-serif;
   color: var(--primary);
-`;
-
-export const Title = styled.div`
-  margin: 10px 0px 0px 30px;
-  color: #fff;
-  font-size: 20px;
-  font-family:  "Helvetica Neue", sans-serif;
+  &:last-child {
+    margin: 0 10px 0 0;
+  }
 `;
 
 export const ScrollNav = styled.div`
-  max-height: 209px;
+  max-height: 210px;
   overflow: auto;
   overflow-anchor: none;
   scrollbar-width: bold;
@@ -47,29 +35,9 @@ export const ScrollNav = styled.div`
   }
 `;
 
-export const MainNav = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const Close = styled.div`
-  margin: 0px 21px 12px 0px;
-  color: #fff;
-  font-size: 25px;
-`;
-
-export const ButtonComment = styled.button`
-  margin: 10px 2px 2px 0px;
-  color: #000;
-  font-size: 18px;
-  color: var(--primary) !important;
-  font-family: "Helvetica Neue", sans-serif !important;
-  border-radius: 8px !important;
-`;
-
 export const CommentsCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0px 0px 10px;
+  margin: 20px 0px 0px 0;
 `;

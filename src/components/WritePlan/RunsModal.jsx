@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { IoClose } from "react-icons/io5";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, Description, MainNav, Close, ButtonComment, Title } from "./styles/RunsModalStyles";
+import { NavBody, NavBodyText, Description, ButtonComment } from "./styles/RunsModalStyles";
+import InnerModal from "../Shared/InnerModal/InnerModal";
 
 function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
   const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const modalRef = useRef(null);
 
   const modalStyles = {
     display: show ? "block" : "none",
@@ -39,53 +40,48 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
   }, []);
 
   return (
-    <div
-      style={modalStyles}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-    >
-      <MainNav>
-        <Title>Runs</Title>
-        <Close
-          className="close"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setshowModalRuns(false);
-            setFillColorIconRuns("var(--primary)");
-          }}
-        >
-          <IoClose size={24} />
-        </Close>
-      </MainNav>
-      {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError error={error}></CustomError>}
-      {!loading && !error && data && (
-        <NavBody>
-          <NavBodyText>
-            <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>
-            </div>
-            <Description>
-              {t(
-                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
-              )}
-            </Description>
+    <InnerModal show={show} ref={modalRef}>
+      <InnerModal.Header
+        closeButton
+        expandButton
+        ref={modalRef}
+        onClose={() => {
+          setshowModalRuns(false);
+          setFillColorIconRuns("var(--primary)");
+        }}
+      >
+        <InnerModal.Title>
+          {t('Runs')}
+        </InnerModal.Title>
+      </InnerModal.Header>
+      <InnerModal.Body>
+        {loading && <CustomSpinner />}
+        {!loading && error && <CustomError error={error} />}
+        {!loading && !error && data && (
+          <NavBody>
+            <NavBodyText>
+              <div style={{ margin: 10 }}>
+                <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>
+              </div>
+              <Description>
+                {t(
+                  "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
+                )}
+              </Description>
 
-            <div style={{ margin: 10 }}>
-              <ButtonComment className="btn btn-light">{t("Notify MESO@LR")}</ButtonComment>
-            </div>
-            <Description>
-              {t(
-                "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
-              )}
-            </Description>
-          </NavBodyText>
-        </NavBody>
-      )}
-    </div>
+              <div style={{ margin: 10 }}>
+                <ButtonComment className="btn btn-light">{t("Notify MESO@LR")}</ButtonComment>
+              </div>
+              <Description>
+                {t(
+                  "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
+                )}
+              </Description>
+            </NavBodyText>
+          </NavBody>
+        )}
+      </InnerModal.Body>
+    </InnerModal>
   );
 }
 

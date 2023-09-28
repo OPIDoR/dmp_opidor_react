@@ -172,8 +172,17 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {/* {!readonly && (
+                  {/*
+                    // TODO: Display scripts button
+                    {!readonly && ( 
                     <>
+                      <ReactTooltip
+                        id="scriptTip"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t("Script")}
+                      />
                       <div
                         data-tooltip-id="scriptTip"
                         className={styles.panel_icon}
@@ -194,107 +203,77 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                           />
                         )}
                       </div>
-                      <ReactTooltip
-                        id="scriptTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Script")}
-                      />
-                      {isQuestionOpened() && (
-                        <RunsModal
-                          show={showRunsModal}
-                          setshowModalRuns={setShowRunsModal}
-                          setFillColorIconRuns={setFillRunsIconColor}
-                        ></RunsModal>
-                      )}
                     </>
                   )} */}
 
-                  <div
-                    data-tooltip-id="commentTip"
-                    className={styles.panel_icon}
-                    onClick={(e) => {
-                      handleClick(e, isQuestionOpened(), question, "comment");
-                    }}
-                    style={{ marginLeft: "5px" }}
-                  >
-                    {isQuestionOpened() && (
-                      <CommentSVG
-                        size={32}
-                        style={{ marginTop: "6px" }}
-                        fill={
-                          isQuestionOpened()
-                            ? fillCommentIconColor
-                            : "var(--primary)"
-                        }
-                      />
-                    )}
-                  </div>
-                  <ReactTooltip
-                    id="commentTip"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t("Comment")}
-                  />
-                  {isQuestionOpened() && (
-                    <CommentModal
-                      show={showCommentModal}
-                      setshowModalComment={setShowCommentModal}
-                      setFillColorIconComment={setFillCommentIconColor}
-                      answerId={answerId}
-                      researchOutputId={displayedResearchOutput.id}
-                      planId={planData.id}
-                      questionId={question.id}
-                      readonly={readonly}
-                    ></CommentModal>
-                  )}
-
-                  {
-                    questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && <div
-                      data-tooltip-id="guidanceTip"
+                  <div>
+                    <ReactTooltip
+                      id="commentTip"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t("Comment")}
+                    />
+                    <div
+                      data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
-                        handleClick(
-                          e,
-                          isQuestionOpened(),
-                          question,
-                          "guidance"
-                        );
+                        handleClick(e, isQuestionOpened(), question, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
                     >
                       {isQuestionOpened() && (
-                        <PiLightbulbLight
+                        <CommentSVG
                           size={32}
                           style={{ marginTop: "6px" }}
                           fill={
                             isQuestionOpened()
-                              ? fillGuidanceIconColor
+                              ? fillCommentIconColor
                               : "var(--primary)"
                           }
                         />
                       )}
                     </div>
-                  }
+                  </div>
 
-                  <ReactTooltip
-                    id="guidanceTip"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t("Guidances")}
-                  />
-                  {isQuestionOpened() && (
-                    <GuidanceModal
-                      show={showGuidanceModal}
-                      setShowGuidanceModal={setShowGuidanceModal}
-                      setFillColorGuidanceIcon={setFillGuidanceIconColor}
-                      questionId={questionId}
-                      planId={planData.id}
-                    ></GuidanceModal>
+                  {
+                    questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+                      <div>
+                        <ReactTooltip
+                          id="guidanceTip"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t("Guidances")}
+                        />
+                        <div
+                        data-tooltip-id="guidanceTip"
+                        className={styles.panel_icon}
+                        onClick={(e) => {
+                          handleClick(
+                            e,
+                            isQuestionOpened(),
+                            question,
+                            "guidance"
+                          );
+                        }}
+                        style={{ marginLeft: "5px" }}
+                      >
+                        {isQuestionOpened() && (
+                          <PiLightbulbLight
+                            size={32}
+                            style={{ marginTop: "6px" }}
+                            fill={
+                              isQuestionOpened()
+                                ? fillGuidanceIconColor
+                                : "var(--primary)"
+                            }
+                          />
+                        )}
+                      </div>
+                    </div>
                   )}
+
                   {isQuestionOpened() ? (
                     <TfiAngleUp
                       style={{ marginLeft: "5px" }}
@@ -312,7 +291,35 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
               </div>
             </Panel.Title>
           </Panel.Heading>
-          <Panel.Body className={styles.panel_body} collapsible={true}>
+          <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
+            {isQuestionOpened() && (
+              <div>
+                {/*
+                  // TODO: Display scripts modal
+                  <RunsModal
+                  show={showRunsModal}
+                  setshowModalRuns={setShowRunsModal}
+                  setFillColorIconRuns={setFillRunsIconColor}
+                /> */}
+                <CommentModal
+                  show={showCommentModal}
+                  setshowModalComment={setShowCommentModal}
+                  setFillColorIconComment={setFillCommentIconColor}
+                  answerId={answerId}
+                  researchOutputId={displayedResearchOutput.id}
+                  planId={planData.id}
+                  questionId={question.id}
+                  readonly={readonly}
+                />
+                <GuidanceModal
+                  show={showGuidanceModal}
+                  setShowGuidanceModal={setShowGuidanceModal}
+                  setFillColorGuidanceIcon={setFillGuidanceIconColor}
+                  questionId={questionId}
+                  planId={planData.id}
+                />
+              </div>
+            )}
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
