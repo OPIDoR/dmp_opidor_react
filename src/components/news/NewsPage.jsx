@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { get } from 'lodash';
 
 import NewsItem from './NewsItem.jsx';
 import { news as newsService } from '../../services';
@@ -18,7 +17,7 @@ function NewsPage({locale}) {
           title: r.title.rendered,
           link: r.link,
           date: new Date(r.date).toLocaleDateString('fr-FR'),
-          thumbnail: get(r, ['_embedded', 'wp:featuredmedia', '0', 'media_details', 'sizes', 'medium_large']),
+          thumbnail: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["medium_large"],
         }));
         setNews(newsItems);
         setLoading(false);

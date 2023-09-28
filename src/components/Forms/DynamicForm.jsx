@@ -9,7 +9,7 @@ import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
-import { unionBy } from 'lodash';
+import unionBy from 'lodash.unionby';
 
 function DynamicForm({
   fragmentId,

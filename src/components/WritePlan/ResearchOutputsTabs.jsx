@@ -5,11 +5,9 @@ import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
 import { Panel, PanelGroup } from "react-bootstrap";
 import styles from "../assets/css/sidebar.module.css";
 import { MdAddCircleOutline } from "react-icons/md";
-import { BsBell, BsCheckCircleFill } from "react-icons/bs";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
-import { chunk } from "lodash";
-import consumer from "../../cable";
+import chunk from "lodash.chunk";
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
