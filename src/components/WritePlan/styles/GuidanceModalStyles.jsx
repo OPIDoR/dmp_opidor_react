@@ -9,11 +9,12 @@ export const NavBody = styled.div`
   max-height: 10px;
   margin-right: 20px;
 `;
+
 export const NavBodyText = styled.div`
-  background: white; // Set the background color to white
-  padding: 18px; // Add padding if needed
-  border-radius: 0px 10px 10px 10px;
-  font-family:  "Helvetica Neue", sans-serif;
+  background: var(--white);
+  padding: 18px;
+  border-radius: 0px 10px 10px 0;
+  font-family: "Helvetica Neue", sans-serif;
   color: var(--primary);
   min-height: 300px;
 `;
@@ -40,20 +41,8 @@ export const ScrollNav = styled.div`
   }
 `;
 
-export const MainNav = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const Close = styled.div`
-  margin: 10px 0px 0px 0px;
-  color: #fff;
-  font-size: 25px;
-  font-family:  "Helvetica Neue", sans-serif;
-`;
-
 export const Theme = styled.div`
   font-size: 25px;
-  font-family:  "Helvetica Neue", sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
   font-weight: bold;
 `;
