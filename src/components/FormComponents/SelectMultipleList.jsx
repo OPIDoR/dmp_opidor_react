@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -18,13 +20,15 @@ function SelectMultipleList({
   header,
   readonly,
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState(null);
+  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const { 
     locale, loadedRegistries, setLoadedRegistries 
   } = useContext(GlobalContext);
-  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -99,13 +103,18 @@ function SelectMultipleList({
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
-          )}
+          <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
 
         {/* ************Select registry************** */}
