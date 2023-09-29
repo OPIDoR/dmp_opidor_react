@@ -268,7 +268,6 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                       {isQuestionOpened() && (
                         <PiLightbulbLight
                           size={32}
-                          style={{ marginTop: "6px" }}
                           fill={
                             isQuestionOpened()
                               ? fillGuidanceIconColor
