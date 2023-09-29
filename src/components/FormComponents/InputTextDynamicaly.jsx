@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
+import { FaPlus, FaMinus } from 'react-icons/fa6';
 import styles from '../assets/css/form.module.css';
 
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ values, handleChangeValue, label, propName, tooltip, fragmentId, readonly  }) {
+function InputTextDynamicaly({ values, handleChangeValue, label, propName, tooltip, fragmentId, readonly }) {
   const { t } = useTranslation();
-  const [formFields, setFormFields] = useState(['']);
-  
-  /* A React hook that is called when the component is mounted and when the name variable changes. */
+  const [formFields, setFormFields] = useState([]);
+  const [fieldContent, setFieldContent] = useState('');
+  const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
+
   useEffect(() => {
-    setFormFields(values || [""]);
+    setFormFields(values || []);
   }, [values]);
 
   /**
@@ -23,83 +27,117 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
     setFormFields(data);
     // setFormData(updateFormState(formData, fragmentId, propName, data));
     handleChangeValue(propName, data)
-
   };
 
   /**
-   * When the addFields function is called, the setFormFields
-   * function is called with the current formFields array and a new empty string.
+   * Function to add field in formFields state.
+   * @param {Event} e - The event object, typically a click event.
+   * @returns {void}
    */
   const addFields = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setFormFields([...formFields, '']);
+
+    setFormFields([...formFields, fieldContent]);
+    return setFieldContent('');
   };
 
   /**
-   * If the formFields array has more than one element,
-   * then remove the element at the index specified by the index parameter.
+   * Function to remove field in formFields state
+   * @param {Event} e - The event object, typically a click event.
+   * @param {number} index - The index of the field to be removed.
+   * @returns {void}
    */
   const removeFields = (e, index) => {
     e.preventDefault();
     e.stopPropagation();
-    if (formFields.length > 1) {
-      const data = [...formFields];
-      data.splice(index, 1);
-      setFormFields(data);
-      // setFormData(updateFormState(formData, fragmentId, propName, data));
-      handleChangeValue(propName, data)
-    }
+
+    const data = [...formFields];
+    data.splice(index, 1);
+    setFormFields(data);
+    // setFormData(updateFormState(formData, fragmentId, propName, data));
+    handleChangeValue(propName, data);
   };
 
   return (
     <div className="App">
       <div className={styles.label_form}>
         <strong className={styles.dot_label}></strong>
-        <label>{label}</label>
-        {tooltip && (
-          <span 
-            className="fas fa-circle-info" 
-            data-toggle="tooltip" data-placement="top" title={tooltip}
-          ></span>
-        )}
+        <label data-tooltip-id={inputTextTooltipId}>{label}</label>
+        {
+          tooltip && (
+            <ReactTooltip
+              id={inputTextTooltipId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              style={{ width: '300px', textAlign: 'center' }}
+              content={tooltip}
+            />
+          )
+        }
       </div>
-      {formFields.map((form, index) => {
-        return (
-          <div key={index} style={{ margin: "10px" }}>
-            <div className={styles.input_container}>
-              <input 
+
+      <div className="row" style={{ marginBottom: '10px' }}>
+        <div className="col-md-11">
+          <input
+            type="text"
+            className="form-control"
+            style={{ border: '1px solid var(--primary)', borderRadius: '8px', flex: 1 }}
+            onChange={(e) => setFieldContent(e.target.value)}
+            value={fieldContent}
+            name={propName}
+            disabled={readonly}
+          />
+        </div>
+        <div className="col-md-1">
+          <ReactTooltip
+            id="input-text-dynamicaly-add-button"
+            place="bottom"
+            effect="solid"
+            variant="info"
+            content={t('Add')}
+          />
+          <FaPlus
+            data-tooltip-id="input-text-dynamicaly-add-button"
+            onClick={(e) => addFields(e)}
+            style={{ margin: '8px', cursor: 'pointer' }}
+          />
+        </div>
+      </div>
+
+      {formFields.map((content, index) => (
+        <div className="row" style={{ marginBottom: '10px' }} key={`row-${index}`}>
+          <div className="col-md-11">
+            <div style={{ display: 'flex', alignItems: 'space-between' }}>
+              <input
+                key={`input-text-dynamically-${index}`}
                 type="text"
-                className={styles.input}
-                value={form} name={propName}
+                className="form-control"
+                style={{ border: '1px solid var(--primary)', borderRadius: '8px', flex: 1 }}
+                value={content}
+                name={propName}
                 onChange={(event) => handleFormChange(event, index)}
                 disabled={readonly}
-                />
-
-              {!readonly && (
-                <>
-                  {formFields.length !== 1 && (
-                    <span className={styles.input_img} data-role="toggle">
-                      <a
-                        className="text-primary"
-                        type="button"
-                        href="#"
-                        onClick={(e) => removeFields(e, index)}
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title={t("Delete")}
-                        style={{ marginRight: "8px" }}
-                      >
-                        <i className="fa fa-minus" aria-hidden="true" />
-                      </a>
-                    </span>
-                  )}
-                </>
-              )}
+              />
             </div>
           </div>
-        );
-      })}
+          <div className="col-md-1" key={`col-md-1-input-text-dynamically-${index}`}>
+            <ReactTooltip
+              id={`input-text-dynamically-del-button-${index}`}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              content={t('Delete')}
+            />
+            <FaMinus
+              data-tooltip-id={`input-text-dynamically-del-button-${index}`}
+              onClick={(e) => removeFields(e, index)}
+              style={{ margin: '8px', cursor: 'pointer' }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
