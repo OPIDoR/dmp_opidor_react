@@ -5,6 +5,8 @@ import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -25,6 +27,7 @@ function SelectSingleList({
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const [selectedValue, setSelectedValue] = useState( registryType === 'complex' ? {} : '');
   const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : '');
+  const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
   const nullValue  = registryType === 'complex' ? {} : '';
 
@@ -99,13 +102,18 @@ function SelectSingleList({
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
-          )}
+          <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
 
         {/* ************Select registry************** */}

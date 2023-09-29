@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
@@ -39,7 +41,9 @@ function ModalTemplate({
   } = useContext(GlobalContext);
   const [modalData, setModalData] = useState({});
   const [index, setIndex] = useState(null);
-  const [fragmentsList, setFragmentsList] = useState([])
+  const [fragmentsList, setFragmentsList] = useState([]);
+  const tooltipId = uniqueId('modal_template_tooltip_id_');
+
 
   const [template, setTemplate] = useState(null);
   useEffect(() => {
@@ -145,13 +149,18 @@ function ModalTemplate({
       <div className={`p-2 mb-2`}>
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span
-              className="fas fa-circle-info"
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
-          )}
+          <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
         {template && (
           <FragmentList
