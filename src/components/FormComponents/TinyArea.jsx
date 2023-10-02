@@ -1,5 +1,7 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 import styles from '../assets/css/form.module.css';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
@@ -22,8 +24,14 @@ const ReadDiv = styled.div`
 `tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
 function TinyArea({
-  value, handleChangeValue, label, propName, tooltip, readonly
+  value,
+  handleChangeValue,
+  label,
+  propName,
+  tooltip,
+  readonly,
 }) {
+  const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
   const handleChange = (newText) => {
     handleChangeValue(propName, newText)
@@ -34,13 +42,18 @@ function TinyArea({
       <div className="row">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span
-              className="fas fa-circle-info"
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
-          )}
+          <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tinyAreaLabelId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
 
         <div style={{ marginTop: "10px" }}>
@@ -58,7 +71,7 @@ function TinyArea({
                 toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
                 content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                 skin_url: '/tinymce/skins/oxide',
-                content_css: ['/tinymce/tinymce.css'],
+                content_css: [],
               }}
             />
           )}

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
@@ -36,6 +36,7 @@ function GuidanceChoice({ planId }) {
   const {
     setQuestionsWithGuidance
   } = useContext(GlobalContext);
+  const guidanceBlockRef = useRef(null);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -45,7 +46,11 @@ function GuidanceChoice({ planId }) {
     guidances.getGuidanceGroups(planId)
       .then((res) => {
         let { guidance_groups } = res.data;
-        guidance_groups = sortGuidances(guidance_groups);
+
+        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
+        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
+
+        guidance_groups = [ ...selectedGuidances, ...unselectedGuidances ];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
@@ -55,11 +60,7 @@ function GuidanceChoice({ planId }) {
       .finally(() => setLoading(false));
   }, [planId]);
 
-  const sortGuidances = (guidances) => {
-    return guidances = guidances
-      .sort((a) => (a.important === true ? -1 : 1))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }
+  const sortGuidances = (guidances) => guidances.sort((a, b) => a.name.localeCompare(b.name));
 
   const handleGuidanceGroups = (guidanceGroups) => {
     const states = {};
@@ -138,13 +139,21 @@ function GuidanceChoice({ planId }) {
     }
 
     let { guidance_groups } = response.data;
-    guidance_groups = sortGuidances(guidance_groups);
 
-    const {  questions_with_guidance } = response.data;
+    let {  questions_with_guidance } = response.data;
+
+    const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
+    const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
+
+    guidance_groups = [ ...selectedGuidances, ...unselectedGuidances ];
+
     setData(guidance_groups);
+
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
+
+    guidanceBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
 
     toast.success(t("Registration was successful !"));
   };
@@ -172,91 +181,91 @@ function GuidanceChoice({ planId }) {
         </Panel.Heading>
         {true && (
           <Panel.Body collapsible>
-            <div style={description}>
+            <div style={description} ref={guidanceBlockRef}>
               <div style={{ textAlign: 'justify' }}>
                 {t(
                   "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations."
                 )}
               </div>
-              {loading && <CustomSpinner />}
-              {!loading && error && <CustomError error={error} />}
-              {!loading && !error && data && (
-                <div className="container" style={{ margin: "20px" }}>
-                  {
-                    data.map((group, index) => (
-                      <div key={`guidance-group-${index}`} className="form-check" style={{ margin: "5px" }}>
+              <div style={{ marginTop: '20px' }}>
+                {loading && <CustomSpinner />}
+                {!loading && error && <CustomError error={error} />}
+                {!loading && !error && data && (
+                  data.map((group, index) => (
+                    <div key={`guidance-group-${index}`} className="form-check" style={{ margin: "5px" }}>
+                      {
+                        !checkboxStates[group.id].checked ? (
+                          <MdOutlineCheckBoxOutlineBlank
+                            style={{ cursor: 'pointer' }}
+                            size={18}
+                            onClick={() => handleCheckboxChange(group.id, true)}
+                          />
+                        ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidances).length > 1 ? (
+                          <MdIndeterminateCheckBox
+                            style={{ cursor: 'pointer' }}
+                            size={18}
+                            onClick={() => handleCheckboxChange(group.id, true)}
+                          />
+                        ) : (
+                          <MdCheckBox
+                            style={{ cursor: 'pointer' }}
+                            size={18}
+                            onClick={() => handleCheckboxChange(group.id, false)}
+                          />
+                        )
+                      }
+                      <label
+                        className={`${guidanceChoiceStyles.label_checkbox} ${
+                          checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ""
+                        }`}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleCheckboxChange(group.id, !checkboxStates[group.id].checked)}
+                      >
+                        {group.name}
+                      </label>
+                      <div>
                         {
-                          !checkboxStates[group.id].checked ? (
-                            <MdOutlineCheckBoxOutlineBlank
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              onClick={() => handleCheckboxChange(group.id, true)}
-                            />
-                          ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidances).length > 1 ? (
-                            <MdIndeterminateCheckBox
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              onClick={() => handleCheckboxChange(group.id, true)}
-                            />
-                          ) : (
-                            <MdCheckBox
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              onClick={() => handleCheckboxChange(group.id, false)}
-                            />
-                          )
+                          group.guidances.map((guidance, key) => (
+                            <div key={guidance.id} className="form-check" style={{ marginLeft: "30px" }}>
+                              {
+                                !checkboxStates[group.id].guidances[guidance.id] ? (
+                                  <MdOutlineCheckBoxOutlineBlank
+                                    style={{ cursor: 'pointer' }}
+                                    size={18}
+                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                                  />
+                                ) : (
+                                  <MdCheckBox
+                                    style={{ cursor: 'pointer' }}
+                                    size={18}
+                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                                  />
+                                )
+                              }
+                              <label
+                                className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                              >
+                                {guidance.name}
+                              </label>
+                            </div>
+                          ))
                         }
-                        <label
-                          className={`${guidanceChoiceStyles.label_checkbox} ${
-                            checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ""
-                          }`}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => handleCheckboxChange(group.id, !checkboxStates[group.id].checked)}
-                        >
-                          {group.name}
-                        </label>
-                        <div>
-                          {
-                            group.guidances.map((guidance, key) => (
-                              <div key={guidance.id} className="form-check" style={{ marginLeft: "30px" }}>
-                                {
-                                  !checkboxStates[group.id].guidances[guidance.id] ? (
-                                    <MdOutlineCheckBoxOutlineBlank
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
-                                    />
-                                  ) : (
-                                    <MdCheckBox
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
-                                    />
-                                  )
-                                }
-                                <label
-                                  className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
-                                  style={{ cursor: 'pointer' }}
-                                  onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
-                                >
-                                  {guidance.name}
-                                </label>
-                              </div>
-                            ))
-                          }
-                        </div>
                       </div>
-                    ))
-                  }
+                    </div>
+                  ))
+                )}
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  {!loading && !error && data && (
+                    <CustomButton
+                      title={t("Save my choise")}
+                      buttonType={countSelectedGuidances() > 0 ? "orange" : "primary"}
+                      position="start"
+                      handleClick={handleSaveChoise}
+                    />
+                  )}
                 </div>
-              )}
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <CustomButton
-                  title={t("Save my choise")}
-                  buttonType={countSelectedGuidances() > 0 ? "orange" : "primary"}
-                  position="start"
-                  handleClick={handleSaveChoise}
-                />
               </div>
             </div>
           </Panel.Body>

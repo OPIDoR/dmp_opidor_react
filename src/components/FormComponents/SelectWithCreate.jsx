@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 
 import { GlobalContext } from '../context/Global.jsx';
 import {
@@ -41,6 +43,8 @@ function SelectWithCreate({
   const [template, setTemplate] = useState({});
   const [modalData, setModalData] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const tooltipId = uniqueId('select_with_create_tooltip_id_');
+  
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
@@ -187,13 +191,18 @@ function SelectWithCreate({
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span 
-              className="fas fa-circle-info" 
-              data-toggle="tooltip" data-placement="top" title={tooltip}
-            ></span>
-          )}
+          <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
         {/* ************Select ref************** */}
         <div className="row">
