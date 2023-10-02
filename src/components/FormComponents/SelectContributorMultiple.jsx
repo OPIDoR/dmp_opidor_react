@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
-import ImportExternal from "../ExternalImport/ImportExternal";
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createContributorsOptions, createOptions, deleteByIndex, parsePattern } from '../../utils/GeneratorUtils.js';
@@ -37,8 +39,9 @@ function SelectContributorMultiple({
   const [template, setTemplate] = useState(null);
   const [modalData, setModalData] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
-  const [contributorList, setContributorList] = useState([])
+  const [contributorList, setContributorList] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
+  const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
   useEffect(() => {
     setContributorList(values || [])
@@ -206,12 +209,18 @@ function SelectContributorMultiple({
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label>{label}</label>
-          {tooltip && (
-            <span className="m-4" data-toggle="tooltip" data-placement="top" title={tooltip}>
-              ?
-            </span>
-          )}
+          <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
         <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">

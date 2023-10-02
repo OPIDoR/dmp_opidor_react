@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = styled.button`
-  margin: 30px 0px 10px 0px;
-  margin: 10px;
   padding: 10px 20px 10px 20px;
   border-radius: 10px;
   font-size: 15px;
-  background-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary) !important" : "var(--orange) !important")};
-  border-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary) !important" : "var(--orange) !important")};
+  background-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary)" : "var(--orange)")} !important;
+  border-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary)" : "var(--orange)")} !important;
+  transition: ease-in-out 0.2s;
+
+  &:hover {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+  }
 `;
 
 const DivButton = styled.div`

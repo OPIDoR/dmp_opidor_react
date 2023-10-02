@@ -225,7 +225,6 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                       {isQuestionOpened() && (
                         <CommentSVG
                           size={32}
-                          style={{ marginTop: "6px" }}
                           fill={
                             isQuestionOpened()
                               ? fillCommentIconColor
