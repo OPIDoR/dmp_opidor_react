@@ -93,16 +93,16 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
       <PanelBody>
         <ul>
           <li>
-            {t('Short name')}: <strong>{displayedResearchOutput.abbreviation}</strong>
+            {t('Short name')} : <strong>{displayedResearchOutput.abbreviation}</strong>
           </li>
           <li>
-            {t('Name')}: <strong>{displayedResearchOutput.title}</strong>
+            {t('Name')} : <strong>{displayedResearchOutput.title}</strong>
           </li>
           <li>
-            {t('Type')}: <strong>{t(displayedResearchOutput.type || '-')}</strong>
+            {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
           <li>
-            {t('Contains personal data')}: <strong>{displayedResearchOutput.hasPersonalData ? t('Yes') : t('No')}</strong>
+            {t('Contains personal data')} : <strong>{displayedResearchOutput.hasPersonalData ? t('Yes') : t('No')}</strong>
           </li>
         </ul>
       </PanelBody>
