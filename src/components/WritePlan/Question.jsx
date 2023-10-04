@@ -157,7 +157,8 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                       fontSize: '18px',
                       fontWeight: 'bold',
                       whiteSpace: 'break-spaces',
-                      textAlign: 'justify'
+                      textAlign: 'justify',
+                      hyphens: 'auto'
                     }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([question.text]),
