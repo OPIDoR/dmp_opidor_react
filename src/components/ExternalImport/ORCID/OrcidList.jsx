@@ -82,8 +82,7 @@ function OrcidList({ fragment, setFragment }) {
 
   return (
     <div style={{ position: "relative" }}>
-      {loading && <CustomSpinner></CustomSpinner>}
-      {error && <CustomError></CustomError>}
+      {error && <CustomError />}
       {!error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
@@ -95,7 +94,7 @@ function OrcidList({ fragment, setFragment }) {
                       type="text"
                       className="form-control"
                       value={text}
-                      placeholder={t("search by <last name> <first name>")}
+                      placeholder={t("Search by <last name> <first name>")}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
                       style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
@@ -154,16 +153,26 @@ function OrcidList({ fragment, setFragment }) {
                       {el?.institutionName.join(' / ')}
                     </td>
                   </tr>
-                )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
+                )) : (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
+                      { loading ? <CustomSpinner /> : t('No data available') }
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
-          <div className="row text-center">
-            <div className="mx-auto"></div>
-            <div className="mx-auto">
-              <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
-            </div>
-          </div>
+          {
+            data.length > 0 && (
+              <div className="row text-center">
+                <div className="mx-auto"></div>
+                <div className="mx-auto">
+                  <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
+                </div>
+              </div>
+            )
+          }
         </>
       )}
     </div>
