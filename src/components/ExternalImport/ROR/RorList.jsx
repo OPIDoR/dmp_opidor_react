@@ -18,8 +18,8 @@ function RorList({ fragment, setFragment }) {
   const [currentData, setCurrentData] = useState([]);
   const [countries, setCountries] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState(null);
-  const [text, setText] = useState("");
-
+  const [text, setText] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -80,6 +80,8 @@ function RorList({ fragment, setFragment }) {
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
   const handleChangeCountry = async (e) => {
+    setSelectedCountry(e?.value);
+
     let response;
     try {
       response = await externalServices.getRor(text, `country.country_code:${e.value}`);
@@ -94,35 +96,35 @@ function RorList({ fragment, setFragment }) {
   /**
    * The handleSearchTerm function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleSearchTerm = () => {
-    getData(text);
-  };
+  const handleSearchTerm = () => getData(text, selectedCountry ? `country.country_code:${selectedCountry}` : null);
 
   /**
    * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
    */
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      getData(text);
+      return getData(text, selectedCountry ? `country.country_code:${selectedCountry}` : null);
     }
+    return null;
   }
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
    */
   const handleDeleteText = () => {
-    setText("");
+    setText('');
     setData([]);
     setCurrentData([]);
+    setSelectedCountry(null);
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      {loading && <CustomSpinner></CustomSpinner>}
-      {error && <CustomError></CustomError>}
+    <div style={{ position: 'relative' }}>
+      {loading && <CustomSpinner />}
+      {error && <CustomError />}
       {!error && (
         <>
-          <div className="row" style={{ margin: "10px" }}>
+          <div className="row" style={{ margin: '10px' }}>
             <div>
               <div className="row">
                 <div>
@@ -133,15 +135,15 @@ function RorList({ fragment, setFragment }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t("search for <organization name> or <acronym>")}
-                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                      placeholder={t('search for <organization name> or <acronym>')}
+                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px' }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px', margin: '0' }}
                       >
                         <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }} />
                       </button>
@@ -151,7 +153,7 @@ function RorList({ fragment, setFragment }) {
                         className="btn btn-default"
                         type="button"
                         onClick={handleDeleteText}
-                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px', margin: '0' }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -161,8 +163,8 @@ function RorList({ fragment, setFragment }) {
               </div>
             </div>
           </div>
-          {countries.length > 1 && (
-            <div className="row" style={{ margin: "10px" }}>
+          {data.length > 0 && countries.length > 1 && (
+            <div className="row" style={{ margin: '10px' }}>
               <div className="">
                 <div className="row">
                   <div>
@@ -170,13 +172,13 @@ function RorList({ fragment, setFragment }) {
                       menuPortalTarget={document.body}
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-                        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }),
+                        singleValue: (base) => ({ ...base, color: 'var(--primary)' }),
+                        control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px' }),
                       }}
                       onChange={handleChangeCountry}
                       defaultValue={{
-                        label: t("Select a country"),
-                        value: t("Select a country"),
+                        label: t('Select a country'),
+                        value: t('Select a country'),
                       }}
                       options={countries}
                     />
@@ -190,10 +192,10 @@ function RorList({ fragment, setFragment }) {
             <thead className="thead-dark">
               <tr>
                 <th scope="col"></th>
-                <th scope="col">{t("Organization name")}</th>
-                <th scope="col">{t("Acronym")}</th>
-                <th scope="col">{t("Country")}</th>
-                <th scope="col">{t("Location")}</th>
+                <th scope="col">{t('Organization name')}</th>
+                <th scope="col">{t('Acronym')}</th>
+                <th scope="col">{t('Country')}</th>
+                <th scope="col">{t('Location')}</th>
               </tr>
             </thead>
             <tbody>
@@ -222,19 +224,21 @@ function RorList({ fragment, setFragment }) {
                   <td>
                     {Object.values(el.addresses[0])
                       .filter((value) => value)
-                      .join(", ")}
+                      .join(', ')}
                   </td>
                 </tr>
               )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
             </tbody>
           </table>
 
-          <div className="row text-center">
-            <div className="mx-auto"></div>
-            <div className="mx-auto">
-              <Pagination items={filteredData} onChangePage={onChangePage} pageSize={pageSize} />
+          {data.length > 0 && (
+            <div className="row text-center">
+              <div className="mx-auto"></div>
+              <div className="mx-auto">
+                <Pagination items={filteredData} onChangePage={onChangePage} pageSize={pageSize} />
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>
