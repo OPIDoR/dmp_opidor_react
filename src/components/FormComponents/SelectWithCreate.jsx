@@ -104,9 +104,7 @@ function SelectWithCreate({
    * then sets the state to the new array.
    * @param idx - the index of the item in the array
    */
-  const handleDelete = (e, idx) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDelete = (idx) => {
     Swal.fire({
       title: t("Are you sure ?"),
       text: t("Are you sure you want to delete this item?"),
@@ -167,9 +165,7 @@ function SelectWithCreate({
    * It sets the state of the modalData variable to the value of the formData[propName][idx] variable.
    * @param idx - the index of the item in the array
    */
-  const handleEdit = (e, idx) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleEdit = (idx) => {
     setModalData(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);

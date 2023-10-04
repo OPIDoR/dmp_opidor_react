@@ -108,9 +108,7 @@ function ModalTemplate({
    * by the parameter, then sets the state to the new array.
    * @param idx - the index of the item in the array
    */
-  const handleDelete = (e, idx) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDelete = (idx) => {
     Swal.fire({
       title: t("Are you sure ?"),
       text: t("Are you sure you want to delete this item?"),
@@ -132,9 +130,7 @@ function ModalTemplate({
   /**
    * This function handles the edit functionality for a form element in a React component.
    */
-  const handleEdit = (e, idx) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleEdit = (idx) => {
     setModalData(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);
