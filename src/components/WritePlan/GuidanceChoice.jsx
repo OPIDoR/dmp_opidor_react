@@ -7,7 +7,7 @@ import guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import { guidances } from "../../services";
 import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import toast from "react-hot-toast";
 import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";
 import DOMPurify from 'dompurify';
@@ -301,12 +301,19 @@ function GuidanceChoice({ planId }) {
                   </tbody>
                 </table>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  {!loading && !error && data && !limitHasBeenReached() && (
+                  {!loading && !error && data && (
                     <CustomButton
-                      title={t("Save my choise")}
+                      title={
+                        limitHasBeenReached() ? (
+                          <Trans>
+                            The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
+                          </Trans>
+                        ) : t('Save my choise')
+                      }
                       buttonType={countSelectedGuidances() > 0 ? "orange" : "primary"}
                       position="start"
-                      handleClick={handleSaveChoise}
+                      handleClick={limitHasBeenReached() ? null : handleSaveChoise}
+                      disabled={limitHasBeenReached()}
                     />
                   )}
                 </div>

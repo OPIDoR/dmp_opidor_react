@@ -26,14 +26,14 @@ const DivButton = styled.div`
  * button is styled using CSS-in-JS with the help of the styled-components library. The component returns a div that contains a button element with an
  * onClick event listener that triggers the handleClick function passed as a prop.
  */
-function CustomButton({ handleClick, title, buttonType, position }) {
+function CustomButton({ handleClick, title, buttonType, position, disabled }) {
   const handleButtonAction = (e) => {
     handleClick(e);
   };
 
   return (
     <DivButton $position={position}>
-      <Button type="button" className="btn btn-primary" $buttonType={buttonType} onClick={handleButtonAction}>
+      <Button type="button" className="btn btn-primary" $buttonType={buttonType} onClick={handleButtonAction} disabled={disabled}>
         {title}
       </Button>
     </DivButton>
