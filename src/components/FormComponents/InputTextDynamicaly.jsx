@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPlus, FaMinus } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
+import { IoIosClose } from 'react-icons/io';
 import styles from '../assets/css/form.module.css';
 
 /* A React component that renders a form with a text input and a button.
@@ -130,10 +131,12 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
               variant="info"
               content={t('Delete')}
             />
-            <FaMinus
+            <IoIosClose
               data-tooltip-id={`input-text-dynamically-del-button-${index}`}
               onClick={(e) => removeFields(e, index)}
-              style={{ margin: '8px', cursor: 'pointer' }}
+              variant="info"
+              size={24}
+              style={{ margin: '6px 0 0 4px', cursor: 'pointer' }}
             />
           </div>
         </div>
