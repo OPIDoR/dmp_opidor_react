@@ -120,7 +120,6 @@ function RorList({ fragment, setFragment }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <CustomSpinner />}
       {error && <CustomError />}
       {!error && (
         <>
@@ -135,7 +134,7 @@ function RorList({ fragment, setFragment }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('search for <organization name> or <acronym>')}
+                      placeholder={t('Search for <organization name> or <acronym>')}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px' }}
                     />
                     <span className="input-group-btn">
@@ -227,7 +226,13 @@ function RorList({ fragment, setFragment }) {
                       .join(', ')}
                   </td>
                 </tr>
-              )) : <tr><td colSpan="5">{t('No data available')}</td></tr>}
+              )) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
+                    { loading ? <CustomSpinner /> : t('No data available') }
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
 
