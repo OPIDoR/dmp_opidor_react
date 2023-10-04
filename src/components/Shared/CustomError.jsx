@@ -3,16 +3,13 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 const ErrorContainer = styled.div`
-  height: 100vh !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100% !important;
+  height: 100% !important;
   font-family: montserrat, sans-serif;
 `;
 
 const BigText = styled.div`
-  font-size: 200px;
+  font-size: 150px;
   font-weight: 900;
   font-family: sans-serif;
   background: url(https://www.inist.fr/wp-content/uploads/2018/09/012_3132-scaled.jpg) no-repeat;
@@ -68,21 +65,27 @@ function CustomError({ error }) {
   const defaultMessage = t("It seems that a problem has appeared");
   const errorMessage = error?.message || t("Internal Server Error");
   const errorDescription = error?.error || defaultMessage;
+  const home = error?.home || true;
 
   return (
-    <ErrorContainer className="container">
-      <div className="row d-flex align-items-center justify-content-center">
-        <div className="col-md-12 text-center">
-          <BigText>Oops!</BigText>
-          <SmallText>{error?.code || ''} {errorMessage ? `- ${errorMessage}` : ''}</SmallText>
-        </div>
-        <div className="col-md-12 text-center">
-          <p>{errorDescription}</p>
-          <Button>
-            <a href="/">{t("Home page")}</a>
-          </Button>
-        </div>
+    <ErrorContainer>
+      <div className="text-center">
+        <BigText>Oops!</BigText>
+        <SmallText>{error?.code || ''} {errorMessage ? `- ${errorMessage}` : ''}</SmallText>
       </div>
+      <div
+        className="text-center"
+        style={{
+          width: '100% !important',
+          overflowWrap: 'break-word',
+          margin: '10px 0 10px 0',
+        }}
+      >
+        <p>{errorDescription}</p>
+        {home && <Button>
+          <a href="/">{t("Home page")}</a>
+        </Button>}
+        </div>
     </ErrorContainer>
   );
 }
