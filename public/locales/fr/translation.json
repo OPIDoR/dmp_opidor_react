@@ -129,10 +129,10 @@
   "Establishment": "Établissement",
   "Invalid email": "Email invalide",
   "Retrieve ORCID identifier": "Récupérer l'identifiant ORCID",
-  "ORCID Affiliation": "Affiliation rensignée dans ORCID",
+  "ORCID Affiliation": "Affiliation renseignée dans ORCID",
   "Retrieve RoR identifier": "Récupérer l'identifiant RoR",
-  "search by <last name> <first name>": "recherche par <nom> <prénom>",
-  "search for <organization name> or <acronym>": "recherche <nom de l'organisation> ou <acronyme>",
+  "Search by <last name> <first name>": "Recherche par <nom> <prénom>",
+  "Search for <organization name> or <acronym>": "Recherche <nom de l'organisation> ou <acronyme>",
   "Person": "Personne",
   "Display all guidances": "Afficher toutes les recommendations",
   "Display importants guidances": "Afficher les recommendations importantes",
@@ -144,5 +144,6 @@
   "Edit search output": "Éditer le produit de recherche",
   "Create or import a research output": "Créer ou importer un produit de recherche",
   "Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.": "Produit de recherche: jeu de données, logiciel, workflow, échantillon, protocole, ...<br />La création d'un produit de recherche permet de décrire la gestion spécifique de ce produit en fonction de se nature ou de sa discipline.<br />Vous pouvez créer autant de produit de recherche que nécessaire.",
-  "Research output": "Produit de recherche"
+  "Research output": "Produit de recherche",
+  "Role": "Rôle"
 }
