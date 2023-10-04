@@ -1,17 +1,19 @@
 .label_checkbox {
-  border-radius: 10px;
-  border: solid;
-  border-color: grey;
-  border-width: 1px;
-  margin: 1px 1px 1px 10px;
-  padding: 5px;
+  border-radius: 8px;
+  padding: 5px 10px 5px 10px;
+  box-sizing: border-box;
+  border: 1px solid grey;
   font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   font-size: 18px;
+  word-break: break-all;
+  hyphens: auto;
+  overflow-x: hidden;
 }
 
 .label_checkbox.checked {
   color: white;
+  border: none;
   background-color: var(--primary);
 }
 
@@ -19,5 +21,4 @@
   font-family:  "Helvetica Neue", sans-serif;
   color: var(--primary);
   font-size: 16px;
-  margin: 10px;
 }
