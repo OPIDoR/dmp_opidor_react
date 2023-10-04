@@ -39,6 +39,11 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       setType(displayedResearchOutput.type);
     }
 
+    if (!edit) {
+      setAbbreviation(`${t('Research output')} ${researchOutputs.length + 1}`);
+      setTitle(`${t('Research output')} ${researchOutputs.length + 1}`);
+    }
+
     service.getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
@@ -119,7 +124,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Short name')}</label>
         </div>
         <input
-          value={abbreviation || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
+          value={abbreviation || `${t('Research output')} ${researchOutputs.length + 1}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -134,7 +139,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Name')}</label>
         </div>
         <input
-          value={title || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
+          value={title || `${t('Research output')} ${researchOutputs.length + 1}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
