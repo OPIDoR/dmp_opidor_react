@@ -43,6 +43,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
         code: error?.response?.status,
         message: error?.response?.statusText,
         error: error?.response?.data?.message || '',
+        home: false,
       }))
       .finally(() => setLoading(false));
   }, [answerId]);
@@ -269,7 +270,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       <InnerModal.Footer>
         <InnerModal.Spacer />
 
-        {!readonly && (
+        {!readonly && loading && !error && (
           <Button variant="primary" onClick={(e) => handleSave(e)}>
             {isUpdate ? t("Update") : t("Save")}
           </Button>
