@@ -159,7 +159,7 @@ function GuidanceChoice({ planId }) {
     toast.success(t("Registration was successful !"));
   };
 
-  const limitHasBeenReached = () => countSelectedGuidances() >= GUIDANCES_GROUPS_LIMIT;
+  const limitHasBeenReached = () => countSelectedGuidances() > GUIDANCES_GROUPS_LIMIT;
 
   return (
     <PanelGroup accordion id="accordion-guidance-choice">
