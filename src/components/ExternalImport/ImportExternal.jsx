@@ -28,7 +28,7 @@ function ImportExternal({fragment, setFragment}) {
         </button>
         <ReactTooltip id="ror" place="top" effect="solid" variant="info" content={t("ROR id")} />
         <button data-tooltip-id="ror" type="button" className="btn btn-dark" style={{ color: "white", backgroundColor: "var(--primary)" }} onClick={toggleRor}>
-          {t('Retrieve RoR identifier')}
+          {t('Retrieve ROR identifier')}
         </button>
       </div>
 
