@@ -154,10 +154,10 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                   <div
                     className={styles.panel_title}
                     style={{
-                      margin: "0px !important",
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                      marginRight: "10px",
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      whiteSpace: 'break-spaces',
+                      textAlign: 'justify'
                     }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([question.text]),
@@ -261,7 +261,6 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                         {isQuestionOpened() && (
                           <PiLightbulbLight
                             size={32}
-                            style={{ marginTop: "6px" }}
                             fill={
                               isQuestionOpened()
                                 ? fillGuidanceIconColor
