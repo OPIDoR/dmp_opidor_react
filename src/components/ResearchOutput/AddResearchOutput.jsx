@@ -21,6 +21,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     displayedResearchOutput, setDisplayedResearchOutput,
     setResearchOutputs,
     setUrlParams,
+    researchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
@@ -118,7 +119,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Short name')}</label>
         </div>
         <input
-          value={abbreviation || ""}
+          value={abbreviation || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -133,7 +134,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Name')}</label>
         </div>
         <input
-          value={title || ""}
+          value={title || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}

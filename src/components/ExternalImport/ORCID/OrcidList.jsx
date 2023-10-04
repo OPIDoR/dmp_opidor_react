@@ -131,7 +131,7 @@ function OrcidList({ fragment, setFragment }) {
                 <tr>
                   <th scope="col"></th>
                   <th scope="col">{t("Last / First name")}</th>
-                  <th scope="col">{t("Establishment")}</th>
+                  <th scope="col">{t("ORCID Affiliation")}</th>
                 </tr>
               </thead>
               <tbody>

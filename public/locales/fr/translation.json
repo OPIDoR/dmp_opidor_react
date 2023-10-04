@@ -128,8 +128,9 @@
   "Last / First name": "Nom / prénom",
   "Establishment": "Établissement",
   "Invalid email": "Email invalide",
-  "Import personal data from ORCID": "Importer les données personnelles depuis ORCID",
-  "Import affiliation from RoR": "Importer les données d'affiliation depuis RoR",
+  "Retrieve ORCID identifier": "Récupérer l'identifiant ORCID",
+  "ORCID Affiliation": "Affiliation rensignée dans ORCID",
+  "Retrieve RoR identifier": "Récupérer l'identifiant RoR",
   "search by <last name> <first name>": "recherche par <nom> <prénom>",
   "search for <organization name> or <acronym>": "recherche <nom de l'organisation> ou <acronyme>",
   "Person": "Personne",
@@ -142,5 +143,6 @@
   "Name": "Nom",
   "Edit search output": "Éditer le produit de recherche",
   "Create or import a research output": "Créer ou importer un produit de recherche",
-  "Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.": "Produit de recherche: jeu de données, logiciel, workflow, échantillon, protocole, ...<br />La création d'un produit de recherche permet de décrire la gestion spécifique de ce produit en fonction de se nature ou de sa discipline.<br />Vous pouvez créer autant de produit de recherche que nécessaire."
+  "Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.": "Produit de recherche: jeu de données, logiciel, workflow, échantillon, protocole, ...<br />La création d'un produit de recherche permet de décrire la gestion spécifique de ce produit en fonction de se nature ou de sa discipline.<br />Vous pouvez créer autant de produit de recherche que nécessaire.",
+  "Research output": "Produit de recherche"
 }
