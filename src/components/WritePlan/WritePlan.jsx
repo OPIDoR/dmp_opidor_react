@@ -73,8 +73,8 @@ function WritePlan({
 
   return (
     <>
-      {loading && <CustomSpinner />}
-      {!loading && error && <CustomError error={error} />}
+      {loading && <CustomSpinner></CustomSpinner>}
+      {!loading && error && <CustomError error={error}></CustomError>}
       {!loading && !error && researchOutputs && (
         <>
           <div style={{ margin: '10px 30px 10px 30px' }}>
