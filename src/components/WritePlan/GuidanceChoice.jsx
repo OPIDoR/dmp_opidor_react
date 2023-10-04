@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { PiLightbulbLight } from "react-icons/pi";
@@ -37,7 +37,6 @@ function GuidanceChoice({ planId }) {
   const {
     setQuestionsWithGuidance
   } = useContext(GlobalContext);
-  const guidanceBlockRef = useRef(null);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -154,7 +153,7 @@ function GuidanceChoice({ planId }) {
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
 
-    guidanceBlockRef.current?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     toast.success(t("Registration was successful !"));
   };
@@ -173,7 +172,7 @@ function GuidanceChoice({ planId }) {
               borderRadius: '5px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} ref={guidanceBlockRef}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ flexGrow: 3, alignItems: 'center', textAlign: 'center' }}>
                 <div style={{ fontSize: '24px', color: 'var(--primary)'}}>
                   <PiLightbulbLight
