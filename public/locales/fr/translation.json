@@ -107,7 +107,7 @@
   "Select the guidance of your plan": "Sélectionnez les recommandations de votre plan",
   "Save was successful !": "L'enregistrement a été effectué avec succès !",
   "Please select at least one recommendation": "Veuillez sélectionner au moins une recommandation",
-  "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - you can select up to 6 organizations.": " Pour vous aider à rédiger votre plan, DMP OPIDoR vous propose des recommandations provenant de différents organismes - vous pouvez sélectionner jusqu’à 6 organismes.",
+  "To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - <strong>you can select up to 6 organizations</strong>.": " Pour vous aider à rédiger votre plan, DMP OPIDoR vous propose des recommandations provenant de différents organismes - <strong>vous pouvez sélectionner jusqu’à 6 organismes</strong>.",
   "Loading...": "Chargement ...",
   "Edit": "Éditer",
   "Unable to send the comment, please enter a valid comment.": "Impossible d'envoyer le commentaires, veuillez saisir un commentaire valide.",
@@ -135,5 +135,12 @@
   "Person": "Personne",
   "Display all guidances": "Afficher toutes les recommendations",
   "Display importants guidances": "Afficher les recommendations importantes",
-  "No data available": "Aucune donnée disponible"
+  "No data available": "Aucune donnée disponible",
+  "Comments": "Commentaires",
+  "Guidances": "Recommendations",
+  "Short name": "Nom abrégé",
+  "Name": "Nom",
+  "Edit search output": "Éditer le produit de recherche",
+  "Create or import a research output": "Créer ou importer un produit de recherche",
+  "Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.": "Produit de recherche: jeu de données, logiciel, workflow, échantillon, protocole, ...<br />La création d'un produit de recherche permet de décrire la gestion spécifique de ce produit en fonction de se nature ou de sa discipline.<br />Vous pouvez créer autant de produit de recherche que nécessaire."
 }
