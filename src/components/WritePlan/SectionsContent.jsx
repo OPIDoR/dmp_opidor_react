@@ -109,7 +109,7 @@ function SectionsContent({ planId, templateId, readonly }) {
                 key={section.id}
                 section={section}
                 readonly={readonly}
-              ></Section>
+              />
             ))}
           </div>
         </>

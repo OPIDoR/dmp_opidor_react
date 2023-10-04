@@ -73,16 +73,14 @@ function WritePlan({
 
   return (
     <>
-      {!readonly && (
-        <div className="container">
-          <GuidanceChoice planId={planId} />
-        </div>
-      )}
-      <div className={styles.section}>
-        {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError error={error}></CustomError>}
-        {!loading && !error && researchOutputs && (
-          <>
+      {loading && <CustomSpinner />}
+      {!loading && error && <CustomError error={error} />}
+      {!loading && !error && researchOutputs && (
+        <>
+          <div style={{ margin: '10px 30px 10px 30px' }}>
+            <GuidanceChoice planId={planId} />
+          </div>
+          <div className={styles.section}>
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
@@ -93,9 +91,9 @@ function WritePlan({
                 />
               )}
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

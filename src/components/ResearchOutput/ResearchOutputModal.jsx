@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Tab } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "react-bootstrap";
+import DOMPurify from "dompurify";
 import AddResearchOutput from "./AddResearchOutput";
 import ImportResearchOutput from "./ImportResearchOutput";
 import styles from "../assets/css/modal.module.css";
@@ -15,30 +16,37 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
 
   return (
     <Modal show={show} onHide={handleClose}>
-      {/* <Modal.Header closeButton>
-        <Modal.Title>{t("Research Output")}</Modal.Title>
-      </Modal.Header> */}
+      <Modal.Header closeButton>
+        <Modal.Title>{t(edit ? 'Edit search output' : 'Create or import a research output')}</Modal.Title>
+      </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
         <div className={`col-md-12 ${styles.info_box}`}>
           <fieldset>
             <legend className={styles.legend}>
-              Info <span className="fas fa-circle-info" />
+              Info
             </legend>
-            <div className="col-md-12">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book{" "}
+            <div
+              className="col-md-12"
+              style={{ margin: 0, wordWrap: 'break-word' }}
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize([t('Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.')]),
+              }}
+            >
             </div>
           </fieldset>
-          <br></br>
         </div>
-        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={edit ? "edit" : "create"} id="create-edit-research-output-tabs">
-          <Tab eventKey={edit ? "edit" : "create"} title={t(edit ? "Edit" : "Create")}>
-            <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
-          </Tab>
-          {/* <Tab eventKey="import" title={t("Import")}>
-            <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />
-          </Tab> */}
-        </Tabs>
+        {edit ? (
+          <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
+        ) : (
+          <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
+            <Tab eventKey={"create"} title={t("Create")}>
+              <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
+            </Tab>
+            {/* <Tab eventKey="import" title={t("Import")}>
+              <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />
+            </Tab> */}
+          </Tabs>
+        )}
       </Modal.Body>
     </Modal>
   );
