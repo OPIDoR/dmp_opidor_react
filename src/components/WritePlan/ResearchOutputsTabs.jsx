@@ -143,15 +143,26 @@ function ResearchOutputsTabs({ planId, readonly }) {
               </ul>
             )}
             {!readonly && (
-              <button className={styles.add_research_output_button}
+              <button
+                className={styles.add_research_output_button}
                 onClick={(e) => {
                   e.preventDefault();
                   handleShow();
                 }}
+                style={{
+                  padding: '10px 0 10px 0',
+                  boxSizing: 'border-box',
+                }}
               >
-                <div className={styles.nav_title}>{t("Create")}</div>
-                <div className={styles.nav_icon}>
-                  <MdAddCircleOutline size={40}></MdAddCircleOutline>
+                <div
+                  className={styles.nav_title}
+                  style={{
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                    justifyContent: 'space-arround'
+                  }}>
+                  <MdAddCircleOutline size={18} style={{ marginRight: '5px' }}/> {t("Create")}
                 </div>
               </button>
             )}

@@ -21,6 +21,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     displayedResearchOutput, setDisplayedResearchOutput,
     setResearchOutputs,
     setUrlParams,
+    researchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{value:'', label:''}]);
@@ -30,9 +31,6 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
   const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
 
-  /* This is a `useEffect` hook that is used to fetch data from the server using the `getTypeResearchOutput` function. It sets the fetched data to the
-`data` state variable using the `setData` function. The `[]` as the second argument to the `useEffect` hook means that this effect will only run once
-when the component mounts. */
   useEffect(() => {
     if (edit) {
       setAbbreviation(displayedResearchOutput.abbreviation);
@@ -52,6 +50,7 @@ when the component mounts. */
   const handleSelect = (e) => {
     setType(e.value);
   };
+
   /**
    * The function handles saving data by creating an object and posting it to a server, then updating state variables and closing a modal.
    */
@@ -117,10 +116,10 @@ when the component mounts. */
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Abbreviation")}</label>
+          <label>{t('Short name')}</label>
         </div>
         <input
-          value={abbreviation || ""}
+          value={abbreviation || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -132,10 +131,10 @@ when the component mounts. */
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Title")}</label>
+          <label>{t('Name')}</label>
         </div>
         <input
-          value={title || ""}
+          value={title || `${t('Research output')} ${researchOutputs.length === 0 ? 2 : researchOutputs.length}`}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
@@ -144,7 +143,7 @@ when the component mounts. */
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Type")}</label>
+          <label>{t('Type')}</label>
         </div>
         {options && (
           <CustomSelect
@@ -173,7 +172,7 @@ when the component mounts. */
           {t("Close")}
         </Button>
         <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
-          {t(edit ? "Edit" : "Add")}
+          {t(edit ? "Save" : "Add")}
         </Button>
       </EndButton>
     </div>

@@ -24,11 +24,11 @@ function ImportExternal({fragment, setFragment}) {
       <div style={{ marginBottom: "25px" }}>
         <ReactTooltip id="orcid" place="top" effect="solid" variant="info" content={t("ORCID id")} />
         <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px", color: "white", backgroundColor: "var(--primary)" }} onClick={toggleOrcid}>
-          {t("Import personal data from ORCID")}
+          {t('Retrieve ORCID identifier')}
         </button>
         <ReactTooltip id="ror" place="top" effect="solid" variant="info" content={t("ROR id")} />
         <button data-tooltip-id="ror" type="button" className="btn btn-dark" style={{ color: "white", backgroundColor: "var(--primary)" }} onClick={toggleRor}>
-          {t("Import affiliation from RoR")}
+          {t('Retrieve RoR identifier')}
         </button>
       </div>
 
