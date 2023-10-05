@@ -175,8 +175,8 @@ function GeneralInfo({
           }}
           onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
         >
-        {loading && <CustomSpinner></CustomSpinner>}
-        {!loading && error && <CustomError error={error}></CustomError>}
+        {loading && <CustomSpinner />}
+        {!loading && error && <CustomError error={error} />}
         {!error && funders && (
           <>
             <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
@@ -197,11 +197,7 @@ function GeneralInfo({
             </Panel.Heading>
             <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
               <div className={styles.container_anr}>
-                <p className={styles.description_anr}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur
-                  rutrum commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula. Etiam porta scelerisque massa in faucibus. Donec
-                  ac porta tellus. Praesent pulvinar tristique metus vulputate interdum.
-                </p>
+                <p className={styles.description_anr}>{t('Your project is funded by the ANR, automatically retrieve the administrative information for your project.')}</p>
                 {funders.length > 1 && (
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
@@ -217,7 +213,6 @@ function GeneralInfo({
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
                       <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
-                      <BiInfoCircle size={25} color="white" style={{ marginLeft: "10px" }}></BiInfoCircle>
                     </div>
                       <CustomSelect
                         options={fundedProjects}

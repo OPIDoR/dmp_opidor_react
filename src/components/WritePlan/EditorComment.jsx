@@ -20,6 +20,7 @@ const EditorComment = ({ initialValue, updateParentText }) => {
         toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         skin_url: '/tinymce/skins/oxide',
+        forced_root_block: '\r',
         content_css: [],
       }}
     />
