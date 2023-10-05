@@ -270,9 +270,9 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       <InnerModal.Footer>
         <InnerModal.Spacer />
 
-        {!readonly && loading && !error && (
+        {!readonly && !loading && !error && (
           <Button variant="primary" onClick={(e) => handleSave(e)}>
-            {isUpdate ? t("Update") : t("Save")}
+            {t("Save")}
           </Button>
         )}
       </InnerModal.Footer>
