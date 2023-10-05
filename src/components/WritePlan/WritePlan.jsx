@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import SectionsContent from "./SectionsContent";
@@ -16,24 +16,25 @@ function WritePlan({
   templateId,
   userId,
   readonly,
+  currentOrgId,
+  currentOrgName,
 }) {
   const { i18n } = useTranslation();
   const {
-    setLocale,
     setFormData,
     setPlanData,
     setDmpId,
+    setCurrentOrg,
+    setUserId,
+    setLocale,
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs, setResearchOutputs,
-    setUserId,
     setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setUserId(userId);
-    setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
 
@@ -44,6 +45,10 @@ function WritePlan({
 
     const queryParameters = new URLSearchParams(window.location.search);
     const researchOutputId = queryParameters.get('research_output');
+
+    setCurrentOrg({id: currentOrgId, name: currentOrgName});
+    setUserId(userId);
+    setLocale(locale);
 
     writePlan.getPlanData(planId)
       .then((res) => {
