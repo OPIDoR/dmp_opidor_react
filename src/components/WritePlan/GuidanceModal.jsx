@@ -10,7 +10,7 @@ import InnerModal from "../Shared/InnerModal/InnerModal";
 
 function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("Science Europe");
+  const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,33 +22,36 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
-    color: activeTab === tab ? "var(--primary)" : "var(--white)",
-    textDecoration: "none",
-    cursor: "pointer",
-    display: "flex",
-    justifyContent: "space-around",
-    flexDirection: "row",
-    alignItems: "center",
-    background: activeTab === tab ? "var(--white)" : "var(--primary)",
-    padding: "10px",
-    borderRadius: "10px 10px 0px 0px",
-    fontWeight: "bold",
+    color: activeTab === tab ? 'var(--primary)' : 'var(--white)',
+    textDecoration: 'none',
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center',
+    background: activeTab === tab ? 'var(--white)' : 'var(--primary)',
+    padding: '10px',
+    borderRadius: '10px 10px 0 0',
+    fontWeight: 'bold',
+    margin: '0 0 1px 0',
+    flex: 1,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   });
-
-  const navBar = {
-    marginTop: "10px",
-    display: "flex",
-  };
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-   if (!questionId) { return; }
-   if (!questionsWithGuidance.includes(questionId)) { return; }
+    if (!questionId) { return; }
+    if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
     guidances.getGuidances(planId, questionId)
-      .then((res) => {
-        setData(res.data.guidances);
+      .then(({ data }) => {
+        const guidancesData = data?.guidances;
+        setData(guidancesData);
+        const activetab = guidancesData?.[0]?.name || '';
+        setActiveTab(activetab);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -62,24 +65,24 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   */
   const getContent = () => {
     return (
-      <ScrollNav>
-        <NavBody>
-          <NavBodyText>
-            {data?.[indexTab]?.annotations?.length > 0 ? (
-              <>
-                {data?.[indexTab]?.annotations?.map((annotation, id) => (
-                  <div
-                    key={`guidance-${indexTab}-annotation-${id}`}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(annotation.text),
-                    }}
-                  />
-                ))}
-              </>
-            ) : (
-              <>
-                {Object.keys(data?.[indexTab]?.groups).length > 0 &&
-                  Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
+      <NavBody>
+        <NavBodyText style={{ borderRadius: '10px' }}>
+          {data?.[indexTab]?.annotations?.length > 0 ? (
+            <>
+              {data?.[indexTab]?.annotations?.map((annotation, id) => (
+                <ScrollNav
+                  key={`guidance-${indexTab}-annotation-${id}`}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(annotation.text),
+                  }}
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              {Object.keys(data?.[indexTab]?.groups).length > 0 &&
+                Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
+                  <ScrollNav key={`guidance-scroll-nav-${ref}-${idx}`}>
                     <div key={`guidance-ref-${ref}-${idx}`}>
                       {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
                         <div key={`guidance-theme-${themeId}`}>
@@ -98,12 +101,12 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                         </div>
                       ))}
                     </div>
-                  ))}
-              </>
-            )}
-          </NavBodyText>
-        </NavBody>
-      </ScrollNav>
+                  </ScrollNav>
+                ))}
+            </>
+          )}
+        </NavBodyText>
+      </NavBody>
     );
   };
 
@@ -126,24 +129,27 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
         {loading && <CustomSpinner />}
         {!loading && error && <CustomError error={error} />}
         {!loading && !error && data && (
-          <nav style={navBar}>
-            {data.map((el, idx) => (
-              <span
-                key={`guidance-tab-${idx}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  setActiveTab(el.name);
-                  setIndexTab(idx);
-                }}
-                style={navStyles(el.name)}
-              >
-                {el.name.length < 15 ? el.name : `${el.name.substring(0, 15)}...`}
-              </span>
-            ))}
-          </nav>
+          <>
+            <nav style={{ display: 'flex', width: '100%', padding: '0 10px 0 10px' }} id="guidances-thumbs">
+              {data.map((el, idx) => (
+                <span
+                  key={`guidance-tab-${idx}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setActiveTab(el.name);
+                    setIndexTab(idx);
+                  }}
+                  style={{ ...navStyles(el.name), width: `calc(100% / ${data.length})` }}
+                  alt={el.name}
+                >
+                  {el.name.length < 15 ? el.name : `${el.name.substring(0, 15)}...`}
+                </span>
+              ))}
+            </nav>
+            <div id="guidances-content">{data && getContent()}</div>
+          </>
         )}
-        <div>{data && getContent()}</div>
       </InnerModal.Body>
     </InnerModal>
   );

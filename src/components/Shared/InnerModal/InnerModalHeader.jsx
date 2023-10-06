@@ -47,9 +47,10 @@ const InnerModalHeader = forwardRef((props, ref) => {
       className={className}
     >
       <div>{children}</div>
-      <div>
+      <div id="inner-modal-header-actions">
         {expandButton && isExpanded && (
           <TbMinimize
+            id="inner-modal-header-actions-minimize"
             size={24}
             style={{ margin: '0 5px 0 5px', cursor: 'pointer' }}
             onClick={() => expand(false)}
@@ -57,6 +58,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
         )}
         {expandButton && !isExpanded && (
           <TbMaximize
+            id="inner-modal-header-actions-maximize"
             size={24}
             style={{ margin: '0 5px 0 5px', cursor: 'pointer' }}
             onClick={() => expand(true)}
@@ -64,6 +66,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
         )}
         {closeButton && (
           <IoClose
+            id="inner-modal-header-actions-close"
             size={24}
             style={{ margin: '8px 5px 0 5px', cursor: 'pointer' }}
             onClick={() => onClose()}

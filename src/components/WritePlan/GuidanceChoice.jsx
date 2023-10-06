@@ -35,7 +35,8 @@ function GuidanceChoice({ planId }) {
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const {
-    setQuestionsWithGuidance
+    setQuestionsWithGuidance,
+    currentOrg,
   } = useContext(GlobalContext);
 
   /**
@@ -47,10 +48,11 @@ function GuidanceChoice({ planId }) {
       .then((res) => {
         let { guidance_groups } = res.data;
 
-        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
-        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
+        const orgGuidances = guidance_groups.filter(({ name }) => name.toLowerCase() === currentOrg.name.toLowerCase());
+        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === true && name.toLowerCase() !== currentOrg.name.toLowerCase()));
+        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === false && name.toLowerCase() !== currentOrg.name.toLowerCase()));
 
-        guidance_groups = [ ...selectedGuidances, ...unselectedGuidances ];
+        guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);

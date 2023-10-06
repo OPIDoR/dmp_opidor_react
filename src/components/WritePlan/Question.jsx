@@ -213,7 +213,7 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
                       place="bottom"
                       effect="solid"
                       variant="info"
-                      content={t("Comment")}
+                      content={t("Comments")}
                     />
                     <div
                       data-tooltip-id="commentTip"

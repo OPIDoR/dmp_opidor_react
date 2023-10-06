@@ -2,26 +2,26 @@ import styled from "styled-components";
 
 export const NavBody = styled.div`
   color: #000;
-  padding: 0px;
-
-  margin-top: 4px;
-  min-height: 320px;
-  max-height: 10px;
-  margin-right: 20px;
+  padding: 0;
+  margin: 0;
+  min-height: 318px;
+  max-height: 318px;
 `;
 
 export const NavBodyText = styled.div`
   background: var(--white);
-  padding: 18px;
-  border-radius: 0px 10px 10px 0;
+  padding: 10px 5px 5px 10px;
+  box-sizing: border-box;
   font-family: "Helvetica Neue", sans-serif;
   color: var(--primary);
-  min-height: 300px;
+  height: 318px;
+  max-height: 318px;
+  border-radius: 10px;
 `;
 
 export const ScrollNav = styled.div`
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
+  height: 100%;
   scrollbar-width: bold;
   scrollbar-color: var(--primary) transparent;
   &::-webkit-scrollbar {
@@ -29,7 +29,7 @@ export const ScrollNav = styled.div`
     display: flex;
     justify-content: space-between;
     background: var(--white);
-    border-radius: 13px;
+    border-radius: 0 10px 10px 0;
   }
   &::-webkit-scrollbar-track {
     background: transparent;
