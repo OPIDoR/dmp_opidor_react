@@ -133,10 +133,6 @@ function SelectContributorSingle({
 
   const handleSelectContributor = (e) => {
     const { object } = e;
-    // setFormData(updateFormState(
-    //   formData, fragmentId, propName, 
-    //   { ...contributor, person: {...object, action: "update" }, role: role, action: "update" }
-    // ));
     handleChangeValue(propName, { ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
   };
 
@@ -145,7 +141,6 @@ function SelectContributorSingle({
    */
   const handleSelectRole = (e) => {
     setDefaultRole(e.value);
-    // setFormData(dataCopy);
     handleChangeValue(propName, { ...value, role: e.value, action: 'update' })
   };
 
@@ -156,9 +151,13 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
+    console.log('index', index);
     if (index !== null) {
-      // setFormData(updateFormState(value, fragmentId, propName, { person: modalData, role: role }));
-      handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update' } })
+      handleChangeValue(propName, { 
+        ...contributor,
+        person: { ...modalData, action: modalData.action || 'update' },
+        action: contributor.action || 'update' 
+      })
     } else {
       // save new
       handleSaveNew();
@@ -175,10 +174,6 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = () => {
-    // setFormData(updateFormState(
-    //   value, fragmentId, propName,
-    //   { ...contributor, person: { ...modalData, action: 'create' }, role: role, action: 'update' }
-    // ));
     handleChangeValue(propName, { ...contributor, person: { ...modalData, action: 'create' }, role: defaultRole, action: 'update' })
 
     handleClose();
@@ -191,9 +186,9 @@ function SelectContributorSingle({
   const handleEdit = (e, idx) => {
     e.stopPropagation();
     e.preventDefault();
+    setIndex(idx);
     setModalData(contributor.person);
     setShow(true);
-    setIndex(idx);
   };
 
 
