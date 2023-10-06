@@ -6,7 +6,7 @@ import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
 function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form', templateToString = [], tableHeader = null, readonly = false }) {
   return (
     <>
-      {fragmentsList  && (
+      {fragmentsList && (
         <table style={{ marginTop: '20px' }} className="table table-hover">
           {tableHeader && (
             <thead>
@@ -17,7 +17,7 @@ function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form'
                     <th scope="col">Actions</th>
                   </tr>
                 )}
-          </thead>
+            </thead>
           )}
           <tbody>
             {fragmentsList
@@ -38,7 +38,7 @@ function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form'
                           <IoIosClose
                             onClick={(e) => handleDelete(idx)}
                             size={18}
-                            style={{cursor: 'pointer', margin: '0 2px 0 2px'  }}
+                            style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
                           />
                         </>
                       )}
