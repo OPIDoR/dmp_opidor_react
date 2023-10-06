@@ -308,7 +308,7 @@ function GuidanceChoice({ planId }) {
                           <Trans>
                             The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
                           </Trans>
-                        ) : t('Save my choise')
+                        ) : t('Save')
                       }
                       buttonType={countSelectedGuidances() > 0 ? "orange" : "primary"}
                       position="start"
