@@ -105,22 +105,23 @@ function SelectContributorMultiple({
    */
   const handleSelectContributor = (e) => {
     const { object } = e;
-    const currentList = contributorList;
     const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
-    const newContributorList = [...currentList, addedContributor];
-    setContributorList([...contributorList, addedContributor])
-    // setFormData(updateFormState(formData, fragmentId, propName, mergedList));
+    const newContributorList = [...contributorList, addedContributor];
+    setContributorList(newContributorList)
     handleChangeValue(propName, newContributorList)
   };
 
   /**
-   * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
+   * The handleSelectRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e, index) => {
-    const dataCopy = contributorList;
-    dataCopy[index]= {...dataCopy[index], role: e.value, action: dataCopy[index].action || 'update' };
-    // setFormData(dataCopy);
-    handleChangeValue(propName, dataCopy)
+    const updatedContributorList = contributorList;
+    updatedContributorList[index]= {
+      ...updatedContributorList[index],
+      role: e.value,
+      action: updatedContributorList[index].action || 'update'
+    };
+    handleChangeValue(propName, updatedContributorList)
 
   };
 
@@ -132,9 +133,14 @@ function SelectContributorMultiple({
    */
   const handleSave = () => {
     if (index !== null) {
-      const updatedContributor = { person: modalData, role: defaultRole, action: modalData.action || 'update' };
-      // setFormData(updateFormState(formData, fragmentId, propName, newContributorList));
-      handleChangeValue(propName, [...values, updatedContributor])
+      const newContributorList = [...values];
+      newContributorList[index]= {
+        ...newContributorList[index],
+        person: modalData,
+        role: defaultRole,
+        action: newContributorList[index].action || 'update'
+      };
+      handleChangeValue(propName, newContributorList)
 
       setContributorList([...contributorList, modalData]);
     } else {
@@ -192,11 +198,12 @@ function SelectContributorMultiple({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
+    console.log('index', idx);
     e.preventDefault();
     e.stopPropagation();
+    setIndex(idx);
     setModalData(contributorList[idx]['person']);
     setShow(true);
-    setIndex(idx);
   };
 
 
