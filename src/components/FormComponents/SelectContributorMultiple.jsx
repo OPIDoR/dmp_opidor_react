@@ -5,15 +5,16 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import { FaPlus } from 'react-icons/fa6';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
-import { createContributorsOptions, createOptions, deleteByIndex, parsePattern } from '../../utils/GeneratorUtils.js';
+import { createContributorsOptions, createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import ContributorList from './ContributorList';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorMultiple({
   values,
@@ -244,12 +245,19 @@ function SelectContributorMultiple({
             />
           </div>
           {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={() => setShow(true)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+            <div className="col-md-1">
+              <ReactTooltip
+                id="select-contributor-multiple-add-button"
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={t('Add')}
+              />
+              <FaPlus
+                data-tooltip-id="select-contributor-multiple-add-button"
+                onClick={() => setShow(true)}
+                style={{ margin: '8px', cursor: 'pointer' }}
+              />
             </div>
           )}
         </div>

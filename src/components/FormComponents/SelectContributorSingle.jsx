@@ -4,7 +4,8 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import { FaPlus } from 'react-icons/fa6';
+import Swal from 'sweetalert2';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createContributorsOptions, createOptions } from '../../utils/GeneratorUtils.js';
@@ -12,8 +13,8 @@ import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import Swal from 'sweetalert2';
 import ContributorList from './ContributorList';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorSingle({
   value,
@@ -63,7 +64,7 @@ function SelectContributorSingle({
 
   const fetchRoles = () => {
     service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({...loadedRegistries, 'Role': res.data});
+      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
       setDefaultRole(value?.role || options[0]?.value);
@@ -72,7 +73,7 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(!loadedTemplates[templateId]) {
+    if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
@@ -153,10 +154,10 @@ function SelectContributorSingle({
   const handleSave = () => {
     console.log('index', index);
     if (index !== null) {
-      handleChangeValue(propName, { 
+      handleChangeValue(propName, {
         ...contributor,
         person: { ...modalData, action: modalData.action || 'update' },
-        action: contributor.action || 'update' 
+        action: contributor.action || 'update'
       })
     } else {
       // save new
@@ -208,7 +209,7 @@ function SelectContributorSingle({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -228,12 +229,19 @@ function SelectContributorSingle({
             />
           </div>
           {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+            <div className="col-md-1">
+              <ReactTooltip
+                id="select-contributor-single-add-button"
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={t('Add')}
+              />
+              <FaPlus
+                data-tooltip-id="select-contributor-single-add-button"
+                onClick={() => setShow(true)}
+                style={{ margin: '8px', cursor: 'pointer' }}
+              />
             </div>
           )}
         </div>
