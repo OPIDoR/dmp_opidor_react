@@ -16,7 +16,7 @@ function WritePlanLayout({
   userId,
   currentOrgId,
   currentOrgName,
-  readonly, 
+  readonly,
 }) {
   return(
     <Global>
