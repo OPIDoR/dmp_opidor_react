@@ -8,7 +8,8 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
-import { createContributorsOptions, createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
+import { createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
@@ -30,6 +31,7 @@ function SelectContributorMultiple({
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
   const {
     locale, dmpId,
@@ -41,6 +43,7 @@ function SelectContributorMultiple({
   const [modalData, setModalData] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributorList, setContributorList] = useState([]);
+  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
@@ -51,13 +54,21 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchContributors();
+    fetchPersons();
     fetchRoles();
   }, []);
+  
+  useEffect(() => {
+    if (persons) {
+      setOptions(createPersonsOptions(persons));
+    } else {
+      setOptions(null)
+    }
+  }, [persons])
 
-  const fetchContributors = () => {
-    service.getContributors(dmpId).then((res) => {
-      setOptions(createContributorsOptions(res.data.results));
+  const fetchPersons = () => {
+    service.getPersons(dmpId).then((res) => {
+      setPersons(res.data.results);
     });
   }
 
@@ -110,6 +121,7 @@ function SelectContributorMultiple({
     const newContributorList = [...contributorList, addedContributor];
     setContributorList(newContributorList)
     handleChangeValue(propName, newContributorList)
+    setError(null);
   };
 
   /**
@@ -133,21 +145,25 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (index !== null) {
-      const newContributorList = [...values];
-      newContributorList[index]= {
-        ...newContributorList[index],
-        person: modalData,
-        role: defaultRole,
-        action: newContributorList[index].action || 'update'
-      };
-      handleChangeValue(propName, newContributorList)
-
-      setContributorList([...contributorList, modalData]);
+    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      handleSaveNew();
+      if (index !== null) {
+        const newContributorList = [...values];
+        newContributorList[index]= {
+          ...newContributorList[index],
+          person: modalData,
+          role: defaultRole,
+          action: newContributorList[index].action || 'update'
+        };
+        handleChangeValue(propName, newContributorList)
+  
+        setContributorList([...contributorList, modalData]);
+      } else {
+        handleSaveNew();
+      }
+      toast.success('Save was successful !');
     }
-    toast.success('Enregistrement a été effectué avec succès !');
     setModalData({});
     handleClose();
   };
@@ -159,11 +175,11 @@ function SelectContributorMultiple({
    * modal and set the temporary person object to null.
    */
   const handleSaveNew = () => {
-    const objectPerson = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
+    const newContributor = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
     // setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
-    handleChangeValue(propName, [...(contributorList || []), objectPerson])
+    handleChangeValue(propName, [...(contributorList || []), newContributor])
 
-    setContributorList([...contributorList, objectPerson]);
+    setContributorList([...contributorList, newContributor]);
     handleClose();
     setModalData({});
   };
@@ -261,6 +277,7 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
+        <span className='error-message'>{error}</span>
         {template && (
           <ContributorList
             contributorList={contributorList}
