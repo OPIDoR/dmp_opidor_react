@@ -27,7 +27,7 @@ const description = {
   margin: "10px 150px 0px 150px",
 };
 
-function GuidanceChoice({ planId }) {
+function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,6 +36,7 @@ function GuidanceChoice({ planId }) {
   const [isOpen, setIsOpen] = useState(false);
   const {
     setQuestionsWithGuidance,
+    setCurrentOrg,
     currentOrg,
   } = useContext(GlobalContext);
 
@@ -43,14 +44,18 @@ function GuidanceChoice({ planId }) {
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
+    isClassic && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
+
+    const orgName = currentOrgName || currentOrg.name;
+
     setLoading(true);
     guidances.getGuidanceGroups(planId)
       .then((res) => {
         let { guidance_groups } = res.data;
 
-        const orgGuidances = guidance_groups.filter(({ name }) => name.toLowerCase() === currentOrg.name.toLowerCase());
-        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === true && name.toLowerCase() !== currentOrg.name.toLowerCase()));
-        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === false && name.toLowerCase() !== currentOrg.name.toLowerCase()));
+        const orgGuidances = guidance_groups.filter(({ name }) => name.toLowerCase() === orgName.toLowerCase());
+        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
+        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
         guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
 
