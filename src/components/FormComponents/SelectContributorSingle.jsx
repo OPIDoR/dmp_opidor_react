@@ -8,7 +8,8 @@ import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
-import { createContributorsOptions, createOptions } from '../../utils/GeneratorUtils.js';
+import { createOptions } from '../../utils/GeneratorUtils.js';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
@@ -29,6 +30,7 @@ function SelectContributorSingle({
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
   const {
     locale,
@@ -38,9 +40,10 @@ function SelectContributorSingle({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [modalData, setModalData] = useState({})
+  const [modalData, setModalData] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
-  const [contributor, setContributor] = useState({})
+  const [contributor, setContributor] = useState({});
+  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
@@ -52,13 +55,21 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchContributors();
+    fetchPersons();
     fetchRoles();
   }, []);
+  
+  useEffect(() => {
+    if (persons) {
+      setOptions(createPersonsOptions(persons));
+    } else {
+      setOptions(null)
+    }
+  }, [persons])
 
-  const fetchContributors = () => {
-    service.getContributors(dmpId).then((res) => {
-      setOptions(createContributorsOptions(res.data.results));
+  const fetchPersons = () => {
+    service.getPersons(dmpId).then((res) => {
+      setPersons(res.data.results);
     });
   }
 
@@ -98,15 +109,6 @@ function SelectContributorSingle({
     setShow(false);
     setModalData({});
     setIndex(null);
-  };
-
-  /**
-   * The function `handleShow` sets the state of `show` to true and prevents the default behavior of an event.
-   */
-  const handleShow = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShow(true);
   };
 
 
@@ -152,18 +154,21 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    console.log('index', index);
-    if (index !== null) {
-      handleChangeValue(propName, {
-        ...contributor,
-        person: { ...modalData, action: modalData.action || 'update' },
-        action: contributor.action || 'update'
-      })
+    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      // save new
-      handleSaveNew();
+      if (index !== null) {
+        handleChangeValue(propName, {
+          ...contributor,
+          person: { ...modalData, action: modalData.action || 'update' },
+          action: contributor.action || 'update'
+        })
+      } else {
+        // save new
+        handleSaveNew();
+      }
+      toast.success('Save was successful !');
     }
-    toast.success('Enregistrement a été effectué avec succès !');
     setModalData({});
     handleClose();
   };
@@ -245,6 +250,7 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
+        <span className='error-message'>{error}</span>
         {template && (
           <ContributorList
             contributorList={[contributor]}

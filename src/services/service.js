@@ -35,7 +35,7 @@ export async function getRegistryById(id) {
 
 const getRegistryByName = async (name) => axios.get(`/registries/by_name/${name}`);
 
-const getContributors = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
+const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
 
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
@@ -53,6 +53,6 @@ export default {
   loadNewForm,
   getSchema,
   getRegistryByName,
-  getContributors,
+  getPersons,
   saveForm,
 };
