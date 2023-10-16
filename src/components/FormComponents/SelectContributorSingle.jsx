@@ -4,16 +4,18 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import { FaPlus } from 'react-icons/fa6';
+import Swal from 'sweetalert2';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
-import { createContributorsOptions, createOptions } from '../../utils/GeneratorUtils.js';
+import { createOptions } from '../../utils/GeneratorUtils.js';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import Swal from 'sweetalert2';
 import ContributorList from './ContributorList';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorSingle({
   value,
@@ -28,6 +30,7 @@ function SelectContributorSingle({
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
   const {
     locale,
@@ -37,9 +40,10 @@ function SelectContributorSingle({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [modalData, setModalData] = useState({})
+  const [modalData, setModalData] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
-  const [contributor, setContributor] = useState({})
+  const [contributor, setContributor] = useState({});
+  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
@@ -51,19 +55,27 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchContributors();
+    fetchPersons();
     fetchRoles();
   }, []);
+  
+  useEffect(() => {
+    if (persons) {
+      setOptions(createPersonsOptions(persons));
+    } else {
+      setOptions(null)
+    }
+  }, [persons])
 
-  const fetchContributors = () => {
-    service.getContributors(dmpId).then((res) => {
-      setOptions(createContributorsOptions(res.data.results));
+  const fetchPersons = () => {
+    service.getPersons(dmpId).then((res) => {
+      setPersons(res.data.results);
     });
   }
 
   const fetchRoles = () => {
     service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({...loadedRegistries, 'Role': res.data});
+      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
       setDefaultRole(value?.role || options[0]?.value);
@@ -72,7 +84,7 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(!loadedTemplates[templateId]) {
+    if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
@@ -97,15 +109,6 @@ function SelectContributorSingle({
     setShow(false);
     setModalData({});
     setIndex(null);
-  };
-
-  /**
-   * The function `handleShow` sets the state of `show` to true and prevents the default behavior of an event.
-   */
-  const handleShow = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShow(true);
   };
 
 
@@ -133,10 +136,6 @@ function SelectContributorSingle({
 
   const handleSelectContributor = (e) => {
     const { object } = e;
-    // setFormData(updateFormState(
-    //   formData, fragmentId, propName, 
-    //   { ...contributor, person: {...object, action: "update" }, role: role, action: "update" }
-    // ));
     handleChangeValue(propName, { ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
   };
 
@@ -145,7 +144,6 @@ function SelectContributorSingle({
    */
   const handleSelectRole = (e) => {
     setDefaultRole(e.value);
-    // setFormData(dataCopy);
     handleChangeValue(propName, { ...value, role: e.value, action: 'update' })
   };
 
@@ -156,14 +154,21 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (index !== null) {
-      // setFormData(updateFormState(value, fragmentId, propName, { person: modalData, role: role }));
-      handleChangeValue(propName, { ...contributor, person: { ...modalData, action: modalData.action || 'update' } })
+    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      // save new
-      handleSaveNew();
+      if (index !== null) {
+        handleChangeValue(propName, {
+          ...contributor,
+          person: { ...modalData, action: modalData.action || 'update' },
+          action: contributor.action || 'update'
+        })
+      } else {
+        // save new
+        handleSaveNew();
+      }
+      toast.success('Save was successful !');
     }
-    toast.success('Enregistrement a été effectué avec succès !');
     setModalData({});
     handleClose();
   };
@@ -175,10 +180,6 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = () => {
-    // setFormData(updateFormState(
-    //   value, fragmentId, propName,
-    //   { ...contributor, person: { ...modalData, action: 'create' }, role: role, action: 'update' }
-    // ));
     handleChangeValue(propName, { ...contributor, person: { ...modalData, action: 'create' }, role: defaultRole, action: 'update' })
 
     handleClose();
@@ -191,9 +192,9 @@ function SelectContributorSingle({
   const handleEdit = (e, idx) => {
     e.stopPropagation();
     e.preventDefault();
+    setIndex(idx);
     setModalData(contributor.person);
     setShow(true);
-    setIndex(idx);
   };
 
 
@@ -213,7 +214,7 @@ function SelectContributorSingle({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -233,15 +234,23 @@ function SelectContributorSingle({
             />
           </div>
           {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleShow(e)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+            <div className="col-md-1">
+              <ReactTooltip
+                id="select-contributor-single-add-button"
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={t('Add')}
+              />
+              <FaPlus
+                data-tooltip-id="select-contributor-single-add-button"
+                onClick={() => setShow(true)}
+                style={{ margin: '8px', cursor: 'pointer' }}
+              />
             </div>
           )}
         </div>
+        <span className='error-message'>{error}</span>
         {template && (
           <ContributorList
             contributorList={[contributor]}

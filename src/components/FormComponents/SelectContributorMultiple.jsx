@@ -5,15 +5,17 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import { FaPlus } from 'react-icons/fa6';
 
 import FormBuilder from '../Forms/FormBuilder.jsx';
-import { createContributorsOptions, createOptions, deleteByIndex, parsePattern } from '../../utils/GeneratorUtils.js';
+import { createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import ContributorList from './ContributorList';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorMultiple({
   values,
@@ -29,6 +31,7 @@ function SelectContributorMultiple({
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
   const {
     locale, dmpId,
@@ -40,6 +43,7 @@ function SelectContributorMultiple({
   const [modalData, setModalData] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributorList, setContributorList] = useState([]);
+  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
@@ -50,13 +54,21 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchContributors();
+    fetchPersons();
     fetchRoles();
   }, []);
+  
+  useEffect(() => {
+    if (persons) {
+      setOptions(createPersonsOptions(persons));
+    } else {
+      setOptions(null)
+    }
+  }, [persons])
 
-  const fetchContributors = () => {
-    service.getContributors(dmpId).then((res) => {
-      setOptions(createContributorsOptions(res.data.results));
+  const fetchPersons = () => {
+    service.getPersons(dmpId).then((res) => {
+      setPersons(res.data.results);
     });
   }
 
@@ -105,22 +117,24 @@ function SelectContributorMultiple({
    */
   const handleSelectContributor = (e) => {
     const { object } = e;
-    const currentList = contributorList;
     const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
-    const newContributorList = [...currentList, addedContributor];
-    setContributorList([...contributorList, addedContributor])
-    // setFormData(updateFormState(formData, fragmentId, propName, mergedList));
+    const newContributorList = [...contributorList, addedContributor];
+    setContributorList(newContributorList)
     handleChangeValue(propName, newContributorList)
+    setError(null);
   };
 
   /**
-   * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
+   * The handleSelectRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e, index) => {
-    const dataCopy = contributorList;
-    dataCopy[index]= {...dataCopy[index], role: e.value, action: dataCopy[index].action || 'update' };
-    // setFormData(dataCopy);
-    handleChangeValue(propName, dataCopy)
+    const updatedContributorList = contributorList;
+    updatedContributorList[index]= {
+      ...updatedContributorList[index],
+      role: e.value,
+      action: updatedContributorList[index].action || 'update'
+    };
+    handleChangeValue(propName, updatedContributorList)
 
   };
 
@@ -131,16 +145,25 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = () => {
-    if (index !== null) {
-      const updatedContributor = { person: modalData, role: defaultRole, action: modalData.action || 'update' };
-      // setFormData(updateFormState(formData, fragmentId, propName, newContributorList));
-      handleChangeValue(propName, [...values, updatedContributor])
-
-      setContributorList([...contributorList, modalData]);
+    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      handleSaveNew();
+      if (index !== null) {
+        const newContributorList = [...values];
+        newContributorList[index]= {
+          ...newContributorList[index],
+          person: modalData,
+          role: defaultRole,
+          action: newContributorList[index].action || 'update'
+        };
+        handleChangeValue(propName, newContributorList)
+  
+        setContributorList([...contributorList, modalData]);
+      } else {
+        handleSaveNew();
+      }
+      toast.success('Save was successful !');
     }
-    toast.success('Enregistrement a été effectué avec succès !');
     setModalData({});
     handleClose();
   };
@@ -152,11 +175,11 @@ function SelectContributorMultiple({
    * modal and set the temporary person object to null.
    */
   const handleSaveNew = () => {
-    const objectPerson = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
+    const newContributor = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
     // setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
-    handleChangeValue(propName, [...(contributorList || []), objectPerson])
+    handleChangeValue(propName, [...(contributorList || []), newContributor])
 
-    setContributorList([...contributorList, objectPerson]);
+    setContributorList([...contributorList, newContributor]);
     handleClose();
     setModalData({});
   };
@@ -192,11 +215,12 @@ function SelectContributorMultiple({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
+    console.log('index', idx);
     e.preventDefault();
     e.stopPropagation();
+    setIndex(idx);
     setModalData(contributorList[idx]['person']);
     setShow(true);
-    setIndex(idx);
   };
 
 
@@ -237,15 +261,23 @@ function SelectContributorMultiple({
             />
           </div>
           {!readonly && (
-            <div className="col-md-1" style={{ marginTop: "8px" }}>
-              <span>
-                <a className="text-primary" href="#" aria-hidden="true" onClick={() => setShow(true)}>
-                  <i className="fas fa-plus" />
-                </a>
-              </span>
+            <div className="col-md-1">
+              <ReactTooltip
+                id="select-contributor-multiple-add-button"
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={t('Add')}
+              />
+              <FaPlus
+                data-tooltip-id="select-contributor-multiple-add-button"
+                onClick={() => setShow(true)}
+                style={{ margin: '8px', cursor: 'pointer' }}
+              />
             </div>
           )}
         </div>
+        <span className='error-message'>{error}</span>
         {template && (
           <ContributorList
             contributorList={contributorList}

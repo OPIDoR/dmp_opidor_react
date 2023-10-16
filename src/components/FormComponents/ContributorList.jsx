@@ -3,6 +3,8 @@ import { parsePattern } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
 
 function ContributorList({
   contributorList,
@@ -40,17 +42,35 @@ function ContributorList({
                         <div className="col-md-1">
                           {parent === 'form' && (
                             <span>
-                              <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleEdit(e, idx)}>
-                                <i className="fa fa-pen-to-square" />
-                              </a>
+                              <ReactTooltip
+                                id="contributor-edit-button"
+                                place="bottom"
+                                effect="solid"
+                                variant="info"
+                                content={t('Edit')}
+                              />
+                              <FaPenToSquare
+                                data-tooltip-id="contributor-edit-button"
+                                onClick={(e) => handleEdit(e, idx)}
+                                style={{ margin: '8px', cursor: 'pointer' }}
+                              />
                             </span>
                           )}
                         </div>
                         <div className="col-md-1">
                           <span>
-                            <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDelete(e, idx)}>
-                              <i className="fa fa-xmark" />
-                            </a>
+                            <ReactTooltip
+                              id="contributor-delete-button"
+                              place="bottom"
+                              effect="solid"
+                              variant="info"
+                              content={t('Delete')}
+                            />
+                            <FaXmark
+                              data-tooltip-id="contributor-delete-button"
+                              onClick={(e) => handleDelete(e, idx)}
+                              style={{ margin: '8px', cursor: 'pointer' }}
+                            />
                           </span>
                         </div>
                       </div>
