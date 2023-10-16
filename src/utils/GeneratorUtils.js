@@ -172,19 +172,6 @@ export function createOptions(registryValues, locale) {
 }
 
 /**
- * This method builds a select options list from a contributor array
- * @param contributorsList : a list of contributor to build the options from
- */
-export function createContributorsOptions(contributorsList) {
-  let options = contributorsList.map((option) => ({
-    value: option.id,
-    label: option.text,
-    object: option.object,
-  }));
-  return [ {value:'', label:''}, ...options ]
-}
-
-/**
  * This function extracts the label from a template property.
  * Returns the form_label if it exists, if not the label, if neither return a 'No label defined' value
  * @param property : the template property to extract the label from
