@@ -2,6 +2,7 @@ import React from 'react';
 
 import Global from '../context/Global.jsx';
 import GeneralInfo from './GeneralInfo.jsx';
+import GuidanceChoice from '../WritePlan/GuidanceChoice.jsx';
 import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
 
@@ -16,10 +17,14 @@ function GeneralInfoLayout({
   metaFragmentId,
   locale = 'en_GB',
   researchContext = 'research_project',
-  isTest = false
+  isTest = false,
+  isClassic = false,
+  currentOrgId,
+  currentOrgName,
 }) {
   return(
     <Global>
+      {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
       <GeneralInfo
         locale={locale}
         planId={planId}
