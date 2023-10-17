@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { FaXmark } from 'react-icons/fa6';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -175,16 +176,18 @@ function SelectMultipleList({
               <tbody>
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
-                    <td scope="row" style={{ width: "100%" }}>
+                    <td style={{ width: "100%" }}>
                       <div className={styles.border}>
                         <div>{el} </div>
                         <div className={styles.table_container}>
                           {!readonly && (
                             <div className="col-md-1">
                               <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                  <i className="fa fa-xmark" />
-                                </a>
+                                <FaXmark
+                                  onClick={(e) => handleDeleteList(e, idx)}
+                                  size={18}
+                                  style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                                />
                               </span>
                             </div>
                           )}

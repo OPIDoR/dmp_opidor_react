@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { FaPlus } from 'react-icons/fa6';
 
 import { GlobalContext } from '../context/Global.jsx';
 import {
@@ -45,14 +46,14 @@ function SelectWithCreate({
   const [modalData, setModalData] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
-  
+
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(!loadedTemplates[templateId]) {
+    if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({...loadedTemplates, [templateId] : res.data});
+        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
       });
     } else {
       setTemplate(loadedTemplates[templateId]);
@@ -62,12 +63,12 @@ function SelectWithCreate({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(loadedRegistries[selectedRegistry]) {
+    if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
+          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
@@ -180,7 +181,7 @@ function SelectWithCreate({
   };
 
   const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData,  [propName]: value});
+    setModalData({ ...modalData, [propName]: value });
   }
 
   return (
@@ -195,7 +196,7 @@ function SelectWithCreate({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -216,7 +217,7 @@ function SelectWithCreate({
                         label: registry,
                       }))}
                       name={propName}
-                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
+                      selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
                       isDisabled={readonly}
                     />
                   </div>
@@ -228,7 +229,7 @@ function SelectWithCreate({
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <>
               <div className={styles.input_label}>
-                { registries.length > 1 ? t("Then select a value from the list") :t("Select a value from the list") }
+                {registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
               </div>
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
@@ -245,15 +246,22 @@ function SelectWithCreate({
                   />
                 </div>
                 {!readonly && (
-                  <div className="col-md-1" style={{ marginTop: "8px" }}>
-                    <span>
-                      <a className="text-primary" href="#" onClick={() => {
-                          setShow(true);
-                          setIndex(null);
-                        }}>
-                        <i className="fas fa-plus" />
-                      </a>
-                    </span>
+                  <div className="col-md-1">
+                    <ReactTooltip
+                      id="select-with-create-add-button"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t('Add')}
+                    />
+                    <FaPlus
+                      data-tooltip-id="select-contributor-single-add-button"
+                      onClick={() => {
+                        setShow(true);
+                        setIndex(null);
+                      }}
+                      style={{ margin: '8px', cursor: 'pointer' }}
+                    />
                   </div>
                 )}
               </div>
@@ -292,7 +300,7 @@ function SelectWithCreate({
           {!readonly && (
             <Button variant="primary" onClick={handleSave}>
               {t("Save")}
-          </Button>
+            </Button>
           )}
         </Modal.Footer>
       </Modal>
