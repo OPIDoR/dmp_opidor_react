@@ -14,6 +14,7 @@ import { generalInfo } from "../../services";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
 import { service } from "../../services";
+import { filterOptions } from "../../utils/GeneratorUtils";
 
 export const ButtonSave = styled.button`+
   margin: 10px 2px 2px 0px;
@@ -218,6 +219,8 @@ function GeneralInfo({
                         options={fundedProjects}
                         selectedOption={selectedProject ? {value: selectedProject.grantId, label: selectedProject.title } : null}
                         onChange={(e) => setSelectedProject(e.object)}
+                        async={true}
+                        asyncCallback={(value) => filterOptions(fundedProjects, value)}
                       />
                   </div>
                 )}

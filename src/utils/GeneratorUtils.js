@@ -1,4 +1,5 @@
 import DOMPurify from "dompurify";
+import { stringIncludes } from "./utils";
 
 /**
  * It takes a JSON object and a list of keys, and returns a string that is the concatenation of the values of the keys in the JSON object
@@ -224,4 +225,17 @@ export function createDynamicObject(result) {
     dynamicObject.push(isTruth);
   }
   return dynamicObject;
+}
+
+/**
+ * This function is used by async selects. It takes an array of select options and filter it based on the value passed as a parameter
+ * @param options - options of a select list
+ * @param value - value used to search options in a select
+ */
+export function filterOptions(options, value) {
+  return new Promise((resolve) => {      
+    setTimeout(() => {
+      resolve(options.filter(o => stringIncludes(o.label, value)));
+    }, 500);
+  });
 }

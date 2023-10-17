@@ -3,12 +3,14 @@ import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { FaXmark } from 'react-icons/fa6';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 
 function SelectMultipleList({
   values,
@@ -22,7 +24,7 @@ function SelectMultipleList({
 }) {
   const { t } = useTranslation();
   const [selectedValues, setSelectedValues] = useState([]);
-  const [options, setOptions] = useState(null);
+  const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const { 
@@ -154,11 +156,8 @@ function SelectMultipleList({
                         onChange={handleSelectRegistryValue}
                         options={options}
                         name={propName}
-                        // defaultValue={{
-                        //   label: fragment ? fragment[propName] : '',
-                        //   value: fragment ? fragment[propName] : '',
-                        // }}
                         isDisabled={readonly}
+                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                       />
                     </>
                   )}
@@ -177,16 +176,18 @@ function SelectMultipleList({
               <tbody>
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
-                    <td scope="row" style={{ width: "100%" }}>
+                    <td style={{ width: "100%" }}>
                       <div className={styles.border}>
                         <div>{el} </div>
                         <div className={styles.table_container}>
                           {!readonly && (
                             <div className="col-md-1">
                               <span style={{ marginRight: "10px" }}>
-                                <a className="text-primary" href="#" aria-hidden="true" onClick={(e) => handleDeleteList(e, idx)}>
-                                  <i className="fa fa-xmark" />
-                                </a>
+                                <FaXmark
+                                  onClick={(e) => handleDeleteList(e, idx)}
+                                  size={18}
+                                  style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                                />
                               </span>
                             </div>
                           )}

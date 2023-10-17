@@ -7,6 +7,7 @@ import CustomSelect from '../Shared/CustomSelect';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -155,6 +156,7 @@ function SelectSingleList({
                         name={propName}
                         selectedOption={selectedOption}
                         isDisabled={readonly}
+                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                       />
                     </>
                   )}
