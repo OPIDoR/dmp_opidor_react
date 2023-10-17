@@ -16,6 +16,7 @@ import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 
 function SelectWithCreate({
   values,
@@ -37,7 +38,7 @@ function SelectWithCreate({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const [show, setShow] = useState(false);
-  const [options, setOptions] = useState(null);
+  const [options, setOptions] = useState([]);
   const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
@@ -240,6 +241,7 @@ function SelectWithCreate({
                       value: modalData ? modalData[propName] : '',
                     }}
                     isDisabled={readonly}
+                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                   />
                 </div>
                 {!readonly && (
