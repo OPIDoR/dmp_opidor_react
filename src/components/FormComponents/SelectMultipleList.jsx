@@ -9,6 +9,7 @@ import { service } from '../../services';
 import { createOptions } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 
 function SelectMultipleList({
   values,
@@ -22,7 +23,7 @@ function SelectMultipleList({
 }) {
   const { t } = useTranslation();
   const [selectedValues, setSelectedValues] = useState([]);
-  const [options, setOptions] = useState(null);
+  const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const { 
@@ -154,11 +155,8 @@ function SelectMultipleList({
                         onChange={handleSelectRegistryValue}
                         options={options}
                         name={propName}
-                        // defaultValue={{
-                        //   label: fragment ? fragment[propName] : '',
-                        //   value: fragment ? fragment[propName] : '',
-                        // }}
                         isDisabled={readonly}
+                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                       />
                     </>
                   )}

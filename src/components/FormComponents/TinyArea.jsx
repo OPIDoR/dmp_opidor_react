@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
@@ -32,6 +32,7 @@ function TinyArea({
   readonly,
 }) {
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
+  const editorRef = useRef(null);
 
   const handleChange = (newText) => {
     handleChangeValue(propName, newText)
@@ -49,7 +50,7 @@ function TinyArea({
                 id={tinyAreaLabelId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -60,18 +61,38 @@ function TinyArea({
           {!readonly && (
             <Editor
               onEditorChange={(newText) => handleChange(newText)}
-              // onInit={(evt, editor) => (editorRef.current = editor)}
+              onInit={(evt, editor) => (editorRef.current = editor)}
               value={value}
               name={propName}
               init={{
-                branding: false,
-                height: 200,
+                statusbar: true,
                 menubar: false,
-                plugins: "table autoresize link advlist lists",
-                toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
-                content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                toolbar: 'bold italic underline | fontsizeselect forecolor | bullist numlist | link | table',
+                plugins: 'table autoresize link advlist lists autolink',
+                browser_spellcheck: true,
+                advlist_bullet_styles: 'circle,disc,square', // Only disc bullets display on htmltoword
+                target_list: false,
+                elementpath: false,
+                resize: true,
+                min_height: 230,
+                width: '100%',
+                autoresize_bottom_margin: 10,
+                branding: false,
+                extended_valid_elements: 'iframe[tooltip] , a[href|target=_blank]',
+                paste_as_text: false,
+                paste_block_drop: true,
+                paste_merge_formats: true,
+                paste_tab_spaces: 4,
+                smart_paste: true,
+                paste_data_images: true,
+                paste_remove_styles_if_webkit: true,
+                paste_webkit_styles: 'none',
+                table_default_attributes: {
+                  border: 1,
+                },
+                // editorManager.baseURL is not resolved properly for IE since document.currentScript
+                // is not supported, see issue https://github.com/tinymce/tinymce/issues/358
                 skin_url: '/tinymce/skins/oxide',
-                forced_root_block: '\r',
                 content_css: [],
               }}
             />
