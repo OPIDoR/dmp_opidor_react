@@ -33,7 +33,7 @@ export async function getRegistryById(id) {
   return response;
 }
 
-const getRegistryByName = async (name) => axios.get(`/registries/by_name/${name}`);
+const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
 
