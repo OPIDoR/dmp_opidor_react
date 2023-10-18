@@ -18,6 +18,8 @@ export function normalizeString(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-export function stringIncludes(str, substr) {
+export function stringIncludes(str = "", substr = "") {
+  if (!str || !substr) return false;
+
   return normalizeString(str.toUpperCase()).includes(normalizeString(substr.toUpperCase()));
 }
