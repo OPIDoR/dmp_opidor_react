@@ -14,7 +14,7 @@ import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import ContributorList from './ContributorList';
+import PersonsList from './PersonsList.jsx';
 import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorMultiple({
@@ -279,7 +279,7 @@ function SelectContributorMultiple({
         </div>
         <span className='error-message'>{error}</span>
         {template && (
-          <ContributorList
+          <PersonsList
             contributorList={contributorList}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
@@ -289,7 +289,7 @@ function SelectContributorMultiple({
             templateToString={template.to_string}
             tableHeader={header}
             readonly={readonly}
-          ></ContributorList>
+          ></PersonsList>
         )}
       </div>
       <>

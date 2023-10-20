@@ -14,7 +14,7 @@ import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import ContributorList from './ContributorList';
+import PersonsList from './PersonsList.jsx';
 import ImportExternal from '../ExternalImport/ImportExternal';
 
 function SelectContributorSingle({
@@ -252,7 +252,7 @@ function SelectContributorSingle({
         </div>
         <span className='error-message'>{error}</span>
         {template && (
-          <ContributorList
+          <PersonsList
             contributorList={[contributor]}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
@@ -262,7 +262,7 @@ function SelectContributorSingle({
             templateToString={template.to_string}
             tableHeader={t('Selected value')}
             readonly={readonly}
-          ></ContributorList>
+          ></PersonsList>
         )}
       </div>
       <>
