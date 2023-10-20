@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
 
-function ContributorList({
-  contributorList,
+function PersonsList({
+  personsList,
   handleEdit,
   handleDelete,
   roleOptions,
@@ -21,10 +21,10 @@ function ContributorList({
   const { t } = useTranslation();
   return (
     <>
-      {contributorList && (
+      {personsList && (
         <table style={{ marginTop: "20px" }} className="table">
           <thead>
-            {contributorList.length > 0 && tableHeader && contributorList.some((el) => el.action !== "delete") && (
+            {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== "delete") && (
               <tr>
                 <th scope="col">{tableHeader}</th>
                 <th scope="col">{t("Role")}</th>
@@ -32,7 +32,7 @@ function ContributorList({
             )}
           </thead>
           <tbody>
-            {contributorList.map((el, idx) => (el.action !== "delete" ?
+            {personsList.map((el, idx) => (el.action !== "delete" ?
               <tr key={idx}>
                 <td style={{ width: "50%" }}>
                   <div className={styles.border}>
@@ -97,4 +97,4 @@ function ContributorList({
   );
 }
 
-export default ContributorList;
+export default PersonsList;
