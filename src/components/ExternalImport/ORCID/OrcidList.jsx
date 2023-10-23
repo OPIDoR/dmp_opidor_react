@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { externalServices } from "../../../services";
 import CustomError from "../../Shared/CustomError";
 import CustomSpinner from "../../Shared/CustomSpinner";
-import Pagination from "../Pagination";
+import Pagination from "../../Shared/Pagination";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
 function OrcidList({ fragment, setFragment }) {
