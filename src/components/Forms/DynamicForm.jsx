@@ -22,9 +22,7 @@ function DynamicForm({
 }) {
   const { t } = useTranslation();
   const {
-    locale,
     formData, setFormData,
-    dmpId,
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
@@ -53,7 +51,7 @@ function DynamicForm({
           .finally(() => setLoading(false));
       }
     } else {
-      service.loadNewForm(planId, questionId, displayedResearchOutput.id, madmpSchemaId, dmpId, locale).then((res) => {
+      service.createFragment(null, madmpSchemaId, planId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
         setTemplate(res.data.schema);
         const fragment = res.data.fragment;
