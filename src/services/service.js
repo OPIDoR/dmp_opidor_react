@@ -15,6 +15,11 @@ const createFragment = async (data = {}, madmpSchemaId, planId, questionId = nul
   { headers: createHeaders({}, true) },
 );
 
+const destroyFragment = async (fragmentId) => axios.delete(
+  `/madmp_fragments/${fragmentId}`,
+  { headers: createHeaders({}, true) },
+)
+
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
 
 export async function getRegistryById(id) {
@@ -48,6 +53,7 @@ const saveForm = async (id, jsonObject) => axios.post(`/madmp_fragments/update_j
 export default {
   getFragment,
   createFragment,
+  destroyFragment,
   getSchema,
   getRegistryByName,
   getPersons,
