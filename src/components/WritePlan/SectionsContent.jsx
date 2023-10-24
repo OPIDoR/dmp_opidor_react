@@ -8,10 +8,10 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import { researchOutput } from "../../services";
-import styles from "../assets/css/write_plan.module.css";
 import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
+import styles from "../assets/css/write_plan.module.css";
 
 
 function SectionsContent({ planId, templateId, readonly }) {
@@ -78,7 +78,7 @@ function SectionsContent({ planId, templateId, readonly }) {
           setDisplayedResearchOutput(res.data.research_outputs[0])
           toast.success(t("Research output was successfully deleted."));
         })
-        .catch((error) => setError(error)) ;
+          .catch((error) => setError(error));
       }
     });
   };
@@ -96,11 +96,11 @@ function SectionsContent({ planId, templateId, readonly }) {
   }
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
-      {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError error={error}></CustomError>}
-      {!loading && !error && sectionsData && (
+      {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
+      {error && <CustomError error={error}></CustomError>}
+      {!error && sectionsData && (
         <>
           <div className={styles.write_plan_block}>
             <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
@@ -114,7 +114,7 @@ function SectionsContent({ planId, templateId, readonly }) {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 

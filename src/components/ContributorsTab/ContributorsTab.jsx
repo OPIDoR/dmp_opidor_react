@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
 import swalUtils from "../../utils/swalUtils";
+import CustomSpinner from "../Shared/CustomSpinner";
 
 
 function ContributorsTab({ planId, locale, readonly }) {
@@ -91,7 +92,7 @@ function ContributorsTab({ planId, locale, readonly }) {
 
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        service.destroyFragment(fragmentId).then(() =>{
+        service.destroyFragment(fragmentId).then(() => {
           newContributorsList.splice(idx, 1);
           setContributors(newContributorsList);
         }).catch(() => {
@@ -102,11 +103,11 @@ function ContributorsTab({ planId, locale, readonly }) {
   }
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
+      {loading && <CustomSpinner isOverlay={true} />}
       <ContributorsList
         contributors={contributors}
         template={template}
-        loading={loading}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
       />
@@ -132,7 +133,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           position="start"
         ></CustomButton>
       )}
-    </>
+    </div>
   )
 }
 
