@@ -3,11 +3,11 @@ import React, { useContext, useState } from "react";
 import { GlobalContext } from "../context/Global";
 import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
 import { Panel, PanelGroup } from "react-bootstrap";
-import styles from "../assets/css/sidebar.module.css";
 import { MdAddCircleOutline } from "react-icons/md";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
 import chunk from "lodash.chunk";
+import styles from "../assets/css/sidebar.module.css";
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();

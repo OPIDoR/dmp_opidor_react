@@ -46,7 +46,7 @@ function WritePlan({
     const queryParameters = new URLSearchParams(window.location.search);
     const researchOutputId = queryParameters.get('research_output');
 
-    setCurrentOrg({id: currentOrgId, name: currentOrgName});
+    setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     setUserId(userId);
     setLocale(locale);
 
@@ -77,10 +77,10 @@ function WritePlan({
 
 
   return (
-    <>
-      {loading && <CustomSpinner></CustomSpinner>}
-      {!loading && error && <CustomError error={error}></CustomError>}
-      {!loading && !error && researchOutputs && (
+    <div style={{ position: 'relative' }}>
+      {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
+      {error && <CustomError error={error}></CustomError>}
+      {!error && researchOutputs && (
         <>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} />
@@ -99,7 +99,7 @@ function WritePlan({
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
 

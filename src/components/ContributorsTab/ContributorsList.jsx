@@ -3,14 +3,13 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 import { parsePattern } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
-import { CustomSpinner } from "../Shared";
 import { FaPenToSquare, FaXmark } from "react-icons/fa6";
 import Pagination from "../Shared/Pagination";
 
-function ContributorsList({ contributors, template, loading, handleEdit, handleDelete }) {
+function ContributorsList({ contributors, template, handleEdit, handleDelete }) {
   const { t } = useTranslation();
   const [currentData, setCurrentData] = useState([]);
-  
+
   /**
    * The onChangePage function updates the state with a new page of items.
    */
@@ -75,8 +74,8 @@ function ContributorsList({ contributors, template, loading, handleEdit, handleD
             </tr>
           )) : (
             <tr>
-              <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
-                {loading ? <CustomSpinner /> : t('No data available')}
+              <td colSpan="5" style={{ textAlign: 'left' }}>
+                {t('No data available')}
               </td>
             </tr>
           )}
