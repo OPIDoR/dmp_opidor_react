@@ -7,7 +7,6 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createOptions } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
@@ -15,7 +14,7 @@ import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import ModalForm from '../Forms/ModalForm.jsx';
 
 function SelectContributorSingle({
   value,
@@ -39,7 +38,7 @@ function SelectContributorSingle({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [modalData, setModalData] = useState({});
+  const [editedPerson, setEditedPerson] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributor, setContributor] = useState({});
   const [persons, setPersons] = useState([]);
@@ -57,7 +56,7 @@ function SelectContributorSingle({
     fetchPersons();
     fetchRoles();
   }, []);
-  
+
   useEffect(() => {
     if (persons) {
       setOptions(createPersonsOptions(persons));
@@ -106,7 +105,7 @@ function SelectContributorSingle({
    */
   const handleClose = () => {
     setShow(false);
-    setModalData({});
+    setEditedPerson({});
     setIndex(null);
   };
 
@@ -152,23 +151,23 @@ function SelectContributorSingle({
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
-  const handleSave = () => {
-    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+  const handleSave = (data) => {
+    if (checkFragmentExists(persons, data, template['unicity'])) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
         handleChangeValue(propName, {
           ...contributor,
-          person: { ...modalData, action: modalData.action || 'update' },
+          person: { ...data, action: data.action || 'update' },
           action: contributor.action || 'update'
         })
       } else {
         // save new
-        handleSaveNew();
+        handleSaveNew(data);
       }
       toast.success('Save was successful !');
     }
-    setModalData({});
+    setEditedPerson({});
     handleClose();
   };
 
@@ -178,11 +177,11 @@ function SelectContributorSingle({
    * temporary person object and add it to the list array, then it will close
    * the modal and set the temporary person object to null.
    */
-  const handleSaveNew = () => {
-    handleChangeValue(propName, { ...contributor, person: { ...modalData, action: 'create' }, role: defaultRole, action: 'update' })
+  const handleSaveNew = (data) => {
+    handleChangeValue(propName, { ...contributor, person: { ...data, action: 'create' }, role: defaultRole, action: 'update' })
 
     handleClose();
-    setModalData({});
+    setEditedPerson({});
   };
   /**
    * It sets the state of the modalData variable to the value of the form[propName][idx] variable.
@@ -192,14 +191,9 @@ function SelectContributorSingle({
     e.stopPropagation();
     e.preventDefault();
     setIndex(idx);
-    setModalData(contributor.person);
+    setEditedPerson(contributor.person);
     setShow(true);
   };
-
-
-  const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData, [propName]: value });
-  }
 
   return (
     <>
@@ -252,7 +246,7 @@ function SelectContributorSingle({
         <span className='error-message'>{error}</span>
         {template && (
           <PersonsList
-            contributorList={[contributor]}
+            personsList={[contributor]}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             roleOptions={roleOptions}
@@ -266,31 +260,17 @@ function SelectContributorSingle({
       </div>
       <>
         {template && (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header>
-              <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
-              <FormBuilder
-                fragment={modalData}
-                handleChangeValue={handleModalValueChange}
-                fragmentId={fragmentId}
-                template={template}
-                readonly={readonly}
-              ></FormBuilder>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                {t("Close")}
-              </Button>
-              {!readonly && (
-                <Button variant="primary" onClick={handleSave}>
-                  {t("Save")}
-                </Button>
-              )}
-            </Modal.Footer>
-          </Modal>
+          <ModalForm
+            fragmentId={fragmentId}
+            data={editedPerson}
+            template={template}
+            label={t('Editing a person')}
+            readonly={readonly}
+            show={show}
+            handleSave={handleSave}
+            handleClose={handleClose}
+            withImport={true}
+          />
         )}
       </>
     </>

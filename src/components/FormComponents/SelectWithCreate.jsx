@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -12,12 +11,12 @@ import {
   createOptions,
   deleteByIndex,
 } from '../../utils/GeneratorUtils';
-import FormBuilder from '../Forms/FormBuilder.jsx';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
+import ModalForm from '../Forms/ModalForm.jsx';
 
 function SelectWithCreate({
   values,
@@ -42,7 +41,7 @@ function SelectWithCreate({
   const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
-  const [modalData, setModalData] = useState({})
+  const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
@@ -82,7 +81,7 @@ function SelectWithCreate({
 
   const handleClose = () => {
     setShow(false);
-    setModalData({});
+    setEditedFragment({});
     setIndex(null);
   };
 
@@ -131,21 +130,21 @@ function SelectWithCreate({
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
-  const handleSave = () => {
-    if (!modalData) return handleClose();
+  const handleSave = (data) => {
+    if (!data) return handleClose();
     //const checkForm = checkRequiredForm(registerFile, temp);
     if (index !== null) {
       //add in update
       const deleteIndex = deleteByIndex(fragmentsList, index);
-      const concatedObject = [...deleteIndex, { ...modalData, action: 'update' }];
+      const concatedObject = [...deleteIndex, { ...data, action: 'update' }];
       // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
       handleChangeValue(propName, concatedObject)
 
-      setModalData({});
+      setEditedFragment({});
       handleClose();
     } else {
       //add in add
-      handleSaveNew();
+      handleSaveNew(data);
     }
     toast.success(t("Save was successful !"));
   };
@@ -153,13 +152,13 @@ function SelectWithCreate({
   /**
    * I'm trying to add a new object to an array of objects, and then add that array to a new object.
    */
-  const handleSaveNew = () => {
-    const newFragmentList = [...fragmentsList, { ...modalData, action: 'create' }];
+  const handleSaveNew = (data) => {
+    const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     // setFormData(updateFormState(formData, fragmentId, propName, newObject));
     handleChangeValue(propName, newFragmentList)
 
     handleClose();
-    setModalData({});
+    setEditedFragment({});
   };
 
   /**
@@ -167,7 +166,7 @@ function SelectWithCreate({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (idx) => {
-    setModalData(fragmentsList[idx]);
+    setEditedFragment(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);
   };
@@ -178,10 +177,6 @@ function SelectWithCreate({
   const handleSelectRegistry = (e) => {
     setSelectedRegistry(e.value);
   };
-
-  const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData, [propName]: value });
-  }
 
   return (
     <div>
@@ -236,10 +231,6 @@ function SelectWithCreate({
                     onChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
-                    defaultValue={{
-                      label: modalData ? modalData[propName] : '',
-                      value: modalData ? modalData[propName] : '',
-                    }}
                     isDisabled={readonly}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                   />
@@ -278,30 +269,16 @@ function SelectWithCreate({
           ></FragmentList>
         )}
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ padding: "20px !important" }}>
-          <FormBuilder
-            fragment={modalData}
-            handleChangeValue={handleModalValueChange}
-            template={template}
-            fragmentId={fragmentId}
-            readonly={readonly}
-          ></FormBuilder>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {t("Close")}
-          </Button>
-          {!readonly && (
-            <Button variant="primary" onClick={handleSave}>
-              {t("Save")}
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+      <ModalForm
+        fragmentId={fragmentId}
+        data={editedFragment}
+        template={template}
+        label={t('Editing a person')}
+        readonly={readonly}
+        show={show}
+        handleSave={handleSave}
+        handleClose={handleClose}
+      />
     </div>
   );
 }

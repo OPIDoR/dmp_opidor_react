@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
-import FormBuilder from '../Forms/FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
 import {
   deleteByIndex,
@@ -15,6 +13,7 @@ import { service } from '../../services';
 import CustomButton from '../Styled/CustomButton.jsx';
 import styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
+import ModalForm from '../Forms/ModalForm.jsx';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -38,7 +37,7 @@ function ModalTemplate({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const [modalData, setModalData] = useState({});
+  const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
@@ -65,7 +64,7 @@ function ModalTemplate({
    */
   const handleClose = () => {
     setShow(false);
-    setModalData({});
+    setEditedFragment({});
     setIndex(null);
   };
 
@@ -73,17 +72,17 @@ function ModalTemplate({
    * If the modalData variable is not empty, check if the form is valid, if it is,
    * add the modalData variable to the form, if it's not, show an error message.
    */
-  const handleSave = () => {
-    if (!modalData) return handleClose();
+  const handleSave = (data) => {
+    if (!data) return handleClose();
     if (index !== null) {
       const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
       const deleteIndex = deleteByIndex(filterDeleted, index);
-      const addedObject = [...deleteIndex, { ...modalData, action: 'update' }];
+      const addedObject = [...deleteIndex, { ...data, action: 'update' }];
       // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
       handleChangeValue(propName, addedObject)
-      setModalData({});
+      setEditedFragment({});
     } else {
-      handleSaveNew();
+      handleSaveNew(data);
     }
     toast.success(t("Save was successful !"));
     handleClose();
@@ -93,12 +92,12 @@ function ModalTemplate({
    * When the user clicks the save button, the form is updated with the new data,
    * the modalData is set to null, and the modal is closed.
    */
-  const handleSaveNew = () => {
-    const newFragmentList = [...fragmentsList, { ...modalData, action: 'create' }];
+  const handleSaveNew = (data) => {
+    const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     setFragmentsList(newFragmentList)
     // setFormData(updateFormState(formData, fragmentId, propName, newFragmentList));
     handleChangeValue(propName, newFragmentList)
-    setModalData({});
+    setEditedFragment({});
     handleClose();
   };
 
@@ -130,14 +129,10 @@ function ModalTemplate({
    * This function handles the edit functionality for a form element in a React component.
    */
   const handleEdit = (idx) => {
-    setModalData(fragmentsList[idx]);
+    setEditedFragment(fragmentsList[idx]);
     setShow(true);
     setIndex(idx);
   };
-
-  const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData, [propName]: value });
-  }
 
   return (
     <>
@@ -179,30 +174,16 @@ function ModalTemplate({
           ></CustomButton>
         )}
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ padding: "20px !important" }}>
-          <FormBuilder
-            fragment={modalData}
-            handleChangeValue={handleModalValueChange}
-            template={template}
-            fragmentId={fragmentId}
-            readonly={readonly}
-          ></FormBuilder>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {t("Close")}
-          </Button>
-          {!readonly && (
-            <Button variant="primary" onClick={handleSave}>
-              {t("Save")}
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+      <ModalForm
+        fragmentId={fragmentId}
+        data={editedFragment}
+        template={template}
+        label={t('Editing a person')}
+        readonly={readonly}
+        show={show}
+        handleSave={handleSave}
+        handleClose={handleClose}
+      />
     </>
   );
 }
