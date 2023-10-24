@@ -30,12 +30,11 @@ let template = {
 
 describe("HandleGenerateForms component", () => {
   it("should render input elements correctly", () => {
-    const level = 1;
     const lng = "fr";
     const changeValue = jest.fn();
     const wrapper = mount(
       <Global>
-        <HandleGenerateForms template={template} level={level} lng={lng} changeValue={changeValue} />
+        <HandleGenerateForms template={template} lng={lng} changeValue={changeValue} />
       </Global>
     );
 

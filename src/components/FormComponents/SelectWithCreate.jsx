@@ -26,7 +26,6 @@ function SelectWithCreate({
   handleChangeValue,
   propName,
   templateId,
-  level,
   tooltip,
   header,
   fragmentId,
@@ -288,7 +287,6 @@ function SelectWithCreate({
             fragment={modalData}
             handleChangeValue={handleModalValueChange}
             template={template}
-            level={level + 1}
             fragmentId={fragmentId}
             readonly={readonly}
           ></FormBuilder>

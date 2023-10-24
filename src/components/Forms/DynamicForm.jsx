@@ -125,7 +125,6 @@ function DynamicForm({
               fragment={fragment}
               handleChangeValue={handleChangeValue}
               template={template}
-              level={1}
               fragmentId={fragmentId}
               readonly={readonly}
             />
