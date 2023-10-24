@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +6,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import FormBuilder from '../Forms/FormBuilder.jsx';
 import { createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
@@ -15,7 +13,7 @@ import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import ModalForm from '../Forms/ModalForm.jsx';
 
 function SelectContributorMultiple({
   values,
@@ -39,7 +37,7 @@ function SelectContributorMultiple({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [modalData, setModalData] = useState({});
+  const [editedPerson, setEditedPerson] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributorList, setContributorList] = useState([]);
   const [persons, setPersons] = useState([]);
@@ -56,7 +54,7 @@ function SelectContributorMultiple({
     fetchPersons();
     fetchRoles();
   }, []);
-  
+
   useEffect(() => {
     if (persons) {
       setOptions(createPersonsOptions(persons));
@@ -73,7 +71,7 @@ function SelectContributorMultiple({
 
   const fetchRoles = () => {
     service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({...loadedRegistries, 'Role': res.data});
+      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
       setDefaultRole(options[0]?.value);
@@ -106,7 +104,7 @@ function SelectContributorMultiple({
    */
   const handleClose = () => {
     setShow(false);
-    setModalData({});
+    setEditedPerson({});
     setIndex(null);
   };
 
@@ -118,7 +116,7 @@ function SelectContributorMultiple({
     const { object } = e;
     const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
     const newContributorList = [...contributorList, addedContributor];
-    setContributorList(newContributorList)
+    setContributorList(newContributorList);
     handleChangeValue(propName, newContributorList)
     setError(null);
   };
@@ -128,7 +126,7 @@ function SelectContributorMultiple({
    */
   const handleSelectRole = (e, index) => {
     const updatedContributorList = contributorList;
-    updatedContributorList[index]= {
+    updatedContributorList[index] = {
       ...updatedContributorList[index],
       role: e.value,
       action: updatedContributorList[index].action || 'update'
@@ -143,27 +141,27 @@ function SelectContributorMultiple({
    * and then splice the item from the list array.
    * If the index is null, then just save the item.
    */
-  const handleSave = () => {
-    if(checkFragmentExists(persons, modalData, template['unicity'])) {
+  const handleSave = (data) => {
+    if (checkFragmentExists(persons, data, template['unicity'])) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
         const newContributorList = [...values];
-        newContributorList[index]= {
+        newContributorList[index] = {
           ...newContributorList[index],
-          person: modalData,
+          person: data,
           role: defaultRole,
           action: newContributorList[index].action || 'update'
         };
         handleChangeValue(propName, newContributorList)
-  
-        setContributorList([...contributorList, modalData]);
+
+        setContributorList([...contributorList, data]);
       } else {
-        handleSaveNew();
+        handleSaveNew(data);
       }
       toast.success('Save was successful !');
     }
-    setModalData({});
+    setEditedPerson({});
     handleClose();
   };
 
@@ -173,14 +171,14 @@ function SelectContributorMultiple({
    * temporary person object and add it to the list array, then it will close the
    * modal and set the temporary person object to null.
    */
-  const handleSaveNew = () => {
-    const newContributor = { person: { ...modalData, action: 'create' }, role: defaultRole, action: 'create' };
+  const handleSaveNew = (data) => {
+    const newContributor = { person: { ...data, action: 'create' }, role: defaultRole, action: 'create' };
     // setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
     handleChangeValue(propName, [...(contributorList || []), newContributor])
 
     setContributorList([...contributorList, newContributor]);
     handleClose();
-    setModalData({});
+    setEditedPerson({});
   };
 
   /**
@@ -200,7 +198,7 @@ function SelectContributorMultiple({
       confirmButtonText: t("Yes, delete!"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const updatedList = [ ...contributorList ];
+        const updatedList = [...contributorList];
         updatedList[idx]['action'] = 'delete';
         setContributorList(deleteByIndex(contributorList, idx));
         // setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
@@ -218,14 +216,9 @@ function SelectContributorMultiple({
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
-    setModalData(contributorList[idx]['person']);
+    setEditedPerson(contributorList[idx]['person']);
     setShow(true);
   };
-
-
-  const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData, [propName]: value });
-  }
 
   return (
     <>
@@ -239,7 +232,7 @@ function SelectContributorMultiple({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -252,10 +245,6 @@ function SelectContributorMultiple({
               onChange={handleSelectContributor}
               options={options}
               name={propName}
-              defaultValue={{
-                label: modalData ? modalData[propName] : '',
-                value: modalData ? modalData[propName] : '',
-              }}
               isDisabled={readonly}
             />
           </div>
@@ -279,7 +268,7 @@ function SelectContributorMultiple({
         <span className='error-message'>{error}</span>
         {template && (
           <PersonsList
-            contributorList={contributorList}
+            personsList={contributorList}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             roleOptions={roleOptions}
@@ -293,31 +282,17 @@ function SelectContributorMultiple({
       </div>
       <>
         {template && (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header>
-              <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ padding: "20px !important" }}>
-              <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>
-              <FormBuilder
-                fragment={modalData}
-                handleChangeValue={handleModalValueChange}
-                fragmentId={fragmentId}
-                template={template}
-                readonly={readonly}
-              ></FormBuilder>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                {t("Close")}
-              </Button>
-              {!readonly && (
-                <Button variant="primary" onClick={handleSave}>
-                  {t("Save")}
-                </Button>
-              )}
-            </Modal.Footer>
-          </Modal>
+          <ModalForm
+            fragmentId={fragmentId}
+            data={editedPerson}
+            template={template}
+            label={t('Editing a person')}
+            readonly={readonly}
+            show={show}
+            handleSave={handleSave}
+            handleClose={handleClose}
+            withImport={true}
+          />
         )}
       </>
     </>

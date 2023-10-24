@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
+import ImportExternal from '../ExternalImport/ImportExternal';
 
 
-function ModalForm({ fragmentId, data, template, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({ fragmentId, data, template, label, readonly, show, handleSave, handleClose, withImport = false }) {
   const { t } = useTranslation();
   const [modalData, setModalData] = useState({});
 
@@ -21,6 +22,7 @@ function ModalForm({ fragmentId, data, template, label, readonly, show, handleSa
         <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
+        {withImport && <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>}
         <FormBuilder
           fragment={modalData}
           handleChangeValue={handleModalValueChange}
