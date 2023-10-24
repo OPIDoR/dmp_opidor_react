@@ -9,7 +9,6 @@ const ResearchOutputsNavBar = styled.nav`
   z-index: 0;
   margin-bottom: 0px;
   border-radius: 0px 0px 0px 0px;
-  margin-left: 0px;
   float: left;
   position: sticky;
   top: 100px;
@@ -79,7 +78,6 @@ const ResearchOutputsNavBar = styled.nav`
 
   @media (min-width: 1330px) {
     /*Show all nav*/
-    margin-left: 0px;
     float: left;
   }
 `;
