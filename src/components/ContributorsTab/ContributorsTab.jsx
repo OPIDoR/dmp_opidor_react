@@ -7,6 +7,7 @@ import ModalForm from "../Forms/ModalForm";
 import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
 import Swal from "sweetalert2";
+import swalUtils from "../../utils/swalUtils";
 
 
 function ContributorsTab({ planId, locale, readonly }) {
@@ -88,26 +89,13 @@ function ContributorsTab({ planId, locale, readonly }) {
     const fragmentId = contributors[idx].id;
     const newContributorsList = [...contributors];
 
-    Swal.fire({
-      title: t("Are you sure ?"),
-      text: t("Are you sure you want to delete this item?"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         service.destroyFragment(fragmentId).then(() =>{
           newContributorsList.splice(idx, 1);
           setContributors(newContributorsList);
         }).catch(() => {
-          Swal.fire({
-            title: t("Deleted!"),
-            message: t("A problem has occurred while updating the comments"),
-            icon: 'error',
-          });
+          Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'contributor'));
         })
       }
     });

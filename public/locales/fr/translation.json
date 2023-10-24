@@ -25,7 +25,7 @@
   "Data storage and security": "Stockage et sécurité des données",
   "Deepen": "Approfondir",
   "Delete": "Supprimer",
-  "Deleted!": "Supprimé!",
+  "Error while deleting": "Erreur lors de la suppression",
   "Do you confirm the deletion": "Confirmez-vous la suppression",
   "Does your research output contain personal data?": "Votre produit de recherche contient-il des données personnelles ?",
   "Download": "Télécharger",
@@ -74,7 +74,7 @@
   "Update": "Update",
   "Yes, delete!": "Oui, supprimer !",
   "Yes": "Oui",
-  "You must choose a model": "Vous devez choisir un modèle",
+  "You must choose a template": "Vous devez choisir un modèle",
   "add abbreviation": "ajouter abréviation",
   "add title": "ajouter titre",
   "and": "et",
@@ -151,5 +151,8 @@
   "Affiliation": "Affiliation",
   "Attributed roles (Associated research outputs)": "Rôles attribués (Produits de recherche associés)",
   "Add a person": "Ajouter une personne",
-  "Editing a person": "Edition d'une personne"
+  "Editing a person": "Edition d'une personne",
+  "A problem has occurred while deleting the {{record}}" : "Un problème s'est produit lors de la suppression du {{record}}",
+  "comment": "commentaire",
+  "contributor": "contributeur"
 }

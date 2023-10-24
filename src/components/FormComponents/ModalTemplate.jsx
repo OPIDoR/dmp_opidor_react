@@ -14,6 +14,7 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
+import swalUtils from '../../utils/swalUtils.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -107,15 +108,7 @@ function ModalTemplate({
    * @param idx - the index of the item in the array
    */
   const handleDelete = (idx) => {
-    Swal.fire({
-      title: t("Are you sure ?"),
-      text: t("Are you sure you want to delete this item?"),
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
         filteredList[idx]['action'] = 'delete';

@@ -17,6 +17,7 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import ModalForm from '../Forms/ModalForm.jsx';
+import swalUtils from '../../utils/swalUtils.js';
 
 function SelectWithCreate({
   values,
@@ -105,16 +106,7 @@ function SelectWithCreate({
    * @param idx - the index of the item in the array
    */
   const handleDelete = (idx) => {
-    Swal.fire({
-      title: t("Are you sure ?"),
-      text: t("Are you sure you want to delete this item?"),
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         const updatedFragmentList = fragmentsList;
         updatedFragmentList[idx]['action'] = 'delete';
