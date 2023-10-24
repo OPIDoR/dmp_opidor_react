@@ -127,7 +127,6 @@ function ContributorsTab({ planId, locale, readonly }) {
         template={template}
         label={t('Editing a person')}
         readonly={readonly}
-        level={2}
         show={show}
         handleSave={handleSave}
         handleClose={handleClose}

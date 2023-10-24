@@ -4,7 +4,7 @@ import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 
 
-function ModalForm({ fragmentId, data, template, label, readonly, level, show, handleSave, handleClose }) {
+function ModalForm({ fragmentId, data, template, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
   const [modalData, setModalData] = useState({});
 
@@ -25,7 +25,6 @@ function ModalForm({ fragmentId, data, template, label, readonly, level, show, h
           fragment={modalData}
           handleChangeValue={handleModalValueChange}
           template={template}
-          level={level + 1}
           fragmentId={fragmentId}
           readonly={readonly}
         ></FormBuilder>

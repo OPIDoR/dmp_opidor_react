@@ -23,7 +23,6 @@ function SelectContributorMultiple({
   label,
   propName,
   templateId,
-  level,
   tooltip,
   header,
   fragmentId,
@@ -305,7 +304,6 @@ function SelectContributorMultiple({
                 handleChangeValue={handleModalValueChange}
                 fragmentId={fragmentId}
                 template={template}
-                level={level + 1}
                 readonly={readonly}
               ></FormBuilder>
             </Modal.Body>

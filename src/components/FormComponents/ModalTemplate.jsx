@@ -28,7 +28,6 @@ function ModalTemplate({
   label,
   propName,
   templateId,
-  level,
   tooltip,
   header,
   fragmentId,
@@ -189,7 +188,6 @@ function ModalTemplate({
             fragment={modalData}
             handleChangeValue={handleModalValueChange}
             template={template}
-            level={level + 1}
             fragmentId={fragmentId}
             readonly={readonly}
           ></FormBuilder>

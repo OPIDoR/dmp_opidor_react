@@ -41,7 +41,6 @@ let template = {
 
 describe("Handle Generate TextArea", () => {
   it("should render input elements correctly", async () => {
-    const level = 1;
     const lng = "fr";
     const changeValue = jest.fn();
     //GlobalContext.Provider value={temp}
@@ -49,7 +48,7 @@ describe("Handle Generate TextArea", () => {
     await act(async () => {
       render(
         <Global>
-          <HandleGenerateForms template={template} level={level} lng={lng} changeValue={changeValue} />
+          <HandleGenerateForms template={template} lng={lng} changeValue={changeValue} />
         </Global>
       );
     });

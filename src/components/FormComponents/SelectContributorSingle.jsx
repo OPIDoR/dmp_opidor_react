@@ -23,7 +23,6 @@ function SelectContributorSingle({
   label,
   handleChangeValue,
   templateId,
-  level,
   tooltip,
   fragmentId,
   readonly,
@@ -278,7 +277,6 @@ function SelectContributorSingle({
                 handleChangeValue={handleModalValueChange}
                 fragmentId={fragmentId}
                 template={template}
-                level={level + 1}
                 readonly={readonly}
               ></FormBuilder>
             </Modal.Body>
