@@ -45,28 +45,29 @@ function ContributorsTab({ planId, locale, readonly }) {
       await service.saveForm(fragmentId, data)
         .then((res) => {
           newContributorsList[index].data = res.data.fragment;
+          setContributors(newContributorsList);
         }).catch((error) => {
           setError(error);
         }).finally(() => {
           handleClose();
+          setLoading(false);
         });
     } else {
       service.createFragment(data, templateId, planId)
         .then((res) => {
           newContributorsList.unshift({
-            fragmentId: res.data.fragment.id,
+            id: res.data.fragment.id,
             data: res.data.fragment,
             roles: []
           })
+          setContributors(newContributorsList);
         }).catch((error) => {
           setError(error);
         }).finally(() => {
           handleClose();
+          setLoading(false);
         });
-
     }
-    setLoading(false);
-    setContributors(newContributorsList);
   };
 
   const handleClose = () => {
