@@ -14,6 +14,7 @@ import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
+import swalUtils from '../../utils/swalUtils.js';
 
 function SelectContributorMultiple({
   values,
@@ -187,16 +188,7 @@ function SelectContributorMultiple({
   const handleDelete = (e, idx) => {
     e.preventDefault();
     e.stopPropagation();
-    Swal.fire({
-      title: t("Are you sure ?"),
-      text: t("Are you sure you want to delete this item?"),
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         const updatedList = [...contributorList];
         updatedList[idx]['action'] = 'delete';

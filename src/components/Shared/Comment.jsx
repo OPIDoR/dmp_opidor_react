@@ -15,6 +15,7 @@ import CustomError from './CustomError.jsx';
 import { comments as commentsService } from '../../services';
 import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles.jsx';
 import '../../i18n.js';
+import swalUtils from '../../utils/swalUtils.js';
 
 const locales = { fr, en: enGB };
 
@@ -77,16 +78,7 @@ function Comment({
     e.preventDefault();
     e.stopPropagation();
 
-    Swal.fire({
-      title: t("Are you sure ?"),
-      text: t("Are you sure you want to delete this item?"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
-    }).then((result) => {
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         commentsService.archive(id, {
           archived_by: userId,
@@ -94,15 +86,9 @@ function Comment({
           const index = comments.findIndex((el) => el.id === id);
 
           if (!index < 0) {
-            Swal.fire({
-              title: t("Deleted!"),
-              message: t("A problem has occurred while updating the comments"),
-              icon: 'error',
-            });
+            Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
             return;
           }
-
-          Swal.fire(t("Deleted!"), t("Operation completed successfully!."), "success");
 
           const updatedComments = [...comments];
           updatedComments.splice(index, 1);
@@ -110,11 +96,7 @@ function Comment({
 
           updateTitle(updatedComments);
         }).catch(() => {
-          Swal.fire({
-            title: t("Deleted!"),
-            message: t("A problem has occurred while updating the comments"),
-            icon: 'error',
-          });
+          Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
         })
       }
     });
