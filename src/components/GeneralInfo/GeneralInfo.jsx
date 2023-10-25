@@ -78,14 +78,14 @@ function GeneralInfo({
   API call is completed, regardless of whether it was successful or not. If there is an error during the API call, it sets the error state to the error
   object. */
   useEffect(() => {
-    if(researchContext === 'research_project' ) {
+    if (researchContext === 'research_project') {
       setLoading(true);
       service.getRegistryByName('ANRProjects')
         .then((res) => {
           const options = res.data.map((option) => ({
             value: option.value,
             label: option.label[locale],
-            object: {grantId: option.value, title: option.label[locale]}
+            object: { grantId: option.value, title: option.label[locale] }
           }));
           setFundedProjects(options);
         })
@@ -148,24 +148,24 @@ function GeneralInfo({
       return toast.error(errorMessage);
     }
 
-    setFormData({ 
+    setFormData({
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
     });
-    if(response.data.plan_title) {
+    if (response.data.plan_title) {
       document.getElementById('plan-title').innerHTML = response.data.plan_title;
     }
     toast.success(t(
       '\'{{projectTitle}}\' project data has successfully been imported',
       { projectTitle: selectedProject.title }
-    ), {style: { maxWidth: 500 }});
+    ), { style: { maxWidth: 500 } });
 
     setLoading(false);
   };
 
   return (
     <div className="container">
-      { !readonly && researchContext === 'research_project' && (
+      {!readonly && researchContext === 'research_project' && (
         <Panel
           expanded={isOpenFunderImport}
           className={styles.panel}
@@ -176,66 +176,66 @@ function GeneralInfo({
           }}
           onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
         >
-        {loading && <CustomSpinner />}
-        {!loading && error && <CustomError error={error} />}
-        {!error && funders && (
-          <>
-            <Panel.Heading className="funder-import "style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
-              <Panel.Title toggle>
-                <div className={styles.question_title}>
-                  <div className={styles.question_text}>
-                    <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
-                  </div>
-                  <span className={styles.question_icons}>
-                    {isOpenFunderImport ? (
-                      <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-                    ) : (
-                      <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr}/>
-                    )}
-                  </span>
-                </div>
-              </Panel.Title>
-            </Panel.Heading>
-            <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
-              <div className={styles.container_anr}>
-                <p className={styles.description_anr}>{t('Your project is funded by the ANR, automatically retrieve the administrative information for your project.')}</p>
-                {funders.length > 1 && (
-                  <div className="form-group">
-                    <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+          {loading && <CustomSpinner isOverlay={true} />}
+          {error && <CustomError error={error} />}
+          {!error && funders && (
+            <>
+              <Panel.Heading className="funder-import " style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
+                <Panel.Title toggle>
+                  <div className={styles.question_title}>
+                    <div className={styles.question_text}>
+                      <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                     </div>
-                    <CustomSelect
-                      options={funders}
-                      onChange={(e) => handleSelectFunder(e)}
-                    />
+                    <span className={styles.question_icons}>
+                      {isOpenFunderImport ? (
+                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                      ) : (
+                        <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                      )}
+                    </span>
                   </div>
-                )}
-                {fundedProjects.length > 0 && (
-                  <div className="form-group">
-                    <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                </Panel.Title>
+              </Panel.Heading>
+              <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
+                <div className={styles.container_anr}>
+                  <p className={styles.description_anr}>{t('Your project is funded by the ANR, automatically retrieve the administrative information for your project.')}</p>
+                  {funders.length > 1 && (
+                    <div className="form-group">
+                      <div className={styles.label_form_anr}>
+                        <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+                      </div>
+                      <CustomSelect
+                        options={funders}
+                        onChange={(e) => handleSelectFunder(e)}
+                      />
                     </div>
+                  )}
+                  {fundedProjects.length > 0 && (
+                    <div className="form-group">
+                      <div className={styles.label_form_anr}>
+                        <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                      </div>
                       <CustomSelect
                         options={fundedProjects}
-                        selectedOption={selectedProject ? {value: selectedProject.grantId, label: selectedProject.title } : null}
+                        selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
                         onChange={(e) => setSelectedProject(e.object)}
                         async={true}
                         asyncCallback={(value) => filterOptions(fundedProjects, value)}
                       />
-                  </div>
-                )}
-                {selectedProject && (
-                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                    {t("Save")}
-                  </ButtonSave>
-                )}
-              </div>
-            </Panel.Body>
-          </>
-        )}
+                    </div>
+                  )}
+                  {selectedProject && (
+                    <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                      {t("Save")}
+                    </ButtonSave>
+                  )}
+                </div>
+              </Panel.Body>
+            </>
+          )}
         </Panel>
       )}
-      <Panel 
+      <Panel
         expanded={isOpenProjectForm}
         className={styles.panel}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
@@ -261,7 +261,7 @@ function GeneralInfo({
           {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
         </Panel.Body>
       </Panel>
-      <Panel 
+      <Panel
         expanded={isOpenMetaForm}
         className={styles.panel}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}

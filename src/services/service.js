@@ -4,21 +4,21 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const loadNewForm = async (planId, questionId, researchOutputId, madmpSchemaId, dmpId, locale) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null) => axios.post(
   '/madmp_fragments/create_json', {
-    madmp_fragment: {
-      answer: {
-        plan_id: planId,
-        question_id: questionId,
-        research_output_id: researchOutputId,
-      },
-      schema_id: madmpSchemaId,
-      dmp_id: dmpId,
-      template_locale: locale
-    }
+    data,
+    schema_id: madmpSchemaId,
+    plan_id: planId,
+    question_id: questionId,
+    research_output_id: researchOutputId
   },
   { headers: createHeaders({}, true) },
 );
+
+const destroyFragment = async (fragmentId) => axios.delete(
+  `/madmp_fragments/${fragmentId}`,
+  { headers: createHeaders({}, true) },
+)
 
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
 
@@ -37,6 +37,8 @@ const getRegistryByName = async (name, page = null) => axios.get(`/registries/by
 
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
 
+const getContributors = async (planId) => axios.get(`/plans/${planId}/contributors_data`);
+
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
  * </code>
@@ -50,9 +52,11 @@ const saveForm = async (id, jsonObject) => axios.post(`/madmp_fragments/update_j
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getFragment,
-  loadNewForm,
+  createFragment,
+  destroyFragment,
   getSchema,
   getRegistryByName,
   getPersons,
   saveForm,
+  getContributors,
 };

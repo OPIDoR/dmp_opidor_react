@@ -12,7 +12,7 @@ import SelectWithCreate from '../FormComponents/SelectWithCreate';
 import TinyArea from '../FormComponents/TinyArea';
 import { createLabel } from '../../utils/GeneratorUtils.js';
 
-function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level, readonly }) {
+function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readonly }) {
   const { locale, dmpId } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
@@ -64,7 +64,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
               registries={prop["registries"] || [prop["registry_name"]]}
               handleChangeValue={handleChangeValue}
               templateId={prop.items.schema_id}
-              level={level}
               header={prop[`table_header@${locale}`]}
               fragmentId={fragmentId}
               readonly={readonly}
@@ -122,7 +121,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
             handleChangeValue={handleChangeValue}
             dmpId={dmpId}
             templateId={prop.schema_id}
-            level={level}
             tooltip={tooltip}
             fragmentId={fragmentId}
             readonly={readonly}
@@ -144,7 +142,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
               label={label}
               propName={key}
               templateId={prop.items.schema_id}
-              level={level}
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               fragmentId={fragmentId}
@@ -163,7 +160,6 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, level,
               tooltip={tooltip}
               value={prop}
               templateId={prop.items.schema_id}
-              level={level}
               header={prop[`table_header@${locale}`]}
               fragmentId={fragmentId}
               readonly={readonly}

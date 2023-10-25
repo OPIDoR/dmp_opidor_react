@@ -4,7 +4,7 @@ import { externalServices } from "../../../services";
 import Select from "react-select";
 import CustomSpinner from "../../Shared/CustomSpinner";
 import CustomError from "../../Shared/CustomError";
-import Pagination from "../Pagination";
+import Pagination from "../../Shared/Pagination";
 import { FaLink } from "react-icons/fa6";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
