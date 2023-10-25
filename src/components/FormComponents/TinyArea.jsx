@@ -21,7 +21,7 @@ const ReadDiv = styled.div`
 `;
 
 /* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
-`tooltip`, `level`, and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
+`tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
 function TinyArea({
   value,

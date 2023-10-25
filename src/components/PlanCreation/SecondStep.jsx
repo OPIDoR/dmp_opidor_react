@@ -208,7 +208,7 @@ function SecondStep() {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: t("You must choose a model"),
+        text: t("You must choose a template"),
       });
     }
 

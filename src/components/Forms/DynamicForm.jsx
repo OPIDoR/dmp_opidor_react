@@ -22,9 +22,7 @@ function DynamicForm({
 }) {
   const { t } = useTranslation();
   const {
-    locale,
     formData, setFormData,
-    dmpId,
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
@@ -39,7 +37,7 @@ function DynamicForm({
       if (formData[fragmentId]) {
         service.getSchema(formData[fragmentId].schema_id).then((res) => {
           setTemplate(res.data);
-          setLoadedTemplates({...loadedTemplates, [formData[fragmentId].schema_id] : res.data});
+          setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
         });
         setFragment(formData[fragmentId])
         setLoading(false);
@@ -53,7 +51,7 @@ function DynamicForm({
           .finally(() => setLoading(false));
       }
     } else {
-      service.loadNewForm(planId, questionId, displayedResearchOutput.id, madmpSchemaId, dmpId, locale).then((res) => {
+      service.createFragment(null, madmpSchemaId, planId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
         setTemplate(res.data.schema);
         const fragment = res.data.fragment;
@@ -78,7 +76,7 @@ function DynamicForm({
     const updatedFragment = { ...fragment };
     updatedFragment[propName] = value;
     setFragment(updatedFragment);
-    setFormData({ ...formData,  [fragmentId] : updatedFragment});
+    setFormData({ ...formData, [fragmentId]: updatedFragment });
   }
 
   /**
@@ -107,7 +105,7 @@ function DynamicForm({
       return setLoading(false);
     }
 
-    if(response.data.plan_title) {
+    if (response.data.plan_title) {
       document.getElementById('plan-title').innerHTML = response.data.plan_title;
     }
     setFormData({ [fragmentId]: response.data.fragment });
@@ -117,7 +115,7 @@ function DynamicForm({
 
   return (
     <>
-      {loading && (<CustomSpinner></CustomSpinner>)}
+      {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
       {error && <p>error</p>}
       {!error && template && fragment && (
         <div style={{ margin: '15px' }}>
@@ -127,7 +125,6 @@ function DynamicForm({
               fragment={fragment}
               handleChangeValue={handleChangeValue}
               template={template}
-              level={1}
               fragmentId={fragmentId}
               readonly={readonly}
             />

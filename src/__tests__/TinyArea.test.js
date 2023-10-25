@@ -32,12 +32,11 @@ let template = {
 
 describe("HandleGenerateForms component", () => {
   it("should render input elements correctly", () => {
-    const level = 1;
     const lng = "fr";
     const changeValue = jest.fn();
     render(
       <Global>
-        <HandleGenerateForms template={template} level={level} lng={lng} changeValue={changeValue} />
+        <HandleGenerateForms template={template} lng={lng} changeValue={changeValue} />
       </Global>
     );
     expect(screen.getByText("Décrire les besoins de stockage")).toBeInTheDocument();
