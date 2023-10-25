@@ -24,9 +24,9 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     researchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
-  const [options, setOptions] = useState([{value:'', label:''}]);
-  const [abbreviation, setAbbreviation] = useState(null);
-  const [title, setTitle] = useState(null);
+  const [options, setOptions] = useState([{value: '', label: ''}]);
+  const [abbreviation, setAbbreviation] = useState(undefined);
+  const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
@@ -42,6 +42,8 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     if (!edit) {
       setAbbreviation(`${t('Research output')} ${researchOutputs.length + 1}`);
       setTitle(`${t('Research output')} ${researchOutputs.length + 1}`);
+      setHasPersonalData(false);
+      setType(null);
     }
 
     service.getRegistryByName('ResearchDataType').then((res) => {
@@ -124,7 +126,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Short name')}</label>
         </div>
         <input
-          value={abbreviation || `${t('Research output')} ${researchOutputs.length + 1}`}
+          value={abbreviation || ''}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -139,7 +141,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
           <label>{t('Name')}</label>
         </div>
         <input
-          value={title || `${t('Research output')} ${researchOutputs.length + 1}`}
+          value={title || ''}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
