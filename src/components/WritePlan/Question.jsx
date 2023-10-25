@@ -7,7 +7,6 @@ import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
 import { PiLightbulbLight } from "react-icons/pi";
 
-import { showQuestion } from "../../utils/GeneratorUtils";
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
 import DynamicForm from "../Forms/DynamicForm";
@@ -16,7 +15,13 @@ import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
 
-function Question({ question, sectionId, sectionNumber, readonly }) {
+function Question({
+  question,
+  questionIdx,
+  sectionId,
+  sectionNumber,
+  readonly,
+}) {
   const {
     planData,
     openedQuestions,
@@ -133,7 +138,7 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
 
   return (
     <>
-      {showQuestion(question, displayedResearchOutput.hasPersonalData) && (
+      {
         <Panel
           expanded={isQuestionOpened()}
           className={styles.panel}
@@ -149,7 +154,7 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
                   <div className={styles.question_number}>
-                    {sectionNumber}.{question.number}
+                    {sectionNumber}.{questionIdx}
                   </div>
                   <div
                     className={styles.panel_title}
@@ -340,7 +345,7 @@ function Question({ question, sectionId, sectionNumber, readonly }) {
             )}
           </Panel.Body>
         </Panel>
-      )}
+      }
     </>
   );
 }
