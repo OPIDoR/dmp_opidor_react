@@ -64,10 +64,16 @@ function Section({ section, readonly }) {
           </button>
         </div>
       </div>
-      {section.questions.map((question) => (
+      {section.questions.filter((question) => {
+        if (question.madmp_schema.classname === 'personal_data_issues') {
+          return displayedResearchOutput.hasPersonalData;
+        }
+        return true;
+      }).map((question, idx) => (
         <Question
           key={question.id}
           question={question}
+          questionIdx={(idx + 1)}
           sectionId={sectionId}
           sectionNumber={section.number}
           readonly={readonly}
