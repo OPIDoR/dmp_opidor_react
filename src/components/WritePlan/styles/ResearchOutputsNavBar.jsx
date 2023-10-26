@@ -4,7 +4,6 @@ const ResearchOutputsNavBar = styled.nav`
   background-color: white;
   width: 220px;
   height: 100%;
-  margin-left: -160px;
   float: left;
   z-index: 0;
   margin-bottom: 0px;
