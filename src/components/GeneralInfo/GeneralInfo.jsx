@@ -292,6 +292,7 @@ function GeneralInfo({
                 checked={isTestPlan}
                 onClick={() => setIsTestPlan(!isTestPlan)}
                 onChange={(e) => handleClickIsTestPlan(e)}
+                disabled={readonly}
               />
               <label className="form-check-label" htmlFor="is_test">
                 {t('Test Plan')}

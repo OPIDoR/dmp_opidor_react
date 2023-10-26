@@ -21,6 +21,7 @@ function GeneralInfoLayout({
   isClassic = false,
   currentOrgId,
   currentOrgName,
+  readonly = false,
 }) {
   return(
     <Global>
@@ -33,6 +34,7 @@ function GeneralInfoLayout({
         metaFragmentId={metaFragmentId}
         researchContext={researchContext}
         isTest={isTest}
+        readonly={readonly}
       />
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
