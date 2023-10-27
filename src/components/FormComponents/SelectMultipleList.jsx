@@ -28,20 +28,20 @@ function SelectMultipleList({
   const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
-  const { 
-    locale, loadedRegistries, setLoadedRegistries 
+  const {
+    locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
 
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(loadedRegistries[selectedRegistry]) {
+    if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
+          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
@@ -104,7 +104,7 @@ function SelectMultipleList({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -115,47 +115,39 @@ function SelectMultipleList({
         <div className="row"><div className="row">
           {registries && registries.length > 1 && (
             <div className="col-md-6">
-              <>
-                <div className={styles.input_label}>{t("Select a registry")}.</div>
-                <div className="row">
-                  <div className={`col-md-11 ${styles.select_wrapper}`}>
-                    <CustomSelect
-                      onChange={handleSelectRegistry}
-                      options={registries.map((registry) => ({
-                        value: registry,
-                        label: registry,
-                      }))}
-                      name={propName}
-                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
-                      isDisabled={readonly}
-                    />
-                  </div>
+              <div className="row">
+                <div className={`col-md-11 ${styles.select_wrapper}`}>
+                  <CustomSelect
+                    onChange={handleSelectRegistry}
+                    options={registries.map((registry) => ({
+                      value: registry,
+                      label: registry,
+                    }))}
+                    name={propName}
+                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    isDisabled={readonly}
+                    placeholder={t("Select a registry")}
+                  />
                 </div>
-              </>
+              </div>
             </div>
           )}
 
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
-            <>
-              <div className={styles.input_label}>
-                { registries.length > 1 ? t("Then select a value from the list") :t("Select a value from the list") }
+            <div className="row">
+              <div className={`col-md-12 ${styles.select_wrapper}`}>
+                {selectedRegistry && options && (
+                  <CustomSelect
+                    onChange={handleSelectRegistryValue}
+                    options={options}
+                    name={propName}
+                    isDisabled={readonly}
+                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                  />
+                )}
               </div>
-              <div className="row">
-                <div className={`col-md-12 ${styles.select_wrapper}`}>
-                  {selectedRegistry && options && (
-                    <>
-                      <CustomSelect
-                        onChange={handleSelectRegistryValue}
-                        options={options}
-                        name={propName}
-                        isDisabled={readonly}
-                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            </>
+            </div>
           </div>
         </div>
         </div>
