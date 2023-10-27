@@ -9,17 +9,16 @@ function CustomSelect({
     options,
     selectedOption = null,
     onChange,
-    async = false, 
-    asyncCallback = null,
-    defaultValue,
+    async = false,
     isDisabled = false,
+    placeholder = null,
 }) {
   const SelectComponent = async ? AsyncSelect : Select;
   return(
     <SelectComponent
       menuPortalTarget={document.body}
       styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
+        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--primary)" }),
         singleValue: (base) => ({ ...base, color: "var(--primary)" }),
         control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
       }}
@@ -27,7 +26,7 @@ function CustomSelect({
       options={options}
       onChange={onChange}
       value={selectedOption}
-      // defaultValue={defaultValue}
+      placeholder={placeholder}
       loadOptions={async ? (value) => filterOptions(options, value) : undefined}
       defaultOptions={async ? options.slice(0, 100) : undefined}
       cacheOptions
