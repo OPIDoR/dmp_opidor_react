@@ -230,7 +230,6 @@ function SelectContributorMultiple({
             )
           }
         </div>
-        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
@@ -238,6 +237,7 @@ function SelectContributorMultiple({
               options={options}
               name={propName}
               isDisabled={readonly}
+              placeholder={t("Select a value from the list")}
             />
           </div>
           {!readonly && (

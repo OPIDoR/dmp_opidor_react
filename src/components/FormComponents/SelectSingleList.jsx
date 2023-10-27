@@ -14,11 +14,11 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  value, label, propName, handleChangeValue, tooltip, registries, fragmentId, fragment = {}, registryType, templateId, readonly
+  value, label, propName, handleChangeValue, tooltip, registries, registryType, templateId, readonly
 }) {
   const { t } = useTranslation();
-  const [options, setOptions] = useState([{value:'', label:''}]);
-  const { 
+  const [options, setOptions] = useState([{ value: '', label: '' }]);
+  const {
     locale,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
@@ -26,19 +26,19 @@ function SelectSingleList({
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
-  const [selectedValue, setSelectedValue] = useState( registryType === 'complex' ? {} : '');
-  const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : '');
+  const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
+  const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : null);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
-  const nullValue  = registryType === 'complex' ? {} : '';
+  const nullValue = registryType === 'complex' ? {} : null;
 
   useEffect(() => {
     setSelectedValue(value || nullValue);
   }, [value])
 
   useEffect(() => {
-    if(registryType !== 'complex') {
-      setSelectedOption({value: selectedValue, label: selectedValue})
+    if (registryType !== 'complex') {
+      setSelectedOption( selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
     }
   }, [selectedValue])
 
@@ -47,12 +47,12 @@ function SelectSingleList({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    if(loadedRegistries[selectedRegistry]) {
+    if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
-          setLoadedRegistries({...loadedRegistries, [selectedRegistry]: res.data});
+          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
@@ -62,7 +62,7 @@ function SelectSingleList({
   }, [selectedRegistry]);
 
   useEffect(() => {
-    if(registryType !== 'complex') { return; }
+    if (registryType !== 'complex') { return; }
     if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
         setTemplate(res.data)
@@ -82,7 +82,7 @@ function SelectSingleList({
 
     if (registryType === 'complex') {
       const action = selectedValue.id ? 'update' : 'create';
-      const value = {...selectedValue,  ...e.object, action};
+      const value = { ...selectedValue, ...e.object, action };
       setSelectedValue(value);
       // setFormData(updateFormState(fragment, fragmentId, propName, value));
       handleChangeValue(propName, value)
@@ -110,7 +110,7 @@ function SelectSingleList({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -121,48 +121,40 @@ function SelectSingleList({
         <div className="row">
           {registries && registries.length > 1 && (
             <div className="col-md-6">
-              <>
-                <div className={styles.input_label}>{t("Select a registry")}.</div>
-                <div className="row">
-                  <div className={`col-md-11 ${styles.select_wrapper}`}>
-                    <CustomSelect
-                      onChange={handleSelectRegistry}
-                      options={registries.map((registry) => ({
-                        value: registry,
-                        label: registry,
-                      }))}
-                      name={propName}
-                      selectedOption={{value: selectedRegistry, label: selectedRegistry}}
-                      isDisabled={readonly}
-                    />
-                  </div>
+              <div className="row">
+                <div className={`col-md-11 ${styles.select_wrapper}`}>
+                  <CustomSelect
+                    onChange={handleSelectRegistry}
+                    options={registries.map((registry) => ({
+                      value: registry,
+                      label: registry,
+                    }))}
+                    name={propName}
+                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    isDisabled={readonly}
+                    placeholder={t("Select a registry")}
+                  />
                 </div>
-              </>
+              </div>
             </div>
           )}
 
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
-            <>
-              <div className={styles.input_label}>
-                { registries.length > 1 ? t("Then select a value from the list") :t("Select a value from the list") }
+            <div className="row">
+              <div className={`col-md-12 ${styles.select_wrapper}`}>
+                {selectedRegistry && options && (
+                  <CustomSelect
+                    onChange={handleSelectRegistryValue}
+                    options={options}
+                    name={propName}
+                    selectedOption={selectedOption}
+                    isDisabled={readonly}
+                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                  />
+                )}
               </div>
-              <div className="row">
-                <div className={`col-md-12 ${styles.select_wrapper}`}>
-                  {selectedRegistry && options && (
-                    <>
-                      <CustomSelect
-                        onChange={handleSelectRegistryValue}
-                        options={options}
-                        name={propName}
-                        selectedOption={selectedOption}
-                        isDisabled={readonly}
-                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            </>
+            </div>
           </div>
         </div>
 
