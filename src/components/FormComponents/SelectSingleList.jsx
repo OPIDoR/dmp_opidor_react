@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
+
 import { service } from '../../services';
 import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
-import { useTranslation } from 'react-i18next';
-import { Tooltip as ReactTooltip } from 'react-tooltip';
-import uniqueId from 'lodash.uniqueid';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -14,9 +16,11 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  value, label, propName, handleChangeValue, tooltip, registries, registryType, templateId, readonly
+   label, propName, tooltip, registries, registryType, templateId, readonly
 }) {
   const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [options, setOptions] = useState([{ value: '', label: '' }]);
   const {
     locale,
@@ -33,12 +37,12 @@ function SelectSingleList({
   const nullValue = registryType === 'complex' ? {} : null;
 
   useEffect(() => {
-    setSelectedValue(value || nullValue);
-  }, [value])
+    setSelectedValue(field.value || nullValue);
+  }, [field.value])
 
   useEffect(() => {
     if (registryType !== 'complex') {
-      setSelectedOption( selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
+      setSelectedOption(selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
     }
   }, [selectedValue])
 
@@ -83,11 +87,9 @@ function SelectSingleList({
     if (registryType === 'complex') {
       const action = selectedValue.id ? 'update' : 'create';
       const value = { ...selectedValue, ...e.object, action };
-      setSelectedValue(value);
-      // setFormData(updateFormState(fragment, fragmentId, propName, value));
-      handleChangeValue(propName, value)
+      field.onChange(value);
     } else {
-      handleChangeValue(propName, e.value);
+      return field.onChange(e.value);
     }
   };
 
@@ -124,7 +126,7 @@ function SelectSingleList({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
-                    onChange={handleSelectRegistry}
+                    onSelectChange={handleSelectRegistry}
                     options={registries.map((registry) => ({
                       value: registry,
                       label: registry,
@@ -144,9 +146,8 @@ function SelectSingleList({
               <div className={`col-md-12 ${styles.select_wrapper}`}>
                 {selectedRegistry && options && (
                   <CustomSelect
-                    onChange={handleSelectRegistryValue}
+                    onSelectChange={handleSelectRegistryValue}
                     options={options}
-                    name={propName}
                     selectedOption={selectedOption}
                     isDisabled={readonly}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}

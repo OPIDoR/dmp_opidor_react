@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -23,14 +24,11 @@ import swalUtils from '../../utils/swalUtils.js';
  * @returns A React component.
  */
 function ModalTemplate({
-  values,
-  handleChangeValue,
   label,
   propName,
-  templateId,
   tooltip,
   header,
-  fragmentId,
+  templateId,
   readonly,
 }) {
   const { t } = useTranslation();
@@ -38,6 +36,8 @@ function ModalTemplate({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
@@ -57,8 +57,8 @@ function ModalTemplate({
   }, [templateId]);
 
   useEffect(() => {
-    setFragmentsList(values || [])
-  }, [values])
+    setFragmentsList(field.value || [])
+  }, [field.value])
 
   /**
    * The function sets the show state to false
@@ -79,8 +79,7 @@ function ModalTemplate({
       const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
       const deleteIndex = deleteByIndex(filterDeleted, index);
       const addedObject = [...deleteIndex, { ...data, action: 'update' }];
-      // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-      handleChangeValue(propName, addedObject)
+      field.onChange(addedObject)
       setEditedFragment({});
     } else {
       handleSaveNew(data);
@@ -96,8 +95,7 @@ function ModalTemplate({
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     setFragmentsList(newFragmentList)
-    // setFormData(updateFormState(formData, fragmentId, propName, newFragmentList));
-    handleChangeValue(propName, newFragmentList)
+    field.onChange( newFragmentList)
     setEditedFragment({});
     handleClose();
   };
@@ -112,8 +110,7 @@ function ModalTemplate({
       if (result.isConfirmed) {
         const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
         filteredList[idx]['action'] = 'delete';
-        // setFormData(updateFormState(formData, fragmentId, propName, filterList));
-        handleChangeValue(propName, filteredList)
+        field.onChange(filteredList)
       }
     });
   };
@@ -168,7 +165,6 @@ function ModalTemplate({
         )}
       </div>
       <ModalForm
-        fragmentId={fragmentId}
         data={editedFragment}
         template={template}
         label={t('Editing a person')}

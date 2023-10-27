@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { useFormContext, useController } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -18,16 +18,15 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 
 function SelectContributorSingle({
-  value,
   propName,
   label,
-  handleChangeValue,
-  templateId,
   tooltip,
-  fragmentId,
+  templateId,
   readonly,
 }) {
   const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
@@ -47,9 +46,9 @@ function SelectContributorSingle({
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
-    setContributor(value)
-    setDefaultRole(value?.role)
-  }, [value]);
+    setContributor(field.value)
+    setDefaultRole(field.value?.role)
+  }, [field.value]);
 
 
   /* A hook that is called when the component is mounted. */
@@ -77,7 +76,7 @@ function SelectContributorSingle({
       setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setDefaultRole(value?.role || options[0]?.value);
+      setDefaultRole(field.value?.role || options[0]?.value);
     });
   }
 
@@ -126,7 +125,7 @@ function SelectContributorSingle({
 
   const handleSelectContributor = (e) => {
     const { object } = e;
-    handleChangeValue(propName, { ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
+    field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
   };
 
   /**
@@ -134,7 +133,7 @@ function SelectContributorSingle({
    */
   const handleSelectRole = (e) => {
     setDefaultRole(e.value);
-    handleChangeValue(propName, { ...value, role: e.value, action: 'update' })
+    field.onChange({ ...field.value, role: e.value, action: 'update' })
   };
 
   /**
@@ -148,7 +147,7 @@ function SelectContributorSingle({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        handleChangeValue(propName, {
+        field.onChange({
           ...contributor,
           person: { ...data, action: data.action || 'update' },
           action: contributor.action || 'update'
@@ -170,7 +169,7 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    handleChangeValue(propName, { ...contributor, person: { ...data, action: 'create' }, role: defaultRole, action: 'update' })
+    field.onChange({ ...contributor, person: { ...data, action: 'create' }, role: defaultRole, action: 'update' })
 
     handleClose();
     setEditedPerson({});
@@ -209,7 +208,7 @@ function SelectContributorSingle({
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
-              onChange={(e) => handleSelectContributor(e)}
+              onSelectChange={(e) => handleSelectContributor(e)}
               options={options}
               name={propName}
               isDisabled={readonly}
@@ -251,7 +250,6 @@ function SelectContributorSingle({
       <>
         {template && (
           <ModalForm
-            fragmentId={fragmentId}
             data={editedPerson}
             template={template}
             label={t('Editing a person')}

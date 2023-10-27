@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import styles from '../assets/css/form.module.css';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
+
+import styles from '../assets/css/form.module.css';
 
 const ReadDiv = styled.div`
   border: solid;
@@ -24,19 +26,14 @@ const ReadDiv = styled.div`
 `tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
 function TinyArea({
-  value,
-  handleChangeValue,
   label,
   propName,
   tooltip,
   readonly,
 }) {
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
-  const editorRef = useRef(null);
-
-  const handleChange = (newText) => {
-    handleChangeValue(propName, newText)
-  };
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -60,10 +57,8 @@ function TinyArea({
         <div style={{ marginTop: "10px" }}>
           {!readonly && (
             <Editor
-              onEditorChange={(newText) => handleChange(newText)}
-              onInit={(evt, editor) => (editorRef.current = editor)}
-              value={value}
-              name={propName}
+              {...field}
+              onEditorChange={field.onChange}
               init={{
                 statusbar: true,
                 menubar: false,
@@ -100,7 +95,7 @@ function TinyArea({
           {readonly && (
             <ReadDiv
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize([value]),
+                __html: DOMPurify.sanitize([field.value]),
               }}
             />
           )}
