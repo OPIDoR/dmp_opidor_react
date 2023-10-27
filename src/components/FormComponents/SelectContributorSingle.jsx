@@ -206,7 +206,6 @@ function SelectContributorSingle({
           }
         </div>
 
-        <div className={styles.input_label}>{t("Select a value from the list")}.</div>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
@@ -214,8 +213,7 @@ function SelectContributorSingle({
               options={options}
               name={propName}
               isDisabled={readonly}
-            // async={true}
-            // asyncCallback={fetchContributors}
+              placeholder={t("Select a value from the list")}
             />
           </div>
           {!readonly && (
