@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
+import { useForm, FormProvider } from "react-hook-form";
+
 
 import FormBuilder from './FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
@@ -27,10 +29,10 @@ function DynamicForm({
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const methods = useForm();
   const [loading, setLoading] = useState(true);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [fragment, setFragment] = useState({});
 
   useEffect(() => {
     if (fragmentId) {
@@ -39,14 +41,14 @@ function DynamicForm({
           setTemplate(res.data);
           setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
         });
-        setFragment(formData[fragmentId])
+        methods.reset(formData[fragmentId])
         setLoading(false);
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.schema);
           setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
-          setFragment(res.data.fragment);
+          methods.reset(res.data.fragment);
         }).catch(console.error)
           .finally(() => setLoading(false));
       }
@@ -58,7 +60,6 @@ function DynamicForm({
         const answerId = res.data.answer_id
         setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
         setFormData({ [fragment.id]: fragment });
-        setFragment(fragment);
         setFragmentId(fragment.id);
         setAnswerId(answerId);
         updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
@@ -69,15 +70,8 @@ function DynamicForm({
   }, []);
 
   useEffect(() => {
-    setFragment(formData[fragmentId])
+    methods.reset(formData[fragmentId])
   }, [formData[fragmentId]]);
-
-  const handleChangeValue = (propName, value) => {
-    const updatedFragment = { ...fragment };
-    updatedFragment[propName] = value;
-    setFragment(updatedFragment);
-    setFormData({ ...formData, [fragmentId]: updatedFragment });
-  }
 
   /**
    * It checks if the form is filled in correctly.
@@ -117,20 +111,19 @@ function DynamicForm({
     <>
       {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
       {error && <p>error</p>}
-      {!error && template && fragment && (
-        <div style={{ margin: '15px' }}>
-          <div className="row"></div>
-          <div className="m-4">
-            <FormBuilder
-              fragment={fragment}
-              handleChangeValue={handleChangeValue}
-              template={template}
-              fragmentId={fragmentId}
-              readonly={readonly}
-            />
-          </div>
-          <CustomButton handleClick={handleSaveForm} title={t("Save")} position="center" />
-        </div>
+      {!error && template && (
+        <FormProvider {...methods}>
+          <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => console.log(data))}>
+            <div className="m-4">
+              <FormBuilder
+                template={template}
+                readonly={readonly}
+              />
+            </div>
+            <input type="submit" className="btn btn-primary" value="Save"/>
+            <CustomButton /*handleClick={handleSaveForm}*/ title={t("Save")} type="submit" position="center" />
+          </form>
+        </FormProvider>
       )}
     </>
   );
