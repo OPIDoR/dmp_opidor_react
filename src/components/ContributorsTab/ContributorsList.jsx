@@ -5,6 +5,7 @@ import { parsePattern } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
 import { FaPenToSquare, FaXmark } from "react-icons/fa6";
 import Pagination from "../Shared/Pagination";
+import { isValidHttpUrl } from "../../utils/utils";
 
 function ContributorsList({ contributors, template, handleEdit, handleDelete }) {
   const { t } = useTranslation();
@@ -32,8 +33,15 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
         <tbody>
           {currentData.length > 0 && template ? currentData.map((contributor, idx) => (
             <tr key={idx}>
-              <td>{parsePattern(contributor.data, template.to_string)}</td>
-              <td></td>
+              <td>
+                {parsePattern(contributor.data, template.to_string)}
+                {contributor.data?.personId && (
+                  isValidHttpUrl(contributor.data?.personId) ?
+                    [' - ', <a href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>] :
+                    ` - ${contributor.data?.personId}`
+                )}
+              </td>
+              <td>{contributor.data?.affiliationName}</td>
               <td>
                 <ul>
                   {contributor.roles.map((role, ridx) => <li key={ridx}>{role}</li>)}
