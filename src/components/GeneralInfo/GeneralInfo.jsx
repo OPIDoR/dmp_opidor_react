@@ -164,7 +164,7 @@ function GeneralInfo({
   };
 
   return (
-    <div className="container">
+    <>
       {!readonly && researchContext === 'research_project' && (
         <Panel
           expanded={isOpenFunderImport}
@@ -302,7 +302,7 @@ function GeneralInfo({
           {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
         </Panel.Body>
       </Panel>
-    </div>
+    </>
   );
 }
 
