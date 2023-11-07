@@ -39,6 +39,11 @@ const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?d
 
 const getContributors = async (planId) => axios.get(`/plans/${planId}/contributors_data`);
 
+const destroyContributor = async (fragmentId) => axios.delete(
+  `/madmp_fragments/destroy_contributor?contributor_id=${fragmentId}`,
+  { headers: createHeaders({}, true) },
+)
+
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
  * </code>
@@ -59,4 +64,5 @@ export default {
   getPersons,
   saveForm,
   getContributors,
+  destroyContributor,
 };
