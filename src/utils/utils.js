@@ -23,3 +23,14 @@ export function stringIncludes(str = "", substr = "") {
 
   return normalizeString(str.toUpperCase()).includes(normalizeString(substr.toUpperCase()));
 }
+
+// https://stackoverflow.com/a/43467144
+export function isValidHttpUrl(string) {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;  
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}

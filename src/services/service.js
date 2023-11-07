@@ -5,7 +5,7 @@ import createHeaders from '../utils/HeaderBuilder';
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
 const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null) => axios.post(
-  '/madmp_fragments/create_json', {
+  '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
     plan_id: planId,
@@ -39,13 +39,18 @@ const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?d
 
 const getContributors = async (planId) => axios.get(`/plans/${planId}/contributors_data`);
 
+const destroyContributor = async (fragmentId) => axios.delete(
+  `/madmp_fragments/destroy_contributor?contributor_id=${fragmentId}`,
+  { headers: createHeaders({}, true) },
+)
+
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
  * </code>
  * @param jsonObject - the data you want to send to the server
  * @returns The response object from the server.
  */
-const saveForm = async (id, jsonObject) => axios.post(`/madmp_fragments/update_json/${id}`, jsonObject, {
+const saveForm = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, jsonObject, {
   headers: createHeaders({}, true),
 });
 
@@ -59,4 +64,5 @@ export default {
   getPersons,
   saveForm,
   getContributors,
+  destroyContributor,
 };
