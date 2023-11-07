@@ -14,6 +14,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
+import { writePlan } from "../../services";
 
 function Question({
   question,
@@ -28,6 +29,8 @@ function Question({
     setOpenedQuestions,
     displayedResearchOutput,
     questionsWithGuidance,
+    setQuestionsWithGuidance,
+    setUrlParams,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
@@ -73,6 +76,16 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
+
+    writePlan.getPlanData(planData.id)
+      .then((res) => {
+        const { questions_with_guidance } = res.data;
+        setQuestionsWithGuidance(questions_with_guidance || []);
+      })
+      .catch(() => setQuestionsWithGuidance([]));
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    setUrlParams({ research_output: queryParameters.get('research_output') });
   };
 
   const closeAllModals = () => {
@@ -315,13 +328,13 @@ function Question({
                   questionId={question.id}
                   readonly={readonly}
                 />
-                <GuidanceModal
+                { questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showGuidanceModal}
                   setShowGuidanceModal={setShowGuidanceModal}
                   setFillColorGuidanceIcon={setFillGuidanceIconColor}
                   questionId={questionId}
                   planId={planData.id}
-                />
+                />)}
               </div>
             )}
             {isQuestionOpened() ? (

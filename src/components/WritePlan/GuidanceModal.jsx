@@ -18,7 +18,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const modalRef = useRef(null);
 
   const {
-    questionsWithGuidance
+    questionsWithGuidance,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
