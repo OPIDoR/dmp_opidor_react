@@ -3,7 +3,7 @@
 .write_plan_block {
   border-radius: 0px 8px 8px 8px;
   border: solid;
-  border-color: var(--primary);
+  border-color: var(--dark-blue);
   border-width: 1px;
   margin: 0px;
   padding: 35px;
@@ -11,7 +11,7 @@
 .title {
   font-weight: bold;
   font-size: 30px;
-  color: var(--orange);
+  color: var(--rust);
 }
 
 .collapse_title {
@@ -22,14 +22,14 @@
 .sous_title {
   font-weight: bold;
   font-size: 16px;
-  color: var(--secondary);
+  color: var(--blue);
 }
 
 .question_title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--primary);
+  color: var(--dark-blue);
 }
 
 .question_icons {
@@ -40,14 +40,14 @@
 }
 
 .panel_icon {
-  color: var(--primary);
+  color: var(--dark-blue);
   margin: 0px 5px 0px 0px;
 }
 
 .question_number {
   font-size: 18px;
   font-weight: bold;
-  color: var(--secondary);
+  color: var(--blue);
   margin-right: 10px;
 }
 

@@ -135,16 +135,16 @@ function RorList({ fragment, setFragment }) {
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
                       placeholder={t('Search for <organization name> or <acronym>')}
-                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px' }}
+                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px', margin: '0' }}
+                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -152,7 +152,7 @@ function RorList({ fragment, setFragment }) {
                         className="btn btn-default"
                         type="button"
                         onClick={handleDeleteText}
-                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px', margin: '0' }}
+                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -171,8 +171,8 @@ function RorList({ fragment, setFragment }) {
                       menuPortalTarget={document.body}
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                        singleValue: (base) => ({ ...base, color: 'var(--primary)' }),
-                        control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--primary)', height: '43px' }),
+                        singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+                        control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
                       }}
                       onChange={handleChangeCountry}
                       defaultValue={{

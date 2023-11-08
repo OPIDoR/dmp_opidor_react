@@ -5,13 +5,13 @@ const Button = styled.button`
   padding: 10px 20px 10px 20px;
   border-radius: 10px;
   font-size: 15px;
-  background-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary)" : "var(--orange)")} !important;
-  border-color: ${(props) => (props.$buttonType === "primary" ? "var(--primary)" : "var(--orange)")} !important;
+  background-color: ${(props) => (props.$buttonType === "primary" ? "var(--dark-blue)" : "var(--rust)")} !important;
+  border-color: ${(props) => (props.$buttonType === "primary" ? "var(--dark-blue)" : "var(--rust)")} !important;
   transition: ease-in-out 0.2s;
 
   &:hover {
-    background-color: var(--primary) !important;
-    border-color: var(--primary) !important;
+    background-color: var(--dark-blue) !important;
+    border-color: var(--dark-blue) !important;
   }
 `;
 

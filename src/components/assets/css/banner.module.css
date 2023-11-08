@@ -44,7 +44,7 @@
 .banner_warning {
   text-align: start;
   margin: 10px 0px 10px 30px;
-  background-color: var(--orange);
+  background-color: var(--rust);
   width: 62%;
   padding: 10px;
   border-radius: 8px;
@@ -79,7 +79,7 @@
 .banner_warning {
   text-align: start;
   margin: 10px 0px 10px 30px;
-  background-color: var(--orange);
+  background-color: var(--rust);
   width: 62%;
   padding: 10px;
   border-radius: 8px;

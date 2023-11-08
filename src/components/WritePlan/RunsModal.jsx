@@ -17,7 +17,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
     display: show ? "block" : "none",
     position: "absolute",
     zIndex: 99,
-    background: "var(--primary)",
+    background: "var(--dark-blue)",
     padding: "0px",
     borderRadius: "10px",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -47,7 +47,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
         ref={modalRef}
         onClose={() => {
           setshowModalRuns(false);
-          setFillColorIconRuns("var(--primary)");
+          setFillColorIconRuns("var(--dark-blue)");
         }}
       >
         <InnerModal.Title>
