@@ -8,11 +8,11 @@ import styled from 'styled-components';
 
 const ReadDiv = styled.div`
   border: solid;
-  border-color: var(--primary);
+  border-color: var(--dark-blue);
   border-width: 1px;
   padding: 20px;
   margin-bottom: 10px;
-  color: var(--primary);
+  color: var(--dark-blue);
   border-radius: 8px;
   display: flex;
   justify-content: space-between;

@@ -37,7 +37,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
         expandButton
         ref={modalRef}
         onClose={() => {
-          setFillColorIconComment("var(--primary)");
+          setFillColorIconComment("var(--dark-blue)");
           setshowModalComment(false);
         }}
       >

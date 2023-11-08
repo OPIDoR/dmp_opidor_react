@@ -10,8 +10,8 @@ const Circle = styled.div`
   width: 53px !important;
   height: 55px;
   padding: 0px;
-  background: var(--orange);
-  border: 3px solid var(--orange);
+  background: var(--rust);
+  border: 3px solid var(--rust);
   color: var(--white);
   text-align: center;
   margin: 5px;
@@ -20,7 +20,7 @@ const Circle = styled.div`
 `;
 
 const CircleText = styled.div`
-  color: var(--primary);
+  color: var(--dark-blue);
   margin: 18px 0px 0px 5px;
   font-size: 25px;
   font-weight: bold;

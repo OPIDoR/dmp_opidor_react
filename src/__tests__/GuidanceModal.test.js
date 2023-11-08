@@ -181,6 +181,6 @@ describe("GuidanceModal component", () => {
 
     fireEvent.click(screen.getByText("x"));
     expect(setShowGuidanceModal).toHaveBeenCalledWith(false);
-    expect(setFillColorGuidanceIcon).toHaveBeenCalledWith("var(--primary)");
+    expect(setFillColorGuidanceIcon).toHaveBeenCalledWith("var(--dark-blue)");
   });
 });
