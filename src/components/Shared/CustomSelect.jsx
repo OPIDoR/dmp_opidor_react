@@ -3,7 +3,6 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { filterOptions } from "../../utils/GeneratorUtils";
 
-
 function CustomSelect({
     propName = null,
     options,

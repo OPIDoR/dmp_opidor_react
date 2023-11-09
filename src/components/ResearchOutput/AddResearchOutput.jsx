@@ -40,7 +40,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     }
 
     if (!edit) {
-      setAbbreviation(`${t('Research output')} ${researchOutputs.length + 1}`);
+      setAbbreviation(`${t('RO')} ${researchOutputs.length + 1}`);
       setTitle(`${t('Research output')} ${researchOutputs.length + 1}`);
       setHasPersonalData(false);
       setType(null);
