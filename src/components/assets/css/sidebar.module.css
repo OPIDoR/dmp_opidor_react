@@ -50,6 +50,12 @@
   background-color: var(--secondary);
   color: white;
   border: none;
+  border-radius: 0 0 0 20px;
+}
+
+.add_research_output_button:hover {
+  background-color: var(--primary);
+  color: white;
 }
 
 .nav_header {

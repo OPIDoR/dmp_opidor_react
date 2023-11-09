@@ -102,7 +102,7 @@ function SectionsContent({ planId, templateId, readonly }) {
       {error && <CustomError error={error}></CustomError>}
       {!error && sectionsData && (
         <>
-          <div className={styles.write_plan_block}>
+          <div className={styles.write_plan_block} id="sections-content">
             <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
             {sectionsData.map((section) => (
               <Section
