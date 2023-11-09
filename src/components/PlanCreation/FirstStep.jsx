@@ -55,7 +55,7 @@ function FirstStep({ handleNextStep }) {
             onClick={() => handleCheck("research_structure")}
           />
           <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
-            {t('Research Structure')}
+            {t('Research Entity')}
           </label>
           <div className={styles.list_context}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur rutrum
