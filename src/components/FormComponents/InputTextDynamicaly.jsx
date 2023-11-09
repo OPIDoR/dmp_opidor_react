@@ -84,7 +84,7 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
           <input
             type="text"
             className="form-control"
-            style={{ border: '1px solid var(--primary)', borderRadius: '8px', flex: 1 }}
+            style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
             onChange={(e) => setFieldContent(e.target.value)}
             value={fieldContent}
             name={propName}
@@ -115,7 +115,7 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
                 key={`input-text-dynamically-${index}`}
                 type="text"
                 className="form-control"
-                style={{ border: '1px solid var(--primary)', borderRadius: '8px', flex: 1 }}
+                style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
                 value={content}
                 name={propName}
                 onChange={(event) => handleFormChange(event, index)}

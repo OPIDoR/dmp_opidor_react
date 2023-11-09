@@ -19,15 +19,19 @@ function ImportExternal({fragment, setFragment}) {
     setShowOrcid(false);
   };
 
+  const buttonColor = (buttonActive) => {
+    return buttonActive ? "var(--green)" : "var(--dark-blue)";
+  }
+
   return (
     <div style={{ margin: "0 15px" }}>
       <div style={{ marginBottom: "25px" }}>
         <ReactTooltip id="orcid" place="top" effect="solid" variant="info" content={t("ORCID id")} />
-        <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px", color: "white", backgroundColor: "var(--primary)" }} onClick={toggleOrcid}>
+        <button data-tooltip-id="orcid" type="button" className="btn btn-dark" style={{ marginRight: "40px", color: "white", backgroundColor: buttonColor(showOrcid) }} onClick={toggleOrcid}>
           {t('Retrieve ORCID identifier')}
         </button>
         <ReactTooltip id="ror" place="top" effect="solid" variant="info" content={t("ROR id")} />
-        <button data-tooltip-id="ror" type="button" className="btn btn-dark" style={{ color: "white", backgroundColor: "var(--primary)" }} onClick={toggleRor}>
+        <button data-tooltip-id="ror" type="button" className="btn btn-dark" style={{ color: "white", backgroundColor: buttonColor(showRor) }} onClick={toggleRor}>
           {t('Retrieve ROR identifier')}
         </button>
       </div>

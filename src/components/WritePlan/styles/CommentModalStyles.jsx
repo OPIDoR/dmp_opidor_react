@@ -6,7 +6,7 @@ export const NavBodyText = styled.div`
   border-radius: 10px;
   margin: 0 10px 10px 0;
   font-family: "Helvetica Neue", sans-serif;
-  color: var(--primary);
+  color: var(--dark-blue);
   &:last-child {
     margin: 0 10px 0 0;
   }
@@ -17,7 +17,7 @@ export const ScrollNav = styled.div`
   overflow: auto;
   overflow-anchor: none;
   scrollbar-width: bold;
-  scrollbar-color: var(--primary) transparent;
+  scrollbar-color: var(--dark-blue) transparent;
   &::-webkit-scrollbar {
     width: 16px;
     display: flex;
@@ -29,7 +29,7 @@ export const ScrollNav = styled.div`
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: var(--primary);
+    background: var(--dark-blue);
     border-radius: 8px;
     border: 3px solid var(--white);
   }

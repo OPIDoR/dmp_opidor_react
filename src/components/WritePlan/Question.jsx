@@ -38,9 +38,9 @@ function Question({
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--primary)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--primary)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--primary)");
+  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
+  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
+  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -90,13 +90,13 @@ function Question({
 
   const closeAllModals = () => {
     setShowCommentModal(false);
-    setFillCommentIconColor("var(--primary)");
+    setFillCommentIconColor("var(--dark-blue)");
 
     setShowGuidanceModal(false);
-    setFillGuidanceIconColor("var(--primary)");
+    setFillGuidanceIconColor("var(--dark-blue)");
 
     setShowRunsModal(false);
-    setFillRunsIconColor("var(--primary)");
+    setFillRunsIconColor("var(--dark-blue)");
   };
 
   /**
@@ -127,17 +127,17 @@ function Question({
     // Open the specified modal and update icon colors
     setShowCommentModal(modalType === "comment");
     setFillCommentIconColor(
-      modalType === "comment" ? "var(--orange)" : "var(--primary)"
+      modalType === "comment" ? "var(--rust)" : "var(--dark-blue)"
     );
 
     setShowGuidanceModal(modalType === "guidance");
     setFillGuidanceIconColor(
-      modalType === "guidance" ? "var(--orange)" : "var(--primary)"
+      modalType === "guidance" ? "var(--rust)" : "var(--dark-blue)"
     );
 
     setShowRunsModal(modalType === "runs");
     setFillRunsIconColor(
-      modalType === "runs" ? "var(--orange)" : "var(--primary)"
+      modalType === "runs" ? "var(--rust)" : "var(--dark-blue)"
     );
   };
 
@@ -158,7 +158,7 @@ function Question({
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
-            borderColor: "var(--primary)",
+            borderColor: "var(--dark-blue)",
           }}
           onToggle={() => handleQuestionCollapse()}
         >
@@ -217,7 +217,7 @@ function Question({
                             fill={
                               isQuestionOpened()
                                 ? fillRunsIconColor
-                                : "var(--primary)"
+                                : "var(--dark-blue)"
                             }
                           />
                         )}
@@ -247,7 +247,7 @@ function Question({
                           fill={
                             isQuestionOpened()
                               ? fillCommentIconColor
-                              : "var(--primary)"
+                              : "var(--dark-blue)"
                           }
                         />
                       )}
@@ -283,7 +283,7 @@ function Question({
                             fill={
                               isQuestionOpened()
                                 ? fillGuidanceIconColor
-                                : "var(--primary)"
+                                : "var(--dark-blue)"
                             }
                           />
                         )}
