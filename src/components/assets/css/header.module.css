@@ -19,7 +19,7 @@
 
 .item {
   list-style: none;
-  color: var(--secondary);
+  color: var(--blue);
   margin: 13px;
   font-size: 19px;
   font-weight: bold;
@@ -27,11 +27,11 @@
 
 .item a {
   text-decoration: none;
-  color: var(--primary);
+  color: var(--dark-blue);
 }
 
 .button {
-  background-color: var(--primary);
+  background-color: var(--dark-blue);
   border: none;
   outline: none;
   padding: 6px;
@@ -47,7 +47,7 @@
 .dot {
   width: 10px;
   height: 10px;
-  background: var(--secondary);
+  background: var(--blue);
   border-radius: 50%;
   padding: 5px;
   font-weight: bold;

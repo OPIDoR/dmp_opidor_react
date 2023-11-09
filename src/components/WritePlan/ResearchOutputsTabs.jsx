@@ -80,7 +80,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
                       eventKey={i}
                       style={{ borderColor: "white" }}
                     >
-                      <Panel.Heading style={{ background: "var(--primary)" }}>
+                      <Panel.Heading style={{ background: "var(--dark-blue)" }}>
                         <Panel.Title
                           toggle
                           className={styles.nav_title}
@@ -103,11 +103,11 @@ function ResearchOutputsTabs({ planId, readonly }) {
                               <a href="#">
                                 <div className={styles.nav_title}>{ro.abbreviation}</div>
                                 <div className={styles.nav_icon}>
-                                  {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                                  {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--rust)" }}></BsBell>
                                     <BsCheckCircleFill
                                       size={40}
                                       className={styles.space_right}
-                                      style={{ color: "var(--orange)" }}
+                                      style={{ color: "var(--rust)" }}
                                     ></BsCheckCircleFill> */}
                                 </div>
                               </a>
@@ -130,11 +130,11 @@ function ResearchOutputsTabs({ planId, readonly }) {
                     <a href="#" className={styles.nav_header}>
                       <div className={styles.nav_title}>{el.abbreviation}</div>
                       <div className={styles.nav_icon}>
-                        {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                        {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--rust)" }}></BsBell>
                         <BsCheckCircleFill
                           size={40}
                           className={styles.space_right}
-                          style={{ color: "var(--orange)" }}
+                          style={{ color: "var(--rust)" }}
                         ></BsCheckCircleFill> */}
                       </div>
                     </a>

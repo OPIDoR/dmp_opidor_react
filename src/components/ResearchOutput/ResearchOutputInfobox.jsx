@@ -40,7 +40,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
       style={{
         borderRadius: "10px",
         borderWidth: "2px",
-        borderColor: "var(--primary)",
+        borderColor: "var(--dark-blue)",
       }}
     >
       <Panel.Heading style={{

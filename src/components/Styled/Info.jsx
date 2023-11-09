@@ -8,7 +8,7 @@ const Text = styled.span`
 
 const AlertContainer = styled.div`
   margin: ${(props) => (props.$type === "info" ? "0px 0px 0px -360px" : "10px 0px 10px 30px")};
-  background-color: ${(props) => (props.$type === "info" ? "var(--primary)" : "var(--orange)")};
+  background-color: ${(props) => (props.$type === "info" ? "var(--dark-blue)" : "var(--rust)")};
   padding: 10px;
   border-radius: 8px;
   z-index: 999;

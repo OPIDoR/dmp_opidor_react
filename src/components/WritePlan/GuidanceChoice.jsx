@@ -22,7 +22,7 @@ const pannelStyle = {
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
-  color: "var(--secondary)",
+  color: "var(--blue)",
   fontSize: "16px",
   margin: "10px 150px 0px 150px",
 };
@@ -181,9 +181,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ flexGrow: 3, alignItems: 'center', textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', color: 'var(--primary)'}}>
+                <div style={{ fontSize: '24px', color: 'var(--dark-blue)'}}>
                   <PiLightbulbLight
-                    fill={"var(--orange)"}
+                    fill={"var(--rust)"}
                     size={24}
                     style={{ marginRight: '10px' }}
                   />
@@ -192,9 +192,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
               </div>
               <div style={{ width: '28px' }}>
                 {isOpen ? (
-                  <TfiAngleUp size={24} fill={"var(--orange)"} />
+                  <TfiAngleUp size={24} fill={"var(--rust)"} />
                 ) : (
-                  <TfiAngleDown size={24} fill={"var(--orange)"} />
+                  <TfiAngleDown size={24} fill={"var(--rust)"} />
                 )}
               </div>
             </div>

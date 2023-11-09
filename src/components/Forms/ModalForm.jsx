@@ -19,7 +19,7 @@ function ModalForm({ fragmentId, data, template, label, readonly, show, handleSa
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header>
-        <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+        <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
         {withImport && <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>}
