@@ -12,14 +12,14 @@
 }
 
 .check[type="radio"]:checked + label + div {
-  background-color: var(--primary);
+  background-color: var(--dark-blue);
   color: var(--white);
 }
 
 .label_title {
   font-size: 25px;
   margin: 5px 0px 10px 10px;
-  color: var(--secondary);
+  color: var(--blue);
   font-weight: bold;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .element_organisme input[type="radio"]:checked + div {
-  background-color: var(--primary);
+  background-color: var(--dark-blue);
   color: var(--white);
 }
 .element_organisme input {

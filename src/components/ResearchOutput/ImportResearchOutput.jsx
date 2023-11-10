@@ -73,8 +73,8 @@ function ImportResearchOutput({ planId, handleClose, show }) {
             menuPortalTarget={document.body}
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+              singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
+              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
             }}
             options={dataPlans}
             style={{ color: "red" }}
@@ -94,8 +94,8 @@ function ImportResearchOutput({ planId, handleClose, show }) {
             menuPortalTarget={document.body}
             styles={{
               menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-              singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+              singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
+              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
             }}
             options={dataProducts}
             style={{ color: "red" }}
@@ -108,7 +108,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
           {t("Close")}
         </Button>
-        <Button variant="outline-primary" style={{ backgroundColor: "var(--orange)", color: "white" }} onClick={handleImportPlan}>
+        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportPlan}>
           {t("Import")}
         </Button>
       </EndButton>

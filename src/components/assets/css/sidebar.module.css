@@ -42,14 +42,20 @@
 .research_outputs_tab a {
   padding: 20px;
   font-weight: bold;
-  background-color: var(--secondary);
+  background-color: var(--blue);
 }
 
 .add_research_output_button {
   width: 100%;
-  background-color: var(--secondary);
+  background-color: var(--blue);
   color: white;
   border: none;
+  border-radius: 0 0 0 20px;
+}
+
+.add_research_output_button:hover {
+  background-color: var(--primary);
+  color: white;
 }
 
 .nav_header {

@@ -4,7 +4,7 @@ export const ButtonComment = styled.button`
   margin: 10px 2px 2px 0px;
   color: #000;
   font-size: 18px;
-  color: var(--primary) !important;
+  color: var(--dark-blue) !important;
   font-family: "Helvetica Neue", sans-serif !important;
   border-radius: 8px !important;
 `;
@@ -22,7 +22,7 @@ export const NavBodyText = styled.div`
   padding: 0px 0px 0px 18px; // Add padding if needed
   border-radius: 0px 10px 10px 10px;
   font-family:  "Helvetica Neue", sans-serif;
-  color: var(--primary);
+  color: var(--dark-blue);
   min-height: 300px;
 `;
 

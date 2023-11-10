@@ -125,7 +125,8 @@ function SelectContributorSingle({
 
   const handleSelectContributor = (e) => {
     const { object } = e;
-    field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: "update" })
+    const contributorAction = contributor?.id ? 'update': 'create';
+    field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: contributorAction })
   };
 
   /**
@@ -235,7 +236,7 @@ function SelectContributorSingle({
         <span className='error-message'>{error}</span>
         {template && (
           <PersonsList
-            personsList={[contributor]}
+            personsList={contributor ? [contributor] : []}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             roleOptions={roleOptions}

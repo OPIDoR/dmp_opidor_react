@@ -60,9 +60,11 @@ function Global({ children }) {
   //   sessionStorage.setItem("researchOutputs", JSON.stringify(researchOutputs));
   // }, [researchOutputs]);
 
-  const setUrlParams = (data) => {
+  const setUrlParams = (data = {}) => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search));
-    const urlParams = new URLSearchParams({ ...params, ...data });
+    const urlSearchParams = { ...params, ...data }
+    Object.keys(urlSearchParams).forEach(key => (urlSearchParams[key] == null || urlSearchParams[key] === '') && delete urlSearchParams[key]);
+    const urlParams = new URLSearchParams(urlSearchParams);
     return window.history.replaceState(null, null, `${window.location.pathname}?${urlParams.toString()}`);
   };
 

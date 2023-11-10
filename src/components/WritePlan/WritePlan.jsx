@@ -73,8 +73,29 @@ function WritePlan({
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
+
+      window.addEventListener("scroll", (e) => handleScroll(e));
   }, [planId]);
 
+  const handleScroll = () => {
+    const roNavBar = document.querySelector('#ro-nav-bar');
+    const { bottom: bottomRoNavBar, top: topRoNavBar } = roNavBar.getBoundingClientRect();
+
+    const sectionContent = document.querySelector('#sections-content');
+    const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent.getBoundingClientRect();
+
+    if (bottomRoNavBar >= bottomSectionContent) {
+      sectionContent.style.borderBottomLeftRadius = '0';
+    } else {
+      sectionContent.style.borderBottomLeftRadius = '8px';
+    }
+
+    if (topRoNavBar <= topSectionContent) {
+      sectionContent.style.borderTopLeftRadius = '0';
+    } else {
+      sectionContent.style.borderTopLeftRadius = '8px';
+    }
+  }
 
   return (
     <div style={{ position: 'relative' }}>

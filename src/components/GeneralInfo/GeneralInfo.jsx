@@ -20,7 +20,7 @@ export const ButtonSave = styled.button`+
   margin: 10px 2px 2px 0px;
   color: #000;
   font-size: 18px;
-  color: var(--primary) !important;
+  color: var(--dark-blue) !important;
   font-family: "Helvetica Neue", sans-serif !important;
   border-radius: 8px !important;
 `;
@@ -164,13 +164,13 @@ function GeneralInfo({
   };
 
   return (
-    <div className="container">
+    <>
       {!readonly && researchContext === 'research_project' && (
         <Panel
           expanded={isOpenFunderImport}
           className={styles.panel}
           style={{
-            border: "2px solid var(--primary)",
+            border: "2px solid var(--dark-blue)",
             borderRadius: "11px",
             boxShadow: "10px 12px 8px #e5e4e7",
           }}
@@ -180,7 +180,7 @@ function GeneralInfo({
           {error && <CustomError error={error} />}
           {!error && funders && (
             <>
-              <Panel.Heading className="funder-import " style={{ background: "var(--primary)", borderRadius: "8px 8px 0px 0px" }}>
+              <Panel.Heading className="funder-import " style={{ background: "var(--dark-blue)", borderRadius: "8px 8px 0px 0px" }}>
                 <Panel.Title toggle>
                   <div className={styles.question_title}>
                     <div className={styles.question_text}>
@@ -196,7 +196,7 @@ function GeneralInfo({
                   </div>
                 </Panel.Title>
               </Panel.Heading>
-              <Panel.Body collapsible style={{ background: "var(--primary)", borderRadius: "0px 0px 8px 8px" }}>
+              <Panel.Body collapsible style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 8px 8px" }}>
                 <div className={styles.container_anr}>
                   <p className={styles.description_anr}>{t('Your project is funded by the ANR, automatically retrieve the administrative information for your project.')}</p>
                   {funders.length > 1 && (
@@ -238,7 +238,7 @@ function GeneralInfo({
       <Panel
         expanded={isOpenProjectForm}
         className={styles.panel}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
         onToggle={() => setIsOpenProjectForm(!isOpenProjectForm)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
           <Panel.Title toggle>
@@ -264,7 +264,7 @@ function GeneralInfo({
       <Panel
         expanded={isOpenMetaForm}
         className={styles.panel}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--primary)" }}
+        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
         onToggle={() => setIsOpenMetaForm(!isOpenMetaForm)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
           <Panel.Title toggle>
@@ -302,7 +302,7 @@ function GeneralInfo({
           {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
         </Panel.Body>
       </Panel>
-    </div>
+    </>
   );
 }
 

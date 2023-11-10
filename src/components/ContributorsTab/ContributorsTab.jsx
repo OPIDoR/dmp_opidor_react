@@ -92,7 +92,7 @@ function ContributorsTab({ planId, locale, readonly }) {
 
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        service.destroyFragment(fragmentId).then(() => {
+        service.destroyContributor(fragmentId).then(() => {
           newContributorsList.splice(idx, 1);
           setContributors(newContributorsList);
         }).catch(() => {

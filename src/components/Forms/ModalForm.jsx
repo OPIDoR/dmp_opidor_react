@@ -18,7 +18,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     <Modal show={show} onHide={handleClose}>
       <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSave(data))}>
         <Modal.Header>
-          <Modal.Title style={{ color: "var(--orange)", fontWeight: "bold" }}>{label}</Modal.Title>
+          <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ padding: "20px !important" }}>
           {withImport && <ImportExternal fragment={methods.value} setFragment={methods.reset}></ImportExternal>}
