@@ -129,7 +129,7 @@ function ContributorsTab({ planId, locale, readonly }) {
             setIndex(null);
           }}
           title={t("Add a person")}
-          buttonType="primary"
+          buttonColor="primary"
           position="start"
         ></CustomButton>
       )}
