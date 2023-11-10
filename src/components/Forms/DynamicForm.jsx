@@ -77,13 +77,12 @@ function DynamicForm({
    * It checks if the form is filled in correctly.
    * @param e - the event object
    */
-  const handleSaveForm = async (e) => {
-    e.preventDefault();
+  const handleSaveForm = async (data) => {
     setLoading(true);
 
     let response;
     try {
-      response = await service.saveForm(fragmentId, formData[fragmentId]);
+      response = await service.saveForm(fragmentId, data);
     } catch (error) {
       let errorMessage = t("An error occured during form saving");
 
@@ -113,15 +112,14 @@ function DynamicForm({
       {error && <p>error</p>}
       {!error && template && (
         <FormProvider {...methods}>
-          <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => console.log(data))}>
+          <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
             <div className="m-4">
               <FormBuilder
                 template={template}
                 readonly={readonly}
               />
             </div>
-            <input type="submit" className="btn btn-primary" value="Save"/>
-            <CustomButton /*handleClick={handleSaveForm}*/ title={t("Save")} type="submit" position="center" />
+            <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
           </form>
         </FormProvider>
       )}
