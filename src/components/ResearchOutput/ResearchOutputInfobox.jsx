@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import PanelBody from "react-bootstrap/lib/PanelBody";
 import consumer from "../../cable";
 
-
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
   const {
@@ -25,13 +24,11 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
         disconnected: () => console.log("disconnected !"),
         received: data => setDisplayedResearchOutput({ ...displayedResearchOutput, ...data }),
       });
-  }, [displayedResearchOutput, setDisplayedResearchOutput])
 
-  useEffect(() => {
     return () => {
       consumer.disconnect();
     }
-  }, [])
+  }, [displayedResearchOutput, setDisplayedResearchOutput])
 
 
   return (

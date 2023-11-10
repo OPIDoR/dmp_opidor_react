@@ -36,10 +36,8 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
 
   return (
     <div className={styles.main}>
-      <div className={styles.card_articles}>
-        {firstStep && <FirstStep handleNextStep={handleNextStep}></FirstStep>}
-        {secondStep && <SecondStep></SecondStep>}
-      </div>
+      {firstStep && <FirstStep handleNextStep={handleNextStep} />}
+      {secondStep && <SecondStep />}
     </div>
   );
 }
