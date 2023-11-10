@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center;
 }
 .card_articles {
   margin: 10px 200px 15px 200px;
@@ -18,7 +17,7 @@
 }
 
 .text_blue {
-  color: var(--primary);
+  color: var(--dark-blue);
   font-family:  "Helvetica Neue", sans-serif;
   text-align: left;
   margin-left: 12px;
@@ -26,7 +25,7 @@
   font-size: 12px;
 }
 .text_secondary {
-  color: var(--secondary);
+  color: var(--blue);
   font-size: 14px;
 }
 .article_img {
@@ -48,7 +47,7 @@
 
 .card_info {
   margin: 0px 0px 0px -360px;
-  background-color: var(--primary);
+  background-color: var(--dark-blue);
   padding: 10px;
   border-radius: 8px;
   z-index: 999;

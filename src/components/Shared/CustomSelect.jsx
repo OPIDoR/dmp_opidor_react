@@ -3,7 +3,6 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 import { filterOptions } from "../../utils/GeneratorUtils";
 
-
 function CustomSelect({
     propName = null,
     options,
@@ -18,9 +17,9 @@ function CustomSelect({
     <SelectComponent
       menuPortalTarget={document.body}
       styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--primary)" }),
-        singleValue: (base) => ({ ...base, color: "var(--primary)" }),
-        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--primary)" }),
+        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
+        singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
+        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
       }}
       name={propName}
       options={options}

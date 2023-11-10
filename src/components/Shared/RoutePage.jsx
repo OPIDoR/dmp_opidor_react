@@ -57,7 +57,7 @@ const FeatureBox = styled.div`
     width: 70px;
     height: 70px;
     line-height: 70px;
-    background: var(--orange);
+    background: var(--rust);
     color: #ffffff;
     text-align: center;
     border-radius: 50%;
@@ -70,7 +70,7 @@ const FeatureBox = styled.div`
   }
 
   & h5 {
-    color: var(--primary);
+    color: var(--dark-blue);
     font-weight: 600;
   }
 
@@ -87,7 +87,7 @@ const FeatureBox = styled.div`
     right: 0;
     border-radius: 10px;
     width: 0;
-    background: var(--primary);
+    background: var(--dark-blue);
     z-index: -1;
     transition: ease all 0.35s;
   }
@@ -123,10 +123,10 @@ const SectionTitle = styled.div`
 
   & h2 {
     font-weight: 700;
-    color: var(--primary);
+    color: var(--dark-blue);
     font-size: 55px;
     margin: 0 0 15px;
-    border-left: 5px solid var(--orange);
+    border-left: 5px solid var(--rust);
     padding-left: 15px;
   }
 `;

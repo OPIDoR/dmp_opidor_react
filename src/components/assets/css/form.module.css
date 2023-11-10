@@ -25,7 +25,7 @@
   padding: 15px;
   border-radius: 10px;
   border-width: 2px;
-  border-color: var(--primary);
+  border-color: var(--dark-blue);
   margin: 0px 0px 20px 0px;
 }
 
@@ -39,14 +39,14 @@ a {
 
 .label_form {
   font-size: 18px;
-  color: var(--secondary);
+  color: var(--blue);
   font-weight: bold;
   font-family:  "Helvetica Neue", sans-serif;
 }
 .dot_label {
   height: 10px;
   width: 10px;
-  background-color: var(--secondary);
+  background-color: var(--blue);
   border-radius: 50%;
   display: inline-block;
   margin-right: 5px;
@@ -60,10 +60,10 @@ a {
 .input_text {
   font-size: 16px;
   font-family:  "Helvetica Neue", sans-serif;
-  color: var(--primary);
+  color: var(--dark-blue);
   border-radius: 8px;
   border-width: 1px;
-  border-color: var(--primary);
+  border-color: var(--dark-blue);
 }
 .input_label {
   margin: 10px 0px 10px 0px;
@@ -71,7 +71,7 @@ a {
 }
 
 .preview {
-  color: var(--primary);
+  color: var(--dark-blue);
   font-size: 16px;
   font-family:  "Helvetica Neue", sans-serif;
 }
@@ -79,7 +79,7 @@ a {
 .title {
   font-weight: bold;
   font-size: 30px;
-  color: var(--orange);
+  color: var(--rust);
 }
 .table_container {
   display: flex;
@@ -97,7 +97,7 @@ a {
   background: white;
   border-radius: 2px 10px 10px 2px;
   border-width: 2px;
-  border-color: var(--primary);
+  border-color: var(--dark-blue);
 }
 
 .input {

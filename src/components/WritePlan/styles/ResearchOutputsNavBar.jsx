@@ -19,6 +19,17 @@ const ResearchOutputsNavBar = styled.nav`
   /*adds border top to first nav box */
   .navbar-nav > li:first-child {
     border-top: 0px #e5e5e5 solid;
+    border-radius: 20px 0 0 0;
+  }
+
+  .navbar-nav > li a {
+    height: 65px;
+    padding: 10px 0 10px 0;
+    box-sizing: border-box;
+  }
+
+  .navbar-nav > li:not(:first-child) > a {
+    border-radius: 0;
   }
 
   /*adds border to bottom nav boxes*/
@@ -43,17 +54,16 @@ const ResearchOutputsNavBar = styled.nav`
   /* *********************** hover *************************** */
   .navbar-nav > li:first-child:hover {
     background-color: #1c5170;
-    border-radius: 0px 0px 0px 0px;
   }
 
   .navbar-nav > li:not(:first-child):not(:last-child):hover {
     background-color: #1c5170;
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px;
   }
 
   .navbar-nav > li:last-child:hover {
     background-color: #1c5170;
-    border-radius: 0px 0px 0px 0px;
+    border-radius: 0px;
   }
   /* ************************************************** */
   .navbar-nav > .active > a:hover {
@@ -68,6 +78,38 @@ const ResearchOutputsNavBar = styled.nav`
   nav.container-fluid {
     padding: 0 0px 0 0px;
     flex-direction: column;
+  }
+
+  .navbar-collapse .navbar-nav > li:first-child:hover {
+    border-radius: 20px 0 0 0;
+  }
+
+  .navbar-collapse .panel-collapse .navbar-nav > li:first-child:hover {
+    border-radius: 0;
+  }
+
+  .navbar-collapse .panel-collapse {
+    margin-right: 4px;
+  }
+
+  .navbar-collapse .panel-collapse .navbar-nav > li {
+    margin-top: 2px;
+  }
+
+  .navbar-collapse .panel-collapse .navbar-nav > li:first-child {
+    margin-top: 4px;
+  }
+
+  .navbar-collapse .panel {
+    box-shadow: none;
+  }
+
+  .navbar-collapse .panel-group {
+    margin-bottom: 10px;
+  }
+
+  .navbar-collapse .panel-group .panel + .panel {
+    margin-top: 0;
   }
 
   /*give sidebar 100% width;*/

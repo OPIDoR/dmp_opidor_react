@@ -97,16 +97,16 @@ function OrcidList({ fragment, setFragment }) {
                       placeholder={t("Search by <last name> <first name>")}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--primary)", height: "43px" }}
+                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px" }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px", margin: '0' }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--primary)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -114,7 +114,7 @@ function OrcidList({ fragment, setFragment }) {
                         onClick={handleDeleteText}
                         className="btn btn-default"
                         type="button"
-                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--primary)", height: "43px", margin: '0' }}
+                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px", margin: '0' }}
                       >
                         <span className="fa fa-xmark" />
                       </button>

@@ -8,6 +8,7 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
 import chunk from "lodash.chunk";
 import styles from "../assets/css/sidebar.module.css";
+import { RESEARCH_OUTPUTS_PER_PAGE } from "../../config";
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
@@ -18,10 +19,9 @@ function ResearchOutputsTabs({ planId, readonly }) {
     setFormData,
     setUrlParams,
   } = useContext(GlobalContext);
-  const itemsPerPage = 5;
   const [show, setShow] = useState(false);
   const [activeGroup, setActiveGroup] = useState(0);
-  const researchOutputsChunks = chunk(researchOutputs, itemsPerPage);
+  const researchOutputsChunks = chunk(researchOutputs, RESEARCH_OUTPUTS_PER_PAGE);
 
   /**
    * The function handleClose sets the state of setShow to false.
@@ -61,18 +61,19 @@ function ResearchOutputsTabs({ planId, readonly }) {
   return (
     <>
       {researchOutputs && (
-        <ResearchOutputsNavBar className="navbar-inverse">
+        <ResearchOutputsNavBar className="navbar-inverse" id="ro-nav-bar">
           <div className="collapse navbar-collapse">
-            {researchOutputs.length > itemsPerPage && openedQuestions ? (
+            {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
               <PanelGroup 
-              activeKey={activeGroup}
-              onSelect={handleSelect}
-              accordion 
-              id="accordion" className={styles.research_outputs_accordion}
+                activeKey={activeGroup}
+                onSelect={handleSelect}
+                accordion 
+                id="accordion"
+                className={styles.research_outputs_accordion}
               >
                 {researchOutputsChunks.map((roChunk, i) => {
-                  const start = i * itemsPerPage + 1;
-                  const end = i * itemsPerPage + itemsPerPage;
+                  const start = i * RESEARCH_OUTPUTS_PER_PAGE + 1;
+                  const end = i * RESEARCH_OUTPUTS_PER_PAGE + RESEARCH_OUTPUTS_PER_PAGE;
 
                   return (
                     <Panel 
@@ -80,7 +81,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
                       eventKey={i}
                       style={{ borderColor: "white" }}
                     >
-                      <Panel.Heading style={{ background: "var(--primary)" }}>
+                      <Panel.Heading style={{ background: "var(--dark-blue)" }}>
                         <Panel.Title
                           toggle
                           className={styles.nav_title}
@@ -103,11 +104,11 @@ function ResearchOutputsTabs({ planId, readonly }) {
                               <a href="#">
                                 <div className={styles.nav_title}>{ro.abbreviation}</div>
                                 <div className={styles.nav_icon}>
-                                  {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                                  {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--rust)" }}></BsBell>
                                     <BsCheckCircleFill
                                       size={40}
                                       className={styles.space_right}
-                                      style={{ color: "var(--orange)" }}
+                                      style={{ color: "var(--rust)" }}
                                     ></BsCheckCircleFill> */}
                                 </div>
                               </a>
@@ -130,11 +131,11 @@ function ResearchOutputsTabs({ planId, readonly }) {
                     <a href="#" className={styles.nav_header}>
                       <div className={styles.nav_title}>{el.abbreviation}</div>
                       <div className={styles.nav_icon}>
-                        {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--orange)" }}></BsBell>
+                        {/* <BsBell size={40} className={styles.space_right} style={{ color: "var(--rust)" }}></BsBell>
                         <BsCheckCircleFill
                           size={40}
                           className={styles.space_right}
-                          style={{ color: "var(--orange)" }}
+                          style={{ color: "var(--rust)" }}
                         ></BsCheckCircleFill> */}
                       </div>
                     </a>
@@ -152,6 +153,9 @@ function ResearchOutputsTabs({ planId, readonly }) {
                 style={{
                   padding: '10px 0 10px 0',
                   boxSizing: 'border-box',
+                  borderRadius: researchOutputsChunks.length > 1 ? '20px 0 0 20px' : '0 0 0 20px',
+                  marginRight: researchOutputsChunks.length > 1 ? '1px' : undefined,
+                  width: researchOutputsChunks.length <= 1 ? '182.87px' : '100%',
                 }}
               >
                 <div

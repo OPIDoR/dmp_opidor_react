@@ -40,7 +40,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     }
 
     if (!edit) {
-      setAbbreviation(`${t('Research output')} ${researchOutputs.length + 1}`);
+      setAbbreviation(`${t('RO')} ${researchOutputs.length + 1}`);
       setTitle(`${t('Research output')} ${researchOutputs.length + 1}`);
       setHasPersonalData(false);
       setType(null);
@@ -178,7 +178,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
         <Button variant="secondary" onClick={handleClose} style={{ marginRight: "8px" }}>
           {t("Close")}
         </Button>
-        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--orange)", color: "white" }}>
+        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white" }}>
           {t(edit ? "Save" : "Add")}
         </Button>
       </EndButton>

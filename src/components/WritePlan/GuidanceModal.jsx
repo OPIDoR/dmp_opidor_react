@@ -18,18 +18,18 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const modalRef = useRef(null);
 
   const {
-    questionsWithGuidance
+    questionsWithGuidance,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
-    color: activeTab === tab ? 'var(--primary)' : 'var(--white)',
+    color: activeTab === tab ? 'var(--dark-blue)' : 'var(--white)',
     textDecoration: 'none',
     cursor: 'pointer',
     display: 'flex',
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    background: activeTab === tab ? 'var(--white)' : 'var(--primary)',
+    background: activeTab === tab ? 'var(--white)' : 'var(--dark-blue)',
     padding: '10px',
     borderRadius: '10px 10px 0 0',
     fontWeight: 'bold',
@@ -118,7 +118,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
         ref={modalRef}
         onClose={() => {
           setShowGuidanceModal(false);
-          setFillColorGuidanceIcon("var(--primary)");
+          setFillColorGuidanceIcon("var(--dark-blue)");
         }}
       >
         <InnerModal.Title>
