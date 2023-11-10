@@ -54,13 +54,13 @@ function FirstStep({ handleNextStep }) {
             className={`form-check-label ${styles.check}`}
             type="radio"
             name="planContext"
-            id="researchStructure"
-            onClick={() => handleCheck("research_structure")}
+            id="researchEntity"
+            onClick={() => handleCheck("research_entity")}
             style={{ cursor: 'pointer' }}
           />
           <label
             className={`form-check-label ${styles.label_title}`}
-            htmlFor="researchStructure"
+            htmlFor="researchEntity"
             style={{ cursor: 'pointer' }}
           >
             {t('For a research entity')}
