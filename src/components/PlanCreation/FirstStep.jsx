@@ -27,39 +27,46 @@ function FirstStep({ handleNextStep }) {
 
   return (
     <div>
-      <CircleTitle number="1" title={t('Indicate the context of your DMP')}></CircleTitle>
+      <CircleTitle number="1" title={t('Indicate the context of your DMP')} />
       <div className="column">
         <div className="form-check">
           <input
             className={`form-check-label ${styles.check}`}
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault1"
-            defaultChecked={true}
+            name="planContext"
+            id="researchProject"
             onClick={() => handleCheck("research_project")}
+            style={{ cursor: 'pointer' }}
           />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault1">
-            {t('Research Project')}
+          <label
+            className={`form-check-label ${styles.label_title}`}
+            htmlFor="researchProject"
+            style={{ cursor: 'pointer' }}
+          >
+            {t('For a research project')}
           </label>
           <div className={styles.list_context}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur rutrum
-            commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula.
+            {t('You are leading or participating in a research project, you are carrying out a research activity, you are preparing a doctorate.')}
           </div>
         </div>
         <div className="form-check">
           <input
             className={`form-check-label ${styles.check}`}
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault2"
+            name="planContext"
+            id="researchStructure"
             onClick={() => handleCheck("research_structure")}
+            style={{ cursor: 'pointer' }}
           />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
-            {t('Research Entity')}
+          <label
+            className={`form-check-label ${styles.label_title}`}
+            htmlFor="researchStructure"
+            style={{ cursor: 'pointer' }}
+          >
+            {t('For a research entity')}
           </label>
           <div className={styles.list_context}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi erat tellus, pharetra sed ipsum ac, ornare lacinia leo. Curabitur rutrum
-            commodo nibh eget ultricies. Aliquam viverra consequat nulla ac vehicula.
+            {t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.')}
           </div>
         </div>
       </div>
