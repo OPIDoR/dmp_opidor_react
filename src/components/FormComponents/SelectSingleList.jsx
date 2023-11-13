@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { service } from '../../services';
-import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
+import { createOptions, createRegistriesOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
@@ -14,7 +14,15 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-  value, label, propName, handleChangeValue, tooltip, registries, registryType, templateId, readonly
+  value,
+  label,
+  propName,
+  handleChangeValue,
+  tooltip,
+  registries,
+  registryType,
+  templateId,
+  readonly
 }) {
   const { t } = useTranslation();
   const [options, setOptions] = useState([{ value: '', label: '' }]);
@@ -25,7 +33,7 @@ function SelectSingleList({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState({});
-  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
   const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : null);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
@@ -34,7 +42,10 @@ function SelectSingleList({
 
   useEffect(() => {
     setSelectedValue(value || nullValue);
-  }, [value])
+    if(registries.length === 1) {
+      setSelectedRegistry(registries[0]);
+    }
+  }, [value, registries])
 
   useEffect(() => {
     if (registryType !== 'complex') {
@@ -49,7 +60,7 @@ function SelectSingleList({
   useEffect(() => {
     if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else {
+    } else if (selectedRegistry) {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
@@ -125,12 +136,11 @@ function SelectSingleList({
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
+                    options={createRegistriesOptions(registries)}
                     name={propName}
-                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    selectedOption={
+                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                    }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
                   />
@@ -142,15 +152,15 @@ function SelectSingleList({
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-12 ${styles.select_wrapper}`}>
-                {selectedRegistry && options && (
+                {options && (
                   <CustomSelect
                     onChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
                     selectedOption={selectedOption}
-                    isDisabled={readonly}
+                    isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                    placeholder={createRegistryPlaceholder(registries, t)}
                   />
                 )}
               </div>

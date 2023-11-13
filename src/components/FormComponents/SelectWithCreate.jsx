@@ -9,6 +9,8 @@ import { FaPlus } from 'react-icons/fa6';
 import { GlobalContext } from '../context/Global.jsx';
 import {
   createOptions,
+  createRegistriesOptions,
+  createRegistryPlaceholder,
   deleteByIndex,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
@@ -43,7 +45,7 @@ function SelectWithCreate({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState({});
   const [editedFragment, setEditedFragment] = useState({})
-  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
   /* A hook that is called when the component is mounted.
@@ -64,7 +66,7 @@ function SelectWithCreate({
   useEffect(() => {
     if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else {
+    } else if (selectedRegistry) {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
@@ -78,7 +80,10 @@ function SelectWithCreate({
 
   useEffect(() => {
     setFragmentsList(values || []);
-  }, [values]);
+    if (registries.length === 1) {
+      setSelectedRegistry(registries[0]);
+    }
+  }, [values, registries]);
 
   const handleClose = () => {
     setShow(false);
@@ -196,12 +201,11 @@ function SelectWithCreate({
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
+                    options={createRegistriesOptions(registries)}
                     name={propName}
-                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    selectedOption={
+                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                    }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
                   />
@@ -213,14 +217,14 @@ function SelectWithCreate({
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
-                {selectedRegistry && options && (
+                {options && (
                   <CustomSelect
                     onChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
-                    isDisabled={readonly}
+                    isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                    placeholder={createRegistryPlaceholder(registries, t)}
                   />
                 )}
               </div>
