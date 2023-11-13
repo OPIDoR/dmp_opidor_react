@@ -14,30 +14,40 @@ import { useTranslation } from 'react-i18next';
  * secondStep variables. The handleNextStep function is used to update the state of these variables when the user clicks a
  */
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
-  const { t, i18n } = useTranslation();
-  const { setLocale, setCurrentOrg } = useContext(GlobalContext);
-  const [firstStep, setFirstStep] = useState(true);
-  const [secondStep, setSecondStep] = useState(false);
+  const { i18n } = useTranslation();
+  const { setLocale, setCurrentOrg, setUrlParams } = useContext(GlobalContext);
+  const [steps, setSteps] = useState({
+    firstStep: true,
+    secondStep: false,
+  });
 
   useEffect(() => {
     setLocale(locale);
     setCurrentOrg({id: currentOrgId, name: currentOrgName});
     i18n.changeLanguage(locale.substring(0, 2));
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    const step = queryParameters.get('step');
+    setSteps(prevSteps => ({
+      firstStep: step === 'first',
+      secondStep: step === 'second',
+    }));
+    setUrlParams({ step: step || 'first' });
   }, [locale, currentOrgId, currentOrgName]);
 
-  /**
-   * When the user clicks the button, the first step is set to false and the second step
-   * is set to true.
-   */
-  const handleNextStep = () => {
-    setFirstStep(!firstStep);
-    setSecondStep(!secondStep);
+  const handleSteps = (step) => {
+    setSteps(prevSteps => ({
+      ...prevSteps,
+      firstStep: step === 'first',
+      secondStep: step === 'second',
+    }));
+    setUrlParams({ step });
   };
 
   return (
     <div className={styles.main}>
-      {firstStep && <FirstStep handleNextStep={handleNextStep} />}
-      {secondStep && <SecondStep />}
+      {steps.firstStep && <FirstStep key="firstStep" nextStep={handleSteps} />}
+      {steps.secondStep && <SecondStep key="secondStep" prevStep={handleSteps} />}
     </div>
   );
 }
