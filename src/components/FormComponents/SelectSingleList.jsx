@@ -5,7 +5,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
 import { service } from '../../services';
-import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
+import { createOptions, createRegistriesOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
@@ -29,7 +29,7 @@ function SelectSingleList({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState({});
-  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
   const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : null);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
@@ -53,7 +53,7 @@ function SelectSingleList({
   useEffect(() => {
     if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else {
+    } else if (selectedRegistry) {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
@@ -132,7 +132,9 @@ function SelectSingleList({
                       label: registry,
                     }))}
                     name={propName}
-                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    selectedOption={
+                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                    }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
                   />
@@ -144,14 +146,14 @@ function SelectSingleList({
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-12 ${styles.select_wrapper}`}>
-                {selectedRegistry && options && (
+                {options && (
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}
-                    isDisabled={readonly}
+                    isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                    placeholder={createRegistryPlaceholder(registries, t)}
                   />
                 )}
               </div>
