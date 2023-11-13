@@ -34,7 +34,7 @@ function Global({ children }) {
   const [locale, setLocale] = useState('en');
   const [dmpId, setDmpId] = useState(null);
   // Plan Creation
-  const [researchContext, setResearchContext] = useState('research_project');
+  const [researchContext, setResearchContext] = useState(null);
   const [currentOrg, setCurrentOrg] = useState({})
   // Dynamic form
   const [formData, setFormData] = useReducer(reducer, {});
@@ -47,7 +47,8 @@ function Global({ children }) {
   const [openedQuestions, setOpenedQuestions] = useState(null);
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
   const [userId, setUserId] = useState(-1);
-
+  const [planTemplates, setPlanTemplates] = useState({});
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   /* It's setting the formData in sessionStorage. */
   // useEffect(() => {
@@ -63,7 +64,7 @@ function Global({ children }) {
   const setUrlParams = (data = {}) => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search));
     const urlSearchParams = { ...params, ...data }
-    Object.keys(urlSearchParams).forEach(key => (urlSearchParams[key] == null || urlSearchParams[key] === '') && delete urlSearchParams[key]);
+    Object.keys(urlSearchParams).forEach(key => (!urlSearchParams[key] || urlSearchParams[key] === '') && delete urlSearchParams[key]);
     const urlParams = new URLSearchParams(urlSearchParams);
     return window.history.replaceState(null, null, `${window.location.pathname}?${urlParams.toString()}`);
   };
@@ -101,6 +102,10 @@ function Global({ children }) {
         userId,
         setUserId,
         setUrlParams,
+        planTemplates,
+        setPlanTemplates,
+        selectedTemplate,
+        setSelectedTemplate,
       }}
     >
       {children}
