@@ -4,13 +4,13 @@ import AsyncSelect from "react-select/async";
 import { filterOptions } from "../../utils/GeneratorUtils";
 
 function CustomSelect({
-    propName = null,
-    options,
-    selectedOption = null,
-    onChange,
-    async = false,
-    isDisabled = false,
-    placeholder = null,
+  propName = null,
+  options,
+  selectedOption = null,
+  onChange,
+  async = false,
+  isDisabled = false,
+  placeholder = null,
 }) {
   const SelectComponent = async ? AsyncSelect : Select;
   return(
