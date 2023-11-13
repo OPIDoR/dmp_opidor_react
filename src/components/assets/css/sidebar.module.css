@@ -54,7 +54,7 @@
 }
 
 .add_research_output_button:hover {
-  background-color: var(--primary);
+  background-color: var(--dark-blue);
   color: white;
 }
 
