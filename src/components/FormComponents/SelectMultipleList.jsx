@@ -8,7 +8,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
-import { createOptions } from '../../utils/GeneratorUtils';
+import { createOptions, createRegistriesOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
@@ -27,7 +27,7 @@ function SelectMultipleList({
   const { field } = useController({ control, name: propName });
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
-  const [selectedRegistry, setSelectedRegistry] = useState(registries[0]);
+  const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const {
     locale, loadedRegistries, setLoadedRegistries
@@ -39,7 +39,7 @@ function SelectMultipleList({
   useEffect(() => {
     if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else {
+    } else if (selectedRegistry) {
       service.getRegistryByName(selectedRegistry)
         .then((res) => {
           setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
@@ -56,7 +56,7 @@ function SelectMultipleList({
   useEffect(() => {
     setSelectedValues(field.value || []);
   }, [field.value]);
-
+  
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
@@ -125,7 +125,9 @@ function SelectMultipleList({
                       label: registry,
                     }))}
                     name={propName}
-                    selectedOption={{ value: selectedRegistry, label: selectedRegistry }}
+                    selectedOption={
+                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                    }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
                   />
@@ -137,14 +139,14 @@ function SelectMultipleList({
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-12 ${styles.select_wrapper}`}>
-                {selectedRegistry && options && (
+                {options && (
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
-                    isDisabled={readonly}
+                    isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={registries.length > 1 ? t("Then select a value from the list") : t("Select a value from the list")}
+                    placeholder={createRegistryPlaceholder(registries, t)}
                   />
                 )}
               </div>
