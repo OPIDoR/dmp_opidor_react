@@ -169,7 +169,23 @@ export function createOptions(registryValues, locale) {
       object: optionValue,
     }
   });
-  return [ {value:'', label:''}, ...options ]
+  return [ {value:'', label:''}, ...options ];
+}
+
+export function createRegistriesOptions(registries) {
+  let options = registries.map((registry) => ({
+    value: registry,
+    label: registry,
+  }))
+  return [ {value:'', label:''}, ...options ];
+}
+
+export function createRegistryPlaceholder(registries, t) {
+  if(registries.length > 1) {
+    return t("Then select a value from the list");
+  } else {
+    return t("Select a value from the list");
+  }
 }
 
 /**
