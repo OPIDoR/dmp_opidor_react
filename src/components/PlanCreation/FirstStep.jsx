@@ -42,7 +42,10 @@ function FirstStep({ nextStep }) {
                 type="radio"
                 name="planContext"
                 id={id}
-                onClick={() => setResearchContext(id)}
+                onClick={() => {
+                  localStorage.setItem('researchContext', id);
+                  setResearchContext(id);
+                }}
                 defaultChecked={researchContext === id}
                 style={{ cursor: 'pointer' }}
               />
