@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
@@ -9,15 +10,17 @@ import styles from '../assets/css/form.module.css';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ values, handleChangeValue, label, propName, tooltip, fragmentId, readonly }) {
+function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
   const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [formFields, setFormFields] = useState([]);
   const [fieldContent, setFieldContent] = useState('');
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
 
   useEffect(() => {
-    setFormFields(values || []);
-  }, [values]);
+    setFormFields(field.value || []);
+  }, [field.value]);
 
   /**
    * When the form changes, update the form fields and set the form to the new data.
@@ -26,8 +29,7 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
     const data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    // setFormData(updateFormState(formData, fragmentId, propName, data));
-    handleChangeValue(propName, data)
+    field.onChange(data)
   };
 
   /**
@@ -56,8 +58,7 @@ function InputTextDynamicaly({ values, handleChangeValue, label, propName, toolt
     const data = [...formFields];
     data.splice(index, 1);
     setFormFields(data);
-    // setFormData(updateFormState(formData, fragmentId, propName, data));
-    handleChangeValue(propName, data);
+    field.onChange(data);
   };
 
   return (

@@ -206,7 +206,7 @@ function GeneralInfo({
                       </div>
                       <CustomSelect
                         options={funders}
-                        onChange={(e) => handleSelectFunder(e)}
+                        onSelectChange={(e) => handleSelectFunder(e)}
                       />
                     </div>
                   )}
@@ -218,7 +218,7 @@ function GeneralInfo({
                       <CustomSelect
                         options={fundedProjects}
                         selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                        onChange={(e) => setSelectedProject(e.object)}
+                        onSelectChange={(e) => setSelectedProject(e.object)}
                         async={true}
                         asyncCallback={(value) => filterOptions(fundedProjects, value)}
                       />
