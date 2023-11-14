@@ -33,7 +33,9 @@ function TinyArea({
 }) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
+  const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
+  const editorRef = useRef(null);
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -54,11 +56,11 @@ function TinyArea({
           }
         </div>
 
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "10px" }} key={field.id} ref={editorRef}>
           {!readonly && (
             <Editor
-              {...field}
-              onEditorChange={field.onChange}
+              {...newField}
+              onEditorChange={(newText) => onChange(newText)}
               init={{
                 statusbar: true,
                 menubar: false,
