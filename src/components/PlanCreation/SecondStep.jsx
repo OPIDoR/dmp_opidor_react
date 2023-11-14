@@ -39,7 +39,7 @@ function SecondStep({ prevStep }) {
     const tmpls = {
       default: { title: t('Default template'), templates: [] },
       myOrg: { title: `${currentOrg.name} (${t('your organisation')})`, templates: [] },
-      otherOrgs: { id: 'otherOrgs', title: t('Other organisation'), type: 'select', data: [] },
+      othersOrgs: { id: 'otherOrgs', title: t('Other organisation'), type: 'select', data: [] },
       funders: { id: 'funders', title: t('Funder'), type: 'select', data: [] },
     };
 
