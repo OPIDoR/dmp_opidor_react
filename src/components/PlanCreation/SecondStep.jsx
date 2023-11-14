@@ -32,6 +32,10 @@ function SecondStep({ prevStep }) {
   useEffect(() => {
     setResearchContext(researchContext);
 
+    if (!researchContext) {
+      setResearchContext(localStorage.getItem('researchContext') || '');
+    }
+
     const tmpls = {
       default: { title: t('Default template'), templates: [] },
       myOrg: { title: `${currentOrg.name} (${t('your organisation')})`, templates: [] },
@@ -47,6 +51,7 @@ function SecondStep({ prevStep }) {
         currentTemplatesRes = await  planCreation.getDefaultTemplate();
       } catch (error) {
         setLoading(false);
+        return handleError(error);
       }
 
       tmpls.default.templates = Array.isArray(currentTemplatesRes?.data || []) ? currentTemplatesRes?.data : [currentTemplatesRes?.data];
@@ -56,6 +61,7 @@ function SecondStep({ prevStep }) {
         myOrgTemplatesRes = await planCreation.getTemplatesByOrgId(currentOrg, researchContext);
       } catch (error) {
         setLoading(false);
+        return handleError(error);
       }
 
       tmpls.myOrg.templates = myOrgTemplatesRes?.data || [];
@@ -65,6 +71,7 @@ function SecondStep({ prevStep }) {
         orgsRes = await planCreation.getOrgs(researchContext);
       } catch (error) {
         setLoading(false);
+        return handleError(error);
       }
 
       orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }))
@@ -77,6 +84,7 @@ function SecondStep({ prevStep }) {
           orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, researchContext);
         } catch (error) {
           setLoading(false);
+          handleError(error);
           break;
         }
 
@@ -92,6 +100,7 @@ function SecondStep({ prevStep }) {
         fundersRes = await planCreation.getFunders(researchContext);
       } catch (error) {
         setLoading(false);
+        return handleError(error);
       }
 
       fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
@@ -103,6 +112,7 @@ function SecondStep({ prevStep }) {
           fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, researchContext);
         } catch (error) {
           setLoading(false);
+          handleError(error);
           break;
         }
 
@@ -120,6 +130,13 @@ function SecondStep({ prevStep }) {
 
     fetchTemplates();
   }, [currentOrg, researchContext]);
+
+  const handleError = (error) => setError({
+    code: error?.response?.status,
+    message: error?.response?.statusText,
+    error: error?.response?.data?.message || '',
+    home: false,
+  });
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
@@ -151,6 +168,10 @@ function SecondStep({ prevStep }) {
     }
 
     setUrlParams({ step: undefined });
+
+    if (localStorage.getItem('researchContext')) {
+      localStorage.remove('researchContext');
+    }
 
     window.location = `/plans/${response.data.id}`
   };
