@@ -55,7 +55,10 @@ function SelectMultipleList({
   It is used to set the options of the select list. */
   useEffect(() => {
     setSelectedValues(field.value || []);
-  }, [field.value]);
+    if(registries.length === 1) {
+      setSelectedRegistry(registries[0]);
+    }
+  }, [field.value, registries]);
   
   /**
    * It takes the value of the input field and adds it to the list array.

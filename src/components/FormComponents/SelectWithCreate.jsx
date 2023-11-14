@@ -80,7 +80,10 @@ function SelectWithCreate({
 
   useEffect(() => {
     setFragmentsList(field.value || []);
-  }, [field.value]);
+    if(registries.length === 1) {
+      setSelectedRegistry(registries[0]);
+    }
+  }, [field.value, registries]);
 
   const handleClose = () => {
     setShow(false);

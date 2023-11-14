@@ -38,7 +38,10 @@ function SelectSingleList({
 
   useEffect(() => {
     setSelectedValue(field.value || nullValue);
-  }, [field.value])
+    if(registries.length === 1) {
+      setSelectedRegistry(registries[0]);
+    }
+  }, [field.value, registries])
 
   useEffect(() => {
     if (registryType !== 'complex') {
