@@ -1,204 +1,125 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
+import { toast } from "react-hot-toast";
+import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 
+import styles from "../assets/css/steps.module.css";
 import { planCreation } from "../../services";
 import { GlobalContext } from "../context/Global";
-import Swal from "sweetalert2";
-import styles from "../assets/css/steps.module.css";
-import CustomButton from "../Styled/CustomButton";
-import CircleTitle from "../Styled/CircleTitle";
-import { toast } from "react-hot-toast";
-import CustomSelect from "../Shared/CustomSelect";
+import { CustomButton, CircleTitle } from "../Styled";
+import { CustomSpinner, CustomError, CustomSelect } from "../Shared";
 
 /* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
 using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
 selected template ID to the next step. */
-function SecondStep() {
+function SecondStep({ prevStep }) {
   const { t } = useTranslation();
-  const { researchContext, setResearchContext, currentOrg } = useContext(GlobalContext);
+  const {
+    researchContext, setResearchContext,
+    currentOrg,
+    setUrlParams,
+    planTemplates, setPlanTemplates,
+    selectedTemplate, setSelectedTemplate,
+  } = useContext(GlobalContext);
 
-  const [isShowDefaultTemplate, setIsShownDefaultTemplate] = useState(true)
-  const [defaultTemplate, setDefaultTemplate] = useState(null);
-  const [defaultTemplateId, setDefaultTemplateId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const [isShownMyOrg, setIsShownMyOrg] = useState(false);
-  const [myOrgTemplatesList, setMyOrgTemplatesList] = useState(null);
-
-  const [isShownOrgs, setIsShownOrgs] = useState(false);
-  const [orgsList, setOrgsList] = useState(null);
-  const [selectedOrg, setSelectedOrg] = useState(t('Begin typing to see a list of suggestions.'));
-  const [selectedOrgTemplates, setSelectedOrgTemplates] = useState(null);
-
-  const [isShownFunder, setIsShownFunder] = useState(false);
-  const [fundersList, setFundersList] = useState(null);
-  const [selectedFunder, setSelectedFunder] = useState(t('Begin typing to see a list of suggestions.'));
-  const [selectedFunderTemplates, setSelectedFunderTemplates] = useState(null);
-
-  const [selectedTemplate, setSelectedTemplate] = useState(null)
-
+  const placeHolder = t('Begin typing to see a list of suggestions.');
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    planCreation.getTemplatesByOrgId(currentOrg, researchContext).then((res) => {
-      setMyOrgTemplatesList(res.data);
-    }).catch((error) => {
-      toast.error(t("An error occurred during recovery of the organism template"));
-    });
+    setResearchContext(researchContext);
+
+    const tmpls = {
+      default: { title: t('Default template'), templates: [] },
+      myOrg: { title: `${currentOrg.name} (${t('your organisation')})`, templates: [] },
+      otherOrgs: { id: 'otherOrgs', title: t('Other organisation'), type: 'select', data: [] },
+      funders: { id: 'funders', title: t('Funder'), type: 'select', data: [] },
+    };
+
+    const fetchTemplates = async () => {
+      setLoading(true);
+
+      let currentTemplatesRes;
+      try {
+        currentTemplatesRes = await  planCreation.getDefaultTemplate();
+      } catch (error) {
+        setLoading(false);
+      }
+
+      tmpls.default.templates = Array.isArray(currentTemplatesRes?.data || []) ? currentTemplatesRes?.data : [currentTemplatesRes?.data];
+
+      let myOrgTemplatesRes;
+      try {
+        myOrgTemplatesRes = await planCreation.getTemplatesByOrgId(currentOrg, researchContext);
+      } catch (error) {
+        setLoading(false);
+      }
+
+      tmpls.myOrg.templates = myOrgTemplatesRes?.data || [];
+
+      let orgsRes;
+      try {
+        orgsRes = await planCreation.getOrgs(researchContext);
+      } catch (error) {
+        setLoading(false);
+      }
+
+      orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }))
+        .filter((option) => option.name.toLowerCase() !== currentOrg.name.toLowerCase());
+
+      for await (const org of orgsRes) {
+        let orgTemplatesRes;
+
+        try {
+          orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, researchContext);
+        } catch (error) {
+          setLoading(false);
+          break;
+        }
+
+        tmpls.othersOrgs.data.push({
+          ...org,
+          templates: orgTemplatesRes?.data || [],
+          selected: false,
+        });
+      }
+
+      let fundersRes;
+      try {
+        fundersRes = await planCreation.getFunders(researchContext);
+      } catch (error) {
+        setLoading(false);
+      }
+
+      fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
+
+      for await (const funder of fundersRes) {
+        let fundersTemplatesRes;
+
+        try {
+          fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, researchContext);
+        } catch (error) {
+          setLoading(false);
+          break;
+        }
+
+        tmpls.funders.data.push({
+          ...funder,
+          templates: fundersTemplatesRes?.data || [],
+          selected: false,
+        });
+      }
+
+
+      setPlanTemplates(tmpls);
+      setLoading(false);
+    };
+
+    fetchTemplates();
   }, [currentOrg, researchContext]);
-
-  /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
-  useEffect(() => {
-    planCreation.getDefaultTemplate().then((res) => {
-      setDefaultTemplate(res.data);
-      setResearchContext(researchContext);
-      setDefaultTemplateId(res.data.id);
-      setSelectedTemplate(res.data.id);
-    }).catch((error) => t("An error occurred while retrieving the default template"));
-  }, []);
-
-  /**
-   * If the value is 1, 2, or 3, then set the value of isShowListOrg to false, set the value of isShowOrg to false, set the value of organismes
-   * to null, set the value of isShowFunder to false, set the value of valueFunder to t('Begin typing to see a list of suggestions.'), set the value
-   * of isShowOtherOrganisme to true, and set the value of isShowListFunder to false.
-   *
-   * If the value is 2, then set the value of isShowListOrg to true, set the value of isShowOrg to false, set the value of organismes to null,
-   * set the value of isShowFunder to false, set the value of valueFunder to t('Begin typing to see a list of suggestions.'), set the value of
-   * isShowOtherOrgan
-   */
-  const handleCheckOption = (val) => {
-    switch (val) {
-      case "defaultTemplate":
-        //state
-        setResearchContext(researchContext);
-        setSelectedTemplate(defaultTemplateId);
-        setIsShownDefaultTemplate(true);
-        // hide my org
-        setIsShownMyOrg(false);
-        // hide other org
-        setIsShownOrgs(false);
-        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
-        setSelectedOrgTemplates(null);
-        // hide funder
-        setIsShownFunder(false);
-        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
-        setIsShownFunder(false);
-
-        break;
-      case "myOrg": // my org
-        //state
-        setResearchContext(researchContext);
-        setSelectedTemplate(null);
-        setIsShownDefaultTemplate(false);
-        // show my org
-        setIsShownMyOrg(true);
-        // hide other org
-        setIsShownOrgs(false);
-        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
-        setSelectedOrgTemplates(null);
-        // hide funder
-        setIsShownFunder(false);
-        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
-        break;
-      case "orgs": // Other org
-        //state
-        setResearchContext(researchContext);
-        setSelectedTemplate(null);
-        setIsShownDefaultTemplate(false);
-        // hide my org
-        setIsShownMyOrg(false);
-        // show other org
-        if(!orgsList) handleFetchOrgs();
-        setIsShownOrgs(true);
-        setSelectedOrgTemplates(null);
-        // hide funder
-        setIsShownFunder(false);
-        setSelectedFunder(t('Begin typing to see a list of suggestions.'));
-        setSelectedFunderTemplates(null);
-        break;
-      default: // Funder
-        //state
-        setResearchContext(researchContext);
-        setSelectedTemplate(null);
-        setIsShownDefaultTemplate(false);
-        // hide my org
-        setIsShownMyOrg(false);
-        // hide other org
-        setIsShownOrgs(false);
-        setSelectedOrg(t('Begin typing to see a list of suggestions.'));
-        // show funder
-        if(!fundersList) handleFetchFunders();
-        setIsShownFunder(true);
-        setSelectedFunderTemplates(null);
-        break;
-    }
-  };
-
-  /**
-   * Calls ths API and fetch the orgs list according to the given context
-   */
-  const handleFetchOrgs = () => {
-    planCreation.getOrgs(researchContext).then((res) => {
-      const options = res.data.map((option) => ({
-        value: option.id,
-        label: option.name,
-        object: option,
-      }));
-      setOrgsList(options);
-    });
-  };
-
-
-  /**
-   * Calls ths API and fetch the funders list according to the given context
-   */
-  const handleFetchFunders = async () => {
-    let response;
-    try {
-      response = await planCreation.getFunders(researchContext);
-    } catch (error) {
-      return t("A mistake was made during the recovery of the funders");
-    }
-
-    const options = response.data.map((option) => ({
-      value: option.id,
-      label: option.name,
-      object: option,
-    }));
-    setFundersList(options);
-  };
-
-  /**
-   * I want to make an API call to get some data. I
-   * want to set the state of the component to the data I get from the API call.
-   * I'm using the react-select library to create a dropdown menu.
-   */
-  const handleSelectOrg = (e) => {
-    const orgData = e.object;
-    planCreation.getTemplatesByOrgId(orgData, researchContext).then((res) => {
-      setSelectedOrg(orgData);
-      setSelectedOrgTemplates(res.data);
-    }).catch((error) => {
-      toast.error(t("An error occurred during the recovery of the organism templates"));
-    });
-  };
-
-  /**
-   * I'm trying to get the value of the selected option from the d
-   * ropdown and pass it to the function getFunderById.
-   */
-  const handleSelectFunder = async (e) => {
-    const funderData = e.object;
-
-    let response;
-    try {
-      response = await planCreation.getTemplatesByFunderId(funderData, researchContext);
-    } catch(error) {
-      return t("A mistake was made when retrieving the funders templates");
-    }
-
-    setSelectedFunder(funderData);
-    setSelectedFunderTemplates(response.data);
-  };
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
@@ -229,132 +150,135 @@ function SecondStep() {
       toast.error(errorMessage);
     }
 
+    setUrlParams({ step: undefined });
+
     window.location = `/plans/${response.data.id}`
+  };
+
+  const handelSelectedList = (selectedValue) => {
+    const data = { ...planTemplates };
+
+    setPlanTemplates({
+      ...data,
+      [selectedValue?.type]: {
+        ...data[selectedValue?.type],
+        data: data[selectedValue?.type].data.map((d) => ({
+          ...d,
+          selected: selectedValue.value === d.id,
+        }))
+      }
+    });
+  }
+
+  const createList = ({ index, templates }) => {
+    if (templates.length === 0) { return; }
+
+    const list = [];
+    for (const template of templates) {
+      const element = (
+        <div
+          className={`${styles.context_list} ${template.id === selectedTemplate ? styles.checked : ''}`}
+          key={`template-${index}-${template.id}`}
+          style={{
+            cursor: 'pointer',
+          }}
+          onClick={() => setSelectedTemplate(template.id)}
+        >
+          {template.title}
+        </div>
+      );
+      list.push(element);
+    }
+    return list;
+  };
+
+  const displayTemplatesByCategory = (index) => {
+    const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t('No model available')}</i></p>);
+
+    if (!planTemplates[index].type) {
+      const { templates } = planTemplates?.[index];
+
+      if (templates.length <= 0) {
+        return noModelAvailable;
+      }
+
+      return createList({ index, templates });
+    }
+
+    let { data } = planTemplates?.[index];
+
+    if (data.length <= 0) {
+      return noModelAvailable;
+    }
+
+    const type = planTemplates?.[index].id;
+
+    data = data.map(({ name, id, templates, selected }) => ({
+      label: name,
+      value: id,
+      type,
+      selected,
+      templates,
+    }));
+
+    return (
+      <div style={{ width: '100%', marginLeft: '10px' }}>
+        <CustomSelect
+          key={`select-${index}-${type}`}
+          placeholder={placeHolder}
+          options={data}
+          onChange={handelSelectedList}
+          selectedOption={data.find(({ selected }) => selected)}
+        />
+        <div key={`template-${index}-${type}`} style={{ marginTop: '10px' }}>
+          {createList({
+            index,
+            templates: data.find(({ selected }) => selected)?.templates || [],
+          })}
+        </div>
+      </div>
+    );
   };
 
   return (
     <div>
-      <CircleTitle number="2" title={t('Choose your template')}></CircleTitle>
-      <div className="column">
-        <div className="form-check">
-          <input
-            className={`form-check-label ${styles.check}`}
-            type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault1"
-            defaultChecked
-            onClick={() => handleCheckOption("defaultTemplate")}
-          />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault1">
-            {t('Default template')}
-          </label>
-          {isShowDefaultTemplate &&
-            <div className={styles.list_context}>{defaultTemplate && defaultTemplate?.title}</div>
-          }
-        </div>
-        <div className="form-check">
-          <input 
-            className="form-check-input" 
-            type="radio" 
-            name="flexRadioDefault" 
-            id="flexRadioDefault2" 
-            onClick={() => handleCheckOption("myOrg")} />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault2">
-            {currentOrg.name} ({t('your organisation')})
-          </label>
-
-          <div className={styles.list_organisme}>
-            {isShownMyOrg &&
-              myOrgTemplatesList &&
-              myOrgTemplatesList.map((el) => (
-                <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                  <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
-                  {/* <label htmlFor={el.id}>{el.title}</label> */}
-                  <div className={styles.list_element}>{el.title}</div>
-                </label>
-              ))}
+      <CircleTitle number="2" title={t('Choose your template')} />
+      {loading && <CustomSpinner />}
+      {!loading && error && <CustomError error={error} />}
+      {!loading && !error && (
+        <>
+          <div className="column">
+            <span
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return prevStep('first');
+              }}
+              style={{ display: 'block', marginBottom: '20px', cursor: 'pointer' }}
+            >
+              <BsFillArrowLeftCircleFill size={12} style={{ marginRight: '10px' }} />
+              {t('Go back to previous step')}
+            </span>
+            {
+              Object.keys(planTemplates).map((index) => (
+                <div key={`category-${index}`}>
+                  <label key={`category-label-${index}`} className={`${styles.title}`}>
+                    {planTemplates?.[index]?.title}
+                  </label>
+                  {displayTemplatesByCategory(index)}
+                </div>
+              ))
+            }
           </div>
-        </div>
-        <div className="form-check">
-          <input 
-            className="form-check-input" 
-            type="radio" 
-            name="flexRadioDefault" 
-            id="flexRadioDefault3" 
-            onClick={() => handleCheckOption("orgs")} />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault3">
-            {t('Other organisation')}
-          </label>
-          { isShownOrgs && 
-            <div className={styles.select}>
-              {orgsList && (
-                <CustomSelect
-                  options={orgsList}
-                  onChange={handleSelectOrg}
-                  selectedOption={{
-                    label: selectedOrg.name,
-                    value: selectedOrg.id,
-                  }}
-                />
-              )}
-              <div className={styles.list_organisme}>
-                {selectedOrg &&
-                  selectedOrgTemplates &&
-                  selectedOrgTemplates.map((el) => (
-                    <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                      <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
-                      {/* <label htmlFor={el.id}>{el.title}</label> */}
-                      <div className={styles.list_element}>{el.title}</div>
-                    </label>
-                  ))}
-              </div>
-            </div>
-          }
-        </div>
-        <div className="form-check">
-          <input 
-           className="form-check-input"
-           type="radio"
-           name="flexRadioDefault"
-           id="flexRadioDefault4"
-           onClick={() => handleCheckOption("funder")} />
-          <label className={`form-check-label ${styles.label_title}`} htmlFor="flexRadioDefault4">
-            {t('Funder')}
-          </label>
-          { isShownFunder &&
-            <div className={styles.select}>
-              {fundersList && (
-                <CustomSelect
-                  options={fundersList}
-                  onChange={handleSelectFunder}
-                  selectedOption={{
-                    label: selectedFunder.name,
-                    value: selectedFunder.id,
-                  }}
-                />
-              )}
-
-              <div className={styles.list_organisme}>
-                {selectedFunder &&
-                  selectedFunderTemplates &&
-                  selectedFunderTemplates.map((el) => (
-                    <label key={el.id} className={`${styles.element_organisme} ${styles.label_sous_title}`}>
-                      <input type="radio" id={el.id} name="contact" onClick={() => setSelectedTemplate(el.id)} />
-                      {/* <label htmlFor={el.id}>{el.title}</label> */}
-                      <div className={styles.list_element}>{el.title}</div>
-                    </label>
-                  ))}
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-      <div className="row">
-        {/* <button type="button" className="btn btn-primary validate" onClick={handleSendTemplateId}>
-          Valider mon choix
-        </button> */}
-        <CustomButton handleClick={handleSendTemplateId} title={t("Confirm my choice")} position="start"></CustomButton>
-      </div>
+          { selectedTemplate && <div className="row" style={{ marginTop: '20px' }}>
+            <CustomButton
+              handleClick={handleSendTemplateId}
+              title={t("Confirm my choice")}
+              position="start"
+            />
+          </div>}
+        </>
+      )}
     </div>
   );
 }

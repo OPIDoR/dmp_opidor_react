@@ -4,16 +4,16 @@ import AsyncSelect from "react-select/async";
 import { filterOptions } from "../../utils/GeneratorUtils";
 
 function CustomSelect({
-    propName = null,
-    options,
-    selectedOption = null,
-    onSelectChange,
-    async = false,
-    isDisabled = false,
-    placeholder = null,
+  propName = null,
+  options,
+  selectedOption = null,
+  onSelectChange,
+  async = false,
+  isDisabled = false,
+  placeholder = null,
 }) {
   const SelectComponent = async ? AsyncSelect : Select;
-  return(
+  return (
     <SelectComponent
       menuPortalTarget={document.body}
       styles={{

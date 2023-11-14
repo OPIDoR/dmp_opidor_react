@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
@@ -12,70 +12,60 @@ import CustomButton from "../Styled/CustomButton";
  * @returns A React component that renders a form with two radio buttons and a button to validate the user's choice. The component also uses context to
  * set the value of the selected radio button.
  */
-function FirstStep({ handleNextStep }) {
+function FirstStep({ nextStep }) {
   const { t } = useTranslation();
-  const { setResearchContext } = useContext(GlobalContext);
+  const { researchContext, setResearchContext } = useContext(GlobalContext);
 
-  /**
-   * When the checkbox is checked, the value of the checkbox is passed to the handleCheck
-   * function, which then sets the context state to the value of the
-   * checkbox.
-   */
-  const handleCheck = (val) => {
-    setResearchContext(val);
-  };
+  const categories = [
+    {
+      id: 'research_project',
+      title: t('For a research project'),
+      description: t('You are leading or participating in a research project, you are carrying out a research activity, you are preparing a doctorate.'),
+    },
+    {
+      id: 'research_entity',
+      title: t('For a research entity'),
+      description: t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.'),
+    }
+  ];
 
   return (
     <div>
       <CircleTitle number="1" title={t('Indicate the context of your DMP')} />
       <div className="column">
-        <div className="form-check">
-          <input
-            className={`form-check-label ${styles.check}`}
-            type="radio"
-            name="planContext"
-            id="researchProject"
-            onClick={() => handleCheck("research_project")}
-            style={{ cursor: 'pointer' }}
-          />
-          <label
-            className={`form-check-label ${styles.label_title}`}
-            htmlFor="researchProject"
-            style={{ cursor: 'pointer' }}
-          >
-            {t('For a research project')}
-          </label>
-          <div className={styles.list_context}>
-            {t('You are leading or participating in a research project, you are carrying out a research activity, you are preparing a doctorate.')}
-          </div>
-        </div>
-        <div className="form-check">
-          <input
-            className={`form-check-label ${styles.check}`}
-            type="radio"
-            name="planContext"
-            id="researchEntity"
-            onClick={() => handleCheck("research_entity")}
-            style={{ cursor: 'pointer' }}
-          />
-          <label
-            className={`form-check-label ${styles.label_title}`}
-            htmlFor="researchEntity"
-            style={{ cursor: 'pointer' }}
-          >
-            {t('For a research entity')}
-          </label>
-          <div className={styles.list_context}>
-            {t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.')}
-          </div>
-        </div>
+        {
+          categories.map(({ id, title, description }) => (
+            <div className="form-check" key={`category-${id}-form`}>
+              <input
+                key={`category-${id}`}
+                className={`form-check-label ${styles.check}`}
+                type="radio"
+                name="planContext"
+                id={id}
+                onClick={() => setResearchContext(id)}
+                defaultChecked={researchContext === id}
+                style={{ cursor: 'pointer' }}
+              />
+              <label
+                key={`category-${id}-label`}
+                className={`form-check-label ${styles.title}`}
+                htmlFor={id}
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+              >
+                {title}
+              </label>
+              <div className={styles.context_list} key={`category-${id}-description`}>{description}</div>
+            </div>
+          ))
+        }
       </div>
-      <div className="row">
-        {/* <button type="button" className="btn btn-primary validate" onClick={handleNextStep}>
-          Valider mon choix
-        </button> */}
-        <CustomButton handleClick={handleNextStep} title={t("Confirm my choice")} position="start"></CustomButton>
-      </div>
+      {researchContext && <div className="row" style={{ marginTop: '20px' }}>
+        <CustomButton
+          handleClick={() => nextStep('second')}
+          title={t("Confirm my choice")}
+          position="start"
+        />
+      </div>}
     </div>
   );
 }
