@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -14,16 +15,16 @@ import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 function SelectMultipleList({
-  values,
   label,
-  registries,
   propName,
-  handleChangeValue,
   tooltip,
   header,
+  registries,
   readonly,
 }) {
   const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
@@ -53,20 +54,17 @@ function SelectMultipleList({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    setSelectedValues(values || []);
-    if(registries.length === 1) {
-      setSelectedRegistry(registries[0]);
-    }
-  }, [values, registries]);
-
+    setSelectedValues(field.value || []);
+  }, [field.value]);
+  
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
     const newList = [...(selectedValues || []), e.value];
-    handleChangeValue(propName, newList);
     setSelectedValues(newList);
+    field.onChange(newList);
   };
 
   /**
@@ -121,8 +119,11 @@ function SelectMultipleList({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
-                    onChange={handleSelectRegistry}
-                    options={createRegistriesOptions(registries)}
+                    onSelectChange={handleSelectRegistry}
+                    options={registries.map((registry) => ({
+                      value: registry,
+                      label: registry,
+                    }))}
                     name={propName}
                     selectedOption={
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
@@ -140,7 +141,7 @@ function SelectMultipleList({
               <div className={`col-md-12 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
-                    onChange={handleSelectRegistryValue}
+                    onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}

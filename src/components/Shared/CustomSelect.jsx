@@ -7,7 +7,7 @@ function CustomSelect({
     propName = null,
     options,
     selectedOption = null,
-    onChange,
+    onSelectChange,
     async = false,
     isDisabled = false,
     placeholder = null,
@@ -23,7 +23,7 @@ function CustomSelect({
       }}
       name={propName}
       options={options}
-      onChange={onChange}
+      onChange={onSelectChange}
       value={selectedOption}
       placeholder={placeholder}
       loadOptions={async ? (value) => filterOptions(options, value) : undefined}

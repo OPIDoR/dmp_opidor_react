@@ -12,12 +12,12 @@ import SelectWithCreate from '../FormComponents/SelectWithCreate';
 import TinyArea from '../FormComponents/TinyArea';
 import { createLabel } from '../../utils/GeneratorUtils.js';
 
-function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readonly }) {
-  const { locale, dmpId } = useContext(GlobalContext);
+function FormBuilder({ template, readonly }) {
+  const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
   const defaults = template.default || {};
-  const data = [];
+  const formFields = [];
 
   // si type shema is an object
   // retun est code html
@@ -35,17 +35,13 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
       ) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
         if (prop.schema_id && prop.type === 'object') {
-          data.push(
+          formFields.push(
             <SelectSingleList
               key={key}
-              value={fragment[key]}
-              registries={prop["registries"] || [prop["registry_name"]]}
               label={label}
               propName={key}
-              handleChangeValue={handleChangeValue}
               tooltip={tooltip}
-              fragmentId={fragmentId}
-              fragment={fragment}
+              registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
               templateId={prop.schema_id}
               readonly={readonly}
@@ -55,17 +51,14 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
         }
         // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
         if (prop.items?.schema_id && prop.type === 'array') {
-          data.push(
+          formFields.push(
             <SelectWithCreate
               key={key}
-              values={fragment[key]}
               label={label}
               propName={key}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              handleChangeValue={handleChangeValue}
-              templateId={prop.items.schema_id}
               header={prop[`table_header@${locale}`]}
-              fragmentId={fragmentId}
+              templateId={prop.items.schema_id}
+              registries={prop["registries"] || [prop["registry_name"]]}
               readonly={readonly}
             ></SelectWithCreate>,
           );
@@ -73,16 +66,13 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
         }
         // SIMPLE REGISTRY, ONE VALUE SELECTABLE
         if (prop.type === 'string') {
-          data.push(
+          formFields.push(
             <SelectSingleList
               key={key}
-              value={fragment[key]}
               label={label}
               propName={key}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              handleChangeValue={handleChangeValue}
               tooltip={tooltip}
-              fragmentId={fragmentId}
+              registries={prop["registries"] || [prop["registry_name"]]}
               registryType="simple"
               readonly={readonly}
             ></SelectSingleList>,
@@ -91,15 +81,13 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
         }
         // MULTIPLE VALUES SELECTABLE
         if (prop.type === 'array') {
-          data.push(
+          formFields.push(
             <SelectMultipleList
               key={key}
-              values={fragment[key]}
               label={label}
               propName={key}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              handleChangeValue={handleChangeValue}
               tooltip={tooltip}
+              registries={prop["registries"] || [prop["registry_name"]]}
               readonly={readonly}
             ></SelectMultipleList>
           );
@@ -112,17 +100,13 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
 
       // CONTRIBUTOR
       if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
-        data.push(
+        formFields.push(
           <SelectContributorSingle
             key={key}
-            value={fragment[key]}
             propName={key}
             label={label}
-            handleChangeValue={handleChangeValue}
-            dmpId={dmpId}
-            templateId={prop.schema_id}
             tooltip={tooltip}
-            fragmentId={fragmentId}
+            templateId={prop.schema_id}
             readonly={readonly}
           ></SelectContributorSingle>,
         );
@@ -134,34 +118,27 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
        */
       if (prop.type === 'array' && prop.items.type === 'object' && prop.items.schema_id) {
         if (key === 'contributor' && (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard')) {
-          data.push(
+          formFields.push(
             <SelectContributorMultiple
               key={key}
-              values={fragment[key]}
-              handleChangeValue={handleChangeValue}
               label={label}
               propName={key}
-              templateId={prop.items.schema_id}
-              tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
-              fragmentId={fragmentId}
+              tooltip={tooltip}
+              templateId={prop.items.schema_id}
               readonly={readonly}
             ></SelectContributorMultiple>,
           );
         } else {
           // FRAGMENT LIST EDITABLE WITH MODAL
-          data.push(
+          formFields.push(
             <ModalTemplate
-              label={label}
-              values={fragment[key]}
-              handleChangeValue={handleChangeValue}
               key={key}
               propName={key}
+              label={label}
               tooltip={tooltip}
-              value={prop}
-              templateId={prop.items.schema_id}
               header={prop[`table_header@${locale}`]}
-              fragmentId={fragmentId}
+              templateId={prop.items.schema_id}
               readonly={readonly}
             ></ModalTemplate>,
           );
@@ -173,15 +150,12 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
        * ARRAY FIELDS
        */
       if (prop.type === 'array' && prop.items.type === 'string') {
-        data.push(
+        formFields.push(
           <InputTextDynamicaly
             key={key}
-            values={fragment[key]}
-            handleChangeValue={handleChangeValue}
             label={label}
             propName={key}
             tooltip={tooltip}
-            fragmentId={fragmentId}
             readonly={readonly}
           ></InputTextDynamicaly>,
         );
@@ -195,14 +169,11 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
       if (prop.type === 'string' || prop.type === 'number') {
         //   TEXTAREA
         if (prop.inputType === 'textarea') {
-          data.push(
+          formFields.push(
             <TinyArea
               key={key}
-              value={fragment[key]}
-              handleChangeValue={handleChangeValue}
               label={label}
               propName={key}
-              changeValue={handleChangeValue}
               tooltip={tooltip}
               readonly={readonly}
             ></TinyArea>,
@@ -210,19 +181,15 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
           continue;
         } else {
           // TEXT FIELDS
-          data.push(
+          formFields.push(
             <InputText
               key={key}
-              value={fragment[key]}
-              handleChangeValue={handleChangeValue}
               label={label}
               type={prop.format || prop.type}
               placeholder={''}
-              isSmall={false}
               propName={key}
-              changeValue={handleChangeValue}
-              hidden={prop.hidden}
               tooltip={tooltip}
+              hidden={prop.hidden}
               defaultValue={defaultValue}
               readonly={readonly}
             ></InputText>
@@ -232,7 +199,7 @@ function FormBuilder({ fragment, handleChangeValue, fragmentId, template, readon
       }
     }
   }
-  return data;
+  return formFields;
 }
 
 export default FormBuilder;

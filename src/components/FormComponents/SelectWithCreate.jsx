@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -22,15 +23,12 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 
 function SelectWithCreate({
-  values,
   label,
-  registries,
-  handleChangeValue,
   propName,
-  templateId,
   tooltip,
   header,
-  fragmentId,
+  templateId,
+  registries,
   readonly,
 }) {
   const { t } = useTranslation();
@@ -39,6 +37,8 @@ function SelectWithCreate({
     loadedRegistries, setLoadedRegistries,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
   const [fragmentsList, setFragmentsList] = useState([])
@@ -79,11 +79,8 @@ function SelectWithCreate({
   }, [selectedRegistry, locale]);
 
   useEffect(() => {
-    setFragmentsList(values || []);
-    if (registries.length === 1) {
-      setSelectedRegistry(registries[0]);
-    }
-  }, [values, registries]);
+    setFragmentsList(field.value || []);
+  }, [field.value]);
 
   const handleClose = () => {
     setShow(false);
@@ -101,8 +98,7 @@ function SelectWithCreate({
     setFragmentsList(
       pattern.length > 0 ? [...fragmentsList, newItem] : fragmentsList,
     );
-    // setFormData(updateFormState(formData, fragmentId, propName, [...(fragmentsList || []), newItem]));
-    handleChangeValue(propName, [...(fragmentsList || []), newItem])
+    field.onChange([...(fragmentsList || []), newItem]);
   };
 
   /**
@@ -115,8 +111,7 @@ function SelectWithCreate({
       if (result.isConfirmed) {
         const updatedFragmentList = fragmentsList;
         updatedFragmentList[idx]['action'] = 'delete';
-        handleChangeValue(propName, updatedFragmentList)
-        // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
+        field.onChange(updatedFragmentList);
       }
     });
   };
@@ -134,8 +129,7 @@ function SelectWithCreate({
       //add in update
       const deleteIndex = deleteByIndex(fragmentsList, index);
       const concatedObject = [...deleteIndex, { ...data, action: 'update' }];
-      // setFormData(updateFormState(formData, fragmentId, propName, concatedObject));
-      handleChangeValue(propName, concatedObject)
+      field.onChange(concatedObject);
 
       setEditedFragment({});
       handleClose();
@@ -151,8 +145,7 @@ function SelectWithCreate({
    */
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
-    // setFormData(updateFormState(formData, fragmentId, propName, newObject));
-    handleChangeValue(propName, newFragmentList)
+    field.onChange(newFragmentList);
 
     handleClose();
     setEditedFragment({});
@@ -200,8 +193,11 @@ function SelectWithCreate({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
-                    onChange={handleSelectRegistry}
-                    options={createRegistriesOptions(registries)}
+                    onSelectChange={handleSelectRegistry}
+                    options={registries.map((registry) => ({
+                      value: registry,
+                      label: registry,
+                    }))}
                     name={propName}
                     selectedOption={
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
@@ -219,7 +215,7 @@ function SelectWithCreate({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
-                    onChange={handleSelectRegistryValue}
+                    onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
@@ -262,7 +258,6 @@ function SelectWithCreate({
         )}
       </div>
       <ModalForm
-        fragmentId={fragmentId}
         data={editedFragment}
         template={template}
         label={t('Editing a person')}

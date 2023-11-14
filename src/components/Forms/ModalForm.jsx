@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import { useForm, FormProvider } from "react-hook-form";
 import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import ImportExternal from '../ExternalImport/ImportExternal';
 
 
-function ModalForm({ fragmentId, data, template, label, readonly, show, handleSave, handleClose, withImport = false }) {
+function ModalForm({ data, template, label, readonly, show, handleSave, handleClose, withImport = false }) {
   const { t } = useTranslation();
-  const [modalData, setModalData] = useState({});
+  const methods = useForm();
 
-  const handleModalValueChange = (propName, value) => {
-    setModalData({ ...modalData, [propName]: value });
-  }
   useEffect(() => {
-    setModalData(data);
+    methods.reset(data);
   }, [data]);
+
+  const onValid = (formData, event) => {
+    console.log(formData);
+    handleSave(formData);
+  };
+  const onInvalid = () => {
+    console.log("Modal form errors", methods.errors);
+  };
+
+  const handleModalSubmit = (e) => {
+    e.stopPropagation();
+    methods.handleSubmit(onValid, onInvalid)(e);
+  }
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -22,23 +33,22 @@ function ModalForm({ fragmentId, data, template, label, readonly, show, handleSa
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
-        {withImport && <ImportExternal fragment={modalData} setFragment={setModalData}></ImportExternal>}
-        <FormBuilder
-          fragment={modalData}
-          handleChangeValue={handleModalValueChange}
-          template={template}
-          fragmentId={fragmentId}
-          readonly={readonly}
-        ></FormBuilder>
+        {withImport && <ImportExternal fragment={methods.getValues()} setFragment={methods.reset}></ImportExternal>}
+        <FormProvider {...methods}>
+          <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
+            <FormBuilder
+              template={template}
+              readonly={readonly}
+            />
+          </form>
+        </FormProvider>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           {t("Close")}
         </Button>
         {!readonly && (
-          <Button variant="primary" onClick={() => handleSave(modalData)}>
-            {t("Save")}
-          </Button>
+          <input type="submit" form="modal-form" className="btn btn-primary" value="Save" />
         )}
       </Modal.Footer>
     </Modal>

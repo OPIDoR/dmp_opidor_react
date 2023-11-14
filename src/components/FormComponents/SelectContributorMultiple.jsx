@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useFormContext, useController } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -17,17 +18,16 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 
 function SelectContributorMultiple({
-  values,
-  handleChangeValue,
   label,
   propName,
-  templateId,
   tooltip,
   header,
-  fragmentId,
+  templateId,
   readonly,
 }) {
   const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
@@ -46,8 +46,8 @@ function SelectContributorMultiple({
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
   useEffect(() => {
-    setContributorList(values || [])
-  }, [values]);
+    setContributorList(field.value || [])
+  }, [field.value]);
 
 
   /* A hook that is called when the component is mounted. */
@@ -118,7 +118,7 @@ function SelectContributorMultiple({
     const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
     const newContributorList = [...contributorList, addedContributor];
     setContributorList(newContributorList);
-    handleChangeValue(propName, newContributorList)
+    field.onChange(newContributorList)
     setError(null);
   };
 
@@ -132,7 +132,7 @@ function SelectContributorMultiple({
       role: e.value,
       action: updatedContributorList[index].action || 'update'
     };
-    handleChangeValue(propName, updatedContributorList)
+    field.onChange(updatedContributorList)
 
   };
 
@@ -147,14 +147,14 @@ function SelectContributorMultiple({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        const newContributorList = [...values];
+        const newContributorList = [...contributorList];
         newContributorList[index] = {
           ...newContributorList[index],
           person: data,
           role: defaultRole,
           action: newContributorList[index].action || 'update'
         };
-        handleChangeValue(propName, newContributorList)
+        field.onChange(newContributorList)
 
         setContributorList([...contributorList, data]);
       } else {
@@ -174,8 +174,7 @@ function SelectContributorMultiple({
    */
   const handleSaveNew = (data) => {
     const newContributor = { person: { ...data, action: 'create' }, role: defaultRole, action: 'create' };
-    // setFormData(updateFormState(formData, fragmentId, propName, [...(contributorList || []), objectPerson]));
-    handleChangeValue(propName, [...(contributorList || []), newContributor])
+    field.onChange([...(contributorList || []), newContributor])
 
     setContributorList([...contributorList, newContributor]);
     handleClose();
@@ -193,8 +192,7 @@ function SelectContributorMultiple({
         const updatedList = [...contributorList];
         updatedList[idx]['action'] = 'delete';
         setContributorList(deleteByIndex(contributorList, idx));
-        // setFormData(updateFormState(formData, fragmentId, propName, filterDeleted));
-        handleChangeValue(propName, updatedList)
+        field.onChange(updatedList)
       }
     });
   };
@@ -233,7 +231,7 @@ function SelectContributorMultiple({
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
-              onChange={handleSelectContributor}
+              onSelectChange={handleSelectContributor}
               options={options}
               name={propName}
               isDisabled={readonly}
@@ -275,7 +273,6 @@ function SelectContributorMultiple({
       <>
         {template && (
           <ModalForm
-            fragmentId={fragmentId}
             data={editedPerson}
             template={template}
             label={t('Editing a person')}
