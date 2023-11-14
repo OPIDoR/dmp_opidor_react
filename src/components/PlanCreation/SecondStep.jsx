@@ -170,7 +170,7 @@ function SecondStep({ prevStep }) {
     setUrlParams({ step: undefined });
 
     if (localStorage.getItem('researchContext')) {
-      localStorage.remove('researchContext');
+      localStorage.removeItem('researchContext');
     }
 
     window.location = `/plans/${response.data.id}`
