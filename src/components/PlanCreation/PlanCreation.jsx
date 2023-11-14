@@ -27,12 +27,12 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     i18n.changeLanguage(locale.substring(0, 2));
 
     const queryParameters = new URLSearchParams(window.location.search);
-    const step = queryParameters.get('step');
-    setSteps(prevSteps => ({
+    const step = queryParameters.get('step') || 'first';
+    setSteps({
       firstStep: step === 'first',
       secondStep: step === 'second',
-    }));
-    setUrlParams({ step: step || 'first' });
+    });
+    setUrlParams({ step });
   }, [locale, currentOrgId, currentOrgName]);
 
   const handleSteps = (step) => {
