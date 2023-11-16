@@ -19,7 +19,7 @@ function CustomSelect({
       styles={{
         menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
         singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
+        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
       }}
       name={propName}
       options={options}

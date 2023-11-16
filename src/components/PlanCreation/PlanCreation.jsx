@@ -1,53 +1,120 @@
 import React, { useContext, useEffect, useState } from 'react';
-
-import FirstStep from './FirstStep';
-import SecondStep from './SecondStep';
-import styles from '../assets/css/main.module.css';
-import Info from '../Styled/Info';
-import { GlobalContext } from '../context/Global';
 import { useTranslation } from 'react-i18next';
+import { Step, Stepper } from 'react-form-stepper';
 
-/**
- * This is a React component that renders a plan with two steps and a banner, header, info message, and footer.
- * @returns The Plan component is being returned, which includes a Header, Banner, Info, FirstStep, SecondStep, and Footer components. The Info component
- * displays a message to the user, and the FirstStep and SecondStep components are conditionally rendered based on the state of the firstStep and
- * secondStep variables. The handleNextStep function is used to update the state of these variables when the user clicks a
- */
+
+import { CustomButton } from "../Styled";
+import { ContextSelection, TypeSelection , TemplateSelection } from './Steps';
+import styles from '../assets/css/main.module.css';
+import stepperStyles from '../assets/css/stepper.module.css';
+import { GlobalContext } from '../context/Global';
+import { t } from 'i18next';
+
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
   const { i18n } = useTranslation();
-  const { setLocale, setCurrentOrg, setUrlParams } = useContext(GlobalContext);
-  const [steps, setSteps] = useState({
-    firstStep: true,
-    secondStep: false,
-  });
+  const {
+    setLocale,
+    setCurrentOrg,
+    setUrlParams,
+    researchContext, setResearchContext,
+    isStructured, setIsStructured,
+    selectedTemplate, setSelectedTemplate,
+  } = useContext(GlobalContext);
+
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    {
+      label: t('Context selection'),
+      component: <ContextSelection />,
+    },
+    {
+      label: t('Type selection'),
+      component: <TypeSelection />,
+    },
+    {
+      label: t('Template selection'),
+      component: <TemplateSelection />,
+    }
+  ];
 
   useEffect(() => {
     setLocale(locale);
     setCurrentOrg({id: currentOrgId, name: currentOrgName});
     i18n.changeLanguage(locale.substring(0, 2));
 
+    setResearchContext(researchContext || localStorage.getItem('researchContext') || null);
+
+    const isStructuredValue = localStorage.getItem('isStructured');
+    setIsStructured(isStructured || isStructuredValue ? isStructuredValue === 'true' : null);
+
+    setSelectedTemplate(selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null);
+
     const queryParameters = new URLSearchParams(window.location.search);
-    const step = queryParameters.get('step') || 'first';
-    setSteps({
-      firstStep: step === 'first',
-      secondStep: step === 'second',
-    });
-    setUrlParams({ step });
+    let step = Number.parseInt(queryParameters.get('step'), 10) || 0;
+
+    if (!researchContext) { step = 0; }
+
+    setCurrentStep(step);
+    setUrlParams({ step: `${step || 0}` });
   }, [locale, currentOrgId, currentOrgName]);
 
-  const handleSteps = (step) => {
-    setSteps(prevSteps => ({
-      ...prevSteps,
-      firstStep: step === 'first',
-      secondStep: step === 'second',
-    }));
-    setUrlParams({ step });
+  const prevStep = <CustomButton
+    handleClick={() => handleStep(currentStep - 1)}
+    title={t("Go back to previous step")}
+    position="start"
+  />
+
+  const nextStep = () => {
+    handleStep(currentStep + 1);
+  };
+
+  const handleStep = (index) => {
+    if (index < 0 || index > steps.length) { return; }
+
+    setCurrentStep(index);
+    setUrlParams({ step: index });
   };
 
   return (
-    <div className={styles.main}>
-      {steps.firstStep && <FirstStep key="firstStep" nextStep={handleSteps} />}
-      {steps.secondStep && <SecondStep key="secondStep" prevStep={handleSteps} />}
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-12">
+          <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
+            <Stepper
+              activeStep={currentStep}
+              connectorStateColors
+              styleConfig={{
+                activeBgColor: '#c6503d',
+                size: 55,
+                labelFontSize: 18
+              }}
+              className={stepperStyles.stepper_steps}
+            >
+              {
+                steps.map(({ label }, index) => (
+                  <Step
+                    key={`step-${index}`}
+                    label={label}
+                    onClick={() => handleStep(index)}
+                  />
+                ))
+              }
+            </Stepper>
+            <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
+              {
+                steps.map(({ component }, index) => {
+                  return currentStep === index && React.cloneElement(component, {
+                    key: `step-${index}-component`,
+                    nextStep,
+                    prevStep: index > 0 ? prevStep : undefined,
+                  });
+                })
+              }
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

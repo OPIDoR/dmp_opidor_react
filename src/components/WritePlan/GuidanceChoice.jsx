@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { PiLightbulbLight } from "react-icons/pi";
+import { TbBulbFilled } from "react-icons/tb";
 import { GlobalContext } from '../context/Global.jsx';
 import guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import { guidances } from "../../services";
@@ -177,20 +177,23 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
             style={{
               background: 'white',
               borderRadius: '5px',
+              fontWeight: 900,
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ flexGrow: 3, alignItems: 'center', textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', color: 'var(--dark-blue)'}}>
-                  <PiLightbulbLight
-                    fill={"var(--rust)"}
-                    size={24}
-                    style={{ marginRight: '10px' }}
-                  />
-                  {t("Select the guidance of your plan")}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TbBulbFilled
+                      fill={'var(--rust)'}
+                      size={38}
+                      style={{ marginRight: '10px', color: 'var(--rust)' }}
+                    />
+                    <span style={{ color: 'var(--dark-blue)', marginTop: '3px' }}>{t("Select the guidance of your plan")}</span>
+                  </div>
                 </div>
               </div>
-              <div style={{ width: '28px' }}>
+              <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (
                   <TfiAngleUp size={24} fill={"var(--rust)"} />
                 ) : (

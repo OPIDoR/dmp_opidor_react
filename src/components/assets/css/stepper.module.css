@@ -1,0 +1,10 @@
+@import url("./variable.css");
+
+.stepper_container {
+  border: 2px solid var(--blue);
+  border-radius: 8px;
+}
+
+.stepper_steps {
+  border-bottom: 2px solid var(--blue);
+}
