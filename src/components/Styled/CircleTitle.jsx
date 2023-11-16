@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const CircleContent = styled.div`
-  margin: 30px;
+  margin: 30px 0 0 10px;
+  display: flex;
+  align-items: center;
 `;
 
 const Circle = styled.div`
   border-radius: 50%;
-  width: 53px !important;
+  width: 55px !important;
   height: 55px;
   padding: 0px;
   background: var(--rust);
@@ -15,13 +17,15 @@ const Circle = styled.div`
   color: var(--white);
   text-align: center;
   margin: 5px;
-  font-size: 30px;
-  font-family: tomarikDisplay;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
 `;
 
 const CircleText = styled.div`
   color: var(--dark-blue);
-  margin: 18px 0px 0px 5px;
   font-size: 25px;
   font-weight: bold;
 `;
@@ -29,12 +33,12 @@ const CircleText = styled.div`
 function CircleTitle({ number, title }) {
   return (
     <div className="row">
-      <CircleContent className="row">
-        <div className="row">
-          <Circle className="col-md-4">{number}</Circle>
-          <CircleText className="col-md-8">{title}</CircleText>
-        </div>
-      </CircleContent>
+      <div className="col-12">
+        <CircleContent>
+          <Circle>{number}</Circle>
+          <CircleText>{title}</CircleText>
+        </CircleContent>
+      </div>
     </div>
   );
 }

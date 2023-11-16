@@ -1,26 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
-import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
-import styles from "../assets/css/steps.module.css";
-import { planCreation } from "../../services";
-import { GlobalContext } from "../context/Global";
-import { CustomButton, CircleTitle } from "../Styled";
-import { CustomSpinner, CustomError, CustomSelect } from "../Shared";
+import styles from "../../assets/css/steps.module.css";
+import { planCreation } from "../../../services";
+import { GlobalContext } from "../../context/Global";
+import { CustomButton } from "../../Styled";
+import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
 
-/* The above code is a React functional component that renders a form with radio buttons to select a template for a document. It fetches data from APIs
-using useEffect hooks and uses react-select library to create dropdown menus. It also has functions to handle the selection of options and to send the
-selected template ID to the next step. */
-function SecondStep({ prevStep }) {
+function TemplateSelection({ prevStep }) {
   const { t } = useTranslation();
   const {
-    researchContext, setResearchContext,
+    researchContext,
     currentOrg,
     setUrlParams,
     planTemplates, setPlanTemplates,
     selectedTemplate, setSelectedTemplate,
+    isStructured,
   } = useContext(GlobalContext);
 
   const [loading, setLoading] = useState(false);
@@ -30,17 +29,11 @@ function SecondStep({ prevStep }) {
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
-    setResearchContext(researchContext);
-
-    if (!researchContext) {
-      setResearchContext(localStorage.getItem('researchContext') || '');
-    }
-
     const tmpls = {
       default: { title: t('Default template'), templates: [] },
-      myOrg: { title: `${currentOrg.name} (${t('your organisation')})`, templates: [] },
+      myOrg: { title: `${currentOrg.name} (${t('Your organisation')})`, templates: [] },
       othersOrgs: { id: 'otherOrgs', title: t('Other organisation'), type: 'select', data: [] },
-      funders: { id: 'funders', title: t('Funder'), type: 'select', data: [] },
+      funders: { id: 'funders', title: t('Funders'), type: 'select', data: [] },
     };
 
     const fetchTemplates = async () => {
@@ -54,7 +47,10 @@ function SecondStep({ prevStep }) {
         return handleError(error);
       }
 
-      tmpls.default.templates = Array.isArray(currentTemplatesRes?.data || []) ? currentTemplatesRes?.data : [currentTemplatesRes?.data];
+      tmpls.default.templates = (Array.isArray(currentTemplatesRes?.data || [])
+        ? currentTemplatesRes?.data
+        : [currentTemplatesRes?.data]
+      ).filter(({ structured }) => structured === isStructured);
 
       let myOrgTemplatesRes;
       try {
@@ -64,7 +60,7 @@ function SecondStep({ prevStep }) {
         return handleError(error);
       }
 
-      tmpls.myOrg.templates = myOrgTemplatesRes?.data || [];
+      tmpls.myOrg.templates = myOrgTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [];
 
       let orgsRes;
       try {
@@ -90,7 +86,7 @@ function SecondStep({ prevStep }) {
 
         tmpls.othersOrgs.data.push({
           ...org,
-          templates: orgTemplatesRes?.data || [],
+          templates: orgTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [],
           selected: false,
         });
       }
@@ -118,7 +114,7 @@ function SecondStep({ prevStep }) {
 
         tmpls.funders.data.push({
           ...funder,
-          templates: fundersTemplatesRes?.data || [],
+          templates: fundersTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [],
           selected: false,
         });
       }
@@ -172,11 +168,17 @@ function SecondStep({ prevStep }) {
     if (localStorage.getItem('researchContext')) {
       localStorage.removeItem('researchContext');
     }
+    if (localStorage.getItem('isStructured')) {
+      localStorage.removeItem('isStructured');
+    }
+    if (localStorage.getItem('templateId')) {
+      localStorage.removeItem('templateId');
+    }
 
     window.location = `/plans/${response.data.id}`
   };
 
-  const handelSelectedList = (selectedValue) => {
+  const handleSelectedList = (selectedValue) => {
     const data = { ...planTemplates };
 
     setPlanTemplates({
@@ -198,14 +200,36 @@ function SecondStep({ prevStep }) {
     for (const template of templates) {
       const element = (
         <div
-          className={`${styles.context_list} ${template.id === selectedTemplate ? styles.checked : ''}`}
+          className={`${styles.step_list} ${template.id === selectedTemplate ? styles.checked : ''}`}
           key={`template-${index}-${template.id}`}
           style={{
             cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginLeft: '20px',
           }}
-          onClick={() => setSelectedTemplate(template.id)}
+          onClick={() => {
+            localStorage.setItem('templateId', template.id);
+            setSelectedTemplate(template.id);
+          }}
         >
-          {template.title}
+          <div key={`template-${index}-title`}>{template.title}</div>
+          <ReactTooltip
+            id={`template-${index}-description-tooltip`}
+            place="left"
+            effect="solid"
+            variant="info"
+            key={`template-${index}-description-tooltip`}
+            style={{ width: '600px', textAlign: 'center' }}
+          >
+            {template?.description?.trim()}
+          </ReactTooltip>
+          <FaMagnifyingGlass
+            data-tooltip-id={`template-${index}-description-tooltip`}
+            key={`template-${index}-magnifier`}
+            size={18}
+            style={{ marginRight: '10px', cursor: 'pointer' }}
+          />
         </div>
       );
       list.push(element);
@@ -242,44 +266,45 @@ function SecondStep({ prevStep }) {
       templates,
     }));
 
-    return (
-      <div style={{ width: '100%', marginLeft: '10px' }}>
-        <CustomSelect
-          key={`select-${index}-${type}`}
-          placeholder={placeHolder}
-          options={data}
-          onChange={handelSelectedList}
-          selectedOption={data.find(({ selected }) => selected)}
-        />
-        <div key={`template-${index}-${type}`} style={{ marginTop: '10px' }}>
-          {createList({
-            index,
-            templates: data.find(({ selected }) => selected)?.templates || [],
-          })}
-        </div>
+    const structuredTemplates = [];
+    data.forEach(({ templates }) => {
+      if (templates.length > 0) {
+        structuredTemplates.push(templates);
+      }
+    });
+
+    return structuredTemplates.length <= 0 ? noModelAvailable : <div style={{ marginLeft: '30px' }}>
+      <CustomSelect
+        key={`select-${index}-${type}`}
+        placeholder={placeHolder}
+        options={data}
+        onSelectChange={handleSelectedList}
+        selectedOption={data.find(({ selected }) => selected)}
+      />
+      <div key={`template-${index}-${type}`} style={{ margin: '10px 0 10px 20px' }}>
+        {createList({
+          index,
+          templates: data.find(({ selected }) => selected)?.templates || [],
+        })}
       </div>
-    );
+    </div>;
   };
 
   return (
     <div>
-      <CircleTitle number="2" title={t('Choose your template')} />
+      <h2>{t('Select a management plan template')}</h2>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && (
         <>
-          <div className="column">
-            <span
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                return prevStep('first');
+          <Trans
+              defaults="You can choose a template provided by your organization, another organization or a funding agency.<br>The default template is <bold>{{model}}</bold>."
+              values={{
+                model: planTemplates?.default?.templates?.[0]?.title || 'Science Europe : modèle structuré',
               }}
-              style={{ display: 'block', marginBottom: '20px', cursor: 'pointer' }}
-            >
-              <BsFillArrowLeftCircleFill size={12} style={{ marginRight: '10px' }} />
-              {t('Go back to previous step')}
-            </span>
+              components={{ br: <br />, bold: <strong /> }}
+          />
+          <div className="column">
             {
               Object.keys(planTemplates).map((index) => (
                 <div key={`category-${index}`}>
@@ -291,17 +316,21 @@ function SecondStep({ prevStep }) {
               ))
             }
           </div>
-          { selectedTemplate && <div className="row" style={{ marginTop: '20px' }}>
-            <CustomButton
-              handleClick={handleSendTemplateId}
-              title={t("Confirm my choice")}
-              position="start"
-            />
-          </div>}
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {prevStep}
+            <div className="row" style={{ margin: '0 0 0 25px' }}>
+              <CustomButton
+                handleClick={handleSendTemplateId}
+                title={t("Confirm my choice")}
+                position="end"
+                disabled={!selectedTemplate}
+              />
+            </div>
+          </div>
         </>
       )}
     </div>
   );
 }
 
-export default SecondStep;
+export default TemplateSelection;

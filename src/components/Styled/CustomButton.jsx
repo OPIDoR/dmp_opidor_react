@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 const Button = styled.button`
   padding: 10px 20px 10px 20px;
+  box-sizing: border-box;
   border-radius: 10px;
   font-size: 15px;
   background-color: ${(props) => (props.$buttonColor === "primary" ? "var(--dark-blue)" : "var(--rust)")} !important;
@@ -17,7 +18,7 @@ const Button = styled.button`
 
 const DivButton = styled.div`
   display: flex;
-  justify-content: ${(props) => (props.$position === "start" ? "start" : "center") };
+  justify-content: ${(props) => (props.$position || "start") };
 `;
 
 /**
