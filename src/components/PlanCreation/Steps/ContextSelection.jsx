@@ -38,7 +38,10 @@ function ContextSelection({ nextStep }) {
             className={`${styles.step_list}  ${researchContext === id ? styles.checked : ''}`}
             onClick={() => {
               localStorage.setItem('researchContext', id);
-              setResearchContext(id);
+              if (researchContext === id) {
+                return setResearchContext(null);
+              }
+              return setResearchContext(id);
             }}
           >
             <div
