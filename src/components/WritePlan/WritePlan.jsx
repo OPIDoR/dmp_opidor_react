@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
+import { format } from "date-fns";
+import { fr, enGB } from "date-fns/locale";
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -10,6 +12,8 @@ import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import styles from "../assets/css/sidebar.module.css";
 
+const locales = { fr, en: enGB };
+
 function WritePlan({
   locale = 'en_GB',
   planId,
@@ -19,7 +23,7 @@ function WritePlan({
   currentOrgId,
   currentOrgName,
 }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     setFormData,
     setPlanData,
@@ -30,6 +34,7 @@ function WritePlan({
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
+    planInformations,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -106,6 +111,27 @@ function WritePlan({
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} />
           </div>
+          {
+            planInformations && (
+              <div style={{
+                textAlign: 'center',
+                color: 'grey',
+                fontSize: '16px',
+                margin: '20px 0 20px 0',
+              }}>
+                <Trans
+                  defaults="This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}})"
+                  values={{
+                    model: planInformations.title,
+                    orgName: planInformations.org,
+                    version: planInformations.version,
+                    publishedDate: format(new Date(planInformations.publishedDate), 'dd LLLL yyyy', { locale: locales[planInformations.locale || i18n.resolvedLanguage] }),  
+                  }}
+                  components={{ bold: <strong /> }}
+                />
+              </div>
+            )
+          }
           <div className={styles.section}>
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
