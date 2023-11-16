@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import DOMPurify from "dompurify";
 
 import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
@@ -210,7 +211,10 @@ function TemplateSelection({ prevStep }) {
           }}
           onClick={() => {
             localStorage.setItem('templateId', template.id);
-            setSelectedTemplate(template.id);
+            if (selectedTemplate === template.id) {
+              return setSelectedTemplate(null);
+            }
+            return setSelectedTemplate(template.id);
           }}
         >
           <div key={`template-${index}-title`}>{template.title}</div>
@@ -218,11 +222,13 @@ function TemplateSelection({ prevStep }) {
             id={`template-${index}-description-tooltip`}
             place="left"
             effect="solid"
-            variant="info"
+            variant="dark"
             key={`template-${index}-description-tooltip`}
             style={{ width: '600px', textAlign: 'center' }}
           >
-            {template?.description?.trim()}
+            <div dangerouslySetInnerHTML={{
+              __html: template?.description?.trim(),
+            }} />
           </ReactTooltip>
           <FaMagnifyingGlass
             data-tooltip-id={`template-${index}-description-tooltip`}

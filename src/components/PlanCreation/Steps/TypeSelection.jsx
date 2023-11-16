@@ -32,7 +32,10 @@ function TypeSelection({ prevStep, nextStep }) {
             className={`${styles.step_list}  ${isStructured === structured ? styles.checked : ''}`}
             onClick={() => {
               localStorage.setItem('isStructured', structured);
-              setIsStructured(structured);
+              if (isStructured === structured) {
+                return setIsStructured(null);
+              }
+              return setIsStructured(structured);
             }}
           >
             <div

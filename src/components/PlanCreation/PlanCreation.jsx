@@ -43,7 +43,8 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     setCurrentOrg({id: currentOrgId, name: currentOrgName});
     i18n.changeLanguage(locale.substring(0, 2));
 
-    setResearchContext(researchContext || localStorage.getItem('researchContext') || null);
+    const context = researchContext || localStorage.getItem('researchContext') || null
+    setResearchContext(context);
 
     const isStructuredValue = localStorage.getItem('isStructured');
     setIsStructured(isStructured || isStructuredValue ? isStructuredValue === 'true' : null);
@@ -51,9 +52,9 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     setSelectedTemplate(selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null);
 
     const queryParameters = new URLSearchParams(window.location.search);
-    let step = Number.parseInt(queryParameters.get('step'), 10) || 0;
+    let step = Number.parseInt(queryParameters.get('step') || 0, 10);
 
-    if (!researchContext) { step = 0; }
+    if (!context) { step = 0; }
 
     setCurrentStep(step);
     setUrlParams({ step: `${step || 0}` });
