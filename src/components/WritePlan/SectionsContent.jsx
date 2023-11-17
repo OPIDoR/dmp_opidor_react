@@ -21,6 +21,7 @@ function SectionsContent({ planId, templateId, readonly }) {
     setOpenedQuestions,
     setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
+    setPlanInformations,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -36,6 +37,15 @@ function SectionsContent({ planId, templateId, readonly }) {
     setLoading(true);
     writePlan.getSectionsData(templateId)
       .then((res) => {
+
+        setPlanInformations({
+          locale: res?.data?.locale.split('-')?.at(0) || 'fr',
+          title: res?.data?.title,
+          version: res?.data?.version,
+          org: res?.data?.org,
+          publishedDate: res?.data?.publishedDate,
+        });
+
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
         //   return el.id === displayedResearchOutput.id;
         // });
@@ -100,11 +110,11 @@ function SectionsContent({ planId, templateId, readonly }) {
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && sectionsData && (
+      {!error && sectionsData?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
             <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
-            {sectionsData.map((section) => (
+            {sectionsData?.sections?.map((section) => (
               <Section
                 key={section.id}
                 section={section}

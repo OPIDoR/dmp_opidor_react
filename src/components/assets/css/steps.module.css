@@ -1,12 +1,32 @@
 @import url("./variable.css");
 
-.context_list {
+.step_list {
   border-radius: 8px;
   border: solid;
   border-color: grey;
   border-width: 1px;
-  margin: 1px 1px 10px 10px;
-  padding: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px 0;
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover > .step_title {
+    color: var(--white);
+  }
+
+  &:hover {
+    background-color: var(--blue);
+    color: var(--white);
+  }
+}
+
+.step_title {
+  font-size: 25px;
+  margin: 5px 0px 10px 0;
+  color: var(--blue);
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .checked {
@@ -14,8 +34,7 @@
   color: var(--white);
 }
 
-.check[type="radio"]:checked + label + div {
-  background-color: var(--dark-blue);
+.checked > .step_title {
   color: var(--white);
 }
 
@@ -24,6 +43,11 @@
   margin: 5px 0px 10px 0;
   color: var(--blue);
   font-weight: bold;
+  transition: 0.3s;
+
+  &:hover {
+    color: var(--dark-blue);
+  }
 }
 
 .subtitle {
