@@ -44,11 +44,13 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
         </FormProvider>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
           {t("Close")}
         </Button>
         {!readonly && (
-          <input type="submit" form="modal-form" className="btn btn-primary" value="Save" />
+          <Button bsStyle="primary" type="submit" form="modal-form" style={{ margin: '0 5px 0 5px' }}>
+            {t('Save')}
+          </Button>
         )}
       </Modal.Footer>
     </Modal>
