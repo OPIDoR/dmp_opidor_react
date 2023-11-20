@@ -29,7 +29,8 @@ function SelectWithCreate({
   header,
   templateId,
   registries,
-  readonly,
+  overridable = false,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const {
@@ -223,11 +224,12 @@ function SelectWithCreate({
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, t)}
+                    placeholder={createRegistryPlaceholder(registries, overridable, 'complex', t)}
+                    overridable={false}
                   />
                 )}
               </div>
-              {!readonly && (
+              {!readonly && overridable && (
                 <div className="col-md-1">
                   <ReactTooltip
                     id="select-with-create-add-button"
@@ -237,7 +239,7 @@ function SelectWithCreate({
                     content={t('Add')}
                   />
                   <FaPlus
-                    data-tooltip-id="select-contributor-single-add-button"
+                    data-tooltip-id="select-with-create-add-button"
                     onClick={() => {
                       setShow(true);
                       setIndex(null);

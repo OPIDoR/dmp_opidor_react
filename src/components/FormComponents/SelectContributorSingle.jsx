@@ -213,7 +213,7 @@ function SelectContributorSingle({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={t("Select a value from the list")}
+              placeholder={t("Select a value from the list or create a new one by clicking on +")}
             />
           </div>
           {!readonly && (

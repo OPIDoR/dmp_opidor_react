@@ -20,7 +20,8 @@ function SelectMultipleList({
   tooltip,
   header,
   registries,
-  readonly,
+  overridable = false,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -149,7 +150,8 @@ function SelectMultipleList({
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, t)}
+                    placeholder={createRegistryPlaceholder(registries, overridable, 'simple', t)}
+                    overridable={overridable}
                   />
                 )}
               </div>
