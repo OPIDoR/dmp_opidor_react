@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaEdit, FaEye } from 'react-icons/fa';
+import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import { IoIosClose } from 'react-icons/io';
 import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
 
@@ -29,13 +29,13 @@ function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form'
                       {!readonly && (
                         <>
                           {parent === 'form' && (
-                            <FaEdit
+                            <FaPenToSquare
                               size={18}
                               onClick={() => handleEdit(idx)}
                               style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
                             />
                           )}
-                          <IoIosClose
+                          <FaXmark
                             onClick={(e) => handleDelete(idx)}
                             size={18}
                             style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
