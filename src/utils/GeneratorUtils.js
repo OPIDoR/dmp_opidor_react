@@ -180,11 +180,23 @@ export function createRegistriesOptions(registries) {
   return [ {value:'', label:''}, ...options ];
 }
 
-export function createRegistryPlaceholder(registries, t) {
+export function createRegistryPlaceholder(registries, overridable, registryType, t) {
   if(registries.length > 1) {
-    return t("Then select a value from the list");
+    if (overridable) {
+      return registryType === 'complex' ? 
+      t("Then select a value from the list or create a new one by clicking on +") :
+      t("Then select a value from the list or type a new one") ;
+    } else {
+      return t("Then select a value from the list");
+    }
   } else {
-    return t("Select a value from the list");
+    if (overridable) {
+      return registryType === 'complex' ? 
+      t("Select a value from the list or create a new one by clicking on +") :
+      t("Select a value from the list or type a new one") ;
+    } else {
+      return t("Select a value from the list");
+    }
   }
 }
 

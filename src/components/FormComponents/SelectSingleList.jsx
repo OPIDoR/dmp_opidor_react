@@ -16,7 +16,14 @@ label, name, changeValue, tooltip, registry, and schemaId. It uses the useState 
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-   label, propName, tooltip, registries, registryType, templateId, readonly
+   label,
+   propName,
+   tooltip,
+   registries,
+   registryType,
+   templateId,
+   overridable = false,
+   readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -31,7 +38,7 @@ function SelectSingleList({
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
-  const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : null);
+  const [selectedOption, setSelectedOption] = useState(null);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
   const nullValue = registryType === 'complex' ? {} : null;
@@ -156,7 +163,8 @@ function SelectSingleList({
                     selectedOption={selectedOption}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, t)}
+                    placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
+                    overridable={registryType === 'complex' ? false : overridable}
                   />
                 )}
               </div>
