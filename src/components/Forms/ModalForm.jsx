@@ -15,7 +15,6 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
   }, [data]);
 
   const onValid = (formData, event) => {
-    console.log(formData);
     handleSave(formData);
   };
   const onInvalid = () => {
@@ -28,7 +27,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
   }
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal className="dmpopidor-branding" show={show} onHide={handleClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
