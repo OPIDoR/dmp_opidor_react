@@ -3,16 +3,15 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { FaPenToSquare, FaPlus, FaEye } from 'react-icons/fa6';
 
 import { service } from '../../services';
-import { createOptions, createRegistriesOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
+import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
-import { FaPenToSquare, FaPlus } from 'react-icons/fa6';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { createPortal } from 'react-dom';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -47,6 +46,7 @@ function SelectSingleList({
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
   const nullValue = registryType === 'complex' ? {} : null;
+  const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
     setSelectedValue(field.value || nullValue);
@@ -119,7 +119,7 @@ function SelectSingleList({
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
-    const newFragment = {...field.value, ...data, action: 'update' };
+    const newFragment = { ...field.value, ...data, action: 'update' };
     field.onChange(newFragment);
 
     setEditedFragment({});
@@ -210,14 +210,15 @@ function SelectSingleList({
           <div
             id={`nested-form-${propName}`}
             className={styles.nestedForm}
-            style={{display: showNestedForm ? 'block' : 'none'}}
+            style={{ display: showNestedForm ? 'block' : 'none' }}
           ></div>
         )}
-        {!readonly && showNestedForm && (
+        {showNestedForm && (
           <NestedForm
             propName={propName}
             data={editedFragment}
             template={template}
+            readonly={readonly}
             handleSave={handleSaveNestedForm}
             handleClose={() => {
               setShowNestedForm(false);
@@ -240,7 +241,7 @@ function SelectSingleList({
                     {parsePattern(el, template.to_string)}
                   </td>
                   <td style={{ width: "10%" }}>
-                    <FaPenToSquare
+                    <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
                         setEditedFragment(field.value);

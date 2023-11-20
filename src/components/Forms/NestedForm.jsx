@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 import styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 
-function NestedForm({ propName, data, template, handleSave, handleClose }) {
+function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
   const methods = useForm();
 
@@ -34,16 +34,18 @@ function NestedForm({ propName, data, template, handleSave, handleClose }) {
         <form name="nested-form" id="nested-form" style={{ margin: '15px' }} onSubmit={(e) => handleNestedFormSubmit(e)}>
           <FormBuilder
             template={template}
-            readonly={false}
+            readonly={readonly}
           />
         </form>
         <div className={styles.nestedFormFooter}>
           <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
             {t("Cancel")}
           </Button>
-          <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
-            {t('Save')}
-          </Button>
+          {!readonly && (
+            <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
+              {t('Save')}
+            </Button>
+          )}
         </div>
       </FormProvider>,
       document.getElementById(`nested-form-${propName}`)
