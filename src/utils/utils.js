@@ -1,10 +1,10 @@
 export function pick(data, keys) {
   return keys
-  .filter(key => data[key])
-  .reduce((acc, key) => {
-    acc[key] = data[key];
-    return acc;
-  }, {});
+    .filter(key => data[key])
+    .reduce((acc, key) => {
+      acc[key] = data[key];
+      return acc;
+    }, {});
 }
 
 
@@ -12,6 +12,19 @@ export function exists(data, list, keys) {
   return list.some(item =>
     keys.every(key => item[key] === data[key])
   )
+}
+
+export function except(data, excludedKeys) {
+  const rest = {...data};
+  excludedKeys.forEach(key => {
+    delete rest[key];
+  });
+  return rest;
+}
+
+export function fragmentEmpty(data) {
+  let rest = except(data, ['id', 'schema_id']);
+  return Object.keys(rest).length === 0
 }
 
 export function normalizeString(str) {
@@ -30,7 +43,7 @@ export function isValidHttpUrl(string) {
   try {
     url = new URL(string);
   } catch (_) {
-    return false;  
+    return false;
   }
   return url.protocol === "http:" || url.protocol === "https:";
 }
