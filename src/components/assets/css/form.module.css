@@ -194,3 +194,17 @@ input:checked + .switchSlider .switchOff {
 .switchSlider.switchRound:before {
   border-radius: 50%;
 }
+
+.nestedForm {
+  border: 1px solid var(--dark-blue);
+  border-left-width: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+  padding: 5px 0;
+  width: 90%;
+}
+
+.nestedFormFooter {
+  display: flex;
+  justify-content: flex-end;
+}
