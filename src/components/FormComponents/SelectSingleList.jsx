@@ -12,6 +12,7 @@ import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
+import { fragmentEmpty } from '../../utils/utils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -227,7 +228,7 @@ function SelectSingleList({
           />
         )}
 
-        {registryType === 'complex' && selectedValue && !showNestedForm && (
+        {registryType === 'complex' && !fragmentEmpty(selectedValue) && !showNestedForm && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               <tr>
