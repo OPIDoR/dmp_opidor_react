@@ -284,20 +284,19 @@ function GeneralInfo({
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body className={styles.panel_body} collapsible={true}>
-          <div className="container" style={{ display: "flex", justifyContent: "end", margin: "20px 0px 0px -110px " }}>
-            <div className="form-check form-switch">
-              <input
-                type="checkbox"
-                id="is_test"
-                checked={isTestPlan}
-                onClick={() => setIsTestPlan(!isTestPlan)}
-                onChange={(e) => handleClickIsTestPlan(e)}
-                disabled={readonly}
-              />
-              <label className="form-check-label" htmlFor="is_test">
-                {t('Test Plan')}
-              </label>
-            </div>
+          <div className="form-check form-switch" style={{ marginLeft: '15px' }}>
+            <input
+              type="checkbox"
+              id="is_test"
+              checked={isTestPlan}
+              onClick={() => setIsTestPlan(!isTestPlan)}
+              onChange={(e) => handleClickIsTestPlan(e)}
+              disabled={readonly}
+              style={{ marginRight: '10px' }}
+            />
+            <label className="form-check-label" htmlFor="is_test">
+              {t('Test Plan')}
+            </label>
           </div>
           {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
         </Panel.Body>
