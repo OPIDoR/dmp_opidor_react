@@ -1,19 +1,30 @@
 import React from "react";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
+import AsyncCreatableSelect from "react-select/async-creatable";
+import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
 
 function CustomSelect({
-  propName = null,
-  options,
-  selectedOption = null,
-  onSelectChange,
-  async = false,
-  isDisabled = false,
-  placeholder = null,
+    propName = null,
+    options,
+    selectedOption = null,
+    onSelectChange,
+    async = false,
+    isDisabled = false,
+    placeholder = null,
+    overridable = false,
 }) {
-  const SelectComponent = async ? AsyncSelect : Select;
-  return (
+  const SelectComponent = getSelectComponent();
+  function getSelectComponent() {
+    if (async) {
+      return overridable ? AsyncCreatableSelect : AsyncSelect;
+    } else {
+      return overridable ? CreatableSelect : Select;
+    }
+  }
+
+  return(
     <SelectComponent
       menuPortalTarget={document.body}
       styles={{

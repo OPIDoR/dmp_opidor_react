@@ -3,20 +3,29 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
+import { FaPenToSquare, FaPlus, FaEye } from 'react-icons/fa6';
 
 import { service } from '../../services';
-import { createOptions, createRegistriesOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
+import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
+import NestedForm from '../Forms/NestedForm.jsx';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
 function SelectSingleList({
-   label, propName, tooltip, registries, registryType, templateId, readonly
+  label,
+  propName,
+  tooltip,
+  registries,
+  registryType,
+  templateId,
+  overridable = false,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -28,17 +37,20 @@ function SelectSingleList({
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
+  const [editedFragment, setEditedFragment] = useState({})
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
-  const [selectedOption, setSelectedOption] = useState(registryType === 'complex' ? {} : null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showNestedForm, setShowNestedForm] = useState(false);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
   const nullValue = registryType === 'complex' ? {} : null;
+  const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
     setSelectedValue(field.value || nullValue);
-    if(registries.length === 1) {
+    if (registries.length === 1) {
       setSelectedRegistry(registries[0]);
     }
   }, [field.value, registries])
@@ -103,6 +115,17 @@ function SelectSingleList({
     setSelectedRegistry(e.value);
   };
 
+
+  const handleSaveNestedForm = (data) => {
+    if (!data) return setShowNestedForm(false);
+
+    const newFragment = { ...field.value, ...data, action: 'update' };
+    field.onChange(newFragment);
+
+    setEditedFragment({});
+    setShowNestedForm(false);
+  }
+
   return (
     <div>
       <div className="form-group">
@@ -148,34 +171,83 @@ function SelectSingleList({
 
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
-              <div className={`col-md-12 ${styles.select_wrapper}`}>
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}
-                    isDisabled={readonly || !selectedRegistry}
+                    isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, t)}
+                    placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
+                    overridable={registryType === 'complex' ? false : overridable}
                   />
                 )}
               </div>
+              {!readonly && overridable && registryType === 'complex' && !showNestedForm && (
+                <div className="col-md-1">
+                  <ReactTooltip
+                    id="select-single-list-add-button"
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={t('Add')}
+                  />
+                  <FaPlus
+                    data-tooltip-id="select-single-list-add-button"
+                    onClick={() => {
+                      setShowNestedForm(true);
+                      setEditedFragment({});
+                    }}
+                    style={{ margin: '8px', cursor: 'pointer' }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
+        {registryType === 'complex' && (
+          <div
+            id={`nested-form-${propName}`}
+            className={styles.nestedForm}
+            style={{ display: showNestedForm ? 'block' : 'none' }}
+          ></div>
+        )}
+        {showNestedForm && (
+          <NestedForm
+            propName={propName}
+            data={editedFragment}
+            template={template}
+            readonly={readonly}
+            handleSave={handleSaveNestedForm}
+            handleClose={() => {
+              setShowNestedForm(false);
+              setEditedFragment({});
+            }}
+          />
+        )}
 
-        {registryType === 'complex' && selectedValue && (
+        {registryType === 'complex' && selectedValue && !showNestedForm && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               <tr>
-                <th scope="col">{t("Selected value")}</th>
+                <th colSpan="2" scope="col">{t("Selected value")}</th>
               </tr>
             </thead>
             <tbody>
               {[selectedValue].map((el, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "50%" }}>
+                  <td style={{ width: "90%" }}>
                     {parsePattern(el, template.to_string)}
+                  </td>
+                  <td style={{ width: "10%" }}>
+                    <ViewEditComponent
+                      onClick={() => {
+                        setShowNestedForm(true);
+                        setEditedFragment(field.value);
+                      }}
+                      style={{ margin: '8px', cursor: 'pointer' }}
+                    />
                   </td>
                 </tr>
               ))}

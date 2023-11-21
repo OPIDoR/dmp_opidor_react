@@ -44,6 +44,7 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
               templateId={prop.schema_id}
+              overridable={prop["overridable"]}
               readonly={readonly}
             ></SelectSingleList>,
           );
@@ -59,6 +60,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
               registries={prop["registries"] || [prop["registry_name"]]}
+              overridable={prop["overridable"]}
               readonly={readonly}
             ></SelectWithCreate>,
           );
@@ -74,6 +76,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="simple"
+              overridable={prop["overridable"]}
               readonly={readonly}
             ></SelectSingleList>,
           );
@@ -88,6 +91,7 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
+              overridable={prop["overridable"]}
               readonly={readonly}
             ></SelectMultipleList>
           );
