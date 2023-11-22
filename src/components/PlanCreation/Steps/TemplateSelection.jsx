@@ -33,7 +33,7 @@ function TemplateSelection({ prevStep }) {
     const tmpls = {
       default: { title: t('Default template'), templates: [] },
       myOrg: { title: `${currentOrg.name} (${t('Your organisation')})`, templates: [] },
-      othersOrgs: { id: 'otherOrgs', title: t('Other organisation'), type: 'select', data: [] },
+      othersOrgs: { id: 'othersOrgs', title: t('Other organisation'), type: 'select', data: [] },
       funders: { id: 'funders', title: t('Funders'), type: 'select', data: [] },
     };
 
