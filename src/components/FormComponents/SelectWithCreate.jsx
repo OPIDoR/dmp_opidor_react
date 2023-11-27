@@ -12,7 +12,6 @@ import {
   createOptions,
   createRegistriesOptions,
   createRegistryPlaceholder,
-  deleteByIndex,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
@@ -128,18 +127,20 @@ function SelectWithCreate({
    */
   const handleSave = (data) => {
     if (!data) return handleClose();
-    //const checkForm = checkRequiredForm(registerFile, temp);
     if (index !== null) {
-      //add in update
-      const deleteIndex = deleteByIndex(fragmentsList, index);
-      const concatedObject = [...deleteIndex, { ...data, action: 'update' }];
-      field.onChange(concatedObject);
-      handleClose();
+      const newFragmentList = [...fragmentsList];
+      newFragmentList[index] = {
+        ...newFragmentList[index],
+        ...data,
+        action: newFragmentList[index].action || 'update'
+      };
+      field.onChange(newFragmentList);
     } else {
       //add in add
       handleSaveNew(data);
     }
     toast.success(t("Save was successful !"));
+    handleClose();
   };
 
   /**
@@ -148,8 +149,6 @@ function SelectWithCreate({
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     field.onChange(newFragmentList);
-
-    handleClose();
   };
 
   /**
