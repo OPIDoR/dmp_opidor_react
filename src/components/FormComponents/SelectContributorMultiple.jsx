@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { createOptions, deleteByIndex } from '../../utils/GeneratorUtils.js';
+import { createOptions } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -191,7 +191,6 @@ function SelectContributorMultiple({
       if (result.isConfirmed) {
         const updatedList = [...contributorList];
         updatedList[idx]['action'] = 'delete';
-        setContributorList(deleteByIndex(contributorList, idx));
         field.onChange(updatedList)
       }
     });

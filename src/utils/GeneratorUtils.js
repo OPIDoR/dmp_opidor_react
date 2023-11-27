@@ -36,20 +36,6 @@ export function createMarkup(html) {
   };
 }
 
-/**
- * It returns a new array with the item at the specified index removed.
- * @param list - the array you want to remove an item from
- * @param idx - the index of the item to be removed
- * @returns A new array with the item removed.
- */
-export function deleteByIndex(list, idx) {
-  const newList = [...list];
-  if (idx > -1) {
-    newList.splice(idx, 1); // 2nd parameter means remove one item only
-  }
-  return newList;
-}
-
 // This function takes two parameters, type and value.
 //It checks the type parameter to determine which regular
 //expression should be used to test the value parameter.

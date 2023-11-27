@@ -7,9 +7,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
 import { GlobalContext } from '../context/Global.jsx';
-import {
-  deleteByIndex,
-} from '../../utils/GeneratorUtils';
 import { service } from '../../services';
 import CustomButton from '../Styled/CustomButton.jsx';
 import styles from '../assets/css/form.module.css';
@@ -76,10 +73,13 @@ function ModalTemplate({
   const handleSave = (data) => {
     if (!data) return handleClose();
     if (index !== null) {
-      const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
-      const deleteIndex = deleteByIndex(filterDeleted, index);
-      const addedObject = [...deleteIndex, { ...data, action: 'update' }];
-      field.onChange(addedObject)
+      const newFragmentList = [...fragmentsList];
+      newFragmentList[index] = {
+        ...newFragmentList[index],
+        ...data,
+        action: newFragmentList[index].action || 'update'
+      };
+      field.onChange(newFragmentList)
     } else {
       handleSaveNew(data);
     }
