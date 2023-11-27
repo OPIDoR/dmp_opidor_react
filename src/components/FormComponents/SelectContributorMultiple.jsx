@@ -105,7 +105,7 @@ function SelectContributorMultiple({
    */
   const handleClose = () => {
     setShow(false);
-    setEditedPerson({});
+    setEditedPerson(null);
     setIndex(null);
   };
 
@@ -271,7 +271,7 @@ function SelectContributorMultiple({
         )}
       </div>
       <>
-        {template && (
+        {template && show && (
           <ModalForm
             data={editedPerson}
             template={template}

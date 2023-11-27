@@ -81,14 +81,14 @@ function SelectWithCreate({
 
   useEffect(() => {
     setFragmentsList(field.value || []);
-    if(registries.length === 1) {
+    if (registries.length === 1) {
       setSelectedRegistry(registries[0]);
     }
   }, [field.value, registries]);
 
   const handleClose = () => {
     setShow(false);
-    setEditedFragment({});
+    setEditedFragment(null);
     setIndex(null);
   };
 
@@ -134,8 +134,6 @@ function SelectWithCreate({
       const deleteIndex = deleteByIndex(fragmentsList, index);
       const concatedObject = [...deleteIndex, { ...data, action: 'update' }];
       field.onChange(concatedObject);
-
-      setEditedFragment({});
       handleClose();
     } else {
       //add in add
@@ -152,7 +150,6 @@ function SelectWithCreate({
     field.onChange(newFragmentList);
 
     handleClose();
-    setEditedFragment({});
   };
 
   /**
@@ -262,15 +259,18 @@ function SelectWithCreate({
           ></FragmentList>
         )}
       </div>
-      <ModalForm
-        data={editedFragment}
-        template={template}
-        label={t('Editing a person')}
-        readonly={readonly}
-        show={show}
-        handleSave={handleSave}
-        handleClose={handleClose}
-      />
+
+      {template && show && (
+        <ModalForm
+          data={editedFragment}
+          template={template}
+          label={t('Editing a person')}
+          readonly={readonly}
+          show={show}
+          handleSave={handleSave}
+          handleClose={handleClose}
+        />
+      )}
     </div>
   );
 }
