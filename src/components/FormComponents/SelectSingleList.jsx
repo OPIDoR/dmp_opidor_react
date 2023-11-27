@@ -223,7 +223,7 @@ function SelectSingleList({
             handleSave={handleSaveNestedForm}
             handleClose={() => {
               setShowNestedForm(false);
-              setEditedFragment({});
+              setEditedFragment(null);
             }}
           />
         )}
