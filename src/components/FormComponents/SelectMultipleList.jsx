@@ -169,7 +169,7 @@ function SelectMultipleList({
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
                     <td style={{ width: "100%" }}>
-                      <div className={styles.border}>
+                      <div className={styles.cell_content}>
                         <div>{el} </div>
                         <div className={styles.table_container}>
                           {!readonly && (

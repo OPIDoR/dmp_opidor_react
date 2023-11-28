@@ -35,7 +35,7 @@ function PersonsList({
             {personsList.map((el, idx) => (el.action !== "delete" ?
               <tr key={idx}>
                 <td style={{ width: "50%" }}>
-                  <div className={styles.border}>
+                  <div className={styles.cell_content}>
                     <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
                       <div className={styles.table_container}>
