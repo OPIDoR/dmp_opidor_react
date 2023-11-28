@@ -190,17 +190,17 @@ function RorList({ fragment, setFragment }) {
           <table className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
-                <th scope="col"></th>
-                <th scope="col">{t('Organization name')}</th>
-                <th scope="col">{t('Acronym')}</th>
-                <th scope="col">{t('Country')}</th>
-                <th scope="col">{t('Location')}</th>
+                <th scope="col" style={{width: "5%"}}></th>
+                <th scope="col" style={{width: "40%"}}>{t('Organization name')}</th>
+                <th scope="col" style={{width: "15%"}}>{t('Acronym')}</th>
+                <th scope="col" style={{width: "10%"}}>{t('Country')}</th>
+                <th scope="col" style={{width: "30%"}}>{t('Location')}</th>
               </tr>
             </thead>
             <tbody>
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
-                  <td>
+                  <td style={{width: "5%"}}>
                     {selectedOrg === el.ror ?
                       <FaCheckCircle
                         className="text-center"
@@ -212,15 +212,15 @@ function RorList({ fragment, setFragment }) {
                         onClick={() => setSelectedValue(el)} />
                     }
                   </td>
-                  <td>
+                  <td style={{width: "40%"}}>
                     {el.name[Object.keys(el.name)[0]]}&nbsp;
                     <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
                       <FaLink></FaLink>
                     </a>
                   </td>
-                  <td>{el.acronyms}</td>
-                  <td>{el.country.code}</td>
-                  <td>
+                  <td style={{width: "15%"}}>{el.acronyms}</td>
+                  <td style={{width: "10%"}}>{el.country.code}</td>
+                  <td style={{width: "30%"}}>
                     {Object.values(el.addresses[0])
                       .filter((value) => value)
                       .join(', ')}
