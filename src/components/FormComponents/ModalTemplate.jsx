@@ -7,9 +7,6 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
 import { GlobalContext } from '../context/Global.jsx';
-import {
-  deleteByIndex,
-} from '../../utils/GeneratorUtils';
 import { service } from '../../services';
 import CustomButton from '../Styled/CustomButton.jsx';
 import styles from '../assets/css/form.module.css';
@@ -65,7 +62,7 @@ function ModalTemplate({
    */
   const handleClose = () => {
     setShow(false);
-    setEditedFragment({});
+    setEditedFragment(null);
     setIndex(null);
   };
 
@@ -76,11 +73,13 @@ function ModalTemplate({
   const handleSave = (data) => {
     if (!data) return handleClose();
     if (index !== null) {
-      const filterDeleted = fragmentsList.filter((el) => el.action !== 'delete');
-      const deleteIndex = deleteByIndex(filterDeleted, index);
-      const addedObject = [...deleteIndex, { ...data, action: 'update' }];
-      field.onChange(addedObject)
-      setEditedFragment({});
+      const newFragmentList = [...fragmentsList];
+      newFragmentList[index] = {
+        ...newFragmentList[index],
+        ...data,
+        action: newFragmentList[index].action || 'update'
+      };
+      field.onChange(newFragmentList)
     } else {
       handleSaveNew(data);
     }
@@ -95,8 +94,7 @@ function ModalTemplate({
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     setFragmentsList(newFragmentList)
-    field.onChange( newFragmentList)
-    setEditedFragment({});
+    field.onChange(newFragmentList)
     handleClose();
   };
 
@@ -136,7 +134,7 @@ function ModalTemplate({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info"style={{ width: '300px', textAlign: 'center' }}
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -155,6 +153,7 @@ function ModalTemplate({
         {!readonly && (
           <CustomButton
             handleClick={() => {
+              setEditedFragment(null);
               setShow(true);
               setIndex(null);
             }}
@@ -164,15 +163,16 @@ function ModalTemplate({
           ></CustomButton>
         )}
       </div>
-      <ModalForm
-        data={editedFragment}
-        template={template}
-        label={t('Editing a person')}
-        readonly={readonly}
-        show={show}
-        handleSave={handleSave}
-        handleClose={handleClose}
-      />
+      {template && show && (
+        <ModalForm
+          data={editedFragment}
+          template={template}
+          label={t('Editing a person')}
+          readonly={readonly}
+          show={show}
+          handleSave={handleSave}
+          handleClose={handleClose}
+        />)}
     </>
   );
 }

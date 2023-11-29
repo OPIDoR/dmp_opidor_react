@@ -7,7 +7,7 @@ import { FaTrash } from "react-icons/fa6";
 import { GlobalContext } from "../context/Global";
 import { useTranslation } from "react-i18next";
 import PanelBody from "react-bootstrap/lib/PanelBody";
-import consumer from "../../cable";
+// import consumer from "../../cable";
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
@@ -16,19 +16,19 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
 
-  useEffect(() => {
-    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
-    subscriptionRef.current = consumer.subscriptions.create({ channel: "ResearchOutputChannel", id: displayedResearchOutput.id },
-      {
-        connected: () => console.log("connected!"),
-        disconnected: () => console.log("disconnected !"),
-        received: data => setDisplayedResearchOutput({ ...displayedResearchOutput, ...data }),
-      });
+  // useEffect(() => {
+  //   if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
+  //   subscriptionRef.current = consumer.subscriptions.create({ channel: "ResearchOutputChannel", id: displayedResearchOutput.id },
+  //     {
+  //       connected: () => console.log("connected!"),
+  //       disconnected: () => console.log("disconnected !"),
+  //       received: data => setDisplayedResearchOutput({ ...displayedResearchOutput, ...data }),
+  //     });
 
-    return () => {
-      consumer.disconnect();
-    }
-  }, [displayedResearchOutput, setDisplayedResearchOutput])
+  //   return () => {
+  //     consumer.disconnect();
+  //   }
+  // }, [displayedResearchOutput, setDisplayedResearchOutput])
 
 
   return (

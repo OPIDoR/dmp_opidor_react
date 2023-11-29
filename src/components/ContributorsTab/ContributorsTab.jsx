@@ -111,17 +111,18 @@ function ContributorsTab({ planId, locale, readonly }) {
         handleEdit={handleEdit}
         handleDelete={handleDelete}
       />
-      <ModalForm
-        fragmentId={fragmentId}
-        data={editedPerson}
-        template={template}
-        label={t('Editing a person')}
-        readonly={readonly}
-        show={show}
-        handleSave={handleSave}
-        handleClose={handleClose}
-        withImport={true}
-      />
+      {template && show && (
+        <ModalForm
+          fragmentId={fragmentId}
+          data={editedPerson}
+          template={template}
+          label={t('Editing a person')}
+          readonly={readonly}
+          show={show}
+          handleSave={handleSave}
+          handleClose={handleClose}
+          withImport={true}
+        />)}
       {!readonly && (
         <CustomButton
           handleClick={() => {

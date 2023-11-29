@@ -105,7 +105,7 @@ function SelectContributorSingle({
    */
   const handleClose = () => {
     setShow(false);
-    setEditedPerson({});
+    setEditedPerson(null);
     setIndex(null);
   };
 
@@ -249,7 +249,7 @@ function SelectContributorSingle({
         )}
       </div>
       <>
-        {template && (
+        {template && show && (
           <ModalForm
             data={editedPerson}
             template={template}
