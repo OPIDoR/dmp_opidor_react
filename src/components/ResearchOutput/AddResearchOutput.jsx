@@ -175,10 +175,10 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
         </div>
       </div>
       <EndButton>
-        <Button variant="secondary" onClick={handleClose} style={{ marginRight: "8px" }}>
+        <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
           {t("Close")}
         </Button>
-        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white" }}>
+        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
           {t(edit ? "Save" : "Add")}
         </Button>
       </EndButton>

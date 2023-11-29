@@ -223,7 +223,7 @@ function SelectSingleList({
             handleSave={handleSaveNestedForm}
             handleClose={() => {
               setShowNestedForm(false);
-              setEditedFragment({});
+              setEditedFragment(null);
             }}
           />
         )}
@@ -232,7 +232,8 @@ function SelectSingleList({
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               <tr>
-                <th colSpan="2" scope="col">{t("Selected value")}</th>
+                <th scope="col">{t("Selected value")}</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>

@@ -16,6 +16,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
 
   const onValid = (formData, event) => {
     handleSave(formData);
+    methods.reset();
   };
   const onInvalid = () => {
     console.log("Modal form errors", methods.errors);
@@ -26,8 +27,13 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     methods.handleSubmit(onValid, onInvalid)(e);
   }
 
+  const handleModalClose = () => {
+    handleClose();
+    methods.reset();
+  }
+
   return (
-    <Modal className="dmpopidor-branding" show={show} onHide={handleClose}>
+    <Modal className="dmpopidor-branding" show={show} onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
@@ -43,7 +49,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
         </FormProvider>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
+        <Button onClick={handleModalClose} style={{ margin: '0 5px 0 5px' }}>
           {t("Close")}
         </Button>
         {!readonly && (

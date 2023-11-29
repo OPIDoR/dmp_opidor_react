@@ -4,12 +4,7 @@
   outline: 1px solid #dc3545;
 }
 
-.border {
-  border: solid;
-  border-width: 1px;
-  padding: 10px 10px 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
+.cell_content {
   display: flex;
   justify-content: space-between;
   align-items: center;
