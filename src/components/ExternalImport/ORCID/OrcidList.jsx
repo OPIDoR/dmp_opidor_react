@@ -128,15 +128,15 @@ function OrcidList({ fragment, setFragment }) {
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col" style={{width: "5%"}}></th>
-                  <th scope="col" style={{width: "30%"}}>{t("Last / First name")}</th>
-                  <th scope="col" style={{width: "65%"}}>{t("ORCID Affiliations")}</th>
+                  <th scope="col"></th>
+                  <th scope="col">{t("Last / First name")}</th>
+                  <th scope="col">{t("ORCID Affiliations")}</th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.length > 0 ? currentData.map((el, idx) => (
                   <tr key={idx}>
-                    <td style={{width: "5%"}}>
+                    <td>
                       {selectedPerson === el.orcid ?
                         <FaCheckCircle
                           className="text-center"
@@ -148,8 +148,8 @@ function OrcidList({ fragment, setFragment }) {
                           onClick={() => setSelectedValue(el)} />
                       }
                     </td>
-                    <td style={{width: "30%"}}>{`${el.familyNames} ${el.givenNames} `}</td>
-                    <td style={{width: "65%"}}>
+                    <td>{`${el.familyNames} ${el.givenNames} `}</td>
+                    <td>
                       {el?.institutionName.join(' / ')}
                     </td>
                   </tr>
