@@ -4,6 +4,7 @@ import AsyncSelect from "react-select/async";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
+import { useTranslation } from 'react-i18next';
 
 function CustomSelect({
     propName = null,
@@ -15,6 +16,7 @@ function CustomSelect({
     placeholder = null,
     overridable = false,
 }) {
+  const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
   function getSelectComponent() {
     if (async) {
@@ -41,6 +43,7 @@ function CustomSelect({
       defaultOptions={async ? options.slice(0, 100) : undefined}
       cacheOptions
       isDisabled={isDisabled}
+      noOptionsMessage={() => t('No results found.')}
     />
   );
 }
