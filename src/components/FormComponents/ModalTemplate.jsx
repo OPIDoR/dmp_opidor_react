@@ -22,6 +22,7 @@ import swalUtils from '../../utils/swalUtils.js';
  */
 function ModalTemplate({
   label,
+  formLabel,
   propName,
   tooltip,
   header,
@@ -127,7 +128,7 @@ function ModalTemplate({
       <div className={`p-2 mb-2`}>
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
               <ReactTooltip
@@ -167,7 +168,7 @@ function ModalTemplate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={t('Editing a person')}
+          label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})` }
           readonly={readonly}
           show={show}
           handleSave={handleSave}

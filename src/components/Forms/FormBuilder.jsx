@@ -10,7 +10,7 @@ import SelectMultipleList from '../FormComponents/SelectMultipleList';
 import SelectSingleList from '../FormComponents/SelectSingleList';
 import SelectWithCreate from '../FormComponents/SelectWithCreate';
 import TinyArea from '../FormComponents/TinyArea';
-import { createLabel } from '../../utils/GeneratorUtils.js';
+import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
 function FormBuilder({ template, readonly }) {
   const { locale } = useContext(GlobalContext);
@@ -23,7 +23,7 @@ function FormBuilder({ template, readonly }) {
   // retun est code html
   if (template.type === 'object') {
     for (const [key, prop] of Object.entries(properties)) {
-      const label = createLabel(prop, locale);
+      const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
 
@@ -38,7 +38,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <SelectSingleList
               key={key}
-              label={label}
+              label={formLabel}
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
@@ -55,7 +55,8 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <SelectWithCreate
               key={key}
-              label={label}
+              label={prop[`label@${locale}`] || 'No label defined'}
+              formLabel={formLabel}
               propName={key}
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
@@ -71,7 +72,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <SelectSingleList
               key={key}
-              label={label}
+              label={formLabel}
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
@@ -87,7 +88,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <SelectMultipleList
               key={key}
-              label={label}
+              label={formLabel}
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
@@ -108,7 +109,7 @@ function FormBuilder({ template, readonly }) {
           <SelectContributorSingle
             key={key}
             propName={key}
-            label={label}
+            label={formLabel}
             tooltip={tooltip}
             templateId={prop.schema_id}
             readonly={readonly}
@@ -125,7 +126,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <SelectContributorMultiple
               key={key}
-              label={label}
+              label={formLabel}
               propName={key}
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
@@ -139,7 +140,8 @@ function FormBuilder({ template, readonly }) {
             <ModalTemplate
               key={key}
               propName={key}
-              label={label}
+              label={prop[`label@${locale}`] || 'No label defined'}
+              formLabel={formLabel}
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
@@ -157,7 +159,7 @@ function FormBuilder({ template, readonly }) {
         formFields.push(
           <InputTextDynamicaly
             key={key}
-            label={label}
+            label={formLabel}
             propName={key}
             tooltip={tooltip}
             readonly={readonly}
@@ -176,7 +178,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <TinyArea
               key={key}
-              label={label}
+              label={formLabel}
               propName={key}
               tooltip={tooltip}
               readonly={readonly}
@@ -188,7 +190,7 @@ function FormBuilder({ template, readonly }) {
           formFields.push(
             <InputText
               key={key}
-              label={label}
+              label={formLabel}
               type={prop.format || prop.type}
               placeholder={''}
               propName={key}

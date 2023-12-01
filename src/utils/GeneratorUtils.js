@@ -169,7 +169,7 @@ export function createRegistriesOptions(registries) {
 export function createRegistryPlaceholder(registries, overridable, registryType, t) {
   if(registries.length > 1) {
     if (overridable) {
-      return registryType === 'complex' ? 
+      return registryType === 'complex' ?
       t("Then select a value from the list or create a new one by clicking on +") :
       t("Then select a value from the list or type a new one") ;
     } else {
@@ -177,7 +177,7 @@ export function createRegistryPlaceholder(registries, overridable, registryType,
     }
   } else {
     if (overridable) {
-      return registryType === 'complex' ? 
+      return registryType === 'complex' ?
       t("Select a value from the list or create a new one by clicking on +") :
       t("Select a value from the list or type a new one") ;
     } else {
@@ -193,7 +193,7 @@ export function createRegistryPlaceholder(registries, overridable, registryType,
  * @param locale : the locale of the form
  * @returns if it exists a label in the form language
  */
-export function createLabel(property, locale) {
+export function createFormLabel(property, locale) {
   return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined'
 }
 
@@ -247,7 +247,7 @@ export function createDynamicObject(result) {
  * @param value - value used to search options in a select
  */
 export function filterOptions(options, value) {
-  return new Promise((resolve) => {      
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(options.filter(o => stringIncludes(o.label, value)));
     }, 500);
