@@ -23,6 +23,7 @@ import swalUtils from '../../utils/swalUtils.js';
 
 function SelectWithCreate({
   label,
+  formLabel,
   propName,
   tooltip,
   header,
@@ -47,7 +48,6 @@ function SelectWithCreate({
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
-
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
@@ -173,7 +173,7 @@ function SelectWithCreate({
       <div className="form-group">
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
               <ReactTooltip
@@ -263,7 +263,7 @@ function SelectWithCreate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={t('Editing a person')}
+          label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})` }
           readonly={readonly}
           show={show}
           handleSave={handleSave}
