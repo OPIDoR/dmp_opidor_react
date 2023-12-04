@@ -42,6 +42,7 @@ function GeneralInfo({
 
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
   const [funders, setFunders] = useState([]);
+  const [selectedFunder, setSelectedFunder] = useState(null);
   const [fundedProjects, setFundedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -65,9 +66,10 @@ function GeneralInfo({
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
     generalInfo.getFunders().then(({ data }) => {
-      const options = data.map(({ id, name }) => ({
-        value: id,
-        label: name,
+      const options = data.map((funder) => ({
+        value: funder.id,
+        label: funder.label[locale.substring(0, 2)],
+        script: funder.script,
       }));
       setFunders(options);
     });
@@ -121,8 +123,7 @@ function GeneralInfo({
    * The function logs the value of an event and sets a grant ID to "ProjectStandard".
    */
   const handleSelectFunder = (e) => {
-    console.log(e.value);
-    //setGrantId("ProjectStandard");
+    setSelectedFunder(e);
   };
 
   /**
@@ -133,7 +134,7 @@ function GeneralInfo({
 
     let response;
     try {
-      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId);
+      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId, selectedFunder.script.id);
     } catch (error) {
       let errorMessage = t("An error occurred during the saving of the funders");
 
@@ -206,6 +207,7 @@ function GeneralInfo({
                       </div>
                       <CustomSelect
                         options={funders}
+                        selectedOption={selectedFunder || null}
                         onSelectChange={(e) => handleSelectFunder(e)}
                       />
                     </div>
