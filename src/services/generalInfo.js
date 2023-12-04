@@ -6,7 +6,25 @@ const commonHeaders = createHeaders({}, true);
 const dataFundingOrganization = [
   {
     id: 1,
-    name: "Agence Nationale de la Recherche (ANR)",
+    label: {
+      fr: 'Agence Nationale de la Recherche (ANR)',
+      en: 'French National Research Agency (NRA)',
+    },
+    script: {
+      id: 1,
+      name: 'AnrProject',
+    },
+  },
+  {
+    id: 2,
+    label: {
+      fr: 'Commission Européenne',
+      en: 'European Commission',
+    },
+    script: {
+      id: 2,
+      name: 'CordisProject',
+    },
   },
 ];
 
@@ -18,7 +36,7 @@ const dataFundingOrganization = [
  * usually obtained after the user logs in and is used to verify the user's identity for subsequent requests.
  * @returns An object with a "data" property that contains the value of the "dataComent" variable.
  */
-const getFunders = async (token) => ({ data: dataFundingOrganization })
+const getFunders = async (token) => ({ data: dataFundingOrganization });
 
 const saveIsTestPlan = async (planId, isTestPlan) => 
   axios.post(`/plans/${planId}/set_test`, { is_test: isTestPlan }, { headers: commonHeaders });
@@ -30,8 +48,8 @@ const saveIsTestPlan = async (planId, isTestPlan) =>
  * `grantId` parameter to retrieve data related to a specific project and fragment.
  * @returns An object with a "data" property that contains an empty array.
  */
-const saveFunder = async (grantId, projectFragmentId) => 
-  axios.get(`/codebase/anr_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_id=4`);
+const saveFunder = async (grantId, projectFragmentId, scriptId) => 
+  axios.get(`/codebase/project_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_id=${scriptId}`);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
