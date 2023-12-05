@@ -16,7 +16,7 @@ const EndButton = styled.div`
 `;
 
 function AddResearchOutput({ planId, handleClose, edit = false }) {
-  const { 
+  const {
     locale,
     displayedResearchOutput, setDisplayedResearchOutput,
     setResearchOutputs,
@@ -154,9 +154,10 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
         </div>
         {options && (
           <CustomSelect
-            onChange={handleSelect}
+            onSelectChange={handleSelect}
             options={options}
             selectedOption={selectedOption}
+            overridable={false}
           />
         )}
       </div>

@@ -253,7 +253,7 @@ function SelectContributorSingle({
           <ModalForm
             data={editedPerson}
             template={template}
-            label={t('Editing a person')}
+            label={index !== null ? t('Editing a person') : t('Adding a person')}
             readonly={readonly}
             show={show}
             handleSave={handleSave}
