@@ -71,7 +71,7 @@ const getFunders = async (researchContext) => axios.get(`/orgs/list?context=${re
  * @param templateId identifier of the choosen template
  * @returns 
  */
-const createPlan = async (templateId) => axios.post(`/plans`, { template_id: templateId }, { headers: createHeaders({}, true) });
+const createPlan = async (template_id) => axios.post(`/plans`, { template_id }, { headers: createHeaders({}, true) });
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {

@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
-
+import { t } from 'i18next';
 
 import { CustomButton } from "../Styled";
-import { ContextSelection, TypeSelection , TemplateSelection } from './Steps';
+import { ContextSelection, TypeSelection , TemplateSelection, LangSelection } from './Steps';
 import styles from '../assets/css/main.module.css';
 import stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
-import { t } from 'i18next';
 
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
   const { i18n } = useTranslation();
@@ -19,6 +18,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     researchContext, setResearchContext,
     isStructured, setIsStructured,
     selectedTemplate, setSelectedTemplate,
+    setTemplateLanguage
   } = useContext(GlobalContext);
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -28,9 +28,13 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
       label: t('Context selection'),
       component: <ContextSelection />,
     },
+    // {
+    //   label: t('Type selection'),
+    //   component: <TypeSelection />,
+    // },
     {
-      label: t('Type selection'),
-      component: <TypeSelection />,
+      label: t('Language selection'),
+      component: <LangSelection />,
     },
     {
       label: t('Template selection'),
@@ -48,6 +52,8 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
 
     const isStructuredValue = localStorage.getItem('isStructured');
     setIsStructured(isStructured || isStructuredValue ? isStructuredValue === 'true' : null);
+
+    setTemplateLanguage(localStorage.getItem('templateLanguage'));
 
     setSelectedTemplate(selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null);
 

@@ -4,7 +4,8 @@ import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import DOMPurify from "dompurify";
+import { Label } from "react-bootstrap";
+import { PiTreeStructureDuotone } from "react-icons/pi";
 
 import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
@@ -20,7 +21,8 @@ function TemplateSelection({ prevStep }) {
     setUrlParams,
     planTemplates, setPlanTemplates,
     selectedTemplate, setSelectedTemplate,
-    isStructured,
+    // sStructured,
+    templateLanguage,
   } = useContext(GlobalContext);
 
   const [loading, setLoading] = useState(false);
@@ -51,7 +53,9 @@ function TemplateSelection({ prevStep }) {
       tmpls.default.templates = (Array.isArray(currentTemplatesRes?.data || [])
         ? currentTemplatesRes?.data
         : [currentTemplatesRes?.data]
-      ).filter(({ structured }) => structured === isStructured);
+      )
+        // .filter(({ structured }) => structured === isStructured)
+        .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase());
 
       let myOrgTemplatesRes;
       try {
@@ -61,7 +65,9 @@ function TemplateSelection({ prevStep }) {
         return handleError(error);
       }
 
-      tmpls.myOrg.templates = myOrgTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [];
+      tmpls.myOrg.templates = myOrgTemplatesRes?.data
+        // .filter(({ structured }) => structured === isStructured)
+        .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase()) || [];
 
       let orgsRes;
       try {
@@ -87,7 +93,9 @@ function TemplateSelection({ prevStep }) {
 
         tmpls.othersOrgs.data.push({
           ...org,
-          templates: orgTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [],
+          templates: orgTemplatesRes?.data
+            // .filter(({ structured }) => structured === isStructured)
+            .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase()) || [],
           selected: false,
         });
       }
@@ -115,7 +123,9 @@ function TemplateSelection({ prevStep }) {
 
         tmpls.funders.data.push({
           ...funder,
-          templates: fundersTemplatesRes?.data.filter(({ structured }) => structured === isStructured) || [],
+          templates: fundersTemplatesRes?.data
+            // .filter(({ structured }) => structured === isStructured)
+            .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase()) || [],
           selected: false,
         });
       }
@@ -175,6 +185,9 @@ function TemplateSelection({ prevStep }) {
     if (localStorage.getItem('templateId')) {
       localStorage.removeItem('templateId');
     }
+    if (localStorage.getItem('templateLanguage')) {
+      localStorage.removeItem('templateLanguage');
+    }
 
     window.location = `/plans/${response.data.id}`
   };
@@ -217,7 +230,17 @@ function TemplateSelection({ prevStep }) {
             return setSelectedTemplate(template.id);
           }}
         >
-          <div key={`template-${index}-title`}>{template.title}</div>
+          <div
+            key={`template-${index}-title`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            {template.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
+            {template.title}
+          </div>
           <ReactTooltip
             id={`template-${index}-description-tooltip`}
             place="left"
