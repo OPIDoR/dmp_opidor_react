@@ -10,7 +10,6 @@ import { FaPlus } from 'react-icons/fa6';
 import { GlobalContext } from '../context/Global.jsx';
 import {
   createOptions,
-  createRegistriesOptions,
   createRegistryPlaceholder,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
