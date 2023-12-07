@@ -158,13 +158,7 @@ export function createOptions(registryValues, locale) {
   return [ {value:'', label:''}, ...options ];
 }
 
-export function createRegistriesOptions(registries) {
-  let options = registries.map((registry) => ({
-    value: registry,
-    label: registry,
-  }))
-  return [ {value:'', label:''}, ...options ];
-}
+
 
 export function createRegistryPlaceholder(registries, overridable, registryType, t) {
   if(registries.length > 1) {
