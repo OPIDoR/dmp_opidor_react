@@ -45,7 +45,7 @@ function DynamicForm({
         setLoading(false);
       } else {
         service.getFragment(fragmentId).then((res) => {
-          setTemplate(res.data.schema);
+          setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
           methods.reset(res.data.fragment);
@@ -55,7 +55,7 @@ function DynamicForm({
     } else {
       service.createFragment(null, madmpSchemaId, planId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
-        setTemplate(res.data.schema);
+        setTemplate(res.data.template);
         const fragment = res.data.fragment;
         const answerId = res.data.answer_id
         setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
@@ -115,7 +115,7 @@ function DynamicForm({
           <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
             <div className="m-4">
               <FormBuilder
-                template={template}
+                template={template.schema}
                 readonly={readonly}
               />
             </div>
