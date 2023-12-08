@@ -122,7 +122,7 @@ function FormBuilder({ template, readonly }) {
        * SUB FRAGMENTS LIST
        */
       if (prop.type === 'array' && prop.items.type === 'object' && prop.items.schema_id) {
-        if (key === 'contributor' && (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard')) {
+        if (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard') {
           formFields.push(
             <SelectContributorMultiple
               key={key}
