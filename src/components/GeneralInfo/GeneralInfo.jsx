@@ -42,6 +42,7 @@ function GeneralInfo({
 
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
   const [funders, setFunders] = useState([]);
+  const [selectedFunder, setSelectedFunder] = useState(null);
   const [fundedProjects, setFundedProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
 
@@ -65,34 +66,15 @@ function GeneralInfo({
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
     generalInfo.getFunders().then(({ data }) => {
-      const options = data.map(({ id, name }) => ({
-        value: id,
-        label: name,
+      const options = data.map((funder) => ({
+        value: funder.id,
+        label: funder.label[locale.substring(0, 2)],
+        scriptName: funder.scriptName,
+        registry: funder.registry,
       }));
       setFunders(options);
     });
   }, []);
-
-  /* This `useEffect` hook is fetching data for funded projects and setting the options for a `Select` component. It runs only once when the component
-  mounts, as the dependency array `[]` is empty. It sets the loading state to `true` before making the API call, and then sets it to `false` after the
-  API call is completed, regardless of whether it was successful or not. If there is an error during the API call, it sets the error state to the error
-  object. */
-  useEffect(() => {
-    if (researchContext === 'research_project') {
-      setLoading(true);
-      service.getRegistryByName('ANRProjects')
-        .then((res) => {
-          const options = res.data.map((option) => ({
-            value: option.value,
-            label: option.label[locale],
-            object: { grantId: option.value, title: option.label[locale] }
-          }));
-          setFundedProjects(options);
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }
-  }, [locale]);
 
   const handleClickIsTestPlan = async (e) => {
     const checked = e.target.checked;
@@ -121,8 +103,24 @@ function GeneralInfo({
    * The function logs the value of an event and sets a grant ID to "ProjectStandard".
    */
   const handleSelectFunder = (e) => {
-    console.log(e.value);
-    //setGrantId("ProjectStandard");
+    setSelectedFunder(e);
+
+    if (researchContext !== 'research_project') {
+      return;
+    }
+
+    setLoading(true);
+    return service.getRegistryByName(e.registry)
+      .then((res) => {
+        const options = res.data.map((option) => ({
+          value: option.value,
+          label: option.label[locale],
+          object: { grantId: option.value, title: option.label[locale] }
+        }));
+        setFundedProjects(options);
+      })
+      .catch((error) => toast.error(t('An error occurred')))
+      .finally(() => setLoading(false));
   };
 
   /**
@@ -133,9 +131,9 @@ function GeneralInfo({
 
     let response;
     try {
-      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId);
+      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
-      let errorMessage = t("An error occurred during the saving of the funders");
+      let errorMessage = t('An error occurred during the saving of the funders');
 
       if (error.response) {
         errorMessage = error.response.message;
@@ -144,6 +142,8 @@ function GeneralInfo({
       } else if (error.message) {
         errorMessage = error.message;
       }
+
+      console.log(errorMessage)
 
       return toast.error(errorMessage);
     }
@@ -206,6 +206,7 @@ function GeneralInfo({
                       </div>
                       <CustomSelect
                         options={funders}
+                        selectedOption={selectedFunder || null}
                         onSelectChange={(e) => handleSelectFunder(e)}
                       />
                     </div>
