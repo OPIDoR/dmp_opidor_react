@@ -12,9 +12,11 @@ import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import unionBy from 'lodash.unionby';
+import FormSelector from './FormSelector';
 
 function DynamicForm({
   fragmentId,
+  className,
   planId = null,
   questionId = null,
   madmpSchemaId = null,
@@ -111,17 +113,26 @@ function DynamicForm({
       {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
       {error && <p>error</p>}
       {!error && template && (
-        <FormProvider {...methods}>
-          <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
-            <div className="m-4">
-              <FormBuilder
-                template={template.schema}
-                readonly={readonly}
-              />
-            </div>
-            <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
-          </form>
-        </FormProvider>
+        <>
+          <FormSelector
+            className={className}
+            selectedTemplateId={template.id}
+            fragmentId={fragmentId}
+            setFragment={methods.reset}
+            setTemplate={setTemplate}
+          />
+          <FormProvider {...methods}>
+            <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
+              <div className="m-4">
+                <FormBuilder
+                  template={template.schema}
+                  readonly={readonly}
+                />
+              </div>
+              <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
+            </form>
+          </FormProvider>
+        </>
       )}
     </>
   );
