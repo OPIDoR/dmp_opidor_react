@@ -80,7 +80,7 @@ function PersonsList({
                 <td>
                   {roleOptions && (
                     <CustomSelect
-                      onChange={(e) => handleSelectRole(e, idx)}
+                      onSelectChange={(e) => handleSelectRole(e, idx)}
                       options={roleOptions}
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"
