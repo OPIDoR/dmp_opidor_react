@@ -36,6 +36,7 @@ const destroyContributor = async (fragmentId) => axios.delete(
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
  * </code>
+ * @param id - The fragment id
  * @param jsonObject - the data you want to send to the server
  * @returns The response object from the server.
  */

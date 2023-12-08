@@ -51,7 +51,7 @@ Avec en body `{is_test: true/false}`
 
 ### Import de données Financeurs
 
-A la validation appel à la route `GET /codebase/anr_search?project_id=:grantId&fragment_id=:projectFragmentId&script_id=4`
+A la validation appel à la route `GET /codebase/project_search?project_id=:grantId&fragment_id=:projectFragmentId&script_id=4`
 
 - grantId: idenfitiant du financement, valeur sélectionnée dans la liste des projets financés.
 - projectFragmentId:  identifiant des données du formulaire Projet
