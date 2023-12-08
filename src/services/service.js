@@ -22,17 +22,6 @@ const destroyFragment = async (fragmentId) => axios.delete(
 
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
 
-export async function getRegistryById(id) {
-  let response;
-  try {
-    response = await axios.get(`/registries/${id}`);
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-  return response;
-}
-
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
@@ -54,6 +43,9 @@ const saveForm = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, j
   headers: createHeaders({}, true),
 });
 
+const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
+
+const changeForm = async (fragmentId, templateId) => axios.get(`/madmp_fragments/change_form/${fragmentId}?schema_id=${templateId}`);
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getFragment,
@@ -65,4 +57,6 @@ export default {
   saveForm,
   getContributors,
   destroyContributor,
+  getSchemasByClass,
+  changeForm,
 };
