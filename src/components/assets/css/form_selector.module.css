@@ -6,3 +6,15 @@
 .label {
     color: white;
 }
+
+.form_selector_footer {
+  padding: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form_change_toggle {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
