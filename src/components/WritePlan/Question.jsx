@@ -340,10 +340,11 @@ function Question({
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} readonly={readonly} />
+                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname} readonly={readonly} />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
+                    className={question.madmp_schema.classname}
                     planId={planData.id}
                     questionId={question.id}
                     madmpSchemaId={question.madmp_schema.id}

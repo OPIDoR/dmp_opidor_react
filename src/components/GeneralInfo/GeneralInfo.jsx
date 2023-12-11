@@ -53,7 +53,7 @@ function GeneralInfo({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const projectFormLabel = researchContext === 'research_project' ? t("Project Details") : t("Structure Details");
+  const projectFormLabel = researchContext === 'research_project' ? t("Project Details") : t("Research Entity Details");
 
   useEffect(() => {
     setLocale(locale);
