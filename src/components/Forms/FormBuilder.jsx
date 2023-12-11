@@ -16,7 +16,6 @@ function FormBuilder({ template, readonly }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
-  const defaults = template.default || {};
   const formFields = [];
 
   // si type shema is an object
@@ -26,7 +25,7 @@ function FormBuilder({ template, readonly }) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
-
+      const isConst = prop['isConst'];
       /**
        * REGISTRIES
        */
@@ -45,7 +44,7 @@ function FormBuilder({ template, readonly }) {
               registryType="complex"
               templateId={prop.schema_id}
               overridable={prop["overridable"]}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></SelectSingleList>,
           );
           continue;
@@ -62,7 +61,7 @@ function FormBuilder({ template, readonly }) {
               templateId={prop.items.schema_id}
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></SelectWithCreate>,
           );
           continue;
@@ -78,7 +77,7 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="simple"
               overridable={prop["overridable"]}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></SelectSingleList>,
           );
           continue;
@@ -93,7 +92,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></SelectMultipleList>
           );
           continue;
@@ -112,7 +111,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateId={prop.schema_id}
-            readonly={readonly}
+            readonly={readonly || isConst}
           ></SelectContributorSingle>,
         );
         continue;
@@ -131,7 +130,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateId={prop.items.schema_id}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></SelectContributorMultiple>,
           );
         } else {
@@ -145,7 +144,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></ModalTemplate>,
           );
         }
@@ -162,7 +161,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             propName={key}
             tooltip={tooltip}
-            readonly={readonly}
+            readonly={readonly || isConst}
           ></InputTextDynamicaly>,
         );
         continue;
@@ -181,7 +180,7 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></TinyArea>,
           );
           continue;
@@ -197,7 +196,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               hidden={prop.hidden}
               defaultValue={defaultValue}
-              readonly={readonly}
+              readonly={readonly || isConst}
             ></InputText>
           );
         }
