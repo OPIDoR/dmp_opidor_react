@@ -17,7 +17,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
   const [availableTemplates, setAvailableTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {
-    loadedTemplates, setLoadedTemplates,
+    loadedTemplates, setLoadedTemplates, locale
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
 
   const handleChangeForm = () => {
     setLoading(true)
-    service.changeForm(fragmentId, selectedTemplate.id).then((res) => {
+    service.changeForm(fragmentId, selectedTemplate.id, locale).then((res) => {
       setFragment(res.data.fragment);
       setTemplate(res.data.template)
     }).catch(console.error)
