@@ -3,8 +3,7 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPlus } from 'react-icons/fa6';
-import { IoIosClose } from 'react-icons/io';
+import { FaPlus, FaXmark } from 'react-icons/fa6';
 import styles from '../assets/css/form.module.css';
 
 /* A React component that renders a form with a text input and a button.
@@ -92,20 +91,22 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
             disabled={readonly}
           />
         </div>
-        <div className="col-md-1">
-          <ReactTooltip
-            id="input-text-dynamicaly-add-button"
-            place="bottom"
-            effect="solid"
-            variant="info"
-            content={t('Add')}
-          />
-          <FaPlus
-            data-tooltip-id="input-text-dynamicaly-add-button"
-            onClick={(e) => addFields(e)}
-            style={{ margin: '8px', cursor: 'pointer' }}
-          />
-        </div>
+        {!readonly && (
+          <div className="col-md-1">
+            <ReactTooltip
+              id="input-text-dynamicaly-add-button"
+              place="bottom"
+              effect="solid"
+              variant="info"
+              content={t('Add')}
+            />
+            <FaPlus
+              data-tooltip-id="input-text-dynamicaly-add-button"
+              onClick={(e) => addFields(e)}
+              style={{ margin: '8px', cursor: 'pointer' }}
+            />
+          </div>
+        )}
       </div>
 
       {formFields.map((content, index) => (
@@ -124,22 +125,24 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
               />
             </div>
           </div>
-          <div className="col-md-1" key={`col-md-1-input-text-dynamically-${index}`}>
-            <ReactTooltip
-              id={`input-text-dynamically-del-button-${index}`}
-              place="bottom"
-              effect="solid"
-              variant="info"
-              content={t('Delete')}
-            />
-            <IoIosClose
-              data-tooltip-id={`input-text-dynamically-del-button-${index}`}
-              onClick={(e) => removeFields(e, index)}
-              variant="info"
-              size={24}
-              style={{ margin: '6px 0 0 4px', cursor: 'pointer' }}
-            />
-          </div>
+          {!readonly && (
+            <div className="col-md-1" key={`col-md-1-input-text-dynamically-${index}`}>
+              <ReactTooltip
+                id={`input-text-dynamically-del-button-${index}`}
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={t('Delete')}
+              />
+              <FaXmark
+                data-tooltip-id={`input-text-dynamically-del-button-${index}`}
+                onClick={(e) => removeFields(e, index)}
+                variant="info"
+                size={24}
+                style={{ margin: '6px 0 0 4px', cursor: 'pointer' }}
+              />
+            </div>
+          )}
         </div>
       ))}
     </div>
