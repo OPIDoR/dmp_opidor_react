@@ -1,9 +1,16 @@
 import React from 'react';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
-import { IoIosClose } from 'react-icons/io';
 import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
 
-function FragmentList({ fragmentsList, handleEdit, handleDelete, parent = 'form', templateToString = [], tableHeader = null, readonly = false }) {
+function FragmentList({
+  fragmentsList,
+  handleEdit,
+  handleDelete,
+  parent = 'form',
+  templateToString = [],
+  tableHeader = null,
+  readonly = false
+}) {
   return (
     <>
       {fragmentsList && (
