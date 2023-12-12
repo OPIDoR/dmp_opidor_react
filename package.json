@@ -23,7 +23,7 @@
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^13.2.2",
     "react-icons": "^4.8.0",
-    "react-loader-spinner": "^5.3.4",
+    "react-loader-spinner": "^6.1.0",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.0",

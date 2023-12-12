@@ -104,11 +104,12 @@
   "Select project acronym, title or ID": "Sélectionnez l’acronyme, le titre ou l’identifiant du projet",
   "Project Details": "Renseignements sur le projet",
   "Plan Information": "Renseignements sur le plan",
-  "Structure Details": "Détails de la Structure",
+  "Research Entity Details": "Renseignements sur l'entité de recherche",
   "Test Plan": "Plan de Test",
   "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
-  "Your project is funded by the ANR, automatically retrieve the administrative information for your project.": "Votre projet est financé par l’ANR, récupérez automatiquement les informations administratives de votre projet.",
+  "Your project is funded by the ANR or the European Commission, automatically retrieve the administrative information for your project.": "Votre projet est financé par l’ANR ou la Commission Européenne, récupérez automatiquement les informations administratives de votre projet.",
   "'{{projectTitle}}' project data has successfully been imported": "Données du projet '{{projectTitle}}' ont été importées avec succès.",
+  "An error occurred during the import of the project information": "Une erreur s'est produite lors de l'import des données projet",
   "You cannot delete the first element": "vous ne pouvez pas supprimer le premier élément",
   "Selected value": "Valeur sélectionnée",
   "Select the guidance of your plan": "Sélectionnez les recommandations de votre plan",
@@ -180,5 +181,6 @@
   "Structured template": "Modèle structuré",
   "Classic template": "Modèle classique",
   "No model available": "Aucun modèle disponible",
-  "No results found.": "Aucun résultat trouvé."
+  "No results found.": "Aucun résultat trouvé.",
+  "You can pick a different question form": "Vous pouvez choisir un formulaire différent"
 }

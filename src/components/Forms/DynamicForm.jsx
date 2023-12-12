@@ -12,9 +12,11 @@ import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import unionBy from 'lodash.unionby';
+import FormSelector from './FormSelector';
 
 function DynamicForm({
   fragmentId,
+  className,
   planId = null,
   questionId = null,
   madmpSchemaId = null,
@@ -45,7 +47,7 @@ function DynamicForm({
         setLoading(false);
       } else {
         service.getFragment(fragmentId).then((res) => {
-          setTemplate(res.data.schema);
+          setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
           methods.reset(res.data.fragment);
@@ -55,7 +57,7 @@ function DynamicForm({
     } else {
       service.createFragment(null, madmpSchemaId, planId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
-        setTemplate(res.data.schema);
+        setTemplate(res.data.template);
         const fragment = res.data.fragment;
         const answerId = res.data.answer_id
         setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
@@ -111,17 +113,26 @@ function DynamicForm({
       {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
       {error && <p>error</p>}
       {!error && template && (
-        <FormProvider {...methods}>
-          <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
-            <div className="m-4">
-              <FormBuilder
-                template={template}
-                readonly={readonly}
-              />
-            </div>
-            <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
-          </form>
-        </FormProvider>
+        <>
+          <FormSelector
+            className={className}
+            selectedTemplateId={template.id}
+            fragmentId={fragmentId}
+            setFragment={methods.reset}
+            setTemplate={setTemplate}
+          />
+          <FormProvider {...methods}>
+            <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
+              <div className="m-4">
+                <FormBuilder
+                  template={template.schema}
+                  readonly={readonly}
+                />
+              </div>
+              <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
+            </form>
+          </FormProvider>
+        </>
       )}
     </>
   );
