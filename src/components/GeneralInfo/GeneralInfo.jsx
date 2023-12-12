@@ -133,10 +133,12 @@ function GeneralInfo({
     try {
       response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
-      let errorMessage = t('An error occurred during the saving of the funders');
+      let errorMessage = t('An error occurred during the import of the project information');
+
+      console.log(error);
 
       if (error.response) {
-        errorMessage = error.response.message;
+        errorMessage = error.response?.data?.error;
       } else if (error.request) {
         errorMessage = error.request;
       } else if (error.message) {
@@ -198,7 +200,7 @@ function GeneralInfo({
               </Panel.Heading>
               <Panel.Body collapsible style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 8px 8px" }}>
                 <div className={styles.container_anr}>
-                  <p className={styles.description_anr}>{t('Your project is funded by the ANR, automatically retrieve the administrative information for your project.')}</p>
+                  <p className={styles.description_anr}>{t('Your project is funded by the ANR or the European Commission, automatically retrieve the administrative information for your project.')}</p>
                   {funders.length > 1 && (
                     <div className="form-group">
                       <div className={styles.label_form_anr}>
