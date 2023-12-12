@@ -84,10 +84,10 @@ function WritePlan({
 
   const handleScroll = () => {
     const roNavBar = document.querySelector('#ro-nav-bar');
-    const { bottom: bottomRoNavBar, top: topRoNavBar } = roNavBar.getBoundingClientRect();
+    const { bottom: bottomRoNavBar, top: topRoNavBar } = roNavBar?.getBoundingClientRect() || 0;
 
     const sectionContent = document.querySelector('#sections-content');
-    const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent.getBoundingClientRect();
+    const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
 
     if (bottomRoNavBar >= bottomSectionContent) {
       sectionContent.style.borderBottomLeftRadius = '0';
