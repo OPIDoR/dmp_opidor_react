@@ -27,7 +27,7 @@ function ModalTemplate({
   tooltip,
   header,
   templateId,
-  readonly,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
