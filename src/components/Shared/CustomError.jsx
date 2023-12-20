@@ -2,10 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import CustomButton from '../Styled/CustomButton';
+
 const ErrorContainer = styled.div`
   width: 100% !important;
   height: 100% !important;
   font-family: montserrat, sans-serif;
+  background-color: white;
 `;
 
 const BigText = styled.div`
@@ -21,7 +24,7 @@ const BigText = styled.div`
 
 const SmallText = styled.div`
   font-family: montserrat, sans-serif;
-  color: rgb(0, 0, 0);
+  color: var(--rust);
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
@@ -60,17 +63,17 @@ const Button = styled.button`
  * @param {any} error - The error object (if available) for further analysis.
  * @returns {JSX.Element} - A JSX component displaying the error message and options.
  */
-function CustomError({ error }) {
+function CustomError({ error, showWarning = true, handleClose }) {
   const { t } = useTranslation();
   const defaultMessage = t("It seems that a problem has appeared");
   const errorMessage = error?.message || t("Internal Server Error");
   const errorDescription = error?.error || defaultMessage;
-  const home = error?.home || true;
+  const home = error.hasOwnProperty('home') ? error?.home : true;
 
   return (
     <ErrorContainer>
       <div className="text-center">
-        <BigText>Oops!</BigText>
+        {showWarning && <BigText>Oops!</BigText>}
         <SmallText>{error?.code || ''} {errorMessage ? `- ${errorMessage}` : ''}</SmallText>
       </div>
       <div
@@ -82,10 +85,12 @@ function CustomError({ error }) {
         }}
       >
         <p>{errorDescription}</p>
-        {home && <Button>
-          <a href="/">{t("Home page")}</a>
-        </Button>}
-        </div>
+        {home ? 
+        (<Button><a href="/">{t("Home page")}</a></Button>) :
+        (<CustomButton handleClick={handleClose} title={'Close'} buttonColor={"white"} position="center" />)
+
+        }
+      </div>
     </ErrorContainer>
   );
 }
