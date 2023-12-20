@@ -11,10 +11,11 @@ import { GlobalContext } from "../context/Global";
 import { service } from "../../services";
 import swalUtils from "../../utils/swalUtils";
 
-function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId, setFragment }) {
+function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId }) {
   const { t } = useTranslation();
   const {
-    locale
+    locale,
+    setFormData,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -51,7 +52,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
     setLoading(true);
     service.runScript(fragmentId, scriptName).then((res) => {
       if (res.data.needs_reload) {
-        setFragment(res.data.fragment);
+        setFormData({ [fragmentId]: res.data.fragment });
         setSuccess(t('New data is available in the form, you can close this window.'));
       } else {
         setSuccess(res.data.message);

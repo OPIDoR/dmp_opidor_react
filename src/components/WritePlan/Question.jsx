@@ -33,7 +33,6 @@ function Question({
     setUrlParams,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
-  const [scriptFragment, setScriptFragment] = useState(null);
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
   const [scriptsData, setScriptsData] = useState({scripts: []}); // {classname: "class", id: 1}
@@ -319,7 +318,6 @@ function Question({
                     setFillColorIconRuns={setFillRunsIconColor}
                     scriptsData={scriptsData}
                     fragmentId={fragmentId}
-                    setFragment={setScriptFragment}
                   />
                 )}
                 <CommentModal
@@ -344,7 +342,7 @@ function Question({
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} fragment={scriptFragment} className={question.madmp_schema.classname}  setScriptsData={setScriptsData} readonly={readonly} />
+                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname}  setScriptsData={setScriptsData} readonly={readonly} />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
