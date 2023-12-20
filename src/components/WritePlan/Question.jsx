@@ -57,7 +57,7 @@ function Question({
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
    */
-  const handleQuestionCollapse = () => {
+  const handleQuestionCollapse = (expanded) => {
     closeAllModals();
 
     const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
@@ -70,7 +70,7 @@ function Question({
 
     updatedState[sectionId] = {
       ...updatedState[sectionId],
-      [questionId]: !updatedState[sectionId]?.[questionId] ?? true,
+      [questionId]: expanded,
     };
 
     setOpenedQuestions({
@@ -108,7 +108,7 @@ function Question({
    * @param {object} q - The question object associated with the click event.
    * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
    */
-  const handleClick = (e, collapse, q, modalType) => {
+  const handleIconClick = (e, collapse, q, modalType) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -161,7 +161,7 @@ function Question({
             borderWidth: "2px",
             borderColor: "var(--dark-blue)",
           }}
-          onToggle={() => handleQuestionCollapse()}
+          onToggle={(expanded) => handleQuestionCollapse(expanded)}
         >
           <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
             <Panel.Title toggle>
@@ -205,7 +205,7 @@ function Question({
                         data-tooltip-id="scriptTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleClick(e, isQuestionOpened(), question, "runs");
+                          handleIconClick(e, isQuestionOpened(), question, "runs");
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -237,7 +237,7 @@ function Question({
                       data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
-                        handleClick(e, isQuestionOpened(), question, "comment");
+                        handleIconClick(e, isQuestionOpened(), question, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
                     >
@@ -268,7 +268,7 @@ function Question({
                           data-tooltip-id="guidanceTip"
                           className={styles.panel_icon}
                           onClick={(e) => {
-                            handleClick(
+                            handleIconClick(
                               e,
                               isQuestionOpened(),
                               question,
