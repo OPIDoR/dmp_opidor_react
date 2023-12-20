@@ -1,46 +1,83 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { guidances } from "../../services";
+import Swal from "sweetalert2";
+
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, Description, ButtonComment } from "./styles/RunsModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
+import { createFormLabel } from "../../utils/GeneratorUtils";
+import CustomButton from "../Styled/CustomButton";
+import { GlobalContext } from "../context/Global";
+import { service } from "../../services";
+import swalUtils from "../../utils/swalUtils";
 
-function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
+function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId, setFragment }) {
   const { t } = useTranslation();
-  const [data, setData] = useState(null);
+  const {
+    locale
+  } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const modalRef = useRef(null);
 
-  const modalStyles = {
-    display: show ? "block" : "none",
-    position: "absolute",
-    zIndex: 99,
-    background: "var(--dark-blue)",
-    padding: "0px",
-    borderRadius: "10px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    marginLeft: "-725px",
-    marginTop: "410px",
-    width: "550px",
-    height: "380px",
-    color: "var(--white)",
-  };
 
-  /* A hook that is called when the component is mounted. */
-  useEffect(() => {
-    // setLoading(true);
-    // guidances.getGuidances("")
-    //   .then((res) => {
-    //     setData(res.data);
-    //   })
-    //   .catch((error) => setError(error))
-    //   .finally(() => setLoading(false));
-  }, []);
+  const handleRunScript = (scriptName) => {
+    if (scriptsData?.apiClient && scriptName.includes('notifyer')) {
+      Swal.fire(
+        {
+          ...swalUtils.defaultConfirmConfig(t),
+          text:
+            t(
+              'By using this notification, you will allow {{clientName}} to access the full content of your plan. Do you confirm ?',
+              { clientName: scriptsData?.apiClient?.name }
+            )
+        }
+      ).then((result) => {
+        if (result.isConfirmed) executeScript(scriptName);
+      });
+    }
+    else {
+      executeScript(scriptName);
+    }
+  }
+
+  const handleCloseError = () => {
+    setError(null);
+    setLoading(false);
+  }
+
+  function executeScript(scriptName) {
+    setLoading(true);
+    service.runScript(fragmentId, scriptName).then((res) => {
+      if (res.data.needs_reload) {
+        setFragment(res.data.fragment);
+        setSuccess(t('New data is available in the form, you can close this window.'));
+      } else {
+        setSuccess(res.data.message);
+      }
+    }).catch((error) => {
+      let errorMessage = t("An error occurred during the change of status of the plan");
+
+      if (error.response) {
+        errorMessage = error.response.data.error;
+      } else if (error.request) {
+        errorMessage = error.request;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      setError({
+        home: false,
+        code: error.response.status,
+        error: errorMessage
+      });
+    }).finally(() => {
+      setLoading(false);
+    });
+  }
 
   return (
-    <InnerModal show={show} ref={modalRef}>
+    <InnerModal show={show} ref={modalRef} style={{border: "1px solid var(--dark-blue"}}>
       <InnerModal.Header
         closeButton
         expandButton
@@ -48,39 +85,31 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns }) {
         onClose={() => {
           setshowModalRuns(false);
           setFillColorIconRuns("var(--dark-blue)");
+          setError(null);
+          setSuccess(null);
         }}
       >
         <InnerModal.Title>
           {t('Runs')}
         </InnerModal.Title>
       </InnerModal.Header>
-      <InnerModal.Body>
-        {loading && <CustomSpinner />}
-        {!loading && error && <CustomError error={error} />}
-        {!loading && !error && data && (
-          <NavBody>
-            <NavBodyText>
-              <div style={{ margin: 10 }}>
-                <ButtonComment className="btn btn-light">{t("Calculate storage cost")}</ButtonComment>
+      <InnerModal.Body style={{color: "var(--dark-blue)", backgroundColor: "white"}}>
+        {loading && <CustomSpinner isOverlay={true} />}
+        {!loading && error && <CustomError error={error} showWarning={false} handleClose={handleCloseError} />}
+        {!error &&
+          <>
+            {scriptsData.scripts.map((script, idx) => (
+              <div key={idx}>
+                <CustomButton handleClick={() => handleRunScript(script.name)} title={createFormLabel(script, locale)} buttonColor={"white"} position="center" />
+                <span>{script?.[`tooltip@${locale}`]}</span>
               </div>
-              <Description>
-                {t(
-                  "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
-                )}
-              </Description>
-
-              <div style={{ margin: 10 }}>
-                <ButtonComment className="btn btn-light">{t("Notify MESO@LR")}</ButtonComment>
-              </div>
-              <Description>
-                {t(
-                  "The storage prices (excluding VAT) of the mesocentre are subject to the general conditions of sale of the University of Montpellier: URL address"
-                )}
-              </Description>
-            </NavBodyText>
-          </NavBody>
-        )}
+            ))}
+          </>
+        }
       </InnerModal.Body>
+      <InnerModal.Footer style={{backgroundColor: "white", color: "var(--dark-blue)"}}>
+        {success && <span style={{color: "var(--green)", fontWeight: "bold"}}>{success}</span>}
+      </InnerModal.Footer>
     </InnerModal>
   );
 }

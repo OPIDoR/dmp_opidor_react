@@ -17,11 +17,13 @@ import FormSelector from './FormSelector';
 function DynamicForm({
   fragmentId,
   className,
+  setScriptsData = null,
   planId = null,
   questionId = null,
   madmpSchemaId = null,
   setFragmentId = null,
   setAnswerId = null,
+  fragment = null,
   readonly,
 }) {
   const { t } = useTranslation();
@@ -74,6 +76,22 @@ function DynamicForm({
   useEffect(() => {
     methods.reset(formData[fragmentId])
   }, [formData[fragmentId]]);
+
+  useEffect(() => {
+    if(setScriptsData && template?.schema?.run && template.schema.run.length > 0) {
+      setScriptsData({
+        scripts: template.schema.run,
+        apiClient: template.api_client
+      });
+    }
+  }, [template])
+
+
+  useEffect(() => {
+    if(fragment) {
+      methods.reset(fragment);
+    }
+  }, [fragment])
 
   /**
    * It checks if the form is filled in correctly.
