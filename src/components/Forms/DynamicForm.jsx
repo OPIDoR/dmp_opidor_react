@@ -23,7 +23,6 @@ function DynamicForm({
   madmpSchemaId = null,
   setFragmentId = null,
   setAnswerId = null,
-  fragment = null,
   readonly,
 }) {
   const { t } = useTranslation();
@@ -86,12 +85,6 @@ function DynamicForm({
     }
   }, [template])
 
-
-  useEffect(() => {
-    if(fragment) {
-      methods.reset(fragment);
-    }
-  }, [fragment])
 
   /**
    * It checks if the form is filled in correctly.
