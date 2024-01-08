@@ -340,7 +340,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                         </Trans>
                       ) : t('Save')
                     }
-                    buttonColor={countSelectedGuidances() > 0 ? "orange" : "primary"}
+                    buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
                     position="start"
                     handleClick={limitHasBeenReached() ? null : handleSaveChoice}
                     disabled={limitHasBeenReached()}

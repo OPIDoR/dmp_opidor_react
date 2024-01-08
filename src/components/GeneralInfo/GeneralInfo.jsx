@@ -176,7 +176,7 @@ function GeneralInfo({
             borderRadius: "11px",
             boxShadow: "10px 12px 8px #e5e4e7",
           }}
-          onToggle={() => setIsOpenFunderImport(!isOpenFunderImport)}
+          onToggle={(expanded) => setIsOpenFunderImport(expanded)}
         >
           {loading && <CustomSpinner isOverlay={true} />}
           {error && <CustomError error={error} />}
@@ -242,7 +242,7 @@ function GeneralInfo({
         expanded={isOpenProjectForm}
         className={styles.panel}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
-        onToggle={() => setIsOpenProjectForm(!isOpenProjectForm)}>
+        onToggle={(expanded) => setIsOpenProjectForm(expanded)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
           <Panel.Title toggle>
             <div className={styles.question_title}>
@@ -268,7 +268,7 @@ function GeneralInfo({
         expanded={isOpenMetaForm}
         className={styles.panel}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
-        onToggle={() => setIsOpenMetaForm(!isOpenMetaForm)}>
+        onToggle={(expanded) => setIsOpenMetaForm(expanded)}>
         <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
           <Panel.Title toggle>
             <div className={styles.question_title}>

@@ -5,7 +5,6 @@ const bodyStyle = {
   padding: '10px',
   marginTop: '4px',
   width: '100%',
-  minHeight: '250px',
   marginRight: '20px',
   boxSizing: 'border-box',
   alignItems: 'center',
