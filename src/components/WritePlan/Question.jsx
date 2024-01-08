@@ -35,6 +35,7 @@ function Question({
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
+  const [scriptsData, setScriptsData] = useState({scripts: []}); // {classname: "class", id: 1}
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
@@ -56,7 +57,7 @@ function Question({
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
    */
-  const handleQuestionCollapse = () => {
+  const handleQuestionCollapse = (expanded) => {
     closeAllModals();
 
     const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
@@ -69,7 +70,7 @@ function Question({
 
     updatedState[sectionId] = {
       ...updatedState[sectionId],
-      [questionId]: !updatedState[sectionId]?.[questionId] ?? true,
+      [questionId]: expanded,
     };
 
     setOpenedQuestions({
@@ -107,7 +108,7 @@ function Question({
    * @param {object} q - The question object associated with the click event.
    * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
    */
-  const handleClick = (e, collapse, q, modalType) => {
+  const handleIconClick = (e, collapse, q, modalType) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -160,7 +161,7 @@ function Question({
             borderWidth: "2px",
             borderColor: "var(--dark-blue)",
           }}
-          onToggle={() => handleQuestionCollapse()}
+          onToggle={(expanded) => handleQuestionCollapse(expanded)}
         >
           <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
             <Panel.Title toggle>
@@ -191,10 +192,8 @@ function Question({
                     justifyContent: "flex-end",
                   }}
                 >
-                  {/*
-                    // TODO: Display scripts button
-                    {!readonly && ( 
-                    <>
+                  {scriptsData.scripts.length > 0 && (
+                    <div>
                       <ReactTooltip
                         id="scriptTip"
                         place="bottom"
@@ -206,7 +205,7 @@ function Question({
                         data-tooltip-id="scriptTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleClick(e, isQuestionOpened(), question, "runs");
+                          handleIconClick(e, isQuestionOpened(), question, "runs");
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -222,8 +221,9 @@ function Question({
                           />
                         )}
                       </div>
-                    </>
-                  )} */}
+                    </div>
+                  )}
+
 
                   <div>
                     <ReactTooltip
@@ -237,7 +237,7 @@ function Question({
                       data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
-                        handleClick(e, isQuestionOpened(), question, "comment");
+                        handleIconClick(e, isQuestionOpened(), question, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
                     >
@@ -265,31 +265,31 @@ function Question({
                           content={t("Guidances")}
                         />
                         <div
-                        data-tooltip-id="guidanceTip"
-                        className={styles.panel_icon}
-                        onClick={(e) => {
-                          handleClick(
-                            e,
-                            isQuestionOpened(),
-                            question,
-                            "guidance"
-                          );
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <PiLightbulbLight
-                            size={32}
-                            fill={
-                              isQuestionOpened()
-                                ? fillGuidanceIconColor
-                                : "var(--dark-blue)"
-                            }
-                          />
-                        )}
+                          data-tooltip-id="guidanceTip"
+                          className={styles.panel_icon}
+                          onClick={(e) => {
+                            handleIconClick(
+                              e,
+                              isQuestionOpened(),
+                              question,
+                              "guidance"
+                            );
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          {isQuestionOpened() && (
+                            <PiLightbulbLight
+                              size={32}
+                              fill={
+                                isQuestionOpened()
+                                  ? fillGuidanceIconColor
+                                  : "var(--dark-blue)"
+                              }
+                            />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   {isQuestionOpened() ? (
                     <TfiAngleUp
@@ -311,13 +311,15 @@ function Question({
           <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
             {isQuestionOpened() && (
               <div>
-                {/*
-                  // TODO: Display scripts modal
+                {scriptsData.scripts.length > 0 && (
                   <RunsModal
-                  show={showRunsModal}
-                  setshowModalRuns={setShowRunsModal}
-                  setFillColorIconRuns={setFillRunsIconColor}
-                /> */}
+                    show={showRunsModal}
+                    setshowModalRuns={setShowRunsModal}
+                    setFillColorIconRuns={setFillRunsIconColor}
+                    scriptsData={scriptsData}
+                    fragmentId={fragmentId}
+                  />
+                )}
                 <CommentModal
                   show={showCommentModal}
                   setshowModalComment={setShowCommentModal}
@@ -328,7 +330,7 @@ function Question({
                   questionId={question.id}
                   readonly={readonly}
                 />
-                { questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showGuidanceModal}
                   setShowGuidanceModal={setShowGuidanceModal}
                   setFillColorGuidanceIcon={setFillGuidanceIconColor}
@@ -340,11 +342,12 @@ function Question({
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname} readonly={readonly} />
+                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname}  setScriptsData={setScriptsData} readonly={readonly} />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
                     className={question.madmp_schema.classname}
+                    setScriptsData={setScriptsData}
                     planId={planData.id}
                     questionId={question.id}
                     madmpSchemaId={question.madmp_schema.id}

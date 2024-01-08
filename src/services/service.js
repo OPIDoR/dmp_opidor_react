@@ -4,13 +4,13 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
   '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
     plan_id: planId,
     question_id: questionId,
-    research_output_id: researchOutputId
+    research_output_id: researchOutputId,
   },
   { headers: createHeaders({}, true) },
 );
@@ -47,6 +47,8 @@ const saveForm = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, j
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
 const changeForm = async (fragmentId, templateId, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?schema_id=${templateId}&locale=${locale}`);
+
+const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getFragment,
@@ -60,4 +62,5 @@ export default {
   destroyContributor,
   getSchemasByClass,
   changeForm,
+  runScript,
 };
