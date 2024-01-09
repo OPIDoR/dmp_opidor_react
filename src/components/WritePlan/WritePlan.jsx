@@ -88,6 +88,7 @@ function WritePlan({
 
     const sectionContent = document.querySelector('#sections-content');
     const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
+    if(!sectionContent) return;
 
     if (bottomRoNavBar >= bottomSectionContent) {
       sectionContent.style.borderBottomLeftRadius = '0';
