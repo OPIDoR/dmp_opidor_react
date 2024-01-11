@@ -40,12 +40,16 @@ function DynamicForm({
   useEffect(() => {
     if (fragmentId) {
       if (formData[fragmentId]) {
-        service.getSchema(formData[fragmentId].schema_id).then((res) => {
-          setTemplate(res.data);
-          setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
-        });
-        methods.reset(formData[fragmentId])
-        setLoading(false);
+        if(loadedTemplates[formData[fragmentId].schema_id]) {
+          setTemplate(loadedTemplates[formData[fragmentId].schema_id]);
+        } else {
+          service.getSchema(formData[fragmentId].schema_id).then((res) => {
+            setTemplate(res.data);
+            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
+          }).catch(console.error)
+            .finally(() => setLoading(false));
+        }
+        methods.reset(formData[fragmentId]);
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
@@ -77,7 +81,7 @@ function DynamicForm({
   }, [formData[fragmentId]]);
 
   useEffect(() => {
-    if(setScriptsData && template?.schema?.run && template.schema.run.length > 0) {
+    if (setScriptsData && template?.schema?.run && template.schema.run.length > 0) {
       setScriptsData({
         scripts: template.schema.run,
         apiClient: template.api_client

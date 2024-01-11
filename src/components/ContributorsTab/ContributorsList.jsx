@@ -34,7 +34,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
           {currentData.length > 0 && template ? currentData.map((contributor, idx) => (
             <tr key={contributor.id}>
               <td>
-                {parsePattern(contributor.data, template.to_string)}
+                {parsePattern(contributor.data, template.schema.to_string)}
                 {contributor.data?.personId && (
                   isValidHttpUrl(contributor.data?.personId) ?
                     [' - ', <a key={contributor.id} href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>] :
