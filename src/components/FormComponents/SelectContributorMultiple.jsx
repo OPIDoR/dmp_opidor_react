@@ -85,8 +85,9 @@ function SelectContributorMultiple({
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
-        setDefaultRole(contributorTemplate.properties.role[`const@${locale}`]);
-        const personTemplateId = contributorTemplate.properties.person.schema_id;
+        const contributorProps = contributorTemplate?.schema?.properties || {}
+        setDefaultRole(contributorProps.role[`const@${locale}`]);
+        const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
           setTemplate(personTemplate);
@@ -95,7 +96,7 @@ function SelectContributorMultiple({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateId];
-      const personTemplateId = contributorTemplate.properties.person.schema_id;
+      const personTemplateId = contributorTemplate?.schema?.properties.person.schema_id;
       setTemplate(loadedTemplates[personTemplateId]);
     }
   }, [templateId]);
@@ -263,7 +264,7 @@ function SelectContributorMultiple({
             roleOptions={roleOptions}
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
-            templateToString={template.to_string}
+            templateToString={template.schema.to_string}
             tableHeader={header}
             readonly={readonly}
           ></PersonsList>

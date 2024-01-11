@@ -43,7 +43,7 @@ function SelectWithCreate({
   const [options, setOptions] = useState([]);
   const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
-  const [template, setTemplate] = useState({});
+  const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
@@ -95,7 +95,7 @@ function SelectWithCreate({
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    const pattern = template.to_string;
+    const pattern = template?.schema?.to_string || [];
     const newItem = { ...e.object, action: 'create' };
     setFragmentsList(
       pattern.length > 0 ? [...fragmentsList, newItem] : fragmentsList,
@@ -251,7 +251,7 @@ function SelectWithCreate({
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
-            templateToString={template.to_string}
+            templateToString={template.schema.to_string}
             tableHeader={header}
             readonly={readonly}
           ></FragmentList>

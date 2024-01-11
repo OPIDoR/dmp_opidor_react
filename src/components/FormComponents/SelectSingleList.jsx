@@ -240,7 +240,7 @@ function SelectSingleList({
               {[selectedValue].map((el, idx) => (
                 <tr key={idx}>
                   <td style={{ width: "90%" }}>
-                    {parsePattern(el, template.to_string)}
+                    {parsePattern(el, template.schema.to_string)}
                   </td>
                   <td style={{ width: "10%" }}>
                     <ViewEditComponent
