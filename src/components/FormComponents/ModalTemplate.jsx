@@ -159,7 +159,7 @@ function ModalTemplate({
               setIndex(null);
             }}
             title={t("Add an element")}
-            buttonColor="primary"
+            buttonColor="rust"
             position="start"
           ></CustomButton>
         )}

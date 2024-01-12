@@ -182,5 +182,7 @@
   "Classic template": "Modèle classique",
   "No model available": "Aucun modèle disponible",
   "No results found.": "Aucun résultat trouvé.",
-  "You can pick a different question form": "Vous pouvez choisir un formulaire différent"
+  "You can pick a different question form": "Vous pouvez choisir un formulaire différent",
+  "By using this notification, you will allow {{clientName}} to access the full content of your plan. Do you confirm ?": "En utilisant cette notification, vous autorisez {{clientName}} à accéder à l'intégralité du contenu de votre plan. Vous confirmez ?",
+  "New data is available in the form, you can close this window.": "De nouvelles données sont disponibles dans votre formulaire, vous pouvez fermer cette fenêtre."
 }

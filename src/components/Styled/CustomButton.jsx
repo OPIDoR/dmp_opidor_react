@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+const DefaultButton = styled.button`
   padding: 10px 20px 10px 20px;
   box-sizing: border-box;
   border-radius: 10px;
   font-size: 15px;
-  background-color: ${(props) => (props.$buttonColor === "primary" ? "var(--dark-blue)" : "var(--rust)")} !important;
-  border-color: ${(props) => (props.$buttonColor === "primary" ? "var(--dark-blue)" : "var(--rust)")} !important;
+  background-color: var(--rust) !important;
+  border-color: var(--rust) !important;
   transition: ease-in-out 0.2s;
 
   &:hover {
@@ -15,11 +15,38 @@ const Button = styled.button`
     border-color: var(--dark-blue) !important;
   }
 `;
+const BlueButton = styled(DefaultButton)`
+background-color: var(--dark-blue)!important;
+border-color: var(--dark-blue) !important;
+`
+
+const WhiteButton = styled(DefaultButton)`
+background-color: white !important;
+color: var(--blue) !important;
+border-color: var(--dark-blue) !important;
+
+&:hover {
+  background-color: white !important;
+  border-color: var(--dark-blue) !important;
+}
+`
+
 
 const DivButton = styled.div`
   display: flex;
-  justify-content: ${(props) => (props.$position || "start") };
+  justify-content: ${(props) => (props.$position || "start")};
 `;
+
+const Button = (props) => {
+  switch (props.$buttonType) {
+    case 'blue':
+      return <BlueButton {...props} />;
+    case 'white':
+      return <WhiteButton {...props} />;
+    default:
+      return <DefaultButton {...props} />
+  }
+}
 
 /**
  * This is a React component that renders a custom button with customizable properties such as title, type, and position.

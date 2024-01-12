@@ -4,7 +4,6 @@ const footerStyle = {
   color: 'var(--white)',
   display: 'flex',
   justifyContent: 'space-between',
-  height: '60px',
   padding: '10px',
   boxSizing: 'border-box',
   verticalAlign: 'middle',
