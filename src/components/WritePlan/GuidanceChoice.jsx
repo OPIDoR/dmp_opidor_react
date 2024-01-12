@@ -50,11 +50,12 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     setLoading(true);
     guidances.getGuidanceGroups(planId)
       .then((res) => {
-        let { guidance_groups } = res.data;
+        let guidance_groups = [];
+        const { data } = res.data;
 
-        const orgGuidances = guidance_groups.filter(({ name }) => name.toLowerCase() === orgName.toLowerCase());
-        const selectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
-        const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
+        const orgGuidances = data.filter(({ name }) => name.toLowerCase() === orgName.toLowerCase());
+        const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
+        const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
         guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
 
@@ -68,14 +69,14 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
   const sortGuidances = (guidances) => guidances.sort((a, b) => a.name.localeCompare(b.name));
 
-  const handleGuidanceGroups = (guidanceGroups) => {
+  const handleGuidanceGroups = (data) => {
     const states = {};
-    for (let i = 0; i < guidanceGroups.length; i += 1) {
-      const guidances = guidanceGroups[i].guidances.reduce((obj, item) => ({ ...obj, [item.id]: item.selected} ), {});
-      const isSelected = Object.keys(guidances).filter((id) => guidances[id] === true).length > 0;
-      states[guidanceGroups[i].id] = {
+    for (let i = 0; i < data.length; i += 1) {
+      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected} ), {});
+      const isSelected = Object.keys(guidance_groups).filter((id) => guidance_groups[id] === true).length > 0;
+      states[data[i].id] = {
         checked: isSelected,
-        guidances,
+        guidance_groups,
       };
     }
     return states;
@@ -91,7 +92,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     states[key] = {
       ...states[key],
       checked: status,
-      guidances: Object.keys(states[key].guidances).reduce((acc, el) => ({ ...acc, [el]: status }), {}),
+      guidance_groups: Object.keys(states[key].guidance_groups).reduce((acc, el) => ({ ...acc, [el]: status }), {}),
     };
 
     setCheckboxStates(states);
@@ -105,13 +106,13 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     states[parentKey] = {
       ...states[parentKey],
-      guidances: {
-        ...states[parentKey].guidances,
+      guidance_groups: {
+        ...states[parentKey].guidance_groups,
         [id]: status,
       }
     };
 
-    const childChecked = Object.keys(states[parentKey].guidances).filter((id) => states[parentKey].guidances[id] === true);
+    const childChecked = Object.keys(states[parentKey].guidance_groups).filter((id) => states[parentKey].guidance_groups[id] === true);
     states[parentKey].checked = childChecked.length >= 1;
 
     setCheckboxStates(states);
@@ -123,18 +124,18 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     }, 0);
   };
 
-  const countSelectedChild = (parentId) => Object.keys(checkboxStates[parentId].guidances).filter((id) => checkboxStates[parentId].guidances[id] === true).length;
+  const countSelectedChild = (parentId) => Object.keys(checkboxStates[parentId].guidance_groups).filter((id) => checkboxStates[parentId].guidance_groups[id] === true).length;
 
   /**
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
-  const handleSaveChoise = async () => {
+  const handleSaveChoice = async () => {
     if (countSelectedGuidances <= 0) {
       return toast.error(t("Please select at least one recommendation"));
     }
 
     const selectedGuidancesIds = Object.keys(checkboxStates)
-      .map((parentKey) => Object.keys(checkboxStates[parentKey].guidances).filter((guidanceKey) => checkboxStates[parentKey].guidances[guidanceKey] === true))
+      .map((parentKey) => Object.keys(checkboxStates[parentKey].guidance_groups).filter((guidanceKey) => checkboxStates[parentKey].guidance_groups[guidanceKey] === true))
       .flat();
 
     let response;
@@ -144,12 +145,14 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
 
-    let { guidance_groups } = response.data;
+    const { data } = response.data;
 
     let {  questions_with_guidance } = response.data;
 
-    const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
-    const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
+    let guidance_groups = [];
+
+    const selectedGuidances = sortGuidances(data.filter(({ important }) => important === true));
+    const unselectedGuidances = sortGuidances(data.filter(({ important }) => important === false));
 
     guidance_groups = [ ...selectedGuidances, ...unselectedGuidances ];
 
@@ -239,7 +242,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                             key={`icon-${index}-checkbox-outline-blank`}
                             onClick={() => handleCheckboxChange(group.id, true)}
                           />
-                        ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidances).length > 1 ? (
+                        ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidance_groups).length > 1 ? (
                           <MdIndeterminateCheckBox
                             style={{ cursor: 'pointer' }}
                             size={18}
@@ -276,7 +279,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       key={`guidance-group-${index}-childs`}
                     >
                       {
-                        group.guidances.map((guidance, key) => (
+                        group.guidance_groups.map((guidance, key) => (
                           <div
                             style={{ display: 'flex', alignItems: 'center', }}
                             key={`guidance-group-${index}-childs-${key}-section`}
@@ -287,26 +290,26 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                               key={`guidance-group-${index}-childs-${key}-container`}
                             >
                               {
-                                limitHasBeenReached() && !checkboxStates[group.id].guidances[guidance.id] ? (
+                                limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? (
                                   <MdOutlineCheckBoxOutlineBlank
                                     fill="grey"
                                     size={18}
                                     key={`icon-${index}-${key}-checkbox-outline-blank-disabled`}
                                     style={{ cursor: 'not-allowed' }}
                                   />
-                                ) : !checkboxStates[group.id].guidances[guidance.id] ? (
+                                ) : !checkboxStates[group.id].guidance_groups[guidance.id] ? (
                                   <MdOutlineCheckBoxOutlineBlank
                                     style={{ cursor: 'pointer' }}
                                     size={18}
                                     key={`icon-${index}-${key}-checkbox-outline-blank`}
-                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
                                   />
                                 ) : (
                                   <MdCheckBox
                                     style={{ cursor: 'pointer' }}
                                     size={18}
                                     key={`icon-${index}-${key}-checkbox`}
-                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                                    onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
                                   />
                                 )
                               }
@@ -314,8 +317,8 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
                             <label
                               className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
-                              style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidances[guidance.id] ? 'not-allowed' : 'pointer' }}
-                              onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidances[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidances[guidance.id])}
+                              style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
+                              onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
                             >
                               {guidance.name}
                             </label>
@@ -337,9 +340,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                         </Trans>
                       ) : t('Save')
                     }
-                    buttonColor={countSelectedGuidances() > 0 ? "orange" : "primary"}
+                    buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
                     position="start"
-                    handleClick={limitHasBeenReached() ? null : handleSaveChoise}
+                    handleClick={limitHasBeenReached() ? null : handleSaveChoice}
                     disabled={limitHasBeenReached()}
                   />
                 )}
