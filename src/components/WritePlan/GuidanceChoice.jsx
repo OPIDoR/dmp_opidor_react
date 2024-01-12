@@ -145,18 +145,14 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
 
-    const { data } = response.data;
+    const { guidance_groups } = response.data;
 
-    let {  questions_with_guidance } = response.data;
+    let { questions_with_guidance } = response.data;
 
-    let guidance_groups = [];
+    const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
+    const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
-    const selectedGuidances = sortGuidances(data.filter(({ important }) => important === true));
-    const unselectedGuidances = sortGuidances(data.filter(({ important }) => important === false));
-
-    guidance_groups = [ ...selectedGuidances, ...unselectedGuidances ];
-
-    setData(guidance_groups);
+    setData([ ...selectedGuidances, ...unselectedGuidances ]);
 
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
