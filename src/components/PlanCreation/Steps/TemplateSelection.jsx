@@ -297,11 +297,13 @@ function TemplateSelection({ prevStep }) {
         funder: <HiOutlineBuildingOffice2 size="18" style={{ margin: '0 10px 0 0' }} />
       };
 
+      const hasSelectedTemplate = templates.some(({ id }) => id === selectedTemplate);
+
       return {
         label: <>{types?.[dataType] || ''}{name}</>,
         value: id,
         type,
-        selected,
+        selected: hasSelectedTemplate || selected,
         templates,
       };
     });
