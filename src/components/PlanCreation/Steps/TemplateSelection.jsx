@@ -4,8 +4,9 @@ import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
+import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { Label } from "react-bootstrap";
-import { PiTreeStructureDuotone } from "react-icons/pi";
 
 import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
@@ -21,7 +22,7 @@ function TemplateSelection({ prevStep }) {
     setUrlParams,
     planTemplates, setPlanTemplates,
     selectedTemplate, setSelectedTemplate,
-    // sStructured,
+    // isStructured,
     templateLanguage,
   } = useContext(GlobalContext);
 
@@ -33,10 +34,9 @@ function TemplateSelection({ prevStep }) {
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     const tmpls = {
-      default: { title: t('Default template'), templates: [] },
+      default: { title: t('Recommended template'), templates: [] },
       myOrg: { title: `${currentOrg.name} (${t('Your organisation')})`, templates: [] },
-      othersOrgs: { id: 'othersOrgs', title: t('Other organisation'), type: 'select', data: [] },
-      funders: { id: 'funders', title: t('Funders'), type: 'select', data: [] },
+      others: { id: 'others', title: t('Others templates'), type: 'select', data: [] },
     };
 
     const fetchTemplates = async () => {
@@ -91,10 +91,12 @@ function TemplateSelection({ prevStep }) {
           break;
         }
 
-        tmpls.othersOrgs.data.push({
+        tmpls.others.data.push({
           ...org,
+          type: 'org',
           templates: orgTemplatesRes?.data
             // .filter(({ structured }) => structured === isStructured)
+            .map((obj) => ({ ...obj, type: 'org' }))
             .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase()) || [],
           selected: false,
         });
@@ -121,15 +123,16 @@ function TemplateSelection({ prevStep }) {
           break;
         }
 
-        tmpls.funders.data.push({
+        tmpls.others.data.push({
           ...funder,
+          type: 'funder',
           templates: fundersTemplatesRes?.data
             // .filter(({ structured }) => structured === isStructured)
+            .map((obj) => ({ ...obj, type: 'funder' }))
             .filter(({ locale }) => locale?.toLowerCase() === templateLanguage.toLowerCase()) || [],
           selected: false,
         });
       }
-
 
       setPlanTemplates(tmpls);
       setLoading(false);
@@ -221,6 +224,7 @@ function TemplateSelection({ prevStep }) {
             display: 'flex',
             justifyContent: 'space-between',
             marginLeft: '20px',
+            marginTop: 0,
           }}
           onClick={() => {
             localStorage.setItem('templateId', template.id);
@@ -238,7 +242,7 @@ function TemplateSelection({ prevStep }) {
               justifyContent: 'space-between',
             }}
           >
-            {template.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
+            {template?.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
             {template.title}
           </div>
           <ReactTooltip
@@ -287,13 +291,20 @@ function TemplateSelection({ prevStep }) {
 
     const type = planTemplates?.[index].id;
 
-    data = data.map(({ name, id, templates, selected }) => ({
-      label: name,
-      value: id,
-      type,
-      selected,
-      templates,
-    }));
+    data = data.map(({ name, id, templates, selected, type: dataType }) => {
+      const types = {
+        org: <PiBank size="18" style={{ margin: '0 10px 0 0' }} />,
+        funder: <HiOutlineBuildingOffice2 size="18" style={{ margin: '0 10px 0 0' }} />
+      };
+
+      return {
+        label: <>{types?.[dataType] || ''}{name}</>,
+        value: id,
+        type,
+        selected,
+        templates,
+      };
+    });
 
     const structuredTemplates = [];
     data.forEach(({ templates }) => {
@@ -302,7 +313,7 @@ function TemplateSelection({ prevStep }) {
       }
     });
 
-    return structuredTemplates.length <= 0 ? noModelAvailable : <div style={{ marginLeft: '30px' }}>
+    return structuredTemplates.length <= 0 ? noModelAvailable : <div style={{ marginLeft: '20px' }}>
       <CustomSelect
         key={`select-${index}-${type}`}
         placeholder={placeHolder}
@@ -333,6 +344,18 @@ function TemplateSelection({ prevStep }) {
               }}
               components={{ br: <br />, bold: <strong /> }}
           />
+          <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0 20px 0' }}>
+            <span>Légende:</span>
+            <Label bsStyle="primary" style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
+              <PiTreeStructureDuotone size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Structured template')}</i>
+            </Label>
+            <Label bsStyle="primary" style={{ margin: '0 10px 0 10px', display: 'flex', alignItems: 'center' }}>
+              <PiBank size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Funders')}</i>
+            </Label>
+            <Label bsStyle="primary" style={{ display: 'flex', alignItems: 'center' }}>
+              <HiOutlineBuildingOffice2 size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Other organisation')}</i>
+            </Label>
+          </div>
           <div className="column">
             {
               Object.keys(planTemplates).map((index) => (

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../../context/Global";
 import styles from "../../assets/css/steps.module.css";
-import CustomButton from "../../Styled/CustomButton";
 
 /**
  * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management
@@ -38,10 +37,8 @@ function ContextSelection({ nextStep }) {
             className={`${styles.step_list}  ${researchContext === id ? styles.checked : ''}`}
             onClick={() => {
               localStorage.setItem('researchContext', id);
-              if (researchContext === id) {
-                return setResearchContext(null);
-              }
-              return setResearchContext(id);
+              setResearchContext(id);
+              return nextStep();
             }}
           >
             <div
@@ -55,14 +52,6 @@ function ContextSelection({ nextStep }) {
           </div>
         ))
       }
-      <div className="row" style={{ margin: '0 0 0 25px' }}>
-        <CustomButton
-          handleClick={nextStep}
-          title={t("Confirm my choice")}
-          position="end"
-          disabled={!researchContext}
-        />
-      </div>
     </div>
   );
 }
