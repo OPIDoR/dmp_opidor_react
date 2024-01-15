@@ -4,7 +4,7 @@ import { Step, Stepper } from 'react-form-stepper';
 import { t } from 'i18next';
 
 import { CustomButton } from "../Styled";
-import { ContextSelection, TypeSelection , TemplateSelection, LangSelection } from './Steps';
+import { ContextSelection , TemplateSelection, LangSelection } from './Steps';
 import styles from '../assets/css/main.module.css';
 import stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
@@ -18,7 +18,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     researchContext, setResearchContext,
     isStructured, setIsStructured,
     selectedTemplate, setSelectedTemplate,
-    setTemplateLanguage
+    templateLanguage, setTemplateLanguage
   } = useContext(GlobalContext);
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -27,18 +27,17 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Context selection'),
       component: <ContextSelection />,
+      value: researchContext,
     },
-    // {
-    //   label: t('Type selection'),
-    //   component: <TypeSelection />,
-    // },
     {
       label: t('Language selection'),
       component: <LangSelection />,
+      value: templateLanguage,
     },
     {
       label: t('Template selection'),
       component: <TemplateSelection />,
+      value: selectedTemplate
     }
   ];
 
@@ -87,6 +86,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-12">
+          <h1>{t('Create your plan in 3 steps')}</h1>
           <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
             <Stepper
               activeStep={currentStep}
@@ -99,10 +99,11 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
               className={stepperStyles.stepper_steps}
             >
               {
-                steps.map(({ label }, index) => (
+                steps.map(({ label, value }, index) => (
                   <Step
                     key={`step-${index}`}
                     label={label}
+                    // label={<>{label}<br />({value})</>}
                     onClick={() => handleStep(index)}
                   />
                 ))
