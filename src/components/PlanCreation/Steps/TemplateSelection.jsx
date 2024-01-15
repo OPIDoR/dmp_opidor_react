@@ -347,13 +347,13 @@ function TemplateSelection({ prevStep }) {
           <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0 20px 0' }}>
             <span>Légende:</span>
             <Label bsStyle="primary" style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
-              <PiTreeStructureDuotone size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Structured template')}</i>
+              <PiTreeStructureDuotone size={18} style={{ marginRight: '10px' }}/> <i>{t('Structured template')}</i>
             </Label>
-            <Label bsStyle="primary" style={{ margin: '0 10px 0 10px', display: 'flex', alignItems: 'center' }}>
-              <PiBank size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Funders')}</i>
+            <Label bsStyle="primary" style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}>
+              <PiBank size={18} style={{ marginRight: '10px' }}/> <i>{t('Funders')}</i>
             </Label>
             <Label bsStyle="primary" style={{ display: 'flex', alignItems: 'center' }}>
-              <HiOutlineBuildingOffice2 size={18} style={{ margin: '0 10px 0 10px' }}/> <i>{t('Other organisation')}</i>
+              <HiOutlineBuildingOffice2 size={18} style={{ marginRight: '10px' }}/> <i>{t('Other organisation')}</i>
             </Label>
           </div>
           <div className="column">
