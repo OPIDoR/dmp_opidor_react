@@ -33,7 +33,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
       <FormProvider {...methods}>
         <form name="nested-form" id="nested-form" style={{ margin: '15px' }} onSubmit={(e) => handleNestedFormSubmit(e)}>
           <FormBuilder
-            template={template}
+            template={template.schema}
             readonly={readonly}
           />
         </form>

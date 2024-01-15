@@ -42,7 +42,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
         <FormProvider {...methods}>
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder
-              template={template}
+              template={template.schema}
               readonly={readonly}
             />
           </form>
