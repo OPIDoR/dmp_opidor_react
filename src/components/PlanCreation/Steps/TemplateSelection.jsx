@@ -349,7 +349,7 @@ function TemplateSelection({ prevStep }) {
             <Label bsStyle="primary" style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
               <PiTreeStructureDuotone size={18} style={{ marginRight: '10px' }}/> <i>{t('Structured template')}</i>
             </Label>
-            <Label bsStyle="primary" style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}>
+            <Label bsStyle="primary" style={{ margin: '0 10px 0 10px', display: 'flex', alignItems: 'center' }}>
               <PiBank size={18} style={{ marginRight: '10px' }}/> <i>{t('Funders')}</i>
             </Label>
             <Label bsStyle="primary" style={{ display: 'flex', alignItems: 'center' }}>
