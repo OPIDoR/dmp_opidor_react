@@ -37,7 +37,7 @@ function SelectContributorSingle({
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
-  const [template, setTemplate] = useState({});
+  const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributor, setContributor] = useState({});
@@ -86,8 +86,9 @@ function SelectContributorSingle({
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
-        setDefaultRole(contributorTemplate.properties.role[`const@${locale}`]);
-        const personTemplateId = contributorTemplate.properties.person.schema_id;
+        const contributorProps = contributorTemplate?.schema?.properties || {}
+        setDefaultRole(contributorProps.role[`const@${locale}`]);
+        const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: res.data });
@@ -95,7 +96,7 @@ function SelectContributorSingle({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateId];
-      const personTemplateId = contributorTemplate.properties.person.schema_id;
+      const personTemplateId = contributorTemplate?.schema?.properties.person.schema_id;
       setTemplate(loadedTemplates[personTemplateId]);
     }
   }, [templateId]);
@@ -242,7 +243,7 @@ function SelectContributorSingle({
             roleOptions={roleOptions}
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
-            templateToString={template.to_string}
+            templateToString={template.schema.to_string}
             tableHeader={t('Selected value')}
             readonly={readonly}
           ></PersonsList>

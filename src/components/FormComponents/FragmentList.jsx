@@ -31,7 +31,7 @@ function FragmentList({
               .map((el, idx) => (el.action !== 'delete' ?
                 <tr key={idx}>
                   <td dangerouslySetInnerHTML={createMarkup(parsePattern(el, templateToString))}></td>
-                  <td>
+                  <td style={{width: "200px"}}>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
                       {!readonly && (
                         <>

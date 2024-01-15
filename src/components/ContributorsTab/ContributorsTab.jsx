@@ -16,8 +16,7 @@ function ContributorsTab({ planId, locale, readonly }) {
   const { setLocale } = useContext(GlobalContext);
   const [show, setShow] = useState(false);
   const [index, setIndex] = useState(null);
-  const [template, setTemplate] = useState({});
-  const [templateId, setTemplateId] = useState(null);
+  const [template, setTemplate] = useState(null);
   const [contributors, setContributors] = useState([]);
   const [fragmentId, setFragmentId] = useState(null)
   const [editedPerson, setEditedPerson] = useState({})
@@ -29,7 +28,6 @@ function ContributorsTab({ planId, locale, readonly }) {
     service.getContributors(planId).then((res) => {
       setContributors(res.data.contributors);
       setTemplate(res.data.template);
-      setTemplateId(res.data.template_id);
     })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -55,7 +53,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           setLoading(false);
         });
     } else {
-      service.createFragment(data, templateId, planId)
+      service.createFragment(data, template.id, planId)
         .then((res) => {
           newContributorsList.unshift({
             id: res.data.fragment.id,
