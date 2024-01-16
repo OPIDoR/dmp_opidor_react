@@ -1,48 +1,46 @@
-import React, { useEffect, useState } from 'react';
-
-import NewsItem from './NewsItem.jsx';
-import { news as newsService } from '../../services';
+import React from 'react';
+import { useQuery } from 'react-query';
+import { format } from 'date-fns';
+import { fr, enGB } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
+import CustomError from '../Shared/CustomError.jsx';
 
-function NewsPage({locale}) {
-  const [loading, setLoading] = useState(true);
-  const [news, setNews] = useState([]);
-  const [error, setError] = useState(null);
+const locales = {
+  'fr-FR': fr,
+  'en-GB': enGB,
+};
 
-  useEffect(() => {
-    newsService(12)
-      .then((data) => {
-        const newsItems = data.map((r) => ({
-          id: r.id,
-          title: r.title.rendered,
-          link: r.link,
-          date: new Date(r.date).toLocaleDateString('fr-FR'),
-          thumbnail: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["medium_large"],
-        }));
-        setNews(newsItems);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError({
-          code: error?.response?.status,
-          message: error?.response?.statusText,
-          error: error?.response?.data?.message || '',
-        });
-        setLoading(false);
-      });
-  }, []); 
+export default function NewsPage({ locale, size }) {
+  const { i18n } = useTranslation();
+
+  const { isLoading, error, data } = useQuery('news', () =>
+    fetch(`https://opidor.fr/wp-json/wp/v2/posts?per_page=${size}&categories=5&_embed`).then(res =>
+      res.json()
+    )
+  );
+
+  if (isLoading) return <CustomSpinner />;
+
+  if (error) return <CustomError error={error} />;
 
   return (
-    <>
-    {loading && (<CustomSpinner></CustomSpinner>)}
-    {!loading && error && <p>error</p>}
-    {!loading && !error && news.length > 0 && (
-        <div id='news-page'>
-          {news.map((n) => <NewsItem key={n.id} news={n}/>)}
-        </div>
-    )}
-    </>
-  );
+    <div id="homepage-news">
+      {data.map((r) => ({
+        id: r.id,
+        title: r.title.rendered,
+        link: r.link,
+        date: format(new Date(r.date), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || locale] }),
+        thumbnail: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["medium_large"],
+      })).map((n, id) => (
+        <article key={`news-item-${id}`} className='news-item'>
+          <a key={`news-link-${id}`} className='news-link' href={n.link} target='_blank' rel="noreferrer">
+            <img key={`news-img-${id}`} className='news-img' alt="news thumbnail" src={n.thumbnail.source_url} />
+            <h3 key={`news-title-${id}`} className='news-title' dangerouslySetInnerHTML={{ __html: n.title }}></h3>
+          </a>
+          <span key={`news-date-${id}`} className='news-date'>{n.date}</span>
+        </article>
+      ))}
+    </div>
+  )
 }
-
-export default NewsPage;
