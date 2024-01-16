@@ -42,6 +42,7 @@ function Question({
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
+  const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -50,7 +51,12 @@ function Question({
     );
     setAnswerId(answer?.answer_id);
     setFragmentId(answer?.fragment_id);
-  }, [displayedResearchOutput, question.id]);
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    setUrlParams({ research_output: queryParameters.get('research_output') });
+
+    setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10));
+  }, [displayedResearchOutput, question.id, currentResearchOutput]);
 
   /**
    * Handles toggling the open/collapse state of a question.
@@ -148,7 +154,7 @@ function Question({
    * @returns {boolean} True if the question is opened, false otherwise.
    */
   const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId];
+    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput);
 
   return (
     <>
