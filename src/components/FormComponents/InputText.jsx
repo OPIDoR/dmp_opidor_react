@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-
-import { getCheckEmailPattern, getCheckPattern } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 
 /**

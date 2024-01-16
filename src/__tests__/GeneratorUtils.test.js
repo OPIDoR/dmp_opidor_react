@@ -1,10 +1,5 @@
 import {
   parsePatern,
-  createMarkup,
-  getCheckPatern,
-  checkRequiredForm,
-  isEmptyObject,
-  getLabelName,
   getDefaultLabel,
 } from "../utils/GeneratorUtils";
 
@@ -37,145 +32,6 @@ describe("parsePattern", () => {
   });
 });
 
-describe("createMarkup", () => {
-  it("returns an object with a sanitized __html property", () => {
-    const html = '<p>dmp opidor</p><script>alert("attack!")</script>';
-    const expectedResult = {
-      __html: "<p>dmp opidor</p>",
-    };
-    const result = createMarkup(html);
-
-    expect(result).toEqual(expectedResult);
-  });
-});
-
-describe("getCheckPattern", () => {
-  test("returns true for valid email address", () => {
-    const type = "email";
-    const value = "test@example.com";
-    expect(getCheckPatern(type, value)).toBe(true);
-  });
-
-  test("returns false for invalid email address", () => {
-    const type = "email";
-    const value = "testexample.com";
-    expect(getCheckPatern(type, value)).toBe(false);
-  });
-
-  test("returns true for valid URI", () => {
-    const type = "uri";
-    const value = "https://www.example.com";
-    expect(getCheckPatern(type, value)).toBe(true);
-  });
-
-  test("returns false for invalid URI", () => {
-    const type = "uri";
-    const value = "httwww.example.";
-    expect(getCheckPatern(type, value)).toBe(false);
-  });
-
-  test("returns true for any other type", () => {
-    const type = "string";
-    const value = "anyValue";
-    expect(getCheckPatern(type, value)).toBe(true);
-  });
-});
-
-// describe("checkRequiredForm", () => {
-//   it("returns undefined if form is falsy", () => {
-//     const standardTemplate = { required: ["field1", "field2"] };
-//     const form = null;
-//     const result = checkRequiredForm(standardTemplate, form);
-//     expect(result).toBe(undefined);
-//   });
-
-//   it("returns the first required field that is empty or has the default value", () => {
-//     const standardTemplate = { required: ["field1", "field2"] };
-//     const form = {
-//       field1: "",
-//       field2: "<p></p>",
-//       field3: "some value",
-//     };
-//     const result = checkRequiredForm(standardTemplate, form);
-//     expect(result).toBe("field1");
-//   });
-
-//   it("returns an empty string if all required fields have a value", () => {
-//     const standardTemplate = { required: ["field1", "field2"] };
-//     const form = {
-//       field1: "some value",
-//       field2: "some other value",
-//     };
-//     const result = checkRequiredForm(standardTemplate, form);
-//     expect(result).toBe("");
-//   });
-// });
-
-describe("isEmptyObject", () => {
-  it("returns true for an empty object", () => {
-    const obj = {};
-    expect(isEmptyObject(obj)).toBe(true);
-  });
-
-  it("returns false for a non-empty object", () => {
-    const obj = { key: "value" };
-    expect(isEmptyObject(obj)).toBe(false);
-  });
-
-  it("returns true for an empty array", () => {
-    const obj = [];
-    expect(isEmptyObject(obj)).toBe(false);
-  });
-
-  it("returns false for a non-empty array", () => {
-    const obj = [1, 2, 3];
-    expect(isEmptyObject(obj)).toBe(false);
-  });
-
-  it("returns true for an object without any own properties", () => {
-    const obj = Object.create(null);
-    expect(isEmptyObject(obj)).toBe(true);
-  });
-});
-
-describe("getLabelName", () => {
-  it("returns the correct label name for a given value", () => {
-    const value = "description";
-    const object = {
-      properties: {
-        description: {
-          type: "string",
-          description: "Description de la politique de sauvegarde appliquée",
-          inputType: "textarea",
-          "label@fr_FR": "nom et description de la politique de stockage et sauvegarde",
-          "label@en_GB": "Storage and backup policy name and description",
-          "form_label@fr_FR": "Politique de stockage et sauvegarde",
-          "form_label@en_GB": "Storage and backup policy",
-        },
-      },
-    };
-
-    expect(getLabelName(value, object)).toBe("Politique de stockage et sauvegarde");
-  });
-
-  it("returns the fallback label name if form_label is not available", () => {
-    const value = "description";
-    const object = {
-      properties: {
-        description: {
-          type: "string",
-          description: "Description de la politique de sauvegarde appliquée",
-          inputType: "textarea",
-          "label@fr_FR": "nom et description de la politique de stockage et sauvegarde",
-          "label@en_GB": "Storage and backup policy name and description",
-        },
-      },
-    };
-
-    expect(getLabelName(value, object)).toBe("nom et description de la politique de stockage et sauvegarde");
-  });
-});
-
 describe("getDefaultLabel", () => {
   const temp = {
     funder: {
@@ -202,9 +58,4 @@ describe("getDefaultLabel", () => {
     const result = getDefaultLabel(null, form, "estimatedVolume");
     expect(result).toEqual("12");
   });
-
-  // test("should return undefined if funder does not exist in temp or form", () => {
-  //   const result = getDefaultLabel(temp, form, "unknownName");
-  //   expect(result).toBeUndefined();
-  // });
 });
