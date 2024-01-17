@@ -12,13 +12,6 @@ import toast from "react-hot-toast";
 import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";
 import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
 
-const panelStyle = {
-  backgroundColor: "var(--white)",
-  fontSize: "large",
-  borderRadius: "5px",
-  boxShadow: "5px 5px 5px #e5e4e7",
-};
-
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
   color: "var(--blue)",
@@ -167,14 +160,13 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
   return (
     <PanelGroup accordion id="accordion-guidance-choice">
-      <Panel eventKey="1" style={panelStyle}>
-        <Panel.Heading style={{ background: "white", borderRadius: "5px" }}>
+      <Panel eventKey="1" className="funder-import">
+        <Panel.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
           <Panel.Title
             toggle
             onClick={(e) => setIsOpen(!isOpen)}
             style={{
-              background: 'white',
-              borderRadius: '5px',
+              background: 'var(--dark-blue)',
               fontWeight: 900,
             }}
           >
@@ -187,15 +179,15 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       size={38}
                       style={{ marginRight: '10px', color: 'var(--rust)' }}
                     />
-                    <span style={{ color: 'var(--dark-blue)', marginTop: '3px' }}>{t("Select the guidance of your plan")}</span>
+                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Select the guidance of your plan")}</span>
                   </div>
                 </div>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (
-                  <TfiAngleUp size={24} fill={"var(--rust)"} />
+                  <TfiAngleUp size={24} fill={"var(--white)"} />
                 ) : (
-                  <TfiAngleDown size={24} fill={"var(--rust)"} />
+                  <TfiAngleDown size={24} fill={"var(--white)"} />
                 )}
               </div>
             </div>

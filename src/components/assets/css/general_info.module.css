@@ -55,7 +55,8 @@
 }
 
 .container_anr {
-  margin: 10px 50px 0px 50px;
+  border-top: 1px solid var(--white);
+  padding-top: 10px;
 }
 
 .description_anr {
