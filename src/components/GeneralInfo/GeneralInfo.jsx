@@ -173,69 +173,66 @@ function GeneralInfo({
           className={styles.panel}
           style={{
             border: "2px solid var(--dark-blue)",
-            borderRadius: "11px",
-            boxShadow: "10px 12px 8px #e5e4e7",
+            borderRadius: "10px",
           }}
           onToggle={(expanded) => setIsOpenFunderImport(expanded)}
         >
           {loading && <CustomSpinner isOverlay={true} />}
           {error && <CustomError error={error} />}
-          {!error && funders && (
-            <>
-              <Panel.Heading className="funder-import " style={{ background: "var(--dark-blue)", borderRadius: "8px 8px 0px 0px" }}>
-                <Panel.Title toggle>
-                  <div className={styles.question_title}>
-                    <div className={styles.question_text}>
-                      <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
-                    </div>
-                    <span className={styles.question_icons}>
-                      {isOpenFunderImport ? (
-                        <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-                      ) : (
-                        <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-                      )}
-                    </span>
-                  </div>
-                </Panel.Title>
-              </Panel.Heading>
-              <Panel.Body collapsible style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 8px 8px" }}>
-                <div className={styles.container_anr}>
-                  <p className={styles.description_anr}>{t('Your project is funded by the ANR or the European Commission, automatically retrieve the administrative information for your project.')}</p>
-                  {funders.length > 1 && (
-                    <div className="form-group">
-                      <div className={styles.label_form_anr}>
-                        <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
-                      </div>
-                      <CustomSelect
-                        options={funders}
-                        selectedOption={selectedFunder || null}
-                        onSelectChange={(e) => handleSelectFunder(e)}
-                      />
-                    </div>
-                  )}
-                  {fundedProjects.length > 0 && (
-                    <div className="form-group">
-                      <div className={styles.label_form_anr}>
-                        <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
-                      </div>
-                      <CustomSelect
-                        options={fundedProjects}
-                        selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                        onSelectChange={(e) => setSelectedProject(e.object)}
-                        async={true}
-                        asyncCallback={(value) => filterOptions(fundedProjects, value)}
-                      />
-                    </div>
-                  )}
-                  {selectedProject && (
-                    <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                      {t("Save")}
-                    </ButtonSave>
-                  )}
+          <Panel.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
+            <Panel.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
+              <div className={styles.question_title}>
+                <div className={styles.question_text}>
+                  <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
                 </div>
-              </Panel.Body>
-            </>
-          )}
+                <span className={styles.question_icons}>
+                  {isOpenFunderImport ? (
+                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                  ) : (
+                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                  )}
+                </span>
+              </div>
+            </Panel.Title>
+          </Panel.Heading>
+          <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+            {!error && funders && (
+              <div className={styles.container_anr}>
+                <p className={styles.description_anr}>{t('Your project is funded by the ANR or the European Commission, automatically retrieve the administrative information for your project.')}</p>
+                {funders.length > 1 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+                    </div>
+                    <CustomSelect
+                      options={funders}
+                      selectedOption={selectedFunder || null}
+                      onSelectChange={(e) => handleSelectFunder(e)}
+                    />
+                  </div>
+                )}
+                {fundedProjects.length > 0 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                    </div>
+                    <CustomSelect
+                      options={fundedProjects}
+                      selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
+                      onSelectChange={(e) => setSelectedProject(e.object)}
+                      async={true}
+                      asyncCallback={(value) => filterOptions(fundedProjects, value)}
+                    />
+                  </div>
+                )}
+                {selectedProject && (
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                    {t("Save")}
+                  </ButtonSave>
+                )}
+              </div>
+            )}
+          </Panel.Body>
         </Panel>
       )}
       <Panel
