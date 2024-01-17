@@ -5,6 +5,7 @@ import { fr, enGB } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomError from '../Shared/CustomError.jsx';
+import { news } from '../../services';
 
 const locales = {
   'fr-FR': fr,
@@ -15,9 +16,7 @@ export default function NewsPage({ locale, size }) {
   const { i18n } = useTranslation();
 
   const { isLoading, error, data } = useQuery('news', () =>
-    fetch(`https://opidor.fr/wp-json/wp/v2/posts?per_page=${size}&categories=5&_embed`).then(res =>
-      res.json()
-    )
+    news.get(size).then(res => res.data)
   );
 
   if (isLoading) return <CustomSpinner />;
