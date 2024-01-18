@@ -5,7 +5,7 @@ import { Panel } from "react-bootstrap";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
-import { PiLightbulbLight } from "react-icons/pi";
+import { TbBulbFilled } from "react-icons/tb";
 
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
@@ -230,7 +230,6 @@ function Question({
                     </div>
                   )}
 
-
                   <div>
                     <ReactTooltip
                       id="commentTip"
@@ -243,20 +242,19 @@ function Question({
                       data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
+                        handleQuestionCollapse(true);
                         handleIconClick(e, isQuestionOpened(), question, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
                     >
-                      {isQuestionOpened() && (
-                        <CommentSVG
-                          size={32}
-                          fill={
-                            isQuestionOpened()
-                              ? fillCommentIconColor
-                              : "var(--dark-blue)"
-                          }
-                        />
-                      )}
+                      <CommentSVG
+                        size={32}
+                        fill={
+                          isQuestionOpened()
+                            ? fillCommentIconColor
+                            : "var(--dark-blue)"
+                        }
+                      />
                     </div>
                   </div>
 
@@ -284,13 +282,18 @@ function Question({
                           style={{ marginLeft: "5px" }}
                         >
                           {isQuestionOpened() && (
-                            <PiLightbulbLight
+                            <TbBulbFilled
                               size={32}
                               fill={
                                 isQuestionOpened()
                                   ? fillGuidanceIconColor
                                   : "var(--dark-blue)"
                               }
+                              style={{
+                                color: isQuestionOpened()
+                                  ? fillGuidanceIconColor
+                                  : "var(--dark-blue)"
+                              }}
                             />
                           )}
                         </div>
