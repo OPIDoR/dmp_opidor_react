@@ -10,6 +10,7 @@ import SelectMultipleList from '../FormComponents/SelectMultipleList';
 import SelectSingleList from '../FormComponents/SelectSingleList';
 import SelectWithCreate from '../FormComponents/SelectWithCreate';
 import TinyArea from '../FormComponents/TinyArea';
+import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
 function FormBuilder({ template, readonly }) {
@@ -114,6 +115,19 @@ function FormBuilder({ template, readonly }) {
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
         );
+        continue;
+      }
+      if(prop.schema_id && prop.type === 'object') {
+        formFields.push(
+          <SubForm
+          key={key}
+          label={formLabel}
+          propName={key}
+          tooltip={tooltip}
+          templateId={prop.schema_id}
+          readonly={readonly || isConst}
+          />
+        )
         continue;
       }
 
