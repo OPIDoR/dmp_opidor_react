@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
-import { createMarkup, parsePattern } from '../../utils/GeneratorUtils';
+import DOMPurify from "dompurify";
+import { parsePattern } from '../../utils/GeneratorUtils';
 
 function FragmentList({
   fragmentsList,
@@ -30,7 +31,11 @@ function FragmentList({
             {fragmentsList
               .map((el, idx) => (el.action !== 'delete' ?
                 <tr key={idx}>
-                  <td dangerouslySetInnerHTML={createMarkup(parsePattern(el, templateToString))}></td>
+                  <td
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
+                    }}
+                  ></td>
                   <td style={{width: "200px"}}>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
                       {!readonly && (

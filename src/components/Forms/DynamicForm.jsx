@@ -33,11 +33,12 @@ function DynamicForm({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const methods = useForm();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     if (fragmentId) {
       if (formData[fragmentId]) {
         if(loadedTemplates[formData[fragmentId].schema_id]) {
@@ -74,6 +75,7 @@ function DynamicForm({
       }).catch(console.error)
         .finally(() => setLoading(false));
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
