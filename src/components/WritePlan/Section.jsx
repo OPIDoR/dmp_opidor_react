@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
@@ -8,7 +8,11 @@ import Question from "./Question";
 function Section({ section, readonly }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
-  const sectionId = useState(section.id);
+  const [sectionId, setSectionId] = useState(section.id);
+
+  useEffect(() => {
+    setSectionId(section.id);
+  }, [section])
 
   /**
  * Toggle the state of questions within a section to the provided boolean value.
@@ -16,8 +20,12 @@ function Section({ section, readonly }) {
  * @param {boolean} boolVal - The boolean value to set for all questions in the section.
  */
   const toggleQuestionsInSection = (boolVal) => {
+    const queryParameters = new URLSearchParams(window.location.search);
+
+    const currentResearchOutput = queryParameters.get('research_output');
+
     const updatedState = {
-      ...openedQuestions[displayedResearchOutput.id],
+      ...openedQuestions[currentResearchOutput],
       [sectionId]: section.questions.reduce((acc, question) => {
         acc[question.id] = boolVal;
         return acc;
@@ -26,7 +34,7 @@ function Section({ section, readonly }) {
 
     setOpenedQuestions({
       ...openedQuestions,
-      [displayedResearchOutput.id]: updatedState
+      [currentResearchOutput]: updatedState
     });
   };
 
