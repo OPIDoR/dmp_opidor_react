@@ -47,11 +47,8 @@ function Global({ children }) {
   const [openedQuestions, setOpenedQuestions] = useState(null);
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
   const [userId, setUserId] = useState(-1);
-  const [planTemplates, setPlanTemplates] = useState({});
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [planInformations, setPlanInformations] = useState(null);
-  const [isStructured, setIsStructured] = useState(null);
-  const [templateLanguage, setTemplateLanguage] = useState(null);
 
   /* It's setting the formData in sessionStorage. */
   // useEffect(() => {
@@ -105,16 +102,10 @@ function Global({ children }) {
         userId,
         setUserId,
         setUrlParams,
-        planTemplates,
-        setPlanTemplates,
         selectedTemplate,
         setSelectedTemplate,
         planInformations,
         setPlanInformations,
-        isStructured,
-        setIsStructured,
-        templateLanguage,
-        setTemplateLanguage,
       }}
     >
       {children}
