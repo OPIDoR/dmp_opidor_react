@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import uniqueId from 'lodash.uniqueid';
-import { FaPenToSquare, FaEye } from 'react-icons/fa6';
+import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
+import Swal from 'sweetalert2';
 
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
@@ -11,6 +12,7 @@ import { fragmentEmpty } from '../../utils/utils.js';
 import { parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
+import swalUtils from '../../utils/swalUtils.js';
 
 function SubForm({
   label,
@@ -32,7 +34,7 @@ function SubForm({
   const tooltipId = uniqueId('sub_form_tooltip_id_');
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
-  
+
   useEffect(() => {
     setEditedFragment(field.value || {});
   }, [field.value])
@@ -52,11 +54,25 @@ function SubForm({
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
-    const newFragment = { ...field.value, ...data, action: data.action || 'update'};
+    const newFragment = { ...field.value, ...data, action: data.action || 'update' };
     field.onChange(newFragment);
 
     setEditedFragment({});
     setShowNestedForm(false);
+  }
+
+  const handleDeleteList = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
+      if (result.isConfirmed) {
+        field.onChange({ id: field.value.id, action: 'delete' });
+    
+        setEditedFragment({});
+        setShowNestedForm(false);
+      }
+    });
+
   }
 
   return (
@@ -87,6 +103,12 @@ function SubForm({
 
         {!fragmentEmpty(editedFragment) && !showNestedForm && (
           <table style={{ marginTop: "20px" }} className="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
             <tbody>
               {[editedFragment].map((el, idx) => (
                 <tr key={idx}>
@@ -101,6 +123,10 @@ function SubForm({
                       }}
                       style={{ margin: '8px', cursor: 'pointer' }}
                     />
+                    <FaXmark
+                      onClick={(e) => handleDeleteList(e)}
+                      style={{ margin: '8px', cursor: 'pointer' }}
+                    />
                   </td>
                 </tr>
               ))}
@@ -108,7 +134,7 @@ function SubForm({
           </table>
         )}
 
-        {!readonly && (
+        {!readonly && fragmentEmpty(editedFragment) && (
           <CustomButton
             handleClick={() => {
               setEditedFragment({ action: 'create' });
