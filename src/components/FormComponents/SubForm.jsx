@@ -72,7 +72,6 @@ function SubForm({
         setShowNestedForm(false);
       }
     });
-
   }
 
   return (
