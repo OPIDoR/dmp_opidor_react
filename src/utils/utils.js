@@ -23,7 +23,7 @@ export function except(data, excludedKeys) {
 }
 
 export function fragmentEmpty(data) {
-  let rest = except(data, ['id', 'schema_id']);
+  let rest = except(data, ['id', 'schema_id', 'action']);
   return Object.keys(rest).length === 0
 }
 

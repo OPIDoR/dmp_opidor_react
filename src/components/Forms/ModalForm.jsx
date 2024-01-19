@@ -33,7 +33,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
   }
 
   return (
-    <Modal className="dmpopidor-branding" show={show} onHide={handleModalClose}>
+    <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
