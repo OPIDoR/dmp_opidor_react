@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { GlobalContext } from "../../context/Global";
 import styles from "../../assets/css/steps.module.css";
 
 /**
@@ -10,9 +9,8 @@ import styles from "../../assets/css/steps.module.css";
  * @returns A React component that renders a form with two radio buttons and a button to validate the user's choice. The component also uses context to
  * set the value of the selected radio button.
  */
-function ContextSelection({ nextStep }) {
+function ContextSelection({ nextStep, set, params }) {
   const { t } = useTranslation();
-  const { researchContext, setResearchContext } = useContext(GlobalContext);
 
   const categories = [
     {
@@ -34,10 +32,10 @@ function ContextSelection({ nextStep }) {
         categories.map(({ id, title, description }) => (
           <div
             key={`first-step-${id}-container`}
-            className={`${styles.step_list}  ${researchContext === id ? styles.checked : ''}`}
+            className={`${styles.step_list}  ${params.researchContext === id ? styles.checked : ''}`}
             onClick={() => {
               localStorage.setItem('researchContext', id);
-              setResearchContext(id);
+              set(id);
               return nextStep();
             }}
           >
