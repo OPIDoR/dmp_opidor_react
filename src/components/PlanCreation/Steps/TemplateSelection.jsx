@@ -182,6 +182,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     if (localStorage.getItem('templateId')) {
       localStorage.removeItem('templateId');
     }
+    if (localStorage.getItem('templateName')) {
+      localStorage.removeItem('templateName');
+    }
     if (localStorage.getItem('templateLanguage')) {
       localStorage.removeItem('templateLanguage');
     }
@@ -222,6 +225,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           }}
           onClick={() => {
             localStorage.setItem('templateId', template.id);
+            localStorage.setItem('templateName', template.title);
             if (params.selectedTemplate === template.id) {
               return set(null);
             }
