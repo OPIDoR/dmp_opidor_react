@@ -3,7 +3,8 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPenToSquare, FaPlus, FaEye } from 'react-icons/fa6';
+import { FaPenToSquare, FaPlus, FaEye, FaXmark } from 'react-icons/fa6';
+import Swal from 'sweetalert2';
 
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
@@ -13,6 +14,7 @@ import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
 import { fragmentEmpty } from '../../utils/utils.js';
+import swalUtils from '../../utils/swalUtils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -125,6 +127,19 @@ function SelectSingleList({
 
     setEditedFragment({});
     setShowNestedForm(false);
+  }
+  
+  const handleDeleteList = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
+      if (result.isConfirmed) {
+        field.onChange({ id: field.value.id, action: 'delete' });
+    
+        setEditedFragment({});
+        setShowNestedForm(false);
+      }
+    });
   }
 
   return (
@@ -248,6 +263,10 @@ function SelectSingleList({
                         setShowNestedForm(true);
                         setEditedFragment(field.value);
                       }}
+                      style={{ margin: '8px', cursor: 'pointer' }}
+                    />
+                    <FaXmark
+                      onClick={(e) => handleDeleteList(e)}
                       style={{ margin: '8px', cursor: 'pointer' }}
                     />
                   </td>
