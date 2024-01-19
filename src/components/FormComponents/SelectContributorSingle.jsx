@@ -145,7 +145,7 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template['unicity'])) {
+    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
