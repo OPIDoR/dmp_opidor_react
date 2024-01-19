@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { GlobalContext } from "../../context/Global";
 import styles from "../../assets/css/steps.module.css";
 
-function LangSelection({ prevStep, nextStep }) {
+function LangSelection({ prevStep, nextStep, set, params }) {
   const { t } = useTranslation();
-  const { templateLanguage, setTemplateLanguage } = useContext(GlobalContext);
 
   const languages = [
     {
@@ -28,10 +26,10 @@ function LangSelection({ prevStep, nextStep }) {
         languages.map(({ label, value, description }, index) => (
           <div
             key={`first-step-${index}-container`}
-            className={`${styles.step_list}  ${templateLanguage === value ? styles.checked : ''}`}
+            className={`${styles.step_list}  ${params.templateLanguage === value ? styles.checked : ''}`}
             onClick={() => {
               localStorage.setItem('templateLanguage', value);
-              setTemplateLanguage(value);
+              set(value);
               return nextStep();
             }}
           >
