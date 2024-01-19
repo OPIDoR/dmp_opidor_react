@@ -10,56 +10,83 @@ import stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
 
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
-  const { i18n } = useTranslation();
-  const {
-    setLocale,
-    setCurrentOrg,
-    setUrlParams,
-    researchContext, setResearchContext,
-    isStructured, setIsStructured,
-    selectedTemplate, setSelectedTemplate,
-    templateLanguage, setTemplateLanguage
-  } = useContext(GlobalContext);
+  const { t, i18n } = useTranslation();
+  const { setLocale, setUrlParams } = useContext(GlobalContext);
+
+  const [params, setParams] = useState({
+    researchContext: null,
+    templateLanguage: null,
+    selectedTemplate: null,
+    templateName: null,
+    isStructured: false,
+    currentOrg: { id: currentOrgId, name: currentOrgName },
+  });
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  const context = {
+    'research_project': t('For a research project'),
+    'research_entity': t('For a research entity'),
+  };
+
+  const languages = {
+    'fr-FR': 'Français',
+    'en-GB': 'English (UK)'
+  };
 
   const steps = [
     {
       label: t('Context selection'),
       component: <ContextSelection />,
-      value: researchContext,
+      value: context[params.researchContext],
+      set: (researchContext) => setParams({
+        ...params,
+        researchContext,
+      }),
     },
     {
       label: t('Language selection'),
       component: <LangSelection />,
-      value: templateLanguage,
+      value: languages[params.templateLanguage],
+      set: (templateLanguage) => setParams({
+        ...params,
+        templateLanguage,
+      }),
     },
     {
       label: t('Template selection'),
       component: <TemplateSelection />,
-      value: selectedTemplate
+      value: params.templateName,
+      set: (selectedTemplate, templateName) => setParams({
+        ...params,
+        selectedTemplate,
+        templateName,
+      }),
     }
   ];
 
   useEffect(() => {
     setLocale(locale);
-    setCurrentOrg({id: currentOrgId, name: currentOrgName});
     i18n.changeLanguage(locale.substring(0, 2));
 
-    const context = researchContext || localStorage.getItem('researchContext') || null
-    setResearchContext(context);
-
     const isStructuredValue = localStorage.getItem('isStructured');
-    setIsStructured(isStructured || isStructuredValue ? isStructuredValue === 'true' : null);
 
-    setTemplateLanguage(localStorage.getItem('templateLanguage'));
+    const researchContext = params.researchContext || localStorage.getItem('researchContext') || null;
 
-    setSelectedTemplate(selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null);
+    setParams({
+      ...params,
+      researchContext,
+      templateLanguage: localStorage.getItem('templateLanguage'),
+      selectedTemplate: params.selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null,
+      isStructured: params.isStructured || isStructuredValue ? isStructuredValue === 'true' : null,
+    })
 
     const queryParameters = new URLSearchParams(window.location.search);
     let step = Number.parseInt(queryParameters.get('step') || 0, 10);
 
-    if (!context) { step = 0; }
+    if (!researchContext) {
+      step = 0;
+    }
 
     setCurrentStep(step);
     setUrlParams({ step: `${step || 0}` });
@@ -102,8 +129,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
                 steps.map(({ label, value }, index) => (
                   <Step
                     key={`step-${index}`}
-                    label={label}
-                    // label={<>{label}<br />({value})</>}
+                    label={<>{label}<br /><small><i>{value && `(${value})`}</i></small></>}
                     onClick={() => handleStep(index)}
                   />
                 ))
@@ -111,11 +137,14 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
             </Stepper>
             <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
               {
-                steps.map(({ component }, index) => {
+                steps.map(({ component, set }, index) => {
                   return currentStep === index && React.cloneElement(component, {
                     key: `step-${index}-component`,
                     nextStep,
                     prevStep: index > 0 ? prevStep : undefined,
+                    set,
+                    params,
+                    setUrlParams,
                   });
                 })
               }
