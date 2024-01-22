@@ -243,7 +243,7 @@ function SelectContributorSingle({
             roleOptions={roleOptions}
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
-            templateToString={template.schema.to_string}
+            templateToString={template?.schema?.to_string}
             tableHeader={t('Selected value')}
             readonly={readonly}
           ></PersonsList>

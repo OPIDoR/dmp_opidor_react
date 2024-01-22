@@ -264,7 +264,7 @@ function SelectContributorMultiple({
             roleOptions={roleOptions}
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
-            templateToString={template.schema.to_string}
+            templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
           ></PersonsList>
