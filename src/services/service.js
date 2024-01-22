@@ -4,11 +4,11 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
   '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
-    plan_id: planId,
+    dmp_id: dmpId,
     question_id: questionId,
     research_output_id: researchOutputId,
   },
