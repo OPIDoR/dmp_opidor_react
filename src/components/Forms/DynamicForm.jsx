@@ -101,7 +101,7 @@ function DynamicForm({
 
     let response;
     try {
-      response = await service.saveForm(fragmentId, data);
+      response = await service.saveFragment(fragmentId, data);
     } catch (error) {
       let errorMessage = t("An error occured during form saving");
 

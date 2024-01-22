@@ -40,7 +40,7 @@ const destroyContributor = async (fragmentId) => axios.delete(
  * @param jsonObject - the data you want to send to the server
  * @returns The response object from the server.
  */
-const saveForm = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, jsonObject, {
+const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, jsonObject, {
   headers: createHeaders({}, true),
 });
 
@@ -57,7 +57,7 @@ export default {
   getSchema,
   getRegistryByName,
   getPersons,
-  saveForm,
+  saveFragment,
   getContributors,
   destroyContributor,
   getSchemasByClass,
