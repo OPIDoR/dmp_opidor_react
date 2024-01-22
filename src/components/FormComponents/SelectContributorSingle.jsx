@@ -16,6 +16,8 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { parsePattern } from "../../utils/GeneratorUtils";
+import { servive } from '../../services';
 
 function SelectContributorSingle({
   propName,
@@ -149,16 +151,27 @@ function SelectContributorSingle({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        field.onChange({
-          ...contributor,
-          person: { ...data, action: data.action || 'update' },
-          action: contributor.action || 'update'
-        })
+        service.saveFragment(data.id, data, templateId).then((res) => {
+          const savedFragment = res.data.fragment;
+          const updatedPersons = [...persons];
+          field.onChange({
+            ...contributor,
+            person: savedFragment,
+            action: contributor.action || 'update'
+          });
+          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+            ...savedFragment,
+            to_string: parsePattern(data, template?.schema?.to_string)
+          }
+          setPersons(updatedPersons);
+
+        }).catch(error => setError(error))
       } else {
         // save new
         handleSaveNew(data);
       }
       toast.success('Save was successful !');
+      setError(null);
     }
     setEditedPerson({});
     handleClose();
@@ -171,8 +184,11 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    field.onChange({ ...contributor, person: { ...data, action: 'create' }, role: defaultRole, action: 'update' })
-
+    service.createFragment(data, template.id, dmpId).then(res => {
+      const savedFragment = res.data.fragment;
+      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      setPersons([...persons, { savedFragment , to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
+    }).catch(error => setError(error));
     handleClose();
     setEditedPerson({});
   };
