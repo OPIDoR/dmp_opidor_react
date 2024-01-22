@@ -251,7 +251,7 @@ function SelectWithCreate({
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
-            templateToString={template.schema.to_string}
+            templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
           ></FragmentList>
