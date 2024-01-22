@@ -13,7 +13,10 @@ import CustomSpinner from "../Shared/CustomSpinner";
 
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
-  const { setLocale } = useContext(GlobalContext);
+  const { 
+    setLocale,
+    dmpId, setDmpId,
+  } = useContext(GlobalContext);
   const [show, setShow] = useState(false);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -53,7 +56,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           setLoading(false);
         });
     } else {
-      service.createFragment(data, template.id, planId)
+      service.createFragment(data, template.id, dmpId)
         .then((res) => {
           newContributorsList.unshift({
             id: res.data.fragment.id,
