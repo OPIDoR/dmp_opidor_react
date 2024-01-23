@@ -45,7 +45,7 @@ function ContributorsTab({ planId, locale, readonly }) {
     const newContributorsList = [...contributors];
     setLoading(true);
     if (index !== null && fragmentId) {
-      await service.saveFragment(fragmentId, data)
+      service.saveFragment(fragmentId, data)
         .then((res) => {
           newContributorsList[index].data = res.data.fragment;
           setContributors(newContributorsList);
