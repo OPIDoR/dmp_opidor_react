@@ -33,6 +33,7 @@ function SelectContributorMultiple({
   const [options, setOptions] = useState(null);
   const {
     locale, dmpId,
+    persons, setPersons,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
@@ -41,7 +42,6 @@ function SelectContributorMultiple({
   const [editedPerson, setEditedPerson] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributorList, setContributorList] = useState([]);
-  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
@@ -57,7 +57,7 @@ function SelectContributorMultiple({
   }, []);
 
   useEffect(() => {
-    if (persons) {
+    if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
       setOptions(null)
