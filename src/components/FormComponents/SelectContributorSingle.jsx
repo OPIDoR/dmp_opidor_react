@@ -35,6 +35,7 @@ function SelectContributorSingle({
   const {
     locale,
     dmpId,
+    persons, setPersons,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
@@ -43,7 +44,6 @@ function SelectContributorSingle({
   const [editedPerson, setEditedPerson] = useState({});
   const [defaultRole, setDefaultRole] = useState(null);
   const [contributor, setContributor] = useState({});
-  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
@@ -60,7 +60,7 @@ function SelectContributorSingle({
   }, []);
 
   useEffect(() => {
-    if (persons) {
+    if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
       setOptions(null)
