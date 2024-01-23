@@ -23,7 +23,8 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateId,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -40,7 +41,7 @@ function SelectContributorMultiple({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole, setDefaultRole] = useState(null);
+  const [defaultRole] = useState(defaultValue?.[0]?.role || null);
   const [contributorList, setContributorList] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
@@ -75,7 +76,6 @@ function SelectContributorMultiple({
       setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setDefaultRole(options[0]?.value);
     });
   }
 
@@ -86,7 +86,6 @@ function SelectContributorMultiple({
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        setDefaultRole(contributorProps.role[`const@${locale}`]);
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;

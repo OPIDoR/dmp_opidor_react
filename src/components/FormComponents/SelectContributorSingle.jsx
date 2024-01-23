@@ -17,14 +17,14 @@ import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { parsePattern } from "../../utils/GeneratorUtils";
-import { servive } from '../../services';
 
 function SelectContributorSingle({
   propName,
   label,
   tooltip,
   templateId,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -42,14 +42,13 @@ function SelectContributorSingle({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole, setDefaultRole] = useState(null);
+  const [defaultRole] = useState(defaultValue?.role || null);
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
     setContributor(field.value)
-    setDefaultRole(field.value?.role)
   }, [field.value]);
 
 
@@ -78,7 +77,6 @@ function SelectContributorSingle({
       setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setDefaultRole(field.value?.role || options[0]?.value);
     });
   }
 
@@ -89,7 +87,6 @@ function SelectContributorSingle({
         const contributorTemplate = res.data
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        setDefaultRole(contributorProps.role[`const@${locale}`]);
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
@@ -136,7 +133,6 @@ function SelectContributorSingle({
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e) => {
-    setDefaultRole(e.value);
     field.onChange({ ...field.value, role: e.value, action: 'update' })
   };
 

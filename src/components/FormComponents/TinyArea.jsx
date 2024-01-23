@@ -29,7 +29,8 @@ function TinyArea({
   label,
   propName,
   tooltip,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
@@ -61,6 +62,7 @@ function TinyArea({
             <Editor
               {...newField}
               onEditorChange={(newText) => onChange(newText)}
+              initialValue={defaultValue}
               init={{
                 statusbar: true,
                 menubar: false,

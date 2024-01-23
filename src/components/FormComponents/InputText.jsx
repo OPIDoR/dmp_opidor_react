@@ -16,21 +16,12 @@ function InputText({
   propName,
   tooltip,
   hidden = false,
-  defaultValue,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { register } = useFormContext();
-  const [isRequired, setIsRequired] = useState(false);
+  const [isRequired] = useState(false);
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
-
-
-  // useEffect(() => {
-  //   if (defaultValue !== null) {
-  //     setInputValue(value || defaultValue);
-  //   } else {
-  //     setInputValue(value || "");
-  //   }
-  // }, [value]);
 
   return (
     <div className="form-group">
@@ -54,6 +45,7 @@ function InputText({
       )}
       <input
         {...register(propName)}
+        defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder}
