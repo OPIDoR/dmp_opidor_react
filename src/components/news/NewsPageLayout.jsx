@@ -6,7 +6,7 @@ import NewsPage from './NewsPage.jsx';
 
 const queryClient = new QueryClient();
 
-export default function NewsPageLayout({ locale = 'fr-FR', size = 3 }) {
+export default function NewsPageLayout({ locale = 'fr-FR', size = 6 }) {
   return (
     <QueryClientProvider client={queryClient}>
       <NewsPage locale={locale} size={size} />
