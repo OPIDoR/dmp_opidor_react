@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { format } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { Row, Col, Media, Thumbnail, Button } from 'react-bootstrap';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomError from '../Shared/CustomError.jsx';
 import { news } from '../../services';
@@ -13,7 +14,7 @@ const locales = {
 };
 
 export default function NewsPage({ locale, size }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { isLoading, error, data } = useQuery('news', () =>
     news.get(size).then(res => res.data)
@@ -24,22 +25,61 @@ export default function NewsPage({ locale, size }) {
   if (error) return <CustomError error={error} />;
 
   return (
-    <div id="homepage-news">
+    <Row style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+    }}>
       {data.map((r) => ({
         id: r.id,
         title: r.title.rendered,
+        content: r.content.rendered,
         link: r.link,
         date: format(new Date(r.date), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || locale] }),
-        thumbnail: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["medium_large"],
+        full: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["full"],
       })).map((n, id) => (
-        <article key={`news-item-${id}`} className='news-item'>
-          <a key={`news-link-${id}`} className='news-link' href={n.link} target='_blank' rel="noreferrer">
-            <img key={`news-img-${id}`} className='news-img' alt="news thumbnail" src={n.thumbnail.source_url} />
-            <h3 key={`news-title-${id}`} className='news-title' dangerouslySetInnerHTML={{ __html: n.title }}></h3>
-          </a>
-          <span key={`news-date-${id}`} className='news-date'>{n.date}</span>
-        </article>
+        <Col
+          xs={12}
+          md={4}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          key={`col-${n.id}`}
+        >
+          <Thumbnail
+            src={n.full.source_url}
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            key={`thumbnail-${n.id}`}
+          >
+            <h2 key={`title-${n.id}`}>
+              <a key={`link-${n.id}`} href={n.link} dangerouslySetInnerHTML={{ __html: n.title }} />
+            </h2>
+            <p
+              style={{
+                marginBottom: '50px',
+              }}
+              dangerouslySetInnerHTML={{ __html: `${n.content.substring(0, 120)}...` }}
+              key={`content-${n.id}`}
+            />
+            <p>
+              <Button
+                href={n.link}
+                bsStyle="primary"
+                style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  right: '30px',
+                }}
+                key={`read-button-${n.id}`}
+              >{t('Read article')}</Button>
+            </p>
+          </Thumbnail>
+        </Col>
       ))}
-    </div>
+    </Row>
   )
 }
