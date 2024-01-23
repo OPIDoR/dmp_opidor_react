@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { createOptions } from '../../utils/GeneratorUtils.js';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -23,7 +23,8 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateId,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -33,15 +34,15 @@ function SelectContributorMultiple({
   const [options, setOptions] = useState(null);
   const {
     locale, dmpId,
+    persons, setPersons,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole, setDefaultRole] = useState(null);
+  const [defaultRole] = useState(defaultValue?.[0]?.role || null);
   const [contributorList, setContributorList] = useState([]);
-  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
@@ -57,7 +58,7 @@ function SelectContributorMultiple({
   }, []);
 
   useEffect(() => {
-    if (persons) {
+    if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
       setOptions(null)
@@ -75,7 +76,6 @@ function SelectContributorMultiple({
       setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setDefaultRole(options[0]?.value);
     });
   }
 
@@ -86,7 +86,6 @@ function SelectContributorMultiple({
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        setDefaultRole(contributorProps.role[`const@${locale}`]);
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
@@ -144,20 +143,29 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template['unicity'])) {
+    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        const newContributorList = [...contributorList];
-        newContributorList[index] = {
-          ...newContributorList[index],
-          person: data,
-          role: defaultRole,
-          action: newContributorList[index].action || 'update'
-        };
-        field.onChange(newContributorList)
+        service.saveFragment(data.id, data, templateId).then((res) => {
+          const newContributorList = [...contributorList];
+          const updatedPersons = [...persons];
+          const savedFragment = res.data.fragment;
+          newContributorList[index] = {
+            ...newContributorList[index],
+            person: savedFragment,
+            role: defaultRole,
+            action: newContributorList[index].action || 'update'
+          };
+          field.onChange(newContributorList);
 
-        setContributorList([...contributorList, data]);
+          setContributorList([...contributorList, data]);
+          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+            ...savedFragment,
+            to_string: parsePattern(data, template?.schema?.to_string)
+          };
+          setPersons(updatedPersons);
+        }).catch(error => setError(error));
       } else {
         handleSaveNew(data);
       }
@@ -174,10 +182,15 @@ function SelectContributorMultiple({
    * modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    const newContributor = { person: { ...data, action: 'create' }, role: defaultRole, action: 'create' };
-    field.onChange([...(contributorList || []), newContributor])
+    service.createFragment(data, template.id, dmpId).then(res => {
+      const savedFragment = res.data.fragment;
+      const newContributor = { person: savedFragment, role: defaultRole, action: 'create' };
 
-    setContributorList([...contributorList, newContributor]);
+      field.onChange([...(contributorList || []), newContributor]);
+      setPersons([...persons, { savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
+      setContributorList([...contributorList, newContributor]);
+    }).catch(error => setError(error));
+
     handleClose();
     setEditedPerson({});
   };

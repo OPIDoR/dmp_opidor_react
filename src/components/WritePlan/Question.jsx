@@ -357,7 +357,6 @@ function Question({
                     fragmentId={null}
                     className={question.madmp_schema.classname}
                     setScriptsData={setScriptsData}
-                    planId={planData.id}
                     questionId={question.id}
                     madmpSchemaId={question.madmp_schema.id}
                     setFragmentId={setFragmentId}

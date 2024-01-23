@@ -4,11 +4,11 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const createFragment = async (data = {}, madmpSchemaId, planId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
   '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
-    plan_id: planId,
+    dmp_id: dmpId,
     question_id: questionId,
     research_output_id: researchOutputId,
   },
@@ -40,7 +40,7 @@ const destroyContributor = async (fragmentId) => axios.delete(
  * @param jsonObject - the data you want to send to the server
  * @returns The response object from the server.
  */
-const saveForm = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, jsonObject, {
+const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}`, jsonObject, {
   headers: createHeaders({}, true),
 });
 
@@ -57,7 +57,7 @@ export default {
   getSchema,
   getRegistryByName,
   getPersons,
-  saveForm,
+  saveFragment,
   getContributors,
   destroyContributor,
   getSchemasByClass,

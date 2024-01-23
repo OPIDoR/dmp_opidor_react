@@ -33,6 +33,7 @@ export const GlobalContext = createContext();
 function Global({ children }) {
   const [locale, setLocale] = useState('en');
   const [dmpId, setDmpId] = useState(null);
+  const [persons, setPersons] = useState([]);
   // Plan Creation
   const [researchContext, setResearchContext] = useState(null);
   const [currentOrg, setCurrentOrg] = useState({})
@@ -76,6 +77,8 @@ function Global({ children }) {
         setLocale,
         dmpId,
         setDmpId,
+        persons,
+        setPersons,
         // Plan Creation
         currentOrg,
         setCurrentOrg,

@@ -17,6 +17,7 @@ function FormBuilder({ template, readonly }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
+  const defaults = template.default?.[locale];
   const formFields = [];
 
   // si type shema is an object
@@ -25,7 +26,7 @@ function FormBuilder({ template, readonly }) {
     for (const [key, prop] of Object.entries(properties)) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
-      const defaultValue = Object.prototype.hasOwnProperty.call(prop, `const@${locale}`) ? prop[`const@${locale}`] : null;
+      const defaultValue = defaults?.[key];
       const isConst = prop['isConst'];
       /**
        * REGISTRIES
@@ -44,6 +45,7 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
               templateId={prop.schema_id}
+              defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleList>,
@@ -77,6 +79,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="simple"
+              defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleList>,
@@ -112,6 +115,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateId={prop.schema_id}
+            defaultValue={defaultValue}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
         );
@@ -144,6 +148,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateId={prop.items.schema_id}
+              defaultValue={defaultValue}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
           );
@@ -194,6 +199,7 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
+              defaultValue={defaultValue}
               readonly={readonly || isConst}
             ></TinyArea>,
           );
