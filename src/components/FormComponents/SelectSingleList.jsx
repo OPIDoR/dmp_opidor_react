@@ -27,6 +27,7 @@ function SelectSingleList({
   registries,
   registryType,
   templateId,
+  defaultValue = null,
   overridable = false,
   readonly = false,
 }) {
@@ -52,11 +53,11 @@ function SelectSingleList({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
-    setSelectedValue(field.value || nullValue);
+    setSelectedValue(field.value || defaultValue || nullValue);
     if (registries.length === 1) {
       setSelectedRegistry(registries[0]);
     }
-  }, [field.value, registries])
+  }, [field.value, defaultValue, registries])
 
   useEffect(() => {
     if (registryType !== 'complex') {
