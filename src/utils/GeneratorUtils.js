@@ -54,14 +54,20 @@ export function createOptions(registryValues, locale) {
  * @param {function} t - A translation function used to retrieve localized messages.
  * @returns {string} - The placeholder message for the registry.
  */
-export function createRegistryPlaceholder(registries, overridable, registryType, t) {
-  const multipleRegistries = registries.length > 1;
-  const createMessage = (prefix) => (overridable && registryType === 'complex') ? 
-    t(`${prefix} or create a new one by clicking on +`) : t(`${prefix} or type a new one`);
+// export function createRegistryPlaceholder(registries, overridable, registryType, t) {
+//   const multipleRegistries = registries.length > 1;
+//   const createMessage = (prefix) => (overridable && registryType === 'complex') ? 
+//     t(`${prefix} or create a new one by clicking on +`) : t(`${prefix} or type a new one`);
 
-  return multipleRegistries ?
-    createMessage('Then select a value from the list') :
-    createMessage('Select a value from the list');
+//   return multipleRegistries ?
+//     createMessage('Then select a value from the list') :
+//     createMessage('Select a value from the list');
+// }
+export function createRegistryPlaceholder(registries, overridable, registryType, t) {
+  const baseMessage = registries.length > 1 ? "Then" : "Select";
+  const actionMessage = overridable ? (registryType === 'complex' ? "create a new one by clicking on +" : "type a new one") : "";
+
+  return t(`${baseMessage} select a value from the list${actionMessage}`);
 }
 
 /**
