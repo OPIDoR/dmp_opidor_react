@@ -18,7 +18,6 @@ function DynamicForm({
   fragmentId,
   className,
   setScriptsData = null,
-  planId = null,
   questionId = null,
   madmpSchemaId = null,
   setFragmentId = null,
@@ -28,6 +27,7 @@ function DynamicForm({
   const { t } = useTranslation();
   const {
     formData, setFormData,
+    dmpId,
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
@@ -61,7 +61,7 @@ function DynamicForm({
           .finally(() => setLoading(false));
       }
     } else {
-      service.createFragment(null, madmpSchemaId, planId, questionId, displayedResearchOutput.id).then((res) => {
+      service.createFragment(null, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
         setTemplate(res.data.template);
         const fragment = res.data.fragment;
@@ -101,7 +101,7 @@ function DynamicForm({
 
     let response;
     try {
-      response = await service.saveForm(fragmentId, data);
+      response = await service.saveFragment(fragmentId, data);
     } catch (error) {
       let errorMessage = t("An error occured during form saving");
 

@@ -16,13 +16,15 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { parsePattern } from "../../utils/GeneratorUtils";
 
 function SelectContributorSingle({
   propName,
   label,
   tooltip,
   templateId,
-  readonly,
+  defaultValue = null,
+  readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -33,21 +35,20 @@ function SelectContributorSingle({
   const {
     locale,
     dmpId,
+    persons, setPersons,
     loadedTemplates, setLoadedTemplates,
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole, setDefaultRole] = useState(null);
+  const [defaultRole] = useState(defaultValue?.role || null);
   const [contributor, setContributor] = useState({});
-  const [persons, setPersons] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
     setContributor(field.value)
-    setDefaultRole(field.value?.role)
   }, [field.value]);
 
 
@@ -58,7 +59,7 @@ function SelectContributorSingle({
   }, []);
 
   useEffect(() => {
-    if (persons) {
+    if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
       setOptions(null)
@@ -76,7 +77,6 @@ function SelectContributorSingle({
       setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
       const options = createOptions(res.data, locale)
       setRoleOptions(options);
-      setDefaultRole(field.value?.role || options[0]?.value);
     });
   }
 
@@ -87,7 +87,6 @@ function SelectContributorSingle({
         const contributorTemplate = res.data
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        setDefaultRole(contributorProps.role[`const@${locale}`]);
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
@@ -134,7 +133,6 @@ function SelectContributorSingle({
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e) => {
-    setDefaultRole(e.value);
     field.onChange({ ...field.value, role: e.value, action: 'update' })
   };
 
@@ -149,16 +147,27 @@ function SelectContributorSingle({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        field.onChange({
-          ...contributor,
-          person: { ...data, action: data.action || 'update' },
-          action: contributor.action || 'update'
-        })
+        service.saveFragment(data.id, data, templateId).then((res) => {
+          const savedFragment = res.data.fragment;
+          const updatedPersons = [...persons];
+          field.onChange({
+            ...contributor,
+            person: savedFragment,
+            action: contributor.action || 'update'
+          });
+          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+            ...savedFragment,
+            to_string: parsePattern(data, template?.schema?.to_string)
+          }
+          setPersons(updatedPersons);
+
+        }).catch(error => setError(error))
       } else {
         // save new
         handleSaveNew(data);
       }
       toast.success('Save was successful !');
+      setError(null);
     }
     setEditedPerson({});
     handleClose();
@@ -171,8 +180,11 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    field.onChange({ ...contributor, person: { ...data, action: 'create' }, role: defaultRole, action: 'update' })
-
+    service.createFragment(data, template.id, dmpId).then(res => {
+      const savedFragment = res.data.fragment;
+      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      setPersons([...persons, { savedFragment , to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
+    }).catch(error => setError(error));
     handleClose();
     setEditedPerson({});
   };
