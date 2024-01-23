@@ -93,6 +93,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
 
       setUrlParams({ research_output: displayedResearchOutput.id });
 
+      toast.success(t("Save was successful !"));
       return handleClose();
     }
 
@@ -115,6 +116,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
 
     setUrlParams({ research_output: res?.data?.created_ro_id });
 
+    toast.success(t("Research output successfully added."));
     return handleClose();
   };
 
