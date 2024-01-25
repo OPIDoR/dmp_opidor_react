@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { externalServices } from "../../../services";
 import Select from "react-select";
@@ -8,7 +8,7 @@ import Pagination from "../../Shared/Pagination";
 import { FaLink } from "react-icons/fa6";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
-function RorList({ fragment, setFragment }) {
+function RorList({ fragment, setFragment, mapping }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -72,7 +72,21 @@ function RorList({ fragment, setFragment }) {
    */
   const setSelectedValue = (el) => {
     setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
-    const obj = { affiliationId: el.ror, affiliationName: el.name[Object.keys(el.name)[0]], affiliationIdType: "ROR ID" };
+    let obj = {
+      affiliationId: el.ror,
+      affiliationName: el.name[Object.keys(el.name)[0]],
+      affiliationIdType: "ROR ID",
+      acronyms: el.acronyms?.[0],
+    };
+
+    obj = Object.entries(obj).reduce((acc, [key, value]) => {
+      const objKey = mapping[key] || key;
+      if (!(objKey in mapping)) {
+        acc[objKey] = value;
+      }
+      return acc;
+    }, {});
+
     setFragment({ ...fragment, ...obj });
   };
 
