@@ -6,7 +6,7 @@ import createHeaders from "../utils/HeaderBuilder";
  * @param token - The `token` parameter is not used in the `getDefaultModel` function. It is not necessary for the function to work properly.
  * @returns an object with a `data` property that contains the `dataDefaultModel` value.
  */
-const getDefaultTemplate = async () => axios.get('/template_options/default');
+const getRecommendedTemplate = async (researchContext, locale) => axios.get(`/template_options/recommend?context=${researchContext}&locale=${locale}`);
 
 /**
  * This is an asynchronous function that retrieves data for an other organism by ID and name using a token and context.
@@ -75,7 +75,7 @@ const createPlan = async (template_id) => axios.post(`/plans`, { template_id }, 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  getDefaultTemplate,
+  getRecommendedTemplate,
   getTemplatesByOrgId,
   getTemplatesByFunderId,
   getOrgs,
