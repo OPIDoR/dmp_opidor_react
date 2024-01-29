@@ -293,7 +293,7 @@ function SelectContributorMultiple({
             show={show}
             handleSave={handleSave}
             handleClose={handleClose}
-            withImport={true}
+            externalImport={['ror', 'orcid']}
           />
         )}
       </>

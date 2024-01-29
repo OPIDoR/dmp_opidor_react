@@ -122,7 +122,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
-          withImport={true}
+          externalImport={['ror', 'orcid']}
         />)}
       {!readonly && (
         <CustomButton
