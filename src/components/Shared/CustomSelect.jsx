@@ -1,5 +1,5 @@
 import React from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import AsyncSelect from "react-select/async";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CreatableSelect from "react-select/creatable";
@@ -18,13 +18,32 @@ function CustomSelect({
 }) {
   const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
+  const { Option } = components;
+
   function getSelectComponent() {
     if (async) {
       return overridable ? AsyncCreatableSelect : AsyncSelect;
-    } else {
-      return overridable ? CreatableSelect : Select;
     }
+    return overridable ? CreatableSelect : Select;
   }
+
+  const CustomOption = (props) => (
+    <Option {...props}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {props?.data?.prependIcon}
+          {props?.data?.label}
+        </div>
+        {props?.data?.appendIcon}
+      </div>
+    </Option>
+  );
 
   return(
     <SelectComponent
@@ -35,6 +54,7 @@ function CustomSelect({
         control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
       }}
       name={propName}
+      components={{ Option: CustomOption }}
       options={options}
       onChange={onSelectChange}
       value={selectedOption}
