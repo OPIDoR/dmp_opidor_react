@@ -38,7 +38,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       let currentTemplatesRes;
       try {
-        currentTemplatesRes = await planCreation.getDefaultTemplate();
+        currentTemplatesRes = await planCreation.getRecommendedTemplate(params.researchContext, params.templateLanguage);
       } catch (error) {
         setLoading(false);
         return handleError(error);
