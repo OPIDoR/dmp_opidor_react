@@ -79,13 +79,15 @@ function RorList({ fragment, setFragment, mapping }) {
       acronyms: el.acronyms?.[0],
     };
 
-    obj = Object.entries(obj).reduce((acc, [key, value]) => {
-      const objKey = mapping[key] || key;
-      if (!(objKey in mapping)) {
-        acc[objKey] = value;
-      }
-      return acc;
-    }, {});
+    if (mapping) {
+      obj = Object.entries(obj).reduce((acc, [key, value]) => {
+        const objKey = mapping?.[key] || key;
+        if (!(objKey in mapping)) {
+          acc[objKey] = value;
+        }
+        return acc;
+      }, {});
+    }
 
     setFragment({ ...fragment, ...obj });
   };
