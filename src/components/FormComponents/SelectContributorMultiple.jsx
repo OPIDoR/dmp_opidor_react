@@ -53,7 +53,9 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchPersons();
+    if (persons.length === 0) {
+      fetchPersons();
+    }
     fetchRoles();
   }, []);
 
@@ -151,6 +153,7 @@ function SelectContributorMultiple({
           const newContributorList = [...contributorList];
           const updatedPersons = [...persons];
           const savedFragment = res.data.fragment;
+          savedFragment.action = 'update';
           newContributorList[index] = {
             ...newContributorList[index],
             person: savedFragment,
@@ -184,10 +187,11 @@ function SelectContributorMultiple({
   const handleSaveNew = (data) => {
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
+      savedFragment.action = 'update';
       const newContributor = { person: savedFragment, role: defaultRole, action: 'create' };
 
       field.onChange([...(contributorList || []), newContributor]);
-      setPersons([...persons, { savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
+      setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
       setContributorList([...contributorList, newContributor]);
     }).catch(error => setError(error));
 
