@@ -37,12 +37,12 @@ const saveIsTestPlan = async (planId, isTestPlan) =>
  * @param scriptName Script name
  * @returns An object with a "data" property that contains an empty array.
  */
-const saveFunder = async (grantId, projectFragmentId, scriptName) =>
+const importProject = async (grantId, projectFragmentId, scriptName) =>
   axios.get(`/codebase/project_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_name=${scriptName}`);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getFunders,
   saveIsTestPlan,
-  saveFunder,
+  importProject,
 };
