@@ -54,7 +54,9 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    fetchPersons();
+    if (persons.length === 0) {
+      fetchPersons();
+    }
     fetchRoles();
   }, []);
 
@@ -125,7 +127,7 @@ function SelectContributorSingle({
 
   const handleSelectContributor = (e) => {
     const { object } = e;
-    const contributorAction = contributor?.id ? 'update': 'create';
+    const contributorAction = contributor?.id ? 'update' : 'create';
     field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: contributorAction })
   };
 
@@ -149,6 +151,7 @@ function SelectContributorSingle({
       if (index !== null) {
         service.saveFragment(data.id, data, templateId).then((res) => {
           const savedFragment = res.data.fragment;
+          savedFragment.action = 'update';
           const updatedPersons = [...persons];
           field.onChange({
             ...contributor,
@@ -182,8 +185,9 @@ function SelectContributorSingle({
   const handleSaveNew = (data) => {
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
+      savedFragment.action = 'update';
       field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
-      setPersons([...persons, { savedFragment , to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
+      setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
     }).catch(error => setError(error));
     handleClose();
     setEditedPerson({});

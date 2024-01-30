@@ -31,6 +31,7 @@ function ContributorsTab({ planId, locale, readonly }) {
     service.getContributors(planId).then((res) => {
       setContributors(res.data.contributors);
       setTemplate(res.data.template);
+      setDmpId(res.data.dmp_id);
     })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));

@@ -36,7 +36,7 @@ function GeneralInfo({
   readonly,
 }) {
   const { t, i18n } = useTranslation();
-  const { setLocale, setDmpId, setFormData } = useContext(GlobalContext);
+  const { setLocale, setDmpId, setFormData, setPersons } = useContext(GlobalContext);
 
   const [isTestPlan, setIsTestPlan] = useState(isTest);
 
@@ -131,7 +131,7 @@ function GeneralInfo({
 
     let response;
     try {
-      response = await generalInfo.saveFunder(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
+      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       let errorMessage = t('An error occurred during the import of the project information');
 
@@ -154,6 +154,7 @@ function GeneralInfo({
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
     });
+    setPersons(response.data.persons);
     if (response.data.plan_title) {
       document.getElementById('plan-title').innerHTML = response.data.plan_title;
     }
