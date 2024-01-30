@@ -298,11 +298,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       const hasSelectedTemplate = templates.some(({ id }) => id === params.selectedTemplate);
 
       return {
-        label: <>{types?.[dataType] || ''}{name}</>,
+        label: name,
         value: id,
         type,
         selected: hasSelectedTemplate || selected,
         templates,
+        prependIcon: types?.[dataType],
       };
     });
 

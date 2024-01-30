@@ -85,10 +85,9 @@ function CustomError({ error, showWarning = true, handleClose }) {
         }}
       >
         <p>{errorDescription}</p>
-        {home ? 
-        (<Button><a href="/">{t("Home page")}</a></Button>) :
-        (<CustomButton handleClick={handleClose} title={'Close'} buttonColor={"white"} position="center" />)
-
+        {home ?
+          (<Button><a href="/">{t("Home page")}</a></Button>) :
+          (<CustomButton handleClick={handleClose} title={'Close'} buttonColor={"white"} position="center" />)
         }
       </div>
     </ErrorContainer>
