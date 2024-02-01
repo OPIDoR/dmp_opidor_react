@@ -13,7 +13,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
-  const { 
+  const {
     setLocale,
     dmpId, setDmpId,
   } = useContext(GlobalContext);
@@ -118,7 +118,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           fragmentId={fragmentId}
           data={editedPerson}
           template={template}
-          label={t('Editing a person')}
+          label={t('Edit a person or an organisation')}
           readonly={readonly}
           show={show}
           handleSave={handleSave}
@@ -131,7 +131,7 @@ function ContributorsTab({ planId, locale, readonly }) {
             setShow(true);
             setIndex(null);
           }}
-          title={t("Add a person")}
+          title={t("Add a person or an organisation")}
           buttonColor="rust"
           position="start"
         ></CustomButton>
