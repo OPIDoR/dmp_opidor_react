@@ -10,15 +10,15 @@ function LangSelection({ prevStep, nextStep, set, params }) {
     {
       label: 'Français',
       value: 'fr-FR',
-      description: t('Forms and recommendations will be in French'),
+      description: t('Les formulaires et recommandations associées seront en français'),
     },
     {
       label: 'English (UK)',
       value: 'en-GB',
-      description: t('Forms and recommendations will be in English'),
+      description: t('Forms and linked recommendations will be in English'),
     },
   ];
- 
+
   return (
     <div>
       <h2>{t('Select plan language')}</h2>
