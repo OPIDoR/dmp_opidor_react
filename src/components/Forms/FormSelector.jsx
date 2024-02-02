@@ -87,7 +87,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t('Change form')}
+                content={t('Select a customized form')}
               />
               <FaShuffle
                 data-tooltip-id="form-change-show-button"
