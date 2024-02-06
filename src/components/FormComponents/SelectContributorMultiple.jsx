@@ -292,7 +292,7 @@ function SelectContributorMultiple({
           <ModalForm
             data={editedPerson}
             template={template}
-            label={index !== null ? t('Editing a person') : t('Adding a person')}
+            label={index !== null ? t('Edit a person') : t('Add a person')}
             readonly={readonly}
             show={show}
             handleSave={handleSave}

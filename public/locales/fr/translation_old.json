@@ -159,8 +159,9 @@
   "Actions": "Actions",
   "Affiliation": "Affiliation",
   "Attributed roles (Associated research outputs)": "Rôles attribués (Produits de recherche associés)",
-  "Add a person or an organisation": "Ajouter une personne ou une organisation",
-  "Edit a person or an organisation": "Modifier une personne ou une organisation",
+  "Add a person": "Ajouter une personne",
+  "Editing a person": "Edition d'une personne",
+  "Adding a person": "Ajout d'une personne",
   "A problem has occurred while deleting the {{record}}" : "Un problème s'est produit lors de la suppression du {{record}}",
   "comment": "commentaire",
   "contributor": "contributeur",
@@ -172,7 +173,7 @@
   "Financing agency": "Agence de financement",
   "One or more models are available, which one would you like to select ?": "Un ou plusieurs modèles sont disponibles, lequel souhaitez-vous sélectionner ?",
   "Go back to previous step": "Retour à l'étape précédente",
-  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8220; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8220; fourni par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}})",
+  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8220; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8220; fournis par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}})",
   "Context selection": "Choix du contexte",
   "Type selection": "Choix du type",
   "Template selection": "Choix du modèle",
@@ -186,13 +187,9 @@
   "By using this notification, you will allow {{clientName}} to access the full content of your plan. Do you confirm ?": "En utilisant cette notification, vous autorisez {{clientName}} à accéder à l'intégralité du contenu de votre plan. Vous confirmez ?",
   "New data is available in the form, you can close this window.": "De nouvelles données sont disponibles dans votre formulaire, vous pouvez fermer cette fenêtre.",
   "Models from other organizations or funders": "Modèles d'autres organismes ou financeurs",
-  "Template recommended by DMP OPIDoR": "Modèle recommandé par DMP OPIDoR",
-  "Template recommended by your organization ({{orgName}})": "Modèle recommandé par votre organisme ({{orgName}})",
+  "Recommended template by DMPOPIDoR": "Modèle recommandé par DMPOPIDoR",
+  "Model recommended by your organization ({{orgName}})": "Modèle recommandé par votre organisme ({{orgName}})",
   "Select plan language": "Sélectionner la langue du plan",
   "Create your plan in 3 steps": "Créez votre plan en 3 étapes",
-  "Read article": "Lire l'article",
-  "Registration was successful !" :"L’enregistrement a été effectué avec succès !",
-  "Use a customized form" : "Utilisez un formulaire personnalisé",
-  "Cancel" : "Annuler"
-  ""
+  "Read article": "Lire l'article"
 }
