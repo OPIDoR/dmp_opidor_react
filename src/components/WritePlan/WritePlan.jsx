@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { format } from "date-fns";
 import { fr, enGB } from "date-fns/locale";
@@ -11,6 +11,7 @@ import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import styles from "../assets/css/sidebar.module.css";
+import consumer from "../../cable";
 
 const locales = { fr, en: enGB };
 
@@ -36,12 +37,35 @@ function WritePlan({
     setQuestionsWithGuidance,
     planInformations,
   } = useContext(GlobalContext);
+  const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const handleWebsocketData = useCallback((data) => {
+    if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
+      setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
+    }
+    if(data.target === 'dynamic_form') {
+      setFormData({ [data.fragment_id]: data.payload })
+    }
+  }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
+
+  useEffect(() => {
+    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
+    subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
+      {
+        connected: () => console.log("connected!"),
+        disconnected: () => console.log("disconnected !"),
+        received: data => handleWebsocketData(data),
+      });
+    return () => {
+      consumer.disconnect();
+    }
+  }, [planId, handleWebsocketData])
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
   //TODO update this , it can make error
