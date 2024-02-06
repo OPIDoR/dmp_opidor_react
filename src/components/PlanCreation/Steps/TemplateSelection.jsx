@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
-import { useQueries } from 'react-query';
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -44,10 +43,11 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         return handleError(error);
       }
 
-      tmpls.default.templates = (Array.isArray(currentTemplatesRes?.data || [])
+      const defaultTemplateID = currentTemplatesRes?.data?.id
+
+      tmpls.default.templates = Array.isArray(currentTemplatesRes?.data)
         ? currentTemplatesRes?.data
         : [currentTemplatesRes?.data]
-      )
         // .filter(({ structured }) => structured === params.isStructured)
         .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase());
 
@@ -61,6 +61,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       tmpls.myOrg.templates = myOrgTemplatesRes?.data
         // .filter(({ structured }) => structured === params.isStructured)
+        .filter(({ id }) => id !== defaultTemplateID)
         .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [];
 
       let orgsRes;
@@ -91,6 +92,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           templates: orgTemplatesRes?.data
             // .filter(({ structured }) => structured === params.isStructured)
             .map((obj) => ({ ...obj, type: 'org' }))
+            .filter(({ id }) => id !== defaultTemplateID)
             .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
           selected: false,
         });
@@ -123,6 +125,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           templates: fundersTemplatesRes?.data
             // .filter(({ structured }) => structured === isStructured)
             .map((obj) => ({ ...obj, type: 'funder' }))
+            // .filter(({ id }) => id !== defaultTemplateID)
             .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
           selected: false,
         });
