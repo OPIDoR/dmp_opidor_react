@@ -276,7 +276,7 @@ function SelectWithCreate({
           externalImport={propName.toLowerCase() === 'partner' ? ['ror'] : []}
           handleSave={handleSave}
           handleClose={handleClose}
-          mapping={rorMapping}
+          mapping={propName.toLowerCase() === 'partner' ? rorMapping : undefined}
         />
       )}
     </div>
