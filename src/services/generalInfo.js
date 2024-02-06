@@ -8,7 +8,7 @@ const dataFundingOrganization = [
     id: 1,
     label: {
       fr: 'Agence Nationale de la Recherche (ANR)',
-      en: 'French National Research Agency (NRA)',
+      en: 'French National Research Agency (ANR)',
     },
     scriptName: 'Anr_data_fetcher_v3',
     registry: 'AnrProjects',
@@ -26,7 +26,7 @@ const dataFundingOrganization = [
 
 const getFunders = async () => ({ data: dataFundingOrganization });
 
-const saveIsTestPlan = async (planId, isTestPlan) => 
+const saveIsTestPlan = async (planId, isTestPlan) =>
   axios.post(`/plans/${planId}/set_test`, { is_test: isTestPlan }, { headers: commonHeaders });
 
 /**

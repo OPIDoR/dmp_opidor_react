@@ -145,12 +145,12 @@ function WritePlan({
                 margin: '20px 0 20px 0',
               }}>
                 <Trans
-                  defaults="This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}})"
+                  defaults="This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}})."
                   values={{
                     model: planInformations.title,
                     orgName: planInformations.org,
                     version: planInformations.version,
-                    publishedDate: format(new Date(planInformations.publishedDate), 'dd LLLL yyyy', { locale: locales[planInformations.locale || i18n.resolvedLanguage] }),  
+                    publishedDate: format(new Date(planInformations.publishedDate), 'dd LLLL yyyy', { locale: locales[planInformations.locale || i18n.resolvedLanguage] }),
                   }}
                   components={{ bold: <strong /> }}
                 />
