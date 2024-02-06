@@ -42,7 +42,6 @@ function WritePlan({
   const [error, setError] = useState(null);
 
   const handleWebsocketData = useCallback((data) => {
-    console.log(data);
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
       setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
     }
