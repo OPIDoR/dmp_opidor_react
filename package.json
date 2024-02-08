@@ -26,18 +26,11 @@
     "react-loader-spinner": "^6.1.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.9.0",
-    "react-scripts": "5.0.1",
     "react-select": "^5.7.0",
     "react-tooltip": "^5.13.1",
     "styled-components": "^6.0.7",
     "sweetalert2": "^11.7.3",
     "web-vitals": "^3.4.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
