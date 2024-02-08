@@ -247,7 +247,7 @@ function SelectWithCreate({
                       setShow(true);
                       setIndex(null);
                     }}
-                    style={{ margin: '8px', cursor: 'pointer' }}
+                    className={styles.icon}
                   />
                 </div>
               )}
