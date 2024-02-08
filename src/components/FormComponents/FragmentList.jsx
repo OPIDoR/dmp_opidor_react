@@ -2,6 +2,7 @@ import React from 'react';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import DOMPurify from "dompurify";
 import { parsePattern } from '../../utils/GeneratorUtils';
+import styles from '../assets/css/form.module.css';
 
 function FragmentList({
   fragmentsList,
@@ -36,21 +37,21 @@ function FragmentList({
                       __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
                     }}
                   ></td>
-                  <td style={{width: "200px"}}>
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                  <td style={{ width: "200px" }}>
+                    <div className={styles.table_container}>
                       {!readonly && (
                         <>
                           {parent === 'form' && (
                             <FaPenToSquare
                               size={18}
                               onClick={() => handleEdit(idx)}
-                              style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                              className={styles.icon}
                             />
                           )}
                           <FaXmark
                             onClick={(e) => handleDelete(idx)}
                             size={18}
-                            style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                            className={styles.icon}
                           />
                         </>
                       )}
@@ -58,7 +59,7 @@ function FragmentList({
                         <FaEye
                           size={18}
                           onClick={() => handleEdit(idx)}
-                          style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                          className={styles.icon}
                         />
                       )}
                     </div>

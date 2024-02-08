@@ -216,7 +216,7 @@ function SelectSingleList({
                       setShowNestedForm(true);
                       setEditedFragment({});
                     }}
-                    style={{ margin: '8px', cursor: 'pointer' }}
+                    className={styles.icon}
                   />
                 </div>
               )}
@@ -264,11 +264,11 @@ function SelectSingleList({
                         setShowNestedForm(true);
                         setEditedFragment(field.value);
                       }}
-                      style={{ margin: '8px', cursor: 'pointer' }}
+                      className={styles.icon}
                     />
                     <FaXmark
                       onClick={(e) => handleDeleteList(e)}
-                      style={{ margin: '8px', cursor: 'pointer' }}
+                      className={styles.icon}
                     />
                   </td>
                 </tr>

@@ -1,10 +1,12 @@
 import React from 'react';
-import { parsePattern } from '../../utils/GeneratorUtils';
-import styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
+
+import { parsePattern } from '../../utils/GeneratorUtils';
+import styles from '../assets/css/form.module.css';
+import CustomSelect from '../Shared/CustomSelect';
+
 
 function PersonsList({
   personsList,
@@ -39,40 +41,34 @@ function PersonsList({
                     <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
                       <div className={styles.table_container}>
-                        <div className="col-md-1">
-                          {parent === 'form' && (
-                            <span>
-                              <ReactTooltip
-                                id="contributor-edit-button"
-                                place="bottom"
-                                effect="solid"
-                                variant="info"
-                                content={t('Edit')}
-                              />
-                              <FaPenToSquare
-                                data-tooltip-id="contributor-edit-button"
-                                onClick={(e) => handleEdit(e, idx)}
-                                style={{ margin: '8px', cursor: 'pointer' }}
-                              />
-                            </span>
-                          )}
-                        </div>
-                        <div className="col-md-1">
-                          <span>
+                        {parent === 'form' && (
+                          <>
                             <ReactTooltip
-                              id="contributor-delete-button"
+                              id="contributor-edit-button"
                               place="bottom"
                               effect="solid"
                               variant="info"
-                              content={t('Delete')}
+                              content={t('Edit')}
                             />
-                            <FaXmark
-                              data-tooltip-id="contributor-delete-button"
-                              onClick={(e) => handleDelete(e, idx)}
-                              style={{ margin: '8px', cursor: 'pointer' }}
+                            <FaPenToSquare
+                              data-tooltip-id="contributor-edit-button"
+                              onClick={(e) => handleEdit(e, idx)}
+                              className={styles.icon}
                             />
-                          </span>
-                        </div>
+                          </>
+                        )}
+                        <ReactTooltip
+                          id="contributor-delete-button"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t('Delete')}
+                        />
+                        <FaXmark
+                          data-tooltip-id="contributor-delete-button"
+                          onClick={(e) => handleDelete(e, idx)}
+                          className={styles.icon}
+                        />
                       </div>
                     )}
                   </div>

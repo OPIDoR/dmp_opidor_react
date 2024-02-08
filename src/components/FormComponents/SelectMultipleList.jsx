@@ -56,11 +56,11 @@ function SelectMultipleList({
   It is used to set the options of the select list. */
   useEffect(() => {
     setSelectedValues(field.value || []);
-    if(registries.length === 1) {
+    if (registries.length === 1) {
       setSelectedRegistry(registries[0]);
     }
   }, [field.value, registries]);
-  
+
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
@@ -173,15 +173,11 @@ function SelectMultipleList({
                         <div>{el} </div>
                         <div className={styles.table_container}>
                           {!readonly && (
-                            <div className="col-md-1">
-                              <span style={{ marginRight: "10px" }}>
-                                <FaXmark
-                                  onClick={(e) => handleDeleteList(e, idx)}
-                                  size={18}
-                                  style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
-                                />
-                              </span>
-                            </div>
+                            <FaXmark
+                              onClick={(e) => handleDeleteList(e, idx)}
+                              size={18}
+                              className={styles.icon}
+                            />
                           )}
                         </div>
                       </div>
