@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 
 import styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
+import { dirtyValues } from '../../utils/utils';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
 
 
   const onValid = (formData, event) => {
-    handleSave(formData);
+    handleSave(dirtyValues(methods.formState.dirtyFields, formData));
   };
   const onInvalid = () => {
     console.log("Modal form errors", methods.errors);
