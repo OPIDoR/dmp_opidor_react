@@ -149,7 +149,7 @@ function SelectContributorSingle({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        service.saveFragment(data.id, data, templateId).then((res) => {
+        service.saveFragment(editedPerson.id, data, templateId).then((res) => {
           const savedFragment = res.data.fragment;
           savedFragment.action = 'update';
           const updatedPersons = [...persons];
