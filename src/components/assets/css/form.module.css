@@ -78,7 +78,9 @@ a {
 }
 .table_container {
   display: flex;
-  margin-right: -20px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .align_div {
@@ -203,3 +205,9 @@ input:checked + .switchSlider .switchOff {
   display: flex;
   justify-content: flex-end;
 }
+
+.icon {
+  margin: 8px;
+  cursor: pointer;
+}
+

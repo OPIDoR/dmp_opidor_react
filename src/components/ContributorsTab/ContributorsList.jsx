@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-
-import { parsePattern } from "../../utils/GeneratorUtils";
 import { useTranslation } from "react-i18next";
 import { FaPenToSquare, FaXmark } from "react-icons/fa6";
+
+import { parsePattern } from "../../utils/GeneratorUtils";
 import Pagination from "../Shared/Pagination";
 import { isValidHttpUrl } from "../../utils/utils";
+import styles from '../assets/css/form.module.css';
 
 function ContributorsList({ contributors, template, handleEdit, handleDelete }) {
   const { t } = useTranslation();
@@ -59,7 +60,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                   data-tooltip-id="contributor-edit-button"
                   size={18}
                   onClick={() => handleEdit(idx)}
-                  style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                  className={styles.icon}
                 />
                 {contributors.length > 1 &&
                   <>
@@ -74,7 +75,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                       data-tooltip-id="contributor-delete-button"
                       size={18}
                       onClick={() => handleDelete(idx)}
-                      style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
+                      className={styles.icon}
                     />
                   </>
                 }

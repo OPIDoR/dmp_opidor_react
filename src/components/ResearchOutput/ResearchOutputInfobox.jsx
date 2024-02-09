@@ -11,6 +11,7 @@ import PanelBody from "react-bootstrap/lib/PanelBody";
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
   const {
+    researchOutputs,
     displayedResearchOutput
   } = useContext(GlobalContext);
 
@@ -51,7 +52,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
                 </button>
               </>
             )}
-            {!readonly && displayedResearchOutput.order !== 1 && (
+            {!readonly && researchOutputs.length > 1 && (
               <>
                 <Tooltip anchorSelect="#deleteBtn" place="bottom">
                   {t("Delete")}
