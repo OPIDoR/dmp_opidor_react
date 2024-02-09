@@ -245,7 +245,7 @@ function SelectContributorSingle({
               <FaPlus
                 data-tooltip-id="select-contributor-single-add-button"
                 onClick={() => setShow(true)}
-                style={{ margin: '8px', cursor: 'pointer' }}
+                className={styles.icon}
               />
             </div>
           )}

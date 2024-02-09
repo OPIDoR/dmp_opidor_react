@@ -267,7 +267,7 @@ function SelectContributorMultiple({
               <FaPlus
                 data-tooltip-id="select-contributor-multiple-add-button"
                 onClick={() => setShow(true)}
-                style={{ margin: '8px', cursor: 'pointer' }}
+                className={styles.icon}
               />
             </div>
           )}

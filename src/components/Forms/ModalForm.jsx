@@ -4,6 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import ImportExternal from '../ExternalImport/ImportExternal';
+import { dirtyValues } from '../../utils/utils';
 
 
 function ModalForm({ data, template, label, readonly, show, handleSave, handleClose, externalImport = [], mapping }) {
@@ -15,7 +16,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
   }, [data]);
 
   const onValid = (formData, event) => {
-    handleSave(formData);
+    handleSave(dirtyValues(methods.formState.dirtyFields, formData));
     methods.reset();
   };
   const onInvalid = () => {
@@ -32,13 +33,19 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     methods.reset();
   }
 
+  const setValues = (data) => {
+    Object.keys(data).forEach((k) => {
+      methods.setValue(k, data[k], { shouldDirty: true })
+    })
+  }
+
   return (
     <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
-        {externalImport?.length > 0 && <ImportExternal fragment={methods.getValues()} setFragment={methods.reset} externalImport={externalImport} mapping={mapping} />}
+        {externalImport?.length > 0 && <ImportExternal fragment={methods.getValues()} setFragment={setValues} externalImport={externalImport} mapping={mapping} />}
         <FormProvider {...methods}>
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder

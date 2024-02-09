@@ -103,7 +103,7 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
             <FaPlus
               data-tooltip-id="input-text-dynamicaly-add-button"
               onClick={(e) => addFields(e)}
-              style={{ margin: '8px', cursor: 'pointer' }}
+              className={styles.icon}
             />
           </div>
         )}
@@ -139,7 +139,7 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
                 onClick={(e) => removeFields(e, index)}
                 variant="info"
                 size={24}
-                style={{ margin: '6px 0 0 4px', cursor: 'pointer' }}
+                className={styles.icon}
               />
             </div>
           )}
