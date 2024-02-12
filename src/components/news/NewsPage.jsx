@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { format } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Media, Thumbnail, Button } from 'react-bootstrap';
+import { Row, Col, Thumbnail, Button } from 'react-bootstrap';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomError from '../Shared/CustomError.jsx';
 import { news } from '../../services';
