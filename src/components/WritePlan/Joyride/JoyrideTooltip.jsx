@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import JoyrideTooltipHeader from "./JoyrideTooltipHeader";
 import JoyrideTooltipTitle from "./JoyrideTooltipTitle";
@@ -16,7 +16,7 @@ const tooltipStyles = {
   boxSizing: 'border-box',
 };
 
-function JoyrideTooltip(props) {
+const JoyrideTooltip = forwardRef((props, ref) => {
   const {
     className,
     style,
@@ -39,7 +39,7 @@ function JoyrideTooltip(props) {
       {children}
     </div>
   );
-};
+});
 
 export default Object.assign(JoyrideTooltip, {
   Header: JoyrideTooltipHeader,

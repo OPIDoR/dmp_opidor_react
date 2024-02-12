@@ -193,5 +193,7 @@
   "Read article": "Lire l'article",
   "Registration was successful !" :"L’enregistrement a été effectué avec succès !",
   "Use a customized form" : "Utilisez un formulaire personnalisé",
-  "Cancel" : "Annuler"
+  "Cancel" : "Annuler",
+  "Finish": "Terminer",
+  "Ignore the guided tour": "Ignorer la visite guidée"
 }
