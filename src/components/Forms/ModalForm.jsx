@@ -4,21 +4,20 @@ import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import ImportExternal from '../ExternalImport/ImportExternal';
-import { dirtyValues } from '../../utils/utils';
-
 
 function ModalForm({ data, template, label, readonly, show, handleSave, handleClose, externalImport = [], mapping }) {
   const { t } = useTranslation();
-  const methods = useForm();
+  const methods = useForm({ defaultValues: data });
 
   useEffect(() => {
-    methods.reset(data);
+    methods.reset(methods.formState.dirtyFields);
   }, [data]);
 
   const onValid = (formData, event) => {
-    handleSave(dirtyValues(methods.formState.dirtyFields, formData));
+    handleSave(formData);
     methods.reset();
   };
+
   const onInvalid = () => {
     console.log("Modal form errors", methods.errors);
   };
@@ -33,11 +32,8 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     methods.reset();
   }
 
-  const setValues = (data) => {
-    Object.keys(data).forEach((k) => {
-      methods.setValue(k, data[k], { shouldDirty: true })
-    })
-  }
+  const setValues = (data) => Object.keys(data)
+    .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   return (
     <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
