@@ -17,7 +17,7 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t(edit ? 'Edit search output' : 'Create or import a research output')}</Modal.Title>
+        <Modal.Title>{t(edit ? 'Edit research output' : 'Create or import a research output')}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
         <div className={`col-md-12 ${styles.info_box}`}>
