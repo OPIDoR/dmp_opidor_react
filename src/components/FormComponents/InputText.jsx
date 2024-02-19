@@ -44,7 +44,9 @@ function InputText({
         </div>
       )}
       <input
-        {...register(propName)}
+        {...register(propName, {
+          valueAsNumber: type === 'number'
+        })}
         defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
