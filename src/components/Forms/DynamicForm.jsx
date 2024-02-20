@@ -4,15 +4,15 @@ import React, {
 import toast from 'react-hot-toast';
 import { useTranslation } from "react-i18next";
 import { useForm, FormProvider } from "react-hook-form";
-
+import unionBy from 'lodash.unionby';
 
 import FormBuilder from './FormBuilder.jsx';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
-import unionBy from 'lodash.unionby';
 import FormSelector from './FormSelector';
+import { ExternalImport } from '../ExternalImport';
 
 function DynamicForm({
   fragmentId,
@@ -32,10 +32,11 @@ function DynamicForm({
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const methods = useForm();
+  const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [externalImports, setExternalImports] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -46,6 +47,7 @@ function DynamicForm({
         } else {
           service.getSchema(formData[fragmentId].schema_id).then((res) => {
             setTemplate(res.data);
+            setExternalImports(template?.schema?.externalImports || {});
             setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
           }).catch(console.error)
             .finally(() => setLoading(false));
@@ -79,7 +81,7 @@ function DynamicForm({
   }, []);
 
   useEffect(() => {
-    methods.reset(formData[fragmentId])
+    methods.reset(formData[fragmentId]);
   }, [formData[fragmentId]]);
 
   useEffect(() => {
@@ -89,8 +91,8 @@ function DynamicForm({
         apiClient: template.api_client
       });
     }
+    setExternalImports(template?.schema?.externalImports || {});
   }, [template])
-
 
   /**
    * It checks if the form is filled in correctly.
@@ -120,17 +122,22 @@ function DynamicForm({
     if (response.data.plan_title) {
       document.getElementById('plan-title').innerHTML = response.data.plan_title;
     }
+
     setFormData({ [fragmentId]: response.data.fragment });
 
     setLoading(false);
   };
 
+  const setValues = (data) => Object.keys(data)
+    .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
+
   return (
     <>
-      {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
+      {loading && (<CustomSpinner isOverlay={true} />)}
       {error && <p>error</p>}
       {!error && template && (
         <>
+          {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
           <FormSelector
             className={className}
             selectedTemplateId={template.id}

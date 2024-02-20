@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { externalServices } from "../../../services";
-import CustomError from "../../Shared/CustomError";
-import CustomSpinner from "../../Shared/CustomSpinner";
-import Pagination from "../../Shared/Pagination";
+import { externalServices } from "../../services";
+import CustomError from "../Shared/CustomError";
+import CustomSpinner from "../Shared/CustomSpinner";
+import Pagination from "../Shared/Pagination";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
-function OrcidList({ fragment, setFragment }) {
+function OrcidList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -51,7 +51,18 @@ function OrcidList({ fragment, setFragment }) {
    */
   const setSelectedValue = (el) => {
     setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
-    const obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
+    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
+
+    if (mapping && Object.keys(mapping)?.length > 0) {
+      obj = Object.entries(obj).reduce((acc, [key, value]) => {
+        const objKey = mapping?.[key] || key;
+        if (!(objKey in mapping)) {
+          acc[objKey] = value;
+        }
+        return acc;
+      }, {});
+    }
+
     setFragment({ ...fragment, ...obj });
   };
 
