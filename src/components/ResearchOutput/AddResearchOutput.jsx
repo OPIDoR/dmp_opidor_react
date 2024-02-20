@@ -10,7 +10,7 @@ import { researchOutput } from "../../services";
 import { createOptions } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
-import { pick } from "../../utils/utils";
+import { getErrorMessage, pick } from "../../utils/utils";
 
 const EndButton = styled.div`
   display: flex;
@@ -80,16 +80,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       try {
         res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
       } catch (error) {
-        let errorMessage = t("An error occured during form saving");
-        if (error.response && error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
-        } else if (error.request) {
-          errorMessage = error.request;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-
-        toast.error(errorMessage);
+        toast.error(getErrorMessage(error));
         return;
       }
 
@@ -106,16 +97,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     try {
       res = await researchOutput.create(researchOutputInfo);
     } catch (error) {
-      let errorMessage = t("An error occured during form saving");
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(error));
       return;
     }
 
