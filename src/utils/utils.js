@@ -47,3 +47,14 @@ export function isValidHttpUrl(string) {
   }
   return url.protocol === "http:" || url.protocol === "https:";
 }
+
+export function getErrorMessage(error) {
+  if (error.response && error.response.data && error.response.data.message) {
+    return error.response.data.message;
+  } else if (error.request) {
+    return error.request;
+  } else if (error.message) {
+    return error.message;
+  }
+  return null;
+}
