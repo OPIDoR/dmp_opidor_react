@@ -10,12 +10,12 @@ function LangSelection({ prevStep, nextStep, set, params }) {
     {
       label: 'Français',
       value: 'fr-FR',
-      description: t('Les formulaires et recommandations associées seront en français'),
+      description: t('Le modèle sera en français'),
     },
     {
       label: 'English (UK)',
       value: 'en-GB',
-      description: t('Forms and linked recommendations will be in English'),
+      description: t('The template will be in English'),
     },
   ];
 
