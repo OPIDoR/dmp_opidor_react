@@ -1,6 +1,7 @@
 import axios from '../utils/AxiosClient';
 import createHeaders from '../utils/HeaderBuilder';
 import { toast } from "react-hot-toast";
+import { getErrorMessage } from '../utils/utils';
 
 const plans = [
   {
@@ -70,27 +71,7 @@ const postImportProduct = async (planId, uuid) => {
     sessionStorage.setItem("data", JSON.stringify(copieData));
     return { data: copieData };
   } catch (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      //toast.error("error server");
-      console.log(error.response.data);
-      console.log(error.response.message);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-    } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the
-      // browser and an instance of
-      // http.ClientRequest in node.js
-      // toast.error("error request");
-      console.log(error.request);
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      console.log("Error", error.message);
-    }
-    console.log(error.config);
-    return error;
+    toast.error(getErrorMessage(error));
   }
 }
 
@@ -105,13 +86,7 @@ const deleteResearchOutput = async (researchOutputId, planId) => {
   try {
     response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, { headers: createHeaders({}, true)});
   } catch (error) {
-    if (error.response) {
-      toast.error(error.response.message);
-    } else if (error.request) {
-      toast.error(error.request);
-    } else {
-      toast.error(error.message);
-    }
+    toast.error(getErrorMessage(error));
   }
   return response;
 }

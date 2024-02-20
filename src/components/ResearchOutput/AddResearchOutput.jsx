@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-hot-toast";
+import styled from "styled-components";
+
 import stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
-import styled from "styled-components";
 import { createOptions } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
-import { toast } from "react-hot-toast";
+import { getErrorMessage, pick } from "../../utils/utils";
 
 const EndButton = styled.div`
   display: flex;
@@ -40,8 +42,9 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     }
 
     if (!edit) {
-      setAbbreviation(`${t('RO')} ${researchOutputs.length + 1}`);
-      setTitle(`${t('Research output')} ${researchOutputs.length + 1}`);
+      const maxOrder = Math.max(...researchOutputs.map(ro => ro.order));
+      setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
+      setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(false);
       setType(null);
     }
@@ -78,14 +81,8 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       try {
         res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
       } catch (error) {
-        if (error.response) {
-          toast.error(error.response.message);
-        } else if (error.request) {
-          toast.error(error.request);
-        } else {
-          toast.error(error.message);
-        }
-        return handleClose();
+        toast.error(getErrorMessage(error));
+        return;
       }
 
       setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === displayedResearchOutput.id));
@@ -101,14 +98,8 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     try {
       res = await researchOutput.create(researchOutputInfo);
     } catch (error) {
-      if (error.response) {
-        toast.error(error.response.message);
-      } else if (error.request) {
-        toast.error(error.request);
-      } else {
-        toast.error(error.message);
-      }
-      return handleClose();
+      toast.error(getErrorMessage(error));
+      return;
     }
 
     setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === res?.data?.created_ro_id));
