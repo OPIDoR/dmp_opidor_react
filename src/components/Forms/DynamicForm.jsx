@@ -13,6 +13,7 @@ import CustomSpinner from '../Shared/CustomSpinner.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
+import { getErrorMessage } from '../../utils/utils.js';
 
 function DynamicForm({
   fragmentId,
@@ -105,17 +106,7 @@ function DynamicForm({
     try {
       response = await service.saveFragment(fragmentId, data);
     } catch (error) {
-      let errorMessage = t("An error occured during form saving");
-
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-
-      toast.error(errorMessage);
+      toast.error(getErrorMessage(error));
       return setLoading(false);
     }
 
