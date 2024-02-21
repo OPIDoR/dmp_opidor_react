@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 import swalUtils from "../../utils/swalUtils";
 import CustomSpinner from "../Shared/CustomSpinner";
 
-
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
   const {
@@ -123,7 +122,6 @@ function ContributorsTab({ planId, locale, readonly }) {
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
-          externalImport={['ror', 'orcid']}
         />)}
       {!readonly && (
         <CustomButton
