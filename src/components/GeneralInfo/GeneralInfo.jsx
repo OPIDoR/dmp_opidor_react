@@ -104,6 +104,7 @@ function GeneralInfo({
    */
   const handleSelectFunder = (e) => {
     setSelectedFunder(e);
+    setSelectedProject(null);
 
     if (researchContext !== 'research_project') {
       return;
