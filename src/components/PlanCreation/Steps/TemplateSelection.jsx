@@ -20,16 +20,16 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const placeHolder = t('Begin typing to see a list of suggestions.');
+  const placeHolder = t('Begin typing to see a list of suggestions');
 
   const params = useMemo(() => selectionData, [selectionData]);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     const tmpls = {
-      default: { title: t('Recommended template by DMPOPIDoR'), templates: [] },
-      myOrg: { title: t('Model recommended by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
-      others: { id: 'others', title: t('Models from other organizations or funders'), type: 'select', data: [] },
+      default: { title: t('Template recommended by DMP OPIDoR'), templates: [] },
+      myOrg: { title: t('Template recommended by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
+      others: { id: 'others', title: t('Templates from other organizations or funders'), type: 'select', data: [] },
     };
 
     const fetchTemplates = async () => {
