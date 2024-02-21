@@ -13,7 +13,7 @@ import CustomSelect from "../Shared/CustomSelect";
 function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, setTemplate }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {
@@ -43,7 +43,6 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
       setTemplate(res.data.template)
     }).catch(console.error)
       .finally(() => {
-        setShow(false);
         setLoading(false);
       });
   }
@@ -70,7 +69,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
                   />
                   <div className={styles.form_selector_footer}>
                     <Button onClick={() => setShow(false)} style={{ margin: '0 5px 0 5px' }}>
-                      {t("Cancel")}
+                      {t("Close")}
                     </Button>
                     <Button onClick={handleChangeForm} bsStyle="primary" type="submit" style={{ margin: '0 5px 0 5px' }}>
                       {t('Save')}
