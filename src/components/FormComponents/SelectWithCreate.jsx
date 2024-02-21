@@ -48,13 +48,6 @@ function SelectWithCreate({
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
-  const rorMapping = {
-    affiliationName: 'name',
-    affiliationId: 'orgId',
-    acronyms: 'acronym',
-    affiliationIdType: 'idType',
-  };
-
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
@@ -273,10 +266,8 @@ function SelectWithCreate({
           label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})` }
           readonly={readonly}
           show={show}
-          externalImport={propName.toLowerCase() === 'partner' ? ['ror'] : []}
           handleSave={handleSave}
           handleClose={handleClose}
-          mapping={propName.toLowerCase() === 'partner' ? rorMapping : undefined}
         />
       )}
     </div>

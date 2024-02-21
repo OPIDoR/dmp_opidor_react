@@ -3,11 +3,13 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
-import ImportExternal from '../ExternalImport/ImportExternal';
+import { ExternalImport } from '../ExternalImport';
 
-function ModalForm({ data, template, label, readonly, show, handleSave, handleClose, externalImport = [], mapping }) {
+function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
+
+  const externalImports = template?.schema?.externalImports || {};
 
   useEffect(() => {
     methods.reset(methods.formState.dirtyFields);
@@ -41,7 +43,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
-        {externalImport?.length > 0 && <ImportExternal fragment={methods.getValues()} setFragment={setValues} externalImport={externalImport} mapping={mapping} />}
+        {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
         <FormProvider {...methods}>
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder

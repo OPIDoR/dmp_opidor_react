@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { externalServices } from "../../../services";
+import { externalServices } from "../../services";
 import Select from "react-select";
-import CustomSpinner from "../../Shared/CustomSpinner";
-import CustomError from "../../Shared/CustomError";
-import Pagination from "../../Shared/Pagination";
+import CustomSpinner from "../Shared/CustomSpinner";
+import CustomError from "../Shared/CustomError";
+import Pagination from "../Shared/Pagination";
 import { FaLink } from "react-icons/fa6";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
-function RorList({ fragment, setFragment, mapping }) {
+function RorList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -75,11 +75,11 @@ function RorList({ fragment, setFragment, mapping }) {
     let obj = {
       affiliationId: el.ror,
       affiliationName: el.name[Object.keys(el.name)[0]],
-      affiliationIdType: "ROR ID",
+      affiliationIdType: 'ROR ID',
       acronyms: el.acronyms?.[0],
     };
 
-    if (mapping) {
+    if (mapping && Object.keys(mapping)?.length > 0) {
       obj = Object.entries(obj).reduce((acc, [key, value]) => {
         const objKey = mapping?.[key] || key;
         if (!(objKey in mapping)) {
