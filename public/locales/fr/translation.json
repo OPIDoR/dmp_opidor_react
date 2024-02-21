@@ -172,7 +172,7 @@
   "Financing agency": "Agence de financement",
   "One or more models are available, which one would you like to select ?": "Un ou plusieurs modèles sont disponibles, lequel souhaitez-vous sélectionner ?",
   "Go back to previous step": "Retour à l'étape précédente",
-  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8221; fournis par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}})." : "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8220; fourni par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}})",
+  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8221; fournis par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}}).",
   "Context selection": "Choix du contexte",
   "Type selection": "Choix du type",
   "Template selection": "Choix du modèle",
