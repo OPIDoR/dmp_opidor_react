@@ -249,8 +249,8 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           <ReactTooltip
             id={`template-${index}-description-tooltip`}
             place="left"
+            variant="info"
             effect="solid"
-            variant="dark"
             key={`template-${index}-description-tooltip`}
             style={{ width: '600px', textAlign: 'center' }}
           >
