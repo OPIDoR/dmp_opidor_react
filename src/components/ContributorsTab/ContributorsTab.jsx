@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { service } from "../../services";
-import CustomButton from "../Styled/CustomButton";
-import ContributorsList from "./ContributorsList";
-import ModalForm from "../Forms/ModalForm";
-import { useContext } from "react";
-import { GlobalContext } from "../context/Global";
-import Swal from "sweetalert2";
-import swalUtils from "../../utils/swalUtils";
-import CustomSpinner from "../Shared/CustomSpinner";
+import React, { useEffect, useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
+import { service } from '../../services';
+import CustomButton from '../Styled/CustomButton';
+import ContributorsList from './ContributorsList';
+import ModalForm from '../Forms/ModalForm';
+import { GlobalContext } from '../context/Global';
+import swalUtils from '../../utils/swalUtils';
+import CustomSpinner from '../Shared/CustomSpinner';
 
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
@@ -20,8 +19,8 @@ function ContributorsTab({ planId, locale, readonly }) {
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [contributors, setContributors] = useState([]);
-  const [fragmentId, setFragmentId] = useState(null)
-  const [editedPerson, setEditedPerson] = useState({})
+  const [fragmentId, setFragmentId] = useState(null);
+  const [editedPerson, setEditedPerson] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +38,7 @@ function ContributorsTab({ planId, locale, readonly }) {
   useEffect(() => {
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
-  }, [planId, locale])
+  }, [planId, locale]);
 
   const handleSave = async (data) => {
     const newContributorsList = [...contributors];
@@ -61,8 +60,8 @@ function ContributorsTab({ planId, locale, readonly }) {
           newContributorsList.unshift({
             id: res.data.fragment.id,
             data: res.data.fragment,
-            roles: []
-          })
+            roles: [],
+          });
           setContributors(newContributorsList);
         }).catch((error) => {
           setError(error);
@@ -76,8 +75,8 @@ function ContributorsTab({ planId, locale, readonly }) {
   const handleClose = () => {
     setShow(false);
     setIndex(null);
-    setEditedPerson({})
-    setFragmentId(null)
+    setEditedPerson({});
+    setFragmentId(null);
   };
 
   const handleEdit = (idx) => {
@@ -85,7 +84,7 @@ function ContributorsTab({ planId, locale, readonly }) {
     setEditedPerson(contributors[idx].data);
     setFragmentId(contributors[idx].id);
     setShow(true);
-  }
+  };
 
   const handleDelete = (idx) => {
     const fragmentId = contributors[idx].id;
@@ -98,14 +97,14 @@ function ContributorsTab({ planId, locale, readonly }) {
           setContributors(newContributorsList);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'contributor'));
-        })
+        });
       }
     });
-  }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <CustomSpinner isOverlay={true} />}
+      {loading && <CustomSpinner isOverlay />}
       <ContributorsList
         contributors={contributors}
         template={template}
@@ -122,20 +121,21 @@ function ContributorsTab({ planId, locale, readonly }) {
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
-        />)}
+        />
+      )}
       {!readonly && (
         <CustomButton
           handleClick={() => {
             setShow(true);
             setIndex(null);
           }}
-          title={t("Add a person or an organisation")}
+          title={t('Add a person or an organisation')}
           buttonColor="rust"
           position="start"
-        ></CustomButton>
+        />
       )}
     </div>
-  )
+  );
 }
 
 export default ContributorsTab;

@@ -3,18 +3,20 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPenToSquare, FaPlus, FaEye, FaXmark } from 'react-icons/fa6';
+import {
+  FaPenToSquare, FaPlus, FaEye, FaXmark,
+} from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
-import { GlobalContext } from '../context/Global.jsx';
+import { GlobalContext } from '../context/Global';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
-import NestedForm from '../Forms/NestedForm.jsx';
-import { fragmentEmpty } from '../../utils/utils.js';
-import swalUtils from '../../utils/swalUtils.js';
+import NestedForm from '../Forms/NestedForm';
+import { fragmentEmpty } from '../../utils/utils';
+import swalUtils from '../../utils/swalUtils';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -41,7 +43,7 @@ function SelectSingleList({
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
-  const [editedFragment, setEditedFragment] = useState({})
+  const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
@@ -57,13 +59,13 @@ function SelectSingleList({
     if (registries.length === 1) {
       setSelectedRegistry(registries[0]);
     }
-  }, [field.value, defaultValue, registries])
+  }, [field.value, defaultValue, registries]);
 
   useEffect(() => {
     if (registryType !== 'complex') {
-      setSelectedOption(selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
+      setSelectedOption(selectedValue ? { value: selectedValue, label: selectedValue } : nullValue);
     }
-  }, [selectedValue])
+  }, [selectedValue]);
 
   /*
   A hook that is called when the component is mounted.
@@ -88,20 +90,20 @@ function SelectSingleList({
     if (registryType !== 'complex') { return; }
     if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
-        setTemplate(res.data)
+        setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
       });
     } else {
       setTemplate(loadedTemplates[templateId]);
     }
-  }, [registryType, templateId])
+  }, [registryType, templateId]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    if (!e) return { target: { name: propName, value: '' } }
+    if (!e) return { target: { name: propName, value: '' } };
 
     if (registryType === 'complex') {
       const action = selectedValue.id ? 'update' : 'create';
@@ -119,7 +121,6 @@ function SelectSingleList({
     setSelectedRegistry(e.value);
   };
 
-
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
@@ -128,26 +129,26 @@ function SelectSingleList({
 
     setEditedFragment({});
     setShowNestedForm(false);
-  }
-  
+  };
+
   const handleDeleteList = (e) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
     });
-  }
+  };
 
   return (
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -155,7 +156,8 @@ function SelectSingleList({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -179,14 +181,14 @@ function SelectSingleList({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t('Select a registry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? 'col-md-6' : 'col-md-12'}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -228,7 +230,7 @@ function SelectSingleList({
             id={`nested-form-${propName}`}
             className={styles.nestedForm}
             style={{ display: showNestedForm ? 'block' : 'none' }}
-          ></div>
+          />
         )}
         {showNestedForm && (
           <NestedForm
@@ -245,20 +247,20 @@ function SelectSingleList({
         )}
 
         {registryType === 'complex' && !fragmentEmpty(selectedValue) && !showNestedForm && (
-          <table style={{ marginTop: "20px" }} className="table">
+          <table style={{ marginTop: '20px' }} className="table">
             <thead>
               <tr>
-                <th scope="col">{t("Selected value")}</th>
-                <th scope="col"></th>
+                <th scope="col">{t('Selected value')}</th>
+                <th scope="col" />
               </tr>
             </thead>
             <tbody>
               {[selectedValue].map((el, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "90%" }}>
+                  <td style={{ width: '90%' }}>
                     {parsePattern(el, template?.schema?.to_string)}
                   </td>
-                  <td style={{ width: "10%" }}>
+                  <td style={{ width: '10%' }}>
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);

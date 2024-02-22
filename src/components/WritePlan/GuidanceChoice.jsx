@@ -1,25 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Panel, PanelGroup } from "react-bootstrap";
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { TbBulbFilled } from "react-icons/tb";
-import { GlobalContext } from '../context/Global.jsx';
-import guidanceChoiceStyles from "../../../src/components/assets/css/guidance_choice.module.css";
-import { guidances } from "../../services";
-import { CustomSpinner, CustomError } from "../Shared";
-import CustomButton from "../Styled/CustomButton";
-import { useTranslation, Trans } from "react-i18next";
-import toast from "react-hot-toast";
-import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";
-import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
+import React, { useContext, useEffect, useState } from 'react';
+import { Panel, PanelGroup } from 'react-bootstrap';
+import { TfiAngleDown, TfiAngleUp } from 'react-icons/tfi';
+import { TbBulbFilled } from 'react-icons/tb';
+import { useTranslation, Trans } from 'react-i18next';
+import toast from 'react-hot-toast';
+import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from 'react-icons/md';
+import { GlobalContext } from '../context/Global';
+import guidanceChoiceStyles from '../assets/css/guidance_choice.module.css';
+import { guidances } from '../../services';
+import { CustomSpinner, CustomError } from '../Shared';
+import CustomButton from '../Styled/CustomButton';
+import { GUIDANCES_GROUPS_LIMIT } from '../../config';
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
-  color: "var(--blue)",
-  fontSize: "16px",
-  margin: "10px 150px 0px 150px",
+  color: 'var(--blue)',
+  fontSize: '16px',
+  margin: '10px 150px 0px 150px',
 };
 
-function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
+function GuidanceChoice({
+  planId, currentOrgId, currentOrgName, isClassic,
+}) {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +38,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
-    isClassic && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
+    if (isClassic) {
+      setCurrentOrg({ id: currentOrgId, name: currentOrgName });
+    }
 
     const orgName = currentOrgName || currentOrg.name;
 
@@ -50,13 +54,13 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
         const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
-        guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
+        guidance_groups = [...orgGuidances, ...selectedGuidances, ...unselectedGuidances];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
       })
-      .catch((error) => setError(error))
+      .catch((err) => setError(err))
       .finally(() => setLoading(false));
   }, [planId]);
 
@@ -65,7 +69,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const handleGuidanceGroups = (data) => {
     const states = {};
     for (let i = 0; i < data.length; i += 1) {
-      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected} ), {});
+      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected }), {});
       const isSelected = Object.keys(guidance_groups).filter((id) => guidance_groups[id] === true).length > 0;
       states[data[i].id] = {
         checked: isSelected,
@@ -73,7 +77,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       };
     }
     return states;
-  }
+  };
 
   /**
    * This function handles changes to a checkbox and updates the state accordingly, including updating nested checkboxes and an array of recommendation
@@ -102,7 +106,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       guidance_groups: {
         ...states[parentKey].guidance_groups,
         [id]: status,
-      }
+      },
     };
 
     const childChecked = Object.keys(states[parentKey].guidance_groups).filter((id) => states[parentKey].guidance_groups[id] === true);
@@ -111,11 +115,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     setCheckboxStates(states);
   };
 
-  const countSelectedGuidances = () => {
-    return Object.values(checkboxStates).reduce((count, state) => {
-      return state.checked === true ? count + 1 : count;
-    }, 0);
-  };
+  const countSelectedGuidances = () => Object.values(checkboxStates).reduce((count, state) => (state.checked === true ? count + 1 : count), 0);
 
   const countSelectedChild = (parentId) => Object.keys(checkboxStates[parentId].guidance_groups).filter((id) => checkboxStates[parentId].guidance_groups[id] === true).length;
 
@@ -124,7 +124,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
    */
   const handleSaveChoice = async () => {
     if (countSelectedGuidances <= 0) {
-      return toast.error(t("Please select at least one recommendation"));
+      return toast.error(t('Please select at least one recommendation'));
     }
 
     const selectedGuidancesIds = Object.keys(checkboxStates)
@@ -135,17 +135,17 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     try {
       response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, planId);
     } catch (error) {
-      return toast.error(t("An error occurred while saving the recommendations"));
+      return toast.error(t('An error occurred while saving the recommendations'));
     }
 
     const { guidance_groups } = response.data;
 
-    let { questions_with_guidance } = response.data;
+    const { questions_with_guidance } = response.data;
 
     const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
     const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
-    setData([ ...selectedGuidances, ...unselectedGuidances ]);
+    setData([...selectedGuidances, ...unselectedGuidances]);
 
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
@@ -153,7 +153,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    toast.success(t("Registration was successful !"));
+    toast.success(t('Registration was successful !'));
   };
 
   const limitHasBeenReached = () => countSelectedGuidances() > GUIDANCES_GROUPS_LIMIT;
@@ -161,7 +161,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   return (
     <PanelGroup accordion id="accordion-guidance-choice">
       <Panel eventKey="1" className="funder-import">
-        <Panel.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
+        <Panel.Heading style={{ background: 'var(--dark-blue)', borderRadius: isOpen ? '5px 5px 0 0' : '5px' }}>
           <Panel.Title
             toggle
             onClick={(e) => setIsOpen(!isOpen)}
@@ -172,22 +172,28 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ flexGrow: 3, alignItems: 'center', textAlign: 'center' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <div style={{ fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                }}
+                >
+                  <div style={{
+                    fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                  >
                     <TbBulbFilled
-                      fill={'var(--rust)'}
+                      fill="var(--rust)"
                       size={38}
                       style={{ marginRight: '10px', color: 'var(--rust)' }}
                     />
-                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Select the guidance of your plan")}</span>
+                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t('Select the guidance of your plan')}</span>
                   </div>
                 </div>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (
-                  <TfiAngleUp size={24} fill={"var(--white)"} />
+                  <TfiAngleUp size={24} fill="var(--white)" />
                 ) : (
-                  <TfiAngleDown size={24} fill={"var(--white)"} />
+                  <TfiAngleDown size={24} fill="var(--white)" />
                 )}
               </div>
             </div>
@@ -196,10 +202,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         <Panel.Body collapsible>
           <div style={description}>
             <div style={{ textAlign: 'justify' }}>
-               <Trans
+              <Trans
                 defaults="To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - <bold>you can select up to 6 organizations</bold>."
                 components={{ bold: <strong /> }}
-                />
+              />
             </div>
             <div style={{ marginTop: '20px' }}>
               {loading && <CustomSpinner />}
@@ -208,7 +214,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                 {!loading && !error && data && data.map((group, index) => (
                   <div key={`guidances-section-${index}`}>
                     <div
-                      style={{ display: 'flex', alignItems: 'center', }}
+                      style={{ display: 'flex', alignItems: 'center' }}
                       key={`guidances-container-${index}`}
                     >
                       <div
@@ -249,7 +255,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
                       <label
                         className={`${guidanceChoiceStyles.label_checkbox} ${
-                          checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ""
+                          checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ''
                         }`}
                         style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
                         onClick={() => {
@@ -269,7 +275,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       {
                         group.guidance_groups.map((guidance, key) => (
                           <div
-                            style={{ display: 'flex', alignItems: 'center', }}
+                            style={{ display: 'flex', alignItems: 'center' }}
                             key={`guidance-group-${index}-childs-${key}-section`}
                           >
                             <div
@@ -306,7 +312,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                             <label
                               className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
                               style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
-                              onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                              onClick={() => (limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id]))}
                             >
                               {guidance.name}
                             </label>
@@ -324,11 +330,15 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                     title={
                       limitHasBeenReached() ? (
                         <Trans>
-                          The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
+                          The limit of
+                          {' '}
+                          {{ limit: GUIDANCES_GROUPS_LIMIT }}
+                          {' '}
+                          groups of recommendations has been reached
                         </Trans>
                       ) : t('Save')
                     }
-                    buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
+                    buttonColor={countSelectedGuidances() > 0 ? 'rust' : 'blue'}
                     position="start"
                     handleClick={limitHasBeenReached() ? null : handleSaveChoice}
                     disabled={limitHasBeenReached()}

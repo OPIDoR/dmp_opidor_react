@@ -1,19 +1,21 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation, Trans } from "react-i18next";
-import Swal from "sweetalert2";
-import { toast } from "react-hot-toast";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { Label } from "react-bootstrap";
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
+import Swal from 'sweetalert2';
+import { toast } from 'react-hot-toast';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { PiTreeStructureDuotone, PiBank } from 'react-icons/pi';
+import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
+import { Label } from 'react-bootstrap';
 
-import styles from "../../assets/css/steps.module.css";
-import { planCreation } from "../../../services";
-import { CustomButton } from "../../Styled";
-import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
+import styles from '../../assets/css/steps.module.css';
+import { planCreation } from '../../../services';
+import { CustomButton } from '../../Styled';
+import { CustomSpinner, CustomError, CustomSelect } from '../../Shared';
 
-function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
+function TemplateSelection({
+  prevStep, set, params: selectionData, setUrlParams,
+}) {
   const { t } = useTranslation();
 
   const [planTemplates, setPlanTemplates] = useState({});
@@ -29,7 +31,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const tmpls = {
       default: { title: t('Template recommended by DMP OPIDoR'), templates: [] },
       myOrg: { title: t('Template recommended by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
-      others: { id: 'others', title: t('Templates from other organizations or funders'), type: 'select', data: [] },
+      others: {
+        id: 'others', title: t('Templates from other organizations or funders'), type: 'select', data: [],
+      },
     };
 
     const fetchTemplates = async () => {
@@ -43,13 +47,13 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         return handleError(error);
       }
 
-      const defaultTemplateID = currentTemplatesRes?.data?.id
+      const defaultTemplateID = currentTemplatesRes?.data?.id;
 
       tmpls.default.templates = Array.isArray(currentTemplatesRes?.data)
         ? currentTemplatesRes?.data
         : [currentTemplatesRes?.data]
         // .filter(({ structured }) => structured === params.isStructured)
-        .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase());
+          .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase());
 
       let myOrgTemplatesRes;
       try {
@@ -151,9 +155,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const handleSendTemplateId = async () => {
     if (!params.selectedTemplate) {
       return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: t("You must choose a template"),
+        icon: 'error',
+        title: 'Oops...',
+        text: t('You must choose a template'),
       });
     }
 
@@ -161,7 +165,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     try {
       response = await planCreation.createPlan(params.selectedTemplate);
     } catch (error) {
-      let errorMessage = t("An error occurred while creating the plan");
+      let errorMessage = t('An error occurred while creating the plan');
 
       if (error.response) {
         errorMessage = error.response.message;
@@ -192,7 +196,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       localStorage.removeItem('templateLanguage');
     }
 
-    window.location = `/plans/${response.data.id}`
+    window.location = `/plans/${response.data.id}`;
   };
 
   const handleSelectedList = (selectedValue) => {
@@ -205,10 +209,10 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         data: data[selectedValue?.type].data.map((d) => ({
           ...d,
           selected: selectedValue.value === d.id,
-        }))
-      }
+        })),
+      },
     });
-  }
+  };
 
   const createList = ({ index, templates }) => {
     if (templates.length === 0) { return; }
@@ -256,7 +260,8 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           >
             <div dangerouslySetInnerHTML={{
               __html: template?.description?.trim(),
-            }} />
+            }}
+            />
           </ReactTooltip>
           <FaMagnifyingGlass
             data-tooltip-id={`template-${index}-description-tooltip`}
@@ -292,10 +297,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
     const type = planTemplates?.[index].id;
 
-    data = data.map(({ name, id, templates, selected, type: dataType }) => {
+    data = data.map(({
+      name, id, templates, selected, type: dataType,
+    }) => {
       const types = {
         org: <HiOutlineBuildingOffice2 size="18" style={{ margin: '0 10px 0 0' }} />,
-        funder: <PiBank size="18" style={{ margin: '0 10px 0 0' }} />
+        funder: <PiBank size="18" style={{ margin: '0 10px 0 0' }} />,
       };
 
       const hasSelectedTemplate = templates.some(({ id }) => id === params.selectedTemplate);
@@ -317,21 +324,23 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       }
     });
 
-    return structuredTemplates.length <= 0 ? noModelAvailable : <div style={{ marginLeft: '20px' }}>
-      <CustomSelect
-        key={`select-${index}-${type}`}
-        placeholder={placeHolder}
-        options={data}
-        onSelectChange={handleSelectedList}
-        selectedOption={data.find(({ selected }) => selected)}
-      />
-      <div key={`template-${index}-${type}`} style={{ margin: '10px 0 10px 20px' }}>
-        {createList({
-          index,
-          templates: data.find(({ selected }) => selected)?.templates || [],
-        })}
+    return structuredTemplates.length <= 0 ? noModelAvailable : (
+      <div style={{ marginLeft: '20px' }}>
+        <CustomSelect
+          key={`select-${index}-${type}`}
+          placeholder={placeHolder}
+          options={data}
+          onSelectChange={handleSelectedList}
+          selectedOption={data.find(({ selected }) => selected)}
+        />
+        <div key={`template-${index}-${type}`} style={{ margin: '10px 0 10px 20px' }}>
+          {createList({
+            index,
+            templates: data.find(({ selected }) => selected)?.templates || [],
+          })}
+        </div>
       </div>
-    </div>;
+    );
   };
 
   return (
@@ -342,22 +351,28 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       {!loading && !error && (
         <>
           <Trans
-              defaults="You can choose a template provided by your organization, another organization or a funding agency.<br>The default template is <bold>{{model}}</bold>."
-              values={{
-                model: planTemplates?.default?.templates?.[0]?.title || 'Science Europe : modèle structuré',
-              }}
-              components={{ br: <br />, bold: <strong /> }}
+            defaults="You can choose a template provided by your organization, another organization or a funding agency.<br>The default template is <bold>{{model}}</bold>."
+            values={{
+              model: planTemplates?.default?.templates?.[0]?.title || 'Science Europe : modèle structuré',
+            }}
+            components={{ br: <br />, bold: <strong /> }}
           />
           <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0 20px 0' }}>
             <span>Légende:</span>
             <Label bsStyle="primary" style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
-              <PiTreeStructureDuotone size={18} style={{ marginRight: '10px' }}/> <i>{t('Structured template')}</i>
+              <PiTreeStructureDuotone size={18} style={{ marginRight: '10px' }} />
+              {' '}
+              <i>{t('Structured template')}</i>
             </Label>
             <Label bsStyle="primary" style={{ margin: '0 10px 0 10px', display: 'flex', alignItems: 'center' }}>
-              <PiBank size={18} style={{ marginRight: '10px' }}/> <i>{t('Funders')}</i>
+              <PiBank size={18} style={{ marginRight: '10px' }} />
+              {' '}
+              <i>{t('Funders')}</i>
             </Label>
             <Label bsStyle="primary" style={{ display: 'flex', alignItems: 'center' }}>
-              <HiOutlineBuildingOffice2 size={18} style={{ marginRight: '10px' }}/> <i>{t('Other organisation')}</i>
+              <HiOutlineBuildingOffice2 size={18} style={{ marginRight: '10px' }} />
+              {' '}
+              <i>{t('Other organisation')}</i>
             </Label>
           </div>
           <div className="column">
@@ -377,7 +392,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleSendTemplateId}
-                title={t("Confirm my choice")}
+                title={t('Confirm my choice')}
                 position="end"
                 disabled={!params.selectedTemplate}
               />

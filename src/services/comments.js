@@ -1,5 +1,5 @@
 import axios from '../utils/AxiosClient';
-import createHeaders from "../utils/HeaderBuilder";
+import createHeaders from '../utils/HeaderBuilder';
 
 const commonHeaders = createHeaders({}, true);
 
@@ -7,7 +7,7 @@ const commonHeaders = createHeaders({}, true);
  * Fetches comments associated with an answer by making a GET request to the server.
  *
  * @param {string} answerId - The identifier of the answer for which to retrieve comments.
- * @returns {Promise} A promise that resolves with the retrieved comments or nothing if the answerId is missing.
+ * @returns {Promise} Retrieved comments or nothing if the answerId is missing.
  */
 const get = async (answerId) => {
   if (!answerId) return [];
@@ -21,14 +21,14 @@ const get = async (answerId) => {
  * @param {Object} comment - The comment data to be sent in the request body.
  * @returns {Promise} A promise that resolves with the created comment response.
  */
-const create = async (comment) =>
-  axios.post("/notes", comment, { headers: commonHeaders });
+const create = async (comment) => axios.post('/notes', comment, { headers: commonHeaders });
 
 /**
  * Updates an existing comment with the provided data by sending a PUT request to the server.
  *
  * @param {Object} comment - The updated comment data.
- * @returns {Promise} A promise that resolves with the updated comment response if the comment has an 'id', otherwise, it returns nothing.
+ * @returns {Promise} Updated comment response if the comment has an 'id'
+ *                    otherwise, it returns nothing.
  */
 const update = async (comment) => {
   const { id } = comment;
@@ -44,10 +44,8 @@ const update = async (comment) => {
  * @param {Object} comment - The comment data, including the 'archive' action if needed.
  * @returns {Promise} A promise that resolves with the server response for the archive request.
  */
-const archive = async (id, comment) =>
-  axios.patch(`/notes/${id}/archive`, comment, { headers: commonHeaders });
+const archive = async (id, comment) => axios.patch(`/notes/${id}/archive`, comment, { headers: commonHeaders });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   get,
   create,

@@ -7,16 +7,15 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { createOptions } from '../../utils/GeneratorUtils.js';
-import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
-import { GlobalContext } from '../context/Global.jsx';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils';
+import { GlobalContext } from '../context/Global';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import PersonsList from './PersonsList.jsx';
-import ModalForm from '../Forms/ModalForm.jsx';
-import swalUtils from '../../utils/swalUtils.js';
-import { parsePattern } from "../../utils/GeneratorUtils";
+import CustomSelect from '../Shared/CustomSelect';
+import PersonsList from './PersonsList';
+import ModalForm from '../Forms/ModalForm';
+import swalUtils from '../../utils/swalUtils';
 
 function SelectContributorSingle({
   propName,
@@ -48,9 +47,8 @@ function SelectContributorSingle({
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
-    setContributor(field.value)
+    setContributor(field.value);
   }, [field.value]);
-
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -64,31 +62,31 @@ function SelectContributorSingle({
     if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
-      setOptions(null)
+      setOptions(null);
     }
-  }, [persons])
+  }, [persons]);
 
   const fetchPersons = () => {
     service.getPersons(dmpId).then((res) => {
       setPersons(res.data.results);
     });
-  }
+  };
 
   const fetchRoles = () => {
     service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
-      const options = createOptions(res.data, locale)
+      setLoadedRegistries({ ...loadedRegistries, Role: res.data });
+      const options = createOptions(res.data, locale);
       setRoleOptions(options);
     });
-  }
+  };
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
-        const contributorTemplate = res.data
+        const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
-        const contributorProps = contributorTemplate?.schema?.properties || {}
+        const contributorProps = contributorTemplate?.schema?.properties || {};
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
@@ -111,7 +109,6 @@ function SelectContributorSingle({
     setIndex(null);
   };
 
-
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
@@ -128,14 +125,16 @@ function SelectContributorSingle({
   const handleSelectContributor = (e) => {
     const { object } = e;
     const contributorAction = contributor?.id ? 'update' : 'create';
-    field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: contributorAction })
+    field.onChange({
+      ...contributor, person: { ...object, action: 'update' }, role: defaultRole, action: contributorAction,
+    });
   };
 
   /**
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e) => {
-    field.onChange({ ...field.value, role: e.value, action: 'update' })
+    field.onChange({ ...field.value, role: e.value, action: 'update' });
   };
 
   /**
@@ -145,7 +144,7 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
+    if (checkFragmentExists(persons, data, template.schema.unicity)) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
@@ -156,15 +155,14 @@ function SelectContributorSingle({
           field.onChange({
             ...contributor,
             person: savedFragment,
-            action: contributor.action || 'update'
+            action: contributor.action || 'update',
           });
-          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+          updatedPersons[updatedPersons.findIndex((el) => el.id === savedFragment.id)] = {
             ...savedFragment,
-            to_string: parsePattern(data, template?.schema?.to_string)
-          }
+            to_string: parsePattern(data, template?.schema?.to_string),
+          };
           setPersons(updatedPersons);
-
-        }).catch(error => setError(error))
+        }).catch((error) => setError(error));
       } else {
         // save new
         handleSaveNew(data);
@@ -183,12 +181,14 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    service.createFragment(data, template.id, dmpId).then(res => {
+    service.createFragment(data, template.id, dmpId).then((res) => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      field.onChange({
+        ...contributor, person: savedFragment, role: defaultRole, action: 'update',
+      });
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
-    }).catch(error => setError(error));
+    }).catch((error) => setError(error));
     handleClose();
     setEditedPerson({});
   };
@@ -208,7 +208,7 @@ function SelectContributorSingle({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -216,7 +216,8 @@ function SelectContributorSingle({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -230,7 +231,7 @@ function SelectContributorSingle({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={t("Select a value from the list or create a new one by clicking on +")}
+              placeholder={t('Select a value from the list or create a new one by clicking on +')}
             />
           </div>
           {!readonly && (
@@ -250,7 +251,7 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
-        <span className='error-message'>{error}</span>
+        <span className="error-message">{error}</span>
         {template && (
           <PersonsList
             personsList={contributor ? [contributor] : []}
@@ -262,23 +263,21 @@ function SelectContributorSingle({
             templateToString={template?.schema?.to_string}
             tableHeader={t('Selected value')}
             readonly={readonly}
-          ></PersonsList>
-        )}
-      </div>
-      <>
-        {template && show && (
-          <ModalForm
-            data={editedPerson}
-            template={template}
-            label={index !== null ? t('Edit a person or an organisation') : t('Add a person or an organisation')}
-            readonly={readonly}
-            show={show}
-            handleSave={handleSave}
-            handleClose={handleClose}
-            externalImport={['ror', 'orcid']}
           />
         )}
-      </>
+      </div>
+      {template && show && (
+      <ModalForm
+        data={editedPerson}
+        template={template}
+        label={index !== null ? t('Edit a person or an organisation') : t('Add a person or an organisation')}
+        readonly={readonly}
+        show={show}
+        handleSave={handleSave}
+        handleClose={handleClose}
+        externalImport={['ror', 'orcid']}
+      />
+      )}
     </>
   );
 }

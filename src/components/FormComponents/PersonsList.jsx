@@ -7,7 +7,6 @@ import { parsePattern } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 
-
 function PersonsList({
   personsList,
   handleEdit,
@@ -18,27 +17,30 @@ function PersonsList({
   parent = 'form',
   templateToString = [],
   tableHeader = null,
-  readonly = false
+  readonly = false,
 }) {
   const { t } = useTranslation();
   return (
     <>
       {personsList && (
-        <table style={{ marginTop: "20px" }} className="table">
+        <table style={{ marginTop: '20px' }} className="table">
           <thead>
-            {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== "delete") && (
+            {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== 'delete') && (
               <tr>
                 <th scope="col">{tableHeader}</th>
-                <th scope="col">{t("Role")}</th>
+                <th scope="col">{t('Role')}</th>
               </tr>
             )}
           </thead>
           <tbody>
-            {personsList.map((el, idx) => (el.action !== "delete" ?
+            {personsList.map((el, idx) => (el.action !== 'delete' ? (
               <tr key={idx}>
-                <td style={{ width: "50%" }}>
+                <td style={{ width: '50%' }}>
                   <div className={styles.cell_content}>
-                    <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
+                    <div>
+                      {parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])}
+                      {' '}
+                    </div>
                     {!readonly && (
                       <div className={styles.table_container}>
                         {parent === 'form' && (
@@ -84,7 +86,8 @@ function PersonsList({
                     />
                   )}
                 </td>
-              </tr> : null
+              </tr>
+            ) : null
             ))}
           </tbody>
         </table>

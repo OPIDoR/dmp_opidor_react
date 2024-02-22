@@ -8,14 +8,14 @@ import { format } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 import { BiEdit } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa6';
-import Global from '../context/Global.jsx';
-import EditorComment from '../WritePlan/EditorComment.jsx';
-import CustomSpinner from './CustomSpinner.jsx';
-import CustomError from './CustomError.jsx';
+import Global from '../context/Global;
+import EditorComment from '../WritePlan/EditorComment;
+import CustomSpinner from './CustomSpinner;
+import CustomError from './CustomError;
 import { comments as commentsService } from '../../services';
-import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles.jsx';
-import '../../i18n.js';
-import swalUtils from '../../utils/swalUtils.js';
+import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles;
+import '../../i18n;
+import swalUtils from '../../utils/swalUtils;
 
 const locales = { fr, en: enGB };
 
@@ -48,7 +48,7 @@ function Comment({
     commentsService.get(answerId)
       .then(({ data }) => {
         setComments(data?.notes || []);
-        updateTitle(data?.notes || [])
+        updateTitle(data?.notes || []);
       })
       .catch((error) => setError({
         code: error?.response?.status,
@@ -97,7 +97,7 @@ function Comment({
           updateTitle(updatedComments);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
-        })
+        });
       }
     });
   };
@@ -137,7 +137,7 @@ function Comment({
       ...data?.note,
     };
 
-    const index = comments.findIndex(item => item.id === updatedComment.id);
+    const index = comments.findIndex((item) => item.id === updatedComment.id);
     if (index === -1) { return; }
 
     const updatedComments = [...comments];
@@ -149,7 +149,7 @@ function Comment({
     updateTitle(updatedComments);
 
     return toast.success(t('Comment sent successfully.'));
-  }
+  };
 
   const createComment = async (newText) => {
     const note = {
@@ -186,7 +186,7 @@ function Comment({
     updateTitle([newNote, ...comments]);
 
     return toast.success(t('Comment sent successfully.'));
-  }
+  };
 
   const updateTitle = (data) => {
     if (!inModal) {
@@ -195,7 +195,7 @@ function Comment({
         title.innerText = `${t('Comments')} (${(data || comments).length || 0})`;
       }
     }
-  }
+  };
 
   /**
    * I'm trying to update the state of the component with the new data.
@@ -215,7 +215,7 @@ function Comment({
     return isUpdate ? update(newText, comment) : createComment(newText);
   };
 
-  return(
+  return (
     <Global>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
@@ -235,10 +235,22 @@ function Comment({
                 />
                 <CommentsCard>
                   <div>
-                    <strong style={{ fontSize: '17px' }}>{comment.user.surname} {comment.user.firstname}</strong>
+                    <strong style={{ fontSize: '17px' }}>
+                      {comment.user.surname}
+                      {' '}
+                      {comment.user.firstname}
+                    </strong>
                     {' '}
                     {!inModal && (<br />)}
-                    <i>{t('on')} {format(new Date(comment.created_at), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || 'fr'] })} {t('at')} {format(new Date(comment.created_at), 'HH:mm:ss', { locale: locales[i18n.resolvedLanguage || 'fr'] })}</i>
+                    <i>
+                      {t('on')}
+                      {' '}
+                      {format(new Date(comment.created_at), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || 'fr'] })}
+                      {' '}
+                      {t('at')}
+                      {' '}
+                      {format(new Date(comment.created_at), 'HH:mm:ss', { locale: locales[i18n.resolvedLanguage || 'fr'] })}
+                    </i>
                   </div>
                   {!readonly && Number.parseInt(userId) === Number.parseInt(comment.user.id) && (
                     <div>
@@ -262,7 +274,7 @@ function Comment({
           <EditorComment initialValue={text} updateParentText={updateParentText} />
           {!readonly && !loading && !error && (
             <Button variant="primary" onClick={(e) => handleSave(e)} style={{ float: 'right' }}>
-              {t("Save")}
+              {t('Save')}
             </Button>
           )}
         </div>

@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from 'react-hook-form';
 import { Modal, Button } from 'react-bootstrap';
-import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
+// eslint-disable-next-line import/no-cycle
+import FormBuilder from './FormBuilder';
 import { ExternalImport } from '../ExternalImport';
 
-function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({
+  data, template, label, readonly, show, handleSave, handleClose,
+}) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
 
@@ -15,35 +18,41 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     methods.reset(methods.formState.dirtyFields);
   }, [data]);
 
-  const onValid = (formData, event) => {
+  const onValid = (formData) => {
     handleSave(formData);
     methods.reset();
   };
 
   const onInvalid = () => {
-    console.log("Modal form errors", methods.errors);
+    console.log('Modal form errors', methods.errors);
   };
 
   const handleModalSubmit = (e) => {
     e.stopPropagation();
     methods.handleSubmit(onValid, onInvalid)(e);
-  }
+  };
 
   const handleModalClose = () => {
     handleClose();
     methods.reset();
-  }
+  };
 
-  const setValues = (data) => Object.keys(data)
-    .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
+  const setValues = (values) => Object.keys(values)
+    .forEach((k) => methods.setValue(k, values[k], { shouldDirty: true }));
 
   return (
-    <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
+    <Modal className="dmpopidor-branding" show={show} backdrop="static" onHide={handleModalClose}>
       <Modal.Header>
-        <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
+        <Modal.Title style={{ color: 'var(--rust)', fontWeight: 'bold' }}>{label}</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ padding: "20px !important" }}>
-        {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
+      <Modal.Body style={{ padding: '20px !important' }}>
+        {Object.keys(externalImports)?.length > 0 && (
+          <ExternalImport
+            fragment={methods.getValues()}
+            setFragment={setValues}
+            externalImports={externalImports}
+          />
+        )}
         <FormProvider {...methods}>
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder
@@ -55,7 +64,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleModalClose}>
-          {t("Close")}
+          {t('Close')}
         </Button>
         {!readonly && (
           <Button bsStyle="primary" type="submit" form="modal-form">
@@ -64,7 +73,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
         )}
       </Modal.Footer>
     </Modal>
-  )
+  );
 }
 
 export default ModalForm;

@@ -7,18 +7,18 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
+import { GlobalContext } from '../context/Global';
 import {
   createOptions,
   createRegistryPlaceholder,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import FragmentList from './FragmentList.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import ModalForm from '../Forms/ModalForm.jsx';
-import swalUtils from '../../utils/swalUtils.js';
+import CustomSelect from '../Shared/CustomSelect';
+import FragmentList from './FragmentList';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
+import ModalForm from '../Forms/ModalForm';
+import swalUtils from '../../utils/swalUtils';
 
 function SelectWithCreate({
   label,
@@ -41,10 +41,10 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState([])
+  const [fragmentsList, setFragmentsList] = useState([]);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [editedFragment, setEditedFragment] = useState({})
+  const [editedFragment, setEditedFragment] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
@@ -113,7 +113,7 @@ function SelectWithCreate({
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         const updatedFragmentList = fragmentsList;
-        updatedFragmentList[idx]['action'] = 'delete';
+        updatedFragmentList[idx].action = 'delete';
         field.onChange(updatedFragmentList);
       }
     });
@@ -132,14 +132,14 @@ function SelectWithCreate({
       newFragmentList[index] = {
         ...newFragmentList[index],
         ...data,
-        action: newFragmentList[index].action || 'update'
+        action: newFragmentList[index].action || 'update',
       };
       field.onChange(newFragmentList);
     } else {
-      //add in add
+      // add in add
       handleSaveNew(data);
     }
-    toast.success(t("Save was successful !"));
+    toast.success(t('Save was successful !'));
     handleClose();
   };
 
@@ -172,7 +172,7 @@ function SelectWithCreate({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
@@ -180,7 +180,8 @@ function SelectWithCreate({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -203,14 +204,14 @@ function SelectWithCreate({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t('Select a registry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? 'col-md-6' : 'col-md-12'}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -263,7 +264,7 @@ function SelectWithCreate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})` }
+          label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

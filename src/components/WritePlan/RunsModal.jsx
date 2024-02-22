@@ -1,17 +1,19 @@
-import React, { useState, useRef, useContext } from "react";
-import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
+import React, { useState, useRef, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
 
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import InnerModal from "../Shared/InnerModal/InnerModal";
-import { createFormLabel } from "../../utils/GeneratorUtils";
-import CustomButton from "../Styled/CustomButton";
-import { GlobalContext } from "../context/Global";
-import { service } from "../../services";
-import swalUtils from "../../utils/swalUtils";
+import CustomError from '../Shared/CustomError';
+import CustomSpinner from '../Shared/CustomSpinner';
+import InnerModal from '../Shared/InnerModal/InnerModal';
+import { createFormLabel } from '../../utils/GeneratorUtils';
+import CustomButton from '../Styled/CustomButton';
+import { GlobalContext } from '../context/Global';
+import { service } from '../../services';
+import swalUtils from '../../utils/swalUtils';
 
-function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId }) {
+function ModalRuns({
+  show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId,
+}) {
   const { t } = useTranslation();
   const {
     locale,
@@ -22,7 +24,6 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
   const [success, setSuccess] = useState(null);
   const modalRef = useRef(null);
 
-
   const handleRunScript = (scriptName) => {
     if (scriptsData?.apiClient && scriptName.includes('notifyer')) {
       Swal.fire(
@@ -31,22 +32,21 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
           text:
             t(
               'By using this notification, you will allow {{clientName}} to access the full content of your plan. Do you confirm ?',
-              { clientName: scriptsData?.apiClient?.name }
-            )
-        }
+              { clientName: scriptsData?.apiClient?.name },
+            ),
+        },
       ).then((result) => {
         if (result.isConfirmed) executeScript(scriptName);
       });
-    }
-    else {
+    } else {
       executeScript(scriptName);
     }
-  }
+  };
 
   const handleCloseError = () => {
     setError(null);
     setLoading(false);
-  }
+  };
 
   function executeScript(scriptName) {
     setLoading(true);
@@ -57,20 +57,20 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
       } else {
         setSuccess(res.data.message);
       }
-    }).catch((error) => {
-      let errorMessage = t("An error occurred during the change of status of the plan");
+    }).catch((err) => {
+      let errorMessage = t('An error occurred during the change of status of the plan');
 
-      if (error.response) {
-        errorMessage = error.response.data.error;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
+      if (err.response) {
+        errorMessage = err.response.data.error;
+      } else if (err.request) {
+        errorMessage = err.request;
+      } else if (err.message) {
+        errorMessage = err.message;
       }
       setError({
         home: false,
-        code: error.response.status,
-        error: errorMessage
+        code: err.response.status,
+        error: errorMessage,
       });
     }).finally(() => {
       setLoading(false);
@@ -78,14 +78,14 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
   }
 
   return (
-    <InnerModal show={show} ref={modalRef} style={{border: "1px solid var(--dark-blue"}}>
+    <InnerModal show={show} ref={modalRef} style={{ border: '1px solid var(--dark-blue' }}>
       <InnerModal.Header
         closeButton
         expandButton
         ref={modalRef}
         onClose={() => {
           setshowModalRuns(false);
-          setFillColorIconRuns("var(--dark-blue)");
+          setFillColorIconRuns('var(--dark-blue)');
           setError(null);
           setSuccess(null);
         }}
@@ -94,22 +94,23 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
           {t('Runs')}
         </InnerModal.Title>
       </InnerModal.Header>
-      <InnerModal.Body style={{color: "var(--dark-blue)", backgroundColor: "white"}}>
-        {loading && <CustomSpinner isOverlay={true} />}
+      <InnerModal.Body style={{ color: 'var(--dark-blue)', backgroundColor: 'white' }}>
+        {loading && <CustomSpinner isOverlay />}
         {!loading && error && <CustomError error={error} showWarning={false} handleClose={handleCloseError} />}
-        {!error &&
+        {!error
+          && (
           <>
             {scriptsData.scripts.map((script, idx) => (
               <div key={idx}>
-                <CustomButton handleClick={() => handleRunScript(script.name)} title={createFormLabel(script, locale)} buttonColor={"white"} position="center" />
+                <CustomButton handleClick={() => handleRunScript(script.name)} title={createFormLabel(script, locale)} buttonColor="white" position="center" />
                 <span>{script?.[`tooltip@${locale}`]}</span>
               </div>
             ))}
           </>
-        }
+          )}
       </InnerModal.Body>
-      <InnerModal.Footer style={{backgroundColor: "white", color: "var(--dark-blue)"}}>
-        {success && <span style={{color: "var(--green)", fontWeight: "bold"}}>{success}</span>}
+      <InnerModal.Footer style={{ backgroundColor: 'white', color: 'var(--dark-blue)' }}>
+        {success && <span style={{ color: 'var(--green)', fontWeight: 'bold' }}>{success}</span>}
       </InnerModal.Footer>
     </InnerModal>
   );

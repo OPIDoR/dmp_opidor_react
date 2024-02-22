@@ -1,22 +1,22 @@
 import React, { useContext } from 'react';
 
-import { GlobalContext } from '../context/Global.jsx';
-import InputText from '../FormComponents/InputText.jsx';
+import { GlobalContext } from '../context/Global';
+import InputText from '../FormComponents/InputText';
 import InputTextDynamicaly from '../FormComponents/InputTextDynamicaly';
 import ModalTemplate from '../FormComponents/ModalTemplate';
-import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
-import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
+import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple';
+import SelectContributorSingle from '../FormComponents/SelectContributorSingle';
 import SelectMultipleList from '../FormComponents/SelectMultipleList';
 import SelectSingleList from '../FormComponents/SelectSingleList';
 import SelectWithCreate from '../FormComponents/SelectWithCreate';
 import TinyArea from '../FormComponents/TinyArea';
-import SubForm from '../FormComponents/SubForm.jsx';
-import { createFormLabel } from '../../utils/GeneratorUtils.js';
+import SubForm from '../FormComponents/SubForm';
+import { createFormLabel } from '../../utils/GeneratorUtils';
 
 function FormBuilder({ template, readonly }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
-  const properties = template.properties;
+  const { properties } = template;
   const defaults = template.default?.[locale];
   const formFields = [];
 
@@ -27,12 +27,12 @@ function FormBuilder({ template, readonly }) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = defaults?.[key];
-      const isConst = prop['isConst'];
+      const { isConst } = prop;
       /**
        * REGISTRIES
        */
-      if (prop.inputType === "dropdown" &&
-        (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"))
+      if (prop.inputType === 'dropdown'
+        && (prop.hasOwnProperty('registry_name') || prop.hasOwnProperty('registries'))
       ) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
         if (prop.schema_id && prop.type === 'object') {
@@ -42,13 +42,13 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              registries={prop.registries || [prop.registry_name]}
               registryType="complex"
               templateId={prop.schema_id}
               defaultValue={defaultValue}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
-            ></SelectSingleList>,
+            />,
           );
           continue;
         }
@@ -62,10 +62,10 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              overridable={prop["overridable"]}
+              registries={prop.registries || [prop.registry_name]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
-            ></SelectWithCreate>,
+            />,
           );
           continue;
         }
@@ -77,12 +77,12 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              registries={prop.registries || [prop.registry_name]}
               registryType="simple"
               defaultValue={defaultValue}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
-            ></SelectSingleList>,
+            />,
           );
           continue;
         }
@@ -94,10 +94,10 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              overridable={prop["overridable"]}
+              registries={prop.registries || [prop.registry_name]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
-            ></SelectMultipleList>
+            />,
           );
           continue;
         }
@@ -117,21 +117,21 @@ function FormBuilder({ template, readonly }) {
             templateId={prop.schema_id}
             defaultValue={defaultValue}
             readonly={readonly || isConst}
-          ></SelectContributorSingle>,
+          />,
         );
         continue;
       }
-      if(prop.schema_id && prop.type === 'object') {
+      if (prop.schema_id && prop.type === 'object') {
         formFields.push(
           <SubForm
-          key={key}
-          label={formLabel}
-          propName={key}
-          tooltip={tooltip}
-          templateId={prop.schema_id}
-          readonly={readonly || isConst}
-          />
-        )
+            key={key}
+            label={formLabel}
+            propName={key}
+            tooltip={tooltip}
+            templateId={prop.schema_id}
+            readonly={readonly || isConst}
+          />,
+        );
         continue;
       }
 
@@ -150,7 +150,7 @@ function FormBuilder({ template, readonly }) {
               templateId={prop.items.schema_id}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
-            ></SelectContributorMultiple>,
+            />,
           );
         } else {
           // FRAGMENT LIST EDITABLE WITH MODAL
@@ -164,7 +164,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               templateId={prop.items.schema_id}
               readonly={readonly || isConst}
-            ></ModalTemplate>,
+            />,
           );
         }
         continue;
@@ -181,7 +181,7 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             tooltip={tooltip}
             readonly={readonly || isConst}
-          ></InputTextDynamicaly>,
+          />,
         );
         continue;
       }
@@ -201,7 +201,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
-            ></TinyArea>,
+            />,
           );
           continue;
         } else {
@@ -211,13 +211,13 @@ function FormBuilder({ template, readonly }) {
               key={key}
               label={formLabel}
               type={prop.format || prop.type}
-              placeholder={''}
+              placeholder=""
               propName={key}
               tooltip={tooltip}
               hidden={prop.hidden}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
-            ></InputText>
+            />,
           );
         }
         continue;

@@ -1,18 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { GlobalContext } from "../context/Global";
-import styles from "../assets/css/write_plan.module.css";
-import Question from "./Question";
+import { GlobalContext } from '../context/Global';
+import styles from '../assets/css/write_plan.module.css';
+import Question from './Question';
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();
-  const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
+  const {
+    openedQuestions,
+    setOpenedQuestions,
+    displayedResearchOutput,
+  } = useContext(GlobalContext);
   const [sectionId, setSectionId] = useState(section.id);
 
   useEffect(() => {
     setSectionId(section.id);
-  }, [section])
+  }, [section]);
 
   /**
  * Toggle the state of questions within a section to the provided boolean value.
@@ -29,46 +33,52 @@ function Section({ section, readonly }) {
       [sectionId]: section.questions.reduce((acc, question) => {
         acc[question.id] = boolVal;
         return acc;
-      }, {})
+      }, {}),
     };
 
     setOpenedQuestions({
       ...openedQuestions,
-      [currentResearchOutput]: updatedState
+      [currentResearchOutput]: updatedState,
     });
   };
 
   return (
     <>
       <p className={styles.title}>
-        {section.number}. {section.title}
+        {section.number}
+        .
+        {section.title}
       </p>
       <div className="column">
         <div className={styles.collapse_title}>
           <button
             type="button"
             className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
-            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
+            style={{
+              outline: 'none', fontSize: '14px', padding: 0, color: '#1c5170',
+            }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               toggleQuestionsInSection(true);
             }}
           >
-            {t("Expand all")}
+            {t('Expand all')}
           </button>
           <span className={styles.sous_title}> | </span>
           <button
             type="button"
             className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
-            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
+            style={{
+              outline: 'none', fontSize: '14px', padding: 0, color: '#1c5170',
+            }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               toggleQuestionsInSection(false);
             }}
           >
-            {t("Collapse all")}
+            {t('Collapse all')}
           </button>
         </div>
       </div>

@@ -9,7 +9,9 @@ import styles from '../assets/css/form.module.css';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
+function InputTextDynamicaly({
+  label, propName, tooltip, readonly,
+}) {
   const { t } = useTranslation();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
@@ -28,7 +30,7 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
     const data = [...formFields];
     data[index] = event.target.value;
     setFormFields(data);
-    field.onChange(data)
+    field.onChange(data);
   };
 
   /**
@@ -63,7 +65,7 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
   return (
     <div className="App">
       <div className={styles.label_form}>
-        <strong className={styles.dot_label}></strong>
+        <strong className={styles.dot_label} />
         <label data-tooltip-id={inputTextTooltipId}>{label}</label>
         {
           tooltip && (

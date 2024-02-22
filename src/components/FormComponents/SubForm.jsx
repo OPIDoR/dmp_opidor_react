@@ -3,16 +3,16 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { service } from '../../services';
-import styles from '../assets/css/form.module.css';
-import NestedForm from '../Forms/NestedForm.jsx';
 import { useTranslation } from 'react-i18next';
 import { useController, useFormContext } from 'react-hook-form';
-import { fragmentEmpty } from '../../utils/utils.js';
-import { parsePattern } from '../../utils/GeneratorUtils.js';
-import { GlobalContext } from '../context/Global.jsx';
-import CustomButton from '../Styled/CustomButton.jsx';
-import swalUtils from '../../utils/swalUtils.js';
+import { service } from '../../services';
+import styles from '../assets/css/form.module.css';
+import NestedForm from '../Forms/NestedForm';
+import { fragmentEmpty } from '../../utils/utils';
+import { parsePattern } from '../../utils/GeneratorUtils';
+import { GlobalContext } from '../context/Global';
+import CustomButton from '../Styled/CustomButton';
+import swalUtils from '../../utils/swalUtils';
 
 function SubForm({
   label,
@@ -34,22 +34,20 @@ function SubForm({
   const tooltipId = uniqueId('sub_form_tooltip_id_');
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
-
   useEffect(() => {
     setEditedFragment(field.value || {});
-  }, [field.value])
+  }, [field.value]);
 
   useEffect(() => {
     if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
-        setTemplate(res.data)
+        setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
       });
     } else {
       setTemplate(loadedTemplates[templateId]);
     }
-  }, [templateId])
-
+  }, [templateId]);
 
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
@@ -59,7 +57,7 @@ function SubForm({
 
     setEditedFragment({});
     setShowNestedForm(false);
-  }
+  };
 
   const handleDeleteList = (e) => {
     e.preventDefault();
@@ -67,25 +65,25 @@ function SubForm({
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
     });
-  }
+  };
 
   return (
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{label}</label>
         </div>
         <div
           id={`nested-form-${propName}`}
           className={styles.nestedForm}
           style={{ display: showNestedForm ? 'block' : 'none' }}
-        ></div>
+        />
         {showNestedForm && (
           <NestedForm
             propName={propName}
@@ -101,20 +99,20 @@ function SubForm({
         )}
 
         {!fragmentEmpty(editedFragment) && !showNestedForm && (
-          <table style={{ marginTop: "20px" }} className="table">
+          <table style={{ marginTop: '20px' }} className="table">
             <thead>
               <tr>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col" />
+                <th scope="col" />
               </tr>
             </thead>
             <tbody>
               {[editedFragment].map((el, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "90%" }}>
+                  <td style={{ width: '90%' }}>
                     {parsePattern(el, template?.schema?.to_string)}
                   </td>
-                  <td style={{ width: "10%" }}>
+                  <td style={{ width: '10%' }}>
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
@@ -139,15 +137,14 @@ function SubForm({
               setEditedFragment({ action: 'create' });
               setShowNestedForm(true);
             }}
-            title={t("Add an element")}
+            title={t('Add an element')}
             buttonColor="rust"
             position="start"
-          ></CustomButton>
+          />
         )}
       </div>
     </div>
-  )
+  );
 }
-
 
 export default SubForm;

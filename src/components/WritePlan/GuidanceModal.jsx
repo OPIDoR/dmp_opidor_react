@@ -1,14 +1,20 @@
-import DOMPurify from "dompurify";
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { GlobalContext } from "../context/Global";
-import { guidances } from "../../services";
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, ScrollNav, Theme } from "./styles/GuidanceModalStyles";
-import InnerModal from "../Shared/InnerModal/InnerModal";
+import DOMPurify from 'dompurify';
+import React, {
+  useContext, useEffect, useState, useRef,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import { GlobalContext } from '../context/Global';
+import { guidances } from '../../services';
+import CustomError from '../Shared/CustomError';
+import CustomSpinner from '../Shared/CustomSpinner';
+import {
+  NavBody, NavBodyText, ScrollNav, Theme,
+} from './styles/GuidanceModalStyles';
+import InnerModal from '../Shared/InnerModal/InnerModal';
 
-function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
+function GuidanceModal({
+  show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId,
+}) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
@@ -63,25 +69,24 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   * Otherwise, the function maps data[indexTab].groups to show each group's theme and guidances using dangerouslySetInnerHTML.
   * Horizontal lines (<hr>) separate each guidance.
   */
-  const getContent = () => {
-    return (
-      <NavBody>
-        <NavBodyText style={{ borderRadius: '10px' }}>
-          {data?.[indexTab]?.annotations?.length > 0 ? (
-            <>
-              {data?.[indexTab]?.annotations?.map((annotation, id) => (
-                <ScrollNav
-                  key={`guidance-${indexTab}-annotation-${id}`}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(annotation.text),
-                  }}
-                />
-              ))}
-            </>
-          ) : (
-            <>
-              {Object.keys(data?.[indexTab]?.groups).length > 0 &&
-                Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
+  const getContent = () => (
+    <NavBody>
+      <NavBodyText style={{ borderRadius: '10px' }}>
+        {data?.[indexTab]?.annotations?.length > 0 ? (
+          <>
+            {data?.[indexTab]?.annotations?.map((annotation, id) => (
+              <ScrollNav
+                key={`guidance-${indexTab}-annotation-${id}`}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(annotation.text),
+                }}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {Object.keys(data?.[indexTab]?.groups).length > 0
+                && Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
                   <ScrollNav key={`guidance-scroll-nav-${ref}-${idx}`}>
                     <div key={`guidance-ref-${ref}-${idx}`}>
                       {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
@@ -103,12 +108,11 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                     </div>
                   </ScrollNav>
                 ))}
-            </>
-          )}
-        </NavBodyText>
-      </NavBody>
-    );
-  };
+          </>
+        )}
+      </NavBodyText>
+    </NavBody>
+  );
 
   return (
     <InnerModal show={show} ref={modalRef}>
@@ -118,7 +122,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
         ref={modalRef}
         onClose={() => {
           setShowGuidanceModal(false);
-          setFillColorGuidanceIcon("var(--dark-blue)");
+          setFillColorGuidanceIcon('var(--dark-blue)');
         }}
       >
         <InnerModal.Title>

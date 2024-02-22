@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useTranslation } from "react-i18next";
-import { FaPenToSquare, FaXmark } from "react-icons/fa6";
+import { useTranslation } from 'react-i18next';
+import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
 
-import { parsePattern } from "../../utils/GeneratorUtils";
-import Pagination from "../Shared/Pagination";
-import { isValidHttpUrl } from "../../utils/utils";
+import { parsePattern } from '../../utils/GeneratorUtils';
+import Pagination from '../Shared/Pagination';
+import { isValidHttpUrl } from '../../utils/utils';
 import styles from '../assets/css/form.module.css';
 
-function ContributorsList({ contributors, template, handleEdit, handleDelete }) {
+function ContributorsList({
+  contributors, template, handleEdit, handleDelete,
+}) {
   const { t } = useTranslation();
   const [currentData, setCurrentData] = useState([]);
 
@@ -25,10 +27,10 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
       <table className="table table-hover">
         <thead>
           <tr>
-            <th scope="col">{t("Name")}</th>
-            <th scope="col" className="sorter-false">{t("Affiliation")}</th>
-            <th scope="col" className="sorter-false">{t("Attributed roles (Associated research outputs)")}</th>
-            <th scope="col" className="sorter-false">{t("Actions")}</th>
+            <th scope="col">{t('Name')}</th>
+            <th scope="col" className="sorter-false">{t('Affiliation')}</th>
+            <th scope="col" className="sorter-false">{t('Attributed roles (Associated research outputs)')}</th>
+            <th scope="col" className="sorter-false">{t('Actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -37,9 +39,9 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
               <td>
                 {parsePattern(contributor.data, template?.schema?.to_string)}
                 {contributor.data?.personId && (
-                  isValidHttpUrl(contributor.data?.personId) ?
-                    [' - ', <a key={contributor.id} href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>] :
-                    ` - ${contributor.data?.personId}`
+                  isValidHttpUrl(contributor.data?.personId)
+                    ? [' - ', <a key={contributor.id} href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>]
+                    : ` - ${contributor.data?.personId}`
                 )}
               </td>
               <td>{contributor.data?.affiliationName}</td>
@@ -62,7 +64,8 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                   onClick={() => handleEdit(idx)}
                   className={styles.icon}
                 />
-                {contributors.length > 1 &&
+                {contributors.length > 1
+                  && (
                   <>
                     <ReactTooltip
                       id="contributor-delete-button"
@@ -78,7 +81,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                       className={styles.icon}
                     />
                   </>
-                }
+                  )}
               </td>
             </tr>
           )) : (
@@ -91,7 +94,6 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
         </tbody>
       </table>
 
-
       {contributors.length > 0 && (
         <div className="row text-right">
           <div className="mx-auto">
@@ -100,7 +102,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
         </div>
       )}
     </>
-  )
+  );
 }
 
 export default ContributorsList;

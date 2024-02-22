@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 
-import { GlobalContext } from "../context/Global";
-import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
-import { Panel, PanelGroup } from "react-bootstrap";
-import { MdAddCircleOutline } from "react-icons/md";
-import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
-import { useTranslation } from "react-i18next";
-import chunk from "lodash.chunk";
-import styles from "../assets/css/sidebar.module.css";
-import { RESEARCH_OUTPUTS_PER_PAGE } from "../../config";
+import { Panel, PanelGroup } from 'react-bootstrap';
+import { MdAddCircleOutline } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
+import chunk from 'lodash.chunk';
+import ResearchOutputModal from '../ResearchOutput/ResearchOutputModal';
+import ResearchOutputsNavBar from './styles/ResearchOutputsNavBar';
+import { GlobalContext } from '../context/Global';
+import styles from '../assets/css/sidebar.module.css';
+import { RESEARCH_OUTPUTS_PER_PAGE } from '../../config';
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
@@ -35,23 +35,15 @@ function ResearchOutputsTabs({ planId, readonly }) {
 
   const handleSelect = (activeKey) => setActiveGroup(activeKey);
 
-  /**
-   * This function updates the displayed research output ID, product ID, and form based on the provided ID and whether or not it is null.
-   */
-  const handleIdsUpdate = (id, isNull) => {
-    // exist and not empty
-    if (researchOutputs && researchOutputs[id] && Object.keys(researchOutputs[id]).length > 0) {
-      setFormData(researchOutputs[id]);
-    } else {
-      isNull && setFormData(null);
-    }
-  };
+  // const handleIdsUpdate = (id, isNull) => {
+  //   if (researchOutputs && researchOutputs[id] && Object.keys(researchOutputs[id]).length > 0) {
+  //     setFormData(researchOutputs[id]);
+  //   } else if (isNull) {
+  //     setFormData(null);
+  //   }
+  // };
 
-  /**
-   * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
-   * tab that was clicked.
-   */
-  const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
+  const handleShowResearchOutputClick = (e, selectedResearchOutput) => {
     e.preventDefault();
     setDisplayedResearchOutput(selectedResearchOutput);
     setUrlParams({ research_output: selectedResearchOutput.id });
@@ -64,10 +56,10 @@ function ResearchOutputsTabs({ planId, readonly }) {
         <ResearchOutputsNavBar className="navbar-inverse" id="ro-nav-bar">
           <div className="collapse navbar-collapse">
             {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
-              <PanelGroup 
+              <PanelGroup
                 activeKey={activeGroup}
                 onSelect={handleSelect}
-                accordion 
+                accordion
                 id="accordion"
                 className={styles.research_outputs_accordion}
               >
@@ -76,29 +68,32 @@ function ResearchOutputsTabs({ planId, readonly }) {
                   const end = i * RESEARCH_OUTPUTS_PER_PAGE + RESEARCH_OUTPUTS_PER_PAGE;
 
                   return (
-                    <Panel 
+                    <Panel
                       key={i}
                       eventKey={i}
-                      style={{ borderColor: "white" }}
+                      style={{ borderColor: 'white' }}
                     >
-                      <Panel.Heading style={{ background: "var(--dark-blue)" }}>
+                      <Panel.Heading style={{ background: 'var(--dark-blue)' }}>
                         <Panel.Title
                           toggle
                           className={styles.nav_title}
                         >
-                          {start} - {end}
+                          {start}
+                          {' '}
+                          -
+                          {end}
                         </Panel.Title>
                       </Panel.Heading>
 
                       <Panel.Body
-                        collapsible={true}
-                        style={{ padding: "0px 0px 0px 0px" }}
+                        collapsible
+                        style={{ padding: '0px 0px 0px 0px' }}
                       >
                         <ul className={`nav navbar-nav ${styles.research_outputs_tabs}`}>
                           {roChunk.map((ro, idx) => (
                             <li
                               key={idx}
-                              className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === ro.id ? "active" : ""}`}
+                              className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === ro.id ? 'active' : ''}`}
                               onClick={(e) => handleShowResearchOutputClick(e, ro, idx)}
                             >
                               <a href="#">
@@ -125,7 +120,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
                 {researchOutputs.map((el, idx) => (
                   <li
                     key={idx}
-                    className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === el.id ? "active" : ""}`}
+                    className={`${styles.research_outputs_tab} ${displayedResearchOutput.id === el.id ? 'active' : ''}`}
                     onClick={(e) => handleShowResearchOutputClick(e, el, idx)}
                   >
                     <a href="#" className={styles.nav_header}>
@@ -145,6 +140,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
             )}
             {!readonly && (
               <button
+                type="button"
                 className={styles.add_research_output_button}
                 onClick={(e) => {
                   e.preventDefault();
@@ -164,16 +160,26 @@ function ResearchOutputsTabs({ planId, readonly }) {
                     textAlign: 'center',
                     alignItems: 'center',
                     display: 'flex',
-                    justifyContent: 'space-arround'
-                  }}>
-                  <MdAddCircleOutline size={18} style={{ marginRight: '5px' }}/> {t("Create")}
+                    justifyContent: 'space-arround',
+                  }}
+                >
+                  <MdAddCircleOutline size={18} style={{ marginRight: '5px' }} />
+                  {' '}
+                  {t('Create')}
                 </div>
               </button>
             )}
           </div>
         </ResearchOutputsNavBar>
       )}
-      {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
+      {show && (
+        <ResearchOutputModal
+          planId={planId}
+          handleClose={handleClose}
+          show={show}
+          edit={false}
+        />
+      )}
     </>
   );
 }

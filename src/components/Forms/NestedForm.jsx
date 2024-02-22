@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 
@@ -8,7 +8,9 @@ import { ExternalImport } from '../ExternalImport';
 import styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 
-function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
+function NestedForm({
+  propName, data, template, readonly, handleSave, handleClose,
+}) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
 
@@ -23,13 +25,13 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
   };
 
   const onInvalid = () => {
-    console.log("Modal form errors", methods.errors);
+    console.log('Modal form errors', methods.errors);
   };
 
   const handleNestedFormSubmit = (e) => {
     e.stopPropagation();
     methods.handleSubmit(onValid, onInvalid)(e);
-  }
+  };
 
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
@@ -51,7 +53,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
           </form>
           <div className={styles.nestedFormFooter}>
             <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
-              {t("Cancel")}
+              {t('Cancel')}
             </Button>
             {!readonly && (
               <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
@@ -61,10 +63,9 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
           </div>
         </FormProvider>
       </>,
-      document.getElementById(`nested-form-${propName}`)
+      document.getElementById(`nested-form-${propName}`),
     )
-  )
+  );
 }
-
 
 export default NestedForm;

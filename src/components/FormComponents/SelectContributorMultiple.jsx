@@ -7,15 +7,15 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
-import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
-import { GlobalContext } from '../context/Global.jsx';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils';
+import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils';
+import { GlobalContext } from '../context/Global';
 import { service } from '../../services';
 import styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import PersonsList from './PersonsList.jsx';
-import ModalForm from '../Forms/ModalForm.jsx';
-import swalUtils from '../../utils/swalUtils.js';
+import CustomSelect from '../Shared/CustomSelect';
+import PersonsList from './PersonsList';
+import ModalForm from '../Forms/ModalForm';
+import swalUtils from '../../utils/swalUtils';
 
 function SelectContributorMultiple({
   label,
@@ -47,9 +47,8 @@ function SelectContributorMultiple({
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
   useEffect(() => {
-    setContributorList(field.value || [])
+    setContributorList(field.value || []);
   }, [field.value]);
-
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -63,23 +62,23 @@ function SelectContributorMultiple({
     if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
-      setOptions(null)
+      setOptions(null);
     }
-  }, [persons])
+  }, [persons]);
 
   const fetchPersons = () => {
     service.getPersons(dmpId).then((res) => {
       setPersons(res.data.results);
     });
-  }
+  };
 
   const fetchRoles = () => {
     service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
-      const options = createOptions(res.data, locale)
+      setLoadedRegistries({ ...loadedRegistries, Role: res.data });
+      const options = createOptions(res.data, locale);
       setRoleOptions(options);
     });
-  }
+  };
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -87,7 +86,7 @@ function SelectContributorMultiple({
       service.getSchema(templateId).then((res) => {
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
-        const contributorProps = contributorTemplate?.schema?.properties || {}
+        const contributorProps = contributorTemplate?.schema?.properties || {};
         const personTemplateId = contributorProps.person.schema_id;
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
@@ -117,10 +116,10 @@ function SelectContributorMultiple({
    */
   const handleSelectContributor = (e) => {
     const { object } = e;
-    const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
+    const addedContributor = { person: { ...object, action: 'update' }, role: defaultRole, action: 'create' };
     const newContributorList = [...contributorList, addedContributor];
     setContributorList(newContributorList);
-    field.onChange(newContributorList)
+    field.onChange(newContributorList);
     setError(null);
   };
 
@@ -132,10 +131,9 @@ function SelectContributorMultiple({
     updatedContributorList[index] = {
       ...updatedContributorList[index],
       role: e.value,
-      action: updatedContributorList[index].action || 'update'
+      action: updatedContributorList[index].action || 'update',
     };
-    field.onChange(updatedContributorList)
-
+    field.onChange(updatedContributorList);
   };
 
   /**
@@ -145,7 +143,7 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
+    if (checkFragmentExists(persons, data, template.schema.unicity)) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
@@ -158,17 +156,17 @@ function SelectContributorMultiple({
             ...newContributorList[index],
             person: savedFragment,
             role: defaultRole,
-            action: newContributorList[index].action || 'update'
+            action: newContributorList[index].action || 'update',
           };
           field.onChange(newContributorList);
 
           setContributorList([...contributorList, data]);
-          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+          updatedPersons[updatedPersons.findIndex((el) => el.id === savedFragment.id)] = {
             ...savedFragment,
-            to_string: parsePattern(data, template?.schema?.to_string)
+            to_string: parsePattern(data, template?.schema?.to_string),
           };
           setPersons(updatedPersons);
-        }).catch(error => setError(error));
+        }).catch((error) => setError(error));
       } else {
         handleSaveNew(data);
       }
@@ -185,7 +183,7 @@ function SelectContributorMultiple({
    * modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    service.createFragment(data, template.id, dmpId).then(res => {
+    service.createFragment(data, template.id, dmpId).then((res) => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
       const newContributor = { person: savedFragment, role: defaultRole, action: 'create' };
@@ -193,7 +191,7 @@ function SelectContributorMultiple({
       field.onChange([...(contributorList || []), newContributor]);
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
       setContributorList([...contributorList, newContributor]);
-    }).catch(error => setError(error));
+    }).catch((error) => setError(error));
 
     handleClose();
     setEditedPerson({});
@@ -208,8 +206,8 @@ function SelectContributorMultiple({
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         const updatedList = [...contributorList];
-        updatedList[idx]['action'] = 'delete';
-        field.onChange(updatedList)
+        updatedList[idx].action = 'delete';
+        field.onChange(updatedList);
       }
     });
   };
@@ -223,7 +221,7 @@ function SelectContributorMultiple({
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
-    setEditedPerson(contributorList[idx]['person']);
+    setEditedPerson(contributorList[idx].person);
     setShow(true);
   };
 
@@ -231,7 +229,7 @@ function SelectContributorMultiple({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -239,7 +237,8 @@ function SelectContributorMultiple({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -252,7 +251,7 @@ function SelectContributorMultiple({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={t("Select a value from the list or create a new one by clicking on +")}
+              placeholder={t('Select a value from the list or create a new one by clicking on +')}
             />
           </div>
           {!readonly && (
@@ -272,7 +271,7 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        <span className='error-message'>{error}</span>
+        <span className="error-message">{error}</span>
         {template && (
           <PersonsList
             personsList={contributorList}
@@ -284,23 +283,21 @@ function SelectContributorMultiple({
             templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
-          ></PersonsList>
-        )}
-      </div>
-      <>
-        {template && show && (
-          <ModalForm
-            data={editedPerson}
-            template={template}
-            label={index !== null ? t('Edit: person or organisation') : t('Add:person or organisation')}
-            readonly={readonly}
-            show={show}
-            handleSave={handleSave}
-            handleClose={handleClose}
-            externalImport={['ror', 'orcid']}
           />
         )}
-      </>
+      </div>
+      {template && show && (
+      <ModalForm
+        data={editedPerson}
+        template={template}
+        label={index !== null ? t('Edit: person or organisation') : t('Add:person or organisation')}
+        readonly={readonly}
+        show={show}
+        handleSave={handleSave}
+        handleClose={handleClose}
+        externalImport={['ror', 'orcid']}
+      />
+      )}
     </>
   );
 }

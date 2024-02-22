@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import OrcidList from "./OrcidList";
-import RorList from "./RorList";
-import { useTranslation } from "react-i18next";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import OrcidList from './OrcidList';
+import RorList from './RorList';
 
 function ImportExternal({ fragment, setFragment, externalImports = {} }) {
   const { t } = useTranslation();
@@ -11,22 +11,22 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
       .reduce((acc, key) => {
         acc[key] = false;
         return acc;
-      }, {})
+      }, {}),
   );
 
   const toggleImport = (type) => {
-    setImportsState(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+    setImportsState((prevState) => Object.keys(prevState).reduce((updatedState, key) => {
       updatedState[key] = key === type ? !prevState[key] : false;
       return updatedState;
     }, {}));
   };
 
-  const buttonColor = (buttonActive) => buttonActive ? 'var(--green)' : 'var(--dark-blue)';
+  const buttonColor = (buttonActive) => (buttonActive ? 'var(--green)' : 'var(--dark-blue)');
 
   const externalImportComponent = (type, fragment, setFragment) => {
     const importComponents = {
       ror: (fragment, setFragment, mapping) => <RorList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
-      orcid: (fragment, setFragment, mapping) => <OrcidList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />
+      orcid: (fragment, setFragment, mapping) => <OrcidList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
     };
 
     return (
@@ -34,7 +34,7 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
         {importsState[type] && (
           <div key={`${type}-import-container`}>
             {importComponents[type](fragment, setFragment, externalImports[type])}
-            <div key={`${type}-import-spacer`} style={{ display: "flex", justifyContent: "center" }}></div>
+            <div key={`${type}-import-spacer`} style={{ display: 'flex', justifyContent: 'center' }} />
           </div>
         )}
       </div>
@@ -64,8 +64,8 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
   const externalImportsKeys = Object.keys(externalImports);
 
   return (
-    <div style={{ margin: "0 15px" }}>
-      <div style={{ marginBottom: "25px" }}>
+    <div style={{ margin: '0 15px' }}>
+      <div style={{ marginBottom: '25px' }}>
         {externalImportsKeys.map((key) => externalImportButton(key))}
       </div>
 

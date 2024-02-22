@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
 import { t } from 'i18next';
 
-import { CustomButton } from "../Styled";
-import { ContextSelection , TemplateSelection, LangSelection } from './Steps';
+import { CustomButton } from '../Styled';
+import { ContextSelection, TemplateSelection, LangSelection } from './Steps';
 import styles from '../assets/css/main.module.css';
 import stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
@@ -25,13 +25,13 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const context = {
-    'research_project': t('For a research project'),
-    'research_entity': t('For a research entity'),
+    research_project: t('For a research project'),
+    research_entity: t('For a research entity'),
   };
 
   const languages = {
     'fr-FR': 'Français',
-    'en-GB': 'English (UK)'
+    'en-GB': 'English (UK)',
   };
 
   const steps = [
@@ -62,7 +62,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
         selectedTemplate,
         templateName,
       }),
-    }
+    },
   ];
 
   useEffect(() => {
@@ -80,7 +80,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
       selectedTemplate: params.selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null,
       templateName: localStorage.getItem('templateName'),
       isStructured: params.isStructured || isStructuredValue ? isStructuredValue === 'true' : null,
-    })
+    });
 
     const queryParameters = new URLSearchParams(window.location.search);
     let step = Number.parseInt(queryParameters.get('step') || 0, 10);
@@ -93,11 +93,13 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     setUrlParams({ step: `${step || 0}` });
   }, [locale, currentOrgId, currentOrgName]);
 
-  const prevStep = <CustomButton
-    handleClick={() => handleStep(currentStep - 1)}
-    title={t("Go back to previous step")}
-    position="start"
-  />
+  const prevStep = (
+    <CustomButton
+      handleClick={() => handleStep(currentStep - 1)}
+      title={t('Go back to previous step')}
+      position="start"
+    />
+  );
 
   const nextStep = () => {
     handleStep(currentStep + 1);
@@ -122,7 +124,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
               styleConfig={{
                 activeBgColor: '#c6503d',
                 size: 55,
-                labelFontSize: 18
+                labelFontSize: 18,
               }}
               className={stepperStyles.stepper_steps}
             >
@@ -130,7 +132,13 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
                 steps.map(({ label, value }, index) => (
                   <Step
                     key={`step-${index}`}
-                    label={<>{label}<br /><small><i>{value && `(${value})`}</i></small></>}
+                    label={(
+                      <>
+                        {label}
+                        <br />
+                        <small><i>{value && `(${value})`}</i></small>
+                      </>
+)}
                     onClick={() => handleStep(index)}
                   />
                 ))
@@ -138,16 +146,14 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
             </Stepper>
             <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
               {
-                steps.map(({ component, set }, index) => {
-                  return currentStep === index && React.cloneElement(component, {
-                    key: `step-${index}-component`,
-                    nextStep,
-                    prevStep: index > 0 ? prevStep : undefined,
-                    set,
-                    params,
-                    setUrlParams,
-                  });
-                })
+                steps.map(({ component, set }, index) => currentStep === index && React.cloneElement(component, {
+                  key: `step-${index}-component`,
+                  nextStep,
+                  prevStep: index > 0 ? prevStep : undefined,
+                  set,
+                  params,
+                  setUrlParams,
+                }))
               }
             </div>
           </div>

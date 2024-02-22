@@ -27,7 +27,7 @@ function InputText({
     <div className="form-group">
       {hidden === false && (
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipedLabelId}>{label}</label>
           {
             tooltip && (
@@ -45,7 +45,7 @@ function InputText({
       )}
       <input
         {...register(propName, {
-          valueAsNumber: type === 'number'
+          valueAsNumber: type === 'number',
         })}
         defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}

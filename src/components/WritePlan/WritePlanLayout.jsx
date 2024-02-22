@@ -1,13 +1,13 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import Global from '../context/Global.jsx';
-import WritePlan from './WritePlan.jsx'
-import '../../i18n.js';
+import Global from '../context/Global';
+import WritePlan from './WritePlan';
+import '../../i18n';
 
 const toastOptions = {
   duration: 5000,
-}
+};
 
 function WritePlanLayout({
   planId,
@@ -18,7 +18,7 @@ function WritePlanLayout({
   currentOrgName,
   readonly,
 }) {
-  return(
+  return (
     <Global>
       <WritePlan
         planId={planId}
@@ -31,7 +31,7 @@ function WritePlanLayout({
       />
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
-  )
+  );
 }
 
-export default WritePlanLayout
+export default WritePlanLayout;

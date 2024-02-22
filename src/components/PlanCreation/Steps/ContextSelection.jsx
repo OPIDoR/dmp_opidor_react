@@ -1,7 +1,7 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import styles from "../../assets/css/steps.module.css";
+import styles from '../../assets/css/steps.module.css';
 
 /**
  * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management
@@ -22,9 +22,9 @@ function ContextSelection({ nextStep, set, params }) {
       id: 'research_entity',
       title: t('For a research entity'),
       description: t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.'),
-    }
+    },
   ];
- 
+
   return (
     <div>
       <h2>{t('Select the context in which you are developing your data management plan')}</h2>

@@ -6,13 +6,13 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaXmark } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
+import { GlobalContext } from '../context/Global';
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import swalUtils from '../../utils/swalUtils.js';
+import CustomSelect from '../Shared/CustomSelect';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
+import swalUtils from '../../utils/swalUtils';
 
 function SelectMultipleList({
   label,
@@ -31,9 +31,8 @@ function SelectMultipleList({
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const {
-    locale, loadedRegistries, setLoadedRegistries
+    locale, loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
-
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -96,12 +95,11 @@ function SelectMultipleList({
     setSelectedRegistry(e.value);
   };
 
-
   return (
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -109,7 +107,8 @@ function SelectMultipleList({
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
@@ -117,8 +116,9 @@ function SelectMultipleList({
         </div>
 
         {/* ************Select registry************** */}
-        <div className="row"><div className="row">
-          {registries && registries.length > 1 && (
+        <div className="row">
+          <div className="row">
+            {registries && registries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
@@ -133,17 +133,17 @@ function SelectMultipleList({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t('Select a registry')}
                   />
                 </div>
               </div>
             </div>
-          )}
+            )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
-            <div className="row">
-              <div className={`col-md-12 ${styles.select_wrapper}`}>
-                {options && (
+            <div className={registries && registries.length > 1 ? 'col-md-6' : 'col-md-12'}>
+              <div className="row">
+                <div className={`col-md-12 ${styles.select_wrapper}`}>
+                  {options && (
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
@@ -153,24 +153,27 @@ function SelectMultipleList({
                     placeholder={createRegistryPlaceholder(registries, overridable, 'simple', t)}
                     overridable={overridable}
                   />
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
         {/* *************Select registry************* */}
 
-        <div style={{ margin: "20px 2px 20px 2px" }}>
+        <div style={{ margin: '20px 2px 20px 2px' }}>
           {selectedValues && (
-            <table style={{ marginTop: "0px" }} className="table">
+            <table style={{ marginTop: '0px' }} className="table">
               {header && <thead>{header}</thead>}
               <tbody>
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
-                    <td style={{ width: "100%" }}>
+                    <td style={{ width: '100%' }}>
                       <div className={styles.cell_content}>
-                        <div>{el} </div>
+                        <div>
+                          {el}
+                          {' '}
+                        </div>
                         <div className={styles.table_container}>
                           {!readonly && (
                             <FaXmark

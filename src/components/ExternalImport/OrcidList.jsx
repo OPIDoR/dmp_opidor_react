@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { externalServices } from "../../services";
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import Pagination from "../Shared/Pagination";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
+import { externalServices } from '../../services';
+import CustomError from '../Shared/CustomError';
+import CustomSpinner from '../Shared/CustomSpinner';
+import Pagination from '../Shared/Pagination';
 
 function OrcidList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
@@ -14,7 +14,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   const [error, setError] = useState(null);
   const [currentData, setCurrentData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -51,7 +51,9 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
    */
   const setSelectedValue = (el) => {
     setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
-    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
+    let obj = {
+      firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t('Personne'), idType: 'ORCID iD',
+    };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
       obj = Object.entries(obj).reduce((acc, [key, value]) => {
@@ -80,23 +82,23 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
     if (e.key === 'Enter') {
       getData(text);
     }
-  }
+  };
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
    */
   const handleDeleteText = () => {
-    setText("");
+    setText('');
     setData([]);
     setCurrentData([]);
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: 'relative' }}>
       {error && <CustomError />}
       {!error && (
         <>
-          <div className="row" style={{ margin: "10px" }}>
+          <div className="row" style={{ margin: '10px' }}>
             <div>
               <div className="row">
                 <div>
@@ -105,19 +107,23 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                       type="text"
                       className="form-control"
                       value={text}
-                      placeholder={t("Search by <last name> <first name>")}
+                      placeholder={t('Search by <last name> <first name>')}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px" }}
+                      style={{
+                        borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                      }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: "0", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px", margin: '0' }}
+                        style={{
+                          borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: 'var(--dark-blue)' }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -125,7 +131,9 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                         onClick={handleDeleteText}
                         className="btn btn-default"
                         type="button"
-                        style={{ borderRadius: "0 8px 8px 0", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px", margin: '0' }}
+                        style={{
+                          borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -139,25 +147,29 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
             <table className="table table-bordered table-hover">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col"></th>
-                  <th scope="col">{t("Last / First name")}</th>
-                  <th scope="col">{t("ORCID Affiliations")}</th>
+                  <th scope="col" />
+                  <th scope="col">{t('Last / First name')}</th>
+                  <th scope="col">{t('ORCID Affiliations')}</th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.length > 0 ? currentData.map((el, idx) => (
                   <tr key={idx}>
                     <td>
-                      {selectedPerson === el.orcid ?
-                        <FaCheckCircle
-                          className="text-center"
-                          style={{ color: 'green' }}
-                        /> :
-                        <FaPlusSquare
-                          className="text-center"
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => setSelectedValue(el)} />
-                      }
+                      {selectedPerson === el.orcid
+                        ? (
+                          <FaCheckCircle
+                            className="text-center"
+                            style={{ color: 'green' }}
+                          />
+                        )
+                        : (
+                          <FaPlusSquare
+                            className="text-center"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setSelectedValue(el)}
+                          />
+                        )}
                     </td>
                     <td>{`${el.familyNames} ${el.givenNames} `}</td>
                     <td>
@@ -166,7 +178,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
+                    <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
                       { loading ? <CustomSpinner /> : t('No data available') }
                     </td>
                   </tr>
@@ -177,7 +189,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
           {
             data.length > 0 && (
               <div className="row text-center">
-                <div className="mx-auto"></div>
+                <div className="mx-auto" />
                 <div className="mx-auto">
                   <Pagination items={data} onChangePage={onChangePage} pageSize={pageSize} />
                 </div>

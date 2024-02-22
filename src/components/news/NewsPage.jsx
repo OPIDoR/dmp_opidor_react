@@ -3,9 +3,11 @@ import { useQuery } from 'react-query';
 import { format } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { Row, Col, Media, Thumbnail, Button } from 'react-bootstrap';
-import CustomSpinner from '../Shared/CustomSpinner.jsx';
-import CustomError from '../Shared/CustomError.jsx';
+import {
+  Row, Col, Thumbnail, Button,
+} from 'react-bootstrap';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomError from '../Shared/CustomError';
 import { news } from '../../services';
 
 const locales = {
@@ -16,9 +18,7 @@ const locales = {
 export default function NewsPage({ locale, size }) {
   const { t, i18n } = useTranslation();
 
-  const { isLoading, error, data } = useQuery('news', () =>
-    news.get(size).then(res => res.data)
-  );
+  const { isLoading, error, data } = useQuery('news', () => news.get(size).then((res) => res.data));
 
   if (isLoading) return <CustomSpinner />;
 
@@ -28,15 +28,17 @@ export default function NewsPage({ locale, size }) {
     <Row style={{
       display: 'flex',
       flexWrap: 'wrap',
-    }}>
+    }}
+    >
       {data.map((r) => ({
         id: r.id,
         title: r.title.rendered,
         content: r.content.rendered,
         link: r.link,
         date: format(new Date(r.date), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || locale] }),
-        full: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["full"],
-      })).map((n, id) => (
+        // eslint-disable-next-line no-underscore-dangle
+        full: r?._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.full,
+      })).map((n) => (
         <Col
           xs={12}
           md={4}
@@ -75,11 +77,13 @@ export default function NewsPage({ locale, size }) {
                   right: '30px',
                 }}
                 key={`read-button-${n.id}`}
-              >{t('Read article')}</Button>
+              >
+                {t('Read article')}
+              </Button>
             </p>
           </Thumbnail>
         </Col>
       ))}
     </Row>
-  )
+  );
 }

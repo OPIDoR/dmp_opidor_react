@@ -2,18 +2,18 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
-import { useForm, FormProvider } from "react-hook-form";
+import { useTranslation } from 'react-i18next';
+import { useForm, FormProvider } from 'react-hook-form';
 import unionBy from 'lodash.unionby';
 
-import FormBuilder from './FormBuilder.jsx';
-import { GlobalContext } from '../context/Global.jsx';
+import FormBuilder from './FormBuilder';
+import { GlobalContext } from '../context/Global';
 import { service } from '../../services';
-import CustomSpinner from '../Shared/CustomSpinner.jsx';
-import CustomButton from '../Styled/CustomButton.jsx';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomButton from '../Styled/CustomButton';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
-import { getErrorMessage } from '../../utils/utils.js';
+import { getErrorMessage } from '../../utils/utils';
 
 function DynamicForm({
   fragmentId,
@@ -43,7 +43,7 @@ function DynamicForm({
     setLoading(true);
     if (fragmentId) {
       if (formData[fragmentId]) {
-        if(loadedTemplates[formData[fragmentId].schema_id]) {
+        if (loadedTemplates[formData[fragmentId].schema_id]) {
           setTemplate(loadedTemplates[formData[fragmentId].schema_id]);
         } else {
           service.getSchema(formData[fragmentId].schema_id).then((res) => {
@@ -67,13 +67,13 @@ function DynamicForm({
       service.createFragment(null, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
         const updatedResearchOutput = { ...displayedResearchOutput };
         setTemplate(res.data.template);
-        const fragment = res.data.fragment;
-        const answerId = res.data.answer_id
+        const { fragment } = res.data;
+        const answerId = res.data.answer_id;
         setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
         setFormData({ [fragment.id]: fragment });
         setFragmentId(fragment.id);
         setAnswerId(answerId);
-        updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
+        updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id });
         setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
       }).catch(console.error)
         .finally(() => setLoading(false));
@@ -89,11 +89,11 @@ function DynamicForm({
     if (setScriptsData && template?.schema?.run && template.schema.run.length > 0) {
       setScriptsData({
         scripts: template.schema.run,
-        apiClient: template.api_client
+        apiClient: template.api_client,
       });
     }
     setExternalImports(template?.schema?.externalImports || {});
-  }, [template])
+  }, [template]);
 
   /**
    * It checks if the form is filled in correctly.
@@ -124,7 +124,7 @@ function DynamicForm({
 
   return (
     <>
-      {loading && (<CustomSpinner isOverlay={true} />)}
+      {loading && (<CustomSpinner isOverlay />)}
       {error && <p>error</p>}
       {!error && template && (
         <>
@@ -144,7 +144,7 @@ function DynamicForm({
                   readonly={readonly}
                 />
               </div>
-              <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
+              <CustomButton handleClick={null} title={t('Save')} buttonType="submit" position="center" />
             </form>
           </FormProvider>
         </>

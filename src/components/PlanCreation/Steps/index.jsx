@@ -1,6 +1,6 @@
-import ContextSelection from "./ContextSelection";
-import TemplateSelection from "./TemplateSelection";
-import LangSelection from "./LangSelection";
+import ContextSelection from './ContextSelection';
+import TemplateSelection from './TemplateSelection';
+import LangSelection from './LangSelection';
 
 export {
   ContextSelection,

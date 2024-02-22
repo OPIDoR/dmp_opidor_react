@@ -1,13 +1,17 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, {
+  useRef, useContext, useEffect, useState,
+} from 'react';
+import { useTranslation } from 'react-i18next';
 import { GlobalContext } from '../context/Global';
 import CustomSpinner from '../Shared/CustomSpinner';
 import CustomError from '../Shared/CustomError';
-import { useTranslation } from 'react-i18next';
 import InnerModal from '../Shared/InnerModal/InnerModal';
 import Comment from '../Shared/Comment';
 import { comments as commentsService } from '../../services';
 
-function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
+function CommentModal({
+  show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly,
+}) {
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -37,12 +41,16 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
         expandButton
         ref={modalRef}
         onClose={() => {
-          setFillColorIconComment("var(--dark-blue)");
+          setFillColorIconComment('var(--dark-blue)');
           setshowModalComment(false);
         }}
       >
         <InnerModal.Title>
-          {t('Comments')} ({ comments.length || 0 })
+          {t('Comments')}
+          {' '}
+          (
+          { comments.length || 0 }
+          )
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body>
@@ -56,7 +64,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             questionId={questionId}
             userId={userId}
             readonly={readonly}
-            inModal={true}
+            inModal
             comments={comments}
           />
         )}

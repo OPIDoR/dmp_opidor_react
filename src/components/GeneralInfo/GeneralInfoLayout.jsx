@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Global from '../context/Global.jsx';
-import GeneralInfo from './GeneralInfo.jsx';
-import GuidanceChoice from '../WritePlan/GuidanceChoice.jsx';
-import '../../i18n.js';
+import Global from '../context/Global;
+import GeneralInfo from './GeneralInfo;
+import GuidanceChoice from '../WritePlan/GuidanceChoice;
+import '../../i18n;
 import { Toaster } from 'react-hot-toast';
 
 const toastOptions = {
   duration: 5000,
-}
+};
 
 function GeneralInfoLayout({
   planId,
@@ -23,7 +23,7 @@ function GeneralInfoLayout({
   currentOrgName,
   readonly = false,
 }) {
-  return(
+  return (
     <Global>
       {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
       <GeneralInfo
@@ -38,7 +38,7 @@ function GeneralInfoLayout({
       />
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
-  )
+  );
 }
 
 export default GeneralInfoLayout;

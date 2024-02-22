@@ -1,23 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { FaShuffle } from "react-icons/fa6";
+import { FaShuffle } from 'react-icons/fa6';
 import { Button } from 'react-bootstrap';
 
 import styles from '../assets/css/form_selector.module.css';
 import CustomSpinner from '../Shared/CustomSpinner';
-import service from "../../services/service";
-import { GlobalContext } from "../context/Global";
-import CustomSelect from "../Shared/CustomSelect";
+import service from '../../services/service';
+import { GlobalContext } from '../context/Global';
+import CustomSelect from '../Shared/CustomSelect';
 
-function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, setTemplate }) {
+function FormSelector({
+  className, selectedTemplateId, fragmentId, setFragment, setTemplate,
+}) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {
-    loadedTemplates, setLoadedTemplates, locale
+    loadedTemplates, setLoadedTemplates, locale,
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -29,23 +31,22 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
       });
     }).catch(console.error)
       .finally(() => setLoading(false));
-  }, [className, selectedTemplateId])
-
+  }, [className, selectedTemplateId]);
 
   const handleSelectTemplate = (e) => {
     setSelectedTemplate(e.object);
-  }
+  };
 
   const handleChangeForm = () => {
-    setLoading(true)
+    setLoading(true);
     service.changeForm(fragmentId, selectedTemplate.id, locale).then((res) => {
       setFragment(res.data.fragment);
-      setTemplate(res.data.template)
+      setTemplate(res.data.template);
     }).catch(console.error)
       .finally(() => {
         setLoading(false);
       });
-  }
+  };
 
   return (
     <>
@@ -55,7 +56,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
             <div className={styles.container} style={{ position: 'relative' }}>
               {selectedTemplate && (
                 <>
-                  {loading && (<CustomSpinner isOverlay={true}></CustomSpinner>)}
+                  {loading && (<CustomSpinner isOverlay />)}
                   <label htmlFor={className} className={styles.label}>{t('You can pick a different question form')}</label>
                   <CustomSelect
                     propName={className}
@@ -69,7 +70,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
                   />
                   <div className={styles.form_selector_footer}>
                     <Button onClick={() => setShow(false)} style={{ margin: '0 5px 0 5px' }}>
-                      {t("Close")}
+                      {t('Close')}
                     </Button>
                     <Button onClick={handleChangeForm} bsStyle="primary" type="submit" style={{ margin: '0 5px 0 5px' }}>
                       {t('Save')}
@@ -99,7 +100,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
         </>
       )}
     </>
-  )
+  );
 }
 
 export default FormSelector;

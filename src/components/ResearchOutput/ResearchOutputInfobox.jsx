@@ -1,50 +1,54 @@
-import React, { useContext } from "react";
-import styles from "../assets/css/write_plan.module.css";
-import { Panel } from "react-bootstrap";
-import { Tooltip } from "react-tooltip";
-import { AiOutlineEdit } from "react-icons/ai";
-import { FaTrash } from "react-icons/fa6";
-import { GlobalContext } from "../context/Global";
-import { useTranslation } from "react-i18next";
-import PanelBody from "react-bootstrap/lib/PanelBody";
+import React, { useContext } from 'react';
+import { Panel } from 'react-bootstrap';
+import { Tooltip } from 'react-tooltip';
+import { AiOutlineEdit } from 'react-icons/ai';
+import { FaTrash } from 'react-icons/fa6';
+import { useTranslation } from 'react-i18next';
+import PanelBody from 'react-bootstrap/lib/PanelBody';
+import { GlobalContext } from '../context/Global';
+import styles from '../assets/css/write_plan.module.css';
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
   const {
     researchOutputs,
-    displayedResearchOutput
+    displayedResearchOutput,
   } = useContext(GlobalContext);
 
   return (
     <Panel
       className={styles.panel}
       style={{
-        borderRadius: "10px",
-        borderWidth: "2px",
-        borderColor: "var(--dark-blue)",
+        borderRadius: '10px',
+        borderWidth: '2px',
+        borderColor: 'var(--dark-blue)',
       }}
     >
       <Panel.Heading style={{
-        backgroundColor: "rgb(28, 81, 112)",
-        borderRadius: "5px 5px 0 0",
-        color: "#fff",
-      }}>
+        backgroundColor: 'rgb(28, 81, 112)',
+        borderRadius: '5px 5px 0 0',
+        color: '#fff',
+      }}
+      >
         <Panel.Title style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}>
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+        >
           <strong>{displayedResearchOutput?.title}</strong>
-          <span id="actions" style={{ display: "flex" }}>
+          <span id="actions" style={{ display: 'flex' }}>
             {!readonly && (
               <>
                 <Tooltip anchorSelect="#editBtn" place="bottom">
-                  {t("Edit")}
+                  {t('Edit')}
                 </Tooltip>
                 <button
                   type="button"
                   className="btn btn-link btn-sm m-0 p-0"
-                  style={{ outline: "none", color: "#fff", padding: 0, margin: "2px 5px 0 5px" }}
+                  style={{
+                    outline: 'none', color: '#fff', padding: 0, margin: '2px 5px 0 5px',
+                  }}
                   onClick={handleEdit}
                   id="editBtn"
                 >
@@ -55,12 +59,14 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
             {!readonly && researchOutputs.length > 1 && (
               <>
                 <Tooltip anchorSelect="#deleteBtn" place="bottom">
-                  {t("Delete")}
+                  {t('Delete')}
                 </Tooltip>
                 <button
                   type="button"
                   className="btn btn-link btn-sm m-0 p-0"
-                  style={{ outline: "none", color: "#fff", padding: 0, margin: "2px 5px 0 5px" }}
+                  style={{
+                    outline: 'none', color: '#fff', padding: 0, margin: '2px 5px 0 5px',
+                  }}
                   onClick={handleDelete}
                   id="deleteBtn"
                 >
@@ -74,16 +80,28 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
       <PanelBody>
         <ul>
           <li>
-            {t('Short name')} : <strong>{displayedResearchOutput.abbreviation}</strong>
+            {t('Short name')}
+            {' '}
+            :
+            <strong>{displayedResearchOutput.abbreviation}</strong>
           </li>
           <li>
-            {t('Name')} : <strong>{displayedResearchOutput.title}</strong>
+            {t('Name')}
+            {' '}
+            :
+            <strong>{displayedResearchOutput.title}</strong>
           </li>
           <li>
-            {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
+            {t('Type')}
+            {' '}
+            :
+            <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
           <li>
-            {t('Contains personal data')} : <strong>{displayedResearchOutput.hasPersonalData ? t('Yes') : t('No')}</strong>
+            {t('Contains personal data')}
+            {' '}
+            :
+            <strong>{displayedResearchOutput.hasPersonalData ? t('Yes') : t('No')}</strong>
           </li>
         </ul>
       </PanelBody>

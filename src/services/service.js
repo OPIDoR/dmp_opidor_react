@@ -1,11 +1,17 @@
 import axios from 'axios';
 import createHeaders from '../utils/HeaderBuilder';
 
-
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
-  '/madmp_fragments', {
+const createFragment = async (
+  madmpSchemaId,
+  dmpId,
+  data = {},
+  questionId = null,
+  researchOutputId = null,
+) => axios.post(
+  '/madmp_fragments',
+  {
     data,
     schema_id: madmpSchemaId,
     dmp_id: dmpId,
@@ -18,11 +24,11 @@ const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null
 const destroyFragment = async (fragmentId) => axios.delete(
   `/madmp_fragments/${fragmentId}`,
   { headers: createHeaders({}, true) },
-)
+);
 
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
 
-const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
+const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page } });
 
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
 
@@ -31,7 +37,7 @@ const getContributors = async (planId) => axios.get(`/plans/${planId}/contributo
 const destroyContributor = async (fragmentId) => axios.delete(
   `/madmp_fragments/destroy_contributor?contributor_id=${fragmentId}`,
   { headers: createHeaders({}, true) },
-)
+);
 
 /**
  * It sends a POST request to the server with the jsonObject as the body of the request.
@@ -44,12 +50,12 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
   headers: createHeaders({}, true),
 });
 
-const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
+const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`);
 
 const changeForm = async (fragmentId, templateId, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?schema_id=${templateId}&locale=${locale}`);
 
-const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
-// eslint-disable-next-line import/no-anonymous-default-export
+const runScript = async (fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`);
+
 export default {
   getFragment,
   createFragment,

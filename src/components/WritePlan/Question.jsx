@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import DOMPurify from "dompurify";
-import { Panel } from "react-bootstrap";
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { BsGear } from "react-icons/bs";
-import { TbBulbFilled } from "react-icons/tb";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import DOMPurify from 'dompurify';
+import { Panel } from 'react-bootstrap';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { TfiAngleDown, TfiAngleUp } from 'react-icons/tfi';
+import { BsGear } from 'react-icons/bs';
+import { TbBulbFilled } from 'react-icons/tb';
 
-import { GlobalContext } from "../context/Global";
-import styles from "../assets/css/write_plan.module.css";
-import DynamicForm from "../Forms/DynamicForm";
-import GuidanceModal from "./GuidanceModal";
-import CommentModal from "./CommentModal";
-import RunsModal from "./RunsModal";
-import { CommentSVG } from "../Styled/svg";
-import { writePlan } from "../../services";
+import { GlobalContext } from '../context/Global';
+import styles from '../assets/css/write_plan.module.css';
+import DynamicForm from '../Forms/DynamicForm';
+import GuidanceModal from './GuidanceModal';
+import CommentModal from './CommentModal';
+import RunsModal from './RunsModal';
+import { CommentSVG } from '../Styled/svg';
+import { writePlan } from '../../services';
 
 function Question({
   question,
@@ -35,19 +35,19 @@ function Question({
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
-  const [scriptsData, setScriptsData] = useState({scripts: []}); // {classname: "class", id: 1}
+  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
+  const [fillRunsIconColor, setFillRunsIconColor] = useState('var(--dark-blue)');
+  const [fillCommentIconColor, setFillCommentIconColor] = useState('var(--dark-blue)');
+  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState('var(--dark-blue)');
   const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
   const { t } = useTranslation();
 
   useEffect(() => {
     const answer = displayedResearchOutput?.answers?.find(
-      (answer) => question?.id === answer?.question_id
+      (a) => question?.id === a?.question_id,
     );
     setAnswerId(answer?.answer_id);
     setFragmentId(answer?.fragment_id);
@@ -86,7 +86,9 @@ function Question({
 
     writePlan.getPlanData(planData.id)
       .then((res) => {
+        // eslint-disable-next-line camelcase
         const { questions_with_guidance } = res.data;
+        // eslint-disable-next-line camelcase
         setQuestionsWithGuidance(questions_with_guidance || []);
       })
       .catch(() => setQuestionsWithGuidance([]));
@@ -97,13 +99,13 @@ function Question({
 
   const closeAllModals = () => {
     setShowCommentModal(false);
-    setFillCommentIconColor("var(--dark-blue)");
+    setFillCommentIconColor('var(--dark-blue)');
 
     setShowGuidanceModal(false);
-    setFillGuidanceIconColor("var(--dark-blue)");
+    setFillGuidanceIconColor('var(--dark-blue)');
 
     setShowRunsModal(false);
-    setFillRunsIconColor("var(--dark-blue)");
+    setFillRunsIconColor('var(--dark-blue)');
   };
 
   /**
@@ -121,10 +123,9 @@ function Question({
     // setQuestionId(q.id)
 
     // Check if the current modal type is the same as the one that is about to be opened
-    const isModalOpen =
-      (modalType === "comment" && showCommentModal) ||
-      (modalType === "guidance" && showGuidanceModal) ||
-      (modalType === "runs" && showRunsModal);
+    const isModalOpen = (modalType === 'comment' && showCommentModal)
+      || (modalType === 'guidance' && showGuidanceModal)
+      || (modalType === 'runs' && showRunsModal);
 
     // If the current modal is the same as the one about to be opened, close it
     if (isModalOpen) {
@@ -132,133 +133,133 @@ function Question({
     }
 
     // Open the specified modal and update icon colors
-    setShowCommentModal(modalType === "comment");
+    setShowCommentModal(modalType === 'comment');
     setFillCommentIconColor(
-      modalType === "comment" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'comment' ? 'var(--rust)' : 'var(--dark-blue)',
     );
 
-    setShowGuidanceModal(modalType === "guidance");
+    setShowGuidanceModal(modalType === 'guidance');
     setFillGuidanceIconColor(
-      modalType === "guidance" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'guidance' ? 'var(--rust)' : 'var(--dark-blue)',
     );
 
-    setShowRunsModal(modalType === "runs");
+    setShowRunsModal(modalType === 'runs');
     setFillRunsIconColor(
-      modalType === "runs" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'runs' ? 'var(--rust)' : 'var(--dark-blue)',
     );
   };
 
   /**
-   * Checks if a specific question is opened based on its identifiers within the nested object structure.
+   * Checks if specific question is opened based on its identifier
    *
    * @returns {boolean} True if the question is opened, false otherwise.
    */
-  const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput);
+  const isQuestionOpened = () => (!!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId])
+    && (displayedResearchOutput.id === currentResearchOutput);
 
   return (
-    <>
-      {
-        <Panel
-          expanded={isQuestionOpened()}
-          className={styles.panel}
-          style={{
-            borderRadius: "10px",
-            borderWidth: "2px",
-            borderColor: "var(--dark-blue)",
-          }}
-          onToggle={(expanded) => handleQuestionCollapse(expanded)}
-        >
-          <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-            <Panel.Title toggle>
-              <div className={styles.question_title}>
-                <div className={styles.question_text}>
-                  <div className={styles.question_number}>
-                    {sectionNumber}.{questionIdx}
-                  </div>
-                  <div
-                    className={styles.panel_title}
-                    style={{
-                      fontSize: '18px',
-                      fontWeight: 'bold',
-                      whiteSpace: 'break-spaces',
-                      textAlign: 'justify',
-                      hyphens: 'auto'
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize([question.text]),
-                    }}
-                  />
-                </div>
+    <Panel
+      expanded={isQuestionOpened()}
+      className={styles.panel}
+      style={{
+        borderRadius: '10px',
+        borderWidth: '2px',
+        borderColor: 'var(--dark-blue)',
+      }}
+      onToggle={(expanded) => handleQuestionCollapse(expanded)}
+    >
+      <Panel.Heading style={{ background: 'white', borderRadius: '18px' }}>
+        <Panel.Title toggle>
+          <div className={styles.question_title}>
+            <div className={styles.question_text}>
+              <div className={styles.question_number}>
+                {sectionNumber}
+                .
+                {questionIdx}
+              </div>
+              <div
+                className={styles.panel_title}
+                style={{
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  whiteSpace: 'break-spaces',
+                  textAlign: 'justify',
+                  hyphens: 'auto',
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize([question.text]),
+                }}
+              />
+            </div>
 
-                <span
-                  className={styles.question_icons}
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
+            <span
+              className={styles.question_icons}
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+              }}
+            >
+              {scriptsData.scripts.length > 0 && (
+              <div>
+                <ReactTooltip
+                  id="scriptTip"
+                  place="bottom"
+                  effect="solid"
+                  variant="info"
+                  content={t('Script')}
+                />
+                <div
+                  data-tooltip-id="scriptTip"
+                  className={styles.panel_icon}
+                  onClick={(e) => {
+                    handleIconClick(e, isQuestionOpened(), question, 'runs');
                   }}
+                  style={{ marginLeft: '5px' }}
                 >
-                  {scriptsData.scripts.length > 0 && (
-                    <div>
-                      <ReactTooltip
-                        id="scriptTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Script")}
-                      />
-                      <div
-                        data-tooltip-id="scriptTip"
-                        className={styles.panel_icon}
-                        onClick={(e) => {
-                          handleIconClick(e, isQuestionOpened(), question, "runs");
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <BsGear
-                            size={32}
-                            style={{ marginTop: "6px" }}
-                            fill={
+                  {isQuestionOpened() && (
+                  <BsGear
+                    size={32}
+                    style={{ marginTop: '6px' }}
+                    fill={
                               isQuestionOpened()
                                 ? fillRunsIconColor
-                                : "var(--dark-blue)"
+                                : 'var(--dark-blue)'
                             }
-                          />
-                        )}
-                      </div>
-                    </div>
+                  />
                   )}
+                </div>
+              </div>
+              )}
 
-                  <div>
-                    <ReactTooltip
-                      id="commentTip"
-                      place="bottom"
-                      effect="solid"
-                      variant="info"
-                      content={t("Comments")}
-                    />
-                    <div
-                      data-tooltip-id="commentTip"
-                      className={styles.panel_icon}
-                      onClick={(e) => {
-                        handleQuestionCollapse(true);
-                        handleIconClick(e, isQuestionOpened(), question, "comment");
-                      }}
-                      style={{ marginLeft: "5px" }}
-                    >
-                      <CommentSVG
-                        size={32}
-                        fill={
+              <div>
+                <ReactTooltip
+                  id="commentTip"
+                  place="bottom"
+                  effect="solid"
+                  variant="info"
+                  content={t('Comments')}
+                />
+                <div
+                  data-tooltip-id="commentTip"
+                  className={styles.panel_icon}
+                  onClick={(e) => {
+                    handleQuestionCollapse(true);
+                    handleIconClick(e, isQuestionOpened(), question, 'comment');
+                  }}
+                  style={{ marginLeft: '5px' }}
+                >
+                  <CommentSVG
+                    size={32}
+                    fill={
                           isQuestionOpened()
                             ? fillCommentIconColor
-                            : "var(--dark-blue)"
+                            : 'var(--dark-blue)'
                         }
-                      />
-                    </div>
-                  </div>
+                  />
+                </div>
+              </div>
 
-                  {
+              {
                     questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
                       <div>
                         <ReactTooltip
@@ -266,7 +267,7 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("Guidances")}
+                          content={t('Guidances')}
                         />
                         <div
                           data-tooltip-id="guidanceTip"
@@ -276,10 +277,10 @@ function Question({
                               e,
                               isQuestionOpened(),
                               question,
-                              "guidance"
+                              'guidance',
                             );
                           }}
-                          style={{ marginLeft: "5px" }}
+                          style={{ marginLeft: '5px' }}
                         >
                           {isQuestionOpened() && (
                             <TbBulbFilled
@@ -287,91 +288,92 @@ function Question({
                               fill={
                                 isQuestionOpened()
                                   ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
+                                  : 'var(--dark-blue)'
                               }
                               style={{
                                 color: isQuestionOpened()
                                   ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
+                                  : 'var(--dark-blue)',
                               }}
                             />
                           )}
                         </div>
                       </div>
-                    )}
+                    )
+}
 
-                  {isQuestionOpened() ? (
-                    <TfiAngleUp
-                      style={{ marginLeft: "5px" }}
-                      size={32}
-                      className={styles.down_icon}
-                    />
-                  ) : (
-                    <TfiAngleDown
-                      style={{ marginLeft: "5px" }}
-                      size={32}
-                      className={styles.down_icon}
-                    />
-                  )}
-                </span>
-              </div>
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
-            {isQuestionOpened() && (
-              <div>
-                {scriptsData.scripts.length > 0 && (
-                  <RunsModal
-                    show={showRunsModal}
-                    setshowModalRuns={setShowRunsModal}
-                    setFillColorIconRuns={setFillRunsIconColor}
-                    scriptsData={scriptsData}
-                    fragmentId={fragmentId}
-                  />
-                )}
-                <CommentModal
-                  show={showCommentModal}
-                  setshowModalComment={setShowCommentModal}
-                  setFillColorIconComment={setFillCommentIconColor}
-                  answerId={answerId}
-                  researchOutputId={displayedResearchOutput.id}
-                  planId={planData.id}
-                  questionId={question.id}
-                  readonly={readonly}
+              {isQuestionOpened() ? (
+                <TfiAngleUp
+                  style={{ marginLeft: '5px' }}
+                  size={32}
+                  className={styles.down_icon}
                 />
-                {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                  show={showGuidanceModal}
-                  setShowGuidanceModal={setShowGuidanceModal}
-                  setFillColorGuidanceIcon={setFillGuidanceIconColor}
-                  questionId={questionId}
-                  planId={planData.id}
-                />)}
-              </div>
-            )}
-            {isQuestionOpened() ? (
-              <>
-                {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname}  setScriptsData={setScriptsData} readonly={readonly} />
-                ) : (
-                  <DynamicForm
-                    fragmentId={null}
-                    className={question.madmp_schema.classname}
-                    setScriptsData={setScriptsData}
-                    questionId={question.id}
-                    madmpSchemaId={question.madmp_schema.id}
-                    setFragmentId={setFragmentId}
-                    setAnswerId={setAnswerId}
-                    readonly={readonly}
-                  />
-                )}
-              </>
+              ) : (
+                <TfiAngleDown
+                  style={{ marginLeft: '5px' }}
+                  size={32}
+                  className={styles.down_icon}
+                />
+              )}
+            </span>
+          </div>
+        </Panel.Title>
+      </Panel.Heading>
+      <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible>
+        {isQuestionOpened() && (
+        <div>
+          {scriptsData.scripts.length > 0 && (
+          <RunsModal
+            show={showRunsModal}
+            setshowModalRuns={setShowRunsModal}
+            setFillColorIconRuns={setFillRunsIconColor}
+            scriptsData={scriptsData}
+            fragmentId={fragmentId}
+          />
+          )}
+          <CommentModal
+            show={showCommentModal}
+            setshowModalComment={setShowCommentModal}
+            setFillColorIconComment={setFillCommentIconColor}
+            answerId={answerId}
+            researchOutputId={displayedResearchOutput.id}
+            planId={planData.id}
+            questionId={question.id}
+            readonly={readonly}
+          />
+          {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+          <GuidanceModal
+            show={showGuidanceModal}
+            setShowGuidanceModal={setShowGuidanceModal}
+            setFillColorGuidanceIcon={setFillGuidanceIconColor}
+            questionId={questionId}
+            planId={planData.id}
+          />
+          )}
+        </div>
+        )}
+        {isQuestionOpened() ? (
+          <>
+            {fragmentId && answerId ? (
+              <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname} setScriptsData={setScriptsData} readonly={readonly} />
             ) : (
-              <></>
+              <DynamicForm
+                fragmentId={null}
+                className={question.madmp_schema.classname}
+                setScriptsData={setScriptsData}
+                questionId={question.id}
+                madmpSchemaId={question.madmp_schema.id}
+                setFragmentId={setFragmentId}
+                setAnswerId={setAnswerId}
+                readonly={readonly}
+              />
             )}
-          </Panel.Body>
-        </Panel>
-      }
-    </>
+          </>
+        ) : (
+          <></>
+        )}
+      </Panel.Body>
+    </Panel>
   );
 }
 

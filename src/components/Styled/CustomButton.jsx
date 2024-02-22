@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const DefaultButton = styled.button`
   padding: 10px 20px 10px 20px;
@@ -18,7 +18,7 @@ const DefaultButton = styled.button`
 const BlueButton = styled(DefaultButton)`
 background-color: var(--dark-blue)!important;
 border-color: var(--dark-blue) !important;
-`
+`;
 
 const WhiteButton = styled(DefaultButton)`
 background-color: white !important;
@@ -29,22 +29,21 @@ border-color: var(--dark-blue) !important;
   background-color: white !important;
   border-color: var(--dark-blue) !important;
 }
-`
-
+`;
 
 const DivButton = styled.div`
   display: flex;
-  justify-content: ${(props) => (props.$position || "start")};
+  justify-content: ${(props) => (props.$position || 'start')};
 `;
 
-const Button = (props) => {
-  switch (props.$buttonType) {
+function Button(props) {
+  switch (props?.$buttonType) {
     case 'blue':
       return <BlueButton {...props} />;
     case 'white':
       return <WhiteButton {...props} />;
     default:
-      return <DefaultButton {...props} />
+      return <DefaultButton {...props} />;
   }
 }
 
@@ -54,7 +53,9 @@ const Button = (props) => {
  * button is styled using CSS-in-JS with the help of the styled-components library. The component returns a div that contains a button element with an
  * onClick event listener that triggers the handleClick function passed as a prop.
  */
-function CustomButton({ handleClick, title, buttonType = 'button', buttonColor, position, disabled }) {
+function CustomButton({
+  handleClick, title, buttonType = 'button', buttonColor, position, disabled,
+}) {
   const handleButtonAction = (e) => {
     handleClick?.(e);
   };

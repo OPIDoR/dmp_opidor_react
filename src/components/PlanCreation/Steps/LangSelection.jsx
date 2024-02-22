@@ -1,9 +1,11 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import styles from "../../assets/css/steps.module.css";
+import styles from '../../assets/css/steps.module.css';
 
-function LangSelection({ prevStep, nextStep, set, params }) {
+function LangSelection({
+  prevStep, nextStep, set, params,
+}) {
   const { t } = useTranslation();
 
   const languages = [

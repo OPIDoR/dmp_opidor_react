@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { externalServices } from "../../services";
-import Select from "react-select";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomError from "../Shared/CustomError";
-import Pagination from "../Shared/Pagination";
-import { FaLink } from "react-icons/fa6";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
+import { FaLink } from 'react-icons/fa6';
+import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
+import { externalServices } from '../../services';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomError from '../Shared/CustomError';
+import Pagination from '../Shared/Pagination';
 
 function RorList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
@@ -48,11 +48,11 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     }));
 
     // get distinct array of objects
-    let distinctCountries = Object.values(
+    const distinctCountries = Object.values(
       options.reduce((acc, cur) => {
         if (!acc[cur.value]) acc[cur.value] = cur;
         return acc;
-      }, {})
+      }, {}),
     );
     setCountries(distinctCountries);
 
@@ -122,7 +122,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
       return getData(text, selectedCountry ? `country.country_code:${selectedCountry}` : null);
     }
     return null;
-  }
+  };
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
@@ -151,16 +151,20 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
                       placeholder={t('Search for <organization name> or <acronym>')}
-                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
+                      style={{
+                        borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                      }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: 'var(--dark-blue)' }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -168,7 +172,9 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                         className="btn btn-default"
                         type="button"
                         onClick={handleDeleteText}
-                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -188,7 +194,9 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                         singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
-                        control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
+                        control: (base) => ({
+                          ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                        }),
                       }}
                       onChange={handleChangeCountry}
                       defaultValue={{
@@ -206,7 +214,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
           <table className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
-                <th scope="col"></th>
+                <th scope="col" />
                 <th scope="col">{t('Organization name')}</th>
                 <th scope="col">{t('Acronym')}</th>
                 <th scope="col">{t('Country')}</th>
@@ -217,21 +225,26 @@ function RorList({ fragment, setFragment, mapping = {} }) {
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
                   <td>
-                    {selectedOrg === el.ror ?
-                      <FaCheckCircle
-                        className="text-center"
-                        style={{ color: 'green' }}
-                      /> :
-                      <FaPlusSquare
-                        className="text-center"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => setSelectedValue(el)} />
-                    }
+                    {selectedOrg === el.ror
+                      ? (
+                        <FaCheckCircle
+                          className="text-center"
+                          style={{ color: 'green' }}
+                        />
+                      )
+                      : (
+                        <FaPlusSquare
+                          className="text-center"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => setSelectedValue(el)}
+                        />
+                      )}
                   </td>
                   <td>
-                    {el.name[Object.keys(el.name)[0]]}&nbsp;
+                    {el.name[Object.keys(el.name)[0]]}
+&nbsp;
                     <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
-                      <FaLink></FaLink>
+                      <FaLink />
                     </a>
                   </td>
                   <td>{el.acronyms}</td>
@@ -244,7 +257,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
+                  <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
                     { loading ? <CustomSpinner /> : t('No data available') }
                   </td>
                 </tr>
@@ -254,7 +267,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
 
           {data.length > 0 && (
             <div className="row text-center">
-              <div className="mx-auto"></div>
+              <div className="mx-auto" />
               <div className="mx-auto">
                 <Pagination items={filteredData} onChangePage={onChangePage} pageSize={pageSize} />
               </div>

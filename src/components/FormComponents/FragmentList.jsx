@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
-import DOMPurify from "dompurify";
+import DOMPurify from 'dompurify';
 import { parsePattern } from '../../utils/GeneratorUtils';
 import styles from '../assets/css/form.module.css';
 
@@ -11,7 +11,7 @@ function FragmentList({
   parent = 'form',
   templateToString = [],
   tableHeader = null,
-  readonly = false
+  readonly = false,
 }) {
   return (
     <>
@@ -19,34 +19,35 @@ function FragmentList({
         <table style={{ marginTop: '20px' }} className="table table-hover">
           {tableHeader && (
             <thead>
-              {fragmentsList.length > 0 &&
-                fragmentsList.some((el) => el.action !== "delete") && (
+              {fragmentsList.length > 0
+                && fragmentsList.some((el) => el.action !== 'delete') && (
                   <tr>
                     <th scope="col">{tableHeader}</th>
                     <th scope="col">Actions</th>
                   </tr>
-                )}
+              )}
             </thead>
           )}
           <tbody>
             {fragmentsList
-              .map((el, idx) => (el.action !== 'delete' ?
-                <tr key={idx}>
-                  <td
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
-                    }}
-                  ></td>
-                  <td style={{ width: "200px" }}>
-                    <div className={styles.table_container}>
-                      {!readonly && (
+              .map((el, idx) => (el.action !== 'delete'
+                ? (
+                  <tr key={idx}>
+                    <td
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
+                      }}
+                    />
+                    <td style={{ width: '200px' }}>
+                      <div className={styles.table_container}>
+                        {!readonly && (
                         <>
                           {parent === 'form' && (
-                            <FaPenToSquare
-                              size={18}
-                              onClick={() => handleEdit(idx)}
-                              className={styles.icon}
-                            />
+                          <FaPenToSquare
+                            size={18}
+                            onClick={() => handleEdit(idx)}
+                            className={styles.icon}
+                          />
                           )}
                           <FaXmark
                             onClick={(e) => handleDelete(idx)}
@@ -54,17 +55,18 @@ function FragmentList({
                             className={styles.icon}
                           />
                         </>
-                      )}
-                      {readonly && parent === 'form' && (
+                        )}
+                        {readonly && parent === 'form' && (
                         <FaEye
                           size={18}
                           onClick={() => handleEdit(idx)}
                           className={styles.icon}
                         />
-                      )}
-                    </div>
-                  </td>
-                </tr> : null
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ) : null
               ))}
           </tbody>
         </table>

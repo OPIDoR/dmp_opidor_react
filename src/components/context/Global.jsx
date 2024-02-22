@@ -1,5 +1,5 @@
 import React, {
-  createContext, useEffect, useReducer, useState,
+  createContext, useMemo, useReducer, useState,
 } from 'react';
 
 /**
@@ -36,7 +36,7 @@ function Global({ children }) {
   const [persons, setPersons] = useState([]);
   // Plan Creation
   const [researchContext, setResearchContext] = useState(null);
-  const [currentOrg, setCurrentOrg] = useState({})
+  const [currentOrg, setCurrentOrg] = useState({});
   // Dynamic form
   const [formData, setFormData] = useReducer(reducer, {});
   const [loadedRegistries, setLoadedRegistries] = useState({});
@@ -64,53 +64,53 @@ function Global({ children }) {
 
   const setUrlParams = (data = {}) => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search));
-    const urlSearchParams = { ...params, ...data }
-    Object.keys(urlSearchParams).forEach(key => (!urlSearchParams[key] || urlSearchParams[key] === '') && delete urlSearchParams[key]);
+    const urlSearchParams = { ...params, ...data };
+    Object.keys(urlSearchParams).forEach((key) => (!urlSearchParams[key] || urlSearchParams[key] === '') && delete urlSearchParams[key]);
     const urlParams = new URLSearchParams(urlSearchParams);
     return window.history.replaceState(null, null, `${window.location.pathname}?${urlParams.toString()}`);
   };
 
+  const contextValues = useMemo(() => ({
+    locale,
+    setLocale,
+    dmpId,
+    setDmpId,
+    persons,
+    setPersons,
+    // Plan Creation
+    currentOrg,
+    setCurrentOrg,
+    researchContext,
+    setResearchContext,
+    // Dynamic form
+    formData,
+    setFormData,
+    loadedRegistries,
+    setLoadedRegistries,
+    loadedTemplates,
+    setLoadedTemplates,
+    // Write Plan
+    planData,
+    setPlanData,
+    researchOutputs,
+    setResearchOutputs,
+    displayedResearchOutput,
+    setDisplayedResearchOutput,
+    openedQuestions,
+    setOpenedQuestions,
+    questionsWithGuidance,
+    setQuestionsWithGuidance,
+    userId,
+    setUserId,
+    setUrlParams,
+    selectedTemplate,
+    setSelectedTemplate,
+    planInformations,
+    setPlanInformations,
+  }), []);
+
   return (
-    <GlobalContext.Provider
-      value={{
-        locale,
-        setLocale,
-        dmpId,
-        setDmpId,
-        persons,
-        setPersons,
-        // Plan Creation
-        currentOrg,
-        setCurrentOrg,
-        researchContext,
-        setResearchContext,
-        // Dynamic form
-        formData,
-        setFormData,
-        loadedRegistries,
-        setLoadedRegistries,
-        loadedTemplates,
-        setLoadedTemplates,
-        // Write Plan
-        planData,
-        setPlanData,
-        researchOutputs,
-        setResearchOutputs,
-        displayedResearchOutput,
-        setDisplayedResearchOutput,
-        openedQuestions,
-        setOpenedQuestions,
-        questionsWithGuidance,
-        setQuestionsWithGuidance,
-        userId,
-        setUserId,
-        setUrlParams,
-        selectedTemplate,
-        setSelectedTemplate,
-        planInformations,
-        setPlanInformations,
-      }}
-    >
+    <GlobalContext.Provider value={contextValues}>
       {children}
     </GlobalContext.Provider>
   );

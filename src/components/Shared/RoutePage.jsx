@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import bannerImage from "../assets/images/banner.png";
-import styled from "styled-components";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import bannerImage from '../assets/images/banner.png';
 
 const ContactControlCover = styled.div`
   display: block;
@@ -153,13 +153,13 @@ function RoutePage() {
                         <SectionTitle>
                           <h2>DMP OPIDOR</h2>
                           <p>
-                            Est un outil d’aide à la création en ligne de plans de gestion de données (Data Management Plan ou DMP) mis à disposition
+                            Est un outil d’aide à la création en ligne de plans de gestion de données (Data Management Plan ou DMP)mis à disposition
                             de l’Enseignement Supérieur et de la Recherche. Il est hébergé et géré par l’Inist-CNRS. Basé sur le code open source
                             DMPRoadmap, il a été adapté aux besoins de la communauté scientifique française.
                           </p>
                         </SectionTitle>
                       </div>
-                      <div className="row" style={{ marginTop: "40px" }}>
+                      <div className="row" style={{ marginTop: '40px' }}>
                         <div className="row">
                           <strong>Url :</strong>
                           <div>

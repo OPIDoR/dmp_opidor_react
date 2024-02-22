@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import stylesForm from "../assets/css/form.module.css";
-import { GlobalContext } from "../context/Global";
-import Select from "react-select";
-import { researchOutput } from "../../services";
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
+import stylesForm from '../assets/css/form.module.css';
+import { GlobalContext } from '../context/Global';
+import { researchOutput } from '../../services';
 
 const EndButton = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   const [dataProducts, setDataProducts] = useState([]);
 
   useEffect(() => {
-    researchOutput.getPlans("").then((res) => {
+    researchOutput.getPlans('').then((res) => {
       const options = res.data.map((option) => ({
         value: option.id,
         label: option.title,
@@ -37,7 +37,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   const handleSelectPlan = (e) => {
     const planValue = e.value;
     setPlan(planValue);
-    researchOutput.getProducts(planValue, "").then((res) => {
+    researchOutput.getProducts(planValue, '').then((res) => {
       const options = res.data.map((option) => ({
         value: option.uuid,
         label: option.title,
@@ -62,54 +62,58 @@ function ImportResearchOutput({ planId, handleClose, show }) {
   };
 
   return (
-    <div style={{ margin: "25px" }}>
+    <div style={{ margin: '25px' }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Choose plan")}</label>
+          <strong className={stylesForm.dot_label} />
+          <label>{t('Choose plan')}</label>
         </div>
         {dataPlans && (
           <Select
             menuPortalTarget={document.body}
             styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-              singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: 'grey' }),
+              singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+              control: (base) => ({
+                ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)',
+              }),
             }}
             options={dataPlans}
-            style={{ color: "red" }}
+            style={{ color: 'red' }}
             onChange={(e) => handleSelectPlan(e)}
           />
         )}
-        <small className="form-text text-muted">{t("Please choose one of the plan you have access to")}</small>
+        <small className="form-text text-muted">{t('Please choose one of the plan you have access to')}</small>
       </div>
 
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Choisir produit")}</label>
+          <strong className={stylesForm.dot_label} />
+          <label>{t('Choisir produit')}</label>
         </div>
         {dataProducts && (
           <Select
             menuPortalTarget={document.body}
             styles={{
-              menuPortal: (base) => ({ ...base, zIndex: 9999, color: "grey" }),
-              singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-              control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)" }),
+              menuPortal: (base) => ({ ...base, zIndex: 9999, color: 'grey' }),
+              singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+              control: (base) => ({
+                ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)',
+              }),
             }}
             options={dataProducts}
-            style={{ color: "red" }}
+            style={{ color: 'red' }}
             onChange={(e) => handleSelectProduct(e)}
           />
         )}
-        <small className="form-text text-muted">{t("Please choose one of the research outputs")}</small>
+        <small className="form-text text-muted">{t('Please choose one of the research outputs')}</small>
       </div>
       <EndButton>
-        <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
-          {t("Close")}
+        <Button variant="secondary" style={{ marginRight: '8px' }} onClick={handleClose}>
+          {t('Close')}
         </Button>
-        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportPlan}>
-          {t("Import")}
+        <Button variant="outline-primary" style={{ backgroundColor: 'var(--rust)', color: 'white' }} onClick={handleImportPlan}>
+          {t('Import')}
         </Button>
       </EndButton>
     </div>

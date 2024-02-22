@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-hot-toast";
-import styled from "styled-components";
+import React, { useContext, useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-hot-toast';
+import styled from 'styled-components';
 
-import stylesForm from "../assets/css/form.module.css";
-import { GlobalContext } from "../context/Global";
-import { researchOutput } from "../../services";
-import { createOptions } from "../../utils/GeneratorUtils";
-import CustomSelect from "../Shared/CustomSelect";
-import { service } from "../../services";
-import { getErrorMessage, pick } from "../../utils/utils";
+import stylesForm from '../assets/css/form.module.css';
+import { GlobalContext } from '../context/Global';
+import { researchOutput, service } from '../../services';
+import { createOptions } from '../../utils/GeneratorUtils';
+import CustomSelect from '../Shared/CustomSelect';
+import { getErrorMessage, pick } from '../../utils/utils';
 
 const EndButton = styled.div`
   display: flex;
@@ -26,7 +25,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     researchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
-  const [options, setOptions] = useState([{value: '', label: ''}]);
+  const [options, setOptions] = useState([{ value: '', label: '' }]);
   const [abbreviation, setAbbreviation] = useState(undefined);
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
@@ -42,7 +41,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     }
 
     if (!edit) {
-      const maxOrder = Math.max(...researchOutputs.map(ro => ro.order));
+      const maxOrder = Math.max(...researchOutputs.map((ro) => ro.order));
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(false);
@@ -72,8 +71,8 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       title,
       type,
       configuration: {
-        hasPersonalData
-      }
+        hasPersonalData,
+      },
     };
 
     if (edit) {
@@ -90,7 +89,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
 
       setUrlParams({ research_output: displayedResearchOutput.id });
 
-      toast.success(t("Save was successful !"));
+      toast.success(t('Save was successful !'));
       return handleClose();
     }
 
@@ -107,42 +106,42 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
 
     setUrlParams({ research_output: res?.data?.created_ro_id });
 
-    toast.success(t("Research output successfully added."));
+    toast.success(t('Research output successfully added.'));
     return handleClose();
   };
 
   return (
-    <div style={{ margin: "25px" }}>
+    <div style={{ margin: '25px' }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
+          <strong className={stylesForm.dot_label} />
           <label>{t('Short name')}</label>
         </div>
         <input
           value={abbreviation || ''}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("add abbreviation")}
+          placeholder={t('add abbreviation')}
           type="text"
           onChange={(e) => setAbbreviation(e.target.value)}
           maxLength="20"
         />
-        <small className="form-text text-muted">{t("Limited to 20 characters")}</small>
+        <small className="form-text text-muted">{t('Limited to 20 characters')}</small>
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
+          <strong className={stylesForm.dot_label} />
           <label>{t('Name')}</label>
         </div>
         <input
           value={title || ''}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("add title")}
+          placeholder={t('add title')}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
+          <strong className={stylesForm.dot_label} />
           <label>{t('Type')}</label>
         </div>
         {options && (
@@ -156,11 +155,11 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t("Does your research output contain personal data?")}</label>
+          <label>{t('Does your research output contain personal data?')}</label>
         </div>
-          <div className="form-check">
+        <div className="form-check">
           <label className={stylesForm.switch}>
-            <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }}/>
+            <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData); }} />
             <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
               <span className={stylesForm.switchOn}>{t('Yes')}</span>
               <span className={stylesForm.switchOff}>{t('No')}</span>
@@ -170,10 +169,10 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
       </div>
       <EndButton>
         <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
-          {t("Close")}
+          {t('Close')}
         </Button>
-        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
-          {t(edit ? "Save" : "Add")}
+        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: 'var(--rust)', color: 'white', margin: '0 5px 0 5px' }}>
+          {t(edit ? 'Save' : 'Add')}
         </Button>
       </EndButton>
     </div>

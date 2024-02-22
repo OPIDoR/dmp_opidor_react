@@ -1,7 +1,7 @@
-import React, { forwardRef, useState } from "react";
-import ReactDOM from "react-dom";
-import { IoClose } from "react-icons/io5";
-import { TbMinimize, TbMaximize } from "react-icons/tb";
+import React, { forwardRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { IoClose } from 'react-icons/io5';
+import { TbMinimize, TbMaximize } from 'react-icons/tb';
 
 const headerStyle = {
   color: 'var(--white)',
@@ -73,7 +73,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
         )}
       </div>
     </div>
-  )
+  );
 });
 
 export default InnerModalHeader;

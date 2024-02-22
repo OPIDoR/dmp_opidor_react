@@ -42,7 +42,7 @@ function TinyArea({
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
+          <strong className={styles.dot_label} />
           <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
           {
             tooltip && (
@@ -50,14 +50,15 @@ function TinyArea({
                 id={tinyAreaLabelId}
                 place="bottom"
                 effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
                 content={tooltip}
               />
             )
           }
         </div>
 
-        <div style={{ marginTop: "10px" }} key={field.id} ref={editorRef}>
+        <div style={{ marginTop: '10px' }} key={field.id} ref={editorRef}>
           {!readonly && (
             <Editor
               {...newField}
