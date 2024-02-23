@@ -123,7 +123,7 @@ function SelectSingleList({
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
-    const newFragment = { ...field.value, ...data, action: 'update' };
+    const newFragment = { ...field.value, ...data, action: data.action || 'update' };
     field.onChange(newFragment);
 
     setEditedFragment({});
@@ -214,7 +214,7 @@ function SelectSingleList({
                     data-tooltip-id="select-single-list-add-button"
                     onClick={() => {
                       setShowNestedForm(true);
-                      setEditedFragment({});
+                      setEditedFragment({ action: 'create' });
                     }}
                     className={styles.icon}
                   />
