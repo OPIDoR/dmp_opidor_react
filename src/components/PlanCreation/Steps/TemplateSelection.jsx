@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FaInfoCircle } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
@@ -19,6 +19,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const [planTemplates, setPlanTemplates] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [toogleDescription, setToogleDescription] = useState({});
 
   const placeHolder = t('Begin typing to see a list of suggestions');
 
@@ -29,7 +30,18 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const tmpls = {
       default: { title: t('Template recommended by DMP OPIDoR'), templates: [] },
       myOrg: { title: t('Template recommended by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
-      others: { id: 'others', title: t('Templates from other organizations or funders'), type: 'select', data: [] },
+      others: {
+        id: 'others',
+        title: (<Trans
+          defaults="Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)"
+          components={{
+            organizationsIcon: <HiOutlineBuildingOffice2 style={{ verticalAlign: 'middle' }} />,
+            fundersIcon: <PiBank style={{ verticalAlign: 'middle' }} />,
+          }}
+        />),
+        type: 'select',
+        data: [],
+      },
     };
 
     const fetchTemplates = async () => {
@@ -216,54 +228,82 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const list = [];
     for (const template of templates) {
       const element = (
-        <div
-          className={`${styles.step_list} ${template.id === params.selectedTemplate ? styles.checked : ''}`}
-          key={`template-${index}-${template.id}`}
-          style={{
-            cursor: 'pointer',
+        <div>
+          <div style={{
             display: 'flex',
-            justifyContent: 'space-between',
-            marginLeft: '20px',
-            marginTop: 0,
-          }}
-          onClick={() => {
-            localStorage.setItem('templateId', template.id);
-            localStorage.setItem('templateName', template.title);
-            if (params.selectedTemplate === template.id) {
-              return set(null);
-            }
-            return set(template.id, template.title);
-          }}
-        >
-          <div
-            key={`template-${index}-title`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            {template?.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
-            {template.title}
+            width: '100%',
+            alignItems: 'center',
+          }}>
+            <div
+              className={`${styles.step_list} ${template.id === params.selectedTemplate ? styles.checked : ''}`}
+              key={`template-${index}-${template.id}`}
+              style={{
+                cursor: 'pointer',
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'space-between',
+                marginLeft: '20px',
+                marginTop: 0,
+              }}
+              onClick={() => {
+                localStorage.setItem('templateId', template.id);
+                localStorage.setItem('templateName', template.title);
+                if (params.selectedTemplate === template.id) {
+                  return set(null);
+                }
+                return set(template.id, template.title);
+              }}
+            >
+              <div
+                key={`template-${index}-title`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                {template?.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
+                {template.title}
+              </div>
+            </div>
+            {template?.description && (
+              <FaInfoCircle
+                key={`template-${index}-magnifier`}
+                size={18}
+                onClick={() => {
+                  if (!Object.prototype.hasOwnProperty.call(toogleDescription, template.id)) {
+                    setToogleDescription(prevState => ({
+                      ...Object.fromEntries(Object.entries(prevState).map(([key]) => [key, false])),
+                      [template.id]: true
+                    }));
+                  } else {
+                    setToogleDescription(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+                      updatedState[key] = Number.parseInt(key, 10) === template?.id ? !prevState[key] : false;
+                      return updatedState;
+                    }, {}));
+                  }
+                }}
+                style={{
+                  margin: '-10 10px 0 20px',
+                  cursor: 'pointer',
+                }}
+              />
+            )}
           </div>
-          <ReactTooltip
-            id={`template-${index}-description-tooltip`}
-            place="left"
-            variant="info"
-            effect="solid"
-            key={`template-${index}-description-tooltip`}
-            style={{ width: '600px', textAlign: 'center' }}
-          >
-            <div dangerouslySetInnerHTML={{
-              __html: template?.description?.trim(),
-            }} />
-          </ReactTooltip>
-          <FaMagnifyingGlass
-            data-tooltip-id={`template-${index}-description-tooltip`}
-            key={`template-${index}-magnifier`}
-            size={18}
-            style={{ marginRight: '10px', cursor: 'pointer' }}
-          />
+          {template?.description && toogleDescription?.[template.id] && (
+            <div
+              style={{
+                border: '1px solid var(--dark-blue)',
+                padding: '10px',
+                boxSizing: 'border-box',
+                borderRadius: '5px',
+                boxShadow: '0px 0px 20px -10px var(--dark-blue)',
+              }}
+              dangerouslySetInnerHTML={{
+                __html: template?.description?.trim(),
+              }}
+            />
+          )}
         </div>
       );
       list.push(element);
@@ -336,30 +376,18 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
   return (
     <div>
-      <h2>{t('Select a management plan template')}</h2>
+      <h2>{t('Choose a DMP template')}</h2>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && (
         <>
           <Trans
-              defaults="You can choose a template provided by your organization, another organization or a funding agency.<br>The default template is <bold>{{model}}</bold>."
-              values={{
-                model: planTemplates?.default?.templates?.[0]?.title || 'Science Europe : modèle structuré',
+              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all OPIDoR DMP functionalities.<br>They are identified by the icon : <structuredIcon />"
+              components={{
+                br: <br />,
+                structuredIcon: <PiTreeStructureDuotone style={{ verticalAlign: 'middle' }} />,
               }}
-              components={{ br: <br />, bold: <strong /> }}
           />
-          <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0 20px 0' }}>
-            <span>Légende:</span>
-            <Label bsStyle="primary" style={{ marginLeft: '10px', display: 'flex', alignItems: 'center' }}>
-              <PiTreeStructureDuotone size={18} style={{ marginRight: '10px' }}/> <i>{t('Structured template')}</i>
-            </Label>
-            <Label bsStyle="primary" style={{ margin: '0 10px 0 10px', display: 'flex', alignItems: 'center' }}>
-              <PiBank size={18} style={{ marginRight: '10px' }}/> <i>{t('Funders')}</i>
-            </Label>
-            <Label bsStyle="primary" style={{ display: 'flex', alignItems: 'center' }}>
-              <HiOutlineBuildingOffice2 size={18} style={{ marginRight: '10px' }}/> <i>{t('Other organisation')}</i>
-            </Label>
-          </div>
           <div className="column">
             {
               Object.keys(planTemplates).map((index) => (
