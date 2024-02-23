@@ -179,7 +179,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       size={38}
                       style={{ marginRight: '10px', color: 'var(--rust)' }}
                     />
-                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Select the guidance of your plan")}</span>
+                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Click here to select the guidance of your plan")}</span>
                   </div>
                 </div>
               </div>
@@ -197,8 +197,8 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
           <div style={description}>
             <div style={{ textAlign: 'justify' }}>
                <Trans
-                defaults="To help you write your plan, DMP OPIDoR offers you recommendations from different organizations - <bold>you can select up to 6 organizations</bold>."
-                components={{ bold: <strong /> }}
+                defaults="You will find below a list of organizations offering recommendations and advice to guide you in writing your plan while respecting their data management policies. <bold>You can select up to 6 organizations</bold>. Then click to save your selection."
+                components={{ br: <br />, bold: <strong /> }}
                 />
             </div>
             <div style={{ marginTop: '20px' }}>

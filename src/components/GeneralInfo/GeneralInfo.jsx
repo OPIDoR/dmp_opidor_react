@@ -200,11 +200,11 @@ function GeneralInfo({
           <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
             {!error && funders && (
               <div className={styles.container_anr}>
-                <p className={styles.description_anr}>{t('Your project is funded by the ANR or the European Commission, automatically retrieve the administrative information for your project.')}</p>
+                <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
                 {funders.length > 1 && (
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Please select your funding organization")}</label>
+                      <label className={styles.label_anr}>{t("Please select a funder")}</label>
                     </div>
                     <CustomSelect
                       options={funders}
@@ -216,7 +216,7 @@ function GeneralInfo({
                 {fundedProjects.length > 0 && (
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Select project acronym, title or ID")}</label>
+                      <label className={styles.label_anr}>{t("Then Select project acronym, title or ID")}</label>
                     </div>
                     <CustomSelect
                       options={fundedProjects}
