@@ -69,7 +69,7 @@ function DynamicForm({
         setTemplate(res.data.template);
         const fragment = res.data.fragment;
         const answerId = res.data.answer_id
-        setLoadedTemplates({ ...loadedTemplates, [fragment.schema_id]: res.data.schema });
+        setLoadedTemplates({ ...loadedTemplates, [fragment?.schema_id]: res?.data?.schema });
         setFormData({ [fragment.id]: fragment });
         setFragmentId(fragment.id);
         setAnswerId(answerId);
