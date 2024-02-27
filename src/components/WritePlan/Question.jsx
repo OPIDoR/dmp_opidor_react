@@ -351,14 +351,14 @@ function Question({
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} className={question.madmp_schema.classname}  setScriptsData={setScriptsData} readonly={readonly} />
+                  <DynamicForm fragmentId={fragmentId} className={question?.madmp_schema?.classname}  setScriptsData={setScriptsData} readonly={readonly} />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
-                    className={question.madmp_schema.classname}
+                    className={question?.madmp_schema?.classname}
                     setScriptsData={setScriptsData}
                     questionId={question.id}
-                    madmpSchemaId={question.madmp_schema.id}
+                    madmpSchemaId={question.madmp_schema?.id}
                     setFragmentId={setFragmentId}
                     setAnswerId={setAnswerId}
                     readonly={readonly}
