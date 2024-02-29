@@ -91,8 +91,8 @@ function SectionsContent({ planId, templateId, readonly }) {
           delete updatedOpenedQuestions[displayedResearchOutput.id];
           setOpenedQuestions(updatedOpenedQuestions);
 
-          setDisplayedResearchOutput(researchOutputs[0]);
-          setUrlParams({ research_output: researchOutputs[0].id });
+          setDisplayedResearchOutput(data.research_outputs[0]);
+          setUrlParams({ research_output: data.research_outputs[0].id });
           toast.success(t("Research output was successfully deleted."));
         })
         .catch((error) => setError(error));
