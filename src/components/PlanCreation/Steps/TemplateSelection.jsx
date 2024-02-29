@@ -297,6 +297,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
                 padding: '10px',
                 boxSizing: 'border-box',
                 borderRadius: '5px',
+                marginBottom: '20px',
                 boxShadow: '0px 0px 20px -10px var(--dark-blue)',
               }}
               dangerouslySetInnerHTML={{
