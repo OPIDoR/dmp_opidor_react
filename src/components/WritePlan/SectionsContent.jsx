@@ -19,9 +19,10 @@ function SectionsContent({ planId, templateId, readonly }) {
   const {
     openedQuestions,
     setOpenedQuestions,
-    setResearchOutputs,
+    researchOutputs, setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
     setPlanInformations,
+    setUrlParams,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
@@ -83,12 +84,18 @@ function SectionsContent({ planId, templateId, readonly }) {
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
-        researchOutput.deleteResearchOutput(displayedResearchOutput.id, planId).then((res) => {
-          setResearchOutputs(res.data.research_outputs);
-          setDisplayedResearchOutput(res.data.research_outputs[0])
+        researchOutput.deleteResearchOutput(displayedResearchOutput.id, planId).then(({ data }) => {
+          setResearchOutputs(data.research_outputs);
+
+          const updatedOpenedQuestions = { ...openedQuestions };
+          delete updatedOpenedQuestions[displayedResearchOutput.id];
+          setOpenedQuestions(updatedOpenedQuestions);
+
+          setDisplayedResearchOutput(data.research_outputs[0]);
+          setUrlParams({ research_output: data.research_outputs[0].id });
           toast.success(t("Research output was successfully deleted."));
         })
-          .catch((error) => setError(error));
+        .catch((error) => setError(error));
       }
     });
   };
