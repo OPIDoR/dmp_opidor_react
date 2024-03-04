@@ -80,8 +80,11 @@ function SelectWithCreate({
 
   useEffect(() => {
     setFragmentsList(field.value || []);
-    if (registries.length === 1) {
-      setSelectedRegistry(registries[0]);
+
+    const registriesData = Array?.isArray(registries) ? registries : [registries];
+
+    if (registriesData.length === 1) {
+      setSelectedRegistry(registriesData[0]);
     }
   }, [field.value, registries]);
 
