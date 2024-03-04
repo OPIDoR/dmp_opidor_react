@@ -78,7 +78,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       let orgsRes;
       try {
-        orgsRes = await planCreation.getOrgs(params.researchContext);
+        orgsRes = await planCreation.getOrgs(params.researchContext, params.templateLanguage);
       } catch (error) {
         setLoading(false);
         return handleError(error);
@@ -112,7 +112,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       let fundersRes;
       try {
-        fundersRes = await planCreation.getFunders(params.researchContext);
+        fundersRes = await planCreation.getFunders(params.researchContext, params.templateLanguage);
       } catch (error) {
         setLoading(false);
         return handleError(error);
