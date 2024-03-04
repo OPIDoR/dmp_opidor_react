@@ -107,6 +107,7 @@
   "Research Entity Details": "Renseignements sur l'entité de recherche",
   "Test Plan": "Plan de Test",
   "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
+  "Click here to select the guidance of your plan":"Cliquez ici pour sélectionner les recommandations appliquées à votre plan",
   "If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.": "Si votre projet est financé par l’un des financeurs de la liste, vous pouvez récupérer automatiquement les informations administratives que vous avez déjà saisies lors de la demande de subvention.",
   "'{{projectTitle}}' project data has successfully been imported": "Données du projet '{{projectTitle}}' ont été importées avec succès.",
   "An error occurred during the import of the project information": "Une erreur s'est produite lors de l'import des données projet",
@@ -172,7 +173,7 @@
   "Financing agency": "Agence de financement",
   "One or more models are available, which one would you like to select ?": "Un ou plusieurs modèles sont disponibles, lequel souhaitez-vous sélectionner ?",
   "Go back to previous step": "Retour à l'étape précédente",
-  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8221; fournis par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}}).",
+  "This plan is based on the &#8220;<bold>{{model}}</bold>&#8221; model provided by <bold>{{orgName}}</bold> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle &#8220;<bold>{{model}}</bold>&#8221; fourni par <bold>{{orgName}}</bold> (version: {{version}}, publié le : {{publishedDate}}).",
   "Context selection": "Choix du contexte",
   "Type selection": "Choix du type",
   "Template selection": "Choix du modèle",
@@ -194,5 +195,7 @@
   "Registration was successful !" :"L’enregistrement a été effectué avec succès !",
   "Use a customized form" : "Utilisez un formulaire personnalisé",
   "Cancel" : "Annuler",
-  "Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)": "Autres modèles: financeurs (<fundersIcon />) ou organismes de recherche (<organizationsIcon />)"
+  "Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)": "Autres modèles: financeurs (<fundersIcon />) ou organismes de recherche (<organizationsIcon />)",
+  "The template will be in English" : "Le modèle sera en anglais",
+  "Le modèle sera en français" : "The template will be in French"
 }
