@@ -18,6 +18,7 @@ function PersonsList({
   parent = 'form',
   templateToString = [],
   tableHeader = null,
+  overridable = false,
   readonly = false
 }) {
   const { t } = useTranslation();
@@ -81,6 +82,7 @@ function PersonsList({
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"
                       isDisabled={readonly}
+                      overridable={overridable}
                     />
                   )}
                 </td>
