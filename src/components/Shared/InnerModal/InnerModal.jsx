@@ -21,13 +21,15 @@ const InnerModal = forwardRef((props, ref) => {
     display: show ? 'block' : 'none',
     position: 'absolute',
     zIndex: 10,
-    background: 'var(--dark-blue)',
+    background: 'var(--white)',
     borderRadius: '10px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     color: 'var(--white)',
     width: '540px', // 'calc(100% - 30px)'
     top: 15,
     right: '15px',
+    border: '1px solid var(--dark-blue)',
+    paddingBottom: '10px',
   };
 
   return (

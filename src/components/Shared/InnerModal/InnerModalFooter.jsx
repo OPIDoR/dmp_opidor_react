@@ -1,7 +1,7 @@
 import React from "react";
 
 const footerStyle = {
-  color: 'var(--white)',
+  color: 'var(--dark-blue)',
   display: 'flex',
   justifyContent: 'space-between',
   padding: '10px',
@@ -9,6 +9,7 @@ const footerStyle = {
   verticalAlign: 'middle',
   borderRadius: '0 0 10px 10px',
   alignItems: 'center',
+  backgroundColor: 'var(--white)',
 };
 
 function InnerModalFooter({
