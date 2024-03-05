@@ -51,7 +51,7 @@ function InputText({
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder}
-        disabled={readonly === true}
+        readOnly={readonly === true}
       />
     </div>
   );
