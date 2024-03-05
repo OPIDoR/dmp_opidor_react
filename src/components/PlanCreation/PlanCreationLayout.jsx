@@ -11,10 +11,11 @@ function PlanCreationLayout({ locale, currentOrgId, currentOrgName }) {
   return (
     <Global>
       <QueryClientProvider client={queryClient}>
-        <PlanCreation 
+        <PlanCreation
           locale={locale}
-          currentOrgId={currentOrgId} 
-          currentOrgName={currentOrgName}  />
+          currentOrgId={currentOrgId}
+          currentOrgName={currentOrgName}
+        />
       </QueryClientProvider>
     </Global>
   );
