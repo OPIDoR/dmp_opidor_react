@@ -6,6 +6,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
 import { TbBulbFilled } from "react-icons/tb";
+import { IoShuffleOutline } from "react-icons/io5";
 
 import { GlobalContext } from "../context/Global";
 import styles from "../assets/css/write_plan.module.css";
@@ -36,13 +37,19 @@ function Question({
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
   const [scriptsData, setScriptsData] = useState({scripts: []}); // {classname: "class", id: 1}
+
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
+  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false);
+
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
+  const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
+
   const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -56,6 +63,8 @@ function Question({
     setUrlParams({ research_output: queryParameters.get('research_output') });
 
     setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10));
+
+    handleIconClick(null, 'formSelector');
   }, [displayedResearchOutput, question.id, currentResearchOutput]);
 
   /**
@@ -93,38 +102,42 @@ function Question({
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
+
+    handleIconClick(null, 'formSelector');
   };
 
   const closeAllModals = () => {
     setShowCommentModal(false);
-    setFillCommentIconColor("var(--dark-blue)");
+    setFillCommentIconColor('var(--dark-blue)');
 
     setShowGuidanceModal(false);
-    setFillGuidanceIconColor("var(--dark-blue)");
+    setFillGuidanceIconColor('var(--dark-blue)');
+
+    setShowFormSelectorModal(false);
+    setFillFormSelectorIconColor('var(--dark-blue)');
 
     setShowRunsModal(false);
-    setFillRunsIconColor("var(--dark-blue)");
+    setFillRunsIconColor('var(--dark-blue)');
   };
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
    *
-   * @param {Event} e - The click event object.
-   * @param {boolean} collapse - A flag indicating whether the collapse condition is met.
-   * @param {object} q - The question object associated with the click event.
+   * @param {Event} e - The click event object.handleIconClick
    * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
    */
-  const handleIconClick = (e, collapse, q, modalType) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    // setQuestionId(q.id)
+  const handleIconClick = (e, modalType) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
 
     // Check if the current modal type is the same as the one that is about to be opened
     const isModalOpen =
-      (modalType === "comment" && showCommentModal) ||
-      (modalType === "guidance" && showGuidanceModal) ||
-      (modalType === "runs" && showRunsModal);
+      (modalType === 'comment' && showCommentModal) ||
+      (modalType === 'guidance' && showGuidanceModal) ||
+      (modalType === 'runs' && showRunsModal) ||
+      (modalType === 'formSelector' && showFormSelectorModal)
 
     // If the current modal is the same as the one about to be opened, close it
     if (isModalOpen) {
@@ -132,19 +145,24 @@ function Question({
     }
 
     // Open the specified modal and update icon colors
-    setShowCommentModal(modalType === "comment");
+    setShowCommentModal(modalType === 'comment');
     setFillCommentIconColor(
-      modalType === "comment" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'comment' ? 'var(--rust)' : 'var(--dark-blue)',
     );
 
-    setShowGuidanceModal(modalType === "guidance");
+    setShowGuidanceModal(modalType === 'guidance');
     setFillGuidanceIconColor(
-      modalType === "guidance" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'guidance' ? 'var(--rust)' : 'var(--dark-blue)',
     );
 
-    setShowRunsModal(modalType === "runs");
+    setShowRunsModal(modalType === 'runs');
     setFillRunsIconColor(
-      modalType === "runs" ? "var(--rust)" : "var(--dark-blue)"
+      modalType === 'runs' ? 'var(--rust)' : 'var(--dark-blue)',
+    );
+
+    setShowFormSelectorModal(modalType === 'formSelector');
+    setFillFormSelectorIconColor(
+      modalType === 'formSelector' ? 'var(--rust)' : 'var(--dark-blue)',
     );
   };
 
@@ -211,7 +229,7 @@ function Question({
                         data-tooltip-id="scriptTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleIconClick(e, isQuestionOpened(), question, "runs");
+                          handleIconClick(e, "runs");
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -243,7 +261,7 @@ function Question({
                       className={styles.panel_icon}
                       onClick={(e) => {
                         handleQuestionCollapse(true);
-                        handleIconClick(e, isQuestionOpened(), question, "comment");
+                        handleIconClick(e, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
                     >
@@ -272,12 +290,7 @@ function Question({
                           data-tooltip-id="guidanceTip"
                           className={styles.panel_icon}
                           onClick={(e) => {
-                            handleIconClick(
-                              e,
-                              isQuestionOpened(),
-                              question,
-                              "guidance"
-                            );
+                            handleIconClick(e, "guidance");
                           }}
                           style={{ marginLeft: "5px" }}
                         >
@@ -299,6 +312,41 @@ function Question({
                         </div>
                       </div>
                     )}
+
+                  {isQuestionOpened() && (
+                    <div>
+                      <ReactTooltip
+                        id="form-changer-show-button"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t('Select a customized form')}
+                      />
+                      <div
+                        data-tooltip-id="form-changer-show-button"
+                        className={styles.panel_icon}
+                        onClick={(e) => {
+                          handleIconClick(e, "formSelector");
+                        }}
+                        style={{ marginLeft: "5px" }}
+                      >
+                        <IoShuffleOutline
+                          data-tooltip-id="form-change-show-button"
+                          size={32}
+                          fill={
+                            isQuestionOpened()
+                              ? fillFormSelectorIconColor
+                              : "var(--dark-blue)"
+                          }
+                          style={{
+                            color: isQuestionOpened()
+                              ? fillFormSelectorIconColor
+                              : "var(--dark-blue)"
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
 
                   {isQuestionOpened() ? (
                     <TfiAngleUp
@@ -351,7 +399,17 @@ function Question({
             {isQuestionOpened() ? (
               <>
                 {fragmentId && answerId ? (
-                  <DynamicForm fragmentId={fragmentId} className={question?.madmp_schema?.classname}  setScriptsData={setScriptsData} readonly={readonly} />
+                  <DynamicForm
+                    fragmentId={fragmentId}
+                    className={question?.madmp_schema?.classname}
+                    setScriptsData={setScriptsData}
+                    readonly={readonly}
+                    formSelector={{
+                      show: showFormSelectorModal,
+                      setShowFormSelectorModal,
+                      setFillFormSelectorIconColor,
+                    }}
+                  />
                 ) : (
                   <DynamicForm
                     fragmentId={null}
@@ -362,6 +420,11 @@ function Question({
                     setFragmentId={setFragmentId}
                     setAnswerId={setAnswerId}
                     readonly={readonly}
+                    formSelector={{
+                      show: showFormSelectorModal,
+                      setShowFormSelectorModal,
+                      setFillFormSelectorIconColor,
+                    }}
                   />
                 )}
               </>
