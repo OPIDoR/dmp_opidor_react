@@ -2,14 +2,12 @@ import styled from "styled-components";
 
 export const NavBodyText = styled.div`
   background: var(--white);
-  padding: 18px 18px 5px 18px;
+  padding: 5px 18px 5px 18px;
   border-radius: 10px;
   margin: 0 10px 10px 0;
   font-family: "Helvetica Neue", sans-serif;
   color: var(--dark-blue);
-  &:last-child {
-    margin: 0 10px 0 0;
-  }
+  border: 1px solid var(--dark-blue);
 `;
 
 export const ScrollNav = styled.div`
@@ -31,7 +29,7 @@ export const ScrollNav = styled.div`
   &::-webkit-scrollbar-thumb {
     background: var(--dark-blue);
     border-radius: 8px;
-    border: 3px solid var(--white);
+    border: 3px solid var(--dark-blue);
   }
 `;
 

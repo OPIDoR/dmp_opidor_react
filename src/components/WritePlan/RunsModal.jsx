@@ -78,7 +78,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
   }
 
   return (
-    <InnerModal show={show} ref={modalRef} style={{border: "1px solid var(--dark-blue"}}>
+    <InnerModal show={show} ref={modalRef}>
       <InnerModal.Header
         closeButton
         expandButton
@@ -94,7 +94,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
           {t('Runs')}
         </InnerModal.Title>
       </InnerModal.Header>
-      <InnerModal.Body style={{color: "var(--dark-blue)", backgroundColor: "white"}}>
+      <InnerModal.Body style={{ backgroundColor: "white" }}>
         {loading && <CustomSpinner isOverlay={true} />}
         {!loading && error && <CustomError error={error} showWarning={false} handleClose={handleCloseError} />}
         {!error &&
@@ -108,7 +108,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
           </>
         }
       </InnerModal.Body>
-      <InnerModal.Footer style={{backgroundColor: "white", color: "var(--dark-blue)"}}>
+      <InnerModal.Footer>
         {success && <span style={{color: "var(--green)", fontWeight: "bold"}}>{success}</span>}
       </InnerModal.Footer>
     </InnerModal>
