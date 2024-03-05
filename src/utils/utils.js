@@ -58,3 +58,21 @@ export function getErrorMessage(error) {
   }
   return null;
 }
+
+export function clearLocalStorage() {
+  if (localStorage.getItem('researchContext')) {
+    localStorage.removeItem('researchContext');
+  }
+  if (localStorage.getItem('isStructured')) {
+    localStorage.removeItem('isStructured');
+  }
+  if (localStorage.getItem('templateId')) {
+    localStorage.removeItem('templateId');
+  }
+  if (localStorage.getItem('templateName')) {
+    localStorage.removeItem('templateName');
+  }
+  if (localStorage.getItem('templateLanguage')) {
+    localStorage.removeItem('templateLanguage');
+  }
+}
