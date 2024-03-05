@@ -6,12 +6,12 @@ import { FaInfoCircle } from "react-icons/fa";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { Label } from "react-bootstrap";
 
 import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
+import { clearLocalStorage } from '../../../utils/utils';
 
 function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
   const { t } = useTranslation();
@@ -188,23 +188,11 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
     setUrlParams({ step: undefined });
 
-    if (localStorage.getItem('researchContext')) {
-      localStorage.removeItem('researchContext');
-    }
-    if (localStorage.getItem('isStructured')) {
-      localStorage.removeItem('isStructured');
-    }
-    if (localStorage.getItem('templateId')) {
-      localStorage.removeItem('templateId');
-    }
-    if (localStorage.getItem('templateName')) {
-      localStorage.removeItem('templateName');
-    }
-    if (localStorage.getItem('templateLanguage')) {
-      localStorage.removeItem('templateLanguage');
-    }
+    clearLocalStorage();
 
-    window.location = `/plans/${response.data.id}`
+    if (response?.data?.id) {
+      window.location = `/plans/${response?.data?.id}`;
+    }
   };
 
   const handleSelectedList = (selectedValue) => {
@@ -223,93 +211,91 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   }
 
   const createList = ({ index, templates }) => {
-    if (templates.length === 0) { return; }
+    if (templates.length === 0) { return []; }
 
-    const list = [];
-    for (const template of templates) {
-      const element = (
-        <div>
-          <div style={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-          }}>
+    return templates.map((template) => (
+      <div key={`template-content-${index}-${template.id}`}>
+        <div
+          key={`template-row-${index}-${template.id}`}
+          style={{
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+        }}>
+          <div
+            className={`${styles.step_list} ${template.id === params.selectedTemplate ? styles.checked : ''}`}
+            key={`template-${index}-${template.id}`}
+            style={{
+              cursor: 'pointer',
+              display: 'flex',
+              flex: 1,
+              justifyContent: 'space-between',
+              marginLeft: '20px',
+              marginTop: 0,
+            }}
+            onClick={() => {
+              localStorage.setItem('templateId', template.id);
+              localStorage.setItem('templateName', template.title);
+              if (params.selectedTemplate === template.id) {
+                return set(null);
+              }
+              return set(template.id, template.title);
+            }}
+          >
             <div
-              className={`${styles.step_list} ${template.id === params.selectedTemplate ? styles.checked : ''}`}
-              key={`template-${index}-${template.id}`}
+              key={`template-${index}-title`}
               style={{
-                cursor: 'pointer',
                 display: 'flex',
-                flex: 1,
+                alignItems: 'center',
                 justifyContent: 'space-between',
-                marginLeft: '20px',
-                marginTop: 0,
-              }}
-              onClick={() => {
-                localStorage.setItem('templateId', template.id);
-                localStorage.setItem('templateName', template.title);
-                if (params.selectedTemplate === template.id) {
-                  return set(null);
-                }
-                return set(template.id, template.title);
               }}
             >
-              <div
-                key={`template-${index}-title`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                {template?.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
-                {template.title}
-              </div>
+              {template?.structured && <PiTreeStructureDuotone size="18" style={{ marginRight: '10px' }} />}
+              {template.title}
             </div>
-            {template?.description && (
-              <FaInfoCircle
-                key={`template-${index}-magnifier`}
-                size={18}
-                onClick={() => {
-                  if (!Object.prototype.hasOwnProperty.call(toogleDescription, template.id)) {
-                    setToogleDescription(prevState => ({
-                      ...Object.fromEntries(Object.entries(prevState).map(([key]) => [key, false])),
-                      [template.id]: true
-                    }));
-                  } else {
-                    setToogleDescription(prevState => Object.keys(prevState).reduce((updatedState, key) => {
-                      updatedState[key] = Number.parseInt(key, 10) === template?.id ? !prevState[key] : false;
-                      return updatedState;
-                    }, {}));
-                  }
-                }}
-                style={{
-                  margin: '-10 10px 0 20px',
-                  cursor: 'pointer',
-                }}
-              />
-            )}
           </div>
-          {template?.description && toogleDescription?.[template.id] && (
-            <div
-              style={{
-                border: '1px solid var(--dark-blue)',
-                padding: '10px',
-                boxSizing: 'border-box',
-                borderRadius: '5px',
-                marginBottom: '20px',
-                boxShadow: '0px 0px 20px -10px var(--dark-blue)',
+          {template?.description && (
+            <FaInfoCircle
+              key={`template-${index}-magnifier`}
+              size={18}
+              onClick={() => {
+                if (!Object.prototype.hasOwnProperty.call(toogleDescription, template.id)) {
+                  setToogleDescription(prevState => ({
+                    ...Object.fromEntries(Object.entries(prevState).map(([key]) => [key, false])),
+                    [template.id]: true
+                  }));
+                } else {
+                  setToogleDescription(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+                    updatedState[key] = Number.parseInt(key, 10) === template?.id ? !prevState[key] : false;
+                    return updatedState;
+                  }, {}));
+                }
               }}
-              dangerouslySetInnerHTML={{
-                __html: template?.description?.trim(),
+              style={{
+                margin: '-10px 10px 0 20px',
+                cursor: 'pointer',
               }}
             />
           )}
         </div>
-      );
-      list.push(element);
-    }
-    return list;
+        {template?.description && toogleDescription?.[template.id] && (
+          <div
+            key={`description-content-${template.id}`}
+            style={{
+              border: '1px solid var(--dark-blue)',
+              padding: '10px',
+              boxSizing: 'border-box',
+              borderRadius: '5px',
+              marginBottom: '20px',
+              boxShadow: '0px 0px 20px -10px var(--dark-blue)',
+            }}
+            dangerouslySetInnerHTML={{
+              __html: template?.description?.trim(),
+            }}
+          />
+        )}
+      </div>
+    ));
   };
 
   const displayTemplatesByCategory = (index) => {
