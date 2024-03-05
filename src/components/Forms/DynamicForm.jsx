@@ -137,7 +137,7 @@ function DynamicForm({
             setTemplate={setTemplate}
           />
           <FormProvider {...methods}>
-            <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit(() => handleSaveForm(methods.getValues()))}>
+            <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
               <div className="m-4">
                 <FormBuilder
                   template={template.schema}
