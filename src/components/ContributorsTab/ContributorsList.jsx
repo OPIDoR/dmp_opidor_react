@@ -42,7 +42,14 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                     ` - ${contributor.data?.personId}`
                 )}
               </td>
-              <td>{contributor.data?.affiliationName}</td>
+              <td>
+                {contributor.data?.affiliationName}
+                {contributor.data?.affiliationId && (
+                  isValidHttpUrl(contributor.data?.affiliationId) ?
+                    [' - ', <a key={contributor.id} href={contributor.data?.affiliationId} target="_blank" rel="noreferrer">{contributor.data?.affiliationId}</a>] :
+                    ` - ${contributor.data?.affiliationId}`
+                )}
+              </td>
               <td>
                 <ul>
                   {contributor.roles.map((role, ridx) => <li key={`${contributor.id}_${ridx}`}>{role}</li>)}
