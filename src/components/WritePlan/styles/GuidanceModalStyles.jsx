@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const NavBody = styled.div`
   color: #000;
   padding: 0;
-  margin: 0;
+  margin: -1px 0 0 0;
   min-height: 318px;
   max-height: 318px;
+  border-radius: 10px;
+  border: 1px solid var(--dark-blue);
 `;
 
 export const NavBodyText = styled.div`
-  background: var(--white);
-  padding: 10px 5px 5px 10px;
   box-sizing: border-box;
   font-family: "Helvetica Neue", sans-serif;
   color: var(--dark-blue);
@@ -24,6 +24,7 @@ export const ScrollNav = styled.div`
   height: 100%;
   scrollbar-width: bold;
   scrollbar-color: var(--dark-blue) transparent;
+  padding: 10px;
   &::-webkit-scrollbar {
     width: 16px;
     display: flex;

@@ -24,6 +24,7 @@ function DynamicForm({
   setFragmentId = null,
   setAnswerId = null,
   readonly,
+  formSelector = {},
 }) {
   const { t } = useTranslation();
   const {
@@ -135,6 +136,7 @@ function DynamicForm({
             fragmentId={fragmentId}
             setFragment={methods.reset}
             setTemplate={setTemplate}
+            formSelector={formSelector}
           />
           <FormProvider {...methods}>
             <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>

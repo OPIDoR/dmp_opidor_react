@@ -30,6 +30,8 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
       .finally(() => setLoading(false));
   }, [answerId]);
 
+  const updateComments = (comments) => setComments(comments);
+
   return (
     <InnerModal show={show} ref={modalRef}>
       <InnerModal.Header
@@ -45,7 +47,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
           {t('Comments')} ({ comments.length || 0 })
         </InnerModal.Title>
       </InnerModal.Header>
-      <InnerModal.Body>
+      <InnerModal.Body style={{ borderRadius: '0 0 10px 10px' }}>
         {loading && <CustomSpinner />}
         {!loading && error && <CustomError error={error} />}
         {!loading && !error && comments && (
@@ -58,6 +60,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             readonly={readonly}
             inModal={true}
             comments={comments}
+            updateComments={updateComments}
           />
         )}
       </InnerModal.Body>
