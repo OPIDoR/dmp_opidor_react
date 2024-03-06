@@ -5,6 +5,7 @@ import { TbMinimize, TbMaximize } from "react-icons/tb";
 
 const headerStyle = {
   color: 'var(--white)',
+  backgroundColor: 'var(--dark-blue)',
   display: 'flex',
   justifyContent: 'space-between',
   padding: '0 10px',

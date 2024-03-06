@@ -18,6 +18,7 @@ function InputText({
   hidden = false,
   defaultValue = null,
   readonly = false,
+  min,
 }) {
   const { register } = useFormContext();
   const [isRequired] = useState(false);
@@ -52,6 +53,7 @@ function InputText({
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder}
         readOnly={readonly === true}
+        min={min}
       />
     </div>
   );

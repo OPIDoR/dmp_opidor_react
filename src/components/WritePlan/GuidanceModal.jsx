@@ -22,14 +22,15 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
-    color: activeTab === tab ? 'var(--dark-blue)' : 'var(--white)',
+    color: activeTab === tab ? 'var(--white)' : 'var(--dark-blue)',
     textDecoration: 'none',
     cursor: 'pointer',
     display: 'flex',
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
-    background: activeTab === tab ? 'var(--white)' : 'var(--dark-blue)',
+    backgroundColor: activeTab === tab ? 'var(--dark-blue)' : 'var(--white)',
+    border: activeTab === tab ? '1px solid var(--dark-blue)' : '1px solid var(--white)',
     padding: '10px',
     borderRadius: '10px 10px 0 0',
     fontWeight: 'bold',
@@ -66,7 +67,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const getContent = () => {
     return (
       <NavBody>
-        <NavBodyText style={{ borderRadius: '10px' }}>
+        <NavBodyText>
           {data?.[indexTab]?.annotations?.length > 0 ? (
             <>
               {data?.[indexTab]?.annotations?.map((annotation, id) => (

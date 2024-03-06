@@ -28,6 +28,7 @@ function Comment({
   readonly,
   inModal = false,
   commentsData,
+  updateComments,
 }) {
   const { t, i18n } = useTranslation();
   const editorContentRef = useRef(null);
@@ -95,6 +96,8 @@ function Comment({
           setComments(updatedComments);
 
           updateTitle(updatedComments);
+
+          updateComments(updatedComments);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
         })
@@ -185,6 +188,8 @@ function Comment({
 
     updateTitle([newNote, ...comments]);
 
+    updateComments([newNote, ...comments]);
+
     return toast.success(t('Comment sent successfully.'));
   }
 
@@ -258,12 +263,14 @@ function Comment({
               </NavBodyText>
             ))}
           </ScrollNav>
-          <p style={{ color: inModal ? 'var(--white)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('Add a comment to share with collaborators')}</p>
+          <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('Add a comment to share with collaborators')}</p>
           <EditorComment initialValue={text} updateParentText={updateParentText} />
           {!readonly && !loading && !error && (
-            <Button variant="primary" onClick={(e) => handleSave(e)} style={{ float: 'right' }}>
-              {t("Save")}
-            </Button>
+            <div style={{ display: 'flex', justifyContent: 'right', marginTop: '10px' }}>
+              <Button variant="primary" onClick={(e) => handleSave(e)}>
+                {t("Save")}
+              </Button>
+            </div>
           )}
         </div>
       )}

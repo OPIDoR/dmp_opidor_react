@@ -10,10 +10,9 @@ import service from "../../services/service";
 import { GlobalContext } from "../context/Global";
 import CustomSelect from "../Shared/CustomSelect";
 
-function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, setTemplate }) {
+function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, setTemplate, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
-  const [show, setShow] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {
@@ -27,8 +26,9 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
         setLoadedTemplates({ ...loadedTemplates, [tplt.id]: tplt.schema });
         if (tplt.id === selectedTemplateId) setSelectedTemplate(tplt);
       });
-    }).catch(console.error)
-      .finally(() => setLoading(false));
+    })
+    .catch(console.error)
+    .finally(() => setLoading(false));
   }, [className, selectedTemplateId])
 
 
@@ -41,17 +41,16 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
     service.changeForm(fragmentId, selectedTemplate.id, locale).then((res) => {
       setFragment(res.data.fragment);
       setTemplate(res.data.template)
-    }).catch(console.error)
-      .finally(() => {
-        setLoading(false);
-      });
+    })
+    .catch(console.error)
+    .finally(() => setLoading(false));
   }
 
   return (
     <>
       {availableTemplates.length > 1 && (
         <>
-          {show && (
+          {formSelector.show && (
             <div className={styles.container} style={{ position: 'relative' }}>
               {selectedTemplate && (
                 <>
@@ -68,7 +67,13 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
                     selectedOption={selectedTemplate}
                   />
                   <div className={styles.form_selector_footer}>
-                    <Button onClick={() => setShow(false)} style={{ margin: '0 5px 0 5px' }}>
+                    <Button
+                      onClick={() => {
+                        formSelector.setFillFormSelectorIconColor("var(--dark-blue)");
+                        formSelector.setShowFormSelectorModal(false);
+                      }}
+                      style={{ margin: '0 5px 0 5px' }}
+                    >
                       {t("Close")}
                     </Button>
                     <Button onClick={handleChangeForm} bsStyle="primary" type="submit" style={{ margin: '0 5px 0 5px' }}>
@@ -77,23 +82,6 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
                   </div>
                 </>
               )}
-            </div>
-          )}
-          {!show && (
-            <div className={styles.form_change_toggle}>
-              <ReactTooltip
-                id="form-change-show-button"
-                place="bottom"
-                effect="solid"
-                variant="info"
-                content={t('Select a customized form')}
-              />
-              <FaShuffle
-                data-tooltip-id="form-change-show-button"
-                size={18}
-                onClick={() => setShow(true)}
-                style={{ cursor: 'pointer', margin: '0 2px 0 2px' }}
-              />
             </div>
           )}
         </>

@@ -124,12 +124,12 @@ function FormBuilder({ template, readonly }) {
       if(prop.schema_id && prop.type === 'object') {
         formFields.push(
           <SubForm
-          key={key}
-          label={formLabel}
-          propName={key}
-          tooltip={tooltip}
-          templateId={prop.schema_id}
-          readonly={readonly || isConst}
+            key={key}
+            label={formLabel}
+            propName={key}
+            tooltip={tooltip}
+            templateId={prop.schema_id}
+            readonly={readonly || isConst}
           />
         )
         continue;
@@ -217,6 +217,7 @@ function FormBuilder({ template, readonly }) {
               hidden={prop.hidden}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
+              min={prop.type === 'number' ? 0 : undefined}
             ></InputText>
           );
         }
