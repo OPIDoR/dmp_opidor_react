@@ -123,7 +123,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
         }}
       >
         <InnerModal.Title>
-          {t('Guidances')}
+          {t('Guidance')}
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body>

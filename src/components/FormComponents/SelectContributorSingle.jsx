@@ -45,6 +45,7 @@ function SelectContributorSingle({
   const [defaultRole] = useState(defaultValue?.role || null);
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
+  const [overridableRole, setOverridableRole] = useState(false);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
@@ -90,6 +91,7 @@ function SelectContributorSingle({
         setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateId = contributorProps.person.schema_id;
+        setOverridableRole(contributorProps.role.overridable || false);
         service.getSchema(personTemplateId).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: res.data });
@@ -97,7 +99,9 @@ function SelectContributorSingle({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateId];
-      const personTemplateId = contributorTemplate?.schema?.properties.person.schema_id;
+      const contributorProps = contributorTemplate?.schema?.properties || {}
+      const personTemplateId = contributorProps.person.schema_id;
+      setOverridableRole(contributorProps.role.overridable || false);
       setTemplate(loadedTemplates[personTemplateId]);
     }
   }, [templateId]);
@@ -261,6 +265,7 @@ function SelectContributorSingle({
             defaultRole={defaultRole}
             templateToString={template?.schema?.to_string}
             tableHeader={t('Selected value')}
+            overridable={overridableRole}
             readonly={readonly}
           ></PersonsList>
         )}

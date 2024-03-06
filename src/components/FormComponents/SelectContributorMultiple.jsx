@@ -44,6 +44,7 @@ function SelectContributorMultiple({
   const [defaultRole] = useState(defaultValue?.[0]?.role || null);
   const [contributorList, setContributorList] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
+  const [overridableRole, setOverridableRole] = useState(false);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
   useEffect(() => {
@@ -89,6 +90,7 @@ function SelectContributorMultiple({
         setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateId = contributorProps.person.schema_id;
+        setOverridableRole(contributorProps.role.overridable || false);
         service.getSchema(personTemplateId).then((resSchema) => {
           const personTemplate = resSchema.data;
           setTemplate(personTemplate);
@@ -97,7 +99,9 @@ function SelectContributorMultiple({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateId];
-      const personTemplateId = contributorTemplate?.schema?.properties.person.schema_id;
+      const contributorProps = contributorTemplate?.schema?.properties || {}
+      const personTemplateId = contributorProps.person.schema_id;
+      setOverridableRole(contributorProps.role.overridable || false);
       setTemplate(loadedTemplates[personTemplateId]);
     }
   }, [templateId]);
@@ -283,6 +287,7 @@ function SelectContributorMultiple({
             defaultRole={defaultRole}
             templateToString={template?.schema?.to_string}
             tableHeader={header}
+            overridable={overridableRole}
             readonly={readonly}
           ></PersonsList>
         )}
