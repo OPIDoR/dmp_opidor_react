@@ -148,7 +148,7 @@
   "Display importants guidances": "Afficher les recommendations importantes",
   "No data available": "Aucune donnée disponible",
   "Comments": "Commentaires",
-  "Guidances": "Recommandations",
+  "Guidance": "Recommandations",
   "Short name": "Nom abrégé",
   "Name": "Nom",
   "Edit research output": "Modifier le produit de recherche",
@@ -197,5 +197,7 @@
   "Cancel" : "Annuler",
   "Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)": "Autres modèles: financeurs (<fundersIcon />) ou organismes de recherche (<organizationsIcon />)",
   "The template will be in English" : "Le modèle sera en anglais",
-  "Le modèle sera en français" : "The template will be in French"
+  "The template will be in French":"Le modèle sera en français",
+  "French": "Français",
+  "English (UK)": "Anglais (GB)"
 }
