@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useRef, useCallback } from "rea
 import { useTranslation, Trans } from "react-i18next";
 import { format } from "date-fns";
 import { fr, enGB } from "date-fns/locale";
+import { useTour } from '@reactour/tour'
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -24,7 +25,7 @@ function WritePlan({
   currentOrgId,
   currentOrgName,
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const {
     setFormData,
     setPlanData,
@@ -127,12 +128,15 @@ function WritePlan({
     }
   }
 
+  const { setIsOpen } = useTour();
+
   return (
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
       {!error && researchOutputs && (
         <>
+          <button onClick={() => setIsOpen(true)}>Open Tour</button>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} />
           </div>
