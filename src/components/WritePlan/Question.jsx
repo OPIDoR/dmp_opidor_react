@@ -183,7 +183,8 @@ function Question({
                       fontWeight: 'bold',
                       whiteSpace: 'break-spaces',
                       textAlign: 'justify',
-                      hyphens: 'auto'
+                      hyphens: 'auto',
+                      paddingRight: '20px',
                     }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([question.text]),
@@ -194,8 +195,9 @@ function Question({
                 <span
                   className={styles.question_icons}
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    maxWidth: '200px',
                   }}
                 >
                   {scriptsData.scripts.length > 0 && (
