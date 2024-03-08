@@ -160,6 +160,7 @@ function Question({
     <>
       {
         <Panel
+          id="question-panel"
           expanded={isQuestionOpened()}
           className={styles.panel}
           style={{
@@ -192,7 +193,8 @@ function Question({
                   />
                 </div>
 
-                <span
+                <div
+                  id="icons-container"
                   className={styles.question_icons}
                   style={{
                     display: 'flex',
@@ -315,7 +317,7 @@ function Question({
                       className={styles.down_icon}
                     />
                   )}
-                </span>
+                </div>
               </div>
             </Panel.Title>
           </Panel.Heading>

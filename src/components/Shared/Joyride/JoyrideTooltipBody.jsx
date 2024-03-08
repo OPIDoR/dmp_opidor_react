@@ -7,7 +7,7 @@ const bodyStyle = {
   boxSizing: 'border-box',
   alignItems: 'center',
   background: 'var(--white)',
-  minHeight: '200px',
+  minHeight: '100px',
 };
 
 function JoyrideTooltipBody({
