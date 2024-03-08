@@ -12,6 +12,7 @@ import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
+import { useTour } from "../Shared/Joyride/JoyrideContext";
 
 const locales = { fr, en: enGB };
 
@@ -24,7 +25,7 @@ function WritePlan({
   currentOrgId,
   currentOrgName,
 }) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const {
     setFormData,
     setPlanData,
@@ -40,6 +41,8 @@ function WritePlan({
   const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { setIsOpen } = useTour();
 
   const handleWebsocketData = useCallback((data) => {
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
@@ -133,6 +136,7 @@ function WritePlan({
       {error && <CustomError error={error}></CustomError>}
       {!error && researchOutputs && (
         <>
+          <button onClick={() => setIsOpen(true)}>Open tour</button>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} />
           </div>
