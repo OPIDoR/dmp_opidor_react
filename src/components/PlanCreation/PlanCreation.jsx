@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
-import { t } from 'i18next';
 
 import { CustomButton } from "../Styled";
 import { ContextSelection , TemplateSelection, LangSelection } from './Steps';

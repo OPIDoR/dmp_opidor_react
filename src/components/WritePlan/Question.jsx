@@ -178,6 +178,7 @@ function Question({
     <>
       {
         <Panel
+          id="question-panel"
           expanded={isQuestionOpened()}
           className={styles.panel}
           style={{
@@ -201,7 +202,8 @@ function Question({
                       fontWeight: 'bold',
                       whiteSpace: 'break-spaces',
                       textAlign: 'justify',
-                      hyphens: 'auto'
+                      hyphens: 'auto',
+                      paddingRight: '20px',
                     }}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize([question.text]),
@@ -209,11 +211,13 @@ function Question({
                   />
                 </div>
 
-                <span
+                <div
+                  id="icons-container"
                   className={styles.question_icons}
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    maxWidth: '200px',
                   }}
                 >
                   {scriptsData.scripts.length > 0 && (
@@ -361,7 +365,7 @@ function Question({
                       className={styles.down_icon}
                     />
                   )}
-                </span>
+                </div>
               </div>
             </Panel.Title>
           </Panel.Heading>
