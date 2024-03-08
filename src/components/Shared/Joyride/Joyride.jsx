@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ReactJoyride, { STATUS, EVENTS } from 'react-joyride';
 import { useTranslation } from 'react-i18next';
 import JoyrideTooltip from './JoyrideTooltip.jsx';
-import { guidedTour } from '../../../services';
+import { guidedTour } from '../../../services/index.js';
+import { useTour } from './JoyrideContext.jsx';
 
-function Joyride({ locale = 'fr_FR', tourName, steps, run = false, setRunState = null}) {
+function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
   const { t, i18n } = useTranslation();
+
+  const { isOpen, setIsOpen } = useTour();
 
   const localeSteps = {
     skip: t('Ignore the guided tour'),
@@ -18,7 +21,6 @@ function Joyride({ locale = 'fr_FR', tourName, steps, run = false, setRunState =
   steps = steps.map((step) => ({ ...step, locale: localeSteps }))
 
   const [guidedTourSteps, setGuidedTourSteps] = useState({
-    run,
     stepIndex: 0,
     steps,
   });
@@ -29,17 +31,17 @@ function Joyride({ locale = 'fr_FR', tourName, steps, run = false, setRunState =
     i18n.changeLanguage(locale.substring(0, 2));
     guidedTour.getTour(tourName)
       .then(({ data }) => {
-        setGuidedTourSteps((prevState) => ({ ...prevState, run: run || !data?.tour?.ended }));
+        setGuidedTourSteps((prevState) => ({ ...prevState, run: isOpen || !data?.tour?.ended }));
         setEnded(data?.tour?.ended);
       });
-  }, [run]);
+  }, [isOpen]);
 
   const handleJoyrideCallback = (data) => {
     const { status, index, type } = data;
 
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setGuidedTourSteps((prevState) => ({ ...prevState, run: false }));
-      setRunState && setRunState(false);
+      setIsOpen && setIsOpen(false);
       // TODO dont make query when ended is true in database (run button)
       !ended && guidedTour.endTour(tourName).then(({ data }) => setEnded(data?.tour?.ended));
     }
@@ -88,23 +90,28 @@ function Joyride({ locale = 'fr_FR', tourName, steps, run = false, setRunState =
   };
 
   return (
-    <ReactJoyride
-      callback={handleJoyrideCallback}
-      continuous
-      hideCloseButton
-      run={guidedTourSteps.run}
-      scrollToFirstStep
-      showProgress
-      showSkipButton
-      steps={guidedTourSteps.steps}
-      styles={{
-        options: {
-          zIndex: 10000,
-          arrowColor: 'var(--rust)',
-        },
-      }}
-      tooltipComponent={joyrideTooltip}
-    />
+    <>
+      {isOpen && (
+        <ReactJoyride
+          callback={handleJoyrideCallback}
+          continuous
+          hideCloseButton
+          run={guidedTourSteps.run}
+          scrollToFirstStep
+          showProgress
+          showSkipButton
+          steps={guidedTourSteps.steps}
+          styles={{
+            options: {
+              zIndex: 10000,
+              arrowColor: 'var(--rust)',
+            },
+          }}
+          tooltipComponent={joyrideTooltip}
+        />
+      )}
+      {children}
+    </>
   );
 }
 

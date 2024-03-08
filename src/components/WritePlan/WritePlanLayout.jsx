@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import Global from '../context/Global.jsx';
 import WritePlan from './WritePlan.jsx'
 import '../../i18n.js';
 
-import Joyride from './Joyride/Joyride.jsx';
+import Joyride from '../Shared/Joyride/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
 
 const toastOptions = {
@@ -21,19 +21,9 @@ function WritePlanLayout({
   currentOrgName,
   readonly,
 }) {
-  const [run, setRunState] = useState(false);
-
-  const setRun = (event) => {
-    event.preventDefault();
-
-    setRunState(true);
-  };
-
   return(
     <Global>
-      <Joyride tourName="write_plan" steps={writePlanSteps} locale={locale} run={run} setRunState={setRunState}>
-      </Joyride>
-      <button onClick={setRun}>Run</button>
+      <Joyride tourName="write_plan" steps={writePlanSteps} locale={locale}>
         <WritePlan
           planId={planId}
           templateId={templateId}
@@ -44,6 +34,7 @@ function WritePlanLayout({
           readonly={readonly}
           className="research-outputs-tabs"
         />
+      </Joyride>
       <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
