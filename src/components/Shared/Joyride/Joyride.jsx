@@ -31,6 +31,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
     i18n.changeLanguage(locale.substring(0, 2));
     guidedTour.getTour(tourName)
       .then(({ data }) => {
+        setIsOpen(!data?.tour?.ended);
         setGuidedTourSteps((prevState) => ({ ...prevState, run: isOpen || !data?.tour?.ended }));
         setEnded(data?.tour?.ended);
       });
