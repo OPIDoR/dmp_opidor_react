@@ -50,6 +50,8 @@ function Question({
 
   const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
 
+  const { formSelectors } = useContext(GlobalContext);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -317,7 +319,7 @@ function Question({
                       </div>
                     )}
 
-                  {isQuestionOpened() && (
+                  {isQuestionOpened() && formSelectors[fragmentId] && (
                     <div>
                       <ReactTooltip
                         id="form-changer-show-button"

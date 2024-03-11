@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { FaShuffle } from "react-icons/fa6";
 import { Button } from 'react-bootstrap';
 
 import styles from '../assets/css/form_selector.module.css';
@@ -16,15 +14,18 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
   const [availableTemplates, setAvailableTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {
-    loadedTemplates, setLoadedTemplates, locale
+    locale,
+    setFormSelector,
+    loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    service.getSchemasByClass(className).then((res) => {
-      setAvailableTemplates(res.data);
-      res.data.forEach((tplt) => {
-        setLoadedTemplates({ ...loadedTemplates, [tplt.id]: tplt.schema });
-        if (tplt.id === selectedTemplateId) setSelectedTemplate(tplt);
+    service.getSchemasByClass(className).then(({ data }) => {
+      setAvailableTemplates(data);
+      setFormSelector((prev) => ({ ...prev, [fragmentId]: data?.length > 1 }));
+      data.forEach((template) => {
+        setLoadedTemplates({ ...loadedTemplates, [template.id]: template.schema });
+        if (template.id === selectedTemplateId) setSelectedTemplate(template);
       });
     })
     .catch(console.error)
