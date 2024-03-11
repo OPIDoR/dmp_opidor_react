@@ -28,7 +28,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     const tmpls = {
-      default: { title: t('Common template recommended by DMP OPIDoR'), templates: [] },
+      default: { title: t('Common template proposed by DMP OPIDoR'), templates: [] },
       myOrg: { title: t('Template proposed by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
       others: {
         id: 'others',
