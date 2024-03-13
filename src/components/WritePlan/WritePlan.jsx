@@ -157,7 +157,7 @@ function WritePlan({
                   place="bottom"
                   effect="solid"
                   variant="info"
-                  content={t('Visite guidée')}
+                  content={t('Run guided tour')}
                 />
                 <FaRegCompass
                   data-tooltip-id="guided-tour"
