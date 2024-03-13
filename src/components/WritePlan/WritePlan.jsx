@@ -152,23 +152,25 @@ function WritePlan({
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-                <ReactTooltip
-                  id="guided-tour"
-                  place="bottom"
-                  effect="solid"
-                  variant="info"
-                  content={t('Run guided tour')}
-                />
-                <FaRegCompass
-                  data-tooltip-id="guided-tour"
-                  size="32"
-                  onClick={() => setIsOpen(true)}
-                  style={{
-                    cursor: 'pointer',
-                    marginRight: '10px',
-                    color: 'var(--dark-blue)',
-                  }}
-                />
+                <div id="guided-tour-compass">
+                  <ReactTooltip
+                    id="guided-tour"
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={t('Run guided tour')}
+                  />
+                  <FaRegCompass
+                    data-tooltip-id="guided-tour"
+                    size="32"
+                    onClick={() => setIsOpen(true)}
+                    style={{
+                      cursor: 'pointer',
+                      marginRight: '10px',
+                      color: 'var(--dark-blue)',
+                    }}
+                  />
+                </div>
                 <div style={{
                   marginTop: '5px',
                 }}>

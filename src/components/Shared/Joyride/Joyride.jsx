@@ -15,6 +15,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
     back: t('Previous'),
     next: t('Next'),
     close: t('Close'),
+    open: t('Resume guided tour'),
     last: t('Finish'),
   };
 

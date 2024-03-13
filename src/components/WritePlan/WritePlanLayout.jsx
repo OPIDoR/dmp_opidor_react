@@ -7,6 +7,7 @@ import '../../i18n.js';
 
 import Joyride from '../Shared/Joyride/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
+import { useTranslation } from 'react-i18next';
 
 const toastOptions = {
   duration: 5000,
@@ -21,9 +22,11 @@ function WritePlanLayout({
   currentOrgName,
   readonly,
 }) {
+  const { t } = useTranslation();
+
   return(
     <Global>
-      <Joyride tourName="write_plan" steps={writePlanSteps} locale={locale}>
+      <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
         <WritePlan
           planId={planId}
           templateId={templateId}
