@@ -222,32 +222,36 @@ function Question({
                     maxWidth: '200px',
                   }}
                 >
-                  {scriptsData.scripts.length > 0 && (
+                  { questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
                     <div>
                       <ReactTooltip
-                        id="scriptTip"
+                        id="guidanceTip"
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("Script")}
+                        content={t("Guidances")}
                       />
                       <div
-                        data-tooltip-id="scriptTip"
+                        data-tooltip-id="guidanceTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleIconClick(e, "runs");
+                          handleIconClick(e, "guidance");
                         }}
                         style={{ marginLeft: "5px" }}
                       >
                         {isQuestionOpened() && (
-                          <BsGear
+                          <TbBulbFilled
                             size={32}
-                            style={{ marginTop: "6px" }}
                             fill={
                               isQuestionOpened()
-                                ? fillRunsIconColor
+                                ? fillGuidanceIconColor
                                 : "var(--dark-blue)"
                             }
+                            style={{
+                              color: isQuestionOpened()
+                                ? fillGuidanceIconColor
+                                : "var(--dark-blue)"
+                            }}
                           />
                         )}
                       </div>
@@ -282,43 +286,6 @@ function Question({
                     </div>
                   </div>
 
-                  {
-                    questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
-                      <div>
-                        <ReactTooltip
-                          id="guidanceTip"
-                          place="bottom"
-                          effect="solid"
-                          variant="info"
-                          content={t("Guidances")}
-                        />
-                        <div
-                          data-tooltip-id="guidanceTip"
-                          className={styles.panel_icon}
-                          onClick={(e) => {
-                            handleIconClick(e, "guidance");
-                          }}
-                          style={{ marginLeft: "5px" }}
-                        >
-                          {isQuestionOpened() && (
-                            <TbBulbFilled
-                              size={32}
-                              fill={
-                                isQuestionOpened()
-                                  ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
-                              }
-                              style={{
-                                color: isQuestionOpened()
-                                  ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
-                              }}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    )}
-
                   {isQuestionOpened() && formSelectors[fragmentId] && (
                     <div>
                       <ReactTooltip
@@ -350,6 +317,38 @@ function Question({
                               : "var(--dark-blue)"
                           }}
                         />
+                      </div>
+                    </div>
+                  )}
+
+                  {scriptsData.scripts.length > 0 && (
+                    <div>
+                      <ReactTooltip
+                        id="scriptTip"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t("Script")}
+                      />
+                      <div
+                        data-tooltip-id="scriptTip"
+                        className={styles.panel_icon}
+                        onClick={(e) => {
+                          handleIconClick(e, "runs");
+                        }}
+                        style={{ marginLeft: "5px" }}
+                      >
+                        {isQuestionOpened() && (
+                          <BsGear
+                            size={32}
+                            style={{ marginTop: "6px" }}
+                            fill={
+                              isQuestionOpened()
+                                ? fillRunsIconColor
+                                : "var(--dark-blue)"
+                            }
+                          />
+                        )}
                       </div>
                     </div>
                   )}
