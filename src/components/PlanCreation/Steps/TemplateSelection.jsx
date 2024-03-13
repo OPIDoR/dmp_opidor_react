@@ -3,7 +3,6 @@ import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaInfoCircle } from "react-icons/fa";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
@@ -76,6 +75,40 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         .filter(({ id }) => id !== defaultTemplateID)
         .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [];
 
+      let fundersRes;
+      try {
+        fundersRes = await planCreation.getFunders(params.researchContext, params.templateLanguage);
+      } catch (error) {
+        setLoading(false);
+        return handleError(error);
+      }
+
+      fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
+
+      for await (const funder of fundersRes) {
+        let fundersTemplatesRes;
+
+        try {
+          fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, params.researchContext);
+        } catch (error) {
+          setLoading(false);
+          handleError(error);
+          break;
+        }
+
+        tmpls.others.data.push({
+          ...funder,
+          type: 'funder',
+          templates: fundersTemplatesRes?.data
+            // .filter(({ structured }) => structured === isStructured)
+            .map((obj) => ({ ...obj, type: 'funder' }))
+            .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
+            .filter(({ id }) => id !== defaultTemplateID)
+            .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
+          selected: false,
+        });
+      }
+
       let orgsRes;
       try {
         orgsRes = await planCreation.getOrgs(params.researchContext, params.templateLanguage);
@@ -104,40 +137,8 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           templates: orgTemplatesRes?.data
             // .filter(({ structured }) => structured === params.isStructured)
             .map((obj) => ({ ...obj, type: 'org' }))
+            .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
             .filter(({ id }) => id !== defaultTemplateID)
-            .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
-          selected: false,
-        });
-      }
-
-      let fundersRes;
-      try {
-        fundersRes = await planCreation.getFunders(params.researchContext, params.templateLanguage);
-      } catch (error) {
-        setLoading(false);
-        return handleError(error);
-      }
-
-      fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
-
-      for await (const funder of fundersRes) {
-        let fundersTemplatesRes;
-
-        try {
-          fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, params.researchContext);
-        } catch (error) {
-          setLoading(false);
-          handleError(error);
-          break;
-        }
-
-        tmpls.others.data.push({
-          ...funder,
-          type: 'funder',
-          templates: fundersTemplatesRes?.data
-            // .filter(({ structured }) => structured === isStructured)
-            .map((obj) => ({ ...obj, type: 'funder' }))
-            // .filter(({ id }) => id !== defaultTemplateID)
             .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
           selected: false,
         });
@@ -183,7 +184,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         errorMessage = error.message;
       }
 
-      toast.error(errorMessage);
+      return toast.error(errorMessage);
     }
 
     setUrlParams({ step: undefined });

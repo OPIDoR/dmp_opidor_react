@@ -8,12 +8,12 @@ function LangSelection({ prevStep, nextStep, set, params }) {
 
   const languages = [
     {
-      label: 'French',
+      label: t('Français'),
       value: 'fr-FR',
       description: t('The template will be in French'),
     },
     {
-      label: 'English (UK)',
+      label: t('English (GB)'),
       value: 'en-GB',
       description: t('The template will be in English'),
     },
