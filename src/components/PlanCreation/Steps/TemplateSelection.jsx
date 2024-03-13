@@ -3,7 +3,6 @@ import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaInfoCircle } from "react-icons/fa";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
