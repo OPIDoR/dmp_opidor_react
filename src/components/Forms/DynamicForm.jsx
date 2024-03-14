@@ -129,15 +129,15 @@ function DynamicForm({
       {error && <p>error</p>}
       {!error && template && (
         <>
-          {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
-          <FormSelector
+          {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
+          {!readonly && <FormSelector
             className={className}
             selectedTemplateId={template.id}
             fragmentId={fragmentId}
             setFragment={methods.reset}
             setTemplate={setTemplate}
             formSelector={formSelector}
-          />
+          />}
           <FormProvider {...methods}>
             <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
               <div className="m-4">
@@ -146,7 +146,7 @@ function DynamicForm({
                   readonly={readonly}
                 />
               </div>
-              <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />
+              {!readonly && <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />}
             </form>
           </FormProvider>
         </>
