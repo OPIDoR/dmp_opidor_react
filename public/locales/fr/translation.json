@@ -193,7 +193,7 @@
   "Create your plan in 3 steps": "Créez votre plan en 3 étapes",
   "Read article": "Lire l'article",
   "Registration was successful !" :"L’enregistrement a été effectué avec succès !",
-  "Use a customized form" : "Utilisez un formulaire personnalisé",
+  "List of customized forms" : "Liste de formulaires personnalisés",
   "Cancel" : "Annuler",
   "Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)": "Autres modèles: financeurs (<fundersIcon />) ou organismes de recherche (<organizationsIcon />)",
   "The template will be in English" : "Le modèle sera en anglais",
@@ -223,5 +223,6 @@
   "For information on data management at your facility, click on the envelope.": "Pour avoir des informations concernant la gestion de données dans votre établissement, cliquez sur l’enveloppe.",
   "To report a technical error or provide feedback on the OPIDoR DMP tool, click on the key.": "Pour signaler une erreur technique ou faire un retour sur l’outil DMP OPIDoR, cliquez sur la clé.",
   "Resume guided tour": "Reprendre la visite guidée",
-  "Question not answered.": "Question sans réponse"
+  "Question not answered.": "Question sans réponse",
+  "Tools": "Outils"
 }
