@@ -117,7 +117,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           fragmentId={fragmentId}
           data={editedPerson}
           template={template}
-          label={t('Edit a person or an organisation')}
+          label={t('Edit: person or organisation')}
           readonly={readonly}
           show={show}
           handleSave={handleSave}
@@ -129,7 +129,7 @@ function ContributorsTab({ planId, locale, readonly }) {
             setShow(true);
             setIndex(null);
           }}
-          title={t("Add a person or an organisation")}
+          title={t("Add: person or organisation")}
           buttonColor="rust"
           position="start"
         ></CustomButton>

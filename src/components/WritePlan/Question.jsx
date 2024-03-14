@@ -296,7 +296,7 @@ function Question({
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t('Select a customized form')}
+                        content={t('List of customized forms')}
                       />
                       <div
                         data-tooltip-id="form-changer-show-button"
@@ -331,7 +331,7 @@ function Question({
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("Script")}
+                        content={t("Tools")}
                       />
                       <div
                         data-tooltip-id="scriptTip"
