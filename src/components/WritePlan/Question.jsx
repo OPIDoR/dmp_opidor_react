@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
-import { Panel } from "react-bootstrap";
+import { Panel, Label } from "react-bootstrap";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
@@ -36,7 +36,7 @@ function Question({
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
-  const [scriptsData, setScriptsData] = useState({scripts: []}); // {classname: "class", id: 1}
+  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
 
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -222,14 +222,14 @@ function Question({
                     maxWidth: '200px',
                   }}
                 >
-                  { questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+                  {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
                     <div>
                       <ReactTooltip
                         id="guidanceTip"
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("Guidances")}
+                        content={t("Guidance")}
                       />
                       <div
                         data-tooltip-id="guidanceTip"
@@ -258,33 +258,36 @@ function Question({
                     </div>
                   )}
 
-                  <div>
-                    <ReactTooltip
-                      id="commentTip"
-                      place="bottom"
-                      effect="solid"
-                      variant="info"
-                      content={t("Comments")}
-                    />
-                    <div
-                      data-tooltip-id="commentTip"
-                      className={styles.panel_icon}
-                      onClick={(e) => {
-                        handleQuestionCollapse(true);
-                        handleIconClick(e, "comment");
-                      }}
-                      style={{ marginLeft: "5px" }}
-                    >
-                      <CommentSVG
-                        size={32}
-                        fill={
-                          isQuestionOpened()
-                            ? fillCommentIconColor
-                            : "var(--dark-blue)"
-                        }
+                  {fragmentId && answerId && (
+                    <div>
+                      <ReactTooltip
+                        id="commentTip"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t("Comments")}
                       />
+                      <div
+                        data-tooltip-id="commentTip"
+                        className={styles.panel_icon}
+                        onClick={(e) => {
+                          handleQuestionCollapse(true);
+                          handleIconClick(e, "comment");
+                        }}
+                        style={{ marginLeft: "5px" }}
+                      >
+                        <CommentSVG
+                          size={32}
+                          fill={
+                            isQuestionOpened()
+                              ? fillCommentIconColor
+                              : "var(--dark-blue)"
+                          }
+                        />
+                      </div>
                     </div>
-                  </div>
+
+                  )}
 
                   {isQuestionOpened() && formSelectors[fragmentId] && (
                     <div>
@@ -373,7 +376,7 @@ function Question({
           <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
             {isQuestionOpened() && (
               <div>
-                {scriptsData.scripts.length > 0 && (
+                {!readonly && scriptsData.scripts.length > 0 && (
                   <RunsModal
                     show={showRunsModal}
                     setshowModalRuns={setShowRunsModal}
@@ -415,8 +418,11 @@ function Question({
                       setFillFormSelectorIconColor,
                     }}
                   />
-                ) : (
-                  <DynamicForm
+                ) : readonly ?
+                  (
+                    <Label bsStyle="primary">{t('Question not answered.')}</Label>
+                  ) :
+                  (<DynamicForm
                     fragmentId={null}
                     className={question?.madmp_schema?.classname}
                     setScriptsData={setScriptsData}
@@ -430,8 +436,8 @@ function Question({
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
-                  />
-                )}
+                  />)
+                }
               </>
             ) : (
               <></>
