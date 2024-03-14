@@ -91,7 +91,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
         }}
       >
         <InnerModal.Title>
-          {t('Runs')}
+          {t('Tools')}
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body style={{ backgroundColor: "white" }}>
