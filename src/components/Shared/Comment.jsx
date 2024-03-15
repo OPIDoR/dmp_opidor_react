@@ -265,7 +265,7 @@ function Comment({
           </ScrollNav>
           <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('Add a comment to share with collaborators')}</p>
           <EditorComment initialValue={text} updateParentText={updateParentText} />
-          {!readonly && !loading && !error && (
+          {!loading && !error && (
             <div style={{ display: 'flex', justifyContent: 'right', marginTop: '10px' }}>
               <Button variant="primary" onClick={(e) => handleSave(e)}>
                 {t("Save")}
