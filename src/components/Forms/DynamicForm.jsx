@@ -80,7 +80,7 @@ function DynamicForm({
         .finally(() => setLoading(false));
     }
     setLoading(false);
-  }, []);
+  }, [fragmentId]);
 
   useEffect(() => {
     methods.reset(formData[fragmentId]);
@@ -92,6 +92,8 @@ function DynamicForm({
         scripts: template.schema.run,
         apiClient: template.api_client
       });
+    } else {
+      setScriptsData({ scripts: [] })
     }
     setExternalImports(template?.schema?.externalImports || {});
   }, [template])
