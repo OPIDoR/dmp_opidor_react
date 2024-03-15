@@ -16,6 +16,7 @@ const EditorComment = ({ initialValue, updateParentText }) => {
         branding: false,
         height: 200,
         menubar: false,
+        elementpath: false,
         plugins: "table autoresize link advlist lists",
         toolbar: "bold italic underline | fontsizeselect forecolor | bullist numlist | link | table",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
