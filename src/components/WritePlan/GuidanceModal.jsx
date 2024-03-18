@@ -81,29 +81,33 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
             </>
           ) : (
             <>
-              {Object.keys(data?.[indexTab]?.groups).length > 0 &&
-                Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
-                  <ScrollNav key={`guidance-scroll-nav-${ref}-${idx}`}>
-                    <div key={`guidance-ref-${ref}-${idx}`}>
-                      {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
-                        <div key={`guidance-theme-${themeId}`}>
-                          <Theme alt={theme}>{theme}</Theme>
-                          {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
-                            <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                              <div
-                                key={`guidance-theme-${themeId}-id-${id}`}
-                                dangerouslySetInnerHTML={{
-                                  __html: DOMPurify.sanitize(g.text),
-                                }}
-                              />
-                              {id > 0 && <hr key={`guidance-hr-${themeId}`} />}
+              {
+                Object.keys(data?.[indexTab]?.groups).length > 0 && (
+                  <ScrollNav>
+                    {
+                      Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
+                        <div key={`guidance-ref-${ref}-${idx}`}>
+                          {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
+                            <div key={`guidance-theme-${themeId}`}>
+                              <Theme alt={theme}>{theme}</Theme>
+                              {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
+                                <div key={`guidance-theme-${themeId}-id-${id}-content`}>
+                                  <div
+                                    key={`guidance-theme-${themeId}-id-${id}`}
+                                    dangerouslySetInnerHTML={{
+                                      __html: DOMPurify.sanitize(g.text),
+                                    }}
+                                  />
+                                </div>
+                              ))}
                             </div>
                           ))}
                         </div>
-                      ))}
-                    </div>
+                    ))
+                    }
                   </ScrollNav>
-                ))}
+                )
+              }
             </>
           )}
         </NavBodyText>
