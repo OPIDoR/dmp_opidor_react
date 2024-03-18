@@ -47,3 +47,10 @@ export const Theme = styled.div`
   font-family: "Helvetica Neue", sans-serif;
   font-weight: bold;
 `;
+
+export const SubTitle = styled.div`
+  font-size: 18px;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  margin-top: 10px;
+`;
