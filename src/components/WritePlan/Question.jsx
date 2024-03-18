@@ -286,7 +286,6 @@ function Question({
                         />
                       </div>
                     </div>
-
                   )}
 
                   {isQuestionOpened() && formSelectors[fragmentId] && (
