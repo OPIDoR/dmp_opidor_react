@@ -51,10 +51,9 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
 
     setLoading(true);
     guidances.getGuidanceGroups(planId)
-      .then(({ data }) => setGuidancesGroups(
-        data.data
-          .flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
-          .reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
+      .then((res) => setGuidancesGroups(
+        res?.data?.data?.flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
+          ?.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
       ))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
