@@ -1,6 +1,8 @@
 import DOMPurify from "dompurify";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+
 import { GlobalContext } from "../context/Global";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
@@ -60,6 +62,18 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     guidances.getGuidances(planId, questionId)
       .then(({ data }) => {
         const guidancesData = data?.guidances;
+        guidancesData[0].annotations = [
+          {
+            "id": 33791,
+            "question_id": 34,
+            "org_id": 1,
+            "text": "<p>Se r&eacute;f&eacute;rer aux recommandations du Service Protection des Donn&eacute;es du CNRS pour le traitement des donn&eacute;es &agrave; caract&egrave;re personnel.</p>",
+            "type": "guidance",
+            "created_at": "2024-03-12T08:27:39.587Z",
+            "updated_at": "2024-03-12T08:27:39.587Z",
+            "versionable_id": "ebb75c04-681a-4edd-affa-0cc029f9bf02"
+          }
+        ]
         setData(guidancesData);
         const activetab = guidancesData?.[0]?.name || '';
         setActiveTab(activetab);
@@ -78,49 +92,48 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     return (
       <NavBody>
         <NavBodyText>
-          {data?.[indexTab]?.annotations?.length > 0 ? (
-            <>
-              {data?.[indexTab]?.annotations?.map((annotation, id) => (
-                <ScrollNav
-                  key={`guidance-${indexTab}-annotation-${id}`}
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(annotation.text),
-                  }}
-                />
-              ))}
-            </>
-          ) : (
-            <>
-              {
-                Object.keys(data?.[indexTab]?.groups).length > 0 && (
-                  <ScrollNav>
-                    {
-                      Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
-                        <div key={`guidance-ref-${ref}-${idx}`}>
-                          {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
-                            <div key={`guidance-theme-${themeId}`}>
-                              {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
-                              {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
-                                <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                                  <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
-                                  <div
-                                    key={`guidance-theme-${themeId}-id-${id}`}
-                                    dangerouslySetInnerHTML={{
-                                      __html: DOMPurify.sanitize(g.text),
-                                    }}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          ))}
-                        </div>
-                    ))
-                    }
-                  </ScrollNav>
-                )
-              }
-            </>
-          )}
+          <ScrollNav>
+            {data?.[indexTab]?.annotations?.length > 0 && (
+              <>
+                {data?.[indexTab]?.annotations?.map((annotation, id) => (
+                  <div
+                    key={`guidance-${indexTab}-annotation-${id}`}
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(annotation.text),
+                    }}
+                  />
+                ))}
+              </>
+            )}
+            {
+              Object.keys(data?.[indexTab]?.groups).length > 0 && (
+                <>
+                  {
+                    Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
+                      <div key={`guidance-ref-${ref}-${idx}`}>
+                        {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
+                          <div key={`guidance-theme-${themeId}`}>
+                            {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
+                            {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
+                              <div key={`guidance-theme-${themeId}-id-${id}-content`}>
+                                <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
+                                <div
+                                  key={`guidance-theme-${themeId}-id-${id}`}
+                                  dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(g.text),
+                                  }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                  ))
+                  }
+                </>
+              )
+            }
+          </ScrollNav>
         </NavBodyText>
       </NavBody>
     );
@@ -156,10 +169,30 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                     setActiveTab(el.name);
                     setIndexTab(idx);
                   }}
-                  style={{ ...navStyles(el.name), width: `calc(100% / ${data.length})` }}
+                  style={{
+                    ...navStyles(el.name),
+                    width: `calc(100% / ${data.length})`,
+                    borderTop: indexTab === idx ? null : '1px solid var(--dark-blue)',
+                    borderLeft: indexTab === idx ? null : '1px solid var(--dark-blue)',
+                    borderRight: indexTab === idx ? null : '1px solid var(--dark-blue)',
+                  }}
                   alt={el.name}
                 >
-                  {el.name.length < 15 ? el.name : `${el.name.substring(0, 15)}...`}
+                  <ReactTooltip
+                    key={`guidance-tab-tooltip-${idx}`}
+                    id={`guidance-tab-title-${idx}`}
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={el.name}
+                  />
+                  <span
+                    key={`guidance-tab-title-${idx}`}
+                    data-tooltip-id={`guidance-tab-title-${idx}`}
+                    alt={el.name}
+                  >
+                    {el.name.length < 15 ? el.name : `${el.name.substring(0, 15)}...`}
+                  </span>
                 </span>
               ))}
             </nav>
