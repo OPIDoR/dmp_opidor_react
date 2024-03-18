@@ -14,8 +14,8 @@ export const NavBodyText = styled.div`
   box-sizing: border-box;
   font-family: "Helvetica Neue", sans-serif;
   color: var(--dark-blue);
-  height: 318px;
-  max-height: 318px;
+  height: 310px;
+  max-height: 310px;
   border-radius: 10px;
 `;
 
