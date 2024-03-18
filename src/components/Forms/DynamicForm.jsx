@@ -92,8 +92,8 @@ function DynamicForm({
         scripts: template.schema.run,
         apiClient: template.api_client
       });
-    } else {
-      setScriptsData({ scripts: [] })
+    } else if (setScriptsData) {
+      setScriptsData({ scripts: [] });
     }
     setExternalImports(template?.schema?.externalImports || {});
   }, [template])
