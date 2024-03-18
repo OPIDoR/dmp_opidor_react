@@ -5,7 +5,7 @@ import { GlobalContext } from "../context/Global";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, ScrollNav, Theme } from "./styles/GuidanceModalStyles";
+import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
 
 function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
@@ -16,6 +16,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const [error, setError] = useState(null);
   const [indexTab, setIndexTab] = useState(0);
   const modalRef = useRef(null);
+  const [guidancesGroups, setGuidancesGroups] = useState({});
 
   const {
     questionsWithGuidance,
@@ -47,6 +48,15 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
+    guidances.getGuidanceGroups(planId)
+      .then(({ data }) => setGuidancesGroups(
+        data.data
+          .flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
+          .reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
+      ))
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
+
     guidances.getGuidances(planId, questionId)
       .then(({ data }) => {
         const guidancesData = data?.guidances;
@@ -89,9 +99,10 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                         <div key={`guidance-ref-${ref}-${idx}`}>
                           {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
                             <div key={`guidance-theme-${themeId}`}>
-                              <Theme alt={theme}>{theme}</Theme>
+                              {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
                               {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
                                 <div key={`guidance-theme-${themeId}-id-${id}-content`}>
+                                  <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
                                   <div
                                     key={`guidance-theme-${themeId}-id-${id}`}
                                     dangerouslySetInnerHTML={{
