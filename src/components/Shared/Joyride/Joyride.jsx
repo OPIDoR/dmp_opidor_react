@@ -22,8 +22,8 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
   steps = steps.map((step) => ({ ...step, locale: localeSteps }))
 
   const [guidedTourSteps, setGuidedTourSteps] = useState({
-    stepIndex: 0,
     steps,
+    run: false,
   });
 
   const [ended, setEnded] = useState(false);
@@ -39,7 +39,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
   }, [isOpen]);
 
   const handleJoyrideCallback = (data) => {
-    const { status, index, type } = data;
+    const { status, type } = data;
 
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setGuidedTourSteps((prevState) => ({ ...prevState, run: false }));
@@ -49,7 +49,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
     }
 
     if (type === EVENTS.TOOLTIP_CLOSE) {
-      setGuidedTourSteps((prevState) => ({ ...prevState, stepIndex: index + 1 }));
+      setGuidedTourSteps((prevState) => ({ ...prevState, run: false }));
     }
   };
 
@@ -98,10 +98,10 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
           callback={handleJoyrideCallback}
           continuous
           hideCloseButton
-          run={guidedTourSteps.run}
           scrollToFirstStep
           showProgress
           showSkipButton
+          run={guidedTourSteps.run}
           steps={guidedTourSteps.steps}
           styles={{
             options: {

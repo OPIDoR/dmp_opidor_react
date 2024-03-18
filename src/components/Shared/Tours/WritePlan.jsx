@@ -23,7 +23,7 @@ export default (t) => [
         display: 'flex',
         alignItems: 'center',
       }}>
-        <div style={{ width: '200px', textAlign: 'center' }}>
+        <div style={{ width: '200px', textAlign: 'center', paddingRight: '10px' }}>
           <TbBulbFilled size={60} />
         </div>
         <div>
@@ -50,7 +50,7 @@ export default (t) => [
     target: '#ro-nav-bar',
   },
   {
-    title: 'View the suggested aids for each question',
+    title: t('View the suggested aids for each question'),
     content: (
       <>
         <div style={{
@@ -58,8 +58,8 @@ export default (t) => [
           alignItems: 'center',
           height: '70px',
         }}>
-          <TbBulbFilled size={64} style={{ margin: '-20px 10px 0 5px' }} />
-          <p>{t('Activate the tools proposed for this form: calculate the storage/calculation cost, send notifications to the relevant departments.')}</p>
+          <TbBulbFilled size={32} style={{ margin: '-20px 10px 0 5px' }} />
+          <p>{t('Display guidances for this question.')}</p>
         </div>
         <div style={{
           display: 'flex',
