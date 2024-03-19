@@ -10,7 +10,7 @@ const dataFundingOrganization = [
       fr: 'Agence Nationale de la Recherche (ANR)',
       en: 'French National Research Agency (ANR)',
     },
-    scriptName: 'Anr_data_fetcher_v3',
+    scriptName: 'AnrProjectDataFetcher',
     registry: 'AnrProjects',
   },
   {
@@ -19,7 +19,7 @@ const dataFundingOrganization = [
       fr: 'Commission Européenne',
       en: 'European Commission',
     },
-    scriptName: 'Cordis_data_fetcher',
+    scriptName: 'CordisDataFetcher',
     registry: 'CordisProjects',
   },
 ];
