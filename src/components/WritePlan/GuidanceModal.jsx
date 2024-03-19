@@ -61,18 +61,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     guidances.getGuidances(planId, questionId)
       .then(({ data }) => {
         const guidancesData = data?.guidances;
-        guidancesData[0].annotations = [
-          {
-            "id": 33791,
-            "question_id": 34,
-            "org_id": 1,
-            "text": "<p>Se r&eacute;f&eacute;rer aux recommandations du Service Protection des Donn&eacute;es du CNRS pour le traitement des donn&eacute;es &agrave; caract&egrave;re personnel.</p>",
-            "type": "guidance",
-            "created_at": "2024-03-12T08:27:39.587Z",
-            "updated_at": "2024-03-12T08:27:39.587Z",
-            "versionable_id": "ebb75c04-681a-4edd-affa-0cc029f9bf02"
-          }
-        ]
         setData(guidancesData);
         const activetab = guidancesData?.[0]?.name || '';
         setActiveTab(activetab);
