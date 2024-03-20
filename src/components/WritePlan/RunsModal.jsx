@@ -24,7 +24,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
 
 
   const handleRunScript = (scriptName) => {
-    if (scriptsData?.apiClient && scriptName.includes('notifyer')) {
+    if (scriptsData?.apiClient && scriptName.toLocaleLowerCase().includes('notifyer')) {
       Swal.fire(
         {
           ...swalUtils.defaultConfirmConfig(t),
