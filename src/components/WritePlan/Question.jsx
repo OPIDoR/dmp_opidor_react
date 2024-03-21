@@ -276,14 +276,16 @@ function Question({
                         }}
                         style={{ marginLeft: "5px" }}
                       >
-                        <CommentSVG
-                          size={32}
-                          fill={
-                            isQuestionOpened()
-                              ? fillCommentIconColor
-                              : "var(--dark-blue)"
-                          }
-                        />
+                        {isQuestionOpened() && (
+                          <CommentSVG
+                            size={32}
+                            fill={
+                              isQuestionOpened()
+                                ? fillCommentIconColor
+                                : "var(--dark-blue)"
+                            }
+                          />
+                        )}
                       </div>
                     </div>
                   )}
