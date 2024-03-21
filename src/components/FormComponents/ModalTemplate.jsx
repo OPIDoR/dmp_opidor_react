@@ -168,7 +168,7 @@ function ModalTemplate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} (${label})` : `${t('Add')} (${label})` }
+          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}` }
           readonly={readonly}
           show={show}
           handleSave={handleSave}
