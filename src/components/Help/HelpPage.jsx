@@ -85,8 +85,13 @@ const FaqContent = styled.div`
   }
 `;
 
+const languagesCode = {
+  'fr_FR': 'fr',
+  'en_GB': 'en',
+};
+
 export default function HelpPage({ locale }) {
-  const { t, i18n } = useTranslation(locale);
+  const { t, i18n } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
   const { isLoading, error, data } = useQuery('news', () =>
@@ -97,18 +102,13 @@ export default function HelpPage({ locale }) {
 
   if (error) return <CustomError error={error} />;
 
-  const languagesCode = {
-    'fr-FR': 'fr',
-    'en-GB': 'en',
-  };
-
   const reduceTranslations = (translations, field) => translations
     .reduce(
-      (o, translation) => ({ ...o, [languagesCode[translation?.languages_code?.code || 'fr-FR']]: translation[field] }),
+      (o, translation) => ({ ...o, [languagesCode[translation?.languages_code?.code.replace('-', '_') || 'fr_FR']]: translation[field] }),
       {}
     );
 
-  let categories = data?.faq_categories.map(({ translations: categTranslations, ...category }) => ({
+  const categories = data?.faq_categories.map(({ translations: categTranslations, ...category }) => ({
     ...category,
     title: reduceTranslations(categTranslations, 'title'),
     questions: category.questions.map(({ translations: questionTranslations, ...question }) => ({
@@ -130,7 +130,7 @@ export default function HelpPage({ locale }) {
             onClick={() => setActiveFaq(index)}
           >
             {icon && (<img src={`/directus/assets/${icon.id}/${icon.filename_download}`} alt="" key={icon.id} />)}
-            <span className="text" key={`faq-category-title-${index}`}>{title[i18n.resolvedLanguage]}</span>
+            <span className="text" key={`faq-category-title-${index}`}>{title[languagesCode[locale]]}</span>
           </StyledLi>)
         )}
         </StyledUl>
@@ -141,11 +141,11 @@ export default function HelpPage({ locale }) {
         ) :
         categories[activeFaq].questions.map(({ question, answer }, index) => (
           <div key={`faq-content-${index}`} style={{ marginBottom: '40px' }}>
-            <h2 key={`faq-question-${index}`} style={{ marginTop: 0 }}>{question[i18n.resolvedLanguage]}</h2>
+            <h2 key={`faq-question-${index}`} style={{ marginTop: 0 }}>{question[languagesCode[locale]]}</h2>
             <div
               key={`faq-answer-${index}`}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(answer[i18n.resolvedLanguage]),
+                __html: DOMPurify.sanitize(answer[languagesCode[locale]]),
               }}
             />
           </div>
