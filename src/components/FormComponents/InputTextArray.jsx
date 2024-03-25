@@ -11,7 +11,7 @@ import CustomButton from '../Styled/CustomButton';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
+function InputTextArray({ label, propName, tooltip, readonly }) {
   const { t } = useTranslation();
   const { register } = useFormContext({
     defaultValues: {
@@ -87,4 +87,4 @@ function InputTextDynamicaly({ label, propName, tooltip, readonly }) {
   );
 }
 
-export default InputTextDynamicaly;
+export default InputTextArray;

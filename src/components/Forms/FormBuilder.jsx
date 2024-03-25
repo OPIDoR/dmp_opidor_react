@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../FormComponents/InputText.jsx';
-import InputTextDynamicaly from '../FormComponents/InputTextDynamicaly';
+import InputTextArray from '../FormComponents/InputTextArray.jsx';
 import ModalTemplate from '../FormComponents/ModalTemplate';
 import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
@@ -175,13 +175,13 @@ function FormBuilder({ template, readonly }) {
        */
       if (prop.type === 'array' && prop.items.type === 'string') {
         formFields.push(
-          <InputTextDynamicaly
+          <InputTextArray
             key={key}
             label={formLabel}
             propName={key}
             tooltip={tooltip}
             readonly={readonly || isConst}
-          ></InputTextDynamicaly>,
+          ></InputTextArray>,
         );
         continue;
       }
