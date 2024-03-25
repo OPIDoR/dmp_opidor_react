@@ -43,7 +43,7 @@ describe("HandleGenerateForms component", () => {
         <HandleGenerateForms template={template} lng={lng} changeValue={changeValue} />
       </Global>
     );
-    expect(wrapper.find("InputTextDynamicaly").prop("label")).toBe("Mots clés (texte libre)");
-    expect(wrapper.find("InputTextDynamicaly").prop("name")).toBe("uncontrolledKeywords");
+    expect(wrapper.find("InputTextArray").prop("label")).toBe("Mots clés (texte libre)");
+    expect(wrapper.find("InputTextArray").prop("name")).toBe("uncontrolledKeywords");
   });
 });
