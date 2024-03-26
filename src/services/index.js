@@ -1,4 +1,5 @@
 import comments from "./comments";
+import directus from "./directus";
 import externalServices from "./externalServices";
 import generalInfo from "./generalInfo";
 import guidances from "./guidances";
@@ -11,6 +12,7 @@ import writePlan from "./writePlan";
 
 export {
   comments,
+  directus,
   externalServices,
   generalInfo,
   guidances,
