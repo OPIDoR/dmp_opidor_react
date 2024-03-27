@@ -150,6 +150,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
             onSelectChange={handleSelect}
             options={options}
             selectedOption={selectedOption}
+            placeholder={t("Select a value from the list")}
             overridable={false}
           />
         )}
