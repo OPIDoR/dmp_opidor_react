@@ -124,7 +124,8 @@ function SelectContributorSingle({
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        // changeValue({ target: { name: propName, value: { ...value,  ...e.object } } });
+        field.onChange({ ...contributor, action: "delete" });
+        setContributor({});
       }
     });
   };
