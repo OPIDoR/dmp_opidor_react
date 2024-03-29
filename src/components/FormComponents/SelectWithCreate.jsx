@@ -26,7 +26,7 @@ function SelectWithCreate({
   propName,
   tooltip,
   header,
-  templateId,
+  templateName,
   registries,
   overridable = false,
   readonly = false,
@@ -51,15 +51,15 @@ function SelectWithCreate({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */

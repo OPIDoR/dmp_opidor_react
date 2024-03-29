@@ -21,6 +21,8 @@ const destroyFragment = async (fragmentId) => axios.delete(
 
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
 
+const getSchemaByName = async (name) => axios.get(`/madmp_schemas/by_name/${name}`);
+
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
@@ -45,7 +47,7 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
 
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
-const changeForm = async (fragmentId, templateId, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?schema_id=${templateId}&locale=${locale}`);
+const changeForm = async (fragmentId, templateName, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?template_name=${templateName}&locale=${locale}`);
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -54,6 +56,7 @@ export default {
   createFragment,
   destroyFragment,
   getSchema,
+  getSchemaByName,
   getRegistryByName,
   getPersons,
   saveFragment,

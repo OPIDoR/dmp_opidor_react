@@ -18,7 +18,7 @@ function SubForm({
   label,
   propName,
   tooltip,
-  templateId,
+  templateName,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -40,15 +40,15 @@ function SubForm({
   }, [field.value])
 
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateId])
+  }, [templateName])
 
 
   const handleSaveNestedForm = (data) => {

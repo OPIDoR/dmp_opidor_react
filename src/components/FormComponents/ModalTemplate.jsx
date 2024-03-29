@@ -26,7 +26,7 @@ function ModalTemplate({
   propName,
   tooltip,
   header,
-  templateId,
+  templateName,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -44,15 +44,15 @@ function ModalTemplate({
 
   const [template, setTemplate] = useState(null);
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   useEffect(() => {
     setFragmentsList(field.value || [])

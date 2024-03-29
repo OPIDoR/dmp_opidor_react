@@ -26,7 +26,7 @@ function SelectSingleList({
   tooltip,
   registries,
   registryType,
-  templateId,
+  templateName,
   defaultValue = null,
   overridable = false,
   readonly = false,
@@ -89,15 +89,15 @@ function SelectSingleList({
 
   useEffect(() => {
     if (registryType !== 'complex') { return; }
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [registryType, templateId])
+  }, [registryType, templateName])
 
   /**
    * It takes the value of the input field and adds it to the list array.

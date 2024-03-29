@@ -44,7 +44,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
-              templateId={prop.schema_id}
+              templateName={prop.template_name}
               defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -61,7 +61,7 @@ function FormBuilder({ template, readonly }) {
               formLabel={formLabel}
               propName={key}
               header={prop[`table_header@${locale}`]}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -114,7 +114,7 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             label={formLabel}
             tooltip={tooltip}
-            templateId={prop.schema_id}
+            templateName={prop.template_name}
             defaultValue={defaultValue}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
@@ -128,7 +128,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             propName={key}
             tooltip={tooltip}
-            templateId={prop.schema_id}
+            templateName={prop.template_name}
             readonly={readonly || isConst}
           />
         )
@@ -147,7 +147,7 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
@@ -162,7 +162,7 @@ function FormBuilder({ template, readonly }) {
               formLabel={formLabel}
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               readonly={readonly || isConst}
             ></ModalTemplate>,
           );

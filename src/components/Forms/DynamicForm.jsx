@@ -134,7 +134,7 @@ function DynamicForm({
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
           {!readonly && <FormSelector
             className={className}
-            selectedTemplateId={template.id}
+            selectedTemplateName={template.name}
             fragmentId={fragmentId}
             setFragment={methods.reset}
             setTemplate={setTemplate}
