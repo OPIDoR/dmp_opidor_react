@@ -7,7 +7,7 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { createOptions } from '../../utils/GeneratorUtils.js';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -16,7 +16,7 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
-import { parsePattern } from "../../utils/GeneratorUtils";
+import { getErrorMessage } from '../../utils/utils.js';
 
 function SelectContributorSingle({
   propName,
@@ -95,7 +95,11 @@ function SelectContributorSingle({
         service.getSchemaByName(personTemplateName).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: res.data });
+        }).catch((error) => {
+          setError(getErrorMessage(error));
         });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       const contributorTemplate = loadedTemplates[templateName];
@@ -228,6 +232,7 @@ function SelectContributorSingle({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
@@ -255,7 +260,6 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
-        <span className='error-message'>{error}</span>
         {template && (
           <PersonsList
             personsList={contributor ? [contributor] : []}

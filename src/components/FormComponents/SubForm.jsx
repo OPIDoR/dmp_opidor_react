@@ -8,7 +8,7 @@ import styles from '../assets/css/form.module.css';
 import NestedForm from '../Forms/NestedForm.jsx';
 import { useTranslation } from 'react-i18next';
 import { useController, useFormContext } from 'react-hook-form';
-import { fragmentEmpty } from '../../utils/utils.js';
+import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import { parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
@@ -44,6 +44,8 @@ function SubForm({
       service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       setTemplate(loadedTemplates[templateName]);
@@ -77,6 +79,7 @@ function SubForm({
   return (
     <div>
       <div className="form-group">
+        <span className={styles.errorMessage}>{error}</span>
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>

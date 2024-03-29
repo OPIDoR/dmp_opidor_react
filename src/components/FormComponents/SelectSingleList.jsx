@@ -13,7 +13,7 @@ import styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { fragmentEmpty } from '../../utils/utils.js';
+import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -93,6 +93,8 @@ function SelectSingleList({
       service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       setTemplate(loadedTemplates[templateName]);
@@ -165,6 +167,7 @@ function SelectSingleList({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (

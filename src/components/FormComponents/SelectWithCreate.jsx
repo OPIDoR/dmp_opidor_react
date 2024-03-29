@@ -19,6 +19,7 @@ import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 
 function SelectWithCreate({
   label,
@@ -55,6 +56,8 @@ function SelectWithCreate({
       service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       setTemplate(loadedTemplates[templateName]);
@@ -189,6 +192,7 @@ function SelectWithCreate({
             )
           }
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
         <div className="row">
           {registries && registries.length > 1 && (

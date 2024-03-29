@@ -16,6 +16,7 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 
 function SelectContributorMultiple({
   label,
@@ -95,7 +96,11 @@ function SelectContributorMultiple({
           const personTemplate = resSchema.data;
           setTemplate(personTemplate);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: personTemplate });
+        }).catch((error) => {
+          setError(getErrorMessage(error));
         });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       const contributorTemplate = loadedTemplates[templateName];
@@ -223,7 +228,6 @@ function SelectContributorMultiple({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
-    console.log('index', idx);
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
@@ -276,7 +280,7 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        <span className='error-message'>{error}</span>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <PersonsList
             personsList={contributorList}

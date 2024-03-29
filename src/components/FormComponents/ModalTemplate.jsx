@@ -13,6 +13,7 @@ import styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -39,6 +40,7 @@ function ModalTemplate({
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
+  const [error, setError] = useState(null);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
 
@@ -48,6 +50,8 @@ function ModalTemplate({
       service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
       setTemplate(loadedTemplates[templateName]);
@@ -141,6 +145,7 @@ function ModalTemplate({
             )
           }
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <FragmentList
             fragmentsList={fragmentsList}
