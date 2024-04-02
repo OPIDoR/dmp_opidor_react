@@ -19,6 +19,7 @@ import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 function SelectWithCreate({
   label,
@@ -43,6 +44,7 @@ function SelectWithCreate({
   const [options, setOptions] = useState([]);
   const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
+  const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
@@ -130,19 +132,24 @@ function SelectWithCreate({
    */
   const handleSave = (data) => {
     if (!data) return handleClose();
-    if (index !== null) {
-      const newFragmentList = [...fragmentsList];
-      newFragmentList[index] = {
-        ...newFragmentList[index],
-        ...data,
-        action: newFragmentList[index].action || 'update'
-      };
-      field.onChange(newFragmentList);
+
+    if (checkFragmentExists(fragmentsList, data, template.schema['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      //add in add
-      handleSaveNew(data);
+      if (index !== null) {
+        const newFragmentList = [...fragmentsList];
+        newFragmentList[index] = {
+          ...newFragmentList[index],
+          ...data,
+          action: newFragmentList[index].action || 'update'
+        };
+        field.onChange(newFragmentList);
+      } else {
+        //add in add
+        handleSaveNew(data);
+      }
+      toast.success(t("Save was successful !"));
     }
-    toast.success(t("Save was successful !"));
     handleClose();
   };
 
@@ -250,6 +257,7 @@ function SelectWithCreate({
             </div>
           </div>
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <FragmentList
             fragmentsList={fragmentsList}
@@ -266,7 +274,7 @@ function SelectWithCreate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}` }
+          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}
