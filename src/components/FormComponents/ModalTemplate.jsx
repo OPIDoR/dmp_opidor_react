@@ -13,6 +13,7 @@ import styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -38,6 +39,7 @@ function ModalTemplate({
   const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
+  const [error, setError] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
@@ -73,18 +75,24 @@ function ModalTemplate({
    */
   const handleSave = (data) => {
     if (!data) return handleClose();
-    if (index !== null) {
-      const newFragmentList = [...fragmentsList];
-      newFragmentList[index] = {
-        ...newFragmentList[index],
-        ...data,
-        action: newFragmentList[index].action || 'update'
-      };
-      field.onChange(newFragmentList)
+
+
+    if (checkFragmentExists(fragmentsList, data, template.schema['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      handleSaveNew(data);
+      if (index !== null) {
+        const newFragmentList = [...fragmentsList];
+        newFragmentList[index] = {
+          ...newFragmentList[index],
+          ...data,
+          action: newFragmentList[index].action || 'update'
+        };
+        field.onChange(newFragmentList)
+      } else {
+        handleSaveNew(data);
+      }
+      toast.success(t("Save was successful !"));
     }
-    toast.success(t("Save was successful !"));
     handleClose();
   };
 
@@ -141,6 +149,7 @@ function ModalTemplate({
             )
           }
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <FragmentList
             fragmentsList={fragmentsList}
@@ -168,7 +177,7 @@ function ModalTemplate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}` }
+          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

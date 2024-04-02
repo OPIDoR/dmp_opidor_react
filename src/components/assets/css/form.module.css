@@ -211,3 +211,8 @@ input:checked + .switchSlider .switchOff {
   cursor: pointer;
 }
 
+
+.errorMessage {
+  font-weight: bold;
+  color: var(--rust);
+}

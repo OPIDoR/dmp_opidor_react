@@ -276,7 +276,7 @@ function SelectContributorMultiple({
             </div>
           )}
         </div>
-        <span className='error-message'>{error}</span>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <PersonsList
             personsList={contributorList}
