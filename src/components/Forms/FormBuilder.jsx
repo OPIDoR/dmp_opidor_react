@@ -35,7 +35,7 @@ function FormBuilder({ template, readonly }) {
         (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"))
       ) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
-        if (prop.schema_id && prop.type === 'object') {
+        if (prop.template_name && prop.type === 'object') {
           formFields.push(
             <SelectSingleList
               key={key}
@@ -53,7 +53,7 @@ function FormBuilder({ template, readonly }) {
           continue;
         }
         // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
-        if (prop.items?.schema_id && prop.type === 'array') {
+        if (prop.items?.template_name && prop.type === 'array') {
           formFields.push(
             <SelectWithCreate
               key={key}
@@ -121,7 +121,7 @@ function FormBuilder({ template, readonly }) {
         );
         continue;
       }
-      if(prop.schema_id && prop.type === 'object') {
+      if(prop.template_name && prop.type === 'object') {
         formFields.push(
           <SubForm
             key={key}
@@ -138,7 +138,7 @@ function FormBuilder({ template, readonly }) {
       /**
        * SUB FRAGMENTS LIST
        */
-      if (prop.type === 'array' && prop.items.type === 'object' && prop.items.schema_id) {
+      if (prop.type === 'array' && prop.items.type === 'object' && prop.items.template_name) {
         if (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard') {
           formFields.push(
             <SelectContributorMultiple

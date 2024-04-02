@@ -44,13 +44,13 @@ function DynamicForm({
     setLoading(true);
     if (fragmentId) {
       if (formData[fragmentId]) {
-        if(loadedTemplates[formData[fragmentId].schema_id]) {
-          setTemplate(loadedTemplates[formData[fragmentId].schema_id]);
+        if(loadedTemplates[formData[fragmentId].template_name]) {
+          setTemplate(loadedTemplates[formData[fragmentId].template_name]);
         } else {
-          service.getSchema(formData[fragmentId].schema_id).then((res) => {
+          service.getSchema(formData[fragmentId].template_name).then((res) => {
             setTemplate(res.data);
             setExternalImports(template?.schema?.externalImports || {});
-            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].schema_id]: res.data });
+            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
           }).catch(console.error)
             .finally(() => setLoading(false));
         }
@@ -58,7 +58,7 @@ function DynamicForm({
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
-          setLoadedTemplates({ ...loadedTemplates, [res.data.fragment.schema_id]: res.data.schema });
+          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.schema });
           setFormData({ [fragmentId]: res.data.fragment });
           methods.reset(res.data.fragment);
         }).catch(console.error)
@@ -70,7 +70,7 @@ function DynamicForm({
         setTemplate(res.data.template);
         const fragment = res.data.fragment;
         const answerId = res.data.answer_id
-        setLoadedTemplates({ ...loadedTemplates, [fragment?.schema_id]: res?.data?.schema });
+        setLoadedTemplates({ ...loadedTemplates, [fragment?.template.name]: res?.data?.schema });
         setFormData({ [fragment.id]: fragment });
         setFragmentId(fragment.id);
         setAnswerId(answerId);
