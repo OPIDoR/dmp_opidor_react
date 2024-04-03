@@ -17,7 +17,7 @@ export function checkFragmentExists(fragmentList, newFragment, unicityCriteria) 
 
   // the filter method is here to remove the fragment from the list based on its id
   // this prevents the search to create false positives when updating a fragment.
-  const list = fragmentList.filter((o) => o.id !== newFragment.id).map((f) => pick(f, unicityCriteria));
+  const list = fragmentList.filter((o) => o.id === undefined || o.id !== newFragment.id).map((f) => pick(f, unicityCriteria));
   const fiteredFragment = pick(newFragment, unicityCriteria);
   return exists(fiteredFragment, list, unicityCriteria);
 }

@@ -42,7 +42,7 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState([])
+  const [fragmentsList, setFragmentsList] = useState(field.value || [])
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -81,14 +81,12 @@ function SelectWithCreate({
   }, [selectedRegistry, locale]);
 
   useEffect(() => {
-    setFragmentsList(field.value || []);
-
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
     if (registriesData.length === 1) {
       setSelectedRegistry(registriesData[0]);
     }
-  }, [field.value, registries]);
+  }, [registries]);
 
   const handleClose = () => {
     setShow(false);
@@ -106,7 +104,9 @@ function SelectWithCreate({
     setFragmentsList(
       pattern.length > 0 ? [...fragmentsList, newItem] : fragmentsList,
     );
-    field.onChange([...(fragmentsList || []), newItem]);
+    const newFragmentList = [...(fragmentsList || []), newItem]
+    field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
   };
 
   /**
@@ -120,6 +120,7 @@ function SelectWithCreate({
         const updatedFragmentList = fragmentsList;
         updatedFragmentList[idx]['action'] = 'delete';
         field.onChange(updatedFragmentList);
+        setFragmentsList(updatedFragmentList);
       }
     });
   };
@@ -144,6 +145,7 @@ function SelectWithCreate({
           action: newFragmentList[index].action || 'update'
         };
         field.onChange(newFragmentList);
+        setFragmentsList(newFragmentList);
       } else {
         //add in add
         handleSaveNew(data);
@@ -159,6 +161,7 @@ function SelectWithCreate({
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
   };
 
   /**

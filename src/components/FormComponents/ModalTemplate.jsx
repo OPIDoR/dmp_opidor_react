@@ -40,11 +40,11 @@ function ModalTemplate({
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
-  const [fragmentsList, setFragmentsList] = useState([]);
+  const [fragmentsList, setFragmentsList] = useState(field.value || []);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
-
   const [template, setTemplate] = useState(null);
+
   useEffect(() => {
     if (!loadedTemplates[templateId]) {
       service.getSchema(templateId).then((res) => {
@@ -55,10 +55,6 @@ function ModalTemplate({
       setTemplate(loadedTemplates[templateId]);
     }
   }, [templateId]);
-
-  useEffect(() => {
-    setFragmentsList(field.value || [])
-  }, [field.value])
 
   /**
    * The function sets the show state to false
@@ -87,7 +83,8 @@ function ModalTemplate({
           ...data,
           action: newFragmentList[index].action || 'update'
         };
-        field.onChange(newFragmentList)
+        field.onChange(newFragmentList);
+        setFragmentsList(newFragmentList);
       } else {
         handleSaveNew(data);
       }
@@ -102,8 +99,8 @@ function ModalTemplate({
    */
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
-    setFragmentsList(newFragmentList)
-    field.onChange(newFragmentList)
+    field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
     handleClose();
   };
 
@@ -117,7 +114,8 @@ function ModalTemplate({
       if (result.isConfirmed) {
         const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
         filteredList[idx]['action'] = 'delete';
-        field.onChange(filteredList)
+        field.onChange(filteredList);
+        setFragmentsList(filteredList);
       }
     });
   };
