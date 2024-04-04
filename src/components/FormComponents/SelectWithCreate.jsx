@@ -42,13 +42,17 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState(field.value || [])
+  const [fragmentsList, setFragmentsList] = useState(field.value)
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
+
+  useEffect(() => {
+    setFragmentsList(field.value || [])
+  }, [field.value])
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
