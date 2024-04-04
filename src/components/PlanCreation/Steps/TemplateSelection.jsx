@@ -174,15 +174,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     try {
       response = await planCreation.createPlan(params.selectedTemplate);
     } catch (error) {
-      let errorMessage = t("An error occurred while creating the plan");
-
-      if (error.response) {
-        errorMessage = error.response.message;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
+      let errorMessage = getErrorMessage(error);
 
       return toast.error(errorMessage);
     }

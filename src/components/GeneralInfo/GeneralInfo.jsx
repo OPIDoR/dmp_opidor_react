@@ -15,6 +15,7 @@ import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
 import { service } from "../../services";
 import { filterOptions } from "../../utils/GeneratorUtils";
+import { getErrorMessage } from "../../utils/utils";
 
 export const ButtonSave = styled.button`+
   margin: 10px 2px 2px 0px;
@@ -83,15 +84,7 @@ function GeneralInfo({
     try {
       response = await generalInfo.saveIsTestPlan(planId, checked === true ? '1' : '0');
     } catch (error) {
-      let errorMessage = t("An error occurred during the change of status of the plan");
-
-      if (error.response) {
-        errorMessage = error.response.message;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
+      let errorMessage = getErrorMessage(error);
 
       return toast.error(errorMessage);
     }
@@ -134,20 +127,7 @@ function GeneralInfo({
     try {
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
-      let errorMessage = t('An error occurred during the import of the project information');
-
-      console.log(error);
-
-      if (error.response) {
-        errorMessage = error.response?.data?.error;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-
-      console.log(errorMessage)
-
+      let errorMessage = getErrorMessage(error);
       return toast.error(errorMessage);
     }
 

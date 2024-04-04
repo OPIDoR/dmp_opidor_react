@@ -58,15 +58,7 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
         setSuccess(res.data.message);
       }
     }).catch((error) => {
-      let errorMessage = t("An error occurred during the change of status of the plan");
-
-      if (error.response) {
-        errorMessage = error.response.data.error;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
+      let errorMessage = getErrorMessage(error);
       setError({
         home: false,
         code: error.response.status,
