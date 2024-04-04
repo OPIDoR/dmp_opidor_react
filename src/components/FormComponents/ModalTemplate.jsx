@@ -40,10 +40,14 @@ function ModalTemplate({
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
-  const [fragmentsList, setFragmentsList] = useState(field.value || []);
+  const [fragmentsList, setFragmentsList] = useState([]);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
   const [template, setTemplate] = useState(null);
+
+  useEffect(() => {
+    setFragmentsList(field.value || [])
+  }, [field.value])
 
   useEffect(() => {
     if (!loadedTemplates[templateId]) {
