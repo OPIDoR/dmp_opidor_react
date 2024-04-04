@@ -128,6 +128,7 @@ function GeneralInfo({
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       let errorMessage = getErrorMessage(error);
+      setLoading(false);
       return toast.error(errorMessage);
     }
 
