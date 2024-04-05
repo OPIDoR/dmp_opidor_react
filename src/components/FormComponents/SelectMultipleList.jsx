@@ -55,14 +55,23 @@ function SelectMultipleList({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    setSelectedValues(field.value || []);
+    if(field.value) {
+      const value = Array.isArray(field.value) ? field.value : [field.value]
+      setSelectedValues(value);
+    } else {
+      setSelectedValues([]);
+    }
+  }, [field.value]);
 
+  /* A hook that is called when the component is mounted.
+  It is used to set the options of the select list. */
+  useEffect(() => {
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
     if (registriesData.length === 1) {
       setSelectedRegistry(registriesData[0]);
     }
-  }, [field.value, registries]);
+  }, [registries]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
