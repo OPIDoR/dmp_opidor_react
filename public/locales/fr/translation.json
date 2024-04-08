@@ -227,5 +227,9 @@
   "Tools": "Outils",
   "There seems to be no question for this category.": "Il semble ne pas y avoir de question pour cette catégorie",
   "Oh, it seems that this help page is still under development and does not yet contain any content.": "Oh, il semble que cette page d'aide soit encore en cours de développement et ne contienne pas encore de contenu.",
-  "This record already exists.": "Cet élément est déjà présent."
+  "This record already exists.": "Cet élément est déjà présent.",
+  "Glossary": "Glossaire",
+  "Oh, it seems that this glossary page is still under development and does not yet contain any content.": "Oh, il semble que cette page de glossaire soit encore en cours de développement et ne contienne pas encore de contenu.",
+  "There don't seem to be any terms for this letter.": "Il ne semble pas y avoir de termes pour cette lettre",
+  "Search...": "Rechercher..."
 }

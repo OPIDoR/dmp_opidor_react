@@ -30,7 +30,24 @@ const getHelp = async () => {
   `);
 }
 
+const getGlossary = async () => {
+  return client.query(`
+    query {
+      glossary(filter: { status: { _eq: "published" } }) {
+        translations {
+          languages_code {
+            code
+          }
+          term
+          description
+        }
+      }
+    }
+  `);
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getHelp,
+  getGlossary,
 };
