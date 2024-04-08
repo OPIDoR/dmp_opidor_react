@@ -10,6 +10,7 @@ import CustomButton from "../Styled/CustomButton";
 import { GlobalContext } from "../context/Global";
 import { service } from "../../services";
 import swalUtils from "../../utils/swalUtils";
+import { getErrorMessage } from "../../utils/utils";
 
 function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId }) {
   const { t } = useTranslation();
