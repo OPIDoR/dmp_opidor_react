@@ -24,7 +24,7 @@ export default function HelpPage({ locale }) {
   const { t } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
-  const { isLoading, error, data } = useQuery('news', () =>
+  const { isLoading, error, data } = useQuery('help', () =>
     directus.getHelp().then(res => res)
   );
 
