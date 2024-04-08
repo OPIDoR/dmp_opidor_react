@@ -13,6 +13,7 @@ export function createPersonsOptions(contributorsList) {
   return [ {value:'', label:''}, ...options ]
 }
 export function checkFragmentExists(fragmentList, newFragment, unicityCriteria) {
+  if (unicityCriteria === undefined || unicityCriteria.length === 0) return false;
   if (fragmentList.length === 0) return false;
 
   // the filter method is here to remove the fragment from the list based on its id
