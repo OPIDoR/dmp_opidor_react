@@ -10,7 +10,7 @@ import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
-import { clearLocalStorage } from '../../../utils/utils';
+import { clearLocalStorage, getErrorMessage } from '../../../utils/utils';
 
 function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
   const { t } = useTranslation();
