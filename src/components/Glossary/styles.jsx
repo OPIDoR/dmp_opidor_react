@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const StyledUl = styled.ul`
   display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   align-items: center;
   list-style-type: none;
@@ -10,33 +12,45 @@ export const StyledUl = styled.ul`
 
   position: -webkit-sticky;
   position: sticky;
-  top: 70px;
+  top: 60px;
   z-index: 1000;
+  width: 100%;
+  height: 40px;
+  background-color: var(--white);
 `;
 
 export const StyledLi = styled.li`
-  flex-grow: 1;
-  width: 0;
-  color: var(--blue);
+  color: var(--dark-blue);
   cursor: pointer;
-  margin: 0 5px 0 5px;
-
-  &:hover {
-    color: var(--dark-blue);
-    text-decoration: underline;
-  }
+  font-weight: 900;
 
   &:not(:last-child)::after {
     content: '●';
-    margin-left: 20px;
+    margin: 0 20px 0 20px;
     display: inline-block;
     vertical-align: middle;
     color: var(--blue);
   }
 
-  &.active {
-    color: var(--dark-blue);
+  &:hover {
+    color: var(--rust);
     text-decoration: underline;
+  }
+
+  &.active {
+    color: var(--rust);
+    text-decoration: underline;
+  }
+
+  &.disabled {
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+
+    &:hover {
+      color: rgba(0, 0, 0, 0.5);
+      text-decoration: none;
+      cursor: default;
+    }
   }
 `;
 
@@ -44,9 +58,22 @@ export const GlossaryContent = styled.div`
   margin: 20px 0 0 -35px;
 
   .letter {
-    font-weigth: 900;
+    font-weight: 900;
     font-size: 28px;
-    color: var(--rust);
+    color: var(--dark-blue);
+
+    &.active {
+      color: var(--rust);
+      font-weight: 900;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 400;
+      font-style: italic;
+      color: grey;
+      margin-left: 10px;
+    }
   }
 
   ul {
@@ -56,6 +83,7 @@ export const GlossaryContent = styled.div`
     justify-content: space-between;
     list-style-type: none;
     margin-top: 20px;
+    scroll-margin-top: 110px;
 
     li {
       margin: 10px 0 10px 20px;
