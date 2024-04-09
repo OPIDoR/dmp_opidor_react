@@ -21,7 +21,7 @@ const languagesCode = {
 };
 
 export default function HelpPage({ locale }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [activeLetter, setActiveLetter] = useState('A');
   const letters = {
     A: {},
@@ -91,11 +91,11 @@ export default function HelpPage({ locale }) {
   window.addEventListener("scroll", handleScroll);
 
   terms.forEach(({ term, description }) => {
-    const firstLetter = term[i18n.resolvedLanguage]?.charAt(0)?.toUpperCase();
+    const firstLetter = term[languagesCode[locale]]?.charAt(0)?.toUpperCase();
     if (firstLetter) {
       const letterTerms = {
         ...letters[firstLetter],
-        [term[i18n.resolvedLanguage]]: description[i18n.resolvedLanguage],
+        [term[languagesCode[locale]]]: description[languagesCode[locale]],
       };
 
       letters[firstLetter] = Object.keys(letterTerms)
