@@ -4,10 +4,7 @@ import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
 
-import { CustomSpinner,
-  CustomError,
-  CustomSelect,
-} from '../Shared';
+import { CustomSpinner, CustomError } from '../Shared';
 import { directus } from '../../services';
 import {
   StyledUl,
@@ -75,21 +72,6 @@ export default function HelpPage({ locale }) {
     return (<Alert bsStyle="warning">{t('Oh, it seems that this glossary page is still under development and does not yet contain any content.')}</Alert>)
   }
 
-  const handleScroll = () => {
-    const ulList = document.querySelectorAll('ul');
-    ulList.forEach((ul) => {
-      const rect = ul.getBoundingClientRect();
-      if (rect.top <= window.innerHeight * 0.22 && rect.bottom >= window.innerHeight * 0.22) {
-        const currentLetter = ul.id.split('-')?.at(-1).toUpperCase();
-        if (letters[currentLetter]) {
-          setActiveLetter(currentLetter);
-        }
-      }
-    });
-  }
-
-  window.addEventListener("scroll", handleScroll);
-
   terms.forEach(({ term, description }) => {
     const firstLetter = term[languagesCode[locale]]?.charAt(0)?.toUpperCase();
     if (firstLetter) {
@@ -111,8 +93,8 @@ export default function HelpPage({ locale }) {
     const element = document.querySelector(`#glossary-letter-${letter}`);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActiveLetter(letter);
     }
-    setActiveLetter(letter);
   };
 
   const displayAlphabet = () => (
@@ -120,8 +102,8 @@ export default function HelpPage({ locale }) {
       {Object.keys(letters).map((key, index) => (
         <StyledLi
           key={`glossary-${key}-${index}`}
-          onClick={() => scrollToId(key)}
-          className={activeLetter === key ? 'active' : null}
+          onClick={() => Object.entries(letters[key]).length === 0 ? null : scrollToId(key)}
+          className={`${Object.entries(letters[key]).length === 0 ? 'disabled' : null} ${activeLetter === key ? 'active' : null}`}
         >
           {key}
         </StyledLi>
@@ -149,13 +131,14 @@ export default function HelpPage({ locale }) {
       <GlossaryContent>
         {Object.keys(letters).map((letter, index) => (
           <ul id={`glossary-letter-${letter}`} key={letter}>
-            <span className="letter">{letter}</span>
+            <div className={`letter ${activeLetter === letter ? 'active' : null}`}>
+              {letter}
+              <span>{Object.entries(letters[letter]).length === 0 && <>({t('There don\'t seem to be any terms for this letter.')})</>}</span>
+            </div>
             {
-              Object.entries(letters[letter]).length > 0 ? (
+              Object.entries(letters[letter]).length > 0 && (
                 Object.entries(letters[letter])
                   .map((termData) => displayTerm(termData, index))
-              ) : (
-                <Alert bsStyle="info">{t('There don\'t seem to be any terms for this letter.')}</Alert>
               )
             }
           </ul>
