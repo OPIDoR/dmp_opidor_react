@@ -223,7 +223,6 @@ function SelectContributorMultiple({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
-    console.log('index', idx);
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
