@@ -111,6 +111,7 @@ function ContributorsTab({ planId, locale, readonly }) {
         template={template}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
+        readonly={readonly}
       />
       {template && show && (
         <ModalForm
