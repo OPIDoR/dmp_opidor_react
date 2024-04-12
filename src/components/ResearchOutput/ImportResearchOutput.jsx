@@ -87,7 +87,7 @@ function ImportResearchOutput({ planId, handleClose, show }) {
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <strong className={stylesForm.dot_label}></strong>
-          <label>{t("Choisir produit")}</label>
+          <label>{t("Choose research output")}</label>
         </div>
         {dataProducts && (
           <Select
