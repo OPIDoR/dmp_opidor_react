@@ -44,7 +44,7 @@ function WritePlan({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { isOpen, setIsOpen } = useTour();
+  const { setIsOpen } = useTour();
 
   const handleWebsocketData = useCallback((data) => {
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
