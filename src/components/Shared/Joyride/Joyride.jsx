@@ -30,13 +30,24 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
-    guidedTour.getTour(tourName)
+    const elements = steps.map(({ target }) => target);
+    handleRenderedChildren(elements);
+  }, [isOpen]);
+
+  const handleRenderedChildren = (childrenTags) => {
+    const allChildrenRendered = childrenTags.every((tag) => document.querySelector(tag) !== null);
+
+    if (!allChildrenRendered) {
+      return setTimeout(() => handleRenderedChildren(childrenTags), 100);
+    }
+
+    return guidedTour.getTour(tourName)
       .then(({ data }) => {
         setGuidedTourSteps((prevState) => ({ ...prevState, run: isOpen || !data?.tour?.ended }));
         setIsOpen(isOpen || !data?.tour?.ended);
         setEnded(data?.tour?.ended);
       });
-  }, [isOpen]);
+  };
 
   const handleJoyrideCallback = (data) => {
     const { status, type } = data;
