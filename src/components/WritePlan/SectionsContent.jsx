@@ -73,8 +73,8 @@ function SectionsContent({ planId, templateId, readonly }) {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Do you confirm the deletion"),
-      text: t("By deleting this search product, the associated answers will also be deleted"),
+      title: t("Do you confirm the deletion?"),
+      text: t("By deleting this research output, the associated answers will also be deleted"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
