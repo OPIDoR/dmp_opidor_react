@@ -10,7 +10,7 @@ import styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
-import { clearLocalStorage } from '../../../utils/utils';
+import { clearLocalStorage, getErrorMessage } from '../../../utils/utils';
 
 function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
   const { t } = useTranslation();
@@ -174,15 +174,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     try {
       response = await planCreation.createPlan(params.selectedTemplate);
     } catch (error) {
-      let errorMessage = t("An error occurred while creating the plan");
-
-      if (error.response) {
-        errorMessage = error.response.message;
-      } else if (error.request) {
-        errorMessage = error.request;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
+      let errorMessage = getErrorMessage(error);
 
       return toast.error(errorMessage);
     }

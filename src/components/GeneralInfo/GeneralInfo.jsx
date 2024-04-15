@@ -52,7 +52,7 @@ function GeneralInfo({
 
     return toast.success(response?.data?.msg);
   };
-
+  
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
@@ -118,7 +118,7 @@ function GeneralInfo({
               style={{ marginRight: '10px' }}
             />
             <label className="form-check-label" htmlFor="is_test">
-              {t('Test Plan')}
+              {t('Test Plan (e.g. as part of a training course)')}
             </label>
           </div>
           {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}

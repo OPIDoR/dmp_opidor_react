@@ -14,6 +14,7 @@ import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -39,12 +40,17 @@ function ModalTemplate({
   const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
+  const [error, setError] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
   const [error, setError] = useState(null);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
-
   const [template, setTemplate] = useState(null);
+
+  useEffect(() => {
+    setFragmentsList(field.value || [])
+  }, [field.value])
+
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
       service.getSchemaByName(templateName).then((res) => {
@@ -57,10 +63,6 @@ function ModalTemplate({
       setTemplate(loadedTemplates[templateName]);
     }
   }, [templateName]);
-
-  useEffect(() => {
-    setFragmentsList(field.value || [])
-  }, [field.value])
 
   /**
    * The function sets the show state to false
@@ -77,18 +79,25 @@ function ModalTemplate({
    */
   const handleSave = (data) => {
     if (!data) return handleClose();
-    if (index !== null) {
-      const newFragmentList = [...fragmentsList];
-      newFragmentList[index] = {
-        ...newFragmentList[index],
-        ...data,
-        action: newFragmentList[index].action || 'update'
-      };
-      field.onChange(newFragmentList)
+
+
+    if (checkFragmentExists(fragmentsList, data, template.schema['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      handleSaveNew(data);
+      if (index !== null) {
+        const newFragmentList = [...fragmentsList];
+        newFragmentList[index] = {
+          ...newFragmentList[index],
+          ...data,
+          action: newFragmentList[index].action || 'update'
+        };
+        field.onChange(newFragmentList);
+        setFragmentsList(newFragmentList);
+      } else {
+        handleSaveNew(data);
+      }
+      toast.success(t("Save was successful !"));
     }
-    toast.success(t("Save was successful !"));
     handleClose();
   };
 
@@ -98,8 +107,8 @@ function ModalTemplate({
    */
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
-    setFragmentsList(newFragmentList)
-    field.onChange(newFragmentList)
+    field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
     handleClose();
   };
 
@@ -113,7 +122,8 @@ function ModalTemplate({
       if (result.isConfirmed) {
         const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
         filteredList[idx]['action'] = 'delete';
-        field.onChange(filteredList)
+        field.onChange(filteredList);
+        setFragmentsList(filteredList);
       }
     });
   };
@@ -173,7 +183,7 @@ function ModalTemplate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}` }
+          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

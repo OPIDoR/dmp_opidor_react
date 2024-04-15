@@ -105,7 +105,7 @@
   "Project Details": "Renseignements sur le projet",
   "Plan Information": "Renseignements sur le plan",
   "Research Entity Details": "Renseignements sur l'entité de recherche",
-  "Test Plan": "Plan de Test",
+  "Test Plan (e.g. as part of a training course)": "Plan test (par ex, dans le cadre d'une formation)",
   "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
   "Click here to select the guidance of your plan":"Cliquez ici pour sélectionner les recommandations appliquées à votre plan",
   "If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.": "Si votre projet est financé par l’un des financeurs de la liste, vous pouvez récupérer automatiquement les informations administratives que vous avez déjà saisies lors de la demande de subvention.",
@@ -216,7 +216,7 @@
   "You can create as many research outputs as you need, or delete them as required.": "Vous pouvez créer autant de produit de recherche que nécessaire ou en supprimer si besoin.",
   "View the suggested aids for each question": "Visualisez les aides proposées à chaque question",
   "Display guidances for this question.": "Affichez les recommandations pour cette question.",
-  "Activate the tools proposed for this form: calculate the storage/calculation cost, send notifications to the relevant departments.": "Actionnez les outils proposés pour ce formulaire : calculer le coût de stockage/calcul, envoyer des notifications aux services concernés.",
+  "Activate the tools proposed for this form: calculate the storage/calculation cost, send notifications to the relevant departments.": "Actionnez les outils proposés pour ce formulaire : calculez le coût de stockage/calcul, envoyer des notifications aux services concernés.",
   "View comments shared by collaborators. The number of comments is shown in brackets.": "Consultez les commentaires partagés par les collaborateurs. Le nombre de commentaires est indiqué entre parenthèses.",
   "Choose the appropriate form for the data management service you use (data center, storage center, etc.), then save the form.": "Choisissez le formulaire adapté au service dédié à la gestion des données que vous utilisez (centre de calcul, de stockage …) puis enregistrez le formulaire",
   "Do you have a question?": "Vous avez une question ?",
@@ -226,5 +226,6 @@
   "Question not answered.": "Question sans réponse",
   "Tools": "Outils",
   "There seems to be no question for this category.": "Il semble ne pas y avoir de question pour cette catégorie",
-  "Oh, it seems that this help page is still under development and does not yet contain any content.": "Oh, il semble que cette page d'aide soit encore en cours de développement et ne contienne pas encore de contenu."
+  "Oh, it seems that this help page is still under development and does not yet contain any content.": "Oh, il semble que cette page d'aide soit encore en cours de développement et ne contienne pas encore de contenu.",
+  "This record already exists.": "Cet élément est déjà présent."
 }

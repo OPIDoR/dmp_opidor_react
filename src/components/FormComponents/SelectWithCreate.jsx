@@ -20,6 +20,7 @@ import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 function SelectWithCreate({
   label,
@@ -42,12 +43,17 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState([])
+  const [fragmentsList, setFragmentsList] = useState(field.value)
   const [index, setIndex] = useState(null);
+  const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
+
+  useEffect(() => {
+    setFragmentsList(field.value || [])
+  }, [field.value])
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -82,14 +88,12 @@ function SelectWithCreate({
   }, [selectedRegistry, locale]);
 
   useEffect(() => {
-    setFragmentsList(field.value || []);
-
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
     if (registriesData.length === 1) {
       setSelectedRegistry(registriesData[0]);
     }
-  }, [field.value, registries]);
+  }, [registries]);
 
   const handleClose = () => {
     setShow(false);
@@ -107,7 +111,9 @@ function SelectWithCreate({
     setFragmentsList(
       pattern.length > 0 ? [...fragmentsList, newItem] : fragmentsList,
     );
-    field.onChange([...(fragmentsList || []), newItem]);
+    const newFragmentList = [...(fragmentsList || []), newItem]
+    field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
   };
 
   /**
@@ -121,6 +127,7 @@ function SelectWithCreate({
         const updatedFragmentList = fragmentsList;
         updatedFragmentList[idx]['action'] = 'delete';
         field.onChange(updatedFragmentList);
+        setFragmentsList(updatedFragmentList);
       }
     });
   };
@@ -133,19 +140,25 @@ function SelectWithCreate({
    */
   const handleSave = (data) => {
     if (!data) return handleClose();
-    if (index !== null) {
-      const newFragmentList = [...fragmentsList];
-      newFragmentList[index] = {
-        ...newFragmentList[index],
-        ...data,
-        action: newFragmentList[index].action || 'update'
-      };
-      field.onChange(newFragmentList);
+
+    if (checkFragmentExists(fragmentsList, data, template.schema['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      //add in add
-      handleSaveNew(data);
+      if (index !== null) {
+        const newFragmentList = [...fragmentsList];
+        newFragmentList[index] = {
+          ...newFragmentList[index],
+          ...data,
+          action: newFragmentList[index].action || 'update'
+        };
+        field.onChange(newFragmentList);
+        setFragmentsList(newFragmentList);
+      } else {
+        //add in add
+        handleSaveNew(data);
+      }
+      toast.success(t("Save was successful !"));
     }
-    toast.success(t("Save was successful !"));
     handleClose();
   };
 
@@ -155,6 +168,7 @@ function SelectWithCreate({
   const handleSaveNew = (data) => {
     const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
     field.onChange(newFragmentList);
+    setFragmentsList(newFragmentList);
   };
 
   /**
@@ -254,6 +268,7 @@ function SelectWithCreate({
             </div>
           </div>
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <FragmentList
             fragmentsList={fragmentsList}
@@ -270,7 +285,7 @@ function SelectWithCreate({
         <ModalForm
           data={editedFragment}
           template={template}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}` }
+          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

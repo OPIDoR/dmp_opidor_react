@@ -260,6 +260,7 @@ function SelectContributorSingle({
             </div>
           )}
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {template && (
           <PersonsList
             personsList={contributor ? [contributor] : []}
