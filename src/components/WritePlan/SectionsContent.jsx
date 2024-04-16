@@ -11,7 +11,7 @@ import { researchOutput } from "../../services";
 import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
-import styles from "../assets/css/write_plan.module.css";
+import * as styles from "../assets/css/write_plan.module.css";
 
 
 function SectionsContent({ planId, templateId, readonly }) {

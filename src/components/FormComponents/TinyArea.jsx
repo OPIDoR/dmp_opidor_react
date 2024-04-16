@@ -6,7 +6,7 @@ import uniqueId from 'lodash.uniqueid';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 
 const ReadDiv = styled.div`
   border: solid;

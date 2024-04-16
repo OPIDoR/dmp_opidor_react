@@ -4,7 +4,7 @@ import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 import { service } from '../../services';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import NestedForm from '../Forms/NestedForm.jsx';
 import { useTranslation } from 'react-i18next';
 import { useController, useFormContext } from 'react-hook-form';

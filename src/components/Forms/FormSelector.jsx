@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from 'react-bootstrap';
 
-import styles from '../assets/css/form_selector.module.css';
+import * as styles from '../assets/css/form_selector.module.css';
 import CustomSpinner from '../Shared/CustomSpinner';
 import service from "../../services/service";
 import { GlobalContext } from "../context/Global";

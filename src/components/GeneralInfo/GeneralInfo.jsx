@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomSelect from "../Shared/CustomSelect";
-import styles from "../assets/css/general_info.module.css";
+import * as styles from "../assets/css/general_info.module.css";
 import { generalInfo } from "../../services";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
