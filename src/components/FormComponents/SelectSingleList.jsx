@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';

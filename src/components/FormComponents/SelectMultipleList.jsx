@@ -9,7 +9,7 @@ import { FaXmark } from 'react-icons/fa6';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import swalUtils from '../../utils/swalUtils.js';

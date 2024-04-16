@@ -2,7 +2,7 @@ import React from 'react';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import DOMPurify from "dompurify";
 import { parsePattern } from '../../utils/GeneratorUtils';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 
 function FragmentList({
   fragmentsList,

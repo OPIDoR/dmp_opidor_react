@@ -6,7 +6,7 @@ import { FaPenToSquare, FaXmark } from "react-icons/fa6";
 import { parsePattern } from "../../utils/GeneratorUtils";
 import Pagination from "../Shared/Pagination";
 import { isValidHttpUrl } from "../../utils/utils";
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 
 function ContributorsList({ contributors, template, handleEdit, handleDelete, readonly = false }) {
   const { t } = useTranslation();

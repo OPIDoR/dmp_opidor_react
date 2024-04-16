@@ -5,7 +5,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus, FaXmark } from 'react-icons/fa6';
 
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
 
 /* A React component that renders a form with a text input and a button.

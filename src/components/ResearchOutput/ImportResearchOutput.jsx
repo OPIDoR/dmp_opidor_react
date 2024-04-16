@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import stylesForm from "../assets/css/form.module.css";
+import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import Select from "react-select";
 import { researchOutput } from "../../services";

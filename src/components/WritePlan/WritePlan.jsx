@@ -12,7 +12,7 @@ import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
-import styles from "../assets/css/sidebar.module.css";
+import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
 
