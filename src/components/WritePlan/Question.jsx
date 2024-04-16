@@ -409,6 +409,7 @@ function Question({
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
+                    fetchAnswersData={true}
                   />
                 ) : readonly ?
                   (
@@ -428,6 +429,7 @@ function Question({
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
+                    fetchAnswersData={true}
                   />)
                 }
               </>

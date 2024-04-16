@@ -24,8 +24,9 @@ function DynamicForm({
   madmpSchemaId = null,
   setFragmentId = null,
   setAnswerId = null,
-  readonly,
   formSelector = {},
+  readonly,
+  fetchAnswersData = false,
 }) {
   const { t } = useTranslation();
   const {
@@ -82,13 +83,16 @@ function DynamicForm({
       }).catch(console.error)
         .finally(() => setLoading(false));
     }
-    writePlan.getPlanData(planData.id)
-      .then((res) => {
-        const { questions_with_guidance } = res.data;
-        setQuestionsWithGuidance(questions_with_guidance || []);
-      })
-      .catch(() => setQuestionsWithGuidance([]));
-    setLoading(false);
+
+    if(fetchAnswersData) {
+      writePlan.getPlanData(planData.id)
+        .then((res) => {
+          const { questions_with_guidance } = res.data;
+          setQuestionsWithGuidance(questions_with_guidance || []);
+        })
+        .catch(() => setQuestionsWithGuidance([]));
+      setLoading(false);
+    }
   }, [fragmentId]);
 
   useEffect(() => {
