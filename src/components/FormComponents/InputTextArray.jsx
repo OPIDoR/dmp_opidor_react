@@ -22,7 +22,7 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
   
   return (
-    <div className="App">
+    <div>
       <div className={styles.label_form}>
         <strong className={styles.dot_label}></strong>
         <label data-tooltip-id={inputTextTooltipId}>{label}</label>
