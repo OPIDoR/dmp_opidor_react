@@ -97,6 +97,7 @@ function SelectMultipleList({
           newList.splice(idx, 1); // 2nd parameter means remove one item only
         }
         setSelectedValues(newList);
+        field.onChange(newList);
       }
     });
   };
