@@ -16,13 +16,14 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 
 function SelectContributorMultiple({
   label,
   propName,
   tooltip,
   header,
-  templateId,
+  templateName,
   defaultValue = null,
   readonly = false,
 }) {
@@ -84,27 +85,31 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         const contributorTemplate = res.data;
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: contributorTemplate });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: contributorTemplate });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        const personTemplateId = contributorProps.person.schema_id;
+        const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
-        service.getSchema(personTemplateId).then((resSchema) => {
+        service.getSchemaByName(personTemplateName).then((resSchema) => {
           const personTemplate = resSchema.data;
           setTemplate(personTemplate);
-          setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: personTemplate });
+          setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: personTemplate });
+        }).catch((error) => {
+          setError(getErrorMessage(error));
         });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
-      const contributorTemplate = loadedTemplates[templateId];
+      const contributorTemplate = loadedTemplates[templateName];
       const contributorProps = contributorTemplate?.schema?.properties || {}
-      const personTemplateId = contributorProps.person.schema_id;
+      const personTemplateName = contributorProps.person.template_name;
       setOverridableRole(contributorProps.role.overridable || false);
-      setTemplate(loadedTemplates[personTemplateId]);
+      setTemplate(loadedTemplates[personTemplateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   /**
    * It closes the modal and resets the state of the modal.
@@ -153,7 +158,7 @@ function SelectContributorMultiple({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        service.saveFragment(editedPerson.id, data, templateId).then((res) => {
+        service.saveFragment(editedPerson.id, data).then((res) => {
           const newContributorList = [...contributorList];
           const updatedPersons = [...persons];
           const savedFragment = res.data.fragment;
@@ -223,7 +228,6 @@ function SelectContributorMultiple({
    * @param idx - the index of the item in the array
    */
   const handleEdit = (e, idx) => {
-    console.log('index', idx);
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);

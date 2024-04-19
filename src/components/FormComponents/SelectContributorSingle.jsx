@@ -7,7 +7,7 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { createOptions } from '../../utils/GeneratorUtils.js';
+import { createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -16,13 +16,13 @@ import CustomSelect from '../Shared/CustomSelect.jsx';
 import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
-import { parsePattern } from "../../utils/GeneratorUtils";
+import { getErrorMessage } from '../../utils/utils.js';
 
 function SelectContributorSingle({
   propName,
   label,
   tooltip,
-  templateId,
+  templateName,
   defaultValue = null,
   readonly = false,
 }) {
@@ -85,26 +85,30 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         const contributorTemplate = res.data
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
         const contributorProps = contributorTemplate?.schema?.properties || {}
-        const personTemplateId = contributorProps.person.schema_id;
+        const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
-        service.getSchema(personTemplateId).then((resSchema) => {
+        service.getSchemaByName(personTemplateName).then((resSchema) => {
           setTemplate(resSchema.data);
-          setLoadedTemplates({ ...loadedTemplates, [personTemplateId]: res.data });
+          setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: res.data });
+        }).catch((error) => {
+          setError(getErrorMessage(error));
         });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
-      const contributorTemplate = loadedTemplates[templateId];
+      const contributorTemplate = loadedTemplates[templateName];
       const contributorProps = contributorTemplate?.schema?.properties || {}
-      const personTemplateId = contributorProps.person.schema_id;
+      const personTemplateName = contributorProps.person.template_name;
       setOverridableRole(contributorProps.role.overridable || false);
-      setTemplate(loadedTemplates[personTemplateId]);
+      setTemplate(loadedTemplates[personTemplateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   /**
    * It closes the modal and resets the state of the modal.
@@ -154,7 +158,7 @@ function SelectContributorSingle({
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        service.saveFragment(editedPerson.id, data, templateId).then((res) => {
+        service.saveFragment(editedPerson.id, data).then((res) => {
           const savedFragment = res.data.fragment;
           savedFragment.action = 'update';
           const updatedPersons = [...persons];
@@ -228,6 +232,7 @@ function SelectContributorSingle({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         <div className="row">
           <div className={`col-md-11 ${styles.select_wrapper}`}>
             <CustomSelect
