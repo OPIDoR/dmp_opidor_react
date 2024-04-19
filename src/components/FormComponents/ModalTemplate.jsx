@@ -13,6 +13,7 @@ import styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 /**
@@ -27,7 +28,7 @@ function ModalTemplate({
   propName,
   tooltip,
   header,
-  templateId,
+  templateName,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ function ModalTemplate({
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
+  const [error, setError] = useState(null);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
   const [template, setTemplate] = useState(null);
@@ -50,15 +52,17 @@ function ModalTemplate({
   }, [field.value])
 
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   /**
    * The function sets the show state to false
