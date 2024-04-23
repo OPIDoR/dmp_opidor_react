@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import OrcidList from "./OrcidList";
-import RorList from "./RorList";
+import { OrcidList, RorList, Metadore } from "./";
 import { useTranslation } from "react-i18next";
 
 function ImportExternal({ fragment, setFragment, externalImports = {} }) {
@@ -26,7 +25,8 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
   const externalImportComponent = (type, fragment, setFragment) => {
     const importComponents = {
       ror: (fragment, setFragment, mapping) => <RorList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
-      orcid: (fragment, setFragment, mapping) => <OrcidList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />
+      orcid: (fragment, setFragment, mapping) => <OrcidList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
+      metadore: (fragment, setFragment, mapping) => <Metadore key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />
     };
 
     return (
@@ -45,6 +45,7 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
     const buttons = {
       ror: t('Retrieve ROR identifier'),
       orcid: t('Retrieve ORCID identifier'),
+      metadore: t('Retrieve data by using Datacite'),
     };
 
     return (
