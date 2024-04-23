@@ -5,13 +5,13 @@ import { fr, enGB } from "date-fns/locale";
 import { FaRegCompass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import SectionsContent from "../ProductForm/SectionsContent";
+import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import GuidanceChoice from "../ProductForm/GuidanceChoice";
-import ResearchOutputsTabs from "../ProductForm/ResearchOutputsTabs";
+import GuidanceChoice from "./GuidanceChoice";
+import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
