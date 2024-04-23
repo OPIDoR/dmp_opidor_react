@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
-import stylesForm from "../assets/css/form.module.css";
+import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
 import { createOptions } from "../../utils/GeneratorUtils";

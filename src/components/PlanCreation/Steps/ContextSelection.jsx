@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import styles from "../../assets/css/steps.module.css";
+import * as styles from "../../assets/css/steps.module.css";
 
 /**
  * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management

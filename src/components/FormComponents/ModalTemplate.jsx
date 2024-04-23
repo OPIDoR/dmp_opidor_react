@@ -9,7 +9,7 @@ import uniqueId from 'lodash.uniqueid';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import CustomButton from '../Styled/CustomButton.jsx';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';

@@ -12,7 +12,7 @@ import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
-import styles from "../assets/css/sidebar.module.css";
+import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
 
@@ -44,7 +44,7 @@ function WritePlan({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { isOpen, setIsOpen } = useTour();
+  const { setIsOpen } = useTour();
 
   const handleWebsocketData = useCallback((data) => {
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {

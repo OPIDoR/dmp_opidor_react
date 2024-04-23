@@ -11,7 +11,7 @@ import { researchOutput } from "../../services";
 import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
-import styles from "../assets/css/write_plan.module.css";
+import * as styles from "../assets/css/write_plan.module.css";
 
 
 function SectionsContent({ planId, templateId, readonly }) {
@@ -73,8 +73,8 @@ function SectionsContent({ planId, templateId, readonly }) {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Do you confirm the deletion"),
-      text: t("By deleting this search product, the associated answers will also be deleted"),
+      title: t("Do you confirm the deletion?"),
+      text: t("By deleting this research output, the associated answers will also be deleted"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -13,7 +13,7 @@ import {
   createRegistryPlaceholder,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
