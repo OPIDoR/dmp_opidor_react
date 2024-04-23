@@ -5,7 +5,7 @@ import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 
-import styles from "../assets/css/general_info.module.css";
+import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
 import { generalInfo } from '../../services';
 import CustomError from "../Shared/CustomError";
