@@ -6,7 +6,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
-import styles from "../../assets/css/steps.module.css";
+import * as styles from "../../assets/css/steps.module.css";
 import { planCreation } from "../../../services";
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";

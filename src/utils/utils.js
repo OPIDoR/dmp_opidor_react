@@ -49,7 +49,6 @@ export function isValidHttpUrl(string) {
 }
 
 export function getErrorMessage(error) {
-  console.log(error);
   if (error.response && error.response.data) {
     return error.response.data.message || error.response.data.error;
   } else if (error.request) {

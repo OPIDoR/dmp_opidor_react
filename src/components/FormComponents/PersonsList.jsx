@@ -4,7 +4,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
 
 import { parsePattern } from '../../utils/GeneratorUtils';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 
 

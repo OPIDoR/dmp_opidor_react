@@ -6,9 +6,9 @@ import { FaPenToSquare, FaXmark } from "react-icons/fa6";
 import { parsePattern } from "../../utils/GeneratorUtils";
 import Pagination from "../Shared/Pagination";
 import { isValidHttpUrl } from "../../utils/utils";
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 
-function ContributorsList({ contributors, template, handleEdit, handleDelete }) {
+function ContributorsList({ contributors, template, handleEdit, handleDelete, readonly = false }) {
   const { t } = useTranslation();
   const [currentData, setCurrentData] = useState([]);
 
@@ -56,36 +56,40 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete }) 
                 </ul>
               </td>
               <td>
-                <ReactTooltip
-                  id="contributor-edit-button"
-                  place="bottom"
-                  effect="solid"
-                  variant="info"
-                  content={t('Edit')}
-                />
-                <FaPenToSquare
-                  data-tooltip-id="contributor-edit-button"
-                  size={18}
-                  onClick={() => handleEdit(idx)}
-                  className={styles.icon}
-                />
-                {contributors.length > 1 &&
+                {!readonly && (
                   <>
                     <ReactTooltip
-                      id="contributor-delete-button"
+                      id="contributor-edit-button"
                       place="bottom"
                       effect="solid"
                       variant="info"
-                      content={t('Delete')}
+                      content={t('Edit')}
                     />
-                    <FaXmark
-                      data-tooltip-id="contributor-delete-button"
+                    <FaPenToSquare
+                      data-tooltip-id="contributor-edit-button"
                       size={18}
-                      onClick={() => handleDelete(idx)}
+                      onClick={() => handleEdit(idx)}
                       className={styles.icon}
                     />
+                    {contributors.length > 1 &&
+                      <>
+                        <ReactTooltip
+                          id="contributor-delete-button"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t('Delete')}
+                        />
+                        <FaXmark
+                          data-tooltip-id="contributor-delete-button"
+                          size={18}
+                          onClick={() => handleDelete(idx)}
+                          className={styles.icon}
+                        />
+                      </>
+                    }
                   </>
-                }
+                )}
               </td>
             </tr>
           )) : (

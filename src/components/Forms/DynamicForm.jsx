@@ -14,6 +14,7 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
+import { writePlan } from "../../services";
 
 function DynamicForm({
   fragmentId,
@@ -23,8 +24,9 @@ function DynamicForm({
   madmpSchemaId = null,
   setFragmentId = null,
   setAnswerId = null,
-  readonly,
   formSelector = {},
+  readonly,
+  fetchAnswersData = false,
 }) {
   const { t } = useTranslation();
   const {
@@ -33,6 +35,8 @@ function DynamicForm({
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
+    setQuestionsWithGuidance,
+    planData,
   } = useContext(GlobalContext);
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
@@ -79,7 +83,16 @@ function DynamicForm({
       }).catch(console.error)
         .finally(() => setLoading(false));
     }
-    setLoading(false);
+
+    if(fetchAnswersData) {
+      writePlan.getPlanData(planData.id)
+        .then((res) => {
+          const { questions_with_guidance } = res.data;
+          setQuestionsWithGuidance(questions_with_guidance || []);
+        })
+        .catch(() => setQuestionsWithGuidance([]));
+      setLoading(false);
+    }
   }, [fragmentId]);
 
   useEffect(() => {

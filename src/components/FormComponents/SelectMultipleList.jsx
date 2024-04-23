@@ -9,7 +9,7 @@ import { FaXmark } from 'react-icons/fa6';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import swalUtils from '../../utils/swalUtils.js';
@@ -97,6 +97,7 @@ function SelectMultipleList({
           newList.splice(idx, 1); // 2nd parameter means remove one item only
         }
         setSelectedValues(newList);
+        field.onChange(newList);
       }
     });
   };
@@ -129,7 +130,7 @@ function SelectMultipleList({
         </div>
 
         {/* ************Select registry************** */}
-        <div className="row"><div className="row">
+        <div className="row">
           {registries && registries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
@@ -154,7 +155,7 @@ function SelectMultipleList({
 
           <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
-              <div className={`col-md-12 ${styles.select_wrapper}`}>
+              <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
@@ -169,7 +170,6 @@ function SelectMultipleList({
               </div>
             </div>
           </div>
-        </div>
         </div>
         {/* *************Select registry************* */}
 

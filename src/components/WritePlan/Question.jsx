@@ -9,13 +9,12 @@ import { TbBulbFilled } from "react-icons/tb";
 import { IoShuffleOutline } from "react-icons/io5";
 
 import { GlobalContext } from "../context/Global";
-import styles from "../assets/css/write_plan.module.css";
+import * as styles from "../assets/css/write_plan.module.css";
 import DynamicForm from "../Forms/DynamicForm";
 import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
-import { writePlan } from "../../services";
 
 function Question({
   question,
@@ -30,7 +29,6 @@ function Question({
     setOpenedQuestions,
     displayedResearchOutput,
     questionsWithGuidance,
-    setQuestionsWithGuidance,
     setUrlParams,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
@@ -94,13 +92,6 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
-
-    writePlan.getPlanData(planData.id)
-      .then((res) => {
-        const { questions_with_guidance } = res.data;
-        setQuestionsWithGuidance(questions_with_guidance || []);
-      })
-      .catch(() => setQuestionsWithGuidance([]));
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
@@ -418,6 +409,7 @@ function Question({
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
+                    fetchAnswersData={true}
                   />
                 ) : readonly ?
                   (
@@ -437,6 +429,7 @@ function Question({
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
+                    fetchAnswersData={true}
                   />)
                 }
               </>

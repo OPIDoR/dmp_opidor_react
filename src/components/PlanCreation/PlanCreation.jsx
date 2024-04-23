@@ -4,8 +4,8 @@ import { Step, Stepper } from 'react-form-stepper';
 
 import { CustomButton } from "../Styled";
 import { ContextSelection , TemplateSelection, LangSelection } from './Steps';
-import styles from '../assets/css/main.module.css';
-import stepperStyles from '../assets/css/stepper.module.css';
+import * as styles from '../assets/css/main.module.css';
+import * as stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
 
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
