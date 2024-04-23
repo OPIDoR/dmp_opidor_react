@@ -3,15 +3,15 @@ import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-import { writePlan } from "../../services";
-import CustomSpinner from "../Shared/CustomSpinner";
-import { GlobalContext } from "../context/Global";
-import CustomError from "../Shared/CustomError";
-import { researchOutput } from "../../services";
+import { writePlan } from "../../../services";
+import CustomSpinner from "../CustomSpinner";
+import { GlobalContext } from "../../context/Global";
+import CustomError from "../CustomError";
+import { researchOutput } from "../../../services";
 import Section from "./Section";
-import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
-import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
-import * as styles from "../assets/css/write_plan.module.css";
+import ResearchOutputModal from "../../ResearchOutput/ResearchOutputModal";
+import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
+import * as styles from "../../assets/css/write_plan.module.css";
 
 
 function SectionsContent({ planId, templateId, readonly }) {

@@ -5,7 +5,7 @@ import { fr, enGB } from "date-fns/locale";
 import { FaRegCompass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import SectionsContent from "./SectionsContent";
+import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { writePlan } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
