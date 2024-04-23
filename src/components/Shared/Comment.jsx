@@ -9,11 +9,11 @@ import { fr, enGB } from 'date-fns/locale';
 import { BiEdit } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa6';
 import Global from '../context/Global.jsx';
-import EditorComment from '../WritePlan/EditorComment.jsx';
+import EditorComment from '../ProductForm/EditorComment.jsx';
 import CustomSpinner from './CustomSpinner.jsx';
 import CustomError from './CustomError.jsx';
 import { comments as commentsService } from '../../services';
-import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles.jsx';
+import { NavBodyText, ScrollNav, CommentsCard } from '../ProductForm/styles/CommentModalStyles.jsx';
 import '../../i18n.js';
 import swalUtils from '../../utils/swalUtils.js';
 

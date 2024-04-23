@@ -2,7 +2,7 @@ import React from 'react';
 
 import Global from '../context/Global.jsx';
 import GeneralInfo from './GeneralInfo.jsx';
-import GuidanceChoice from '../WritePlan/GuidanceChoice.jsx';
+import GuidanceChoice from '../ProductForm/GuidanceChoice.jsx';
 import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
 
