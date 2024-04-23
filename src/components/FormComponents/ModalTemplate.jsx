@@ -42,7 +42,6 @@ function ModalTemplate({
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [fragmentsList, setFragmentsList] = useState([]);
-  const [error, setError] = useState(null);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
   const [template, setTemplate] = useState(null);
