@@ -23,6 +23,7 @@ function Question({
   sectionNumber,
   readonly,
 }) {
+  // --- DATA ---
   const {
     planData,
     openedQuestions,
@@ -31,6 +32,7 @@ function Question({
     questionsWithGuidance,
     setUrlParams,
   } = useContext(GlobalContext);
+
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);
   const [answerId, setAnswerId] = useState(null);
@@ -52,8 +54,10 @@ function Question({
 
   const { t } = useTranslation();
 
+  // --- BEHAVIOURS ---
   useEffect(() => {
     if (displayedResearchOutput) {
+      console.log("DRO", displayedResearchOutput);
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
       );
@@ -74,34 +78,69 @@ function Question({
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
    */
-  const handleQuestionCollapse = (expanded) => {
-    if (displayedResearchOutput && displayedResearchOutput.id) {
-      closeAllModals();
+  // const handleQuestionCollapse = (expanded) => {
+  //   console.log('EXP', expanded);
+  //   closeAllModals();
+  //   // if (displayedResearchOutput && displayedResearchOutput.id) {
+  //   //   const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
       
-      const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
+  //   //   if (!updatedState[sectionId]) {
+  //   //     updatedState[sectionId] = {
+  //   //       [questionId]: false,
+  //   //     };
+  //   //   }
 
-      if (!updatedState[sectionId]) {
-        updatedState[sectionId] = {
-          [questionId]: false,
-        };
-      }
+  //   //   updatedState[sectionId] = {
+  //   //     ...updatedState[sectionId],
+  //   //     [questionId]: expanded,
+  //   //   };
 
-      updatedState[sectionId] = {
-        ...updatedState[sectionId],
-        [questionId]: expanded,
-      };
+  //   //   setOpenedQuestions({
+  //   //     ...openedQuestions,
+  //   //     [displayedResearchOutput.id]: updatedState,
+  //   //   });
+  //   // }
 
-      setOpenedQuestions({
-        ...openedQuestions,
-        [displayedResearchOutput.id]: updatedState,
-      });
+  //   const outputId = displayedResearchOutput ? displayedResearchOutput.id : 'generic';
+  //   const updatedState = { ...openedQuestions[outputId] };
 
-      const queryParameters = new URLSearchParams(window.location.search);
-      setUrlParams({ research_output: queryParameters.get('research_output') });
+  //   if (!updatedState[sectionId]) {
+  //     updatedState[sectionId] = {};
+  //   }
 
-      handleIconClick(null, 'formSelector');
+  //   updatedState[sectionId][questionId] = expanded;
+
+  //   setOpenedQuestions({
+  //     ...openedQuestions,
+  //     [outputId]: updatedState,
+  //   });
+
+  //   const queryParameters = new URLSearchParams(window.location.search);
+  //   setUrlParams({ research_output: queryParameters.get('research_output') });
+
+  //   handleIconClick(null, 'formSelector');
+  // };
+  
+  const handleQuestionCollapse = (expanded) => {
+    closeAllModals();
+    const updatedState = { ...openedQuestions };
+
+    if (!updatedState[sectionId]) {
+      updatedState[sectionId] = {};
     }
+
+    updatedState[sectionId][questionId] = expanded;
+
+    setOpenedQuestions(updatedState);
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    setUrlParams({ research_output: queryParameters.get('research_output') });
+
+    handleIconClick(null, 'formSelector');
   };
+
+
+
 
   const closeAllModals = () => {
     setShowCommentModal(false);
@@ -168,9 +207,14 @@ function Question({
    *
    * @returns {boolean} True if the question is opened, false otherwise.
    */
-  const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput);
+  const isQuestionOpened = () => {
+    return !!openedQuestions[sectionId]?.[questionId];
+  };
 
+
+
+
+  // --- RENDER ---
   return (
     <Panel
       id="question-panel"
