@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
-import Question from "../../WritePlan/Question";
+import Question from "./Question";
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();

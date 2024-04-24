@@ -3,12 +3,12 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import { GlobalContext } from "../context/Global";
-import { guidances } from "../../services";
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
-import InnerModal from "../Shared/InnerModal/InnerModal";
+import { GlobalContext } from "../../context/Global";
+import { guidances } from "../../../services";
+import CustomError from "../CustomError";
+import CustomSpinner from "../CustomSpinner";
+import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "../../WritePlan/styles/GuidanceModalStyles";
+import InnerModal from "../InnerModal/InnerModal";
 
 function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
   const { t } = useTranslation();

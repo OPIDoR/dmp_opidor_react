@@ -8,13 +8,13 @@ import { BsGear } from "react-icons/bs";
 import { TbBulbFilled } from "react-icons/tb";
 import { IoShuffleOutline } from "react-icons/io5";
 
-import { GlobalContext } from "../context/Global";
-import * as styles from "../assets/css/write_plan.module.css";
-import DynamicForm from "../Forms/DynamicForm";
+import { GlobalContext } from "../../context/Global";
+import * as styles from "../../assets/css/write_plan.module.css";
+import DynamicForm from "../../Forms/DynamicForm";
 import GuidanceModal from "./GuidanceModal";
-import CommentModal from "./CommentModal";
-import RunsModal from "./RunsModal";
-import { CommentSVG } from "../Styled/svg";
+import CommentModal from "../../WritePlan/CommentModal";
+import RunsModal from "../../WritePlan/RunsModal";
+import { CommentSVG } from "../../Styled/svg";
 
 function Question({
   question,
