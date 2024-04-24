@@ -14,7 +14,7 @@ import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../../assets/css/write_plan.module.css";
 
 
-function SectionsContent({ planId, templateId, readonly }) {
+function SectionsContent({ planId, templateId, readonly, mode }) {
   const { t } = useTranslation();
   const {
     openedQuestions,
@@ -36,35 +36,47 @@ function SectionsContent({ planId, templateId, readonly }) {
   Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
-    writePlan.getSectionsData(templateId)
-      .then((res) => {
+    console.log("Tid:", templateId);
+    if (mode === "mapping") {
+      // Mode sans données pour TemplateMapping
+      writePlan.getSectionsData(templateId)
+        .then((res) => {
+          setSectionsData(res.data);
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    } else if (mode === "writing") {
+      // Mode édition/lecture existant
+      writePlan.getSectionsData(templateId)
+        .then((res) => {
 
-        setPlanInformations({
-          locale: res?.data?.locale.split('-')?.at(0) || 'fr',
-          title: res?.data?.title,
-          version: res?.data?.version,
-          org: res?.data?.org,
-          publishedDate: res?.data?.publishedDate,
-        });
+          setPlanInformations({
+            locale: res?.data?.locale.split('-')?.at(0) || 'fr',
+            title: res?.data?.title,
+            version: res?.data?.version,
+            org: res?.data?.org,
+            publishedDate: res?.data?.publishedDate,
+          });
 
         // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
         //   return el.id === displayedResearchOutput.id;
         // });
-        setSectionsData(res.data);
-        if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
+          setSectionsData(res.data);
+          if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
           // const allCollapses = res.data.map((section) => {
           //   return {[section.id]: []};
           // });
-          const updatedCollapseState = {
-            ...openedQuestions,
-            [displayedResearchOutput.id]: {},
-          };
-          setOpenedQuestions(updatedCollapseState);
-        }
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, [templateId]);
+            const updatedCollapseState = {
+              ...openedQuestions,
+              [displayedResearchOutput.id]: {},
+            };
+            setOpenedQuestions(updatedCollapseState);
+          }
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
+  }, [templateId, mode]);
 
   /**
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
@@ -120,7 +132,7 @@ function SectionsContent({ planId, templateId, readonly }) {
       {!error && sectionsData?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
-            <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
+            {mode !== "mapping" && <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>}
             {sectionsData?.sections?.map((section) => (
               <Section
                 key={section.id}
