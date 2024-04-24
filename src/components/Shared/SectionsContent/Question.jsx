@@ -54,6 +54,19 @@ function Question({
 
   const { t } = useTranslation();
 
+  /**
+   * Checks if a specific question is opened based on its identifiers within the nested object structure.
+   *
+   * @returns {boolean} True if the question is opened, false otherwise.
+   */
+  const isQuestionOpened = () =>
+    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput)
+    // || !!openedQuestions[sectionId]?.[questionId];
+
+  // const isQuestionOpened = () => {
+  //   return !!openedQuestions[sectionId]?.[questionId];
+  // };
+
   // --- BEHAVIOURS ---
   useEffect(() => {
     if (displayedResearchOutput) {
@@ -123,24 +136,67 @@ function Question({
   
   const handleQuestionCollapse = (expanded) => {
     closeAllModals();
-    const updatedState = { ...openedQuestions };
 
-    if (!updatedState[sectionId]) {
-      updatedState[sectionId] = {};
+    if (displayedResearchOutput && displayedResearchOutput.id) {      
+      const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
+
+
+      if (!updatedState[sectionId]) {
+        updatedState[sectionId] = {
+          [questionId]: false,
+        };
+      }
+
+      updatedState[sectionId] = {
+        ...updatedState[sectionId],
+        [questionId]: expanded,
+      };
+
+      console.log("US:", updatedState);
+
+
+      setOpenedQuestions({
+        ...openedQuestions,
+        [displayedResearchOutput.id]: updatedState,
+      });
+    }
+    else {
+      console.log(openedQuestions);
+      const updatedState = { ...openedQuestions };
+
+
+
+      if (!updatedState[sectionId]) {
+        updatedState[sectionId] = {
+          [questionId]: false,
+        };
+      }
+
+      updatedState[sectionId] = {
+        ...updatedState[sectionId],
+        [questionId]: expanded,
+      };
+
+      console.log("US:", updatedState);
+
+
+      // if (!updatedState[sectionId]) {
+      //   updatedState[sectionId] = {};
+      // }
+
+      // updatedState[sectionId][questionId] = expanded;
+
+      setOpenedQuestions(updatedState);
     }
 
-    updatedState[sectionId][questionId] = expanded;
+    console.log("DROO:", displayedResearchOutput);
 
-    setOpenedQuestions(updatedState);
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
 
     handleIconClick(null, 'formSelector');
   };
-
-
-
 
   const closeAllModals = () => {
     setShowCommentModal(false);
@@ -201,18 +257,6 @@ function Question({
       modalType === 'formSelector' ? 'var(--rust)' : 'var(--dark-blue)',
     );
   };
-
-  /**
-   * Checks if a specific question is opened based on its identifiers within the nested object structure.
-   *
-   * @returns {boolean} True if the question is opened, false otherwise.
-   */
-  const isQuestionOpened = () => {
-    return !!openedQuestions[sectionId]?.[questionId];
-  };
-
-
-
 
   // --- RENDER ---
   return (
