@@ -53,11 +53,13 @@ function Question({
   const { t } = useTranslation();
 
   useEffect(() => {
-    const answer = displayedResearchOutput?.answers?.find(
-      (answer) => question?.id === answer?.question_id
-    );
-    setAnswerId(answer?.answer_id);
-    setFragmentId(answer?.fragment_id);
+    if (displayedResearchOutput) {
+      const answer = displayedResearchOutput.answers?.find(
+        (answer) => question?.id === answer?.question_id
+      );
+      setAnswerId(answer?.answer_id);
+      setFragmentId(answer?.fragment_id);
+    }
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
@@ -73,25 +75,31 @@ function Question({
    * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = (expanded) => {
-    closeAllModals();
+    if (displayedResearchOutput && displayedResearchOutput.id) {
+      closeAllModals();
+      
+      const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
 
-    const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
+      if (!updatedState[sectionId]) {
+        updatedState[sectionId] = {
+          [questionId]: false,
+        };
+      }
 
-    if (!updatedState[sectionId]) {
       updatedState[sectionId] = {
-        [questionId]: false,
+        ...updatedState[sectionId],
+        [questionId]: expanded,
       };
-    }
 
-    updatedState[sectionId] = {
-      ...updatedState[sectionId],
-      [questionId]: expanded,
-    };
+      setOpenedQuestions({
+        ...openedQuestions,
+        [displayedResearchOutput.id]: updatedState,
+      });
 
-    setOpenedQuestions({
-      ...openedQuestions,
-      [displayedResearchOutput.id]: updatedState,
-    });
+      const queryParameters = new URLSearchParams(window.location.search);
+      setUrlParams({ research_output: queryParameters.get('research_output') });
+
+      handleIconClick(null, 'formSelector');
     }
   };
 
@@ -164,19 +172,17 @@ function Question({
     !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput);
 
   return (
-    <>
-      {
-        <Panel
-          id="question-panel"
-          expanded={isQuestionOpened()}
-          className={styles.panel}
+    <Panel
+      id="question-panel"
+      expanded={isQuestionOpened()}
+      className={styles.panel}
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
             borderColor: "var(--dark-blue)",
           }}
-          onToggle={(expanded) => handleQuestionCollapse(expanded)}
-        >
+      onToggle={(expanded) => handleQuestionCollapse(expanded)}
+    >
           <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
             <Panel.Title toggle>
               <div className={styles.question_title}>
@@ -433,9 +439,7 @@ function Question({
               <></>
             )}
           </Panel.Body>
-        </Panel>
-      }
-    </>
+    </Panel>
   );
 }
 
