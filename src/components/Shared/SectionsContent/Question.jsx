@@ -92,11 +92,7 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
-
-    const queryParameters = new URLSearchParams(window.location.search);
-    setUrlParams({ research_output: queryParameters.get('research_output') });
-
-    handleIconClick(null, 'formSelector');
+    }
   };
 
   const closeAllModals = () => {
