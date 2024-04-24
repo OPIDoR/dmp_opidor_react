@@ -248,9 +248,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       </div>
 
                       <label
-                        className={`${guidanceChoiceStyles.label_checkbox} ${
-                          checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ""
-                        }`}
+                        className={`${guidanceChoiceStyles.label_checkbox}`}
                         style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
                         onClick={() => {
                           if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {
