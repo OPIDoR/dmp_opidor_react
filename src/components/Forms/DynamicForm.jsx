@@ -44,54 +44,65 @@ function DynamicForm({
   const [template, setTemplate] = useState(null);
   const [externalImports, setExternalImports] = useState({});
 
+  const mode = "mapping"; // TODO: temp, mode from (separate) context
+
   useEffect(() => {
     setLoading(true);
-    if (fragmentId) {
-      if (formData[fragmentId]) {
-        if(loadedTemplates[formData[fragmentId].template_name]) {
-          setTemplate(loadedTemplates[formData[fragmentId].template_name]);
+    if (mode === "mapping") {
+      service.getSchema(madmpSchemaId).then((res) => {
+        setTemplate(res.data);
+        // setExternalImports(template?.schema?.externalImports || {});
+        setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
+      }).catch(console.error)
+        .finally(() => setLoading(false));
+    } else {
+      if (fragmentId) {
+        if (formData[fragmentId]) {
+          if (loadedTemplates[formData[fragmentId].template_name]) {
+            setTemplate(loadedTemplates[formData[fragmentId].template_name]);
+          } else {
+            service.getSchemaByName(formData[fragmentId].template_name).then((res) => {
+              setTemplate(res.data);
+              setExternalImports(template?.schema?.externalImports || {});
+              setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
+            }).catch(console.error)
+              .finally(() => setLoading(false));
+          }
+          methods.reset(formData[fragmentId]);
         } else {
-          service.getSchema(formData[fragmentId].template_name).then((res) => {
-            setTemplate(res.data);
-            setExternalImports(template?.schema?.externalImports || {});
-            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
+          service.getFragment(fragmentId).then((res) => {
+            setTemplate(res.data.template);
+            setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.schema });
+            setFormData({ [fragmentId]: res.data.fragment });
+            methods.reset(res.data.fragment);
           }).catch(console.error)
             .finally(() => setLoading(false));
         }
-        methods.reset(formData[fragmentId]);
       } else {
-        service.getFragment(fragmentId).then((res) => {
+        service.createFragment(null, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
+          const updatedResearchOutput = { ...displayedResearchOutput };
           setTemplate(res.data.template);
-          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.schema });
-          setFormData({ [fragmentId]: res.data.fragment });
-          methods.reset(res.data.fragment);
+          const fragment = res.data.fragment;
+          const answerId = res.data.answer_id
+          setLoadedTemplates({ ...loadedTemplates, [fragment?.template.name]: res?.data?.schema });
+          setFormData({ [fragment.id]: fragment });
+          setFragmentId(fragment.id);
+          setAnswerId(answerId);
+          updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
+          setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
         }).catch(console.error)
           .finally(() => setLoading(false));
       }
-    } else {
-      service.createFragment(null, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
-        const updatedResearchOutput = { ...displayedResearchOutput };
-        setTemplate(res.data.template);
-        const fragment = res.data.fragment;
-        const answerId = res.data.answer_id
-        setLoadedTemplates({ ...loadedTemplates, [fragment?.template.name]: res?.data?.schema });
-        setFormData({ [fragment.id]: fragment });
-        setFragmentId(fragment.id);
-        setAnswerId(answerId);
-        updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
-        setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
-      }).catch(console.error)
-        .finally(() => setLoading(false));
-    }
 
-    if(fetchAnswersData) {
-      writePlan.getPlanData(planData.id)
-        .then((res) => {
-          const { questions_with_guidance } = res.data;
-          setQuestionsWithGuidance(questions_with_guidance || []);
-        })
-        .catch(() => setQuestionsWithGuidance([]));
-      setLoading(false);
+      if (fetchAnswersData) {
+        writePlan.getPlanData(planData.id)
+          .then((res) => {
+            const { questions_with_guidance } = res.data;
+            setQuestionsWithGuidance(questions_with_guidance || []);
+          })
+          .catch(() => setQuestionsWithGuidance([]));
+        setLoading(false);
+      }
     }
   }, [fragmentId]);
 

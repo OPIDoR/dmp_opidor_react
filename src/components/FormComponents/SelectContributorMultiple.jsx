@@ -70,9 +70,13 @@ function SelectContributorMultiple({
   }, [persons])
 
   const fetchPersons = () => {
-    service.getPersons(dmpId).then((res) => {
-      setPersons(res.data.results);
-    });
+    if(dmpId) {
+      service.getPersons(dmpId).then((res) => {
+        setPersons(res.data.results);
+      });
+    } else {
+      setPersons([]);
+    }
   }
 
   const fetchRoles = () => {

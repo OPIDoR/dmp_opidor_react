@@ -138,6 +138,7 @@ function SectionsContent({ planId, templateId, readonly, mode }) {
                 key={section.id}
                 section={section}
                 readonly={readonly}
+                mode={mode}
               />
             ))}
           </div>

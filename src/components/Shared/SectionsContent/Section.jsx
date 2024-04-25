@@ -5,7 +5,7 @@ import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "./Question";
 
-function Section({ section, readonly }) {
+function Section({ section, readonly, mode }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
   const [sectionId, setSectionId] = useState(section.id);
@@ -85,6 +85,7 @@ function Section({ section, readonly }) {
           sectionId={sectionId}
           sectionNumber={section.number}
           readonly={readonly}
+          mode={mode}
         />
       ))}
     </>

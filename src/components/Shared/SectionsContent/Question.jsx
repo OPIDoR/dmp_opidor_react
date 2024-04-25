@@ -22,6 +22,7 @@ function Question({
   sectionId,
   sectionNumber,
   readonly,
+  mode,
 }) {
   // --- DATA ---
   const {
@@ -97,6 +98,7 @@ function Question({
    * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = (expanded) => {
+    console.log(question);
     closeAllModals();
 
     if (displayedResearchOutput && displayedResearchOutput.id) {      
@@ -465,7 +467,7 @@ function Question({
                     }}
                     fetchAnswersData={true}
                   />
-                ) : readonly ?
+                ) : (readonly && mode === 'writing') ?
                   (
                     <Label bsStyle="primary">{t('Question not answered.')}</Label>
                   ) :
