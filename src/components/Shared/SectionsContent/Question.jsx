@@ -59,13 +59,18 @@ function Question({
    *
    * @returns {boolean} True if the question is opened, false otherwise.
    */
-  const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput)
-    // || !!openedQuestions[sectionId]?.[questionId];
-
-  // const isQuestionOpened = () => {
-  //   return !!openedQuestions[sectionId]?.[questionId];
-  // };
+  const isQuestionOpened = () => {
+    // Vérifie d'abord si displayedResearchOutput est défini et utilise cette logique si c'est le cas
+    if (displayedResearchOutput && displayedResearchOutput.id) {
+      return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
+    }
+    // Sinon, utilise une vérification qui ne dépend que de sectionId et questionId
+    return !!openedQuestions?.[sectionId]?.[questionId];
+  };
+  
+  // const isQuestionOpened = () =>
+  //   !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] //&& (displayedResearchOutput.id === currentResearchOutput)
+  //   // || !!openedQuestions[sectionId]?.[questionId];
 
   // --- BEHAVIOURS ---
   useEffect(() => {
@@ -91,49 +96,6 @@ function Question({
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
    */
-  // const handleQuestionCollapse = (expanded) => {
-  //   console.log('EXP', expanded);
-  //   closeAllModals();
-  //   // if (displayedResearchOutput && displayedResearchOutput.id) {
-  //   //   const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
-      
-  //   //   if (!updatedState[sectionId]) {
-  //   //     updatedState[sectionId] = {
-  //   //       [questionId]: false,
-  //   //     };
-  //   //   }
-
-  //   //   updatedState[sectionId] = {
-  //   //     ...updatedState[sectionId],
-  //   //     [questionId]: expanded,
-  //   //   };
-
-  //   //   setOpenedQuestions({
-  //   //     ...openedQuestions,
-  //   //     [displayedResearchOutput.id]: updatedState,
-  //   //   });
-  //   // }
-
-  //   const outputId = displayedResearchOutput ? displayedResearchOutput.id : 'generic';
-  //   const updatedState = { ...openedQuestions[outputId] };
-
-  //   if (!updatedState[sectionId]) {
-  //     updatedState[sectionId] = {};
-  //   }
-
-  //   updatedState[sectionId][questionId] = expanded;
-
-  //   setOpenedQuestions({
-  //     ...openedQuestions,
-  //     [outputId]: updatedState,
-  //   });
-
-  //   const queryParameters = new URLSearchParams(window.location.search);
-  //   setUrlParams({ research_output: queryParameters.get('research_output') });
-
-  //   handleIconClick(null, 'formSelector');
-  // };
-  
   const handleQuestionCollapse = (expanded) => {
     closeAllModals();
 
@@ -467,16 +429,18 @@ function Question({
                     fragmentId={fragmentId}
                   />
                 )}
-                <CommentModal
-                  show={showCommentModal}
-                  setshowModalComment={setShowCommentModal}
-                  setFillColorIconComment={setFillCommentIconColor}
-                  answerId={answerId}
-                  researchOutputId={displayedResearchOutput.id}
-                  planId={planData.id}
-                  questionId={question.id}
-                  readonly={readonly}
-                />
+                { displayedResearchOutput && 
+                  <CommentModal
+                    show={showCommentModal}
+                    setshowModalComment={setShowCommentModal}
+                    setFillColorIconComment={setFillCommentIconColor}
+                    answerId={answerId}
+                    researchOutputId={displayedResearchOutput.id}
+                    planId={planData.id}
+                    questionId={question.id}
+                    readonly={readonly}
+                  />
+                }
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showGuidanceModal}
                   setShowGuidanceModal={setShowGuidanceModal}
