@@ -39,12 +39,12 @@ function DynamicForm({
     setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
+  const { mode } = useSectionsMode();
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
   const [externalImports, setExternalImports] = useState({});
-  const [ mode ] = useSectionsMode();
 
   useEffect(() => {
     setLoading(true);
