@@ -3,7 +3,7 @@ import { Panel, PanelGroup } from "react-bootstrap";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { TbBulbFilled } from "react-icons/tb";
 import { GlobalContext } from '../context/Global.jsx';
-import guidanceChoiceStyles from "../../../src/components/assets/css/guidance_choice.module.css";
+import * as guidanceChoiceStyles from "../../../src/components/assets/css/guidance_choice.module.css";
 import { guidances } from "../../services";
 import { CustomSpinner, CustomError } from "../Shared";
 import CustomButton from "../Styled/CustomButton";
@@ -248,9 +248,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       </div>
 
                       <label
-                        className={`${guidanceChoiceStyles.label_checkbox} ${
-                          checkboxStates[group.id].checked ? guidanceChoiceStyles.checked : ""
-                        }`}
+                        className={`${guidanceChoiceStyles.label_checkbox}`}
                         style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
                         onClick={() => {
                           if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {

@@ -35,7 +35,7 @@ function FormBuilder({ template, readonly }) {
         (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"))
       ) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
-        if (prop.schema_id && prop.type === 'object') {
+        if (prop.template_name && prop.type === 'object') {
           formFields.push(
             <SelectSingleList
               key={key}
@@ -44,7 +44,7 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
-              templateId={prop.schema_id}
+              templateName={prop.template_name}
               defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -53,7 +53,7 @@ function FormBuilder({ template, readonly }) {
           continue;
         }
         // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
-        if (prop.items?.schema_id && prop.type === 'array') {
+        if (prop.items?.template_name && prop.type === 'array') {
           formFields.push(
             <SelectWithCreate
               key={key}
@@ -61,7 +61,7 @@ function FormBuilder({ template, readonly }) {
               formLabel={formLabel}
               propName={key}
               header={prop[`table_header@${locale}`]}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -114,21 +114,21 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             label={formLabel}
             tooltip={tooltip}
-            templateId={prop.schema_id}
+            templateName={prop.template_name}
             defaultValue={defaultValue}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
         );
         continue;
       }
-      if(prop.schema_id && prop.type === 'object') {
+      if(prop.template_name && prop.type === 'object') {
         formFields.push(
           <SubForm
             key={key}
             label={formLabel}
             propName={key}
             tooltip={tooltip}
-            templateId={prop.schema_id}
+            templateName={prop.template_name}
             readonly={readonly || isConst}
           />
         )
@@ -138,7 +138,7 @@ function FormBuilder({ template, readonly }) {
       /**
        * SUB FRAGMENTS LIST
        */
-      if (prop.type === 'array' && prop.items.type === 'object' && prop.items.schema_id) {
+      if (prop.type === 'array' && prop.items.type === 'object' && prop.items.template_name) {
         if (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard') {
           formFields.push(
             <SelectContributorMultiple
@@ -147,7 +147,7 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               defaultValue={defaultValue}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
@@ -162,7 +162,7 @@ function FormBuilder({ template, readonly }) {
               formLabel={formLabel}
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
-              templateId={prop.items.schema_id}
+              templateName={prop.items.template_name}
               readonly={readonly || isConst}
             ></ModalTemplate>,
           );

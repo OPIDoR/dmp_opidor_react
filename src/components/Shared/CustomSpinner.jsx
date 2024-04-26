@@ -2,7 +2,7 @@ import React from 'react';
 import { RotatingTriangles } from 'react-loader-spinner';
 import { useTranslation } from "react-i18next";
 
-import styles from '../assets/css/overlay.module.css';
+import * as styles from '../assets/css/overlay.module.css';
 
 function CustomSpinner({ isOverlay = false }) {
   const { t } = useTranslation();

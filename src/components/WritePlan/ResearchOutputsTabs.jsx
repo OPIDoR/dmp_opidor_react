@@ -7,7 +7,7 @@ import { MdAddCircleOutline } from "react-icons/md";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
 import chunk from "lodash.chunk";
-import styles from "../assets/css/sidebar.module.css";
+import * as styles from "../assets/css/sidebar.module.css";
 import { RESEARCH_OUTPUTS_PER_PAGE } from "../../config";
 
 function ResearchOutputsTabs({ planId, readonly }) {

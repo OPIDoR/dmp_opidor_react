@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 
 /**
  * It's a function that takes in a bunch of props and returns

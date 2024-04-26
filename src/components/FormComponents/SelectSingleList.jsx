@@ -9,11 +9,11 @@ import Swal from 'sweetalert2';
 import { service } from '../../services';
 import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
 import { GlobalContext } from '../context/Global.jsx';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { fragmentEmpty } from '../../utils/utils.js';
+import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -26,7 +26,7 @@ function SelectSingleList({
   tooltip,
   registries,
   registryType,
-  templateId,
+  templateName,
   defaultValue = null,
   overridable = false,
   readonly = false,
@@ -89,15 +89,17 @@ function SelectSingleList({
 
   useEffect(() => {
     if (registryType !== 'complex') { return; }
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [registryType, templateId])
+  }, [registryType, templateName])
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -165,6 +167,7 @@ function SelectSingleList({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (

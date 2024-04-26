@@ -5,7 +5,7 @@ import { Tabs } from "react-bootstrap";
 import DOMPurify from "dompurify";
 import AddResearchOutput from "./AddResearchOutput";
 import ImportResearchOutput from "./ImportResearchOutput";
-import styles from "../assets/css/modal.module.css";
+import * as styles from "../assets/css/modal.module.css";
 
 /* This is a functional component in JavaScript React that renders a modal window with two tabs: "Créer" and "Importer". The component takes in three
 props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to translate the text displayed in the modal. The `Tabs` component from

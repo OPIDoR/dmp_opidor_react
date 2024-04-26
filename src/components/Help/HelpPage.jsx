@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
 
-import CustomSpinner from '../Shared/CustomSpinner.jsx';
-import CustomError from '../Shared/CustomError.jsx';
+import { CustomError, CustomSpinner } from '../Shared';
 import { directus } from '../../services';
+
 import {
   FaqContainer,
   FaqCategories,
