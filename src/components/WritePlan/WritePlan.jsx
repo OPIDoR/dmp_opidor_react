@@ -15,6 +15,7 @@ import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
+import useSectionsMode from "../../hooks/useSectionsMode";
 
 const locales = { fr, en: enGB };
 
@@ -27,6 +28,7 @@ function WritePlan({
   currentOrgId,
   currentOrgName,
 }) {
+  // --- DATA ---
   const { t, i18n } = useTranslation();
   const {
     setFormData,
@@ -40,12 +42,15 @@ function WritePlan({
     setQuestionsWithGuidance,
     planInformations,
   } = useContext(GlobalContext);
+  const { setMode } = useSectionsMode();
+
   const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const { setIsOpen } = useTour();
 
+  // --- BEHAVIOURS ---
   const handleWebsocketData = useCallback((data) => {
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
       setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
@@ -56,6 +61,7 @@ function WritePlan({
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
   useEffect(() => {
+    setMode("mapping");
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
 
@@ -132,6 +138,7 @@ function WritePlan({
     }
   }
 
+  // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}

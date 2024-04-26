@@ -5,7 +5,7 @@ const useSectionsMode = () => {
     const context = useContext(SectionsModeContext);
 
     if (!context)
-        throw new Error('useSectionsMode must be used within useSectionsModeProvider');
+        throw new Error('useSectionsMode must be used within SectionsModeProvider');
 
     return context;
 }
