@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext } from 'react';
 
-export const ModeContext = createContext();
+export const SectionsModeContext = createContext();
 
 // export const useMode = () => useContext(ModeContext);
 
-export const ModeProvider = ({ children }) => {
+export const SectionsModeProvider = ({ children }) => {
   const [mode, setMode] = useState('default');
 
   // return (
@@ -14,12 +14,12 @@ export const ModeProvider = ({ children }) => {
   // );
 
   return (
-    <ModeContext.Provider
+    <SectionsModeContext.Provider
       value={{
         mode, setMode
       }}
     >
       {children}
-    </ModeContext.Provider>
+    </SectionsModeContext.Provider>
   );
 };

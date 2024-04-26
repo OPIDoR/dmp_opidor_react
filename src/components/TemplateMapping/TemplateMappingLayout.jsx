@@ -6,7 +6,7 @@ import '../../i18n.js';
 
 import { useTranslation } from 'react-i18next';
 import TemplateMapping from './TemplateMapping.jsx';
-import { ModeProvider } from '../context/ModeContext.jsx';
+import { SectionsModeProvider } from '../context/SectionsModeContext.jsx';
 
 const toastOptions = {
   duration: 5000,
@@ -23,14 +23,14 @@ function TemplateMappingLayout({
 
   return (
     <Global>
-      <ModeProvider>
+      <SectionsModeProvider>
         <TemplateMapping 
           templateId={TEMP_TEMPLATE_ID}
           locale={locale}
           readonly={true}
         />
         <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </ModeProvider>
+      </SectionsModeProvider>
     </Global>
   )
 }
