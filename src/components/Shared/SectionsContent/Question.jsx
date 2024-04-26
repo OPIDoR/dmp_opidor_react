@@ -24,7 +24,7 @@ function Question({
   sectionNumber,
   readonly,
 }) {
-  // --- DATA ---
+  // --- STATE ---
   const {
     planData,
     openedQuestions,

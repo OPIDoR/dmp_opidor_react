@@ -18,7 +18,7 @@ import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../../hooks/useS
 
 function SectionsContent({ planId, templateId, readonly }) 
 {
-  // --- DATA ---
+  // --- STATE ---
   const { t } = useTranslation();
   const {
     openedQuestions,
@@ -35,6 +35,7 @@ function SectionsContent({ planId, templateId, readonly })
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
+
 
   // --- BEHAVIOURS ---
 
@@ -121,6 +122,7 @@ function SectionsContent({ planId, templateId, readonly })
     setEdit(false);
   }
 
+  // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}

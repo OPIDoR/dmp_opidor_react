@@ -28,7 +28,7 @@ function WritePlan({
   currentOrgId,
   currentOrgName,
 }) {
-  // --- DATA ---
+  // --- STATE ---
   const { t, i18n } = useTranslation();
   const {
     setFormData,
