@@ -8,6 +8,7 @@ const EditorComment = ({ initialValue, updateParentText }) => {
   const handleEditorChange = (content) => {
     updateParentText(content);
   };
+
   return (
     <Editor
       onEditorChange={handleEditorChange}
