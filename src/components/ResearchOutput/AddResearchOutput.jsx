@@ -37,7 +37,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     if (edit) {
       setAbbreviation(displayedResearchOutput.abbreviation);
       setTitle(displayedResearchOutput.title);
-      setHasPersonalData(displayedResearchOutput.hasPersonalData);
+      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
       setType(displayedResearchOutput.type);
     }
 

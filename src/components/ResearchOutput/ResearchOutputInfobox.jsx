@@ -83,7 +83,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
             {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
           <li>
-            {t('Contains personal data')} : <strong>{displayedResearchOutput.hasPersonalData ? t('Yes') : t('No')}</strong>
+            {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
           </li>
         </ul>
       </PanelBody>
