@@ -15,7 +15,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import { CommentSVG } from "../../Styled/svg";
-import useSectionsMode from "../../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../../hooks/useSectionsMode";
 
 function Question({
   question,
@@ -62,22 +62,19 @@ function Question({
    * @returns {boolean} True if the question is opened, false otherwise.
    */
   const isQuestionOpened = () => {
-    // Vérifie d'abord si displayedResearchOutput est défini et utilise cette logique si c'est le cas
-    if (displayedResearchOutput && displayedResearchOutput.id) {
-      return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
+    switch (mode) {
+      case MODE_WRITING:
+        return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
+      case MODE_MAPPING: 
+      default:
+        return !!openedQuestions?.[sectionId]?.[questionId];
     }
-    // Sinon, utilise une vérification qui ne dépend que de sectionId et questionId
-    return !!openedQuestions?.[sectionId]?.[questionId];
   };
   
-  // const isQuestionOpened = () =>
-  //   !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] //&& (displayedResearchOutput.id === currentResearchOutput)
-  //   // || !!openedQuestions[sectionId]?.[questionId];
-
   // --- BEHAVIOURS ---
   useEffect(() => {
     if (displayedResearchOutput) {
-      console.log("DRO", displayedResearchOutput);
+      // console.log("DRO", displayedResearchOutput);
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
       );
@@ -102,60 +99,25 @@ function Question({
     console.log(question);
     closeAllModals();
 
-    if (displayedResearchOutput && displayedResearchOutput.id) {      
-      const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
+    const updatedState = mode === MODE_WRITING // displayedResearchOutput && displayedResearchOutput.id
+      ? { ...openedQuestions[displayedResearchOutput.id] }
+      : { ...openedQuestions };
 
+    // console.log(openedQuestions);
 
-      if (!updatedState[sectionId]) {
-        updatedState[sectionId] = {
-          [questionId]: false,
-        };
-      }
-
-      updatedState[sectionId] = {
-        ...updatedState[sectionId],
-        [questionId]: expanded,
-      };
-
-      console.log("US:", updatedState);
-
-
-      setOpenedQuestions({
-        ...openedQuestions,
-        [displayedResearchOutput.id]: updatedState,
-      });
-    }
-    else {
-      console.log(openedQuestions);
-      const updatedState = { ...openedQuestions };
-
-
-
-      if (!updatedState[sectionId]) {
-        updatedState[sectionId] = {
-          [questionId]: false,
-        };
-      }
-
-      updatedState[sectionId] = {
-        ...updatedState[sectionId],
-        [questionId]: expanded,
-      };
-
-      console.log("US:", updatedState);
-
-
-      // if (!updatedState[sectionId]) {
-      //   updatedState[sectionId] = {};
-      // }
-
-      // updatedState[sectionId][questionId] = expanded;
-
-      setOpenedQuestions(updatedState);
+    if (!updatedState[sectionId]) {
+      updatedState[sectionId] = {};
     }
 
-    console.log("DROO:", displayedResearchOutput);
+    updatedState[sectionId][questionId] = expanded;
 
+    // console.log("US:", updatedState);
+
+    setOpenedQuestions(mode === MODE_WRITING
+      ? { ...openedQuestions, [displayedResearchOutput.id] : updatedState }
+      : updatedState);
+
+    // console.log("DROO:", displayedResearchOutput);
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
@@ -468,7 +430,7 @@ function Question({
                     }}
                     fetchAnswersData={true}
                   />
-                ) : (readonly && mode === 'writing') ?
+                ) : (readonly && mode === MODE_WRITING) ?
                   (
                     <Label bsStyle="primary">{t('Question not answered.')}</Label>
                   ) :
