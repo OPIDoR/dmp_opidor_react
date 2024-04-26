@@ -30,7 +30,42 @@ const getHelp = async () => {
   `);
 }
 
+const getGlossary = async () => {
+  return client.query(`
+    query {
+      glossary(filter: { status: { _eq: "published" } }) {
+        translations {
+          languages_code {
+            code
+          }
+          term
+          description
+        }
+      }
+    }
+  `);
+}
+
+const getStaticPage = async (page) => {
+  return client.query(`
+    query {
+      static_pages(filter: { status: { _eq: "published" }, path: { _eq: "${page}" } }) {
+        path,
+        translations {
+          languages_code {
+            code
+          }
+          title,
+          content
+        }
+      }
+    }
+  `);
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getHelp,
+  getGlossary,
+  getStaticPage,
 };

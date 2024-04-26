@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
 
-import CustomSpinner from '../Shared/CustomSpinner.jsx';
-import CustomError from '../Shared/CustomError.jsx';
+import { CustomError, CustomSpinner } from '../Shared';
 import { directus } from '../../services';
+
 import {
   FaqContainer,
   FaqCategories,
@@ -24,7 +24,7 @@ export default function HelpPage({ locale }) {
   const { t } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
-  const { isLoading, error, data } = useQuery('news', () =>
+  const { isLoading, error, data } = useQuery('help', () =>
     directus.getHelp().then(res => res)
   );
 
