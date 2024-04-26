@@ -138,7 +138,7 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && researchOutputs && researchOutputs.length > 0 ? (
+      {!error && researchOutputs && researchOutputs.length > 0 && (
         <>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
@@ -204,7 +204,8 @@ function WritePlan({
             </div>
           </div>
         </>
-      ) : (
+      )}
+      {!loading && !error && researchOutputs?.length === 0 && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Panel style={{ width: '700px' }}>
             <Panel.Body>
