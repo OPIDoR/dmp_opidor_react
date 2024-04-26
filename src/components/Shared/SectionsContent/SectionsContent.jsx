@@ -12,7 +12,7 @@ import Section from "./Section";
 import ResearchOutputModal from "../../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../../assets/css/write_plan.module.css";
-import { SectionsModeContext } from "../../context/SectionsModeContext";
+import useSectionsMode from "../../../hooks/useSectionsMode";
 
 
 
@@ -28,8 +28,7 @@ function SectionsContent({ planId, templateId, readonly })
     setPlanInformations,
     setUrlParams,
   } = useContext(GlobalContext);
-  const { mode } = useContext(SectionsModeContext);
-
+  const { mode } = useSectionsMode();
 
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
