@@ -12,9 +12,12 @@ import Section from "./Section";
 import ResearchOutputModal from "../../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../../assets/css/write_plan.module.css";
+import { useMode } from "../../context/ModeContext";
 
 
-function SectionsContent({ planId, templateId, readonly, mode }) {
+function SectionsContent({ planId, templateId, readonly }) 
+{
+  // --- DATA ---
   const { t } = useTranslation();
   const {
     openedQuestions,
@@ -24,16 +27,25 @@ function SectionsContent({ planId, templateId, readonly, mode }) {
     setPlanInformations,
     setUrlParams,
   } = useContext(GlobalContext);
+  const modeContext = useMode();
+  const mode = modeContext.mode;
+  const setMode = modeContext.setMode;
+
+
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
 
-  /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
+  // --- BEHAVIOURS ---
+
+  /* 
+  A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
   promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
   If the promise is rejected, it sets the error state to the error.
-  Finally, it sets the loading state to false. */
+  Finally, it sets the loading state to false. 
+  */
   useEffect(() => {
     setLoading(true);
     console.log("Tid:", templateId);
@@ -138,7 +150,6 @@ function SectionsContent({ planId, templateId, readonly, mode }) {
                 key={section.id}
                 section={section}
                 readonly={readonly}
-                mode={mode}
               />
             ))}
           </div>
