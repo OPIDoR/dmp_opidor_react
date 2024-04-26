@@ -15,6 +15,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import { CommentSVG } from "../../Styled/svg";
+import useSectionsMode from "../../../hooks/useSectionsMode";
 
 function Question({
   question,
@@ -22,7 +23,6 @@ function Question({
   sectionId,
   sectionNumber,
   readonly,
-  mode,
 }) {
   // --- DATA ---
   const {
@@ -33,6 +33,7 @@ function Question({
     questionsWithGuidance,
     setUrlParams,
   } = useContext(GlobalContext);
+  const { mode } = useSectionsMode();
 
   const [questionId] = useState(question.id);
   const [fragmentId, setFragmentId] = useState(null);

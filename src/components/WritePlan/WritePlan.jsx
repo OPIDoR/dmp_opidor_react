@@ -204,7 +204,6 @@ function WritePlan({
                   planId={planId}
                   templateId={templateId}
                   readonly={readonly}
-                  mode={MODE_WRITING}
                 />
               )}
             </div>

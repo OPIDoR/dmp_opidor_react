@@ -89,7 +89,6 @@ function Section({ section, readonly }) {
           sectionId={sectionId}
           sectionNumber={section.number}
           readonly={readonly}
-          mode={mode}
         />
       ))}
     </>
