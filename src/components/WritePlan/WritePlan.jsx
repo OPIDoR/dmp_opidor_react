@@ -16,6 +16,7 @@ import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
 import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../hooks/useSectionsMode";
+import ResearchOutput from "../ResearchOutput/ResearchOutput";
 
 const locales = { fr, en: enGB };
 
@@ -200,11 +201,9 @@ function WritePlan({
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
-                <SectionsContent
-                  planId={planId}
-                  templateId={templateId}
-                  readonly={readonly}
-                />
+                <SectionsContent templateId={templateId} readonly={readonly}>
+                  <ResearchOutput planId={planId} readonly={readonly} />
+                </SectionsContent>
               )}
             </div>
           </div>
