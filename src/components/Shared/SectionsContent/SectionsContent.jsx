@@ -46,46 +46,33 @@ function SectionsContent({ planId, templateId, readonly })
   */
   useEffect(() => {
     setLoading(true);
-    console.log("Tid:", templateId);
-    if (mode === MODE_MAPPING) {
-      // Mode sans données pour TemplateMapping
-      writePlan.getSectionsData(templateId)
-        .then((res) => {
-          setSectionsData(res.data);
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    } else if (mode === MODE_WRITING) {
-      // Mode édition/lecture existant
-      writePlan.getSectionsData(templateId)
-        .then((res) => {
 
-          setPlanInformations({
-            locale: res?.data?.locale.split('-')?.at(0) || 'fr',
-            title: res?.data?.title,
-            version: res?.data?.version,
-            org: res?.data?.org,
-            publishedDate: res?.data?.publishedDate,
-          });
+    writePlan.getSectionsData(templateId)
+      .then((res) => {
+        setSectionsData(res.data);
 
-        // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
-        //   return el.id === displayedResearchOutput.id;
-        // });
-          setSectionsData(res.data);
-          if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
-          // const allCollapses = res.data.map((section) => {
-          //   return {[section.id]: []};
-          // });
-            const updatedCollapseState = {
-              ...openedQuestions,
-              [displayedResearchOutput.id]: {},
-            };
-            setOpenedQuestions(updatedCollapseState);
-          }
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }
+        if (mode !== MODE_WRITING) return;
+
+        setPlanInformations({
+          locale: res?.data?.locale.split('-')?.at(0) || 'fr',
+          title: res?.data?.title,
+          version: res?.data?.version,
+          org: res?.data?.org,
+          publishedDate: res?.data?.publishedDate,
+        });
+
+        if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
+
+        const updatedCollapseState = {
+          ...openedQuestions,
+          [displayedResearchOutput.id]: {},
+        };
+        setOpenedQuestions(updatedCollapseState);
+        
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
+
   }, [templateId, mode]);
 
   /**
