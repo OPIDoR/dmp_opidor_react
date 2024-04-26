@@ -13,12 +13,13 @@ import {
   createRegistryPlaceholder,
 } from '../../utils/GeneratorUtils';
 import { service } from '../../services';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
 function SelectWithCreate({
@@ -27,7 +28,7 @@ function SelectWithCreate({
   propName,
   tooltip,
   header,
-  templateId,
+  templateName,
   registries,
   overridable = false,
   readonly = false,
@@ -57,15 +58,17 @@ function SelectWithCreate({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if (!loadedTemplates[templateId]) {
-      service.getSchema(templateId).then((res) => {
+    if (!loadedTemplates[templateName]) {
+      service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data);
-        setLoadedTemplates({ ...loadedTemplates, [templateId]: res.data });
+        setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
+      }).catch((error) => {
+        setError(getErrorMessage(error));
       });
     } else {
-      setTemplate(loadedTemplates[templateId]);
+      setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateId]);
+  }, [templateName]);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -203,6 +206,7 @@ function SelectWithCreate({
             )
           }
         </div>
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
         <div className="row">
           {registries && registries.length > 1 && (

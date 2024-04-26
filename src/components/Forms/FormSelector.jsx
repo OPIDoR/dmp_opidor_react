@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from 'react-bootstrap';
 
-import styles from '../assets/css/form_selector.module.css';
+import * as styles from '../assets/css/form_selector.module.css';
 import CustomSpinner from '../Shared/CustomSpinner';
 import service from "../../services/service";
 import { GlobalContext } from "../context/Global";
 import CustomSelect from "../Shared/CustomSelect";
 
-function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, setTemplate, formSelector }) {
+function FormSelector({ className, selectedTemplateName, fragmentId, setFragment, setTemplate, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
@@ -24,13 +24,13 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
       setAvailableTemplates(data);
       setFormSelector((prev) => ({ ...prev, [fragmentId]: data?.length > 1 }));
       data.forEach((template) => {
-        setLoadedTemplates({ ...loadedTemplates, [template.id]: template.schema });
-        if (template.id === selectedTemplateId) setSelectedTemplate(template);
+        setLoadedTemplates({ ...loadedTemplates, [template.name]: template.schema });
+        if (template.name === selectedTemplateName) setSelectedTemplate(template);
       });
     })
     .catch(console.error)
     .finally(() => setLoading(false));
-  }, [className, selectedTemplateId])
+  }, [className, selectedTemplateName])
 
 
   const handleSelectTemplate = (e) => {
@@ -39,7 +39,7 @@ function FormSelector({ className, selectedTemplateId, fragmentId, setFragment, 
 
   const handleChangeForm = () => {
     setLoading(true)
-    service.changeForm(fragmentId, selectedTemplate.id, locale).then((res) => {
+    service.changeForm(fragmentId, selectedTemplate.name, locale).then((res) => {
       setFragment(res.data.fragment);
       setTemplate(res.data.template)
     })

@@ -23,7 +23,7 @@ export function except(data, excludedKeys) {
 }
 
 export function fragmentEmpty(data) {
-  let rest = except(data, ['id', 'schema_id', 'action']);
+  let rest = except(data, ['id', 'schema_id', 'template_name', 'action']);
   return Object.keys(rest).length === 0
 }
 
@@ -49,7 +49,6 @@ export function isValidHttpUrl(string) {
 }
 
 export function getErrorMessage(error) {
-  console.log(error);
   if (error.response && error.response.data) {
     return error.response.data.message || error.response.data.error;
   } else if (error.request) {

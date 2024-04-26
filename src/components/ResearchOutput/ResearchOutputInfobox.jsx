@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "../assets/css/write_plan.module.css";
+import * as styles from "../assets/css/write_plan.module.css";
 import { Panel } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";

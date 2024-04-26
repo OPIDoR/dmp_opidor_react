@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 
 import { ExternalImport } from '../ExternalImport';
-import styles from '../assets/css/form.module.css';
+import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
