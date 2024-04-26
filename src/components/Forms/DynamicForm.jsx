@@ -15,7 +15,7 @@ import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
 import { writePlan } from "../../services";
-import useSectionsMode from '../../hooks/useSectionsMode.js';
+import useSectionsMode, { MODE_MAPPING } from '../../hooks/useSectionsMode.js';
 
 function DynamicForm({
   fragmentId,
@@ -48,7 +48,7 @@ function DynamicForm({
 
   useEffect(() => {
     setLoading(true);
-    if (mode === "mapping") {
+    if (mode === MODE_MAPPING) {
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
         // setExternalImports(template?.schema?.externalImports || {});

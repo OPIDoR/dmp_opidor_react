@@ -12,7 +12,7 @@ import Section from "./Section";
 import ResearchOutputModal from "../../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../../assets/css/write_plan.module.css";
-import useSectionsMode from "../../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../../hooks/useSectionsMode";
 
 
 
@@ -47,7 +47,7 @@ function SectionsContent({ planId, templateId, readonly })
   useEffect(() => {
     setLoading(true);
     console.log("Tid:", templateId);
-    if (mode === "mapping") {
+    if (mode === MODE_MAPPING) {
       // Mode sans données pour TemplateMapping
       writePlan.getSectionsData(templateId)
         .then((res) => {
@@ -55,7 +55,7 @@ function SectionsContent({ planId, templateId, readonly })
         })
         .catch((error) => setError(error))
         .finally(() => setLoading(false));
-    } else if (mode === "writing") {
+    } else if (mode === MODE_WRITING) {
       // Mode édition/lecture existant
       writePlan.getSectionsData(templateId)
         .then((res) => {
@@ -142,7 +142,7 @@ function SectionsContent({ planId, templateId, readonly })
       {!error && sectionsData?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
-            {mode !== "mapping" && <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>}
+            {mode !== MODE_MAPPING && <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>}
             {sectionsData?.sections?.map((section) => (
               <Section
                 key={section.id}

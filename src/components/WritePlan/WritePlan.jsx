@@ -15,7 +15,7 @@ import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
-import useSectionsMode from "../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../hooks/useSectionsMode";
 
 const locales = { fr, en: enGB };
 
@@ -61,7 +61,7 @@ function WritePlan({
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
   useEffect(() => {
-    setMode("mapping");
+    setMode(MODE_MAPPING);
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
 
@@ -204,7 +204,7 @@ function WritePlan({
                   planId={planId}
                   templateId={templateId}
                   readonly={readonly}
-                  mode="writing"
+                  mode={MODE_WRITING}
                 />
               )}
             </div>
