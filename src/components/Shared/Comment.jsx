@@ -211,11 +211,11 @@ function Comment({
 
     const newText = editorContentRef.current;
 
-    if (!newText) {
+    if (!newText || newText.length <= 0) {
       return toast.error(t('Unable to send the comment, please enter a valid comment.'));
     }
 
-    setText('<p></p>');
+    setText('');
 
     return isUpdate ? update(newText, comment) : createComment(newText);
   };
