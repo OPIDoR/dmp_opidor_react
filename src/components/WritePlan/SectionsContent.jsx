@@ -29,14 +29,20 @@ function SectionsContent({ planId, templateId, readonly }) {
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
+  const [moduleId, setModuleId] = useState(templateId);
 
+
+  useEffect(() => {
+    setModuleId(displayedResearchOutput?.configuration?.moduleId || templateId)
+  }, [displayedResearchOutput, templateId])
   /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
   promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
   If the promise is rejected, it sets the error state to the error.
   Finally, it sets the loading state to false. */
   useEffect(() => {
     setLoading(true);
-    writePlan.getSectionsData(templateId)
+    
+    writePlan.getSectionsData(moduleId)
       .then((res) => {
 
         setPlanInformations({
@@ -64,7 +70,7 @@ function SectionsContent({ planId, templateId, readonly }) {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [templateId]);
+  }, [moduleId]);
 
   /**
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
