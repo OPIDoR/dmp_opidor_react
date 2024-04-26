@@ -61,7 +61,7 @@ function WritePlan({
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
   useEffect(() => {
-    setMode(MODE_MAPPING);
+    setMode(MODE_WRITING);
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
 
