@@ -15,6 +15,7 @@ import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
 import { writePlan } from "../../services";
+import useSectionsMode from '../../hooks/useSectionsMode.js';
 
 function DynamicForm({
   fragmentId,
@@ -43,8 +44,7 @@ function DynamicForm({
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
   const [externalImports, setExternalImports] = useState({});
-
-  const mode = "mapping"; // TODO: temp, mode from (separate) context
+  const [ mode ] = useSectionsMode();
 
   useEffect(() => {
     setLoading(true);
