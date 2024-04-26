@@ -1,32 +1,25 @@
-import React, { Children, useContext, useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { writePlan } from "../../../services";
 import CustomSpinner from "../CustomSpinner";
 import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
-import { researchOutput } from "../../../services";
 import Section from "./Section";
-import ResearchOutputModal from "../../ResearchOutput/ResearchOutputModal";
-import ResearchOutputInfobox from "../../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../../assets/css/write_plan.module.css";
-import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_WRITING } from "../../../hooks/useSectionsMode";
 
 
 
-function SectionsContent({ planId, templateId, readonly, children }) 
+function SectionsContent({ templateId, readonly, children }) 
 {
   // --- STATE ---
   const { t } = useTranslation();
   const {
     openedQuestions,
     setOpenedQuestions,
-    researchOutputs, setResearchOutputs,
-    displayedResearchOutput, setDisplayedResearchOutput,
+    displayedResearchOutput, 
     setPlanInformations,
-    setUrlParams,
   } = useContext(GlobalContext);
   const { mode } = useSectionsMode();
 
@@ -36,43 +29,48 @@ function SectionsContent({ planId, templateId, readonly, children })
 
 
   // --- BEHAVIOURS ---
-
-  /* 
-  A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
-  promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
-  If the promise is rejected, it sets the error state to the error.
-  Finally, it sets the loading state to false. 
+  
+ /**
+  * A useEffect hook that is called when the component is mounted.
   */
   useEffect(() => {
+    fetchData();
+  }, [templateId, mode]);
+  
+  /**
+   * It is calling the getSectionsData function, which is an async function that returns a
+   * promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
+   * If the promise is rejected, it sets the error state to the error.
+   * Finally, it sets the loading state to false. 
+   * @returns void
+   */
+  const fetchData = async () => {
     setLoading(true);
 
-    writePlan.getSectionsData(templateId)
-      .then((res) => {
-        setSectionsData(res.data);
+    const res = await writePlan.getSectionsData(templateId)
+                        .catch((error) => setError(error))
+                        .finally(() => setLoading(false));
 
-        if (mode !== MODE_WRITING) return;
+    setSectionsData(res.data);
 
-        setPlanInformations({
-          locale: res?.data?.locale.split('-')?.at(0) || 'fr',
-          title: res?.data?.title,
-          version: res?.data?.version,
-          org: res?.data?.org,
-          publishedDate: res?.data?.publishedDate,
-        });
+    if (mode !== MODE_WRITING) return;
 
-        if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
+    setPlanInformations({
+      locale: res?.data?.locale.split('-')?.at(0) || 'fr',
+      title: res?.data?.title,
+      version: res?.data?.version,
+      org: res?.data?.org,
+      publishedDate: res?.data?.publishedDate,
+    });
 
-        const updatedCollapseState = {
-          ...openedQuestions,
-          [displayedResearchOutput.id]: {},
-        };
-        setOpenedQuestions(updatedCollapseState);
-        
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
 
-  }, [templateId, mode]);
+    const updatedCollapseState = {
+      ...openedQuestions,
+      [displayedResearchOutput.id]: {},
+    };
+    setOpenedQuestions(updatedCollapseState);
+  }
 
   // --- RENDER ---
   return (
