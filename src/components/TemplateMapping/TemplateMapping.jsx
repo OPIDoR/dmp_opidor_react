@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { fr, enGB } from "date-fns/locale";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
-import { useMode } from "../context/ModeContext";
+import { ModeContext } from "../context/ModeContext";
 
 
 const locales = { fr, en: enGB };
@@ -11,10 +11,7 @@ const locales = { fr, en: enGB };
 function TemplateMapping({locale, templateId}) {
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
-  // const { mode, setMode } = useMode();
-  const modeContext = useMode();
-  const mode = modeContext.mode;
-  const setMode = modeContext.setMode;
+  const { setMode } = useContext(ModeContext);
 
   useEffect(() => {
     setMode("mapping");

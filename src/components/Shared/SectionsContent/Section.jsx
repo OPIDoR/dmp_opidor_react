@@ -4,15 +4,12 @@ import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "./Question";
-import { useMode } from "../../context/ModeContext";
+import { ModeContext } from "../../context/ModeContext";
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
-  // const [ mode, setMode ] = useMode();
-  const modeContext = useMode();
-  const mode = modeContext.mode;
-  const setMode = modeContext.setMode;
+  const { mode } = useContext(ModeContext);
 
 
   const [sectionId, setSectionId] = useState(section.id);
