@@ -17,7 +17,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddResearchOutput({ planId, handleClose, edit = false }) {
+function AddResearchOutput({ planId, handleClose, edit = false, close = true }) {
   const {
     locale,
     displayedResearchOutput, setDisplayedResearchOutput,
@@ -34,6 +34,10 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
   const selectedOption = options.find((opt) => opt.value === type);
 
   useEffect(() => {
+    service.getRegistryByName('ResearchDataType').then((res) => {
+      setOptions(createOptions(res.data, locale));
+    });
+
     if (edit) {
       setAbbreviation(displayedResearchOutput.abbreviation);
       setTitle(displayedResearchOutput.title);
@@ -42,17 +46,13 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
     }
 
     if (!edit) {
-      const maxOrder = Math.max(...researchOutputs.map(ro => ro.order));
+      const maxOrder = researchOutputs && researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(false);
       setType(null);
     }
-
-    service.getRegistryByName('ResearchDataType').then((res) => {
-      setOptions(createOptions(res.data, locale));
-    });
-  }, []);
+  }, [locale]);
 
   /**
    * This is a function that handles the selection of a value and sets it as the type.
@@ -66,6 +66,11 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
    */
   const handleSave = async (e) => {
     e.stopPropagation();
+
+    if (!type || type.length === 0) {
+      return toast.error(t('Un "type" est nécessaire pour créer un produit de recherche.'));
+    }
+
     const researchOutputInfo = {
       plan_id: planId,
       abbreviation,
@@ -152,6 +157,7 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
+            isDisabled={edit}
           />
         )}
       </div>
@@ -170,9 +176,11 @@ function AddResearchOutput({ planId, handleClose, edit = false }) {
         </div>
       </div>
       <EndButton>
-        <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
-          {t("Close")}
-        </Button>
+        {close && (
+          <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
+            {t("Close")}
+          </Button>
+        )}
         <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
           {t(edit ? "Save" : "Add")}
         </Button>
