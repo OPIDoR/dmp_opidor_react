@@ -34,9 +34,14 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
   * A useEffect hook that is called when the component is mounted.
   */
   useEffect(() => {
-    fetchData();
-    // afterFetchTreatment();
+    fetchAndProcessData();
   }, [templateId, mode]);
+
+  const fetchAndProcessData = async () => {
+    const data = await fetchData();
+    if (!afterFetchTreatment) return;
+    afterFetchTreatment(data, openedQuestions, displayedResearchOutput);
+  };
   
   /**
    * It is calling the getSectionsData function, which is an async function that returns a
@@ -54,9 +59,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
 
     setSectionsData(res.data);
 
-    if (mode !== MODE_WRITING) return;
-
-    afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
+    return res;
   }
 
   // --- RENDER ---
