@@ -12,11 +12,11 @@ const languagesCode = {
   'en_GB': 'en',
 };
 
-export default function StaticPage({ locale, page }) {
+export default function StaticPage({ locale, page, directusUrl }) {
   const { t } = useTranslation();
 
   const { isLoading, error, data } = useQuery('statiPage', () =>
-    directus.getStaticPage(page).then(res => res)
+    directus.getStaticPage(directusUrl, page).then(res => res)
   );
 
   if (isLoading) return <CustomSpinner />;

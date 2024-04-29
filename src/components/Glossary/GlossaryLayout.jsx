@@ -6,10 +6,10 @@ import GlossaryPage from './GlossaryPage.jsx';
 
 const queryClient = new QueryClient();
 
-export default function GlossaryLayout({ locale = 'fr-FR' }) {
+export default function GlossaryLayout({ locale = 'fr-FR', directusUrl }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <GlossaryPage locale={locale} />
+      <GlossaryPage locale={locale} directusUrl={directusUrl} />
     </QueryClientProvider>
   )
 }

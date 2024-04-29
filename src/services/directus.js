@@ -1,8 +1,12 @@
 import { createDirectus, graphql } from '@directus/sdk';
 
-const client = createDirectus(`${window.location.origin}/directus`).with(graphql());
+const createClient = (url) => {
+  const client = createDirectus(url).with(graphql());
+  return client;
+}
 
-const getHelp = async () => {
+const getHelp = async (url) => {
+  const client = createClient(url);
   return client.query(`
     query {
       faq_categories(filter: { published: { _eq: true } }) {
@@ -30,7 +34,8 @@ const getHelp = async () => {
   `);
 }
 
-const getGlossary = async () => {
+const getGlossary = async (url) => {
+  const client = createClient(url);
   return client.query(`
     query {
       glossary(filter: { status: { _eq: "published" } }) {
@@ -46,7 +51,8 @@ const getGlossary = async () => {
   `);
 }
 
-const getStaticPage = async (page) => {
+const getStaticPage = async (url, page) => {
+  const client = createClient(url);
   return client.query(`
     query {
       static_pages(filter: { status: { _eq: "published" }, path: { _eq: "${page}" } }) {
@@ -63,7 +69,6 @@ const getStaticPage = async (page) => {
   `);
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getHelp,
   getGlossary,

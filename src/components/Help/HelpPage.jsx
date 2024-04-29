@@ -20,12 +20,12 @@ const languagesCode = {
   'en_GB': 'en',
 };
 
-export default function HelpPage({ locale }) {
+export default function HelpPage({ locale, directusUrl }) {
   const { t } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
   const { isLoading, error, data } = useQuery('help', () =>
-    directus.getHelp().then(res => res)
+    directus.getHelp(directusUrl).then(res => res)
   );
 
   if (isLoading) return <CustomSpinner />;
