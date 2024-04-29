@@ -15,7 +15,7 @@ import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
-import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_WRITING } from "../../hooks/useSectionsMode";
 import ResearchOutput from "../ResearchOutput/ResearchOutput";
 
 const locales = { fr, en: enGB };
@@ -42,7 +42,6 @@ function WritePlan({
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
     planInformations,
-    openedQuestions,
     setOpenedQuestions,
     setPlanInformations,
   } = useContext(GlobalContext);
@@ -103,6 +102,10 @@ function WritePlan({
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
   //TODO update this , it can make error
   useEffect(() => {
+    fetchPlanData();
+  }, [planId]);
+
+  async function fetchPlanData() {
     setLoading(true);
 
     const queryParameters = new URLSearchParams(window.location.search);
@@ -112,32 +115,32 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    writePlan.getPlanData(planId)
-      .then((res) => {
-        setPlanData(res.data);
-        setDmpId(res.data.dmp_id);
+    const res = await writePlan.getPlanData(planId)
+                        .catch((error) => setError(error))
+                        .finally(() => setLoading(false));
 
-        const { research_outputs, questions_with_guidance } = res.data;
+    setPlanData(res.data);
+    setDmpId(res.data.dmp_id);
 
-        let currentResearchOutput = research_outputs?.[0];
-        if (researchOutputId) {
-          const researchOutput = research_outputs
-            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
-          if (researchOutput) {
-            currentResearchOutput = researchOutput;
-          }
-        }
+    const { research_outputs, questions_with_guidance } = res.data;
 
-        setDisplayedResearchOutput(currentResearchOutput);
-        !researchOutputs && setResearchOutputs(research_outputs);
-        setQuestionsWithGuidance(questions_with_guidance || []);
-        setFormData(null);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    let currentResearchOutput = research_outputs?.[0];
+    if (researchOutputId) {
+      const researchOutput = research_outputs
+        .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+      if (researchOutput) {
+        currentResearchOutput = researchOutput;
+      }
+    }
 
-      window.addEventListener("scroll", (e) => handleScroll(e));
-  }, [planId]);
+    setDisplayedResearchOutput(currentResearchOutput);
+    !researchOutputs && setResearchOutputs(research_outputs);
+    setQuestionsWithGuidance(questions_with_guidance || []);
+    setFormData(null);
+
+    window.addEventListener("scroll", (e) => handleScroll(e)
+    );
+  }
 
   const handleScroll = () => {
     const roNavBar = document.querySelector('#ro-nav-bar');
@@ -147,17 +150,11 @@ function WritePlan({
     const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
     if(!sectionContent) return;
 
-    if (bottomRoNavBar >= bottomSectionContent) {
-      sectionContent.style.borderBottomLeftRadius = '0';
-    } else {
-      sectionContent.style.borderBottomLeftRadius = '8px';
-    }
+    sectionContent.style.borderBottomLeftRadius = 
+      bottomRoNavBar >= bottomSectionContent ? '0' : '8px';
 
-    if (topRoNavBar <= topSectionContent) {
-      sectionContent.style.borderTopLeftRadius = '0';
-    } else {
-      sectionContent.style.borderTopLeftRadius = '8px';
-    }
+    sectionContent.style.borderTopLeftRadius = 
+      topRoNavBar <= topSectionContent ? '0' : '8px';
   }
 
   // --- RENDER ---
