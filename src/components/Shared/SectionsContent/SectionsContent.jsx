@@ -11,7 +11,7 @@ import useSectionsMode, { MODE_WRITING } from "../../../hooks/useSectionsMode";
 
 
 
-function SectionsContent({ templateId, readonly, children }) 
+function SectionsContent({ templateId, readonly, afterFetchTreatment, children }) 
 {
   // --- STATE ---
   const { t } = useTranslation();
@@ -35,6 +35,7 @@ function SectionsContent({ templateId, readonly, children })
   */
   useEffect(() => {
     fetchData();
+    // afterFetchTreatment();
   }, [templateId, mode]);
   
   /**
@@ -55,21 +56,7 @@ function SectionsContent({ templateId, readonly, children })
 
     if (mode !== MODE_WRITING) return;
 
-    setPlanInformations({
-      locale: res?.data?.locale.split('-')?.at(0) || 'fr',
-      title: res?.data?.title,
-      version: res?.data?.version,
-      org: res?.data?.org,
-      publishedDate: res?.data?.publishedDate,
-    });
-
-    if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
-
-    const updatedCollapseState = {
-      ...openedQuestions,
-      [displayedResearchOutput.id]: {},
-    };
-    setOpenedQuestions(updatedCollapseState);
+    afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
   }
 
   // --- RENDER ---

@@ -42,6 +42,9 @@ function WritePlan({
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
     planInformations,
+    openedQuestions,
+    setOpenedQuestions,
+    setPlanInformations,
   } = useContext(GlobalContext);
   const { setMode } = useSectionsMode();
 
@@ -50,6 +53,24 @@ function WritePlan({
   const [error, setError] = useState(null);
 
   const { setIsOpen } = useTour();
+
+  const updatePlanAfterFetchTreatment = (res, openedQuestions, displayedResearchOutput) => {
+    setPlanInformations({
+      locale: res?.data?.locale.split('-')?.at(0) || 'fr',
+      title: res?.data?.title,
+      version: res?.data?.version,
+      org: res?.data?.org,
+      publishedDate: res?.data?.publishedDate,
+    });
+  
+    if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
+  
+    const updatedCollapseState = {
+      ...openedQuestions,
+      [displayedResearchOutput.id]: {},
+    };
+    setOpenedQuestions(updatedCollapseState);
+  }
 
   // --- BEHAVIOURS ---
   const handleWebsocketData = useCallback((data) => {
@@ -201,7 +222,7 @@ function WritePlan({
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
-                <SectionsContent templateId={templateId} readonly={readonly}>
+                <SectionsContent templateId={templateId} readonly={readonly} afterFetchTreatment={updatePlanAfterFetchTreatment}>
                   <ResearchOutput planId={planId} readonly={readonly} />
                 </SectionsContent>
               )}
