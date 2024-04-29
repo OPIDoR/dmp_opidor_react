@@ -6,10 +6,10 @@ import HelpPage from './HelpPage.jsx';
 
 const queryClient = new QueryClient();
 
-export default function HelpLayout({ locale = 'fr-FR' }) {
+export default function HelpLayout({ locale = 'fr-FR', directusUrl }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <HelpPage locale={locale} />
+      <HelpPage locale={locale} directusUrl={directusUrl} />
     </QueryClientProvider>
   )
 }

@@ -17,7 +17,7 @@ const languagesCode = {
   'en_GB': 'en',
 };
 
-export default function HelpPage({ locale }) {
+export default function HelpPage({ locale, directusUrl }) {
   const { t } = useTranslation();
   const [activeLetter, setActiveLetter] = useState('A');
   const letters = {
@@ -50,7 +50,7 @@ export default function HelpPage({ locale }) {
   };
 
   const { isLoading, error, data } = useQuery('glossary', () =>
-    directus.getGlossary().then(res => res)
+    directus.getGlossary(directusUrl).then(res => res)
   );
 
   if (isLoading) return <CustomSpinner />;
