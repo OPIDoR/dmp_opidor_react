@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "./Question";
-import useSectionsMode from "../../../hooks/useSectionsMode";
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();

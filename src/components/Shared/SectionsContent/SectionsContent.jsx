@@ -51,7 +51,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
    * It then sets the openedQuestions state to the result of the promise.
    * If the promise is rejected, it sets the error state to the error.
    * Finally, it sets the loading state to false.
-   * @returns AxiosResponse | void - Réponse de la requête
+   * @returns {AxiosResponse | void} - Réponse de la requête
    */
   const fetchAndDisplayData = async () => {
     setLoading(true);
