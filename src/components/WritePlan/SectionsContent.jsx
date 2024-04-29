@@ -51,15 +51,8 @@ function SectionsContent({ planId, templateId, readonly }) {
           org: res?.data?.org,
           publishedDate: res?.data?.publishedDate,
         });
-
-        // const researchOutputFilter = res.data.plan.research_outputs.filter((el) => {
-        //   return el.id === displayedResearchOutput.id;
-        // });
         setSectionsData(res.data);
         if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
-          // const allCollapses = res.data.map((section) => {
-          //   return {[section.id]: []};
-          // });
           const updatedCollapseState = {
             ...openedQuestions,
             [displayedResearchOutput.id]: {},
