@@ -7,7 +7,7 @@ import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
 import Section from "./Section";
 import * as styles from "../../assets/css/write_plan.module.css";
-import useSectionsMode, { MODE_WRITING } from "../../../hooks/useSectionsMode";
+import useSectionsMode from "../../../hooks/useSectionsMode";
 
 
 
@@ -17,9 +17,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
   const { t } = useTranslation();
   const {
     openedQuestions,
-    setOpenedQuestions,
     displayedResearchOutput, 
-    setPlanInformations,
   } = useContext(GlobalContext);
   const { mode } = useSectionsMode();
 
@@ -30,27 +28,32 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
 
   // --- BEHAVIOURS ---
   
- /**
-  * A useEffect hook that is called when the component is mounted.
-  */
+  /**
+    * A useEffect hook that is called when the component is mounted.
+    */
   useEffect(() => {
     fetchAndProcessData();
   }, [templateId, mode]);
 
+  /**
+   * Call data fetching, then call a custom processing if provided in the props
+   * @returns void
+   */
   const fetchAndProcessData = async () => {
-    const data = await fetchData();
+    const res = await fetchAndDisplayData();
     if (!afterFetchTreatment) return;
-    afterFetchTreatment(data, openedQuestions, displayedResearchOutput);
+    afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
   };
   
   /**
    * It is calling the getSectionsData function, which is an async function that returns a
-   * promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
+   * promise. When the promise is resolved, it sets the data state to the result of the promise. 
+   * It then sets the openedQuestions state to the result of the promise.
    * If the promise is rejected, it sets the error state to the error.
-   * Finally, it sets the loading state to false. 
-   * @returns void
+   * Finally, it sets the loading state to false.
+   * @returns AxiosResponse | void - Réponse de la requête
    */
-  const fetchData = async () => {
+  const fetchAndDisplayData = async () => {
     setLoading(true);
 
     const res = await writePlan.getSectionsData(templateId)
@@ -65,21 +68,19 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
   // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
-      {error && <CustomError error={error}></CustomError>}
+      {loading && <CustomSpinner isOverlay={true}/>}
+      {error && <CustomError error={error}/>}
       {!error && sectionsData?.sections && (
-        <>
-          <div className={styles.write_plan_block} id="sections-content">
-            {children}
-            {sectionsData?.sections?.map((section) => (
-              <Section
-                key={section.id}
-                section={section}
-                readonly={readonly}
-              />
-            ))}
-          </div>
-        </>
+        <div className={styles.write_plan_block} id="sections-content">
+          {children}
+          {sectionsData?.sections?.map((section) => (
+            <Section
+              key={section.id}
+              section={section}
+              readonly={readonly}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

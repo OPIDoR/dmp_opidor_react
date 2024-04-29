@@ -9,8 +9,6 @@ import useSectionsMode from "../../../hooks/useSectionsMode";
 function Section({ section, readonly }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
-  const { mode } = useSectionsMode();
-
 
   const [sectionId, setSectionId] = useState(section.id);
 

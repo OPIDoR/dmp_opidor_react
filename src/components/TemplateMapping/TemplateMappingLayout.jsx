@@ -16,11 +16,13 @@ function TemplateMappingLayout({
   locale = 'en_GB',
   templateId,
 }) {
+  // --- STATE ---
   const { t } = useTranslation();
 
   console.log("TML", templateId);
   const TEMP_TEMPLATE_ID = 4;
 
+  // --- RENDER ---
   return (
     <Global>
       <SectionsModeProvider>
