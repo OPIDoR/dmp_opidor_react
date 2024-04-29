@@ -6,7 +6,6 @@ import { GlobalContext } from "../context/Global";
 import useSectionsMode, { MODE_MAPPING } from "../../hooks/useSectionsMode";
 
 
-const locales = { fr, en: enGB };
 
 function TemplateMapping({locale, templateId}) {
   // --- STATE ---

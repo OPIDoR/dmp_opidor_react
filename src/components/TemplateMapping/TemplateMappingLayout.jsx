@@ -13,7 +13,7 @@ const toastOptions = {
 };
 
 function TemplateMappingLayout({
-  locale = 'en_GB',
+  locale = 'en_GB', // TODO: Not receiving locale from react.jsx
   templateId,
 }) {
   // --- STATE ---
