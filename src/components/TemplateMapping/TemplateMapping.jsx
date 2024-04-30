@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { fr, enGB } from "date-fns/locale";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
 import useSectionsMode, { MODE_MAPPING } from "../../hooks/useSectionsMode";
-
 
 
 function TemplateMapping({locale, templateId}) {

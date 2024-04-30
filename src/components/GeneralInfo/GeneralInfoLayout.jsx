@@ -26,20 +26,18 @@ function GeneralInfoLayout({
 }) {
   return(
     <Global>
-      <SectionsModeProvider>
-        {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
-        <GeneralInfo
-          locale={locale}
-          planId={planId}
-          dmpId={dmpId}
-          projectFragmentId={projectFragmentId}
-          metaFragmentId={metaFragmentId}
-          researchContext={researchContext}
-          isTest={isTest}
-          readonly={readonly}
-        />
-        <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsModeProvider>
+      {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
+      <GeneralInfo
+        locale={locale}
+        planId={planId}
+        dmpId={dmpId}
+        projectFragmentId={projectFragmentId}
+        metaFragmentId={metaFragmentId}
+        researchContext={researchContext}
+        isTest={isTest}
+        readonly={readonly}
+      />
+      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

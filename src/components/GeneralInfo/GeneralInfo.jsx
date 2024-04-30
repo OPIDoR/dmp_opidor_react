@@ -10,7 +10,6 @@ import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
 import FunderImport from "./FunderImport";
 import { getErrorMessage } from "../../utils/utils";
-import useSectionsMode, { MODE_WRITING } from "../../hooks/useSectionsMode";
 
 function GeneralInfo({
   planId,
@@ -24,7 +23,6 @@ function GeneralInfo({
 }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
-  const { setMode } = useSectionsMode();
 
   const [isTestPlan, setIsTestPlan] = useState(isTest);
 
@@ -35,7 +33,6 @@ function GeneralInfo({
   const projectFormLabel = researchContext === 'research_project' ? t("Project Details") : t("Research Entity Details");
 
   useEffect(() => {
-    setMode(MODE_WRITING);
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 

@@ -1,8 +1,8 @@
 import { useContext } from "react"
 import { SectionsModeContext } from "../components/context/SectionsModeContext"
 
+export const MODE_WRITING = null;
 export const MODE_MAPPING = "mapping";
-export const MODE_WRITING = "writing";
 
 const useSectionsMode = () => {
     const context = useContext(SectionsModeContext);

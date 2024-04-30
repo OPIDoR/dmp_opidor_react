@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ResearchOutputInfobox from "./ResearchOutputInfobox";
 import ResearchOutputModal from "./ResearchOutputModal";
-import useSectionsMode, { MODE_MAPPING } from '../../hooks/useSectionsMode';
+import useSectionsMode from '../../hooks/useSectionsMode';
+import { MODE_MAPPING } from '../context/SectionsModeContext';
 
 function ResearchOutput({ planId, readonly }) {
   // --- STATE ---

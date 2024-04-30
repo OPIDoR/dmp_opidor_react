@@ -15,7 +15,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import { CommentSVG } from "../../Styled/svg";
-import useSectionsMode, { MODE_MAPPING, MODE_WRITING } from "../../../hooks/useSectionsMode";
+import useSectionsMode, { MODE_MAPPING } from "../../../hooks/useSectionsMode";
 
 function Question({
   question,
@@ -63,11 +63,10 @@ function Question({
    */
   const isQuestionOpened = () => {
     switch (mode) {
-      case MODE_WRITING:
-        return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
       case MODE_MAPPING: 
-      default:
         return !!openedQuestions?.[sectionId]?.[questionId];
+      default:
+        return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
     }
   };
   
@@ -99,9 +98,11 @@ function Question({
     console.log(question);
     closeAllModals();
 
-    const updatedState = mode === MODE_WRITING // displayedResearchOutput && displayedResearchOutput.id
-      ? { ...openedQuestions[displayedResearchOutput.id] }
-      : { ...openedQuestions };
+    console.log(mode);
+
+    const updatedState = mode
+      ? { ...openedQuestions }
+      : { ...openedQuestions[displayedResearchOutput.id] };
 
     // console.log(openedQuestions);
 
@@ -113,9 +114,11 @@ function Question({
 
     // console.log("US:", updatedState);
 
-    setOpenedQuestions(mode === MODE_WRITING
-      ? { ...openedQuestions, [displayedResearchOutput.id] : updatedState }
-      : updatedState);
+
+    setOpenedQuestions(mode
+      ? updatedState
+      : { ...openedQuestions, [displayedResearchOutput.id] : updatedState }
+    );
 
     // console.log("DROO:", displayedResearchOutput);
 
@@ -430,7 +433,7 @@ function Question({
                     }}
                     fetchAnswersData={true}
                   />
-                ) : (readonly && mode === MODE_WRITING) ?
+                ) : (readonly && !mode) ?
                   (
                     <Label bsStyle="primary">{t('Question not answered.')}</Label>
                   ) :
