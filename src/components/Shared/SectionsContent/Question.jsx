@@ -15,7 +15,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import { CommentSVG } from "../../Styled/svg";
-import useSectionsMode, { MODE_MAPPING } from "../../../hooks/useSectionsMode";
+import useSectionsMode from "../../../hooks/useSectionsMode";
 
 function Question({
   question,
@@ -56,18 +56,15 @@ function Question({
 
   const { t } = useTranslation();
 
+  const DRO_ID = displayedResearchOutput?.id || 0;
+
   /**
    * Checks if a specific question is opened based on its identifiers within the nested object structure.
    *
    * @returns {boolean} True if the question is opened, false otherwise.
    */
   const isQuestionOpened = () => {
-    switch (mode) {
-      case MODE_MAPPING: 
-        return !!openedQuestions?.[sectionId]?.[questionId];
-      default:
-        return !!openedQuestions?.[displayedResearchOutput.id]?.[sectionId]?.[questionId];
-    }
+    return !!openedQuestions?.[DRO_ID]?.[sectionId]?.[questionId];
   };
   
   // --- BEHAVIOURS ---
@@ -95,36 +92,17 @@ function Question({
    * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = (expanded) => {
-    console.log(question);
     closeAllModals();
 
-    console.log(mode);
-
-    const updatedState = mode
-      ? { ...openedQuestions }
-      : { ...openedQuestions[displayedResearchOutput.id] };
-
-    // console.log(openedQuestions);
-
-    if (!updatedState[sectionId]) {
-      updatedState[sectionId] = {};
+    const updatedState = { ...openedQuestions };
+    if (!updatedState[DRO_ID]) {
+      updatedState[DRO_ID] = {};
     }
-
-    updatedState[sectionId][questionId] = expanded;
-
-    // console.log("US:", updatedState);
-
-
-    setOpenedQuestions(mode
-      ? updatedState
-      : { ...openedQuestions, [displayedResearchOutput.id] : updatedState }
-    );
-
-    // console.log("DROO:", displayedResearchOutput);
+    updatedState[DRO_ID][sectionId] = { ...updatedState[DRO_ID][sectionId], [questionId]: expanded };
+    setOpenedQuestions(updatedState);
 
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
-
     handleIconClick(null, 'formSelector');
   };
 
