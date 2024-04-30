@@ -107,17 +107,17 @@ function Question({
   };
 
   const closeAllModals = () => {
-    setShowCommentModal(false);
-    setFillCommentIconColor('var(--dark-blue)');
-
-    setShowGuidanceModal(false);
-    setFillGuidanceIconColor('var(--dark-blue)');
-
-    setShowFormSelectorModal(false);
-    setFillFormSelectorIconColor('var(--dark-blue)');
-
-    setShowRunsModal(false);
-    setFillRunsIconColor('var(--dark-blue)');
+    const modals = [
+      { show: setShowCommentModal, fill: setFillCommentIconColor },
+      { show: setShowGuidanceModal, fill: setFillGuidanceIconColor },
+      { show: setShowFormSelectorModal, fill: setFillFormSelectorIconColor },
+      { show: setShowRunsModal, fill: setFillRunsIconColor }
+    ];
+  
+    modals.forEach(({ show, fill }) => {
+      show(false);
+      fill('var(--dark-blue)');
+    });
   };
 
   /**
@@ -127,17 +127,17 @@ function Question({
    * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
    */
   const handleIconClick = (e, modalType) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
+    e?.stopPropagation();
+    e?.preventDefault();
 
     // Check if the current modal type is the same as the one that is about to be opened
-    const isModalOpen =
-      (modalType === 'comment' && showCommentModal) ||
-      (modalType === 'guidance' && showGuidanceModal) ||
-      (modalType === 'runs' && showRunsModal) ||
-      (modalType === 'formSelector' && showFormSelectorModal)
+    const modalStateMap = {
+      comment: showCommentModal,
+      guidance: showGuidanceModal,
+      runs: showRunsModal,
+      formSelector: showFormSelectorModal
+    };
+    const isModalOpen = modalStateMap[modalType];
 
     // If the current modal is the same as the one about to be opened, close it
     if (isModalOpen) {
@@ -145,25 +145,24 @@ function Question({
     }
 
     // Open the specified modal and update icon colors
-    setShowCommentModal(modalType === 'comment');
-    setFillCommentIconColor(
-      modalType === 'comment' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
+    const setModalFunction = {
+      comment: setShowCommentModal,
+      guidance: setShowGuidanceModal,
+      runs: setShowRunsModal,
+      formSelector: setShowFormSelectorModal
+    };
 
-    setShowGuidanceModal(modalType === 'guidance');
-    setFillGuidanceIconColor(
-      modalType === 'guidance' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
+    const setIconColorFunction = {
+      comment: setFillCommentIconColor,
+      guidance: setFillGuidanceIconColor,
+      runs: setFillRunsIconColor,
+      formSelector: setFillFormSelectorIconColor
+    };
 
-    setShowRunsModal(modalType === 'runs');
-    setFillRunsIconColor(
-      modalType === 'runs' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowFormSelectorModal(modalType === 'formSelector');
-    setFillFormSelectorIconColor(
-      modalType === 'formSelector' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
+    Object.keys(modalStateMap).forEach(key => {
+      setModalFunction[key](modalType === key);
+      setIconColorFunction[key](modalType === key ? 'var(--rust)' : 'var(--dark-blue)');
+    });
   };
 
   // --- RENDER ---
