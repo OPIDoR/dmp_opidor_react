@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { fr, enGB } from "date-fns/locale";
 import { FaRegCompass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { Panel } from 'react-bootstrap';
 
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { writePlan } from "../../services";
@@ -17,6 +18,7 @@ import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
 import useSectionsMode from "../../hooks/useSectionsMode";
 import ResearchOutput from "../ResearchOutput/ResearchOutput";
+import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
 
 const locales = { fr, en: enGB };
 
@@ -161,7 +163,7 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && researchOutputs && (
+      {!error && researchOutputs && researchOutputs.length > 0 && (
         <>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
@@ -225,6 +227,18 @@ function WritePlan({
             </div>
           </div>
         </>
+      )}
+      {!loading && !error && researchOutputs?.length === 0 && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Panel style={{ width: '700px' }}>
+            <Panel.Body>
+              <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
+              <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
+                <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} edit={false} />
+              </div>
+            </Panel.Body>
+          </Panel>
+        </div>
       )}
     </div>
   );
