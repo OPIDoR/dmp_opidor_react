@@ -10,7 +10,6 @@ const getPlanData = async (planId) => axios.get(`/plans/${planId}/answers_data`)
 
 const getSectionsData = async (templateId) => axios.get(`/templates/${templateId}`);
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getPlanData,
   getSectionsData,

@@ -52,7 +52,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
                 </button>
               </>
             )}
-            {!readonly && researchOutputs.length > 1 && (
+            {!readonly && researchOutputs.length > 0 && (
               <>
                 <Tooltip anchorSelect="#deleteBtn" place="bottom">
                   {t("Delete")}

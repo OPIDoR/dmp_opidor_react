@@ -3,7 +3,7 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
-const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null) => axios.post(
   '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
@@ -20,6 +20,8 @@ const destroyFragment = async (fragmentId) => axios.delete(
 )
 
 const getSchema = async (id) => axios.get(`/madmp_schemas/${id}`);
+
+const getSchemaByName = async (name) => axios.get(`/madmp_schemas/by_name/${name}`);
 
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
@@ -45,15 +47,16 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
 
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
-const changeForm = async (fragmentId, templateId, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?schema_id=${templateId}&locale=${locale}`);
+const changeForm = async (fragmentId, templateName, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?template_name=${templateName}&locale=${locale}`);
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default {
   getFragment,
   createFragment,
   destroyFragment,
   getSchema,
+  getSchemaByName,
   getRegistryByName,
   getPersons,
   saveFragment,

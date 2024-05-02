@@ -4,8 +4,10 @@ const getRor = async (query, filter) => axios.get("/api/v1/madmp/services/ror", 
 
 const getOrcid = async (search) => axios.get("/api/v1/madmp/services/orcid", { params: { search } });
 
-// eslint-disable-next-line import/no-anonymous-default-export
+const getMetadore = async (query) => axios.get("/api/v1/madmp/services/metadore", { params: { query } });
+
 export default {
   getRor,
   getOrcid,
+  getMetadore,
 };

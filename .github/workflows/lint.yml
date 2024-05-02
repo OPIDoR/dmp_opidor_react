@@ -1,0 +1,52 @@
+name: Run linter on pull request
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  run-linter:
+    runs-on: ubuntu-latest
+
+    environment: development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: src/**/*.{js,jsx}
+          files_ignore: src/__tests__/
+
+      - name: Run lint test
+        shell: bash
+        run: |
+          ROOT_DIR=$(git rev-parse --show-toplevel)
+          ESLINT="${ROOT_DIR}//node_modules/eslint/bin/eslint.js --no-ignore'"
+          JSFILES=""
+          for file in ${{ steps.changed-parser.outputs.all_modified_files }}; do
+            JSFILES="$JSFILES $file"
+          done
+          if [ -n "$JSFILES" ]; then
+            echo "$JSFILES" | xargs $ESLINT || {
+              echo "Linting failed."
+              exit 1
+            }
+          fi

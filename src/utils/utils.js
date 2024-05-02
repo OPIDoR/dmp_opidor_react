@@ -23,7 +23,7 @@ export function except(data, excludedKeys) {
 }
 
 export function fragmentEmpty(data) {
-  let rest = except(data, ['id', 'schema_id', 'action']);
+  const rest = except(data, ['id', 'schema_id', 'template_name', 'action']);
   return Object.keys(rest).length === 0
 }
 
@@ -42,7 +42,8 @@ export function isValidHttpUrl(string) {
   let url;
   try {
     url = new URL(string);
-  } catch (_) {
+  } catch (err) {
+    console.error(err);
     return false;
   }
   return url.protocol === "http:" || url.protocol === "https:";

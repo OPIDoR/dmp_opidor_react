@@ -2,6 +2,11 @@
   "name": "dmp_opidor_react",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "lint": "eslint . --ignore-pattern '**/__tests__/**'",
+    "commitlint": "commitlint --edit $1",
+    "prepare": "husky"
+  },
   "dependencies": {
     "@directus/sdk": "^15.0.3",
     "@tinymce/tinymce-react": "^5.0.0",
@@ -54,10 +59,18 @@
   },
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "^0.7.0",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@testing-library/jest-dom": "^6.1.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
+    "commitlint": "^19.3.0",
     "enzyme": "^3.11.0",
+    "eslint": "^9.1.1",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "globals": "^15.1.0",
+    "husky": "^9.0.11",
     "react-test-renderer": "^18.2.0"
   }
 }

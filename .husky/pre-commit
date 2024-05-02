@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Include husky
+. "$(dirname "$0")/_/husky.sh" || {
+  echo "Cannot find husky.sh. Make sure Husky is installed or adjust the path." >&2
+  exit 1
+}
+
+# Defaults to .git
+unset GIT_DIR
+
+ROOT_DIR=$(git rev-parse --show-toplevel)
+
+cd "$ROOT_DIR" || {
+  echo "Cannot change directory to $ROOT_DIR." >&2
+  exit 1
+}
+
+JSFILES=$(git diff --name-only --cached --relative --diff-filter=ACM | grep -E '\.jsx?$' || :)
+ESLINT="${ROOT_DIR}//node_modules/eslint/bin/eslint.js --no-ignore'"
+
+if [ -n "$JSFILES" ]; then
+  echo "$JSFILES" | xargs $ESLINT || {
+    echo "Linting failed."
+    exit 1
+  }
+fi

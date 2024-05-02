@@ -2,14 +2,14 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import '../../i18n.js';
-import HelpPage from './HelpPage.jsx';
+import StaticPage from './StaticPage.jsx';
 
 const queryClient = new QueryClient();
 
-export default function HelpLayout({ locale = 'fr-FR', directusUrl }) {
+export default function StaticPagesLayout({ locale = 'fr-FR', page, directusUrl }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <HelpPage locale={locale} directusUrl={directusUrl} />
+      <StaticPage locale={locale} page={page} directusUrl={directusUrl} />
     </QueryClientProvider>
   )
 }
