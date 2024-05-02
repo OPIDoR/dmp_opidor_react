@@ -17,9 +17,10 @@ cd "$ROOT_DIR" || {
 }
 
 JSFILES=$(git diff --name-only --cached --relative --diff-filter=ACM | grep -E '\.jsx?$' || :)
+ESLINT="${ROOT_DIR}//node_modules/eslint/bin/eslint.js --no-ignore'"
 
 if [ -n "$JSFILES" ]; then
-  echo "$JSFILES" | xargs yarn lint || {
+  echo "$JSFILES" | xargs $ESLINT || {
     echo "Linting failed."
     exit 1
   }
