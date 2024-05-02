@@ -49,6 +49,7 @@ const update = async (id, jsonObject) => axios.patch(`/research_outputs/${id}`, 
  * @param uuid - The uuid parameter is a unique identifier for a product that is being imported.
  * @returns an object with a "data" property that contains the updated data stored in the session storage.
  */
+// eslint-disable-next-line no-unused-vars
 const postImportProduct = async (planId, uuid) => {
   try {
     //   const objectProduct = {
@@ -113,6 +114,7 @@ const getPlans = async () => {
  * @returns An object with a "data" property that contains the "products" data. However, the "products" variable is not defined in the code snippet, so
  * it is unclear what data is being returned.
  */
+// eslint-disable-next-line no-unused-vars
 const getProducts = async (id) => {
   try {
     //const response = await axios.get(`/plans/${id}/research_outputs`);
@@ -123,7 +125,6 @@ const getProducts = async (id) => {
   }
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   create,
   update,

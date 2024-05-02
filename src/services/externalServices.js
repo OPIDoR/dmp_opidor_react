@@ -6,7 +6,6 @@ const getOrcid = async (search) => axios.get("/api/v1/madmp/services/orcid", { p
 
 const getMetadore = async (query) => axios.get("/api/v1/madmp/services/metadore", { params: { query } });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getRor,
   getOrcid,

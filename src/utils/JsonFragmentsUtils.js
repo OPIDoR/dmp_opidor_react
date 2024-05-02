@@ -5,7 +5,7 @@ import { exists, pick } from "./utils";
  * @param contributorsList : a list of contributor to build the options from
  */
 export function createPersonsOptions(contributorsList) {
-  let options = contributorsList.map((option) => ({
+  const options = contributorsList.map((option) => ({
     value: option.id,
     label: option.to_string,
     object: option,

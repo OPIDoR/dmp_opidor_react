@@ -16,7 +16,6 @@ const defaultDeleteErrorConfig = (t, recordName) =>  ({
   icon: 'error',
 });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   defaultConfirmConfig,
   defaultDeleteErrorConfig
