@@ -1,21 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
-import { Panel, Label } from "react-bootstrap";
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { BsGear } from "react-icons/bs";
-import { TbBulbFilled } from "react-icons/tb";
-import { IoShuffleOutline } from "react-icons/io5";
+import { Panel } from "react-bootstrap";
 
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
-import DynamicForm from "../../Forms/DynamicForm";
-import GuidanceModal from "./GuidanceModal";
-import CommentModal from "../../WritePlan/CommentModal";
-import RunsModal from "../../WritePlan/RunsModal";
-import { CommentSVG } from "../../Styled/svg";
 import useSectionsMode from "../../../hooks/useSectionsMode";
+import { IconsBar } from "./IconsBar";
+import { ModalsContainer } from "./ModalsContainer";
+import { DynamicFormContainer } from "./DynamicFormContainer";
 
 function Question({
   question,
@@ -221,6 +213,7 @@ function Question({
                 fillFormSelectorIconColor={fillFormSelectorIconColor}
                 fillRunsIconColor={fillRunsIconColor}
                 handleIconClick={handleIconClick}
+                handleQuestionCollapse={handleQuestionCollapse}
               />
             </div>
           </div>
@@ -276,161 +269,3 @@ function Question({
 }
 
 export default Question;
-
-
-export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, fragmentId, answerId, formSelectors, scriptsData, fillGuidanceIconColor, fillCommentIconColor, fillFormSelectorIconColor, fillRunsIconColor, handleIconClick }) {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      {isQuestionOpened() &&
-        <>
-          {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
-            <IconComponent
-              tooltipId="guidanceTip"
-              icon={<TbBulbFilled size={32} fill={fillGuidanceIconColor} />}
-              onClick={(e) => handleIconClick(e, "guidance")}
-              tooltipContent={t("Guidance")}
-            />
-          )}
-          {fragmentId && answerId && (
-            <IconComponent
-              tooltipId="commentTip"
-              icon={<CommentSVG size={32} fill={fillCommentIconColor} />}
-              onClick={(e) => {
-                handleQuestionCollapse(true);
-                handleIconClick(e, "comment");
-              }}
-              tooltipContent={t("Comments")}
-            />
-          )}
-          {formSelectors[fragmentId] && (
-            <IconComponent
-              tooltipId="form-changer-show-button"
-              icon={<IoShuffleOutline size={32} fill={fillFormSelectorIconColor} />}
-              onClick={(e) => handleIconClick(e, "formSelector")}
-              tooltipContent={t('List of customized forms')}
-            />
-          )}
-          {scriptsData.scripts.length > 0 && (
-            <IconComponent
-              tooltipId="scriptTip"
-              icon={<BsGear size={32} fill={fillRunsIconColor} />}
-              onClick={(e) => handleIconClick(e, "runs")}
-              tooltipContent={t("Tools")}
-            />
-          )}
-        </>
-      }
-      <IconComponent
-        icon={isQuestionOpened() ? <TfiAngleUp size={32} /> : <TfiAngleDown size={32} />}
-      />
-    </>
-  );
-}
-
-export function ModalsContainer({ question, readonly, scriptsData, showRunsModal, setShowRunsModal, setFillRunsIconColor, fragmentId, displayedResearchOutput, showCommentModal, setShowCommentModal, setFillCommentIconColor, answerId, planData, questionId, showGuidanceModal, setShowGuidanceModal, setFillGuidanceIconColor, questionsWithGuidance }) {
-  return (
-    <>
-      {!readonly && scriptsData.scripts.length > 0 && (
-        <RunsModal
-          show={showRunsModal}
-          setshowModalRuns={setShowRunsModal}
-          setFillColorIconRuns={setFillRunsIconColor}
-          scriptsData={scriptsData}
-          fragmentId={fragmentId}
-        />
-      )}
-      {displayedResearchOutput && (
-        <CommentModal
-          show={showCommentModal}
-          setshowModalComment={setShowCommentModal}
-          setFillColorIconComment={setFillCommentIconColor}
-          answerId={answerId}
-          researchOutputId={displayedResearchOutput.id}
-          planId={planData.id}
-          questionId={question.id}
-          readonly={readonly}
-        />
-      )}
-      {questionsWithGuidance.includes(question.id) && (
-        <GuidanceModal
-          show={showGuidanceModal}
-          setShowGuidanceModal={setShowGuidanceModal}
-          setFillColorGuidanceIcon={setFillGuidanceIconColor}
-          questionId={questionId}
-          planId={planData.id}
-        />
-      )}
-    </>
-  );
-}
-
-export function DynamicFormContainer({ question, fragmentId, answerId, className, setScriptsData, readonly, formSelector, fetchAnswersData, questionId, madmpSchemaId, setFragmentId, setAnswerId, mode }) {
-  const {
-    show: showFormSelectorModal,
-    setShowFormSelectorModal,
-    setFillFormSelectorIconColor
-  } = formSelector;
-  
-  return (
-    <>
-      {fragmentId && answerId ? (
-        <DynamicForm
-          fragmentId={fragmentId}
-          className={question?.madmp_schema?.classname}
-          setScriptsData={setScriptsData}
-          readonly={readonly}
-          formSelector={{
-            show: showFormSelectorModal,
-            setShowFormSelectorModal,
-            setFillFormSelectorIconColor,
-          }}
-          fetchAnswersData={true}
-        />
-      ) : (readonly && !mode) ? (
-        <Label bsStyle="primary">{t('Question not answered.')}</Label>
-      ) : (
-        <DynamicForm
-          fragmentId={null}
-          className={question?.madmp_schema?.classname}
-          setScriptsData={setScriptsData}
-          questionId={question.id}
-          madmpSchemaId={question.madmp_schema?.id}
-          setFragmentId={setFragmentId}
-          setAnswerId={setAnswerId}
-          readonly={readonly}
-          formSelector={{
-            show: showFormSelectorModal,
-            setShowFormSelectorModal,
-            setFillFormSelectorIconColor,
-          }}
-          fetchAnswersData={true}
-        />
-      )}
-    </>
-  );
-}
-
-export function IconComponent ({ tooltipId, icon, onClick, tooltipContent }) {
-  return (
-    <div>
-      <ReactTooltip
-        id={tooltipId}
-        place="bottom"
-        effect="solid"
-        variant="info"
-        content={tooltipContent}
-      />
-      <div
-        data-tooltip-id={tooltipId}
-        className={styles.panel_icon}
-        onClick={onClick}
-        style={{ marginLeft: "5px" }}
-      >
-        {icon}
-      </div>
-    </div>
-  );
-}
-
