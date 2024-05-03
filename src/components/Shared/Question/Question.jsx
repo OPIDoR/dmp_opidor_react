@@ -52,6 +52,7 @@ function Question({
   } = useQuestionState();
   
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
+
   // const [fragmentId, setFragmentId] = useState(null); // used only in all children
   // const [answerId, setAnswerId] = useState(null); // used only in all children
   // const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
@@ -204,10 +205,7 @@ function Question({
                 isQuestionOpened={isQuestionOpened}
                 questionsWithGuidance={questionsWithGuidance}
                 questionId={questionId}
-                fragmentId={fragmentId}
-                answerId={answerId}
                 formSelectors={formSelectors}
-                scriptsData={scriptsData}
                 handleIconClick={handleIconClick}
                 handleQuestionCollapse={handleQuestionCollapse}
               />
@@ -219,10 +217,7 @@ function Question({
         {isQuestionOpened() && 
           <ModalsContainer
             readonly={readonly}
-            scriptsData={scriptsData}
-            fragmentId={fragmentId}
             displayedResearchOutput={displayedResearchOutput}
-            answerId={answerId}
             planData={planData}
             questionId={questionId}
             questionsWithGuidance={questionsWithGuidance}
@@ -231,17 +226,8 @@ function Question({
         }
         {isQuestionOpened() && 
           <DynamicFormContainer
-            fragmentId={fragmentId}
-            answerId={answerId}
-            className={question?.madmp_schema?.classname}
-            setScriptsData={setScriptsData}
-            readonly={readonly}
-            fetchAnswersData={true}
-            questionId={question.id}
-            madmpSchemaId={question.madmp_schema?.id}
-            setFragmentId={setFragmentId}
-            setAnswerId={setAnswerId}
             question={question}
+            readonly={readonly}
           />
         }
       </Panel.Body>

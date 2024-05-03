@@ -4,20 +4,27 @@ import DynamicForm from "../../Forms/DynamicForm";
 import useSectionsMode from "../../../hooks/useSectionsMode";
 import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
+import useQuestionState from "../../../hooks/useQuestionState";
 
 
 
-export function DynamicFormContainer({ question, fragmentId, answerId, setScriptsData, readonly, formSelector, setFragmentId, setAnswerId }) {
+export function DynamicFormContainer({ question, readonly }) {
   // --- STATE ---
   const {
     showFormSelectorModal, setShowFormSelectorModal
   } = useQuestionModals();
 
-  const { mode } = useSectionsMode();
-
   const {
     setFillFormSelectorIconColor
   } = useQuestionIcons();
+
+  const {
+    fragmentId, setFragmentId,
+    answerId, setAnswerId,
+    setScriptsData
+  } = useQuestionState();
+
+  const { mode } = useSectionsMode();
 
   
   // --- RENDER ---

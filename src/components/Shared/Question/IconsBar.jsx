@@ -7,10 +7,11 @@ import { IoShuffleOutline } from "react-icons/io5";
 import { CommentSVG } from "../../Styled/svg";
 import { IconComponent } from "./IconComponent";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
+import useQuestionState from "../../../hooks/useQuestionState";
 
 
 
-export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, fragmentId, answerId, formSelectors, scriptsData, handleIconClick, handleQuestionCollapse }) {
+export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, formSelectors, handleIconClick, handleQuestionCollapse }) {
   // --- STATE ---
   const {
     fillRunsIconColor, 
@@ -18,6 +19,12 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
     fillGuidanceIconColor, 
     fillFormSelectorIconColor,
   } = useQuestionIcons();
+
+  const {
+    fragmentId,
+    answerId,
+    scriptsData,
+  } = useQuestionState();
 
   const { t } = useTranslation();
 

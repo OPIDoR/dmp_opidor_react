@@ -4,10 +4,11 @@ import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
+import useQuestionState from "../../../hooks/useQuestionState";
 
 
 
-export function ModalsContainer({ question, readonly, scriptsData, fragmentId, displayedResearchOutput, answerId, planData, questionId, questionsWithGuidance }) {
+export function ModalsContainer({ question, readonly, displayedResearchOutput, planData, questionId, questionsWithGuidance }) {
   // --- STATE ---
   const {
     showGuidanceModal, setShowGuidanceModal,
@@ -20,6 +21,12 @@ export function ModalsContainer({ question, readonly, scriptsData, fragmentId, d
     setFillCommentIconColor,
     setFillGuidanceIconColor,
   } = useQuestionIcons();
+
+  const {
+    fragmentId,
+    answerId,
+    scriptsData,
+  } = useQuestionState();
   
   // --- BEHAVIOURS ---
   
