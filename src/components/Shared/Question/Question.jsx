@@ -9,6 +9,7 @@ import { ModalsContainer } from "./ModalsContainer";
 import { DynamicFormContainer } from "./DynamicFormContainer";
 import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
+import useQuestionState from "../../../hooks/useQuestionState";
 
 function Question({
   question,
@@ -43,11 +44,17 @@ function Question({
     setFillFormSelectorIconColor,
     resetIconColors
   } = useQuestionIcons();
+
+  const {
+    fragmentId, setFragmentId,
+    answerId, setAnswerId,
+    scriptsData, setScriptsData
+  } = useQuestionState();
   
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
-  const [fragmentId, setFragmentId] = useState(null); // used only in all children
-  const [answerId, setAnswerId] = useState(null); // used only in all children
-  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
+  // const [fragmentId, setFragmentId] = useState(null); // used only in all children
+  // const [answerId, setAnswerId] = useState(null); // used only in all children
+  // const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
 
   // const [currentResearchOutput, setCurrentResearchOutput] = useState(null); // set but unused : future usage or delete?
 

@@ -6,6 +6,7 @@ import { TbBulbFilled } from "react-icons/tb";
 import { IoShuffleOutline } from "react-icons/io5";
 import { CommentSVG } from "../../Styled/svg";
 import { IconComponent } from "./IconComponent";
+import useQuestionIcons from "../../../hooks/useQuestionIcons";
 
 
 

@@ -17,7 +17,7 @@ export function DynamicFormContainer({ question, fragmentId, answerId, setScript
 
   const {
     setFillFormSelectorIconColor
-  } = useQuestionIcons;
+  } = useQuestionIcons();
 
   
   // --- RENDER ---

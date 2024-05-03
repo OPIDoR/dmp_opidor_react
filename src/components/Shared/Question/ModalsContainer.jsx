@@ -3,6 +3,7 @@ import GuidanceModal from "../SectionsContent/GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
 import useQuestionModals from "../../../hooks/useQuestionModals";
+import useQuestionIcons from "../../../hooks/useQuestionIcons";
 
 
 

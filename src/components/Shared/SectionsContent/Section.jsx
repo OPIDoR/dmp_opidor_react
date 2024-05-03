@@ -6,6 +6,7 @@ import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "../Question/Question";
 import { QuestionModalsProvider } from "../../context/QuestionModalsContext";
 import { QuestionIconsProvider } from "../../context/QuestionIconsContext";
+import { QuestionStateProvider } from "../../context/QuestionStateContext";
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();
@@ -83,14 +84,16 @@ function Section({ section, readonly }) {
       }).map((question, idx) => (
         <QuestionModalsProvider key={`question-${question.id}`}>
           <QuestionIconsProvider>
-            <Question
-              key={question.id}
-              question={question}
-              questionIdx={(idx + 1)}
-              sectionId={sectionId}
-              sectionNumber={section.number}
-              readonly={readonly}
-            />
+            <QuestionStateProvider>
+              <Question
+                key={question.id}
+                question={question}
+                questionIdx={(idx + 1)}
+                sectionId={sectionId}
+                sectionNumber={section.number}
+                readonly={readonly}
+              />
+            </QuestionStateProvider>
           </QuestionIconsProvider>
         </QuestionModalsProvider>
       ))}
