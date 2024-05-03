@@ -2,16 +2,21 @@ import React from "react";
 import { Label } from "react-bootstrap";
 import DynamicForm from "../../Forms/DynamicForm";
 import useSectionsMode from "../../../hooks/useSectionsMode";
+import useQuestionModals from "../../../hooks/useQuestionModals";
 
 
 
 export function DynamicFormContainer({ question, fragmentId, answerId, setScriptsData, readonly, formSelector, setFragmentId, setAnswerId }) {
   // --- STATE ---
   const {
-    show: showFormSelectorModal, setShowFormSelectorModal, setFillFormSelectorIconColor
-  } = formSelector;
+    showFormSelectorModal, setShowFormSelectorModal
+  } = useQuestionModals();
 
   const { mode } = useSectionsMode();
+
+  const {
+    setFillFormSelectorIconColor
+  } = formSelector;
 
   
   // --- RENDER ---

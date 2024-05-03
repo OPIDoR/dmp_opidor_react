@@ -40,13 +40,6 @@ function Question({
   const [answerId, setAnswerId] = useState(null); // used only in all children
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
 
-  // // move with handleIconClick in ModalsContainer ? ou créer un contexte modal pour les 4 suivants QuestionModalsContext
-  // const [showGuidanceModal, setShowGuidanceModal] = useState(false);
-  // const [showCommentModal, setShowCommentModal] = useState(false);
-  // const [showRunsModal, setShowRunsModal] = useState(false);
-
-  // const [showFormSelectorModal, setShowFormSelectorModal] = useState(false); // handleIconClick & DynamicFormContainer
-
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
@@ -95,20 +88,6 @@ function Question({
     handleIconClick(null, 'formSelector');
   };
 
-  // const closeAllModals = () => {
-  //   const modals = [
-  //     { show: setShowCommentModal, fill: setFillCommentIconColor },
-  //     { show: setShowGuidanceModal, fill: setFillGuidanceIconColor },
-  //     { show: setShowFormSelectorModal, fill: setFillFormSelectorIconColor },
-  //     { show: setShowRunsModal, fill: setFillRunsIconColor }
-  //   ];
-
-  //   modals.forEach(({ show, fill }) => {
-  //     show(false);
-  //     fill('var(--dark-blue)');
-  //   });
-  // };
-
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
    *
@@ -130,6 +109,7 @@ function Question({
 
     // If the current modal is the same as the one about to be opened, close it
     if (isModalOpen) {
+      // call setFillIcons() from QuestionIconsContext
       return closeAllModals();
     }
 
@@ -233,19 +213,13 @@ function Question({
           <ModalsContainer
             readonly={readonly}
             scriptsData={scriptsData}
-            showRunsModal={showRunsModal}
-            setShowRunsModal={setShowRunsModal}
             setFillRunsIconColor={setFillRunsIconColor}
             fragmentId={fragmentId}
             displayedResearchOutput={displayedResearchOutput}
-            showCommentModal={showCommentModal}
-            setShowCommentModal={setShowCommentModal}
             setFillCommentIconColor={setFillCommentIconColor}
             answerId={answerId}
             planData={planData}
             questionId={questionId}
-            showGuidanceModal={showGuidanceModal}
-            setShowGuidanceModal={setShowGuidanceModal}
             setFillGuidanceIconColor={setFillGuidanceIconColor}
             questionsWithGuidance={questionsWithGuidance}
             question={question}
@@ -259,8 +233,6 @@ function Question({
             setScriptsData={setScriptsData}
             readonly={readonly}
             formSelector={{
-              show: showFormSelectorModal,
-              setShowFormSelectorModal,
               setFillFormSelectorIconColor,
             }}
             fetchAnswersData={true}

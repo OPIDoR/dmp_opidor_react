@@ -2,10 +2,18 @@ import React from "react";
 import GuidanceModal from "../SectionsContent/GuidanceModal";
 import CommentModal from "../../WritePlan/CommentModal";
 import RunsModal from "../../WritePlan/RunsModal";
+import useQuestionModals from "../../../hooks/useQuestionModals";
 
 
 
-export function ModalsContainer({ question, readonly, scriptsData, showRunsModal, setShowRunsModal, setFillRunsIconColor, fragmentId, displayedResearchOutput, showCommentModal, setShowCommentModal, setFillCommentIconColor, answerId, planData, questionId, showGuidanceModal, setShowGuidanceModal, setFillGuidanceIconColor, questionsWithGuidance }) {
+export function ModalsContainer({ question, readonly, scriptsData, setFillRunsIconColor, fragmentId, displayedResearchOutput, setFillCommentIconColor, answerId, planData, questionId, setFillGuidanceIconColor, questionsWithGuidance }) {
+  // --- STATE ---
+  const {
+    showGuidanceModal, setShowGuidanceModal,
+    showCommentModal, setShowCommentModal,
+    showRunsModal, setShowRunsModal
+  } = useQuestionModals();
+  
   // --- BEHAVIOURS ---
   
   // --- RENDER ---
