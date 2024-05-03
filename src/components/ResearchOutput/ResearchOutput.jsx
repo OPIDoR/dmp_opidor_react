@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ResearchOutputInfobox from "./ResearchOutputInfobox";
 import ResearchOutputModal from "./ResearchOutputModal";
 import useSectionsMode from '../../hooks/useSectionsMode';
 import { MODE_MAPPING } from '../context/SectionsModeContext';
+import { GlobalContext } from '../context/Global';
+import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 function ResearchOutput({ planId, readonly }) {
   // --- STATE ---
+  const {
+    researchOutput, setResearchOutputs,
+    displayedResearchOutput, setDisplayedResearchOutput,
+  } = useContext(GlobalContext);
+
   const { mode } = useSectionsMode();
+
+  const { t } = useTranslation();
+
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
 
@@ -16,6 +27,7 @@ function ResearchOutput({ planId, readonly }) {
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
    */
   const handleDelete = (e) => {
+    console.log(researchOutput);
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({

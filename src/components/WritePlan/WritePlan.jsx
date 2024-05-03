@@ -16,7 +16,6 @@ import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
-import useSectionsMode from "../../hooks/useSectionsMode";
 import ResearchOutput from "../ResearchOutput/ResearchOutput";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
 
@@ -47,7 +46,6 @@ function WritePlan({
     setOpenedQuestions,
     setPlanInformations,
   } = useContext(GlobalContext);
-  const { setMode } = useSectionsMode();
 
   const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -221,7 +219,7 @@ function WritePlan({
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
                 <SectionsContent templateId={templateId} readonly={readonly} afterFetchTreatment={updatePlanAfterFetchTreatment}>
-                  <ResearchOutput planId={planId} readonly={readonly} />
+                  <ResearchOutput planId={planId} readonly={readonly} researchOutputs={researchOutputs}/>
                 </SectionsContent>
               )}
             </div>

@@ -33,7 +33,7 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
     <>
       {isQuestionOpened() &&
         <>
-          {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+          {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(questionId) && (
             <IconComponent
               tooltipId="guidanceTip"
               icon={<TbBulbFilled size={32} fill={fillGuidanceIconColor} />}
