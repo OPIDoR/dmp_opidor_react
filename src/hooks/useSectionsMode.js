@@ -1,16 +1,10 @@
-import { useContext } from "react"
 import { SectionsModeContext } from "../components/context/SectionsModeContext"
+import contextValidation from "./contextValidation";
 
 export const MODE_WRITING = null;
 export const MODE_MAPPING = "mapping";
 
-const useSectionsMode = () => {
-    const context = useContext(SectionsModeContext);
-
-    if (!context)
-        throw new Error('useSectionsMode must be used within SectionsModeProvider');
-
-    return context;
-}
+const useSectionsMode = () =>
+    contextValidation(SectionsModeContext);
 
 export default useSectionsMode;

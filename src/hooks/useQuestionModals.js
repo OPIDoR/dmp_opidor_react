@@ -1,13 +1,7 @@
-import { useContext } from "react"
 import { QuestionModalsContext } from "../components/context/QuestionModalsContext";
+import contextValidationProcess from "./contextValidation";
 
-const useQuestionModals = () => {
-    const context = useContext(QuestionModalsContext);
-
-    if (!context)
-        throw new Error('useSectionsMode must be used within SectionsModeProvider');
-
-    return context;
-}
+const useQuestionModals = () => 
+    contextValidationProcess(QuestionModalsContext);
 
 export default useQuestionModals;
