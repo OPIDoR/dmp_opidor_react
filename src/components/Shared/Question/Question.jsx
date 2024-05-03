@@ -8,6 +8,7 @@ import { IconsBar } from "./IconsBar";
 import { ModalsContainer } from "./ModalsContainer";
 import { DynamicFormContainer } from "./DynamicFormContainer";
 import useQuestionModals from "../../../hooks/useQuestionModals";
+import useQuestionIcons from "../../../hooks/useQuestionIcons";
 
 function Question({
   question,
@@ -34,16 +35,23 @@ function Question({
     showFormSelectorModal, setShowFormSelectorModal,
     closeAllModals
   } = useQuestionModals();
+
+  const {
+    fillRunsIconColor, setFillRunsIconColor,
+    fillCommentIconColor, setFillCommentIconColor,
+    fillGuidanceIconColor, setFillGuidanceIconColor,
+    fillFormSelectorIconColor, setFillFormSelectorIconColor,
+  } = useQuestionIcons();
   
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
   const [fragmentId, setFragmentId] = useState(null); // used only in all children
   const [answerId, setAnswerId] = useState(null); // used only in all children
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
 
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
-  const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
+  // const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
+  // const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
+  // const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
+  // const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
 
   // const [currentResearchOutput, setCurrentResearchOutput] = useState(null); // set but unused : future usage or delete?
 

@@ -1,7 +1,7 @@
 import { QuestionModalsContext } from "../components/context/QuestionModalsContext";
-import contextValidationProcess from "./contextValidation";
+import contextProcess from "./contextProcess";
 
 const useQuestionModals = () => 
-    contextValidationProcess(QuestionModalsContext);
+    contextProcess(QuestionModalsContext);
 
 export default useQuestionModals;

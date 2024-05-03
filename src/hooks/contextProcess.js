@@ -5,17 +5,17 @@ import React, { useContext } from "react"
  * @param {React.context<any>} ctx 
  * @returns The context provided
  */
-const contextValidationProcess = (context) => {
+const contextProcess = (context) => {
     const ctx = useContext(context);
 
     if (!ctx) {
         const error = new Error();
         const stack = error.stack || '';
         const hookName = stack.split('\n')[2].match(/at (\w+)/)[1];
-        throw new Error(`${hookName} must be used within ${context.displayName || 'the provider'}`);
+        throw new Error(`${hookName} must be used within ${context.displayName || 'the corresponding provider'}`);
     }
 
     return ctx;
 }
 
-export default contextValidationProcess;
+export default contextProcess;
