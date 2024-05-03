@@ -35,20 +35,20 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
    * If the promise is rejected, it sets the error state to the error.
    * Finally, it sets the loading state to false.
    * Then it calls a custom processing if provided in the props
-   * @returns {any} - Réponse de la requête
+   * @returns {void | any} - Réponse de la requête
    */
   const fetchAndProcessData = async () => {
-    const res = await writePlan.getSectionsData(templateId)
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    const res = await writePlan.getSectionsData(templateId).catch(setError);
+    setLoading(false);
 
-    setSectionsData(res?.data);
+    if (!res) return;
 
-    if (!afterFetchTreatment) return;
+    setSectionsData(res.data);
 
-    return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
+    if (afterFetchTreatment) 
+        return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
   };
-
+  
   // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>
