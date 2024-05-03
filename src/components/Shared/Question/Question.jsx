@@ -4,7 +4,6 @@ import { Panel } from "react-bootstrap";
 
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
-import useSectionsMode from "../../../hooks/useSectionsMode";
 import { IconsBar } from "./IconsBar";
 import { ModalsContainer } from "./ModalsContainer";
 import { DynamicFormContainer } from "./DynamicFormContainer";
@@ -24,40 +23,31 @@ function Question({
     displayedResearchOutput,
     questionsWithGuidance,
     setUrlParams,
+    formSelectors,
   } = useContext(GlobalContext);
-  const { mode } = useSectionsMode();
 
-  const [questionId] = useState(question.id);
-  const [fragmentId, setFragmentId] = useState(null);
-  const [answerId, setAnswerId] = useState(null);
-  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
+  const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
+  const [fragmentId, setFragmentId] = useState(null); // used only in all children
+  const [answerId, setAnswerId] = useState(null); // used only in all children
+  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
 
+  // move with handleIconClick in ModalsContainer ? ou créer un contexte modal pour les 4 suivants QuestionModalsContext
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
-  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false);
+
+  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false); // handleIconClick & DynamicFormContainer
 
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
   const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
 
-  const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
-
-  const { formSelectors } = useContext(GlobalContext);
+  // const [currentResearchOutput, setCurrentResearchOutput] = useState(null); // set but unused : future usage or delete?
 
   const DRO_ID = displayedResearchOutput?.id || 0;
 
-  /**
-   * Checks if a specific question is opened based on its identifiers within the nested object structure.
-   *
-   * @returns {boolean} True if the question is opened, false otherwise.
-   */
-  const isQuestionOpened = () => {
-    return !!openedQuestions?.[DRO_ID]?.[sectionId]?.[questionId];
-  };
-
-  // --- BEHAVIOURS ---
+    // --- BEHAVIOURS ---
   useEffect(() => {
     if (displayedResearchOutput) {
       // console.log("DRO", displayedResearchOutput);
@@ -71,10 +61,10 @@ function Question({
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
 
-    setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10));
+    // setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10)); // set but unused (getting id by url?) : future usage or delete?
 
     handleIconClick(null, 'formSelector');
-  }, [displayedResearchOutput, question.id, currentResearchOutput]);
+  }, [displayedResearchOutput, question.id]); // currentResearchOutput
 
   /**
    * Handles toggling the open/collapse state of a question.
@@ -153,6 +143,16 @@ function Question({
       setModalFunction[key](modalType === key);
       setIconColorFunction[key](modalType === key ? 'var(--rust)' : 'var(--dark-blue)');
     });
+  };
+
+  
+  /**
+   * Checks if a specific question is opened based on its identifiers within the nested object structure.
+   *
+   * @returns {boolean} True if the question is opened, false otherwise.
+   */
+  const isQuestionOpened = () => {
+    return !!openedQuestions?.[DRO_ID]?.[sectionId]?.[questionId];
   };
 
   
@@ -259,7 +259,6 @@ function Question({
             madmpSchemaId={question.madmp_schema?.id}
             setFragmentId={setFragmentId}
             setAnswerId={setAnswerId}
-            mode={mode}
             question={question}
           />
         }

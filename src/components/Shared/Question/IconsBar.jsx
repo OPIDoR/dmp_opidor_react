@@ -10,8 +10,10 @@ import { IconComponent } from "./IconComponent";
 
 
 export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, fragmentId, answerId, formSelectors, scriptsData, fillGuidanceIconColor, fillCommentIconColor, fillFormSelectorIconColor, fillRunsIconColor, handleIconClick, handleQuestionCollapse }) {
+  // --- STATE ---
   const { t } = useTranslation();
 
+  // --- RENDER ---
   return (
     <>
       {isQuestionOpened() &&

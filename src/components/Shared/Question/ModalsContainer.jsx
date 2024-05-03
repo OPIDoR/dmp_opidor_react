@@ -6,6 +6,9 @@ import RunsModal from "../../WritePlan/RunsModal";
 
 
 export function ModalsContainer({ question, readonly, scriptsData, showRunsModal, setShowRunsModal, setFillRunsIconColor, fragmentId, displayedResearchOutput, showCommentModal, setShowCommentModal, setFillCommentIconColor, answerId, planData, questionId, showGuidanceModal, setShowGuidanceModal, setFillGuidanceIconColor, questionsWithGuidance }) {
+  // --- BEHAVIOURS ---
+  
+  // --- RENDER ---
   return (
     <>
       {!readonly && scriptsData.scripts.length > 0 && (
