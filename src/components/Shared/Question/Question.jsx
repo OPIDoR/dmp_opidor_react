@@ -7,6 +7,7 @@ import * as styles from "../../assets/css/write_plan.module.css";
 import { IconsBar } from "./IconsBar";
 import { ModalsContainer } from "./ModalsContainer";
 import { DynamicFormContainer } from "./DynamicFormContainer";
+import useQuestionModals from "../../../hooks/useQuestionModals";
 
 function Question({
   question,
@@ -26,17 +27,25 @@ function Question({
     formSelectors,
   } = useContext(GlobalContext);
 
+  const {
+    showGuidanceModal, setShowGuidanceModal,
+    showCommentModal, setShowCommentModal,
+    showRunsModal, setShowRunsModal,
+    showFormSelectorModal, setShowFormSelectorModal,
+    closeAllModals
+  } = useQuestionModals();
+  
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
   const [fragmentId, setFragmentId] = useState(null); // used only in all children
   const [answerId, setAnswerId] = useState(null); // used only in all children
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
 
-  // move with handleIconClick in ModalsContainer ? ou créer un contexte modal pour les 4 suivants QuestionModalsContext
-  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showRunsModal, setShowRunsModal] = useState(false);
+  // // move with handleIconClick in ModalsContainer ? ou créer un contexte modal pour les 4 suivants QuestionModalsContext
+  // const [showGuidanceModal, setShowGuidanceModal] = useState(false);
+  // const [showCommentModal, setShowCommentModal] = useState(false);
+  // const [showRunsModal, setShowRunsModal] = useState(false);
 
-  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false); // handleIconClick & DynamicFormContainer
+  // const [showFormSelectorModal, setShowFormSelectorModal] = useState(false); // handleIconClick & DynamicFormContainer
 
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
@@ -86,19 +95,19 @@ function Question({
     handleIconClick(null, 'formSelector');
   };
 
-  const closeAllModals = () => {
-    const modals = [
-      { show: setShowCommentModal, fill: setFillCommentIconColor },
-      { show: setShowGuidanceModal, fill: setFillGuidanceIconColor },
-      { show: setShowFormSelectorModal, fill: setFillFormSelectorIconColor },
-      { show: setShowRunsModal, fill: setFillRunsIconColor }
-    ];
+  // const closeAllModals = () => {
+  //   const modals = [
+  //     { show: setShowCommentModal, fill: setFillCommentIconColor },
+  //     { show: setShowGuidanceModal, fill: setFillGuidanceIconColor },
+  //     { show: setShowFormSelectorModal, fill: setFillFormSelectorIconColor },
+  //     { show: setShowRunsModal, fill: setFillRunsIconColor }
+  //   ];
 
-    modals.forEach(({ show, fill }) => {
-      show(false);
-      fill('var(--dark-blue)');
-    });
-  };
+  //   modals.forEach(({ show, fill }) => {
+  //     show(false);
+  //     fill('var(--dark-blue)');
+  //   });
+  // };
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
@@ -145,7 +154,7 @@ function Question({
     });
   };
 
-  
+
   /**
    * Checks if a specific question is opened based on its identifiers within the nested object structure.
    *

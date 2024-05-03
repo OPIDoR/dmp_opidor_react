@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "../Question/Question";
+import { QuestionModalsProvider } from "../../context/QuestionModalsContext";
 
 function Section({ section, readonly }) {
   const { t } = useTranslation();
@@ -79,14 +80,16 @@ function Section({ section, readonly }) {
         }
         return true;
       }).map((question, idx) => (
-        <Question
-          key={question.id}
-          question={question}
-          questionIdx={(idx + 1)}
-          sectionId={sectionId}
-          sectionNumber={section.number}
-          readonly={readonly}
-        />
+        <QuestionModalsProvider key={`modal-${question.id}`}>
+          <Question
+            key={question.id}
+            question={question}
+            questionIdx={(idx + 1)}
+            sectionId={sectionId}
+            sectionNumber={section.number}
+            readonly={readonly}
+          />
+        </QuestionModalsProvider>
       ))}
     </>
   );
