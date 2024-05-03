@@ -46,25 +46,17 @@ function Question({
   } = useQuestionIcons();
 
   const {
-    fragmentId, setFragmentId,
-    answerId, setAnswerId,
-    scriptsData, setScriptsData
+    setFragmentId,
+    setAnswerId  
   } = useQuestionState();
-  
+
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
-
-  // const [fragmentId, setFragmentId] = useState(null); // used only in all children
-  // const [answerId, setAnswerId] = useState(null); // used only in all children
-  // const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
-
-  // const [currentResearchOutput, setCurrentResearchOutput] = useState(null); // set but unused : future usage or delete?
 
   const DRO_ID = displayedResearchOutput?.id || 0;
 
     // --- BEHAVIOURS ---
   useEffect(() => {
     if (displayedResearchOutput) {
-      // console.log("DRO", displayedResearchOutput);
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
       );
@@ -75,15 +67,14 @@ function Question({
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
 
-    // setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10)); // set but unused (getting id by url?) : future usage or delete?
-
     handleIconClick(null, 'formSelector');
-  }, [displayedResearchOutput, question.id]); // currentResearchOutput
+  }, [displayedResearchOutput, question.id]);
 
   /**
    * Handles toggling the open/collapse state of a question.
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
+   * @param expanded 
    */
   const handleQuestionCollapse = (expanded) => {
     closeAllModals();
