@@ -9,8 +9,15 @@ import { IconComponent } from "./IconComponent";
 
 
 
-export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, fragmentId, answerId, formSelectors, scriptsData, fillGuidanceIconColor, fillCommentIconColor, fillFormSelectorIconColor, fillRunsIconColor, handleIconClick, handleQuestionCollapse }) {
+export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, fragmentId, answerId, formSelectors, scriptsData, handleIconClick, handleQuestionCollapse }) {
   // --- STATE ---
+  const {
+    fillRunsIconColor, 
+    fillCommentIconColor, 
+    fillGuidanceIconColor, 
+    fillFormSelectorIconColor,
+  } = useQuestionIcons();
+
   const { t } = useTranslation();
 
   // --- RENDER ---

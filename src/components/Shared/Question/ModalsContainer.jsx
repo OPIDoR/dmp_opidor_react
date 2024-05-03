@@ -6,13 +6,19 @@ import useQuestionModals from "../../../hooks/useQuestionModals";
 
 
 
-export function ModalsContainer({ question, readonly, scriptsData, setFillRunsIconColor, fragmentId, displayedResearchOutput, setFillCommentIconColor, answerId, planData, questionId, setFillGuidanceIconColor, questionsWithGuidance }) {
+export function ModalsContainer({ question, readonly, scriptsData, fragmentId, displayedResearchOutput, answerId, planData, questionId, questionsWithGuidance }) {
   // --- STATE ---
   const {
     showGuidanceModal, setShowGuidanceModal,
     showCommentModal, setShowCommentModal,
     showRunsModal, setShowRunsModal
   } = useQuestionModals();
+
+  const {
+    setFillRunsIconColor,
+    setFillCommentIconColor,
+    setFillGuidanceIconColor,
+  } = useQuestionIcons();
   
   // --- BEHAVIOURS ---
   

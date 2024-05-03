@@ -37,21 +37,17 @@ function Question({
   } = useQuestionModals();
 
   const {
-    fillRunsIconColor, setFillRunsIconColor,
-    fillCommentIconColor, setFillCommentIconColor,
-    fillGuidanceIconColor, setFillGuidanceIconColor,
-    fillFormSelectorIconColor, setFillFormSelectorIconColor,
+    setFillRunsIconColor,
+    setFillCommentIconColor,
+    setFillGuidanceIconColor,
+    setFillFormSelectorIconColor,
+    resetIconColors
   } = useQuestionIcons();
   
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
   const [fragmentId, setFragmentId] = useState(null); // used only in all children
   const [answerId, setAnswerId] = useState(null); // used only in all children
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1} // used only in some children
-
-  // const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
-  // const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
-  // const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
-  // const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
 
   // const [currentResearchOutput, setCurrentResearchOutput] = useState(null); // set but unused : future usage or delete?
 
@@ -117,7 +113,7 @@ function Question({
 
     // If the current modal is the same as the one about to be opened, close it
     if (isModalOpen) {
-      // call setFillIcons() from QuestionIconsContext
+      resetIconColors();
       return closeAllModals();
     }
 
@@ -205,10 +201,6 @@ function Question({
                 answerId={answerId}
                 formSelectors={formSelectors}
                 scriptsData={scriptsData}
-                fillGuidanceIconColor={fillGuidanceIconColor}
-                fillCommentIconColor={fillCommentIconColor}
-                fillFormSelectorIconColor={fillFormSelectorIconColor}
-                fillRunsIconColor={fillRunsIconColor}
                 handleIconClick={handleIconClick}
                 handleQuestionCollapse={handleQuestionCollapse}
               />
@@ -221,14 +213,11 @@ function Question({
           <ModalsContainer
             readonly={readonly}
             scriptsData={scriptsData}
-            setFillRunsIconColor={setFillRunsIconColor}
             fragmentId={fragmentId}
             displayedResearchOutput={displayedResearchOutput}
-            setFillCommentIconColor={setFillCommentIconColor}
             answerId={answerId}
             planData={planData}
             questionId={questionId}
-            setFillGuidanceIconColor={setFillGuidanceIconColor}
             questionsWithGuidance={questionsWithGuidance}
             question={question}
           />
@@ -240,9 +229,6 @@ function Question({
             className={question?.madmp_schema?.classname}
             setScriptsData={setScriptsData}
             readonly={readonly}
-            formSelector={{
-              setFillFormSelectorIconColor,
-            }}
             fetchAnswersData={true}
             questionId={question.id}
             madmpSchemaId={question.madmp_schema?.id}

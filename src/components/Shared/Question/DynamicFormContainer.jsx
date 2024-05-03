@@ -3,6 +3,7 @@ import { Label } from "react-bootstrap";
 import DynamicForm from "../../Forms/DynamicForm";
 import useSectionsMode from "../../../hooks/useSectionsMode";
 import useQuestionModals from "../../../hooks/useQuestionModals";
+import useQuestionIcons from "../../../hooks/useQuestionIcons";
 
 
 
@@ -16,7 +17,7 @@ export function DynamicFormContainer({ question, fragmentId, answerId, setScript
 
   const {
     setFillFormSelectorIconColor
-  } = formSelector;
+  } = useQuestionIcons;
 
   
   // --- RENDER ---
