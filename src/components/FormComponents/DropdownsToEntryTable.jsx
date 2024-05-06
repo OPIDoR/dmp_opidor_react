@@ -21,6 +21,8 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
+import useSectionsMode from '../../hooks/useSectionsMode.js';
+import CustomButton from '../Styled/CustomButton.jsx';
 
 function DropdownsToEntryTable({
   label,
@@ -39,6 +41,9 @@ function DropdownsToEntryTable({
     loadedRegistries, setLoadedRegistries,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+
+  const { mode } = useSectionsMode();
+
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
@@ -192,7 +197,6 @@ function DropdownsToEntryTable({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          {"blow"}
           <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
@@ -209,66 +213,73 @@ function DropdownsToEntryTable({
         </div>
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
-        <div className="row">
-          {registries && registries.length > 1 && (
-            <div className="col-md-6">
+        {mode 
+          ? <CustomButton
+              title={t("Open \"Edit entry\" modal")}
+              handleClick={handleEdit}
+              buttonColor="rust"
+          />
+          : <div className="row">
+            {registries && registries.length > 1 && (
+              <div className="col-md-6">
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <CustomSelect
+                      onSelectChange={handleSelectRegistry}
+                      options={registries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={propName}
+                      selectedOption={
+                        selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                      }
+                      isDisabled={readonly}
+                      placeholder={t("Select a registry")}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
-                  <CustomSelect
-                    onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
-                    name={propName}
-                    selectedOption={
-                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
-                    }
-                    isDisabled={readonly}
-                    placeholder={t("Select a registry")}
-                  />
+                  {options && (
+                    <CustomSelect
+                      onSelectChange={handleSelectRegistryValue}
+                      options={options}
+                      name={propName}
+                      isDisabled={readonly || !selectedRegistry}
+                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                      placeholder={createRegistryPlaceholder(registries, overridable, 'complex', t)}
+                      overridable={false}
+                    />
+                  )}
                 </div>
-              </div>
-            </div>
-          )}
-
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
-            <div className="row">
-              <div className={`col-md-11 ${styles.select_wrapper}`}>
-                {options && (
-                  <CustomSelect
-                    onSelectChange={handleSelectRegistryValue}
-                    options={options}
-                    name={propName}
-                    isDisabled={readonly || !selectedRegistry}
-                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, overridable, 'complex', t)}
-                    overridable={false}
-                  />
+                {!readonly && overridable && (
+                  <div className="col-md-1">
+                    <ReactTooltip
+                      id="select-with-create-add-button"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t('Add')}
+                    />
+                    <FaPlus
+                      data-tooltip-id="select-with-create-add-button"
+                      onClick={() => {
+                        setShow(true);
+                        setIndex(null);
+                      }}
+                      className={styles.icon}
+                    />
+                  </div>
                 )}
               </div>
-              {!readonly && overridable && (
-                <div className="col-md-1">
-                  <ReactTooltip
-                    id="select-with-create-add-button"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t('Add')}
-                  />
-                  <FaPlus
-                    data-tooltip-id="select-with-create-add-button"
-                    onClick={() => {
-                      setShow(true);
-                      setIndex(null);
-                    }}
-                    className={styles.icon}
-                  />
-                </div>
-              )}
             </div>
           </div>
-        </div>
+        }
         <span className={styles.errorMessage}>{error}</span>
         {template && (
           <FragmentList
