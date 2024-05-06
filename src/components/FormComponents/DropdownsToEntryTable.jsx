@@ -11,8 +11,8 @@ import { GlobalContext } from '../context/Global.jsx';
 import {
   createOptions,
   createRegistryPlaceholder,
-} from '../../utils/GeneratorUtils';
-import { service } from '../../services';
+} from '../../utils/GeneratorUtils.js';
+import { service } from '../../services/index.js';
 import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import FragmentList from './FragmentList.jsx';
@@ -22,7 +22,7 @@ import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 
-function SelectWithCreate({
+function DropdownsToEntryTable({
   label,
   formLabel,
   propName,
@@ -192,6 +192,7 @@ function SelectWithCreate({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
+          {"blow"}
           <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
@@ -296,4 +297,4 @@ function SelectWithCreate({
   );
 }
 
-export default SelectWithCreate;
+export default DropdownsToEntryTable;

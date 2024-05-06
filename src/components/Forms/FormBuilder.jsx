@@ -8,7 +8,7 @@ import SelectContributorMultiple from '../FormComponents/SelectContributorMultip
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
 import SelectMultipleList from '../FormComponents/SelectMultipleList';
 import SelectSingleList from '../FormComponents/SelectSingleList';
-import SelectWithCreate from '../FormComponents/SelectWithCreate';
+import DropdownsToEntryTable from '../FormComponents/DropdownsToEntryTable.jsx';
 import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
@@ -55,7 +55,7 @@ function FormBuilder({ template, readonly }) {
         // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
         if (prop.items?.template_name && prop.type === 'array') {
           formFields.push(
-            <SelectWithCreate
+            <DropdownsToEntryTable
               key={key}
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
@@ -65,7 +65,7 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
-            ></SelectWithCreate>,
+            ></DropdownsToEntryTable>,
           );
           continue;
         }
