@@ -14,7 +14,7 @@ import useSectionsMode from '../../hooks/useSectionsMode';
  * When the button is clicked, a new text input is added to the form. When the text
  * input is changed, the form is updated.
  */
-function InputTextArray({ label, propName, tooltip, readonly }) {
+function InputTextList({ label, propName, tooltip, readonly }) {
   // --- STATE ---
   const { mode } = useSectionsMode();
   const { t } = useTranslation();
@@ -97,4 +97,4 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
   );
 }
 
-export default InputTextArray;
+export default InputTextList;

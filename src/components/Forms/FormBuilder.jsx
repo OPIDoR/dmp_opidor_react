@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../FormComponents/InputText.jsx';
-import InputTextArray from '../FormComponents/InputTextArray.jsx';
+import InputTextList from '../FormComponents/InputTextList.jsx';
 import ModalTemplateTable from '../FormComponents/ModalTemplateTable.jsx';
 import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
@@ -175,13 +175,13 @@ function FormBuilder({ template, readonly }) {
        */
       if (prop.type === 'array' && prop.items.type === 'string') {
         formFields.push(
-          <InputTextArray
+          <InputTextList
             key={key}
             label={formLabel}
             propName={key}
             tooltip={tooltip}
             readonly={readonly || isConst}
-          ></InputTextArray>,
+          ></InputTextList>,
         );
         continue;
       }
