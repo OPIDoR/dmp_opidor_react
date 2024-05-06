@@ -8,6 +8,7 @@ import { FaXmark } from 'react-icons/fa6';
 import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
 import useSectionsMode from '../../hooks/useSectionsMode';
+import MappingButton from './MappingButton';
 
 /**
  * A React component that renders a form with a text input and a button.
@@ -82,6 +83,7 @@ function InputTextList({ label, propName, tooltip, readonly }) {
               />
             </div>
           )}
+          <MappingButton/>
         </div>
       ))}
 

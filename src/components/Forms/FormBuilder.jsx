@@ -23,6 +23,7 @@ function FormBuilder({ template, readonly }) {
   // si type shema is an object
   // retun est code html
   if (template.type === 'object') {
+    console.log(properties);
     for (const [key, prop] of Object.entries(properties)) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];

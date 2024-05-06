@@ -6,6 +6,7 @@ import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
 import useSectionsMode from "../../hooks/useSectionsMode";
+import MappingButton from "../FormComponents/MappingButton";
 
 function CustomSelect({
     propName = null,
@@ -48,25 +49,28 @@ function CustomSelect({
   );
 
   return(
-    <SelectComponent
-      menuPortalTarget={document.body}
-      styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
-        singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
-      }}
-      name={propName}
-      components={{ Option: CustomOption }}
-      options={options}
-      onChange={onSelectChange}
-      value={selectedOption}
-      placeholder={mapping ? '' : placeholder}
-      loadOptions={async ? (value) => filterOptions(options, value) : undefined}
-      defaultOptions={async ? options.slice(0, 100) : undefined}
-      cacheOptions
-      isDisabled={isDisabled}
-      noOptionsMessage={() => t('No results found.')}
-    />
+    <>
+      <SelectComponent
+        menuPortalTarget={document.body}
+        styles={{
+          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
+          singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
+          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
+        }}
+        name={propName}
+        components={{ Option: CustomOption }}
+        options={options}
+        onChange={onSelectChange}
+        value={selectedOption}
+        placeholder={mapping ? '' : placeholder}
+        loadOptions={async ? (value) => filterOptions(options, value) : undefined}
+        defaultOptions={async ? options.slice(0, 100) : undefined}
+        cacheOptions
+        isDisabled={isDisabled}
+        noOptionsMessage={() => t('No results found.')}
+      />
+      <MappingButton/>
+    </>
   );
 }
 

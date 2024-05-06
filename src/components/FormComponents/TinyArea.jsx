@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
 import * as styles from '../assets/css/form.module.css';
+import MappingButton from './MappingButton';
 
 const ReadDiv = styled.div`
   border: solid;
@@ -103,6 +104,7 @@ function TinyArea({
               }}
             />
           )}
+          <MappingButton/>
         </div>
       </div>
     </div>

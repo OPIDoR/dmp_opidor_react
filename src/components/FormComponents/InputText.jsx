@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import * as styles from '../assets/css/form.module.css';
+import MappingButton from './MappingButton';
 
 /**
  * It's a function that takes in a bunch of props and returns
@@ -23,7 +24,7 @@ function InputText({
   const { register } = useFormContext();
   const [isRequired] = useState(false);
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
-
+  
   return (
     <div className="form-group">
       {hidden === false && (
@@ -44,17 +45,20 @@ function InputText({
           }
         </div>
       )}
-      <input
-        {...register(propName, {
-          valueAsNumber: type === 'number'
-        })}
-        defaultValue={defaultValue}
-        type={hidden ? 'hidden' : type}
-        className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
-        placeholder={placeholder}
-        readOnly={readonly === true}
-        min={min}
-      />
+      <div>
+        <input
+          {...register(propName, {
+            valueAsNumber: type === 'number'
+          })}
+          defaultValue={defaultValue}
+          type={hidden ? 'hidden' : type}
+          className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
+          placeholder={placeholder}
+          readOnly={readonly === true}
+          min={min}
+        />
+        <MappingButton/>
+      </div>
     </div>
   );
 }

@@ -51,6 +51,7 @@ function DynamicForm({
     if (mapping) {
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
+        console.log(res.data)
         // setExternalImports(template?.schema?.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
       }).catch(console.error)
