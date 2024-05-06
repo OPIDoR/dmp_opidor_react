@@ -17,7 +17,7 @@ function CustomSelect({
     placeholder = null,
     overridable = false,
 }) {
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
   const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
   const { Option } = components;
@@ -60,7 +60,7 @@ function CustomSelect({
       options={options}
       onChange={onSelectChange}
       value={selectedOption}
-      placeholder={mode ? '' : placeholder}
+      placeholder={mapping ? '' : placeholder}
       loadOptions={async ? (value) => filterOptions(options, value) : undefined}
       defaultOptions={async ? options.slice(0, 100) : undefined}
       cacheOptions

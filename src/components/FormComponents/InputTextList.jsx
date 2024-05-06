@@ -16,7 +16,7 @@ import useSectionsMode from '../../hooks/useSectionsMode';
  */
 function InputTextList({ label, propName, tooltip, readonly }) {
   // --- STATE ---
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
   const { t } = useTranslation();
   const { register } = useFormContext({
     defaultValues: {
@@ -26,7 +26,7 @@ function InputTextList({ label, propName, tooltip, readonly }) {
   const { fields, append, remove } = useFieldArray({ name: propName });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
 
-  const formFields = mode 
+  const formFields = mapping 
       ? [{}]
       : fields;
 

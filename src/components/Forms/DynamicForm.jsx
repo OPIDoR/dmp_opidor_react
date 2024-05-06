@@ -15,7 +15,7 @@ import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
 import { writePlan } from "../../services";
-import useSectionsMode, { MODE_MAPPING } from '../../hooks/useSectionsMode.js';
+import useSectionsMode from '../../hooks/useSectionsMode.js';
 
 function DynamicForm({
   fragmentId,
@@ -39,7 +39,7 @@ function DynamicForm({
     setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
@@ -48,7 +48,7 @@ function DynamicForm({
 
   useEffect(() => {
     setLoading(true);
-    if (mode === MODE_MAPPING) {
+    if (mapping) {
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
         // setExternalImports(template?.schema?.externalImports || {});

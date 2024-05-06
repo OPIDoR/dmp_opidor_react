@@ -24,7 +24,7 @@ export function DynamicFormContainer({ question, readonly }) {
     setScriptsData
   } = useQuestionState();
 
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
 
   
   // --- RENDER ---
@@ -42,7 +42,7 @@ export function DynamicFormContainer({ question, readonly }) {
             setFillFormSelectorIconColor,
           }}
           fetchAnswersData={true} />
-      ) : (readonly && !mode) ? (
+      ) : (readonly && !mapping) ? (
         <Label bsStyle="primary">{t('Question not answered.')}</Label>
       ) : (
         <DynamicForm

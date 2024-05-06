@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import ResearchOutputInfobox from "./ResearchOutputInfobox";
 import ResearchOutputModal from "./ResearchOutputModal";
 import useSectionsMode from '../../hooks/useSectionsMode';
-import { MODE_MAPPING } from '../context/SectionsModeContext';
 import { GlobalContext } from '../context/Global';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +13,7 @@ function ResearchOutput({ planId, readonly }) {
     displayedResearchOutput, setDisplayedResearchOutput,
   } = useContext(GlobalContext);
 
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
 
   const { t } = useTranslation();
 
@@ -74,7 +73,7 @@ function ResearchOutput({ planId, readonly }) {
   return (
     <>
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
-      {mode !== MODE_MAPPING && <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>}
+      {!mapping && <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}/>}
     </>
   )
 }

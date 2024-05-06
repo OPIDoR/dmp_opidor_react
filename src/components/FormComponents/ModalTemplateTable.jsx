@@ -37,7 +37,7 @@ function ModalTemplateTable({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
@@ -167,14 +167,14 @@ function ModalTemplateTable({
             readonly={readonly}
           />
         )}
-        {(!readonly || mode) && (
+        {(!readonly || mapping) && (
           <CustomButton
             handleClick={() => {
               setEditedFragment(null);
               setShow(true);
               setIndex(null);
             }}
-            title={t(mode ? "Open element modal" : "Add an element")}
+            title={t(mapping ? "Open element modal" : "Add an element")}
             buttonColor="rust"
             position="start"
           />

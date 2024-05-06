@@ -42,7 +42,7 @@ function DropdownsToEntryTable({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
 
-  const { mode } = useSectionsMode();
+  const { mapping } = useSectionsMode();
 
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
@@ -213,7 +213,7 @@ function DropdownsToEntryTable({
         </div>
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
-        {mode 
+        {mapping 
           ? <CustomButton
               title={t("Open element modal")}
               handleClick={handleEdit}
