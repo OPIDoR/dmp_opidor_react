@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {  } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPlus, FaXmark } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 
 import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
+import useSectionsMode from '../../hooks/useSectionsMode';
 
-/* A React component that renders a form with a text input and a button.
-When the button is clicked, a new text input is added to the form. When the text
-input is changed, the form is updated. */
+/**
+ * A React component that renders a form with a text input and a button.
+ * When the button is clicked, a new text input is added to the form. When the text
+ * input is changed, the form is updated.
+ */
 function InputTextArray({ label, propName, tooltip, readonly }) {
+  // --- STATE ---
+  const { mode } = useSectionsMode();
   const { t } = useTranslation();
   const { register } = useFormContext({
     defaultValues: {
@@ -20,7 +25,12 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
   });
   const { fields, append, remove } = useFieldArray({ name: propName });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
-  
+
+  const formFields = mode 
+      ? [{}]
+      : fields;
+
+  // --- RENDER ---
   return (
     <div>
       <div className={styles.label_form}>
@@ -40,7 +50,7 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
         }
       </div>
 
-      {fields.map((item, index) => (
+      {formFields.map((item, index) => (
         <div className="row" style={{ marginBottom: '10px' }} key={`row-${index}`}>
           <div className="col-md-11">
             <div style={{ display: 'flex', alignItems: 'space-between' }}>
