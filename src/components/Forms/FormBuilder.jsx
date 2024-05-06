@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../FormComponents/InputText.jsx';
 import InputTextArray from '../FormComponents/InputTextArray.jsx';
-import ModalTemplate from '../FormComponents/ModalTemplate';
+import ModalTemplateTable from '../FormComponents/ModalTemplateTable.jsx';
 import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
 import SelectMultipleList from '../FormComponents/SelectMultipleList';
@@ -155,7 +155,7 @@ function FormBuilder({ template, readonly }) {
         } else {
           // FRAGMENT LIST EDITABLE WITH MODAL
           formFields.push(
-            <ModalTemplate
+            <ModalTemplateTable
               key={key}
               propName={key}
               label={prop[`label@${locale}`] || 'No label defined'}
@@ -164,7 +164,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
               readonly={readonly || isConst}
-            ></ModalTemplate>,
+            ></ModalTemplateTable>,
           );
         }
         continue;

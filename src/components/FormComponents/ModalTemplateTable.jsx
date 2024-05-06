@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
 import { GlobalContext } from '../context/Global.jsx';
-import { service } from '../../services';
+import { service } from '../../services/index.js';
 import CustomButton from '../Styled/CustomButton.jsx';
 import * as styles from '../assets/css/form.module.css';
 import FragmentList from './FragmentList.jsx';
@@ -15,6 +15,7 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
+import useSectionsMode from '../../hooks/useSectionsMode.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -22,7 +23,7 @@ import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
  * </code>
  * @returns A React component.
  */
-function ModalTemplate({
+function ModalTemplateTable({
   label,
   formLabel,
   propName,
@@ -36,6 +37,7 @@ function ModalTemplate({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const { mode } = useSectionsMode();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
@@ -163,19 +165,19 @@ function ModalTemplate({
             templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
-          ></FragmentList>
+          />
         )}
-        {!readonly && (
+        {(!readonly || mode) && (
           <CustomButton
             handleClick={() => {
               setEditedFragment(null);
               setShow(true);
               setIndex(null);
             }}
-            title={t("Add an element")}
+            title={t(mode ? "Open element modal" : "Add an element")}
             buttonColor="rust"
             position="start"
-          ></CustomButton>
+          />
         )}
       </div>
       {template && show && (
@@ -192,4 +194,4 @@ function ModalTemplate({
   );
 }
 
-export default ModalTemplate;
+export default ModalTemplateTable;

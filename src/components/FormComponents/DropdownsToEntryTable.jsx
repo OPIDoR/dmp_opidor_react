@@ -215,7 +215,7 @@ function DropdownsToEntryTable({
         {/* ************Select ref************** */}
         {mode 
           ? <CustomButton
-              title={t("Open \"Edit entry\" modal")}
+              title={t("Open element modal")}
               handleClick={handleEdit}
               buttonColor="rust"
           />
