@@ -5,6 +5,7 @@ import AsyncCreatableSelect from "react-select/async-creatable";
 import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
+import useSectionsMode from "../../hooks/useSectionsMode";
 
 function CustomSelect({
     propName = null,
@@ -16,6 +17,7 @@ function CustomSelect({
     placeholder = null,
     overridable = false,
 }) {
+  const { mode } = useSectionsMode();
   const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
   const { Option } = components;
@@ -58,7 +60,7 @@ function CustomSelect({
       options={options}
       onChange={onSelectChange}
       value={selectedOption}
-      placeholder={placeholder}
+      placeholder={mode ? '' : placeholder}
       loadOptions={async ? (value) => filterOptions(options, value) : undefined}
       defaultOptions={async ? options.slice(0, 100) : undefined}
       cacheOptions
