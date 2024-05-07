@@ -17,6 +17,7 @@ function CustomSelect({
     isDisabled = false,
     placeholder = null,
     overridable = false,
+    jsonPath = null
 }) {
   const { mapping } = useSectionsMode();
   const { t } = useTranslation();
@@ -69,7 +70,7 @@ function CustomSelect({
         isDisabled={isDisabled}
         noOptionsMessage={() => t('No results found.')}
       />
-      <MappingButton/>
+      <MappingButton path={jsonPath}/>
     </>
   );
 }

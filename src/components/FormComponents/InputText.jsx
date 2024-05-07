@@ -20,6 +20,7 @@ function InputText({
   defaultValue = null,
   readonly = false,
   min,
+  jsonPath = null,
 }) {
   const { register } = useFormContext();
   const [isRequired] = useState(false);
@@ -57,7 +58,7 @@ function InputText({
           readOnly={readonly === true}
           min={min}
         />
-        <MappingButton/>
+        <MappingButton path={jsonPath}/>
       </div>
     </div>
   );

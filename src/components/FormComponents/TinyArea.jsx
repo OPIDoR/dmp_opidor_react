@@ -32,6 +32,7 @@ function TinyArea({
   tooltip,
   defaultValue = null,
   readonly = false,
+  jsonPath = null,
 }) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
@@ -104,7 +105,7 @@ function TinyArea({
               }}
             />
           )}
-          <MappingButton/>
+          <MappingButton path={jsonPath}/>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ import MappingButton from './MappingButton';
  * When the button is clicked, a new text input is added to the form. When the text
  * input is changed, the form is updated.
  */
-function InputTextList({ label, propName, tooltip, readonly }) {
+function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) {
   // --- STATE ---
   const { mapping } = useSectionsMode();
   const { t } = useTranslation();
@@ -83,7 +83,7 @@ function InputTextList({ label, propName, tooltip, readonly }) {
               />
             </div>
           )}
-          <MappingButton/>
+          <MappingButton path={jsonPath}/>
         </div>
       ))}
 

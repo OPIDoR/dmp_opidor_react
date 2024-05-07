@@ -1,7 +1,7 @@
 import useSectionsMode from "../../hooks/useSectionsMode";
 import CustomButton from "../Styled/CustomButton";
 
-function MappingButton() {
+function MappingButton({path}) {
   // --- STATE ---
   const { mapping } = useSectionsMode();
 
@@ -11,7 +11,7 @@ function MappingButton() {
       {mapping &&
         <CustomButton
           title="→"
-          handleClick={() => console.log("JSON PATH")}
+          handleClick={() => console.log("JSON PATH:", path)}
           buttonColor="white"
         />
       }
