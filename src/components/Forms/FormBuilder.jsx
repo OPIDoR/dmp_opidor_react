@@ -24,6 +24,7 @@ function FormBuilder({ template, readonly }) {
   if (template.type === 'object') {
     // console.log(properties);
     for (const [key, prop] of Object.entries(properties)) {
+      const jsonPath = `$.${key}`;
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = defaults?.[key];
@@ -34,7 +35,11 @@ function FormBuilder({ template, readonly }) {
        */
       if (prop.inputType === "dropdown") {
         const registries = prop["registries"] || [prop["registry_name"]];
-        const registryType = prop.type === 'string' ? "simple" : "complex";
+
+        const registryType = prop.type === 'string' 
+          ? "simple" 
+          : "complex";
+
         const Component = prop.type === 'array' 
           ? (prop.items?.template_name 
             ? DropdownsToEntryTable // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
@@ -54,6 +59,7 @@ function FormBuilder({ template, readonly }) {
             defaultValue={defaultValue}
             overridable={prop["overridable"]}
             readonly={readonly || isConst}
+            jsonPath={jsonPath}
           />
         );
       // CONTRIBUTOR
@@ -72,6 +78,7 @@ function FormBuilder({ template, readonly }) {
             templateName={prop.template_name}
             defaultValue={defaultValue}
             readonly={readonly || isConst}
+            jsonPath={jsonPath}
           />
         );
       } else if (prop.template_name && prop.type === 'object') {
@@ -84,6 +91,7 @@ function FormBuilder({ template, readonly }) {
             tooltip={tooltip}
             templateName={prop.template_name}
             readonly={readonly || isConst}
+            jsonPath={jsonPath}
           />
         );
       // FRAGMENT LIST EDITABLE WITH MODAL
@@ -98,6 +106,7 @@ function FormBuilder({ template, readonly }) {
             header={prop[`table_header@${locale}`]}
             templateName={prop.items.template_name}
             readonly={readonly || isConst}
+            jsonPath={jsonPath}
           />
         );
       /**
@@ -111,6 +120,7 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             tooltip={tooltip}
             readonly={readonly || isConst}
+            jsonPath={jsonPath}
           />
         );
       /**
@@ -132,6 +142,7 @@ function FormBuilder({ template, readonly }) {
             defaultValue={defaultValue}
             readonly={readonly || isConst}
             min={prop.type === 'number' ? 0 : undefined}
+            jsonPath={jsonPath}
           />
         );
       }
