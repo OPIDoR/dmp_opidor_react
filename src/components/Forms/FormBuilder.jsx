@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-
 import { GlobalContext } from '../context/Global.jsx';
 import InputText from '../FormComponents/InputText.jsx';
 import InputTextList from '../FormComponents/InputTextList.jsx';
@@ -20,161 +19,91 @@ function FormBuilder({ template, readonly }) {
   const defaults = template.default?.[locale];
   const formFields = [];
 
-  // si type shema is an object
-  // retun est code html
+  // if the schema is object type
+  // it returns html code
   if (template.type === 'object') {
-    console.log(properties);
+    // console.log(properties);
     for (const [key, prop] of Object.entries(properties)) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = defaults?.[key];
       const isConst = prop['isConst'];
+
       /**
        * REGISTRIES
        */
-      if (prop.inputType === "dropdown" &&
-        (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"))
-      ) {
-        // COMPLEX REGISTRY, ONE VALUE SELECTABLE
-        if (prop.template_name && prop.type === 'object') {
-          formFields.push(
-            <SelectSingleList
-              key={key}
-              label={formLabel}
-              propName={key}
-              tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              registryType="complex"
-              templateName={prop.template_name}
-              defaultValue={defaultValue}
-              overridable={prop["overridable"]}
-              readonly={readonly || isConst}
-            ></SelectSingleList>,
-          );
-          continue;
-        }
-        // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
-        if (prop.items?.template_name && prop.type === 'array') {
-          formFields.push(
-            <DropdownsToEntryTable
-              key={key}
-              label={prop[`label@${locale}`] || 'No label defined'}
-              formLabel={formLabel}
-              propName={key}
-              header={prop[`table_header@${locale}`]}
-              templateName={prop.items.template_name}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              overridable={prop["overridable"]}
-              readonly={readonly || isConst}
-            ></DropdownsToEntryTable>,
-          );
-          continue;
-        }
-        // SIMPLE REGISTRY, ONE VALUE SELECTABLE
-        if (prop.type === 'string') {
-          formFields.push(
-            <SelectSingleList
-              key={key}
-              label={formLabel}
-              propName={key}
-              tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              registryType="simple"
-              defaultValue={defaultValue}
-              overridable={prop["overridable"]}
-              readonly={readonly || isConst}
-            ></SelectSingleList>,
-          );
-          continue;
-        }
-        // MULTIPLE VALUES SELECTABLE
-        if (prop.type === 'array') {
-          formFields.push(
-            <SelectMultipleList
-              key={key}
-              label={formLabel}
-              propName={key}
-              tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
-              overridable={prop["overridable"]}
-              readonly={readonly || isConst}
-            ></SelectMultipleList>
-          );
-          continue;
-        }
-      }
-      /**
-       * SUB FRAGMENTS
-       */
+      if (prop.inputType === "dropdown") {
+        const registries = prop["registries"] || [prop["registry_name"]];
+        const registryType = prop.type === 'string' ? "simple" : "complex";
+        const Component = prop.type === 'array' 
+          ? (prop.items?.template_name 
+            ? DropdownsToEntryTable // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
+            : SelectMultipleList) // MULTIPLE VALUES SELECTABLE
+          : SelectSingleList; // ONE VALUE SELECTABLE
 
-      // CONTRIBUTOR
-      if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
         formFields.push(
-          <SelectContributorSingle
+          <Component
+            key={key}
+            label={formLabel}
+            formLabel={formLabel}
+            propName={key}
+            tooltip={tooltip}
+            registries={registries}
+            registryType={registryType}
+            templateName={prop.template_name || prop.items?.template_name}
+            defaultValue={defaultValue}
+            overridable={prop["overridable"]}
+            readonly={readonly || isConst}
+          />
+        );
+      // CONTRIBUTOR
+      } else if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
+        const Component = prop.type === 'array' 
+          ? SelectContributorMultiple 
+          : SelectContributorSingle;
+
+        formFields.push(
+          <Component
             key={key}
             propName={key}
             label={formLabel}
+            formLabel={formLabel}
             tooltip={tooltip}
             templateName={prop.template_name}
             defaultValue={defaultValue}
             readonly={readonly || isConst}
-          ></SelectContributorSingle>,
+          />
         );
-        continue;
-      }
-      if(prop.template_name && prop.type === 'object') {
+      } else if (prop.template_name && prop.type === 'object') {
         formFields.push(
           <SubForm
             key={key}
             label={formLabel}
+            formLabel={formLabel}
             propName={key}
             tooltip={tooltip}
             templateName={prop.template_name}
             readonly={readonly || isConst}
           />
-        )
-        continue;
-      }
-
-      /**
-       * SUB FRAGMENTS LIST
-       */
-      if (prop.type === 'array' && prop.items.type === 'object' && prop.items.template_name) {
-        if (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard') {
-          formFields.push(
-            <SelectContributorMultiple
-              key={key}
-              label={formLabel}
-              propName={key}
-              header={prop[`table_header@${locale}`]}
-              tooltip={tooltip}
-              templateName={prop.items.template_name}
-              defaultValue={defaultValue}
-              readonly={readonly || isConst}
-            ></SelectContributorMultiple>,
-          );
-        } else {
-          // FRAGMENT LIST EDITABLE WITH MODAL
-          formFields.push(
-            <ModalTemplateTable
-              key={key}
-              propName={key}
-              label={prop[`label@${locale}`] || 'No label defined'}
-              formLabel={formLabel}
-              tooltip={tooltip}
-              header={prop[`table_header@${locale}`]}
-              templateName={prop.items.template_name}
-              readonly={readonly || isConst}
-            ></ModalTemplateTable>,
-          );
-        }
-        continue;
-      }
-
+        );
+      // FRAGMENT LIST EDITABLE WITH MODAL
+      } else if (prop.type === 'array' && prop.items.type === 'object' && prop.items.template_name) {
+        formFields.push(
+          <ModalTemplateTable
+            key={key}
+            propName={key}
+            label={formLabel}
+            formLabel={formLabel}
+            tooltip={tooltip}
+            header={prop[`table_header@${locale}`]}
+            templateName={prop.items.template_name}
+            readonly={readonly || isConst}
+          />
+        );
       /**
        * ARRAY FIELDS
        */
-      if (prop.type === 'array' && prop.items.type === 'string') {
+      } else if (prop.type === 'array' && prop.items.type === 'string') {
         formFields.push(
           <InputTextList
             key={key}
@@ -182,47 +111,29 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             tooltip={tooltip}
             readonly={readonly || isConst}
-          ></InputTextList>,
+          />
         );
-        continue;
-      }
-
       /**
        * TEXT FIELDS
        * TEXT & TEXTAREA
        */
-      if (prop.type === 'string' || prop.type === 'number') {
-        //   TEXTAREA
-        if (prop.inputType === 'textarea') {
-          formFields.push(
-            <TinyArea
-              key={key}
-              label={formLabel}
-              propName={key}
-              tooltip={tooltip}
-              defaultValue={defaultValue}
-              readonly={readonly || isConst}
-            ></TinyArea>,
-          );
-          continue;
-        } else {
-          // TEXT FIELDS
-          formFields.push(
-            <InputText
-              key={key}
-              label={formLabel}
-              type={prop.format || prop.type}
-              placeholder={''}
-              propName={key}
-              tooltip={tooltip}
-              hidden={prop.hidden}
-              defaultValue={defaultValue}
-              readonly={readonly || isConst}
-              min={prop.type === 'number' ? 0 : undefined}
-            ></InputText>
-          );
-        }
-        continue;
+      } else if (prop.type === 'string' || prop.type === 'number') {
+        const InputType = prop.inputType === 'textarea' 
+          ? TinyArea // TEXTAREA
+          : InputText; // TEXT FIELDS
+
+        formFields.push(
+          <InputType
+            key={key}
+            label={formLabel}
+            propName={key}
+            tooltip={tooltip}
+            type={prop.format || prop.type}
+            defaultValue={defaultValue}
+            readonly={readonly || isConst}
+            min={prop.type === 'number' ? 0 : undefined}
+          />
+        );
       }
     }
   }
