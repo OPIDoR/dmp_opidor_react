@@ -5,7 +5,7 @@ import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import { ExternalImport } from '../ExternalImport';
 
-function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({ data, template, label, readonly, show, handleSave, handleClose, jsonPath = null }) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
 
@@ -49,6 +49,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
             <FormBuilder
               template={template.schema}
               readonly={readonly}
+              jsonPath={jsonPath}
             />
           </form>
         </FormProvider>

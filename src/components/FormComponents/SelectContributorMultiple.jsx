@@ -26,6 +26,7 @@ function SelectContributorMultiple({
   templateName,
   defaultValue = null,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -311,6 +312,7 @@ function SelectContributorMultiple({
             handleSave={handleSave}
             handleClose={handleClose}
             externalImport={['ror', 'orcid']}
+            jsonPath={jsonPath}
           />
         )}
       </>

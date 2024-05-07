@@ -25,6 +25,7 @@ function SelectContributorSingle({
   templateName,
   defaultValue = null,
   readonly = false,
+  jsonPath = null,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -245,6 +246,7 @@ function SelectContributorSingle({
               name={propName}
               isDisabled={readonly}
               placeholder={t("Select a value from the list or create a new one by clicking on +")}
+              jsonPath={jsonPath}
             />
           </div>
           {!readonly && (
@@ -277,6 +279,7 @@ function SelectContributorSingle({
             tableHeader={t('Selected value')}
             overridable={overridableRole}
             readonly={readonly}
+            jsonPath={jsonPath}
           ></PersonsList>
         )}
       </div>
@@ -291,6 +294,7 @@ function SelectContributorSingle({
             handleSave={handleSave}
             handleClose={handleClose}
             externalImport={['ror', 'orcid']}
+            jsonPath={jsonPath}
           />
         )}
       </>

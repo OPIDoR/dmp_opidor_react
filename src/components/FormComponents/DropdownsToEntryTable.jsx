@@ -34,6 +34,7 @@ function DropdownsToEntryTable({
   registries,
   overridable = false,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const {
@@ -302,6 +303,7 @@ function DropdownsToEntryTable({
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
+          jsonPath={jsonPath}
         />
       )}
     </div>

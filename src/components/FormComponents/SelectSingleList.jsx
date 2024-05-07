@@ -30,6 +30,7 @@ function SelectSingleList({
   defaultValue = null,
   overridable = false,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -186,6 +187,7 @@ function SelectSingleList({
                     }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
+                    jsonPath={jsonPath}
                   />
                 </div>
               </div>
@@ -204,6 +206,7 @@ function SelectSingleList({
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                     placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
                     overridable={registryType === 'complex' ? false : overridable}
+                    jsonPath={jsonPath}
                   />
                 )}
               </div>

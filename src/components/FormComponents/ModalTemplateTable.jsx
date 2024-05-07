@@ -31,6 +31,7 @@ function ModalTemplateTable({
   header,
   templateName,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
@@ -189,6 +190,7 @@ function ModalTemplateTable({
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
+          jsonPath={jsonPath}
         />)}
     </>
   );
