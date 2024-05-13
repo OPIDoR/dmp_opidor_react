@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -27,7 +27,7 @@ const ReadDiv = styled.div`
 /* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
 `tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
 `useState` hook to set the initial state of the `text` variable to `<p></p>`. */
-function TinyArea({
+const TinyArea = forwardRef(({
   label,
   propName,
   tooltip,
@@ -35,18 +35,14 @@ function TinyArea({
   readonly = false,
   jsonPath = null,
   disableMappingBtn = false,
-}) {
+}, ref) => {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
-  const editorRef = useRef(null);
-  const { mapping, setEditorRef: setMappingEditorRef } = useSectionsMapping();
 
-  useEffect(() => {
-    if (mapping)
-      setMappingEditorRef(editorRef);
-  }, [editorRef])
+  const internalRef = useRef(null);
+  const editorRef = ref || internalRef;
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -118,6 +114,6 @@ function TinyArea({
       </div>
     </div>
   );
-}
+});
 
 export default TinyArea;
