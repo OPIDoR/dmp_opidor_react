@@ -10,6 +10,11 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
 
+const locales = {
+  fr: 'fr-FR',
+  en: 'en-GB',
+};
+
 function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
@@ -21,6 +26,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const [guidancesGroups, setGuidancesGroups] = useState({});
 
   const {
+    planInformations,
     questionsWithGuidance,
   } = useContext(GlobalContext);
 
@@ -101,7 +107,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                         {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
                           <div key={`guidance-theme-${themeId}`}>
                             {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
-                            {data?.[indexTab]?.groups?.[ref]?.[theme]?.map((g, id) => (
+                            {data?.[indexTab]?.groups?.[ref]?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
                               <div key={`guidance-theme-${themeId}-id-${id}-content`}>
                                 <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
                                 <div
