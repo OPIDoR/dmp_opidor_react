@@ -34,6 +34,12 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
+  const targetElement = document.getElementById(`nested-form-${propName}`);
+  if (!targetElement) {
+    console.error(`Target (nested-form-${propName}) container not found for propName: ${propName}`);
+    return null;
+  }
+
   return (
     createPortal(
       <>
@@ -62,7 +68,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
           </div>
         </FormProvider>
       </>,
-      document.getElementById(`nested-form-${propName}`)
+      targetElement
     )
   )
 }

@@ -13,6 +13,7 @@ import { parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import useSectionsMode from '../../hooks/useSectionsMode.js';
 
 function SubForm({
   label,
@@ -28,6 +29,7 @@ function SubForm({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const { mapping } = useSectionsMode();
   const [showNestedForm, setShowNestedForm] = useState(false);
   const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
@@ -91,7 +93,7 @@ function SubForm({
           className={styles.nestedForm}
           style={{ display: showNestedForm ? 'block' : 'none' }}
         ></div>
-        {(showNestedForm) && (
+        {(showNestedForm || mapping) && (
           <NestedForm
             propName={propName}
             data={editedFragment}
