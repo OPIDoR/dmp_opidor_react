@@ -33,7 +33,7 @@ function TinyArea({
   defaultValue = null,
   readonly = false,
   jsonPath = null,
-  mappingBtn = true,
+  disableMappingBtn = false,
 }) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
@@ -106,7 +106,7 @@ function TinyArea({
               }}
             />
           )}
-          {mappingBtn && <MappingButton path={jsonPath}/>}
+          {!disableMappingBtn && <MappingButton path={jsonPath}/>}
         </div>
       </div>
     </div>

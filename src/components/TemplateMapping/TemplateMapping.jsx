@@ -35,7 +35,7 @@ function TemplateMapping({locale, templateId}) {
             label="Edit Export Template"
             propName="template"
             defaultValue=""
-            mappingBtn={false}
+            disableMappingBtn
           />
         </FormProvider>
       </div>
