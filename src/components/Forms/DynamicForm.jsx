@@ -45,6 +45,7 @@ function DynamicForm({
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
   const [externalImports, setExternalImports] = useState({});
+  const [currentJsonPath, setCurrentJsonPath] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -52,7 +53,7 @@ function DynamicForm({
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
         console.log(res.data)
-        // setExternalImports(template?.schema?.externalImports || {});
+        setCurrentJsonPath(`$.${res.data.name}`);
         setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
       }).catch(console.error)
         .finally(() => setLoading(false));
@@ -171,6 +172,7 @@ function DynamicForm({
                 <FormBuilder
                   template={template.schema}
                   readonly={readonly}
+                  jsonPath={currentJsonPath}
                 />
               </div>
               {!readonly && <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />}
