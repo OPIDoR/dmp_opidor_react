@@ -30,6 +30,7 @@ function SubForm({
   const [showNestedForm, setShowNestedForm] = useState(false);
   const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
+  const [error, setError] = useState(null);
 
   const tooltipId = uniqueId('sub_form_tooltip_id_');
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
