@@ -22,6 +22,7 @@ function SelectMultipleList({
   registries,
   overridable = false,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -147,6 +148,7 @@ function SelectMultipleList({
                     }
                     isDisabled={readonly}
                     placeholder={t("Select a registry")}
+                    jsonPath={jsonPath}
                   />
                 </div>
               </div>
@@ -165,6 +167,7 @@ function SelectMultipleList({
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                     placeholder={createRegistryPlaceholder(registries, overridable, 'simple', t)}
                     overridable={overridable}
+                    jsonPath={jsonPath}
                   />
                 )}
               </div>
