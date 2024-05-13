@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, forwardRef } from 'react';
+import React, { useRef, forwardRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 import * as styles from '../assets/css/form.module.css';
 import MappingButton from './MappingButton';
-import useSectionsMapping from '../../hooks/useSectionsMapping';
 
 const ReadDiv = styled.div`
   border: solid;
@@ -100,6 +99,7 @@ const TinyArea = forwardRef(({
                 skin_url: '/tinymce/skins/oxide',
                 content_css: [],
               }}
+              onInit={(_evt, editor) => ref.current = editor}
             />
           )}
           {readonly && (

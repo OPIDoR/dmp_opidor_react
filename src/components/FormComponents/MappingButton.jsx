@@ -6,11 +6,11 @@ function MappingButton({ path }) {
   const { mapping, editorRef } = useSectionsMapping();
 
   const handleInsert = () => {
-    console.log(editorRef);
-    console.log(editorRef.current);
+    // console.log(editorRef.current);
     const editor = editorRef.current;
-    if (editor && editor.editor) {
-      editor.editor.insertContent(path);
+    if (editor) {
+      editor.execCommand('mceInsertContent', false, path);
+      // console.log("entered!!!!!");
     }
     console.log("JSON PATH:", path)
   };
