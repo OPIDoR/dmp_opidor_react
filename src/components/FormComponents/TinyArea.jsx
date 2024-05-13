@@ -99,7 +99,7 @@ const TinyArea = forwardRef(({
                 skin_url: '/tinymce/skins/oxide',
                 content_css: [],
               }}
-              onInit={(_evt, editor) => ref.current = editor}
+              onInit={(_evt, editor) => editorRef.current = editor}
             />
           )}
           {readonly && (
