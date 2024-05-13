@@ -15,7 +15,7 @@ import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
 import { writePlan } from "../../services";
-import useSectionsMode from '../../hooks/useSectionsMode.js';
+import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 
 function DynamicForm({
   fragmentId,
@@ -39,7 +39,7 @@ function DynamicForm({
     setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);

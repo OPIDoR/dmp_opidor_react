@@ -21,7 +21,7 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
-import useSectionsMode from '../../hooks/useSectionsMode.js';
+import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import CustomButton from '../Styled/CustomButton.jsx';
 
 function DropdownsToEntryTable({
@@ -43,7 +43,7 @@ function DropdownsToEntryTable({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
 
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
 
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });

@@ -1,9 +1,17 @@
-import useSectionsMode from "../../hooks/useSectionsMode";
+import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CustomButton from "../Styled/CustomButton";
 
-function MappingButton({path}) {
+function MappingButton({ path }) {
   // --- STATE ---
-  const { mapping } = useSectionsMode();
+  const { mapping, editorRef } = useSectionsMapping();
+
+  const handleInsert = () => {
+    const editor = editorRef.current;
+    if (editor && editor.editor) {
+      editor.editor.insertContent(path);
+    }
+    console.log("JSON PATH:", path)
+  };
 
   // --- RENDER ---
   return (
@@ -11,7 +19,7 @@ function MappingButton({path}) {
       {mapping &&
         <CustomButton
           title="→"
-          handleClick={() => console.log("JSON PATH:", path)}
+          handleClick={handleInsert}
           buttonColor="white"
         />
       }

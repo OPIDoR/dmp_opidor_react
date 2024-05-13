@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import * as styles from '../assets/css/form.module.css';
 import MappingButton from './MappingButton';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 
 const ReadDiv = styled.div`
   border: solid;
@@ -40,6 +41,12 @@ function TinyArea({
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
   const editorRef = useRef(null);
+  const { mapping, setEditorRef: setMappingEditorRef } = useSectionsMapping();
+
+  useEffect(() => {
+    if (mapping)
+      setMappingEditorRef(editorRef);
+  }, [editorRef])
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>

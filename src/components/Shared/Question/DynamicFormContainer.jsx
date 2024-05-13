@@ -1,7 +1,7 @@
 import React from "react";
 import { Label } from "react-bootstrap";
 import DynamicForm from "../../Forms/DynamicForm";
-import useSectionsMode from "../../../hooks/useSectionsMode";
+import useSectionsMapping from "../../../hooks/useSectionsMapping";
 import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
@@ -24,7 +24,7 @@ export function DynamicFormContainer({ question, readonly }) {
     setScriptsData
   } = useQuestionState();
 
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
 
   
   // --- RENDER ---

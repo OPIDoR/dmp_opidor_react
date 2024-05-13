@@ -7,7 +7,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
-import useSectionsMode from '../../hooks/useSectionsMode';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 import MappingButton from './MappingButton';
 
 /**
@@ -17,7 +17,7 @@ import MappingButton from './MappingButton';
  */
 function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) {
   // --- STATE ---
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
   const { t } = useTranslation();
   const { register } = useFormContext({
     defaultValues: {

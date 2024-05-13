@@ -6,14 +6,14 @@ import '../../i18n.js';
 
 import { useTranslation } from 'react-i18next';
 import TemplateMapping from './TemplateMapping.jsx';
-import { SectionsModeProvider } from '../context/SectionsModeContext.jsx';
+import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
 
 const toastOptions = {
   duration: 5000,
 };
 
 function TemplateMappingLayout({
-  locale = 'en_GB', // TODO: Not receiving locale from react.jsx
+  locale = 'en_GB',
   templateId,
 }) {
   // --- STATE ---
@@ -25,14 +25,14 @@ function TemplateMappingLayout({
   // --- RENDER ---
   return (
     <Global>
-      <SectionsModeProvider>
+      <SectionsMappingProvider>
         <TemplateMapping 
           templateId={TEMP_TEMPLATE_ID}
           locale={locale}
           readonly={true}
         />
         <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsModeProvider>
+      </SectionsMappingProvider>
     </Global>
   )
 }

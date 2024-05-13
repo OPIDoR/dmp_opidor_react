@@ -5,7 +5,7 @@ import GeneralInfo from './GeneralInfo.jsx';
 import GuidanceChoice from '../WritePlan/GuidanceChoice.jsx';
 import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
-import { SectionsModeProvider } from '../context/SectionsModeContext.jsx';
+import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
 
 const toastOptions = {
   duration: 5000,
@@ -26,7 +26,7 @@ function GeneralInfoLayout({
 }) {
   return(
     <Global>
-      <SectionsModeProvider>
+      <SectionsMappingProvider>
         {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
         <GeneralInfo
           locale={locale}
@@ -39,7 +39,7 @@ function GeneralInfoLayout({
           readonly={readonly}
         />
         <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsModeProvider>
+      </SectionsMappingProvider>
     </Global>
   )
 }

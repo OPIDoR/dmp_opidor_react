@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
-import useSectionsMode from "../../hooks/useSectionsMode";
+import useSectionsMapping from "../../hooks/useSectionsMapping";
 import TinyArea from "../FormComponents/TinyArea";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -11,7 +11,7 @@ function TemplateMapping({locale, templateId}) {
   // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale, formData } = useContext(GlobalContext);
-  const { enableMapping } = useSectionsMode();
+  const { enableMapping } = useSectionsMapping();
 
   const methods = useForm({ defaultValues: formData });
 

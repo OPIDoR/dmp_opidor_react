@@ -15,7 +15,7 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
-import useSectionsMode from '../../hooks/useSectionsMode.js';
+import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -38,7 +38,7 @@ function ModalTemplateTable({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})

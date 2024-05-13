@@ -8,7 +8,7 @@ import '../../i18n.js';
 import Joyride from '../Shared/Joyride/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
 import { useTranslation } from 'react-i18next';
-import { SectionsModeProvider } from '../context/SectionsModeContext.jsx';
+import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
 
 const toastOptions = {
   duration: 5000,
@@ -27,7 +27,7 @@ function WritePlanLayout({
 
   return(
     <Global>
-      <SectionsModeProvider>
+      <SectionsMappingProvider>
         <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
           <WritePlan
             planId={planId}
@@ -41,7 +41,7 @@ function WritePlanLayout({
           />
         </Joyride>
         <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsModeProvider>
+      </SectionsMappingProvider>
     </Global>
   )
 }

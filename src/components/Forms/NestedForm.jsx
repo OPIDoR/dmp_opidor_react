@@ -7,12 +7,12 @@ import { Button } from 'react-bootstrap';
 import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
-import useSectionsMode from '../../hooks/useSectionsMode';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose, jsonPath = null }) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
 
   const externalImports = template?.schema?.externalImports || {};
 

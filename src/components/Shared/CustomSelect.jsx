@@ -5,7 +5,7 @@ import AsyncCreatableSelect from "react-select/async-creatable";
 import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
-import useSectionsMode from "../../hooks/useSectionsMode";
+import useSectionsMapping from "../../hooks/useSectionsMapping";
 import MappingButton from "../FormComponents/MappingButton";
 
 function CustomSelect({
@@ -19,7 +19,7 @@ function CustomSelect({
     overridable = false,
     jsonPath = null
 }) {
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
   const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
   const { Option } = components;

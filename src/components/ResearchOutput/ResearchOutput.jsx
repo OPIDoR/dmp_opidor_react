@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import ResearchOutputInfobox from "./ResearchOutputInfobox";
 import ResearchOutputModal from "./ResearchOutputModal";
-import useSectionsMode from '../../hooks/useSectionsMode';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 import { GlobalContext } from '../context/Global';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ function ResearchOutput({ planId, readonly }) {
     displayedResearchOutput, setDisplayedResearchOutput,
   } = useContext(GlobalContext);
 
-  const { mapping } = useSectionsMode();
+  const { mapping } = useSectionsMapping();
 
   const { t } = useTranslation();
 
