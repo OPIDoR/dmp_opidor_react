@@ -8,7 +8,7 @@ import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 
-function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
+function NestedForm({ propName, data, template, readonly, handleSave, handleClose, jsonPath = null }) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
 
@@ -47,6 +47,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
             <FormBuilder
               template={template.schema}
               readonly={readonly}
+              jsonPath={jsonPath}
             />
           </form>
           <div className={styles.nestedFormFooter}>

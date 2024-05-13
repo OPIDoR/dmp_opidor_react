@@ -20,6 +20,7 @@ function SubForm({
   tooltip,
   templateName,
   readonly = false,
+  jsonPath = null
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -90,7 +91,7 @@ function SubForm({
           className={styles.nestedForm}
           style={{ display: showNestedForm ? 'block' : 'none' }}
         ></div>
-        {showNestedForm && (
+        {(showNestedForm) && (
           <NestedForm
             propName={propName}
             data={editedFragment}
@@ -101,6 +102,7 @@ function SubForm({
               setShowNestedForm(false);
               setEditedFragment(field.value);
             }}
+            jsonPath={jsonPath}
           />
         )}
 
