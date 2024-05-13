@@ -91,7 +91,7 @@ function SubForm({
         <div
           id={`nested-form-${propName}`}
           className={styles.nestedForm}
-          style={{ display: showNestedForm ? 'block' : 'none' }}
+          style={{ display: showNestedForm || mapping ? 'block' : 'none' }}
         ></div>
         {(showNestedForm || mapping) && (
           <NestedForm

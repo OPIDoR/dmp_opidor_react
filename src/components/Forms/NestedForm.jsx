@@ -7,10 +7,12 @@ import { Button } from 'react-bootstrap';
 import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
+import useSectionsMode from '../../hooks/useSectionsMode';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose, jsonPath = null }) {
   const { t } = useTranslation();
   const methods = useForm({ defaultValues: data });
+  const { mapping } = useSectionsMode();
 
   const externalImports = template?.schema?.externalImports || {};
 
@@ -35,15 +37,12 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   const targetElement = document.getElementById(`nested-form-${propName}`);
-  if (!targetElement) {
-    console.error(`Target (nested-form-${propName}) container not found for propName: ${propName}`);
-    return null;
-  }
-
+  if (!targetElement) return null;
+ 
   return (
     createPortal(
       <>
-        {Object.keys(externalImports)?.length > 0 && (
+        {!mapping && Object.keys(externalImports)?.length > 0 (
           <div style={{ marginTop: '20px' }}>
             <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />
           </div>
@@ -57,14 +56,18 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
             />
           </form>
           <div className={styles.nestedFormFooter}>
-            <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
-              {t("Cancel")}
-            </Button>
-            {!readonly && (
-              <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
-                {t('Save')}
-              </Button>
-            )}
+            {!mapping && 
+              <>
+                <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
+                  {t("Cancel")}
+                </Button>
+                {!readonly && (
+                  <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
+                    {t('Save')}
+                  </Button>
+                )}
+              </>
+            }
           </div>
         </FormProvider>
       </>,
@@ -72,6 +75,5 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
     )
   )
 }
-
 
 export default NestedForm;
