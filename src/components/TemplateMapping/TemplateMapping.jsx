@@ -3,13 +3,17 @@ import { useTranslation } from "react-i18next";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
 import useSectionsMode from "../../hooks/useSectionsMode";
+import TinyArea from "../FormComponents/TinyArea";
+import { FormProvider, useForm } from "react-hook-form";
 
 
 function TemplateMapping({locale, templateId}) {
   // --- STATE ---
   const { i18n } = useTranslation();
-  const { setLocale } = useContext(GlobalContext);
+  const { setLocale, formData } = useContext(GlobalContext);
   const { enableMapping } = useSectionsMode();
+
+  const methods = useForm({ defaultValues: formData });
 
   // --- BEHAVIOURS ---
   useEffect(() => {
@@ -20,8 +24,21 @@ function TemplateMapping({locale, templateId}) {
 
   // --- RENDER ---
   return (
-    <div style={{ position: 'relative' }}>
-      <SectionsContent templateId={templateId} readonly={true}/>
+    <div className="row">
+      <div className="col-md-6">
+        <SectionsContent templateId={templateId} readonly/>
+      </div>
+      <div className="col-md-6">
+        <FormProvider {...methods}>
+          <TinyArea
+            key="uniqueKeyForTinyArea"
+            label="Edit Export Template"
+            propName="template"
+            defaultValue=""
+            mappingBtn={false}
+          />
+        </FormProvider>
+      </div>
     </div>
   );
 }
