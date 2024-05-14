@@ -6,10 +6,10 @@ import StaticPage from './StaticPage.jsx';
 
 const queryClient = new QueryClient();
 
-export default function StaticPagesLayout({ locale = 'fr-FR', page }) {
+export default function StaticPagesLayout({ locale = 'fr-FR', page, directusUrl }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <StaticPage locale={locale} page={page} />
+      <StaticPage locale={locale} page={page} directusUrl={directusUrl} />
     </QueryClientProvider>
   )
 }
