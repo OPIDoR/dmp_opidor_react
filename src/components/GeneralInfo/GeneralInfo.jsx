@@ -56,7 +56,7 @@ function GeneralInfo({
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
-        <FunderImport projectFragmentId={projectFragmentId} researchContext={researchContext} locale={locale}/>
+        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale}/>
       )}
       <Panel
         expanded={isOpenProjectForm}
