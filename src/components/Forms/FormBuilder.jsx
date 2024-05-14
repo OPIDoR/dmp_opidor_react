@@ -11,10 +11,12 @@ import DropdownsToEntryTable from '../FormComponents/DropdownsToEntryTable.jsx';
 import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
+import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 
 function FormBuilder({ template, readonly, jsonPath = null }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
+  const { buildJsonPath } = useSectionsMapping();
   const properties = template.properties;
   const defaults = template.default?.[locale];
   const formFields = [];
@@ -24,9 +26,7 @@ function FormBuilder({ template, readonly, jsonPath = null }) {
   if (template.type === 'object') {
     // console.log(properties);
     for (const [key, prop] of Object.entries(properties)) {
-      const currentJsonPath = jsonPath 
-        ? `${jsonPath}.${key}` 
-        : `$.${key}`;
+      const currentJsonPath = buildJsonPath(jsonPath, key, prop.type);
       
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
