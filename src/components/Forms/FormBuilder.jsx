@@ -16,7 +16,11 @@ import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 function FormBuilder({ template, readonly, jsonPath = null }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
-  const { buildJsonPath } = useSectionsMapping();
+  
+  const { 
+    mapping, buildJsonPath 
+  } = useSectionsMapping();
+
   const properties = template.properties;
   const defaults = template.default?.[locale];
   const formFields = [];
@@ -28,7 +32,7 @@ function FormBuilder({ template, readonly, jsonPath = null }) {
     for (const [key, prop] of Object.entries(properties)) {
       const currentJsonPath = buildJsonPath(jsonPath, key, prop.type);
       
-      const formLabel = createFormLabel(prop, locale);
+      const formLabel = createFormLabel(prop, locale, mapping);
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = defaults?.[key];
       const isConst = prop['isConst'];
