@@ -20,14 +20,16 @@ function TemplateMappingLayout({
   const { t } = useTranslation();
 
   console.log("TML", templateId);
-  const TEMP_TEMPLATE_ID = 4;
+  const INITIAL_TEMPLATE_ID = 4;
+  const TARGET_TEMPLATE_ID = 3;
 
   // --- RENDER ---
   return (
     <Global>
       <SectionsMappingProvider>
         <TemplateMapping 
-          templateId={TEMP_TEMPLATE_ID}
+          initialTemplateId={INITIAL_TEMPLATE_ID}
+          targetTemplateId={TARGET_TEMPLATE_ID}
           locale={locale}
           readonly={true}
         />

@@ -7,7 +7,7 @@ import TinyArea from "../FormComponents/TinyArea";
 import { FormProvider, useForm } from "react-hook-form";
 
 
-function TemplateMapping({locale, templateId}) {
+function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
   // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale, formData } = useContext(GlobalContext);
@@ -28,10 +28,11 @@ function TemplateMapping({locale, templateId}) {
   return (
     <div className="row">
       <div className="col-md-6">
-        <SectionsContent templateId={templateId} readonly/>
+        <SectionsContent templateId={initialTemplateId} readonly/>
       </div>
       <div className="col-md-6">
-        <FormProvider {...methods}>
+        <SectionsContent templateId={targetTemplateId}/>
+        {/* <FormProvider {...methods}>
           <TinyArea
             ref={editorRef}
             key="uniqueKeyForTinyArea"
@@ -40,7 +41,7 @@ function TemplateMapping({locale, templateId}) {
             defaultValue=""
             disableMappingBtn
           />
-        </FormProvider>
+        </FormProvider> */}
       </div>
     </div>
   );
