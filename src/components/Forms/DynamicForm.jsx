@@ -192,7 +192,7 @@ function DynamicForm({
               )}
             </>
           :
-            <p>Unstructured plans display is not supported.</p>
+            <p>Display of unstructured plan questions is not supported.</p>
             // Not working as it returns and display an independant html page that affects the global page + needs url parameters
             // <div dangerouslySetInnerHTML={{ __html: template }} />
         }

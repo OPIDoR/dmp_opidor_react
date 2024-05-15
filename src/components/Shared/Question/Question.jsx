@@ -222,18 +222,6 @@ function Question({
             readonly={readonly}
             id={id}
           />
-          // <>
-          //   { id
-          //     ? 
-          //       <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-          //     : 
-          //       <DynamicFormContainer
-          //         question={question}
-          //         readonly={readonly}
-          //         id={id}
-          //       />
-          //   }
-          // </>
         }
       </Panel.Body>
     </Panel>
