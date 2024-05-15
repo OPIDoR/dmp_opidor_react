@@ -158,13 +158,11 @@ function DynamicForm({
 
   return (
     <>
-      {"MODELA: " + id}
-      {"MODELO: " + isStructuredModels[id]}
+      {loading && (<CustomSpinner isOverlay={true} />)}
+      {error && <p>error</p>}
       {isStructuredModels[id]
           ?
             <>
-              {loading && (<CustomSpinner isOverlay={true} />)}
-              {error && <p>error</p>}
               {!error && template && (
                 <>
                   {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
@@ -194,9 +192,9 @@ function DynamicForm({
               )}
             </>
           :
-            // {console.log("hello!")}
-            // "ALIBA!"
-            <div className='A@l' dangerouslySetInnerHTML={{ __html: "hello" }} />
+            <p>Unstructured plans display is not supported.</p>
+            // Not working as it returns and display an independant html page that affects the global page + needs url parameters
+            // <div dangerouslySetInnerHTML={{ __html: template }} />
         }
     </>
   );

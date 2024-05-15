@@ -31,8 +31,7 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
         <SectionsContent templateId={initialTemplateId} readonly id='left'/>
       </div>
       <div className="col-md-6">
-        <SectionsContent templateId={targetTemplateId} id='right'/>
-        {/* <FormProvider {...methods}>
+        <FormProvider {...methods}>
           <TinyArea
             ref={editorRef}
             key="uniqueKeyForTinyArea"
@@ -41,7 +40,8 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
             defaultValue=""
             disableMappingBtn
           />
-        </FormProvider> */}
+        </FormProvider>
+        <SectionsContent templateId={targetTemplateId} id='right'/>
       </div>
     </div>
   );
