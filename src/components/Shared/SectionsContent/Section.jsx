@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { GlobalContext } from "../../context/Global";
 import * as styles from "../../assets/css/write_plan.module.css";
 import Question from "../Question/Question";
@@ -8,7 +7,7 @@ import { QuestionModalsProvider } from "../../context/QuestionModalsContext";
 import { QuestionIconsProvider } from "../../context/QuestionIconsContext";
 import { QuestionStateProvider } from "../../context/QuestionStateContext";
 
-function Section({ section, readonly }) {
+function Section({ section, readonly, id }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
 
@@ -16,13 +15,13 @@ function Section({ section, readonly }) {
 
   useEffect(() => {
     setSectionId(section.id);
-  }, [section])
+  }, [section]);
 
   /**
- * Toggle the state of questions within a section to the provided boolean value.
- *
- * @param {boolean} boolVal - The boolean value to set for all questions in the section.
- */
+   * Toggle the state of questions within a section to the provided boolean value.
+   *
+   * @param {boolean} boolVal - The boolean value to set for all questions in the section.
+   */
   const toggleQuestionsInSection = (boolVal) => {
     const queryParameters = new URLSearchParams(window.location.search);
 
@@ -86,6 +85,7 @@ function Section({ section, readonly }) {
           <QuestionIconsProvider>
             <QuestionStateProvider>
               <Question
+                id={id}
                 key={question.id}
                 question={question}
                 questionIdx={(idx + 1)}

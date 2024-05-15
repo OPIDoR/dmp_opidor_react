@@ -5,18 +5,20 @@ import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
 import Section from "./Section";
 import * as styles from "../../assets/css/write_plan.module.css";
+import { SectionsMappingContext } from "../../context/SectionsMappingContext";
 
-function SectionsContent({ templateId, readonly, afterFetchTreatment, children }) {
+function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null }) {
   // --- STATE ---
   const {
     openedQuestions,
     displayedResearchOutput,
   } = useContext(GlobalContext);
 
+  const { isStructuredModels, setIsStructuredModel } = useContext(SectionsMappingContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
-
 
   // --- BEHAVIOURS ---
 
@@ -44,6 +46,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
     if (!res) return;
 
     setSectionsData(res.data);
+    setIsStructuredModel(id, res.data.structured);
 
     if (afterFetchTreatment) 
         return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
@@ -59,6 +62,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children }
           {children}
           {sectionsData?.sections?.map((section) => (
             <Section
+              id={id}
               key={section.id}
               section={section}
               readonly={readonly}

@@ -28,6 +28,7 @@ function DynamicForm({
   formSelector = {},
   readonly,
   fetchAnswersData = false,
+  id,
 }) {
   const { t } = useTranslation();
   const {
@@ -39,7 +40,11 @@ function DynamicForm({
     setQuestionsWithGuidance,
     planData,
   } = useContext(GlobalContext);
-  const { mapping } = useSectionsMapping();
+
+  const { 
+    mapping,
+    isStructuredModels
+  } = useSectionsMapping();
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
@@ -153,33 +158,46 @@ function DynamicForm({
 
   return (
     <>
-      {loading && (<CustomSpinner isOverlay={true} />)}
-      {error && <p>error</p>}
-      {!error && template && (
-        <>
-          {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
-          {!readonly && <FormSelector
-            className={className}
-            selectedTemplateName={template.name}
-            fragmentId={fragmentId}
-            setFragment={methods.reset}
-            setTemplate={setTemplate}
-            formSelector={formSelector}
-          />}
-          <FormProvider {...methods}>
-            <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
-              <div className="m-4">
-                <FormBuilder
-                  template={template.schema}
-                  readonly={readonly}
-                  jsonPath={currentJsonPath}
-                />
-              </div>
-              {!readonly && <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />}
-            </form>
-          </FormProvider>
-        </>
-      )}
+      {"MODELA: " + id}
+      {"MODELO: " + isStructuredModels[id]}
+      {isStructuredModels[id]
+          ?
+            <>
+              {loading && (<CustomSpinner isOverlay={true} />)}
+              {error && <p>error</p>}
+              {!error && template && (
+                <>
+                  {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
+                  {!readonly && <FormSelector
+                    className={className}
+                    selectedTemplateName={template.name}
+                    fragmentId={fragmentId}
+                    setFragment={methods.reset}
+                    setTemplate={setTemplate}
+                    formSelector={formSelector}
+                  />}
+                      
+                  <FormProvider {...methods}>
+                    <form style={{ margin: '15px' }} onSubmit={methods.handleSubmit((data) => handleSaveForm(data))}>
+                      <div className="m-4">
+                        <FormBuilder
+                          template={template.schema}
+                          readonly={readonly}
+                          jsonPath={currentJsonPath}
+                        />
+                      </div>
+                      {!readonly && <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" />}
+                    </form>
+                  </FormProvider>
+                  
+                </>
+              )}
+            </>
+          :
+            // {console.log("hello!")}
+            // "ALIBA!"
+            <div className='A@l' dangerouslySetInnerHTML={{ __html: "hello" }} />
+        }
     </>
   );
 }

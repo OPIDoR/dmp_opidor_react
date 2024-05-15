@@ -8,7 +8,7 @@ import useQuestionState from "../../../hooks/useQuestionState";
 
 
 
-export function DynamicFormContainer({ question, readonly }) {
+export function DynamicFormContainer({ question, readonly, id }) {
   // --- STATE ---
   const {
     showFormSelectorModal, setShowFormSelectorModal
@@ -41,7 +41,9 @@ export function DynamicFormContainer({ question, readonly }) {
             setShowFormSelectorModal,
             setFillFormSelectorIconColor,
           }}
-          fetchAnswersData={true} />
+          fetchAnswersData={true}
+          id={id}
+        />
       ) : (readonly && !mapping) ? (
         <Label bsStyle="primary">{t('Question not answered.')}</Label>
       ) : (
@@ -59,7 +61,9 @@ export function DynamicFormContainer({ question, readonly }) {
             setShowFormSelectorModal,
             setFillFormSelectorIconColor,
           }}
-          fetchAnswersData={true} />
+          fetchAnswersData={true} 
+          id={id}
+        />
       )}
     </>
   );

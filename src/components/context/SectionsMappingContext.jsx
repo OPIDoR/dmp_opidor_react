@@ -7,11 +7,17 @@ export const SectionsMappingProvider = ({ children }) => {
   const [mapping, setMapping] = useState(false);
   const [editorRef, setEditorRef] = useState(null);
 
-  // --- BEHAVIOURS ---
+  const [isStructuredModels, setIsStructuredModels] = useState({});
+
+  const setIsStructuredModel = (id, value) => {
+    setIsStructuredModels(prev => ({ ...prev, [id]: value }));
+  };
+
   const enableMapping = () => {
     setMapping(true)
   }
 
+    // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
     ? key + '[*]'
@@ -31,6 +37,7 @@ export const SectionsMappingProvider = ({ children }) => {
         mapping, setMapping, enableMapping,
         editorRef, setEditorRef,
         buildJsonPath,
+        isStructuredModels, setIsStructuredModel,
       }}
     >
       {children}

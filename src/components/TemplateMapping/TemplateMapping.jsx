@@ -28,10 +28,10 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
   return (
     <div className="row">
       <div className="col-md-6">
-        <SectionsContent templateId={initialTemplateId} readonly/>
+        <SectionsContent templateId={initialTemplateId} readonly id='left'/>
       </div>
       <div className="col-md-6">
-        <SectionsContent templateId={targetTemplateId}/>
+        <SectionsContent templateId={targetTemplateId} id='right'/>
         {/* <FormProvider {...methods}>
           <TinyArea
             ref={editorRef}
