@@ -11,7 +11,7 @@ import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
 
-function Metadore({ fragment, setFragment, mapping = {} }) {
+function RorList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -275,4 +275,4 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   );
 }
 
-export default Metadore;
+export default RorList;
