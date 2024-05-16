@@ -5,16 +5,16 @@ import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
 import Section from "./Section";
 import * as styles from "../../assets/css/write_plan.module.css";
-import { SectionsMappingContext } from "../../context/SectionsMappingContext";
+import useSectionsMapping from "../../../hooks/useSectionsMapping";
 
-function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null }) {
+function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null, hiddenFields }) {
   // --- STATE ---
   const {
     openedQuestions,
     displayedResearchOutput,
   } = useContext(GlobalContext);
 
-  const { isStructuredModels, setIsStructuredModel } = useContext(SectionsMappingContext);
+  const { setIsStructuredModel, setIsHiddenQuestionsFields } = useSectionsMapping();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -47,11 +47,17 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
 
     setSectionsData(res.data);
     setIsStructuredModel(id, res.data.structured);
+    setIsHiddenQuestionsFields(id, hiddenFields);
 
     if (afterFetchTreatment) 
         return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
   };
   
+  // --- DEBUG ---
+  // useEffect(() => {
+  //   console.log('Forms updated:', forms);
+  // }, [forms]);
+
   // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>

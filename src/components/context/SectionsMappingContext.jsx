@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const SectionsMappingContext = createContext();
 
@@ -6,29 +6,46 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- STATE ---
   const [mapping, setMapping] = useState(false);
   const [editorRef, setEditorRef] = useState(null);
-
-  const [isStructuredModels, setIsStructuredModels] = useState({});
+  
+  const [forms, setForms] = useState({}); // Associate a form id to its structure and content display mode
 
   const setIsStructuredModel = (id, value) => {
-    setIsStructuredModels(prev => ({ ...prev, [id]: value }));
+    setForms(prev => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        structured: value
+      }
+    }))
   };
 
-  const enableMapping = () => {
-    setMapping(true)
-  }
+  const setIsHiddenQuestionsFields = (id, value) => setForms(prev => ({
+    ...prev,
+    [id]: {
+      ...prev[id],
+      hiddenQuestionsFields: value
+    }
+  }));
+
+  const enableMapping = () => setMapping(true)
 
     // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
-    ? key + '[*]'
-    : key;
+      ? key + '[*]'
+      : key;
     
     const currentJsonPath = jsonPath
-    ? `${jsonPath}.${jpKey}`
-    : `$.${key}`;
+      ? `${jsonPath}.${jpKey}`
+      : `$.${key}`;
     
     return currentJsonPath;
   }
+
+
+  // useEffect(() => {
+  //   console.log('Forms updated:', forms);
+  // }, [forms]);
 
   // --- RENDER ---
   return (
@@ -37,7 +54,7 @@ export const SectionsMappingProvider = ({ children }) => {
         mapping, setMapping, enableMapping,
         editorRef, setEditorRef,
         buildJsonPath,
-        isStructuredModels, setIsStructuredModel,
+        forms, setIsStructuredModel, setIsHiddenQuestionsFields
       }}
     >
       {children}

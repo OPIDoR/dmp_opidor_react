@@ -41,7 +41,7 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
             disableMappingBtn
           />
         </FormProvider>
-        <SectionsContent templateId={targetTemplateId} id='right'/>
+        <SectionsContent templateId={targetTemplateId} id='right' hiddenFields/>
       </div>
     </div>
   );

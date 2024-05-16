@@ -43,8 +43,9 @@ function DynamicForm({
 
   const { 
     mapping,
-    isStructuredModels
+    forms
   } = useSectionsMapping();
+  
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
@@ -57,7 +58,7 @@ function DynamicForm({
     if (mapping) {
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
-        console.log(res.data)
+        // console.log(res.data)
         setCurrentJsonPath(`$.${res.data.name}`);
         setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
       }).catch(console.error)
@@ -160,7 +161,7 @@ function DynamicForm({
     <>
       {loading && (<CustomSpinner isOverlay={true} />)}
       {error && <p>error</p>}
-      {isStructuredModels[id]
+      {forms[id].structured
           ?
             <>
               {!error && template && (
