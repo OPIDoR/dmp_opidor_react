@@ -10,6 +10,7 @@ import { DynamicFormContainer } from "./DynamicFormContainer";
 import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
+import useSectionsMapping from "../../../hooks/useSectionsMapping";
 
 function Question({
   question,
@@ -50,6 +51,8 @@ function Question({
     setFragmentId,
     setAnswerId  
   } = useQuestionState();
+
+  const { forms } = useSectionsMapping();
 
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
 
@@ -160,7 +163,7 @@ function Question({
         borderWidth: "2px",
         borderColor: "var(--dark-blue)",
       }}
-      onToggle={(expanded) => handleQuestionCollapse(expanded)}
+      onToggle={(expanded) => (id ? !forms[id].hiddenQuestionsFields : true) && handleQuestionCollapse(expanded)}
     >
       <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
         <Panel.Title toggle>
@@ -200,6 +203,7 @@ function Question({
                 formSelectors={formSelectors}
                 handleIconClick={handleIconClick}
                 handleQuestionCollapse={handleQuestionCollapse}
+                id={id}
               />
             </div>
           </div>

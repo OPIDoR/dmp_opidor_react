@@ -8,10 +8,11 @@ import { CommentSVG } from "../../Styled/svg";
 import { IconComponent } from "./IconComponent";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
+import useSectionsMapping from "../../../hooks/useSectionsMapping";
 
 
 
-export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, formSelectors, handleIconClick, handleQuestionCollapse }) {
+export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, formSelectors, handleIconClick, handleQuestionCollapse, id }) {
   // --- STATE ---
   const {
     fillRunsIconColor, 
@@ -25,6 +26,8 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
     answerId,
     scriptsData,
   } = useQuestionState();
+
+  const { forms } = useSectionsMapping();
 
   const { t } = useTranslation();
 
@@ -65,8 +68,10 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
               tooltipContent={t("Tools")} />
           )}
         </>}
-      <IconComponent
-        icon={isQuestionOpened() ? <TfiAngleUp size={32} /> : <TfiAngleDown size={32} />} />
+      {(id ? !forms[id].hiddenQuestionsFields : true) &&
+        <IconComponent
+          icon={isQuestionOpened() ? <TfiAngleUp size={32} /> : <TfiAngleDown size={32} />} />
+      }
     </>
   );
 }
