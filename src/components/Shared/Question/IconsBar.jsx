@@ -9,6 +9,7 @@ import { IconComponent } from "./IconComponent";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
+import CustomButton from "../../Styled/CustomButton";
 
 
 
@@ -27,13 +28,19 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
     scriptsData,
   } = useQuestionState();
 
-  const { forms } = useSectionsMapping();
+  const { forms, USAGE_TARGET } = useSectionsMapping();
 
   const { t } = useTranslation();
 
   // --- RENDER ---
   return (
     <>
+      {id && forms[id].usage === USAGE_TARGET &&
+        <CustomButton
+          title="Set mapping"
+          buttonColor="orange"
+        />
+      }
       {isQuestionOpened() &&
         <>
           {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(questionId) && (

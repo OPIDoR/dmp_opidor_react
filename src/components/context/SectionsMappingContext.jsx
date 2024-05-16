@@ -4,32 +4,28 @@ export const SectionsMappingContext = createContext();
 
 export const SectionsMappingProvider = ({ children }) => {
   // --- STATE ---
+  const USAGE_INITIAL = 'initial';
+  const USAGE_TARGET = 'target';
+
   const [mapping, setMapping] = useState(false);
+  const enableMapping = () => setMapping(true);
+
   const [editorRef, setEditorRef] = useState(null);
   
   const [forms, setForms] = useState({}); // Associate a form id to its structure and content display mode
+  const setIsStructuredModel = (id, value) => updateForm(id, 'structured', value);
+  const setIsHiddenQuestionsFields = (id, value) => updateForm(id, 'hiddenQuestionsFields', value);
+  const setUsage = (id, value) => updateForm(id, 'usage', value);
 
-  const setIsStructuredModel = (id, value) => {
-    setForms(prev => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        structured: value
-      }
-    }))
-  };
-
-  const setIsHiddenQuestionsFields = (id, value) => setForms(prev => ({
+  const updateForm = (id, key, value) => setForms(prev => ({
     ...prev,
     [id]: {
       ...prev[id],
-      hiddenQuestionsFields: value
+      [key]: value
     }
   }));
 
-  const enableMapping = () => setMapping(true)
-
-    // --- BEHAVIOURS ---
+  // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
       ? key + '[*]'
@@ -43,9 +39,9 @@ export const SectionsMappingProvider = ({ children }) => {
   }
 
 
-  // useEffect(() => {
-  //   console.log('Forms updated:', forms);
-  // }, [forms]);
+  useEffect(() => {
+    console.log('Forms updated:', forms);
+  }, [forms]);
 
   // --- RENDER ---
   return (
@@ -54,7 +50,8 @@ export const SectionsMappingProvider = ({ children }) => {
         mapping, setMapping, enableMapping,
         editorRef, setEditorRef,
         buildJsonPath,
-        forms, setIsStructuredModel, setIsHiddenQuestionsFields
+        forms, setIsStructuredModel, setIsHiddenQuestionsFields, setUsage,
+        USAGE_INITIAL, USAGE_TARGET,
       }}
     >
       {children}

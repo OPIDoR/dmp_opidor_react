@@ -7,14 +7,14 @@ import Section from "./Section";
 import * as styles from "../../assets/css/write_plan.module.css";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
 
-function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null, hiddenFields }) {
+function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null, hiddenFields, mappingUsage }) {
   // --- STATE ---
   const {
     openedQuestions,
     displayedResearchOutput,
   } = useContext(GlobalContext);
 
-  const { setIsStructuredModel, setIsHiddenQuestionsFields } = useSectionsMapping();
+  const { setIsStructuredModel, setIsHiddenQuestionsFields, setUsage } = useSectionsMapping();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,6 +48,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
     setSectionsData(res.data);
     setIsStructuredModel(id, res.data.structured);
     setIsHiddenQuestionsFields(id, hiddenFields);
+    setUsage(id, mappingUsage);
 
     if (afterFetchTreatment) 
         return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);

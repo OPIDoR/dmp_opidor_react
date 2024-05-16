@@ -11,7 +11,7 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
   // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale, formData } = useContext(GlobalContext);
-  const { enableMapping, setEditorRef } = useSectionsMapping();
+  const { enableMapping, setEditorRef, USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
   const editorRef = useRef(null);
 
   const methods = useForm({ defaultValues: formData });
@@ -28,7 +28,7 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
   return (
     <div className="row">
       <div className="col-md-6">
-        <SectionsContent templateId={initialTemplateId} readonly id='left'/>
+        <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL}/>
       </div>
       <div className="col-md-6">
         <FormProvider {...methods}>
@@ -41,7 +41,7 @@ function TemplateMapping({locale, initialTemplateId, targetTemplateId}) {
             disableMappingBtn
           />
         </FormProvider>
-        <SectionsContent templateId={targetTemplateId} id='right' hiddenFields/>
+        <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET}/>
       </div>
     </div>
   );
