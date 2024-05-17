@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 
 export const SectionsMappingContext = createContext();
 
@@ -10,7 +10,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
 
-  const [editorRef, setEditorRef] = useState(null);
+  const [editorRef, setEditorRef] = useState(useRef(null));
   
   const [forms, setForms] = useState({}); // Associate a form id to its structure and content display mode
   const setIsStructuredModel = (id, value) => updateForm(id, 'structured', value);
@@ -37,7 +37,6 @@ export const SectionsMappingProvider = ({ children }) => {
     
     return currentJsonPath;
   }
-
 
   useEffect(() => {
     console.log('Forms updated:', forms);

@@ -61,23 +61,14 @@ function Question({
     setEditorRef,
   } = useSectionsMapping();
 
-  const editorRef = useRef(null);
+  const currentEditorRef = useRef(null);
   const methods = useForm({ defaultValues: formData });
 
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
 
   const DRO_ID = displayedResearchOutput?.id || id || 0;
 
-  // --- BEHAVIOURS ---
-  /**
-   * Need to set the editorRef when the component is mounted to make mapping buttons work.
-   */
-  useEffect(() => {
-    if (!editorRef) {
-      setEditorRef(useRef(null));
-    }
-  }, []);
-  
+  // --- BEHAVIOURS ---  
   useEffect(() => {
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
@@ -116,7 +107,9 @@ function Question({
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
     handleIconClick(null, 'formSelector');
-    setEditorRef(editorRef);
+
+    if (forms[id]?.usage === USAGE_TARGET)
+      setEditorRef(currentEditorRef);
   };
 
   /**
@@ -282,7 +275,7 @@ function Question({
         {forms[id]?.usage === USAGE_TARGET && 
           <FormProvider {...methods}>
             <TinyArea
-              ref={editorRef}
+              ref={currentEditorRef}
               key="uniqueKeyForTinyArea"
               label="Edit Export Template"
               propName="template"
