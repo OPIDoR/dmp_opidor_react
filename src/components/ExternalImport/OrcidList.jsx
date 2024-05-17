@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import get from 'lodash.get';
+import set from 'lodash.set';
 import { externalServices } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import Pagination from "../Shared/Pagination";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import { flattenObject } from "../../utils/utils";
 
 function OrcidList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
@@ -54,13 +57,15 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
     let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
-      obj = Object.entries(obj).reduce((acc, [key, value]) => {
-        const objKey = mapping?.[key] || key;
-        if (!(objKey in mapping)) {
-          acc[objKey] = value;
+      const matchData = data.find(({ orcid }) => orcid.toLowerCase().includes(el.orcid.toLowerCase()));
+ 
+      if (matchData) {
+        const flattenedMapping = flattenObject(mapping);
+
+        for (const [key, value] of Object.entries(flattenedMapping)) {
+          set(obj, key, get(matchData, value));
         }
-        return acc;
-      }, {});
+      }
     }
 
     setFragment({ ...fragment, ...obj });

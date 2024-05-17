@@ -13,12 +13,10 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
       }, {})
   );
 
-  const toggleImport = (type) => {
-    setImportsState(prevState => Object.keys(prevState).reduce((updatedState, key) => {
-      updatedState[key] = key === type ? !prevState[key] : false;
-      return updatedState;
-    }, {}));
-  };
+  const toggleImport = (type) => setImportsState(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+    updatedState[key] = key === type ? !prevState[key] : false;
+    return updatedState;
+  }, {}));
 
   const buttonColor = (buttonActive) => buttonActive ? 'var(--green)' : 'var(--dark-blue)';
 

@@ -25,7 +25,7 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function FunderImport({ projectFragmentId, researchContext, locale }) {
+function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);

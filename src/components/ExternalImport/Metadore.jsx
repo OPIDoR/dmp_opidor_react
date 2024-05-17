@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import get from 'lodash.get';
+import set from 'lodash.set';
 import { externalServices } from "../../services";
-import Select from "react-select";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
-import { FaLink } from "react-icons/fa6";
+import { flattenObject } from "../../utils/utils";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 
 function Metadore({ fragment, setFragment, mapping = {} }) {
@@ -55,19 +56,18 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
    */
   const setSelectedValue = (el) => {
     setSelectedData(selectedData === el.id ? null : el.id);
-    let obj = {};
 
-    if (mapping && Object.keys(mapping)?.length > 0) {
-      obj = Object.entries(obj).reduce((acc, [key, value]) => {
-        const objKey = mapping?.[key] || key;
-        if (!(objKey in mapping)) {
-          acc[objKey] = value;
-        }
-        return acc;
-      }, {});
+    const matchData = data.find(({ id }) => id.toLowerCase() === el.id.toLowerCase());
+
+    if (matchData) {
+      const flattenedMapping = flattenObject(mapping);
+
+      for (const [key, value] of Object.entries(flattenedMapping)) {
+        set(fragment, key, get(matchData, value));
+      }
     }
 
-    setFragment({ ...fragment, ...obj });
+    setFragment({ ...fragment });
   };
 
   /**
