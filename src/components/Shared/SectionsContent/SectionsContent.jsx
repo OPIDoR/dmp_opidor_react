@@ -40,24 +40,24 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
    * @returns {void | any} - Réponse de la requête
    */
   const fetchAndProcessData = async () => {
-    const res = await writePlan.getSectionsData(templateId).catch(setError);
-    setLoading(false);
+    try {
+      const res = await writePlan.getSectionsData(templateId);
 
-    if (!res) return;
-
-    setSectionsData(res.data);
-    setIsStructuredModel(id, res.data.structured);
-    setIsHiddenQuestionsFields(id, hiddenFields);
-    setUsage(id, mappingUsage);
-
-    if (afterFetchTreatment) 
-        return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
+      setSectionsData(res.data);
+      setIsStructuredModel(id, res.data.structured);
+      setIsHiddenQuestionsFields(id, hiddenFields);
+      setUsage(id, mappingUsage);
+      
+      if (afterFetchTreatment) 
+          return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
+    }
+    catch (err) {
+      setError(err);
+    }
+    finally {
+      setLoading(false);
+    }
   };
-  
-  // --- DEBUG ---
-  // useEffect(() => {
-  //   console.log('Forms updated:', forms);
-  // }, [forms]);
 
   // --- RENDER ---
   return (

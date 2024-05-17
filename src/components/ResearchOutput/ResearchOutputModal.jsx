@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Tabs } from "react-bootstrap";
 import DOMPurify from "dompurify";
 import AddResearchOutput from "./AddResearchOutput";
-import ImportResearchOutput from "./ImportResearchOutput";
 import * as styles from "../assets/css/modal.module.css";
 
 /* This is a functional component in JavaScript React that renders a modal window with two tabs: "Créer" and "Importer". The component takes in three
