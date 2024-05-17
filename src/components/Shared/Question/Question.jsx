@@ -66,7 +66,7 @@ function Question({
 
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
 
-  const DRO_ID = displayedResearchOutput?.id || 0;
+  const DRO_ID = displayedResearchOutput?.id || id || 0;
 
   // --- BEHAVIOURS ---
   /**
@@ -102,10 +102,14 @@ function Question({
   const handleQuestionCollapse = (expanded) => {
     closeAllModals();
 
-    const updatedState = { ...openedQuestions };
-    if (!updatedState[DRO_ID]) {
+    let updatedState = { ...openedQuestions };
+
+    if (!updatedState[DRO_ID])
       updatedState[DRO_ID] = {};
-    }
+
+    if (forms[id]?.usage === USAGE_TARGET)
+      updatedState = collapseOtherQuestions(updatedState, sectionId, questionId);
+
     updatedState[DRO_ID][sectionId] = { ...updatedState[DRO_ID][sectionId], [questionId]: expanded };
     setOpenedQuestions(updatedState);
 
@@ -114,6 +118,34 @@ function Question({
     handleIconClick(null, 'formSelector');
     setEditorRef(editorRef);
   };
+
+  /**
+   * Fold all questions
+   * @param {Object} updatedState - New question state
+   * @param {*} currentSectionId
+   * @param {*} currentQuestionId 
+   * @returns {Object} - Updated questions state
+   */
+  const collapseOtherQuestions = (updatedState, currentSectionId, currentQuestionId) => {
+    // Fold all other questions
+    Object.entries(updatedState[DRO_ID]).forEach(([sectionId, questions]) => {
+      if (sectionId !== currentSectionId) {
+        Object.keys(questions).forEach(questionId => {
+          updatedState[DRO_ID][sectionId][questionId] = false;
+        });
+      } 
+      else {
+        Object.keys(questions).forEach(questionId => {
+          if (questionId !== currentQuestionId) {
+            updatedState[DRO_ID][sectionId][questionId] = false;
+          }
+        });
+      }
+    });
+  
+    return updatedState;
+  };
+  
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
