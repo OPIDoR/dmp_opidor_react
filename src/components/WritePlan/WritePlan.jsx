@@ -43,10 +43,15 @@ function WritePlan({
     planInformations, setPlanInformations,
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
+  const [moduleId, setModuleId] = useState(templateId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const { setIsOpen } = useTour();
+
+  const planInformationsMessage = displayedResearchOutput?.configuration.moduleId ? 
+                                    'This research output uses the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).' : 
+                                    'This plan is based on the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).' ;
 
   const handleWebsocketData = useCallback((data) => {
     if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
@@ -103,6 +108,7 @@ function WritePlan({
         }
 
         setDisplayedResearchOutput(currentResearchOutput);
+        setModuleId(currentResearchOutput?.configuration?.moduleId || templateId)
         !researchOutputs && setResearchOutputs(research_outputs);
         setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
@@ -178,7 +184,7 @@ function WritePlan({
                 }}>
                   <Trans
                     t={t}
-                    defaults='This plan is based on the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).'
+                    defaults={planInformationsMessage}
                     values={{
                       model: planInformations.title,
                       orgName: planInformations.org,
@@ -197,7 +203,7 @@ function WritePlan({
               {planId && displayedResearchOutput && (
                 <SectionsContent
                   planId={planId}
-                  templateId={templateId}
+                  templateId={moduleId}
                   readonly={readonly}
                 />
               )}

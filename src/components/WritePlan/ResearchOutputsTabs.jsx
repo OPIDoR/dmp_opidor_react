@@ -55,7 +55,6 @@ function ResearchOutputsTabs({ planId, readonly }) {
     e.preventDefault();
     setDisplayedResearchOutput(selectedResearchOutput);
     setUrlParams({ research_output: selectedResearchOutput.id });
-    // setHasPersonalData(element?.metadata?.hasPersonalData);
   };
 
   return (

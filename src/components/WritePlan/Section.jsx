@@ -74,7 +74,7 @@ function Section({ section, readonly }) {
       </div>
       {section.questions.filter((question) => {
         if (question?.madmp_schema?.classname === 'personal_data_issues') {
-          return displayedResearchOutput.hasPersonalData;
+          return displayedResearchOutput.configuration.hasPersonalData;
         }
         return true;
       }).map((question, idx) => (
