@@ -21,7 +21,7 @@ function TemplateMappingLayout({
 
   console.log("TML", templateId);
   const INITIAL_TEMPLATE_ID = 4;
-  const TARGET_TEMPLATE_ID = 3;
+  const TARGET_TEMPLATE_ID = 1;
 
   // --- RENDER ---
   return (
