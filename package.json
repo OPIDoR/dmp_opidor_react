@@ -14,6 +14,7 @@
     "i18next-http-backend": "^2.2.0",
     "lodash.chunk": "^4.2.0",
     "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
     "lodash.unionby": "^4.8.0",
     "lodash.uniqueid": "^4.0.1",
     "prop-types": "^15.8.1",
