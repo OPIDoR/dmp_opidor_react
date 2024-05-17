@@ -140,6 +140,7 @@
   "One or more models are available, which one would you like to select ?": "Un ou plusieurs modèles sont disponibles, lequel souhaitez-vous sélectionner ?",
   "Go back to previous step": "Retour à l'étape précédente",
   "This plan is based on the <0>\"{{model}}\"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).": "Ce plan est basé sur le modèle <0>\"{{model}}\"</0> fourni par <1>{{orgName}}</1> (version: {{version}}, publié le : {{publishedDate}}).",
+  "This research output uses the <0>\"{{model}}\"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).": "Ce produit de recherche utilise le modèle <0>\"{{model}}\"</0> fourni par <1>{{orgName}}</1> (version: {{version}}, publié le : {{publishedDate}}).",
   "Context selection": "Choix du contexte",
   "Type selection": "Choix du type",
   "Template selection": "Choix du modèle",
