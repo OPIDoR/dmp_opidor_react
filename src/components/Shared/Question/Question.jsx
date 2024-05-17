@@ -57,8 +57,9 @@ function Question({
 
   const { 
     forms, 
-    USAGE_TARGET,
     setEditorRef,
+    USAGE_TARGET,
+    DEFAULT_REF
   } = useSectionsMapping();
 
   const currentEditorRef = useRef(null);
@@ -88,7 +89,7 @@ function Question({
    * Handles toggling the open/collapse state of a question.
    * This function is called when a question is collapsed or expanded.
    * It updates the state of opened questions based on the changes.
-   * @param expanded 
+   * @param {boolean} expanded  - The new state of the question (collapsed or expanded).
    */
   const handleQuestionCollapse = (expanded) => {
     closeAllModals();
@@ -109,7 +110,7 @@ function Question({
     handleIconClick(null, 'formSelector');
 
     if (forms[id]?.usage === USAGE_TARGET)
-      setEditorRef(currentEditorRef);
+      setEditorRef(expanded ? currentEditorRef : DEFAULT_REF);
   };
 
   /**
