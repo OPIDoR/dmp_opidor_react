@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import { Panel } from "react-bootstrap";
 
@@ -11,6 +11,8 @@ import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
+import { FormProvider, useForm } from "react-hook-form";
+import TinyArea from "../../FormComponents/TinyArea";
 
 function Question({
   question,
@@ -29,6 +31,7 @@ function Question({
     questionsWithGuidance,
     setUrlParams,
     formSelectors,
+    formData,
   } = useContext(GlobalContext);
 
   const {
@@ -52,13 +55,29 @@ function Question({
     setAnswerId  
   } = useQuestionState();
 
-  const { forms } = useSectionsMapping();
+  const { 
+    forms, 
+    USAGE_TARGET,
+    setEditorRef,
+  } = useSectionsMapping();
+
+  const editorRef = useRef(null);
+  const methods = useForm({ defaultValues: formData });
 
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
 
   const DRO_ID = displayedResearchOutput?.id || 0;
 
-    // --- BEHAVIOURS ---
+  // --- BEHAVIOURS ---
+  /**
+   * Need to set the editorRef when the component is mounted to make mapping buttons work.
+   */
+  useEffect(() => {
+    if (!editorRef) {
+      setEditorRef(useRef(null));
+    }
+  }, []);
+  
   useEffect(() => {
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
@@ -93,6 +112,7 @@ function Question({
     const queryParameters = new URLSearchParams(window.location.search);
     setUrlParams({ research_output: queryParameters.get('research_output') });
     handleIconClick(null, 'formSelector');
+    setEditorRef(editorRef);
   };
 
   /**
@@ -163,7 +183,7 @@ function Question({
         borderWidth: "2px",
         borderColor: "var(--dark-blue)",
       }}
-      onToggle={(expanded) => (id ? !forms[id].hiddenQuestionsFields : true) && handleQuestionCollapse(expanded)}
+      onToggle={(expanded) => handleQuestionCollapse(expanded)}
     >
       <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
         <Panel.Title toggle>
@@ -220,12 +240,24 @@ function Question({
             question={question}
           />
         }
-        {isQuestionOpened() && 
+        {isQuestionOpened() && (id ? !forms[id].hiddenQuestionsFields : true) &&
           <DynamicFormContainer
             question={question}
             readonly={readonly}
             id={id}
           />
+        }
+        {forms[id]?.usage === USAGE_TARGET && 
+          <FormProvider {...methods}>
+            <TinyArea
+              ref={editorRef}
+              key="uniqueKeyForTinyArea"
+              label="Edit Export Template"
+              propName="template"
+              defaultValue=""
+              disableMappingBtn
+            />
+          </FormProvider>
         }
       </Panel.Body>
     </Panel>
