@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import get from 'lodash.get';
+import set from 'lodash.set';
+import { FaLink } from "react-icons/fa6";
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 import { externalServices } from "../../services";
 import Select from "react-select";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
-import { FaLink } from "react-icons/fa6";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import { flattenObject } from "../../utils/utils";
 
 function RorList({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
@@ -79,14 +82,20 @@ function RorList({ fragment, setFragment, mapping = {} }) {
       acronyms: el.acronyms?.[0],
     };
 
+    mapping = {
+      affiliationName: 'acronyms[0]',
+    };
+
     if (mapping && Object.keys(mapping)?.length > 0) {
-      obj = Object.entries(obj).reduce((acc, [key, value]) => {
-        const objKey = mapping?.[key] || key;
-        if (!(objKey in mapping)) {
-          acc[objKey] = value;
+      const matchData = data.find(({ ror }) => ror.toLowerCase().includes(el.ror.toLowerCase()));
+ 
+      if (matchData) {
+        const flattenedMapping = flattenObject(mapping);
+
+        for (const [key, value] of Object.entries(flattenedMapping)) {
+          set(obj, key, get(matchData, value));
         }
-        return acc;
-      }, {});
+      }
     }
 
     setFragment({ ...fragment, ...obj });
