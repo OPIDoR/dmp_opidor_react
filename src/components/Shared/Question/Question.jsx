@@ -52,11 +52,11 @@ function Question({
 
   const {
     setFragmentId,
-    setAnswerId  
+    setAnswerId
   } = useQuestionState();
 
-  const { 
-    forms, 
+  const {
+    forms,
     setEditorRef,
     USAGE_TARGET,
     DEFAULT_REF
@@ -127,7 +127,7 @@ function Question({
         Object.keys(questions).forEach(questionId => {
           updatedState[DRO_ID][sectionId][questionId] = false;
         });
-      } 
+      }
       else {
         Object.keys(questions).forEach(questionId => {
           if (questionId !== currentQuestionId) {
@@ -136,10 +136,10 @@ function Question({
         });
       }
     });
-  
+
     return updatedState;
   };
-  
+
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
@@ -197,7 +197,7 @@ function Question({
     return !!openedQuestions?.[DRO_ID]?.[sectionId]?.[questionId];
   };
 
-  
+
   // --- RENDER ---
   return (
     <Panel
@@ -256,7 +256,7 @@ function Question({
         </Panel.Title>
       </Panel.Heading>
       <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
-        {isQuestionOpened() && 
+        {isQuestionOpened() &&
           <ModalsContainer
             readonly={readonly}
             displayedResearchOutput={displayedResearchOutput}
@@ -265,15 +265,16 @@ function Question({
             questionsWithGuidance={questionsWithGuidance}
             question={question}
           />
-        }
-        {isQuestionOpened() && (id ? !forms[id].hiddenQuestionsFields : true) &&
+        }{/* LEFT : forcément DynamicForm */}
+        {/* RIGHT : forcément PAS DynamicForm */}
+        {/* Retirer FormProvider & Remplacer TinyArea par Editor (TinyMCE) avec refactor de la config */}
+        {isQuestionOpened() && question.madmp_schema ? (
           <DynamicFormContainer
             question={question}
             readonly={readonly}
             id={id}
           />
-        }
-        {forms[id]?.usage === USAGE_TARGET && 
+        ) : (
           <FormProvider {...methods}>
             <TinyArea
               ref={currentEditorRef}
@@ -283,7 +284,7 @@ function Question({
               defaultValue=""
               disableMappingBtn
             />
-          </FormProvider>
+          </FormProvider>)
         }
       </Panel.Body>
     </Panel>

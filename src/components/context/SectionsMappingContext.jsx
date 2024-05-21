@@ -29,13 +29,13 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
-      ? key + '[*]'
+      ? `${key}[*]`
       : key;
-    
+
     const currentJsonPath = jsonPath
       ? `${jsonPath}.${jpKey}`
       : `$.${key}`;
-    
+
     return currentJsonPath;
   }
 

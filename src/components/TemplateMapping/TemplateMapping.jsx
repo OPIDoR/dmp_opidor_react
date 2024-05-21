@@ -10,10 +10,10 @@ function TemplateMapping({ locale, initialTemplateId, targetTemplateId }) {
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
   const { enableMapping, USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
-  const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
-  const targetRef = useRef(null);
-
+  const targetRef = useRef(null); 
+  
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
+  const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
   const innerScrollingFormsStyle = {
     position: "absolute",
     top: "0",
