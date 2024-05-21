@@ -20,6 +20,8 @@ function TemplateMapping({ locale, initialTemplateId, targetTemplateId }) {
     height: height,
     maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
     overflowY: "auto",
+    marginTop: "10vh",
+    padding: "0 1em",
   };
 
   // --- BEHAVIOURS ---
@@ -49,17 +51,27 @@ function TemplateMapping({ locale, initialTemplateId, targetTemplateId }) {
 
   // --- RENDER ---
   return (
-    <div className="row" style={{
-      height: height,
-      maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
-    }}>
-      <div className="col-md-6" style={innerScrollingFormsStyle}>
-        <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+    <>
+      <h1>Template Mapping</h1>
+      <p>Here you can map the sections of the initial template to the sections of the target template.</p>
+      <div className="row" style={{
+        height: height,
+        maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
+      }}>
+        <div className="col-md-6">
+          <h2>Initial Template</h2>
+          <div style={innerScrollingFormsStyle}>
+            <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+          </div>
+        </div>
+        <div ref={targetRef} className="col-md-6">
+          <h2>Target Template</h2>
+          <div style={{...innerScrollingFormsStyle, right: "0"}}>
+            <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
+          </div>
+        </div>
       </div>
-      <div ref={targetRef} className="col-md-6" style={{...innerScrollingFormsStyle, right: "0"}}>
-        <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
-      </div>
-    </div>
+    </>
   );
 }
 
