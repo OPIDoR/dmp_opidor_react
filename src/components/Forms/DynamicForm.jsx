@@ -161,7 +161,7 @@ function DynamicForm({
     <>
       {loading && (<CustomSpinner isOverlay={true} />)}
       {error && <p>error</p>}
-      {forms[id].structured
+      {(forms[id] ? forms[id]?.structured : true)
           ?
             <>
               {!error && template && (
