@@ -1,28 +1,20 @@
-import React, { useRef, forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import uniqueId from 'lodash.uniqueid';
 
 import * as styles from '../assets/css/form.module.css';
 
 
-/* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
-`tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
-`useState` hook to set the initial state of the `text` variable to `<p></p>`. */
+/**
+ * This is a React functional component that renders a TinyMCE editor for mapping text input. It receives several props including `label`, `defaultValue`.
+ */
 const MappingEditor = forwardRef(({
   label,
   defaultValue = null,
-}) => {
+}, ref) => {
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
   const [value, setValue] = useState(defaultValue);
-  const editorRef = useRef(null);
-
-  const handleChange = (content) => {
-    setValue(content);
-    if (onChange) {
-      onChange(content);
-    }
-  };
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -33,7 +25,7 @@ const MappingEditor = forwardRef(({
         </div>
 
         <Editor
-          onEditorChange={handleChange}
+          onEditorChange={setValue}
           initialValue={defaultValue}
           value={value}
           init={{
@@ -67,7 +59,7 @@ const MappingEditor = forwardRef(({
             skin_url: '/tinymce/skins/oxide',
             content_css: [],
           }}
-          onInit={(_evt, editor) => editorRef.current = editor}
+          onInit={(_evt, editor) => ref.current = editor}
         />
       </div>
     </div>

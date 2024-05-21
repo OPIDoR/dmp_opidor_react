@@ -267,7 +267,6 @@ function Question({
           />
         }{/* LEFT : surely DynamicForm */}
         {/* RIGHT : surely NOT DynamicForm */}
-        {/* Retirer FormProvider & Remplacer TinyArea par Editor (TinyMCE) avec refactor de la config */}
         {isQuestionOpened() && question.madmp_schema ? (
           <DynamicFormContainer
             question={question}
