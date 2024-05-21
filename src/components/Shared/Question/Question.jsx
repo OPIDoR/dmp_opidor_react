@@ -249,7 +249,6 @@ function Question({
                 formSelectors={formSelectors}
                 handleIconClick={handleIconClick}
                 handleQuestionCollapse={handleQuestionCollapse}
-                id={id}
               />
             </div>
           </div>

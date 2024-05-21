@@ -8,12 +8,9 @@ import { CommentSVG } from "../../Styled/svg";
 import { IconComponent } from "./IconComponent";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
-import useSectionsMapping from "../../../hooks/useSectionsMapping";
-import CustomButton from "../../Styled/CustomButton";
 
 
-
-export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, formSelectors, handleIconClick, handleQuestionCollapse, id }) {
+export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, formSelectors, handleIconClick, handleQuestionCollapse }) {
   // --- STATE ---
   const {
     fillRunsIconColor, 
@@ -28,19 +25,11 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
     scriptsData,
   } = useQuestionState();
 
-  const { forms, USAGE_TARGET } = useSectionsMapping();
-
   const { t } = useTranslation();
 
   // --- RENDER ---
   return (
     <>
-      {id && forms[id].usage === USAGE_TARGET &&
-        <CustomButton
-          title="Set mapping"
-          buttonColor="orange"
-        />
-      }
       {isQuestionOpened() &&
         <>
           {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(questionId) && (
@@ -75,10 +64,8 @@ export function IconsBar({ isQuestionOpened, questionsWithGuidance, questionId, 
               tooltipContent={t("Tools")} />
           )}
         </>}
-      {(id ? !forms[id].hiddenQuestionsFields : true) &&
         <IconComponent
           icon={isQuestionOpened() ? <TfiAngleUp size={32} /> : <TfiAngleDown size={32} />} />
-      }
     </>
   );
 }
