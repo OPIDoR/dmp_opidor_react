@@ -11,8 +11,8 @@ import useQuestionModals from "../../../hooks/useQuestionModals";
 import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
-import { FormProvider, useForm } from "react-hook-form";
-import TinyArea from "../../FormComponents/TinyArea";
+import { useForm } from "react-hook-form";
+import MappingEditor from "../../FormComponents/MappingEditor";
 
 function Question({
   question,
@@ -265,8 +265,8 @@ function Question({
             questionsWithGuidance={questionsWithGuidance}
             question={question}
           />
-        }{/* LEFT : forcément DynamicForm */}
-        {/* RIGHT : forcément PAS DynamicForm */}
+        }{/* LEFT : surely DynamicForm */}
+        {/* RIGHT : surely NOT DynamicForm */}
         {/* Retirer FormProvider & Remplacer TinyArea par Editor (TinyMCE) avec refactor de la config */}
         {isQuestionOpened() && question.madmp_schema ? (
           <DynamicFormContainer
@@ -275,16 +275,15 @@ function Question({
             id={id}
           />
         ) : (
-          <FormProvider {...methods}>
-            <TinyArea
-              ref={currentEditorRef}
-              key="uniqueKeyForTinyArea"
-              label="Edit Export Template"
-              propName="template"
-              defaultValue=""
-              disableMappingBtn
-            />
-          </FormProvider>)
+          <MappingEditor
+            ref={currentEditorRef}
+            key="uniqueKeyForTinyArea"
+            label="Edit Export Template"
+            propName="template"
+            defaultValue=""
+            disableMappingBtn
+          />
+        )
         }
       </Panel.Body>
     </Panel>
