@@ -23,25 +23,25 @@ const ReadDiv = styled.div`
   background: #f2f2f2;
 `;
 
-/* This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
-`tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
-`useState` hook to set the initial state of the `text` variable to `<p></p>`. */
-const TinyArea = forwardRef(({
+/**
+ * This is a React functional component that renders a TinyMCE editor for text input. It receives several props including `label`, `name`, `changeValue`,
+ * `tooltip` and `schemaId`. It uses the `useContext` hook to access the `form` and `temp` values from the `GlobalContext`. It also uses the
+ * `useState` hook to set the initial state of the `text` variable to `<p></p>`.
+ */
+function TinyArea ({
   label,
   propName,
   tooltip,
   defaultValue = null,
   readonly = false,
   jsonPath = null,
-  disableMappingBtn = false,
-}, ref) => {
+}) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
-  const internalRef = useRef(null);
-  const editorRef = ref || internalRef;
+  const editorRef = useRef(null);
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -109,11 +109,11 @@ const TinyArea = forwardRef(({
               }}
             />
           )}
-          {!disableMappingBtn && <MappingButton path={jsonPath}/>}
+          <MappingButton path={jsonPath}/>
         </div>
       </div>
     </div>
   );
-});
+}
 
 export default TinyArea;

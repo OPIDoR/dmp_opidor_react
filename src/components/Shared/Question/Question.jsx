@@ -276,11 +276,8 @@ function Question({
         ) : (
           <MappingEditor
             ref={currentEditorRef}
-            key="uniqueKeyForTinyArea"
             label="Edit Export Template"
-            propName="template"
             defaultValue=""
-            disableMappingBtn
           />
         )
         }
