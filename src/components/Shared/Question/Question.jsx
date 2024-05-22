@@ -56,6 +56,7 @@ function Question({
   } = useQuestionState();
 
   const {
+    mapping,
     forms,
     setEditorRef,
     USAGE_TARGET,
@@ -63,7 +64,6 @@ function Question({
   } = useSectionsMapping();
 
   const currentEditorRef = useRef(null);
-  const methods = useForm({ defaultValues: formData });
 
   const [questionId] = useState(question.id); // ??? questionId et question.id both used in different ways ???
 
@@ -71,6 +71,7 @@ function Question({
 
   // --- BEHAVIOURS ---  
   useEffect(() => {
+    if (mapping) setOpenedQuestions({});
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
