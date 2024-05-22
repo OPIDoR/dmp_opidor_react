@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
-import SelectSingleList from "../FormComponents/SelectSingleList";
 import { FormProvider, useForm } from "react-hook-form";
+import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
+
 
 
 function TemplateMapping({ data, locale, initialTemplateId, targetTemplateId }) {
@@ -56,28 +57,26 @@ function TemplateMapping({ data, locale, initialTemplateId, targetTemplateId }) 
   return (
     <>
       <h1>Template Mapping</h1>
-      <p>Here you can map the sections of the initial template to the sections of the target template.</p>
+      <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       <div className="row">
         <FormProvider {...methods} >
           <div className="col-md-6">
-            <h2>Initial Template</h2>
-            {/* <SelectSingleList
-              key={"bla"}
-              label={"test"}
-              formLabel={"test0"}
-              propName={"bla"}
-              // tooltip={tooltip}
-              // registries={registries}
-              // registryType={registryType}
-              // templateName={prop.template_name || prop.items?.template_name}
-              defaultValue={"rrrrr"}
-              // overridable={prop["overridable"]}
-              // readonly={false}
-            /> */}
+            {/* <h2>Initial Template</h2> */}
+            <TemplateSelector
+              label="Structured Template"
+              propName="structuredTemplateId"
+              defaultValue={initialTemplateId}
+              requestParams="?type=structured"
+            />
           </div>
-          <div ref={targetRef} className="col-md-6">
-            <h2>Target Template</h2>
-
+          <div className="col-md-6">
+            {/* <h2>Target Template</h2> */}
+            <TemplateSelector
+              label="Classic Template"
+              propName="classicTemplateId"
+              defaultValue={targetTemplateId}
+              requestParams="?type=classic"
+            />
           </div>
         </FormProvider>
       </div>
@@ -86,14 +85,11 @@ function TemplateMapping({ data, locale, initialTemplateId, targetTemplateId }) 
         maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
       }}>
         <div className="col-md-6">
-          {/* <h2>Initial Template</h2>
-          <SelectSingleList /> */}
           <div style={innerScrollingFormsStyle}>
             <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
           </div>
         </div>
         <div ref={targetRef} className="col-md-6">
-          {/* <h2>Target Template</h2> */}
           <div style={{...innerScrollingFormsStyle, right: "0"}}>
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
           </div>
