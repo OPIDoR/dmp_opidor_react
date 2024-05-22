@@ -3,7 +3,6 @@ import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import { writePlan } from "../../services";
 
-
 function TemplateSelector({
   label,
   propName,
@@ -11,22 +10,24 @@ function TemplateSelector({
   defaultValue = null,
   readonly = false,
   requestParams = '',
+  onTemplateChange,
 }) {
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const [options, setOptions] = useState([]);
 
-  // -- BEHAVIOURS --
   const handleSelectChange = (selectedOption) => {
     field.onChange(selectedOption.value);
+    onTemplateChange(selectedOption.value);
   };
 
   // Find the selected option based on the field value
   const selectedOption = options.find(option => option.id === field.value) || null;
 
   useEffect(() => {
-    const res = writePlan.getSectionsData(requestParams)
-      .then(res => {
+    const fetchData = async () => {
+      try {
+        const res = await writePlan.getSectionsData(requestParams);
         console.log('data:', res.data);
         // const options = res.data.map(template => ({
         //   value: template.id,
@@ -35,16 +36,11 @@ function TemplateSelector({
         // console.log('options: ',options);
         // setTemplates(options);
         setOptions(res.data);
-        console.log('templates: ', options);
-      })
-      // .then(res => {
-      //   console.log(res.data);
-      // })
-      .catch(err => {
+      } catch (err) {
         console.error(err);
-      });
-
-    console.log(res.data);
+      }
+    };
+    fetchData();
   }, []);
 
   // --- RENDER ---

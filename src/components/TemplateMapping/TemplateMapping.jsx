@@ -6,8 +6,6 @@ import useSectionsMapping from "../../hooks/useSectionsMapping";
 import { FormProvider, useForm } from "react-hook-form";
 import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
 
-
-
 function TemplateMapping({ data, locale }) {
   // --- STATE ---
   const { i18n } = useTranslation();
@@ -16,9 +14,9 @@ function TemplateMapping({ data, locale }) {
   const methods = useForm({ defaultValues: data });
   const targetRef = useRef(null);
 
-  const initialTemplateId = 4;
-  const targetTemplateId = 1;
-  
+  const [initialTemplateId, setInitialTemplateId] = useState(4);
+  const [targetTemplateId, setTargetTemplateId] = useState(1);
+
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
   const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
   const innerScrollingFormsStyle = {
@@ -70,6 +68,7 @@ function TemplateMapping({ data, locale }) {
               propName="structuredTemplateId"
               defaultValue={initialTemplateId}
               requestParams="?type=structured"
+              onTemplateChange={setInitialTemplateId}
             />
           </div>
           <div className="col-md-6">
@@ -79,6 +78,7 @@ function TemplateMapping({ data, locale }) {
               propName="classicTemplateId"
               defaultValue={targetTemplateId}
               requestParams="?type=classic"
+              onTemplateChange={setTargetTemplateId}
             />
           </div>
         </FormProvider>
