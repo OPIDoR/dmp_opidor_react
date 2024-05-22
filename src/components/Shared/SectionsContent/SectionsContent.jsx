@@ -16,7 +16,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
 
   const { setIsStructuredModel, setIsHiddenQuestionsFields, setUsage } = useSectionsMapping();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sectionsData, setSectionsData] = useState(null);
 
@@ -26,6 +26,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
     * A useEffect hook that is called when the component is mounted.
     */
   useEffect(() => {
+    setLoading(true);
     fetchAndProcessData();
   }, [templateId]);
 
@@ -47,9 +48,9 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
       setIsStructuredModel(id, res.data.structured);
       setIsHiddenQuestionsFields(id, hiddenFields);
       setUsage(id, mappingUsage);
-      
-      if (afterFetchTreatment) 
-          return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
+
+      if (afterFetchTreatment)
+        return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
     }
     catch (err) {
       setError(err);
@@ -62,21 +63,25 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
   // --- RENDER ---
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <CustomSpinner isOverlay={true} />}
-      {error && <CustomError error={error} />}
-      {!error && sectionsData?.sections && (
-        <div className={styles.write_plan_block} id="sections-content">
-          {children}
-          {sectionsData?.sections?.map((section) => (
-            <Section
-              id={id}
-              key={section.id}
-              section={section}
-              readonly={readonly}
-            />
-          ))}
-        </div>
-      )}
+      <div className={styles.write_plan_block} id="sections-content">
+        {loading ? (
+          <CustomSpinner isOverlay={true} />
+        ) : error ? (
+          <CustomError error={error} />
+        ) : (
+          <>
+            {children}
+            {sectionsData?.sections?.map((section) => (
+              <Section
+                id={id}
+                key={section.id}
+                section={section}
+                readonly={readonly}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 }
