@@ -12,7 +12,7 @@ import useQuestionIcons from "../../../hooks/useQuestionIcons";
 import useQuestionState from "../../../hooks/useQuestionState";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
 import { useForm } from "react-hook-form";
-import MappingEditor from "../../FormComponents/MappingEditor";
+import MappingEditor from "../../TemplateMappingComponents/MappingEditor";
 
 function Question({
   question,

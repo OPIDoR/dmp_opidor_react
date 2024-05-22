@@ -1,16 +1,13 @@
-import React, { forwardRef, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import uniqueId from 'lodash.uniqueid';
-
-import * as styles from '../assets/css/form.module.css';
-
+import React, { forwardRef, useState } from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import uniqueId from "lodash.uniqueid";
+import * as styles from "../assets/css/form.module.css";
 
 /**
  * This is a React functional component that renders a TinyMCE editor for mapping text input. It receives several props including `label`, `defaultValue`.
  */
 const MappingEditor = forwardRef(({
-  label,
-  defaultValue = null,
+  label, defaultValue = null,
 }, ref) => {
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
@@ -59,8 +56,7 @@ const MappingEditor = forwardRef(({
             skin_url: '/tinymce/skins/oxide',
             content_css: [],
           }}
-          onInit={(_evt, editor) => ref.current = editor}
-        />
+          onInit={(_evt, editor) => ref.current = editor} />
       </div>
     </div>
   );
