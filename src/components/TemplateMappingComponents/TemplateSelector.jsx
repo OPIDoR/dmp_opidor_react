@@ -1,3 +1,4 @@
+//TemplateSelector
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
@@ -13,7 +14,7 @@ function TemplateSelector({
   onTemplateChange,
 }) {
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { field } = useController({ control, name: propName, defaultValue });
   const [options, setOptions] = useState([]);
 
   const handleSelectChange = (selectedOption) => {
@@ -21,27 +22,29 @@ function TemplateSelector({
     onTemplateChange(selectedOption.value);
   };
 
-  // Find the selected option based on the field value
-  const selectedOption = options.find(option => option.id === field.value) || null;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await writePlan.getSectionsData(requestParams);
-        console.log('data:', res.data);
-        // const options = res.data.map(template => ({
-        //   value: template.id,
-        //   label: template.title
-        // }));
-        // console.log('options: ',options);
-        // setTemplates(options);
-        setOptions(res.data);
+        const mappedOptions = res.data.map(option => ({
+          value: option.id,
+          label: option.title
+        }));
+        setOptions(mappedOptions);
+        if (defaultValue) {
+          const defaultOption = mappedOptions.find(option => option.value === defaultValue);
+          if (defaultOption) {
+            field.onChange(defaultOption.value);
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, []);
+  }, [defaultValue]);
+
+  const selectedOption = options.find(option => option.value === field.value) || null;
 
   // --- RENDER ---
   return (
@@ -51,11 +54,8 @@ function TemplateSelector({
       <CustomSelect
         propName={propName}
         onSelectChange={handleSelectChange}
-        options={options.map(option => ({
-          value: option.id,
-          label: option.title
-        }))}
-        selectedOption={selectedOption ? { value: selectedOption.id, label: selectedOption.title } : null}
+        options={options}
+        selectedOption={selectedOption}
         isDisabled={readonly}
         disableMappingBtn
       />
