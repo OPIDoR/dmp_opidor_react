@@ -23,7 +23,6 @@ function TemplateMapping({ data, locale }) {
     height: height,
     maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
     overflowY: "auto",
-    marginTop: "100px",
     padding: "0 1em",
   };
 
@@ -47,7 +46,7 @@ function TemplateMapping({ data, locale }) {
     if (targetRef.current) {
       const rect = targetRef.current.getBoundingClientRect();
       const distanceFromTop = rect.top;
-      const calculatedHeight = `calc(100vh - ${distanceFromTop + 100}px)`;
+      const calculatedHeight = `calc(100vh - ${distanceFromTop}px)`;
       setHeight(calculatedHeight);
     }
   };
