@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import { writePlan } from "../../services";
+import { sectionsContent } from "../../services";
 
 function TemplateSelector({
   label,
@@ -25,7 +25,7 @@ function TemplateSelector({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await writePlan.getSectionsData(requestParams);
+        const res = await sectionsContent.getSectionsData(requestParams);
         const mappedOptions = res.data.map(option => ({
           value: option.id,
           label: option.title

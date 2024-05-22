@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { writePlan } from "../../../services";
+import { sectionsContent } from "../../../services";
 import CustomSpinner from "../CustomSpinner";
 import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
@@ -42,7 +42,7 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
    */
   const fetchAndProcessData = async () => {
     try {
-      const res = await writePlan.getSectionsData(templateId);
+      const res = await sectionsContent.getSectionsData(templateId);
 
       setSectionsData(res.data);
       setIsStructuredModel(id, res.data.structured);

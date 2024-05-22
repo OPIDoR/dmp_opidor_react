@@ -3,7 +3,7 @@ import { render, act } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
 import WritePlan from "../components/WritePlan/WritePlan";
-import { writePlan } from "../services";
+import { sectionsContent } from "../services";
 import Global from "../components/context/Global";
 
 jest.mock("../services/DmpWritePlanApi.js");
@@ -259,7 +259,7 @@ const mockSectionsData = {
 };
 describe("Redaction component", () => {
   beforeEach(() => {
-    writePlan.getPlanData.mockResolvedValue(mockSectionsData);
+    sectionsContent.getPlanData.mockResolvedValue(mockSectionsData);
   });
 
   afterEach(() => {

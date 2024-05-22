@@ -8,7 +8,7 @@ import news from "./news";
 import planCreation from "./planCreation";
 import researchOutput from "./researchOutput";
 import service from "./service";
-import writePlan from "./writePlan";
+import sectionsContent from "./sectionsContent";
 
 export {
   comments,
@@ -21,5 +21,5 @@ export {
   planCreation,
   researchOutput,
   service,
-  writePlan,
+  sectionsContent,
 };

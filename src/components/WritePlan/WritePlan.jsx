@@ -7,7 +7,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { Panel } from 'react-bootstrap';
 
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
-import { writePlan } from "../../services";
+import { sectionsContent } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
@@ -114,7 +114,7 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    const res = await writePlan.getPlanData(planId)
+    const res = await sectionsContent.getPlanData(planId)
                         .catch((error) => setError(error))
                         .finally(() => setLoading(false));
 
