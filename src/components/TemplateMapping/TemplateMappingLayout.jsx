@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast';
 import Global from '../context/Global.jsx';
 import '../../i18n.js';
 
-import { useTranslation } from 'react-i18next';
 import TemplateMapping from './TemplateMapping.jsx';
 import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
 
@@ -17,21 +16,15 @@ function TemplateMappingLayout({
   templateId,
 }) {
   // --- STATE ---
-  const { t } = useTranslation();
-
   console.log("TML", templateId);
-  const INITIAL_TEMPLATE_ID = 4;
-  const TARGET_TEMPLATE_ID = 1;
 
   // --- RENDER ---
   return (
     <Global>
       <SectionsMappingProvider>
         <TemplateMapping 
-          initialTemplateId={INITIAL_TEMPLATE_ID}
-          targetTemplateId={TARGET_TEMPLATE_ID}
           locale={locale}
-          readonly={true}
+          readonly
         />
         <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
       </SectionsMappingProvider>

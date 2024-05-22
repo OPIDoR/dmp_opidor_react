@@ -8,13 +8,16 @@ import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
 
 
 
-function TemplateMapping({ data, locale, initialTemplateId, targetTemplateId }) {
+function TemplateMapping({ data, locale }) {
   // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
   const { enableMapping, USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
   const methods = useForm({ defaultValues: data });
-  const targetRef = useRef(null); 
+  const targetRef = useRef(null);
+
+  const initialTemplateId = 4;
+  const targetTemplateId = 1;
   
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
   const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
