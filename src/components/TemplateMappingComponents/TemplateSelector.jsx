@@ -1,4 +1,3 @@
-//TemplateSelector
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
@@ -11,6 +10,7 @@ function TemplateSelector({
   defaultValue = null,
   readonly = false,
   requestParams = '',
+  data,
   onTemplateChange,
 }) {
   const { control } = useFormContext();
@@ -23,30 +23,34 @@ function TemplateSelector({
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await sectionsContent.getSectionsData(requestParams);
-        const mappedOptions = res.data.map(option => ({
-          value: option.id,
-          label: option.title
-        }));
-        setOptions(mappedOptions);
-        if (defaultValue) {
-          const defaultOption = mappedOptions.find(option => option.value === defaultValue);
-          if (defaultOption) {
-            field.onChange(defaultOption.value);
+    if (data) {
+      setOptions(data);
+    }
+    else {
+      const fetchData = async () => {
+        try {
+          const res = await sectionsContent.getSectionsData(requestParams);
+          const mappedOptions = res.data.map(option => ({
+            value: option.id,
+            label: option.title
+          }));
+          setOptions(mappedOptions);
+          if (defaultValue) {
+            const defaultOption = mappedOptions.find(option => option.value === defaultValue);
+            if (defaultOption) {
+              field.onChange(defaultOption.value);
+            }
           }
+        } catch (err) {
+          console.error(err);
         }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchData();
-  }, [defaultValue]);
+      };
+      fetchData();
+    }
+  }, [requestParams, defaultValue]); // Ajout de requestParams pour réagir aux changements de mappingType
 
   const selectedOption = options.find(option => option.value === field.value) || null;
 
-  // --- RENDER ---
   return (
     <div className="form-group">
       <label>{label}</label>

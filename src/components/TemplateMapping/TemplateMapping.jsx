@@ -4,9 +4,10 @@ import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import { GlobalContext } from "../context/Global";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import TemplatesSelectors from "../TemplateMappingComponents/TemplatesSelectors";
+import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
+import CustomSelect from "../Shared/CustomSelect";
 
 function TemplateMapping({ data, locale }) {
-  // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
   const { enableMapping, USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
@@ -14,6 +15,7 @@ function TemplateMapping({ data, locale }) {
 
   const [initialTemplateId, setInitialTemplateId] = useState(4);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
+  const [mappingType, setMappingType] = useState('structuredToClassic');
 
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
   const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
@@ -26,7 +28,6 @@ function TemplateMapping({ data, locale }) {
     padding: "0 1em",
   };
 
-  // --- BEHAVIOURS ---
   useEffect(() => {
     enableMapping();
     setLocale(locale);
@@ -39,9 +40,6 @@ function TemplateMapping({ data, locale }) {
     };
   }, [locale]);
 
-  /**
-   * Function called when the window is scrolled.
-   */
   const handleScroll = () => {
     if (targetRef.current) {
       const rect = targetRef.current.getBoundingClientRect();
@@ -51,7 +49,6 @@ function TemplateMapping({ data, locale }) {
     }
   };
 
-  // --- RENDER ---
   return (
     <>
       <h1>Template Mapping</h1>
@@ -61,7 +58,9 @@ function TemplateMapping({ data, locale }) {
         setInitialTemplateId={setInitialTemplateId}
         targetTemplateId={targetTemplateId}
         setTargetTemplateId={setTargetTemplateId}
-        data={data} 
+        data={data}
+        mappingType={mappingType}
+        setMappingType={setMappingType}
       />
       <div className="row" style={{
         height: height,
