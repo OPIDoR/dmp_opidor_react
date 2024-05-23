@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
-import CustomSelect from "../Shared/CustomSelect";
 
 export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, targetTemplateId, setTargetTemplateId, data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
@@ -9,8 +8,6 @@ export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, ta
   useEffect(() => {
     methods.setValue('mappingType', mappingType);
   }, [mappingType]);
-
-  // const selectedOption = options.find(option => option.value === field.value) || null;  
 
   return <div className="row">
     <FormProvider {...methods}>
@@ -25,18 +22,6 @@ export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, ta
           ]} 
           onTemplateChange={setMappingType} 
         />
-        {/* <CustomSelect
-          label="Mapping Type"
-          propName="mappingType"
-          options={[
-            { value: 'structuredToClassic', label: 'Structured to Classic' },
-            { value: 'structuredToStructured', label: 'Structured to Structured' }
-          ]} 
-          defaultValue={mappingType}
-          onSelectChange={(selectedOption) => setMappingType(selectedOption.value)}
-          // selectedOption={selectedOption}
-          disableMappingBtn
-        /> */}
       </div>
       <div className="col-md-6">
         {/* <h2>Initial Template</h2> */}

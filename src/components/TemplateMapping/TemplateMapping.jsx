@@ -8,9 +8,9 @@ import Mapper from "../TemplateMappingComponents/Mapper";
 function TemplateMapping({ data, locale }) {
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
-  const { enableMapping, USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
+  const { enableMapping } = useSectionsMapping();
 
-  const [initialTemplateId, setInitialTemplateId] = useState(4);
+  const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingType, setMappingType] = useState('structuredToClassic');
 
@@ -35,7 +35,7 @@ function TemplateMapping({ data, locale }) {
       />
       <Mapper
         initialTemplateId={initialTemplateId} 
-        targetTemplateId={targetTemplateId} 
+        targetTemplateId={targetTemplateId}
       />
     </>
   );

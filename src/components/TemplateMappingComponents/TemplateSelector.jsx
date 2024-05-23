@@ -23,31 +23,31 @@ function TemplateSelector({
   };
 
   useEffect(() => {
-    if (data) {
-      setOptions(data);
-    }
-    else {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      let fetchedOptions = [];
+      if (data) {
+        fetchedOptions = data;
+      } else {
         try {
           const res = await sectionsContent.getSectionsData(requestParams);
-          const mappedOptions = res.data.map(option => ({
+          fetchedOptions = res.data.map(option => ({
             value: option.id,
             label: option.title
           }));
-          setOptions(mappedOptions);
-          if (defaultValue) {
-            const defaultOption = mappedOptions.find(option => option.value === defaultValue);
-            if (defaultOption) {
-              field.onChange(defaultOption.value);
-            }
-          }
         } catch (err) {
           console.error(err);
         }
-      };
-      fetchData();
-    }
-  }, [requestParams, defaultValue]); // Ajout de requestParams pour réagir aux changements de mappingType
+        const defaultOption = defaultValue ? fetchedOptions.find(option => option.value === defaultValue) : fetchedOptions[0];
+        const value = defaultOption ? defaultOption.value : fetchedOptions[0].value;
+
+        field.onChange(value);
+        onTemplateChange(value);
+      }
+      setOptions(fetchedOptions);
+    };
+
+    fetchData();
+  }, [requestParams, data]);
 
   const selectedOption = options.find(option => option.value === field.value) || null;
 
