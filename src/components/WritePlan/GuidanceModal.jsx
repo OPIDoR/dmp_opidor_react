@@ -28,6 +28,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const {
     planInformations,
     questionsWithGuidance,
+    locale,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
@@ -56,7 +57,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId)
+    guidances.getGuidanceGroups(planId, locale)
       .then((res) => setGuidancesGroups(
         res?.data?.data?.flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
           ?.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
