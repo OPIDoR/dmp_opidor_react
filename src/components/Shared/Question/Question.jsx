@@ -97,11 +97,8 @@ function Question({
 
     let updatedState = { ...openedQuestions };
 
-    if (!updatedState[DRO_ID])
-      updatedState[DRO_ID] = {};
-
-    if (forms[id]?.usage === USAGE_TARGET)
-      updatedState = collapseOtherQuestions(updatedState);
+    if (forms[id]?.usage === USAGE_TARGET || !updatedState[DRO_ID])
+      updatedState[DRO_ID] = {}; // Set/Reset the state of opened questions for the current DRO
 
     updatedState[DRO_ID][sectionId] = { ...updatedState[DRO_ID][sectionId], [questionId]: expanded };
     setOpenedQuestions(updatedState);
@@ -113,32 +110,6 @@ function Question({
     if (forms[id]?.usage === USAGE_TARGET)
       setEditorRef(expanded ? currentEditorRef : DEFAULT_REF);
   };
-
-  /**
-   * Fold all questions
-   * @param {Object} updatedState - New question state
-   * @returns {Object} - Updated questions state
-   */
-  const collapseOtherQuestions = (updatedState) => {
-    // Fold all other questions
-    Object.entries(updatedState[DRO_ID]).forEach(([sectionId, questions]) => {
-      if (sectionId !== sectionId) {
-        Object.keys(questions).forEach(questionId => {
-          updatedState[DRO_ID][sectionId][questionId] = false;
-        });
-      }
-      else {
-        Object.keys(questions).forEach(questionId => {
-          if (questionId !== questionId) {
-            updatedState[DRO_ID][sectionId][questionId] = false;
-          }
-        });
-      }
-    });
-
-    return updatedState;
-  };
-
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
