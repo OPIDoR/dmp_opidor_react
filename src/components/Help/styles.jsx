@@ -54,6 +54,7 @@ export const StyledLi = styled.li`
 `;
 
 export const FaqContent = styled.div`
+  max-width: 100%;
   padding: 20px;
   border-box: box-sizing;
   flex: 1;
@@ -74,5 +75,9 @@ export const FaqContent = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     opacity: 0.4;
+  }
+
+  img {
+    max-width: 100%;
   }
 `;
