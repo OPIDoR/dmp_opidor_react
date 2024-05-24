@@ -17,8 +17,8 @@ export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, ta
           propName="mappingType"
           defaultValue={initialTemplateId}
           data={[
-            { value: 'structuredToClassic', label: 'Structured to Classic' },
-            { value: 'structuredToStructured', label: 'Structured to Structured' }
+            { value: 'formToForm', label: 'Form To Form' },
+            { value: 'formToJson', label: 'Form To JSON' },
           ]} 
           onTemplateChange={setMappingType} 
         />
@@ -38,7 +38,7 @@ export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, ta
           label="Target Template"
           propName="classicTemplateId"
           defaultValue={targetTemplateId}
-          requestParams={mappingType === 'structuredToStructured' ? "?type=structured" : "?type=classic"}
+          requestParams={""}
           onTemplateChange={setTargetTemplateId} />
       </div>
     </FormProvider>

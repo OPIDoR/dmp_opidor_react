@@ -12,7 +12,7 @@ function TemplateMapping({ data, locale }) {
 
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
-  const [mappingType, setMappingType] = useState('structuredToClassic');
+  const [mappingType, setMappingType] = useState('formToJson');
 
   useEffect(() => {
     enableMapping();
@@ -36,6 +36,7 @@ function TemplateMapping({ data, locale }) {
       <Mapper
         initialTemplateId={initialTemplateId} 
         targetTemplateId={targetTemplateId}
+        mappingType={mappingType}
       />
     </>
   );
