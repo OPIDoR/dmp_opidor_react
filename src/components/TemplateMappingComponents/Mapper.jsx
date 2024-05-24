@@ -50,16 +50,17 @@ function Mapper({ initialTemplateId, targetTemplateId, mappingType }) {
       </div>
     </div>
     <div ref={targetRef} className="col-md-6">
-      {mappingType === 'formToForm'
-        ?
-        <div style={{ ...innerScrollingFormsStyle, right: "0" }}>
-          <TemplateProvider>
+      <TemplateProvider>
+        {mappingType === 'formToForm'
+          ?
+          <div style={{ ...innerScrollingFormsStyle, right: "0" }}>
+
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
-          </TemplateProvider>
-        </div>
-        :
-        <CodeEditor />
-      }
+          </div>
+          :
+          <CodeEditor templateId={targetTemplateId} />
+        }
+      </TemplateProvider>
     </div>
   </div>;
 }
