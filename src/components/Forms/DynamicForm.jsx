@@ -36,7 +36,7 @@ function DynamicForm({
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
     setQuestionsWithGuidance,
-    planData,
+    planId,
   } = useContext(GlobalContext);
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
@@ -86,7 +86,7 @@ function DynamicForm({
     }
 
     if(fetchAnswersData) {
-      writePlan.getPlanData(planData.id)
+      writePlan.getPlanData(planId)
         .then((res) => {
           const { questions_with_guidance } = res.data;
           setQuestionsWithGuidance(questions_with_guidance || []);

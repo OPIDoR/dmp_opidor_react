@@ -24,7 +24,7 @@ function Question({
   readonly,
 }) {
   const {
-    planData,
+    planId,
     openedQuestions,
     setOpenedQuestions,
     displayedResearchOutput,
@@ -383,7 +383,7 @@ function Question({
                   setFillColorIconComment={setFillCommentIconColor}
                   answerId={answerId}
                   researchOutputId={displayedResearchOutput.id}
-                  planId={planData.id}
+                  planId={planId}
                   questionId={question.id}
                   readonly={readonly}
                 />
@@ -392,7 +392,7 @@ function Question({
                   setShowGuidanceModal={setShowGuidanceModal}
                   setFillColorGuidanceIcon={setFillGuidanceIconColor}
                   questionId={questionId}
-                  planId={planData.id}
+                  planId={planId}
                 />)}
               </div>
             )}

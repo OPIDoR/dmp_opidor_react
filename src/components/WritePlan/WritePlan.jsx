@@ -32,7 +32,7 @@ function WritePlan({
   const { t, i18n } = useTranslation();
   const {
     setFormData,
-    setPlanData,
+    setPlanId,
     setDmpId,
     setCurrentOrg,
     setUserId,
@@ -90,10 +90,10 @@ function WritePlan({
     setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     setUserId(userId);
     setLocale(locale);
+    setPlanId(planId);
 
     writePlan.getPlanData(planId)
       .then((res) => {
-        setPlanData(res.data);
         setDmpId(res.data.dmp_id);
 
         const { research_outputs, questions_with_guidance } = res.data;
