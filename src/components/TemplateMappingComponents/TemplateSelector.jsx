@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import { sectionsContent } from "../../services";
+import useTemplate from '../../hooks/useTemplate.js';
 
 function TemplateSelector({
   label,
@@ -14,6 +14,7 @@ function TemplateSelector({
   onTemplateChange,
 }) {
   const { control } = useFormContext();
+  const { getSectionsData } = useTemplate();
   const { field } = useController({ control, name: propName, defaultValue });
   const [options, setOptions] = useState([]);
 
@@ -29,7 +30,7 @@ function TemplateSelector({
         fetchedOptions = data;
       } else {
         try {
-          const res = await sectionsContent.getSectionsData(requestParams);
+          const res = await getSectionsData(requestParams);
           fetchedOptions = res.data.map(option => ({
             value: option.id,
             label: option.title

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CodeEditor from "./CodeEditor";
+import { TemplateProvider } from "../context/TemplateContext";
 
 function Mapper({ initialTemplateId, targetTemplateId, mappingType }) {
   const targetRef = useRef(null);
@@ -43,14 +44,18 @@ function Mapper({ initialTemplateId, targetTemplateId, mappingType }) {
   }}>
     <div className="col-md-6">
       <div style={innerScrollingFormsStyle}>
-        <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+        <TemplateProvider>
+          <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+        </TemplateProvider>
       </div>
     </div>
     <div ref={targetRef} className="col-md-6">
       {mappingType === 'formToForm'
         ?
         <div style={{ ...innerScrollingFormsStyle, right: "0" }}>
-          <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
+          <TemplateProvider>
+            <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
+          </TemplateProvider>
         </div>
         :
         <CodeEditor />

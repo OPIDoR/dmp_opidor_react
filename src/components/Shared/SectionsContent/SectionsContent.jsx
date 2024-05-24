@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { sectionsContent } from "../../../services";
+// import { sectionsContent } from "../../../services";
 import CustomSpinner from "../CustomSpinner";
 import { GlobalContext } from "../../context/Global";
 import CustomError from "../CustomError";
 import Section from "./Section";
 import * as styles from "../../assets/css/write_plan.module.css";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
+import useTemplate from "../../../hooks/useTemplate";
 
 function SectionsContent({ templateId, readonly, afterFetchTreatment, children, id = null, hiddenFields, mappingUsage }) {
   // --- STATE ---
@@ -16,9 +17,12 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
 
   const { setIsStructuredModel, setIsHiddenQuestionsFields, setUsage } = useSectionsMapping();
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [sectionsData, setSectionsData] = useState(null);
+  const { 
+    loading, setLoading,
+    error, 
+    sectionsData, setSectionsData,
+    fetchAndProcessSectionsData,
+  } = useTemplate();
 
   // --- BEHAVIOURS ---
 
@@ -26,39 +30,17 @@ function SectionsContent({ templateId, readonly, afterFetchTreatment, children, 
     * A useEffect hook that is called when the component is mounted.
     */
   useEffect(() => {
-    setLoading(true);
-    fetchAndProcessData();
-  }, [templateId]);
-
-
-  /**
-   * It is calling the getSectionsData function, which is an async function that returns a
-   * promise. When the promise is resolved, it sets the data state to the result of the promise. 
-   * It then sets the openedQuestions state to the result of the promise.
-   * If the promise is rejected, it sets the error state to the error.
-   * Finally, it sets the loading state to false.
-   * Then it calls a custom processing if provided in the props
-   * @returns {void | any} - Réponse de la requête
-   */
-  const fetchAndProcessData = async () => {
-    try {
-      const res = await sectionsContent.getSectionsData(templateId);
-
+    async function fetchAndProcess() {
+      setLoading(true);
+      const res = await fetchAndProcessSectionsData(templateId, afterFetchTreatment, [openedQuestions, displayedResearchOutput]);
       setSectionsData(res.data);
       setIsStructuredModel(id, res.data.structured);
       setIsHiddenQuestionsFields(id, hiddenFields);
       setUsage(id, mappingUsage);
+    }
 
-      if (afterFetchTreatment)
-        return afterFetchTreatment(res, openedQuestions, displayedResearchOutput);
-    }
-    catch (err) {
-      setError(err);
-    }
-    finally {
-      setLoading(false);
-    }
-  };
+    fetchAndProcess();
+  }, [templateId]);
 
   // --- RENDER ---
   return (

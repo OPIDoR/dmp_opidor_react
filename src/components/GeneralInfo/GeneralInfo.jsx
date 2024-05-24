@@ -10,6 +10,7 @@ import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
 import FunderImport from "./FunderImport";
 import { getErrorMessage } from "../../utils/utils";
+import { TemplateProvider } from "../context/TemplateContext";
 
 function GeneralInfo({
   planId,
@@ -52,11 +53,11 @@ function GeneralInfo({
 
     return toast.success(response?.data?.msg);
   };
-  
+
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
-        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale}/>
+        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale} />
       )}
       <Panel
         expanded={isOpenProjectForm}
@@ -81,7 +82,11 @@ function GeneralInfo({
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body className={styles.panel_body} collapsible={true}>
-          {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
+          {projectFragmentId &&
+            <TemplateProvider>
+              <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />
+            </TemplateProvider>
+          }
         </Panel.Body>
       </Panel>
       <Panel
@@ -121,7 +126,11 @@ function GeneralInfo({
               {t('Test Plan (e.g. as part of a training course)')}
             </label>
           </div>
-          {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
+          {metaFragmentId &&
+            <TemplateProvider>
+              <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />
+            </TemplateProvider>
+          }
         </Panel.Body>
       </Panel>
     </>

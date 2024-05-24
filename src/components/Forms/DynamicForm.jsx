@@ -14,8 +14,8 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
-import { sectionsContent } from "../../services";
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
+import useTemplate from '../../hooks/useTemplate.js';
 
 function DynamicForm({
   fragmentId,
@@ -45,6 +45,8 @@ function DynamicForm({
     mapping,
     forms
   } = useSectionsMapping();
+
+  const { getPlanData } = useTemplate();
   
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
@@ -103,7 +105,7 @@ function DynamicForm({
       }
 
       if (fetchAnswersData) {
-        sectionsContent.getPlanData(planData.id)
+        getPlanData(planData.id)
           .then((res) => {
             const { questions_with_guidance } = res.data;
             setQuestionsWithGuidance(questions_with_guidance || []);

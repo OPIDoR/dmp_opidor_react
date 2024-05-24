@@ -9,6 +9,7 @@ import Joyride from '../Shared/Joyride/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
 import { useTranslation } from 'react-i18next';
 import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
+import { TemplateProvider } from '../context/TemplateContext.jsx';
 
 const toastOptions = {
   duration: 5000,
@@ -25,23 +26,25 @@ function WritePlanLayout({
 }) {
   const { t } = useTranslation();
 
-  return(
+  return (
     <Global>
-      <SectionsMappingProvider>
-        <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
-          <WritePlan
-            planId={planId}
-            templateId={templateId}
-            locale={locale}
-            userId={userId}
-            currentOrgId={currentOrgId}
-            currentOrgName={currentOrgName}
-            readonly={readonly}
-            className="research-outputs-tabs"
-          />
-        </Joyride>
-        <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsMappingProvider>
+      <TemplateProvider>
+        <SectionsMappingProvider>
+          <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
+            <WritePlan
+              planId={planId}
+              templateId={templateId}
+              locale={locale}
+              userId={userId}
+              currentOrgId={currentOrgId}
+              currentOrgName={currentOrgName}
+              readonly={readonly}
+              className="research-outputs-tabs"
+            />
+          </Joyride>
+          <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+        </SectionsMappingProvider>
+      </TemplateProvider>
     </Global>
   )
 }

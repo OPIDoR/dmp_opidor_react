@@ -18,6 +18,8 @@ import consumer from "../../cable";
 import { useTour } from "../Shared/Joyride/JoyrideContext";
 import ResearchOutput from "../ResearchOutput/ResearchOutput";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
+import { TemplateProvider } from "../context/TemplateContext";
+import useTemplate from "../../hooks/useTemplate";
 
 const locales = { fr, en: enGB };
 
@@ -47,6 +49,8 @@ function WritePlan({
     setPlanInformations,
   } = useContext(GlobalContext);
 
+  const { getPlanData } = useTemplate();
+
   const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -69,6 +73,7 @@ function WritePlan({
       [displayedResearchOutput.id]: {},
     };
     setOpenedQuestions(updatedCollapseState);
+    return res;
   }
 
   // --- BEHAVIOURS ---
@@ -114,7 +119,7 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    const res = await sectionsContent.getPlanData(planId)
+    const res = await getPlanData(planId)
                         .catch((error) => setError(error))
                         .finally(() => setLoading(false));
 
@@ -218,9 +223,11 @@ function WritePlan({
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && displayedResearchOutput && (
-                <SectionsContent templateId={templateId} readonly={readonly} afterFetchTreatment={updatePlanAfterFetchTreatment}>
-                  <ResearchOutput planId={planId} readonly={readonly} researchOutputs={researchOutputs}/>
-                </SectionsContent>
+                <TemplateProvider>
+                  <SectionsContent templateId={templateId} readonly={readonly} afterFetchTreatment={updatePlanAfterFetchTreatment}>
+                    <ResearchOutput planId={planId} readonly={readonly} researchOutputs={researchOutputs}/>
+                  </SectionsContent>
+                </TemplateProvider>
               )}
             </div>
           </div>
