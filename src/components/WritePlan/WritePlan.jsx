@@ -33,6 +33,7 @@ function WritePlan({
   const {
     setFormData,
     setPlanId,
+    setPlanTemplateId,
     setDmpId,
     setCurrentOrg,
     setUserId,
@@ -43,7 +44,6 @@ function WritePlan({
     planInformations, setPlanInformations,
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
-  const [moduleId, setModuleId] = useState(templateId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -91,6 +91,7 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
     setPlanId(planId);
+    setPlanTemplateId(templateId);
 
     writePlan.getPlanData(planId)
       .then((res) => {
@@ -108,7 +109,6 @@ function WritePlan({
         }
 
         setDisplayedResearchOutput(currentResearchOutput);
-        setModuleId(currentResearchOutput?.configuration?.moduleId || templateId)
         !researchOutputs && setResearchOutputs(research_outputs);
         setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
@@ -203,7 +203,6 @@ function WritePlan({
               {planId && displayedResearchOutput && (
                 <SectionsContent
                   planId={planId}
-                  templateId={moduleId}
                   readonly={readonly}
                 />
               )}

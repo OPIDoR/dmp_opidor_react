@@ -13,12 +13,14 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
 
-function SectionsContent({ planId, templateId, readonly }) {
+function SectionsContent({ planId, readonly }) {
   const { t } = useTranslation();
   const {
+    planTemplateId,
+    loadedSectionsData, setLoadedSectionsData,
     openedQuestions,
     setOpenedQuestions,
-    researchOutputs, setResearchOutputs,
+    setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
     setPlanInformations,
     setUrlParams,
@@ -27,42 +29,51 @@ function SectionsContent({ planId, templateId, readonly }) {
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
-  const [sectionsData, setSectionsData] = useState(null);
-  const [moduleId, setModuleId] = useState(templateId);
+  const [moduleId, setModuleId] = useState(null);
 
 
   useEffect(() => {
-    setModuleId(displayedResearchOutput?.configuration?.moduleId || templateId)
-  }, [displayedResearchOutput, templateId])
+    setModuleId(displayedResearchOutput?.configuration?.moduleId || planTemplateId)
+  }, [displayedResearchOutput])
   /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
   promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
   If the promise is rejected, it sets the error state to the error.
   Finally, it sets the loading state to false. */
   useEffect(() => {
-    setLoading(true);
-    
-    writePlan.getSectionsData(moduleId)
-      .then((res) => {
-
-        setPlanInformations({
-          locale: res?.data?.locale.split('-')?.at(0) || 'fr',
-          title: res?.data?.title,
-          version: res?.data?.version,
-          org: res?.data?.org,
-          publishedDate: res?.data?.publishedDate,
-        });
-        setSectionsData(res.data);
-        if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
-          const updatedCollapseState = {
-            ...openedQuestions,
-            [displayedResearchOutput.id]: {},
-          };
-          setOpenedQuestions(updatedCollapseState);
-        }
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    if (moduleId && !loadedSectionsData[moduleId]) {
+      setLoading(true);
+      writePlan.getSectionsData(moduleId)
+        .then((res) => {
+          setLoadedSectionsData({ ...loadedSectionsData, [moduleId]: res.data });
+        })
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
   }, [moduleId]);
+
+  useEffect(() => {
+    if (loadedSectionsData[moduleId]) {
+      setPlanInformations({
+        locale: loadedSectionsData[moduleId].locale.split('-')?.at(0) || 'fr',
+        title: loadedSectionsData[moduleId].title,
+        version: loadedSectionsData[moduleId].version,
+        org: loadedSectionsData[moduleId].org,
+        publishedDate: loadedSectionsData[moduleId].publishedDate,
+      });
+    }
+
+  }, [loadedSectionsData[moduleId]])
+
+  useEffect(() => {
+    if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
+      const updatedCollapseState = {
+        ...openedQuestions,
+        [displayedResearchOutput.id]: {},
+      };
+      setOpenedQuestions(updatedCollapseState);
+    }
+
+  }, [displayedResearchOutput])
 
   /**
    * The function handles the deletion of a product from a research output and displays a confirmation message using the SweetAlert library.
@@ -93,7 +104,7 @@ function SectionsContent({ planId, templateId, readonly }) {
           setUrlParams({ research_output: data.research_outputs[0].id });
           toast.success(t("Research output was successfully deleted."));
         })
-        .catch((error) => setError(error));
+          .catch((error) => setError(error));
       }
     });
   };
@@ -115,11 +126,11 @@ function SectionsContent({ planId, templateId, readonly }) {
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && sectionsData?.sections && (
+      {!error && loadedSectionsData[moduleId]?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
             <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
-            {sectionsData?.sections?.map((section) => (
+            {loadedSectionsData[moduleId]?.sections?.map((section) => (
               <Section
                 key={section.id}
                 section={section}
