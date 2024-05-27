@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
+import useTemplate from '../../hooks/useTemplate';
 
 export const SectionsMappingContext = createContext();
 
@@ -29,15 +30,50 @@ export const SectionsMappingProvider = ({ children }) => {
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingSchema, setMappingSchema] = useState({});
+  const { fetchAndProcessSectionsData } = useTemplate();
 
   useEffect(() => {
-    setMappingSchema({
-      initialTemplateId,
-      targetTemplateId,
-      mapping: {},
+    buildMappingSchema();
+
+    async function buildMappingSchema() {
+      const innerMappingSchema = await buildMappingInnerSchema(targetTemplateId);
+      const schema = {
+        initialTemplateId,
+        targetTemplateId,
+        mapping: innerMappingSchema,
+        // mapping: {
+        //   "16": {
+        //     "29": "<p>Ceci est une description tr&egrave;s int&eacute;ressante de mon projet.</p><p>Son titre est le suivant : <samp>$.researchOutputDescription.title</samp></p><p>Il est financ&eacute; par l'ANR.</p>"
+        //   },
+        //   "17": {
+        //     "30": "<p>Ceci est une description tr&egrave;s int&eacute;ressante de mon projet.</p><p>Son titre est le suivant : <samp>$.researchOutputDescription.title</samp></p><p>Il est financ&eacute; par l'ANR.</p>"
+        //   }
+        // }
+      };
+      setMappingSchema(schema);
+
+      console.log('Mapping schema:', schema);
+    }
+  }, [initialTemplateId, setInitialTemplateId]);
+
+  const buildMappingInnerSchema = async (templateId) => {
+    const mapping = {};
+
+    const res = await fetchAndProcessSectionsData(templateId);
+
+    res.data.sections.forEach(section => {
+      section.questions.forEach(question => {
+        mapping[section.id] = {
+          ...mapping[section.id],
+          [question.id]: ""
+        };
+      });
     });
 
-  }, [initialTemplateId, setInitialTemplateId]);
+    // console.log('Mapping inner schema:', mapping);
+
+    return mapping;
+  }
 
   // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {

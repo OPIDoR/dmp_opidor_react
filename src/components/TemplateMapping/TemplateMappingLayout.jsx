@@ -6,6 +6,7 @@ import '../../i18n.js';
 
 import TemplateMapping from './TemplateMapping.jsx';
 import { SectionsMappingProvider } from '../context/SectionsMappingContext.jsx';
+import { TemplateProvider } from '../context/TemplateContext.jsx';
 
 const toastOptions = {
   duration: 5000,
@@ -21,13 +22,15 @@ function TemplateMappingLayout({
   // --- RENDER ---
   return (
     <Global>
-      <SectionsMappingProvider>
-        <TemplateMapping 
-          locale={locale}
-          readonly
-        />
-        <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
-      </SectionsMappingProvider>
+      <TemplateProvider>
+        <SectionsMappingProvider>
+          <TemplateMapping
+            locale={locale}
+            readonly
+          />
+          <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+        </SectionsMappingProvider>
+      </TemplateProvider>
     </Global>
   )
 }
