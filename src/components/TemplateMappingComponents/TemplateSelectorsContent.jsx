@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import TemplateSelector from "../TemplateMappingComponents/TemplateSelector";
+import TemplateSelector from "./TemplateSelector";
 import { TemplateProvider } from "../context/TemplateContext";
 
-export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, targetTemplateId, setTargetTemplateId, data, mappingType, setMappingType }) {
+export function TemplateSelectorsContent({ initialTemplateId, setInitialTemplateId, targetTemplateId, setTargetTemplateId, data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
 
   useEffect(() => {
@@ -48,4 +48,4 @@ export function TemplatesSelectors({ initialTemplateId, setInitialTemplateId, ta
   </div>;
 }
 
-export default TemplatesSelectors;
+export default TemplateSelectorsContent;

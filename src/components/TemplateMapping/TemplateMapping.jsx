@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
-import TemplatesSelectors from "../TemplateMappingComponents/TemplatesSelectors";
+import TemplateSelectorsContent from "../TemplateMappingComponents/TemplateSelectorsContent";
 import Mapper from "../TemplateMappingComponents/Mapper";
 
 function TemplateMapping({ data, locale }) {
@@ -24,7 +24,7 @@ function TemplateMapping({ data, locale }) {
     <>
       <h1>Template Mapping</h1>
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
-      <TemplatesSelectors
+      <TemplateSelectorsContent
         initialTemplateId={initialTemplateId}
         setInitialTemplateId={setInitialTemplateId}
         targetTemplateId={targetTemplateId}

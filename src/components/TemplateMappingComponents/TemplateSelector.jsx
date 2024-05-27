@@ -38,6 +38,7 @@ function TemplateSelector({
         } catch (err) {
           console.error(err);
         }
+        console.log(fetchedOptions);
         const defaultOption = defaultValue ? fetchedOptions.find(option => option.value === defaultValue) : fetchedOptions[0];
         const value = defaultOption ? defaultOption.value : fetchedOptions[0].value;
 
