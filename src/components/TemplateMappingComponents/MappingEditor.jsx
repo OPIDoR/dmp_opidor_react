@@ -23,7 +23,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = (path) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, path);
+      editor.execCommand('mceInsertContent', false, `<samp>${path}</samp>`);
       // console.log("entered!!!!!");
     }
     console.log("JSON PATH:", path)
