@@ -26,13 +26,11 @@ const CodeEditor = forwardRef(({
 
   // --- MappingButton logic ---
   const handleInsert = (path) => {
-    // console.log(editorRef.current);
-    const editor = editorRef.current;
-    if (editor) {
-      editor.execCommand('mceInsertContent', false, path);
-      // console.log("entered!!!!!");
+    if (editorRef.current && path) {
+      const editor = editorRef.current.editor; // Access to the Ace editor instance
+      const position = editor.getCursorPosition(); // Get the current cursor position
+      editor.session.insert(position, path); // Insert path at the current cursor position
     }
-    console.log("JSON PATH:", path)
   };
 
   useEffect(() => {
