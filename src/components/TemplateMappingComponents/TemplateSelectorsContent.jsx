@@ -2,9 +2,15 @@ import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import TemplateSelector from "./TemplateSelector";
 import { TemplateProvider } from "../context/TemplateContext";
+import useSectionsMapping from "../../hooks/useSectionsMapping";
 
-export function TemplateSelectorsContent({ initialTemplateId, setInitialTemplateId, targetTemplateId, setTargetTemplateId, data, mappingType, setMappingType }) {
+export function TemplateSelectorsContent({ data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
+
+  const {
+    initialTemplateId, setInitialTemplateId,
+    targetTemplateId, setTargetTemplateId,
+  } = useSectionsMapping();
 
   useEffect(() => {
     methods.setValue('mappingType', mappingType);

@@ -8,16 +8,24 @@ import Mapper from "../TemplateMappingComponents/Mapper";
 function TemplateMapping({ data, locale }) {
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
-  const { enableMapping } = useSectionsMapping();
+  const {
+    enableMapping,
+    initialTemplateId, setInitialTemplateId,
+    targetTemplateId, setTargetTemplateId,
+  } = useSectionsMapping();
 
-  const [initialTemplateId, setInitialTemplateId] = useState(5);
-  const [targetTemplateId, setTargetTemplateId] = useState(1);
+  // const [initialTemplateId, setInitialTemplateId] = useState(5);
+  // const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingType, setMappingType] = useState('formToJson');
 
   useEffect(() => {
     enableMapping();
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
+
+    setInitialTemplateId(5);
+    setTargetTemplateId(1);
+    console.log(initialTemplateId, targetTemplateId);
   }, [locale]);
 
   return (
@@ -25,17 +33,17 @@ function TemplateMapping({ data, locale }) {
       <h1>Template Mapping</h1>
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       <TemplateSelectorsContent
-        initialTemplateId={initialTemplateId}
-        setInitialTemplateId={setInitialTemplateId}
-        targetTemplateId={targetTemplateId}
-        setTargetTemplateId={setTargetTemplateId}
+        // initialTemplateId={initialTemplateId}
+        // setInitialTemplateId={setInitialTemplateId}
+        // targetTemplateId={targetTemplateId}
+        // setTargetTemplateId={setTargetTemplateId}
         data={data}
         mappingType={mappingType}
         setMappingType={setMappingType}
       />
       <Mapper
-        initialTemplateId={initialTemplateId} 
-        targetTemplateId={targetTemplateId}
+        // initialTemplateId={initialTemplateId} 
+        // targetTemplateId={targetTemplateId}
         mappingType={mappingType}
       />
     </>

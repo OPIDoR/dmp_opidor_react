@@ -4,9 +4,13 @@ import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CodeEditor from "./CodeEditor";
 import { TemplateProvider } from "../context/TemplateContext";
 
-function Mapper({ initialTemplateId, targetTemplateId, mappingType }) {
+function Mapper({ mappingType }) {
   const targetRef = useRef(null);
-  const { USAGE_INITIAL, USAGE_TARGET } = useSectionsMapping();
+  const { 
+    USAGE_INITIAL, USAGE_TARGET,
+    initialTemplateId, 
+    targetTemplateId,
+  } = useSectionsMapping();
 
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
   const [height, setHeight] = useState(INNER_SCROLLING_DEFAULT_HEIGHT);
@@ -54,11 +58,10 @@ function Mapper({ initialTemplateId, targetTemplateId, mappingType }) {
         {mappingType === 'formToForm'
           ?
           <div style={{ ...innerScrollingFormsStyle, right: "0" }}>
-
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
           </div>
           :
-          <CodeEditor templateId={targetTemplateId} />
+          <CodeEditor />
         }
       </TemplateProvider>
     </div>

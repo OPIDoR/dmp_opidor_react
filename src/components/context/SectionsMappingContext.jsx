@@ -26,6 +26,13 @@ export const SectionsMappingProvider = ({ children }) => {
     }
   }));
 
+  const [initialTemplateId, setInitialTemplateId] = useState(5);
+  const [targetTemplateId, setTargetTemplateId] = useState(1);
+
+  // useEffect(() => {
+
+  // }, [initialMappingId, targetMappingId]);
+
   // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
@@ -53,6 +60,8 @@ export const SectionsMappingProvider = ({ children }) => {
         forms, setIsStructuredModel, setIsHiddenQuestionsFields, setUsage,
         USAGE_INITIAL, USAGE_TARGET,
         DEFAULT_REF,
+        initialTemplateId, setInitialTemplateId,
+        targetTemplateId, setTargetTemplateId,
       }}
     >
       {children}
