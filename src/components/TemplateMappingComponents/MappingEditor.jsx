@@ -1,7 +1,8 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import uniqueId from "lodash.uniqueid";
 import * as styles from "../assets/css/form.module.css";
+import useSectionsMapping from "../../hooks/useSectionsMapping";
 
 /**
  * This is a React functional component that renders a TinyMCE editor for mapping text input. It receives several props including `label`, `defaultValue`.
@@ -12,6 +13,25 @@ const MappingEditor = forwardRef(({
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
   const [value, setValue] = useState(defaultValue);
+
+  const {
+    editorRef, setHandleInsert,
+  } = useSectionsMapping();
+
+
+  const handleInsert = (path) => {
+    // console.log(editorRef.current);
+    const editor = editorRef.current;
+    if (editor) {
+      editor.execCommand('mceInsertContent', false, path);
+      // console.log("entered!!!!!");
+    }
+    console.log("JSON PATH:", path)
+  };
+
+  useEffect(() => {
+    setHandleInsert(() => handleInsert);
+  }, [editorRef]);
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>

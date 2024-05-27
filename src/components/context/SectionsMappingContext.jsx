@@ -75,15 +75,7 @@ export const SectionsMappingProvider = ({ children }) => {
     return mapping;
   }
 
-  const handleInsert = (path) => {
-    // console.log(editorRef.current);
-    const editor = editorRef.current;
-    if (editor) {
-      editor.execCommand('mceInsertContent', false, path);
-      // console.log("entered!!!!!");
-    }
-    console.log("JSON PATH:", path)
-  };
+  const [handleInsert, setHandleInsert] = useState(() => () => {});
 
   // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
@@ -115,7 +107,7 @@ export const SectionsMappingProvider = ({ children }) => {
         initialTemplateId, setInitialTemplateId,
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema,
-        handleInsert,
+        handleInsert, setHandleInsert,
       }}
     >
       {children}

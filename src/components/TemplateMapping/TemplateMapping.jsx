@@ -14,7 +14,7 @@ function TemplateMapping({ data, locale }) {
     targetTemplateId, setTargetTemplateId,
   } = useSectionsMapping();
 
-  const [mappingType, setMappingType] = useState('formToJson');
+  const [mappingType, setMappingType] = useState('formToForm');
 
   useEffect(() => {
     enableMapping();
