@@ -4,22 +4,28 @@ import "react-ace-builds/webpack-resolver-min";
 import useTemplate from "../../hooks/useTemplate";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 
-function CodeEditor({ templateId, onChange }) {
+function CodeEditor({ onChange }) {
 
-  const { setLoading, fetchAndProcessSectionsData } = useTemplate();
+  const { setLoading } = useTemplate();
+
+  const { mappingSchema } = useSectionsMapping();
 
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    async function fetchAndProcess() {
-      setLoading(true);
-      const res = await fetchAndProcessSectionsData(templateId);
-      setContent(JSON.stringify(res.data, null, 2));
-        // .replace(/"(\w+)"\s*:/g, '$1:'));
-      }
+    // async function fetchAndProcess() {
+    //   setLoading(true);
+    //   const res = await fetchAndProcessSectionsData(templateId);
+    //   setContent(JSON.stringify(res.data, null, 2));
+    //   // .replace(/"(\w+)"\s*:/g, '$1:'));
 
-    fetchAndProcess();
-  }, [templateId]);
+    // }
+    // fetchAndProcess();
+
+    setLoading(true);
+    console.log(mappingSchema);
+    setContent(JSON.stringify(mappingSchema.mapping, null, 2));
+  }, [mappingSchema]);
 
   return <AceEditor
     mode="json"
