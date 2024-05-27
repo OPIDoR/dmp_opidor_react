@@ -61,7 +61,7 @@ function Mapper({ mappingType }) {
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
           </div>
           :
-          <CodeEditor />
+          <CodeEditor templateId={targetTemplateId} />
         }
       </TemplateProvider>
     </div>

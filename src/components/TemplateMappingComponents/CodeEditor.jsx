@@ -4,9 +4,7 @@ import "react-ace-builds/webpack-resolver-min";
 import useTemplate from "../../hooks/useTemplate";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 
-function CodeEditor({ onChange }) {
-
-  const { targetTemplateId } = useSectionsMapping();
+function CodeEditor({ templateId, onChange }) {
 
   const { setLoading, fetchAndProcessSectionsData } = useTemplate();
 
@@ -15,13 +13,13 @@ function CodeEditor({ onChange }) {
   useEffect(() => {
     async function fetchAndProcess() {
       setLoading(true);
-      const res = await fetchAndProcessSectionsData(targetTemplateId);
+      const res = await fetchAndProcessSectionsData(templateId);
       setContent(JSON.stringify(res.data, null, 2));
         // .replace(/"(\w+)"\s*:/g, '$1:'));
       }
 
     fetchAndProcess();
-  }, [targetTemplateId]);
+  }, [templateId]);
 
   return <AceEditor
     mode="json"

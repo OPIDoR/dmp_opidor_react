@@ -14,8 +14,6 @@ function TemplateMapping({ data, locale }) {
     targetTemplateId, setTargetTemplateId,
   } = useSectionsMapping();
 
-  // const [initialTemplateId, setInitialTemplateId] = useState(5);
-  // const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingType, setMappingType] = useState('formToJson');
 
   useEffect(() => {
@@ -33,17 +31,11 @@ function TemplateMapping({ data, locale }) {
       <h1>Template Mapping</h1>
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       <TemplateSelectorsContent
-        // initialTemplateId={initialTemplateId}
-        // setInitialTemplateId={setInitialTemplateId}
-        // targetTemplateId={targetTemplateId}
-        // setTargetTemplateId={setTargetTemplateId}
         data={data}
         mappingType={mappingType}
         setMappingType={setMappingType}
       />
       <Mapper
-        // initialTemplateId={initialTemplateId} 
-        // targetTemplateId={targetTemplateId}
         mappingType={mappingType}
       />
     </>

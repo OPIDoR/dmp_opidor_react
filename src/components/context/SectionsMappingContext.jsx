@@ -28,10 +28,16 @@ export const SectionsMappingProvider = ({ children }) => {
 
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
+  const [mappingSchema, setMappingSchema] = useState({});
 
-  // useEffect(() => {
+  useEffect(() => {
+    setMappingSchema({
+      initialTemplateId,
+      targetTemplateId,
+      mapping: {},
+    });
 
-  // }, [initialMappingId, targetMappingId]);
+  }, [initialTemplateId, setInitialTemplateId]);
 
   // --- BEHAVIOURS ---
   const buildJsonPath = (jsonPath, key, type) => {
@@ -62,6 +68,7 @@ export const SectionsMappingProvider = ({ children }) => {
         DEFAULT_REF,
         initialTemplateId, setInitialTemplateId,
         targetTemplateId, setTargetTemplateId,
+        mappingSchema, setMappingSchema
       }}
     >
       {children}
