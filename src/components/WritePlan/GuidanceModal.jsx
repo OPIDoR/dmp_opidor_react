@@ -110,7 +110,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                             {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
                             {data?.[indexTab]?.groups?.[ref]?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
                               <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                                <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
+                                {id == 0 && <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>}
                                 <div
                                   key={`guidance-theme-${themeId}-id-${id}`}
                                   dangerouslySetInnerHTML={{
