@@ -4,7 +4,7 @@ import "react-ace-builds/webpack-resolver-min";
 import useTemplate from "../../hooks/useTemplate";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 
-function CodeEditor({ onChange }) {
+function CodeEditor({ templateId, onChange }) {
 
   const { setLoading } = useTemplate();
 
@@ -25,7 +25,7 @@ function CodeEditor({ onChange }) {
     setLoading(true);
     console.log(mappingSchema);
     setContent(JSON.stringify(mappingSchema.mapping, null, 2));
-  }, [mappingSchema]);
+  }, [templateId, mappingSchema]);
 
   return <AceEditor
     mode="json"

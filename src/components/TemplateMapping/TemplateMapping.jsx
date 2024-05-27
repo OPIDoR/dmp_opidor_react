@@ -21,8 +21,8 @@ function TemplateMapping({ data, locale }) {
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 
-    setInitialTemplateId(5);
-    setTargetTemplateId(1);
+    // setInitialTemplateId(5);
+    // setTargetTemplateId(4);
     console.log(initialTemplateId, targetTemplateId);
   }, [locale]);
 

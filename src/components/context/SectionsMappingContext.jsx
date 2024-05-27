@@ -54,7 +54,7 @@ export const SectionsMappingProvider = ({ children }) => {
 
       console.log('Mapping schema:', schema);
     }
-  }, [initialTemplateId, setInitialTemplateId]);
+  }, [initialTemplateId, targetTemplateId]);
 
   const buildMappingInnerSchema = async (templateId) => {
     const mapping = {};
