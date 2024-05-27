@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import AceEditor from "react-ace-builds";
 import "react-ace-builds/webpack-resolver-min";
 import useTemplate from "../../hooks/useTemplate";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 
-function CodeEditor({ templateId, onChange }) {
+const CodeEditor = forwardRef(({ 
+  templateId,
+  // onChange,
+}, ref) => {
 
   const { setLoading } = useTemplate();
 
@@ -31,13 +34,14 @@ function CodeEditor({ templateId, onChange }) {
     mode="json"
     theme="github"
     // theme="monokai"
-    onChange={onChange}
+    // onChange={onChange}
     name="json-editor"
     value={content}
     editorProps={{ $blockScrolling: true }}
     width="40vw"
+    ref={ref}
     // height="100%"
   />
-}
+});
 
 export default CodeEditor;

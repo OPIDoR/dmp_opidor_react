@@ -8,6 +8,7 @@ function Mapper({ mappingType }) {
   const targetRef = useRef(null);
   const { 
     USAGE_INITIAL, USAGE_TARGET,
+    editorRef,
     initialTemplateId, 
     targetTemplateId,
   } = useSectionsMapping();
@@ -61,7 +62,7 @@ function Mapper({ mappingType }) {
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
           </div>
           :
-          <CodeEditor templateId={targetTemplateId} />
+          <CodeEditor templateId={targetTemplateId} ref={editorRef}/>
         }
       </TemplateProvider>
     </div>
