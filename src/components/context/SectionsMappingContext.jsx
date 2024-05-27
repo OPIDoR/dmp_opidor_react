@@ -4,16 +4,20 @@ import useTemplate from '../../hooks/useTemplate';
 export const SectionsMappingContext = createContext();
 
 export const SectionsMappingProvider = ({ children }) => {
-  // --- STATE ---
+
   const USAGE_INITIAL = 'initial';
   const USAGE_TARGET = 'target';
-  const DEFAULT_REF = useRef(null);
 
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
 
+  // --- Editor logic ---
+  const DEFAULT_REF = useRef(null);
   const [editorRef, setEditorRef] = useState(DEFAULT_REF);
+  const [handleInsert, setHandleInsert] = useState(() => () => {});
+  // --- End Editor logic ---
   
+  // --- Forms properties logic ---
   const [forms, setForms] = useState({}); // Associate a form id to its structure and content display mode
   const setIsStructuredModel = (id, value) => updateForm(id, 'structured', value);
   const setIsHiddenQuestionsFields = (id, value) => updateForm(id, 'hiddenQuestionsFields', value);
@@ -26,7 +30,9 @@ export const SectionsMappingProvider = ({ children }) => {
       [key]: value
     }
   }));
+  // --- End Forms properties logic ---
 
+  // --- Mapping schema logic ---
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingSchema, setMappingSchema] = useState({});
@@ -41,14 +47,6 @@ export const SectionsMappingProvider = ({ children }) => {
         initialTemplateId,
         targetTemplateId,
         mapping: innerMappingSchema,
-        // mapping: {
-        //   "16": {
-        //     "29": "<p>Ceci est une description tr&egrave;s int&eacute;ressante de mon projet.</p><p>Son titre est le suivant : <samp>$.researchOutputDescription.title</samp></p><p>Il est financ&eacute; par l'ANR.</p>"
-        //   },
-        //   "17": {
-        //     "30": "<p>Ceci est une description tr&egrave;s int&eacute;ressante de mon projet.</p><p>Son titre est le suivant : <samp>$.researchOutputDescription.title</samp></p><p>Il est financ&eacute; par l'ANR.</p>"
-        //   }
-        // }
       };
       setMappingSchema(schema);
 
@@ -70,14 +68,11 @@ export const SectionsMappingProvider = ({ children }) => {
       });
     });
 
-    // console.log('Mapping inner schema:', mapping);
-
     return mapping;
   }
+  // --- End Mapping schema logic ---
 
-  const [handleInsert, setHandleInsert] = useState(() => () => {});
-
-  // --- BEHAVIOURS ---
+  // --- JSON path logic ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
       ? `${key}[*]`
@@ -89,12 +84,8 @@ export const SectionsMappingProvider = ({ children }) => {
 
     return currentJsonPath;
   }
+  // --- End JSON path logic ---
 
-  useEffect(() => {
-    console.log('Forms updated:', forms);
-  }, [forms]);
-
-  // --- RENDER ---
   return (
     <SectionsMappingContext.Provider
       value={{

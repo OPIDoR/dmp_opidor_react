@@ -10,25 +10,35 @@ const CodeEditor = forwardRef(({
 }, ref) => {
 
   const { setLoading } = useTemplate();
-
-  const { mappingSchema } = useSectionsMapping();
-
+  const { 
+    mappingSchema,
+    editorRef,
+    setHandleInsert,
+  } = useSectionsMapping();
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    // async function fetchAndProcess() {
-    //   setLoading(true);
-    //   const res = await fetchAndProcessSectionsData(templateId);
-    //   setContent(JSON.stringify(res.data, null, 2));
-    //   // .replace(/"(\w+)"\s*:/g, '$1:'));
-
-    // }
-    // fetchAndProcess();
-
     setLoading(true);
     console.log(mappingSchema);
     setContent(JSON.stringify(mappingSchema.mapping, null, 2));
   }, [templateId, mappingSchema]);
+
+
+  // --- MappingButton logic ---
+  const handleInsert = (path) => {
+    // console.log(editorRef.current);
+    const editor = editorRef.current;
+    if (editor) {
+      editor.execCommand('mceInsertContent', false, path);
+      // console.log("entered!!!!!");
+    }
+    console.log("JSON PATH:", path)
+  };
+
+  useEffect(() => {
+    setHandleInsert(() => handleInsert);
+  }, [editorRef]);
+  // --- End MappingButton logic ---
 
   return <AceEditor
     mode="json"

@@ -19,8 +19,8 @@ const MappingEditor = forwardRef(({
   } = useSectionsMapping();
 
 
+  // --- MappingButton logic ---
   const handleInsert = (path) => {
-    // console.log(editorRef.current);
     const editor = editorRef.current;
     if (editor) {
       editor.execCommand('mceInsertContent', false, path);
@@ -32,6 +32,7 @@ const MappingEditor = forwardRef(({
   useEffect(() => {
     setHandleInsert(() => handleInsert);
   }, [editorRef]);
+  // --- End MappingButton logic ---
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
