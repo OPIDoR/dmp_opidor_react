@@ -4,6 +4,7 @@ import { GlobalContext } from "../context/Global";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import TemplateSelectorsContent from "../TemplateMappingComponents/TemplateSelectorsContent";
 import Mapper from "../TemplateMappingComponents/Mapper";
+import CustomButton from "../Styled/CustomButton";
 
 function TemplateMapping({ data, locale }) {
   const { i18n } = useTranslation();
@@ -38,6 +39,19 @@ function TemplateMapping({ data, locale }) {
       <Mapper
         mappingType={mappingType}
       />
+      <div style={{
+        alignContent:"center",
+        display:"flex",
+        justifyContent:"center",
+        marginTop: "20px"
+      }}>
+        <CustomButton
+          title="Save mapping"
+          handleClick={() => alert("Click on \"Save mapping\"")}
+          buttonColor="orange"
+        />
+      </div>
+      
     </>
   );
 }

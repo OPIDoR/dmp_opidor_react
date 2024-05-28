@@ -46,7 +46,7 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
             label="Target Template"
             propName="classicTemplateId"
             defaultValue={targetTemplateId}
-            requestParams={""}
+            requestParams={"?type=classic"}
             onTemplateChange={setTargetTemplateId} />
         </div>
       </TemplateProvider>
