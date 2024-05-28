@@ -13,6 +13,7 @@ import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
 import swalUtils from '../../utils/swalUtils.js';
+import MappingButton from './MappingButton.jsx';
 
 function SelectMultipleList({
   label,
@@ -150,6 +151,7 @@ function SelectMultipleList({
                     placeholder={t("Select a registry")}
                     jsonPath={jsonPath}
                   />
+                  <MappingButton path={jsonPath} label={label}/>
                 </div>
               </div>
             </div>

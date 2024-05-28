@@ -62,7 +62,7 @@ function InputText({
             min={min}
           />
         }
-        <MappingButton path={jsonPath} />
+        <MappingButton path={jsonPath} label={label}/>
       </div>
     </div>
   );

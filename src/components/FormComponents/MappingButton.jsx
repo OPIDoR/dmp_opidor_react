@@ -1,9 +1,9 @@
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CustomButton from "../Styled/CustomButton";
 
-function MappingButton({ path }) {
+function MappingButton({ path, label }) {
   // --- STATE ---
-  const { mapping, editorRef, handleInsert } = useSectionsMapping();
+  const { mapping, handleInsert } = useSectionsMapping();
 
   // --- RENDER ---
   return (
@@ -11,7 +11,7 @@ function MappingButton({ path }) {
       {mapping &&
         <CustomButton
           title="Add to mapping →"
-          handleClick={() => handleInsert(path)}
+          handleClick={() => handleInsert({ path, label })}
           buttonColor="white"
         />
       }

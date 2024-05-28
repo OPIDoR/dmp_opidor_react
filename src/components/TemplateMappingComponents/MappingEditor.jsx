@@ -20,7 +20,7 @@ const MappingEditor = forwardRef(({
 
 
   // --- MappingButton logic ---
-  const handleInsert = (path) => {
+  const handleInsert = ({ path }) => {
     const editor = editorRef.current;
     if (editor) {
       editor.execCommand('mceInsertContent', false, `<samp>${path}</samp>`);

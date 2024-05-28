@@ -17,7 +17,6 @@ import MappingButton from './MappingButton';
  */
 function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) {
   // --- STATE ---
-  const { mapping } = useSectionsMapping();
   const { t } = useTranslation();
   const { register } = useFormContext({
     defaultValues: {
@@ -83,7 +82,7 @@ function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) 
         </div>
       ))}
 
-      <MappingButton path={jsonPath} />
+      <MappingButton path={jsonPath} label={label}/>
 
       {!readonly && (
         <CustomButton

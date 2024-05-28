@@ -17,6 +17,7 @@ import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import MappingButton from './MappingButton.jsx';
 
 function SelectContributorMultiple({
   label,
@@ -267,6 +268,7 @@ function SelectContributorMultiple({
               isDisabled={readonly}
               placeholder={t("Select a value from the list or create a new one by clicking on +")}
             />
+            <MappingButton path={jsonPath} label={label}/>
           </div>
           {!readonly && (
             <div className="col-md-1">

@@ -23,6 +23,7 @@ import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import CustomButton from '../Styled/CustomButton.jsx';
+import MappingButton from './MappingButton.jsx';
 
 function DropdownsToEntryTable({
   label,
@@ -214,11 +215,11 @@ function DropdownsToEntryTable({
         </div>
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
-        {mapping 
+        {mapping
           ? <CustomButton
-              title={t("Open element modal")}
-              handleClick={handleEdit}
-              buttonColor="rust"
+            title={t("Open element modal")}
+            handleClick={handleEdit}
+            buttonColor="rust"
           />
           : <div className="row">
             {registries && registries.length > 1 && (
@@ -238,6 +239,7 @@ function DropdownsToEntryTable({
                       isDisabled={readonly}
                       placeholder={t("Select a registry")}
                     />
+                    <MappingButton path={jsonPath} label={label}/>
                   </div>
                 </div>
               </div>
@@ -247,15 +249,18 @@ function DropdownsToEntryTable({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   {options && (
-                    <CustomSelect
-                      onSelectChange={handleSelectRegistryValue}
-                      options={options}
-                      name={propName}
-                      isDisabled={readonly || !selectedRegistry}
-                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                      placeholder={createRegistryPlaceholder(registries, overridable, 'complex', t)}
-                      overridable={false}
-                    />
+                    <>
+                      <CustomSelect
+                        onSelectChange={handleSelectRegistryValue}
+                        options={options}
+                        name={propName}
+                        isDisabled={readonly || !selectedRegistry}
+                        async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                        placeholder={createRegistryPlaceholder(registries, overridable, 'complex', t)}
+                        overridable={false}
+                      />
+                      <MappingButton path={jsonPath} label={label} />
+                    </>
                   )}
                 </div>
                 {!readonly && overridable && (

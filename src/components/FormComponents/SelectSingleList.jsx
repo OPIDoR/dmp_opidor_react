@@ -15,6 +15,7 @@ import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
 import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import swalUtils from '../../utils/swalUtils.js';
+import MappingButton from './MappingButton.jsx';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -135,14 +136,14 @@ function SelectSingleList({
     setEditedFragment({});
     setShowNestedForm(false);
   }
-  
+
   const handleDeleteList = (e) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
@@ -189,6 +190,7 @@ function SelectSingleList({
                     placeholder={t("Select a registry")}
                     jsonPath={jsonPath}
                   />
+                  <MappingButton path={jsonPath} label={label} />
                 </div>
               </div>
             </div>
@@ -198,16 +200,19 @@ function SelectSingleList({
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
-                  <CustomSelect
-                    onSelectChange={handleSelectRegistryValue}
-                    options={options}
-                    selectedOption={selectedOption}
-                    isDisabled={showNestedForm || readonly || !selectedRegistry}
-                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
-                    overridable={registryType === 'complex' ? false : overridable}
-                    jsonPath={jsonPath}
-                  />
+                  <>
+                    <CustomSelect
+                      onSelectChange={handleSelectRegistryValue}
+                      options={options}
+                      selectedOption={selectedOption}
+                      isDisabled={showNestedForm || readonly || !selectedRegistry}
+                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                      placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
+                      overridable={registryType === 'complex' ? false : overridable}
+                      jsonPath={jsonPath}
+                    />
+                    <MappingButton path={jsonPath} label={label} />
+                  </>
                 )}
               </div>
               {!readonly && overridable && registryType === 'complex' && !showNestedForm && (

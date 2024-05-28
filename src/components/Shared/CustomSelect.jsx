@@ -6,7 +6,6 @@ import CreatableSelect from "react-select/creatable";
 import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
 import useSectionsMapping from "../../hooks/useSectionsMapping";
-import MappingButton from "../FormComponents/MappingButton";
 
 function CustomSelect({
   propName = null,
@@ -17,7 +16,6 @@ function CustomSelect({
   isDisabled = false,
   placeholder = null,
   overridable = false,
-  jsonPath = null,
   disableMappingBtn = false
 }) {
   const { mapping } = useSectionsMapping();
@@ -73,7 +71,7 @@ function CustomSelect({
           noOptionsMessage={() => t('No results found.')}
         />
       }
-      {!disableMappingBtn && <MappingButton path={jsonPath} />}
+      {/* {!disableMappingBtn && <MappingButton path={jsonPath} label={label}/>} */}
     </>
   );
 }

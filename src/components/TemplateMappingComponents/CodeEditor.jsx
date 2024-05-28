@@ -25,11 +25,11 @@ const CodeEditor = forwardRef(({
 
 
   // --- MappingButton logic ---
-  const handleInsert = (path) => {
+  const handleInsert = ({ path }) => {
     if (editorRef.current && path) {
       const editor = editorRef.current.editor; // Access to the Ace editor instance
       const position = editor.getCursorPosition(); // Get the current cursor position
-      editor.session.insert(position, `<samp>${path}</samp>`); // Insert path at the current cursor position
+      editor.session.insert(position, `${path}`); // Insert path at the current cursor position
     }
   };
 

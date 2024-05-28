@@ -111,7 +111,7 @@ function TinyArea ({
               }}
             />
           )}
-          <MappingButton path={jsonPath}/>
+          <MappingButton path={jsonPath} label={label}/>
         </div>
       </div>
     </div>
