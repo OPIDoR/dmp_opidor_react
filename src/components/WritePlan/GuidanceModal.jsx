@@ -28,6 +28,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const {
     planInformations,
     questionsWithGuidance,
+    locale,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
@@ -56,7 +57,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId)
+    guidances.getGuidanceGroups(planId, locale)
       .then((res) => setGuidancesGroups(
         res?.data?.data?.flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
           ?.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
@@ -109,7 +110,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                             {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
                             {data?.[indexTab]?.groups?.[ref]?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
                               <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                                <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
+                                {id == 0 && <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>}
                                 <div
                                   key={`guidance-theme-${themeId}-id-${id}`}
                                   dangerouslySetInnerHTML={{
