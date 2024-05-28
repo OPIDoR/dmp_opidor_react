@@ -20,10 +20,10 @@ const MappingEditor = forwardRef(({
 
 
   // --- MappingButton logic ---
-  const handleInsert = ({ path }) => {
+  const handleInsert = ({ path, label: insertLabel }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `&nbsp;<samp json-path="${path}">${label}</samp>&nbsp;`);
+      editor.execCommand('mceInsertContent', false, `&nbsp;<samp json-path="${path}">${insertLabel}</samp>&nbsp;`);
     }
     console.log("JSON PATH:", path)
   };
@@ -68,7 +68,7 @@ const MappingEditor = forwardRef(({
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
               });
             },
-            content_style: 'samp[json-path] { background-color:#b4d7ff; font-weight: bold; padding: 5px; border-radius: 5px; }',
+            content_style: `samp[json-path] { background-color:#b4d7ff; font-weight: bold; padding: 5px; border-radius: 5px; }`,
 
             paste_as_text: false,
             paste_block_drop: true,
