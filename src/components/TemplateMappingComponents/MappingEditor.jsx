@@ -23,7 +23,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path, label: insertLabel }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `&nbsp;<samp json-path="${path}">${insertLabel}</samp>&nbsp;`);
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}">${insertLabel}</samp>&nbsp;`);
     }
     console.log("JSON PATH:", path)
   };
@@ -32,6 +32,30 @@ const MappingEditor = forwardRef(({
     setHandleInsert(() => handleInsert);
   }, [editorRef]);
   // --- End MappingButton logic ---
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    const handleKeyDown = (e) => {
+      if (e.keyCode === 8 || e.keyCode === 46) { // Backspace or Delete
+        const node = editor.selection.getNode();
+        if (node.nodeName === 'SAMP' && node.getAttribute('json-path')) {
+          e.preventDefault();
+          editor.dom.remove(node);
+          editor.fire('ContentChanged');
+        }
+      }
+    };
+
+    if (editor) {
+      editor.on('keydown', handleKeyDown);
+    }
+
+    return () => {
+      if (editor) {
+        editor.off('keydown', handleKeyDown);
+      }
+    };
+  }, [editorRef]);
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
