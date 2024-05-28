@@ -23,8 +23,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp>${path}</samp>`);
-      // console.log("entered!!!!!");
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}">${label}</samp>`);
     }
     console.log("JSON PATH:", path)
   };
@@ -60,7 +59,16 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip] , a[href|target=_blank]',
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank]',
+            
+            // Workaround to allow the jsonPath attribute on the iframe tag
+            valid_elements: 'samp[json-path]',
+            paste_preprocess: function(plugin, args) {
+              args.content = args.content.replace(/<samp([^>]+)>/g, function(match) {
+                return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
+              });
+            },
+
             paste_as_text: false,
             paste_block_drop: true,
             paste_merge_formats: true,
