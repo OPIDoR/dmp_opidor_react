@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -27,9 +27,6 @@ function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) 
   const { fields, append, remove } = useFieldArray({ name: propName });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
 
-  const formFields = mapping 
-      ? [{}]
-      : fields;
 
   // --- RENDER ---
   return (
@@ -51,7 +48,7 @@ function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) 
         }
       </div>
 
-      {formFields.map((item, index) => (
+      {fields.map((item, index) => (
         <div className="row" style={{ marginBottom: '10px' }} key={`row-${index}`}>
           <div className="col-md-11">
             <div style={{ display: 'flex', alignItems: 'space-between' }}>
@@ -83,9 +80,10 @@ function InputTextList({ label, propName, tooltip, readonly, jsonPath = null }) 
               />
             </div>
           )}
-          <MappingButton path={jsonPath}/>
         </div>
       ))}
+
+      <MappingButton path={jsonPath} />
 
       {!readonly && (
         <CustomButton

@@ -10,7 +10,7 @@ function MappingButton({ path }) {
     <>
       {mapping &&
         <CustomButton
-          title="→"
+          title="Add to mapping →"
           handleClick={() => handleInsert(path)}
           buttonColor="white"
         />

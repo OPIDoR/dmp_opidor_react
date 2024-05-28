@@ -9,16 +9,16 @@ import useSectionsMapping from "../../hooks/useSectionsMapping";
 import MappingButton from "../FormComponents/MappingButton";
 
 function CustomSelect({
-    propName = null,
-    options,
-    selectedOption = null,
-    onSelectChange,
-    async = false,
-    isDisabled = false,
-    placeholder = null,
-    overridable = false,
-    jsonPath = null,
-    disableMappingBtn = false
+  propName = null,
+  options,
+  selectedOption = null,
+  onSelectChange,
+  async = false,
+  isDisabled = false,
+  placeholder = null,
+  overridable = false,
+  jsonPath = null,
+  disableMappingBtn = false
 }) {
   const { mapping } = useSectionsMapping();
   const { t } = useTranslation();
@@ -50,28 +50,30 @@ function CustomSelect({
     </Option>
   );
 
-  return(
+  return (
     <>
-      <SelectComponent
-        menuPortalTarget={document.body}
-        styles={{
-          menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
-          singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-          control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
-        }}
-        name={propName}
-        components={{ Option: CustomOption }}
-        options={options}
-        onChange={onSelectChange}
-        value={selectedOption}
-        placeholder={mapping ? '' : placeholder}
-        loadOptions={async ? (value) => filterOptions(options, value) : undefined}
-        defaultOptions={async ? options.slice(0, 100) : undefined}
-        cacheOptions
-        isDisabled={isDisabled}
-        noOptionsMessage={() => t('No results found.')}
-      />
-      {!disableMappingBtn && <MappingButton path={jsonPath}/>}
+      {(disableMappingBtn || !mapping) &&
+        <SelectComponent
+          menuPortalTarget={document.body}
+          styles={{
+            menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
+            singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
+            control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
+          }}
+          name={propName}
+          components={{ Option: CustomOption }}
+          options={options}
+          onChange={onSelectChange}
+          value={selectedOption}
+          placeholder={placeholder}
+          loadOptions={async ? (value) => filterOptions(options, value) : undefined}
+          defaultOptions={async ? options.slice(0, 100) : undefined}
+          cacheOptions
+          isDisabled={isDisabled}
+          noOptionsMessage={() => t('No results found.')}
+        />
+      }
+      {!disableMappingBtn && <MappingButton path={jsonPath} />}
     </>
   );
 }

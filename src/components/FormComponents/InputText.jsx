@@ -4,6 +4,7 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import * as styles from '../assets/css/form.module.css';
 import MappingButton from './MappingButton';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 
 /**
  * It's a function that takes in a bunch of props and returns
@@ -22,10 +23,11 @@ function InputText({
   min,
   jsonPath = null,
 }) {
+  const { mapping } = useSectionsMapping();
   const { register } = useFormContext();
   const [isRequired] = useState(false);
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
-  
+
   return (
     <div className="form-group">
       {hidden === false && (
@@ -47,18 +49,20 @@ function InputText({
         </div>
       )}
       <div>
-        <input
-          {...register(propName, {
-            valueAsNumber: type === 'number'
-          })}
-          defaultValue={defaultValue}
-          type={hidden ? 'hidden' : type}
-          className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
-          placeholder={placeholder}
-          readOnly={readonly === true}
-          min={min}
-        />
-        <MappingButton path={jsonPath}/>
+        {!mapping &&
+          <input
+            {...register(propName, {
+              valueAsNumber: type === 'number'
+            })}
+            defaultValue={defaultValue}
+            type={hidden ? 'hidden' : type}
+            className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
+            placeholder={placeholder}
+            readOnly={readonly === true}
+            min={min}
+          />
+        }
+        <MappingButton path={jsonPath} />
       </div>
     </div>
   );

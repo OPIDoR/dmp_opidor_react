@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import * as styles from '../assets/css/form.module.css';
 import MappingButton from './MappingButton';
+import useSectionsMapping from '../../hooks/useSectionsMapping';
 
 const ReadDiv = styled.div`
   border: solid;
@@ -36,6 +37,7 @@ function TinyArea ({
   readonly = false,
   jsonPath = null,
 }) {
+  const { mapping } = useSectionsMapping();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const { onChange, ...newField } = field;
@@ -102,7 +104,7 @@ function TinyArea ({
               onInit={(_evt, editor) => editorRef.current = editor}
             />
           )}
-          {readonly && (
+          {readonly && !mapping && (
             <ReadDiv
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize([field.value]),
