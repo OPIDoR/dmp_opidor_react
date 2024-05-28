@@ -23,7 +23,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path, label: insertLabel }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}">${insertLabel}</samp>&nbsp;`);
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}"><span contenteditable="false">${insertLabel.toLowerCase()}</span></samp>&nbsp;`);
     }
     console.log("JSON PATH:", path)
   };
@@ -36,7 +36,7 @@ const MappingEditor = forwardRef(({
   useEffect(() => {
     const editor = editorRef.current;
     const handleKeyDown = (e) => {
-      if (e.keyCode === 8 || e.keyCode === 46) { // Backspace or Delete
+      if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) { // Backspace or Delete
         const node = editor.selection.getNode();
         if (node.nodeName === 'SAMP' && node.getAttribute('json-path')) {
           e.preventDefault();
@@ -83,8 +83,7 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank]',
-            
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style],span[contenteditable]',
             // Workaround to allow the jsonPath attribute on the iframe tag
             valid_elements: 'samp[json-path|style]',
             paste_preprocess: function(plugin, args) {
@@ -92,7 +91,7 @@ const MappingEditor = forwardRef(({
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
               });
             },
-            content_style: `samp[json-path] { background-color:#b4d7ff; font-weight: bold; padding: 5px; border-radius: 5px; }`,
+            content_style: `samp[json-path] { background-color:#b4d7ff; padding: 3px 5px; border-radius: 5px; font-size: 16px; font: monospace; }`,
 
             paste_as_text: false,
             paste_block_drop: true,
