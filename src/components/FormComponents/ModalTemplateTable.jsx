@@ -158,16 +158,6 @@ function ModalTemplateTable({
           }
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
-          <FragmentList
-            fragmentsList={fragmentsList}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-            templateToString={template?.schema?.to_string}
-            tableHeader={header}
-            readonly={readonly}
-          />
-        )}
         {(!readonly || mapping) && (
           <CustomButton
             handleClick={() => {
@@ -178,6 +168,16 @@ function ModalTemplateTable({
             title={t(mapping ? "Open element modal" : "Add an element")}
             buttonColor="rust"
             position="start"
+          />
+        )}
+        {template && (
+          <FragmentList
+            fragmentsList={fragmentsList}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            templateToString={template?.schema?.to_string}
+            tableHeader={header}
+            readonly={readonly}
           />
         )}
       </div>
