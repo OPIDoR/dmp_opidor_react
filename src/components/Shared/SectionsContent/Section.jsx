@@ -6,8 +6,10 @@ import Question from "../Question/Question";
 import { QuestionModalsProvider } from "../../context/QuestionModalsContext";
 import { QuestionIconsProvider } from "../../context/QuestionIconsContext";
 import { QuestionStateProvider } from "../../context/QuestionStateContext";
+import useSectionsMapping from "../../../hooks/useSectionsMapping";
 
 function Section({ section, readonly, id }) {
+  const { mapping } = useSectionsMapping();
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
 
@@ -46,35 +48,37 @@ function Section({ section, readonly, id }) {
       <p className={styles.title}>
         {section.number}. {section.title}
       </p>
-      <div className="column">
-        <div className={styles.collapse_title}>
-          <button
-            type="button"
-            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
-            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleQuestionsInSection(true);
-            }}
-          >
-            {t("Expand all")}
-          </button>
-          <span className={styles.sous_title}> | </span>
-          <button
-            type="button"
-            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
-            style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleQuestionsInSection(false);
-            }}
-          >
-            {t("Collapse all")}
-          </button>
+      {!mapping &&
+        <div className="column">
+          <div className={styles.collapse_title}>
+            <button
+              type="button"
+              className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+              style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleQuestionsInSection(true);
+              }}
+            >
+              {t("Expand all")}
+            </button>
+            <span className={styles.sous_title}> | </span>
+            <button
+              type="button"
+              className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+              style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleQuestionsInSection(false);
+              }}
+            >
+              {t("Collapse all")}
+            </button>
+          </div>
         </div>
-      </div>
+      }
       {section.questions.filter((question) => {
         if (question?.madmp_schema?.classname === 'personal_data_issues') {
           return displayedResearchOutput && displayedResearchOutput.hasPersonalData;
