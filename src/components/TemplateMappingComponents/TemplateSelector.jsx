@@ -39,8 +39,8 @@ function TemplateSelector({
           console.error(err);
         }
         console.log(fetchedOptions);
-        const defaultOption = defaultValue ? fetchedOptions.find(option => option.value === defaultValue) : fetchedOptions[0];
-        const value = defaultOption ? defaultOption.value : fetchedOptions[0].value;
+        const defaultOption = defaultValue ? fetchedOptions.find(option => option.value === defaultValue) : fetchedOptions[0] || null;
+        const value = defaultOption ? defaultOption.value : fetchedOptions[0].value || null;
 
         field.onChange(value);
         onTemplateChange(value);

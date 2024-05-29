@@ -39,6 +39,8 @@ export const SectionsMappingProvider = ({ children }) => {
   const { fetchAndProcessSectionsData } = useTemplate();
 
   useEffect(() => {
+    if (!mapping) return;
+    
     buildMappingSchema();
 
     async function buildMappingSchema() {
