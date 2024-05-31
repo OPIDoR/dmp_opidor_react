@@ -108,9 +108,8 @@ export const SectionsMappingProvider = ({ children }) => {
         DEFAULT_REF,
         initialTemplateId, setInitialTemplateId,
         targetTemplateId, setTargetTemplateId,
-        mappingSchema, setMappingSchema,
+        mappingSchema, setMappingSchema, insertInMappingSchema,
         handleInsert, setHandleInsert,
-        insertInMappingSchema,
       }}
     >
       {children}

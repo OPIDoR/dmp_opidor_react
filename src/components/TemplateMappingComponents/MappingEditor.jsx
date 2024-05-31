@@ -27,8 +27,6 @@ const MappingEditor = forwardRef(({
     const editor = editorRef.current;
     if (editor) {
       editor.execCommand('mceInsertContent', false, `<samp json-path="${path}"><span contenteditable="false">${insertLabel.toLowerCase()}</span></samp>&nbsp;`);
-      // console.log('handle: ', currentlyOpenedQuestion);
-      insertInMappingSchema(editor.getContent());
     }
     console.log("JSON PATH:", path)
   };
@@ -41,6 +39,7 @@ const MappingEditor = forwardRef(({
   useEffect(() => {
     const editor = editorRef.current;
     const handleKeyDown = (e) => {
+      insertInMappingSchema(editor.getContent());
       if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) { // Backspace or Delete
         const node = editor.selection.getNode();
         if (node.nodeName === 'SAMP' && node.getAttribute('json-path')) {
