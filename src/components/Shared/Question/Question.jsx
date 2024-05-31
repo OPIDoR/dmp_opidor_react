@@ -13,6 +13,7 @@ import useQuestionState from "../../../hooks/useQuestionState";
 import useSectionsMapping from "../../../hooks/useSectionsMapping";
 import { useForm } from "react-hook-form";
 import MappingEditor from "../../TemplateMappingComponents/MappingEditor";
+import { set } from "date-fns";
 
 function Question({
   question,
@@ -60,7 +61,8 @@ function Question({
     forms,
     setEditorRef,
     USAGE_TARGET,
-    DEFAULT_REF
+    DEFAULT_REF,
+    setCurrentlyOpenedQuestion,
   } = useSectionsMapping();
 
   const currentEditorRef = useRef(null);
@@ -71,7 +73,9 @@ function Question({
 
   // --- BEHAVIOURS ---  
   useEffect(() => {
-    if (mapping) setOpenedQuestions({});
+    if (mapping) {
+      setOpenedQuestions({});
+    }
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
@@ -107,8 +111,13 @@ function Question({
     setUrlParams({ research_output: queryParameters.get('research_output') });
     handleIconClick(null, 'formSelector');
 
-    if (forms[id]?.usage === USAGE_TARGET)
+    if (forms[id]?.usage === USAGE_TARGET) {
       setEditorRef(expanded ? currentEditorRef : DEFAULT_REF);
+      setCurrentlyOpenedQuestion(expanded 
+        ? questionId
+        : null
+      );
+    }
   };
 
   /**
@@ -243,11 +252,15 @@ function Question({
             id={id}
           />
         ) : (
+          <>
           <MappingEditor
             ref={currentEditorRef}
             label="Edit Export Template"
             defaultValue=""
           />
+          <p>{question.id}</p>
+          <p>{questionId}</p>
+          </>
         )
         }
       </Panel.Body>

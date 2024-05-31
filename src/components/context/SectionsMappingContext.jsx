@@ -15,6 +15,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const DEFAULT_REF = useRef(null);
   const [editorRef, setEditorRef] = useState(DEFAULT_REF);
   const [handleInsert, setHandleInsert] = useState(() => () => {});
+  const [currentlyOpenedQuestion, setCurrentlyOpenedQuestion] = useState(null);
   // --- End Editor logic ---
   
   // --- Forms properties logic ---
@@ -70,6 +71,15 @@ export const SectionsMappingProvider = ({ children }) => {
     return mapping;
   }
 
+  const insertInMappingSchema = (value) => {
+    setMappingSchema(prev => ({
+      ...prev,
+      mapping: {
+        ...prev.mapping,
+        [currentlyOpenedQuestion]: value
+      }
+    }));
+  }
   // --- End Mapping schema logic ---
 
   // --- JSON path logic ---
@@ -91,6 +101,7 @@ export const SectionsMappingProvider = ({ children }) => {
       value={{
         mapping, setMapping, enableMapping,
         editorRef, setEditorRef,
+        currentlyOpenedQuestion, setCurrentlyOpenedQuestion,
         buildJsonPath,
         forms, setIsStructuredModel, setIsHiddenQuestionsFields, setUsage,
         USAGE_INITIAL, USAGE_TARGET,
