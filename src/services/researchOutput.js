@@ -43,6 +43,8 @@ const create = async (jsonObject) => axios.post(`/research_outputs`, jsonObject,
 
 const update = async (id, jsonObject) => axios.patch(`/research_outputs/${id}`, jsonObject, { headers: createHeaders({}, true)});
 
+const get = async (roId) => axios.get(`/research_outputs/${roId}`);
+
 /**
  * This function adds a new object to a list in session storage.
  * @param planId - The ID of the plan to which the product is being imported.
@@ -127,6 +129,7 @@ const getProducts = async (id) => {
 export default {
   create,
   update,
+  get,
   postImportProduct,
   deleteResearchOutput,
   getPlans,
