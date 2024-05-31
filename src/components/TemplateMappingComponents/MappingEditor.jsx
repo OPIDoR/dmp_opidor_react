@@ -27,7 +27,7 @@ const MappingEditor = forwardRef(({
     const editor = editorRef.current;
     if (editor) {
       editor.execCommand('mceInsertContent', false, `<samp json-path="${path}"><span contenteditable="false">${insertLabel.toLowerCase()}</span></samp>&nbsp;`);
-      insertInMappingSchema(editor.getContent()); // useState instead?
+      insertInMappingSchema(editor.getContent()); // useEffect instead?
     }
     console.log("JSON PATH:", path)
   };
