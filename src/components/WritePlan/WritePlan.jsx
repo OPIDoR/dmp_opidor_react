@@ -1,9 +1,5 @@
-import React, { useEffect, useState, useContext, useRef, useCallback } from "react";
-import { useTranslation, Trans } from "react-i18next";
-import { format } from "date-fns";
-import { fr, enGB } from "date-fns/locale";
-import { FaRegCompass } from "react-icons/fa6";
-import { Tooltip as ReactTooltip } from 'react-tooltip';
+import React, { useEffect, useState, useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Panel } from 'react-bootstrap';
 
 import SectionsContent from "./SectionsContent";
@@ -14,11 +10,8 @@ import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
-import consumer from "../../cable";
-import { useTour } from "../Shared/Joyride/JoyrideContext";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
-
-const locales = { fr, en: enGB };
+import PlanInformations from "./PlanInformations";
 
 function WritePlan({
   locale = 'en_GB',
@@ -32,52 +25,21 @@ function WritePlan({
   const { t, i18n } = useTranslation();
   const {
     setFormData,
-    setPlanId,
-    setPlanTemplateId,
     setDmpId,
     setCurrentOrg,
     setUserId,
     setLocale,
-    displayedResearchOutput, setDisplayedResearchOutput,
+    setDisplayedResearchOutput,
+    setLoadedSectionsData,
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
-    planInformations, setPlanInformations,
   } = useContext(GlobalContext);
-  const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const { setIsOpen } = useTour();
-
-  const planInformationsMessage = displayedResearchOutput?.configuration.moduleId ? 
-                                    'This research output uses the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).' : 
-                                    'This plan is based on the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).' ;
-
-  const handleWebsocketData = useCallback((data) => {
-    if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
-      setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
-    }
-    if(data.target === 'dynamic_form') {
-      setFormData({ [data.fragment_id]: data.payload })
-    }
-  }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
-
-  useEffect(() => {
-    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
-    subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
-      {
-        connected: () => console.log("connected!"),
-        disconnected: () => console.log("disconnected !"),
-        received: data => handleWebsocketData(data),
-      });
-    return () => {
-      consumer.disconnect();
-    }
-  }, [planId, handleWebsocketData])
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
   //TODO update this , it can make error
@@ -90,8 +52,6 @@ function WritePlan({
     setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     setUserId(userId);
     setLocale(locale);
-    setPlanId(planId);
-    setPlanTemplateId(templateId);
 
     writePlan.getPlanData(planId)
       .then((res) => {
@@ -109,6 +69,7 @@ function WritePlan({
         }
 
         setDisplayedResearchOutput(currentResearchOutput);
+        setLoadedSectionsData({[currentResearchOutput.template.id]: currentResearchOutput.template})
         !researchOutputs && setResearchOutputs(research_outputs);
         setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
@@ -149,60 +110,14 @@ function WritePlan({
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
           </div>
-          {
-            planInformations && (
-              <div style={{
-                textAlign: 'center',
-                color: 'grey',
-                fontSize: '16px',
-                margin: '20px 0 20px 0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <div id="guided-tour-compass">
-                  <ReactTooltip
-                    id="guided-tour"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t('Run guided tour')}
-                  />
-                  <FaRegCompass
-                    data-tooltip-id="guided-tour"
-                    size="32"
-                    onClick={() => setIsOpen(true)}
-                    style={{
-                      cursor: 'pointer',
-                      marginRight: '10px',
-                      color: 'var(--dark-blue)',
-                    }}
-                  />
-                </div>
-                <div style={{
-                  marginTop: '5px',
-                }}>
-                  <Trans
-                    t={t}
-                    defaults={planInformationsMessage}
-                    values={{
-                      model: planInformations.title,
-                      orgName: planInformations.org,
-                      version: planInformations.version,
-                      publishedDate: format(new Date(planInformations.publishedDate), 'dd LLLL yyyy', { locale: locales[planInformations.locale || i18n.resolvedLanguage] }),
-                    }}
-                    components={[<strong>{planInformations.title}</strong>, <strong>{planInformations.org}</strong>]}
-                  />
-                </div>
-              </div>
-            )
-          }
+          <PlanInformations/>
           <div className={styles.section}>
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
-              {planId && displayedResearchOutput && (
+              {planId && (
                 <SectionsContent
                   planId={planId}
+                  templateId={templateId}
                   readonly={readonly}
                 />
               )}

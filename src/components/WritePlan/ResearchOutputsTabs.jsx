@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { GlobalContext } from "../context/Global";
 import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
@@ -9,19 +9,34 @@ import { useTranslation } from "react-i18next";
 import chunk from "lodash.chunk";
 import * as styles from "../assets/css/sidebar.module.css";
 import { RESEARCH_OUTPUTS_PER_PAGE } from "../../config";
+import { researchOutput } from "../../services";
+import { except } from "../../utils/utils";
 
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
   const {
+    loadedSectionsData, setLoadedSectionsData,
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs,
     openedQuestions,
-    setFormData,
     setUrlParams,
+    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const [show, setShow] = useState(false);
   const [activeGroup, setActiveGroup] = useState(0);
+  const [selectedResearchOutputId, setSelectedResearchOutputId] = useState(null);
   const researchOutputsChunks = chunk(researchOutputs, RESEARCH_OUTPUTS_PER_PAGE);
+
+
+  useEffect(() => {
+    if(selectedResearchOutputId) {
+      researchOutput.get(selectedResearchOutputId).then((res) => {
+        // setLoadedSectionsData({ ...loadedSectionsData, [res.data.template.id]: res.data.template});
+        setDisplayedResearchOutput(except(res.data, ['questions_with_guidance']));
+        setQuestionsWithGuidance(res.data.questions_with_guidance);
+      })
+    }
+  }, [selectedResearchOutputId])
 
   /**
    * The function handleClose sets the state of setShow to false.
@@ -35,17 +50,6 @@ function ResearchOutputsTabs({ planId, readonly }) {
 
   const handleSelect = (activeKey) => setActiveGroup(activeKey);
 
-  /**
-   * This function updates the displayed research output ID, product ID, and form based on the provided ID and whether or not it is null.
-   */
-  const handleIdsUpdate = (id, isNull) => {
-    // exist and not empty
-    if (researchOutputs && researchOutputs[id] && Object.keys(researchOutputs[id]).length > 0) {
-      setFormData(researchOutputs[id]);
-    } else {
-      isNull && setFormData(null);
-    }
-  };
 
   /**
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
@@ -53,7 +57,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
    */
   const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
     e.preventDefault();
-    setDisplayedResearchOutput(selectedResearchOutput);
+    setSelectedResearchOutputId(selectedResearchOutput.id);
     setUrlParams({ research_output: selectedResearchOutput.id });
   };
 

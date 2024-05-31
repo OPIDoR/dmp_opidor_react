@@ -1,22 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-import { writePlan } from "../../services";
+import { researchOutput } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import { researchOutput } from "../../services";
 import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
+import consumer from "../../cable";
 
-function SectionsContent({ planId, readonly }) {
+function SectionsContent({ planId, templateId, readonly }) {
   const { t } = useTranslation();
   const {
-    planTemplateId,
+    setFormData,
     loadedSectionsData, setLoadedSectionsData,
     openedQuestions,
     setOpenedQuestions,
@@ -25,6 +25,7 @@ function SectionsContent({ planId, readonly }) {
     setPlanInformations,
     setUrlParams,
   } = useContext(GlobalContext);
+  const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -32,27 +33,38 @@ function SectionsContent({ planId, readonly }) {
   const [moduleId, setModuleId] = useState(null);
 
 
-  useEffect(() => {
-    setModuleId(displayedResearchOutput?.configuration?.moduleId || planTemplateId)
-  }, [displayedResearchOutput])
-  /* A useEffect hook that is called when the component is mounted. It is calling the getSectionsData function, which is an async function that returns a
-  promise. When the promise is resolved, it sets the data state to the result of the promise. It then sets the openedQuestions state to the result of the promise.
-  If the promise is rejected, it sets the error state to the error.
-  Finally, it sets the loading state to false. */
-  useEffect(() => {
-    if (moduleId && !loadedSectionsData[moduleId]) {
-      setLoading(true);
-      writePlan.getSectionsData(moduleId)
-        .then((res) => {
-          setLoadedSectionsData({ ...loadedSectionsData, [moduleId]: res.data });
-        })
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
+  const handleWebsocketData = useCallback((data) => {
+    if (data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
+      setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
     }
-  }, [moduleId]);
+    if (data.target === 'dynamic_form') {
+      setFormData({ [data.fragment_id]: data.payload })
+    }
+  }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
+
+
 
   useEffect(() => {
-    if (loadedSectionsData[moduleId]) {
+    if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
+    subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
+      {
+        connected: () => console.log("connected!"),
+        disconnected: () => console.log("disconnected !"),
+        received: data => handleWebsocketData(data),
+      });
+    return () => {
+      consumer.disconnect();
+    }
+  }, [planId, handleWebsocketData])
+
+  useEffect(() => {
+    if(displayedResearchOutput) {
+      setModuleId(displayedResearchOutput?.configuration?.moduleId || templateId);
+    }
+  }, [displayedResearchOutput])
+
+  useEffect(() => {
+    if (moduleId && loadedSectionsData[moduleId]) {
       setPlanInformations({
         locale: loadedSectionsData[moduleId].locale.split('-')?.at(0) || 'fr',
         title: loadedSectionsData[moduleId].title,
@@ -61,10 +73,11 @@ function SectionsContent({ planId, readonly }) {
         publishedDate: loadedSectionsData[moduleId].publishedDate,
       });
     }
-
-  }, [loadedSectionsData[moduleId]])
+  }, [moduleId, loadedSectionsData[moduleId]])
 
   useEffect(() => {
+    if (!displayedResearchOutput) return;
+
     if (!openedQuestions || !openedQuestions[displayedResearchOutput.id]) {
       const updatedCollapseState = {
         ...openedQuestions,
@@ -126,13 +139,14 @@ function SectionsContent({ planId, readonly }) {
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && loadedSectionsData[moduleId]?.sections && (
+      {!error && displayedResearchOutput?.template?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
             <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
-            {loadedSectionsData[moduleId]?.sections?.map((section) => (
+            {displayedResearchOutput?.template?.sections?.map((section) => (
               <Section
                 key={section.id}
+                planId={planId}
                 section={section}
                 readonly={readonly}
               />

@@ -42,8 +42,6 @@ function Global({ children }) {
   const [loadedRegistries, setLoadedRegistries] = useState({});
   const [loadedTemplates, setLoadedTemplates] = useState({});
   // Write Plan
-  const [planId, setPlanId] = useState(null);
-  const [planTemplateId, setPlanTemplateId] = useState(null);
   const [loadedSectionsData, setLoadedSectionsData] = useState({});
   const [researchOutputs, setResearchOutputs] = useState(null);
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
@@ -95,10 +93,6 @@ function Global({ children }) {
         loadedTemplates,
         setLoadedTemplates,
         // Write Plan
-        planId,
-        setPlanId,
-        planTemplateId,
-        setPlanTemplateId,
         loadedSectionsData,
         setLoadedSectionsData,
         researchOutputs,
