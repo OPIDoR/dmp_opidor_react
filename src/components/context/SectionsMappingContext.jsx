@@ -63,15 +63,13 @@ export const SectionsMappingProvider = ({ children }) => {
 
     res.data.sections.forEach(section => {
       section.questions.forEach(question => {
-        mapping[section.id] = {
-          ...mapping[section.id],
-          [question.id]: ""
-        };
+        mapping[question.id] = ""
       });
     });
 
     return mapping;
   }
+
   // --- End Mapping schema logic ---
 
   // --- JSON path logic ---
@@ -101,6 +99,7 @@ export const SectionsMappingProvider = ({ children }) => {
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema,
         handleInsert, setHandleInsert,
+        insertInMappingSchema,
       }}
     >
       {children}
