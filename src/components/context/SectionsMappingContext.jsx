@@ -44,8 +44,9 @@ export const SectionsMappingProvider = ({ children }) => {
 
   useEffect(() => {
     if (!mapping) return;
-    buildMappingSchema();    
-  }, [initialTemplateId, targetTemplateId]);
+    buildMappingSchema();
+    setIsLoading(false);
+  }, [initialTemplateId, targetTemplateId, templateMappingId]);
 
   async function buildMappingSchema() {
     const innerMappingSchema = await buildMappingInnerSchema(targetTemplateId);
@@ -131,28 +132,29 @@ export const SectionsMappingProvider = ({ children }) => {
 
   const [isLoading, setIsLoading] = useState(true); // Ajout d'un état de chargement
 
-useEffect(() => {
-  if (!templateMappingId) {
-    setIsLoading(false);
-    return;
-  }
+  // useEffect(() => {
+  //   if (!templateMappingId) {
+  //     setIsLoading(false);
+  //     return;
+  //   }
 
-  const fetchMapping = async () => {
-    setIsLoading(true); // Commence le chargement
-    try {
-      const res = await getMapping(templateMappingId);
-      const { source_id, target_id, mapping } = res.data;
-      setInitialTemplateId(source_id);
-      setTargetTemplateId(target_id);
-      setMappingSchema({mapping});
-    } catch (error) {
-      console.error('Failed to fetch mapping:', error);
-    }
-    setIsLoading(false); // Termine le chargement
-  };
+  //   const fetchMapping = async () => {
+  //     setIsLoading(true); // Commence le chargement
+  //     try {
+  //       const res = await getMapping(templateMappingId);
+  //       console.log("data: ", res.data);
+  //       const { source_id, target_id, mapping } = res.data;
+  //       setInitialTemplateId(source_id);
+  //       setTargetTemplateId(target_id);
+  //       setMappingSchema({mapping});
+  //     } catch (error) {
+  //       console.error('Failed to fetch mapping:', error);
+  //     }
+  //     setIsLoading(false); // Termine le chargement
+  //   };
 
-  fetchMapping();
-}, [templateMappingId]);
+  //   fetchMapping();
+  // }, [templateMappingId]);
   
   // --- End API logic ---
 
