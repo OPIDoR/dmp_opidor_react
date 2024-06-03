@@ -52,15 +52,11 @@ function Question({
     const ans = displayedResearchOutput?.answers?.find(
       (a) => question?.id === a?.question_id
     );
-    console.log(displayedResearchOutput, question.id, answer);
     setAnswer(ans);
 
     handleIconClick(null, 'formSelector');
   }, [displayedResearchOutput, question.id]);
 
-  useEffect(() => {
-    console.log(answer);
-  }, [answer])
   /**
    * Handles toggling the open/collapse state of a question.
    * This function is called when a question is collapsed or expanded.
