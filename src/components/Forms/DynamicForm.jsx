@@ -52,17 +52,15 @@ function DynamicForm({
             setExternalImports(template?.schema?.externalImports || {});
             setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
           }).catch(console.error);
-          setLoading(false)
         }
         methods.reset(formData[fragmentId]);
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
-          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template.schema });
+          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
           setFormData({ [fragmentId]: res.data.fragment });
           methods.reset(res.data.fragment);
         }).catch(console.error);
-        setLoading(false)
       }
     } else {
       service.getSchema(madmpSchemaId).then((res) => {
@@ -70,8 +68,8 @@ function DynamicForm({
         setExternalImports(template?.schema?.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
       }).catch(console.error);
-      setLoading(false)
     }
+    setLoading(false);
   }, [fragmentId]);
 
   useEffect(() => {
@@ -118,11 +116,11 @@ function DynamicForm({
   const handleSaveNew = (data) => {
     service.createFragment(data, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
       const updatedResearchOutput = { ...displayedResearchOutput };
-      setTemplate(res.data.template);
       const fragment = res.data.fragment;
       const template = res.data.template;
       const answerId = res.data.answer_id
-      setLoadedTemplates({ ...loadedTemplates, [template.name]: template.schema });
+      setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
+      setTemplate(template);
       setFormData({ [fragment.id]: fragment });
       setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: madmpSchemaId });
       updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
