@@ -1,13 +1,11 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 import useTemplate from '../../hooks/useTemplate';
+import axios from '../../utils/AxiosClient';
 
 export const SectionsMappingContext = createContext();
 
 export const SectionsMappingProvider = ({ children }) => {
-
-  const USAGE_INITIAL = 'initial';
-  const USAGE_TARGET = 'target';
-
+  
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
 
@@ -19,6 +17,8 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- End Editor logic ---
   
   // --- Forms properties logic ---
+  const USAGE_INITIAL = 'initial';
+  const USAGE_TARGET = 'target';
   const [forms, setForms] = useState({}); // Associate a form id to its structure and content display mode
   const setIsStructuredModel = (id, value) => updateForm(id, 'structured', value);
   const setIsHiddenQuestionsFields = (id, value) => updateForm(id, 'hiddenQuestionsFields', value);
@@ -36,7 +36,7 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- Mapping schema logic ---
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
-  const [mappingSchema, setMappingSchema] = useState({});
+  const [mappingSchema, setMappingSchema] = useState({mapping: {}});
   const { fetchAndProcessSectionsData } = useTemplate();
 
   useEffect(() => {
@@ -96,6 +96,29 @@ export const SectionsMappingProvider = ({ children }) => {
   }
   // --- End JSON path logic ---
 
+  // --- API logic ---
+  const getMappings = async () => axios.get(`/dmp_mapping`);
+  const getMapping = async (id) => axios.get(`/dmp_mapping/${id}`);
+  const newMapping = async () => {
+
+    console.log('Mapping schema:', mappingSchema);
+    
+    const res = await axios.post(`/dmp_mapping`, {
+      dmp_mapping: {
+        mapping: mappingSchema.mapping,
+        source_id: initialTemplateId,
+        target_id: targetTemplateId,
+        type_mapping: "form",
+      }
+    })
+
+    console.log('New mapping:', res);
+  };
+
+  const updateMapping = async (id, data) => axios.put(`/dmp_mapping/${id}`, data);
+  const deleteMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
+  // --- End API logic ---
+
   return (
     <SectionsMappingContext.Provider
       value={{
@@ -110,6 +133,7 @@ export const SectionsMappingProvider = ({ children }) => {
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema, insertInMappingSchema,
         handleInsert, setHandleInsert,
+        getMappings, getMapping, newMapping, updateMapping, deleteMapping,
       }}
     >
       {children}

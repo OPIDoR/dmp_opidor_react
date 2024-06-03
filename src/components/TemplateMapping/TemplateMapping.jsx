@@ -11,8 +11,9 @@ function TemplateMapping({ data, locale }) {
   const { setLocale } = useContext(GlobalContext);
   const {
     enableMapping,
-    initialTemplateId, setInitialTemplateId,
-    targetTemplateId, setTargetTemplateId,
+    initialTemplateId,
+    targetTemplateId,
+    newMapping,
   } = useSectionsMapping();
 
   const [mappingType, setMappingType] = useState('formToForm');
@@ -47,7 +48,10 @@ function TemplateMapping({ data, locale }) {
       }}>
         <CustomButton
           title="Save mapping"
-          handleClick={() => alert("Click on \"Save mapping\"")}
+          handleClick={async () => {
+            const res = await newMapping();
+            console.log(res);
+          }}
           buttonColor="orange"
         />
       </div>
