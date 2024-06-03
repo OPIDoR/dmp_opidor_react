@@ -14,7 +14,7 @@ function TemplateMapping({ data, locale, mappingId }) {
     enableMapping,
     initialTemplateId,
     targetTemplateId,
-    setTemplateMappingId,
+    templateMappingId, setTemplateMappingId,
     saveMapping,
   } = useSectionsMapping();
 
@@ -55,7 +55,7 @@ function TemplateMapping({ data, locale, mappingId }) {
         marginTop: "20px"
       }}>
         <CustomButton
-          title="Save mapping"
+          title={templateMappingId ? "Save mapping" : "Create mapping"}
           handleClick={saveMapping}
           buttonColor="orange"
         />
