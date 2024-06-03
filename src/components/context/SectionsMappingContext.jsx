@@ -44,29 +44,28 @@ export const SectionsMappingProvider = ({ children }) => {
 
   useEffect(() => {
     if (!mapping) return;
-    
-    buildMappingSchema();
-
-    async function buildMappingSchema() {
-      const innerMappingSchema = await buildMappingInnerSchema(targetTemplateId);
-      const schema = {
-        initialTemplateId,
-        targetTemplateId,
-        mapping: innerMappingSchema,
-      };
-      setMappingSchema(schema);
-
-      console.log('Mapping schema:', schema);
-    }
+    buildMappingSchema();    
   }, [initialTemplateId, targetTemplateId]);
+
+  async function buildMappingSchema() {
+    const innerMappingSchema = await buildMappingInnerSchema(targetTemplateId);
+    const schema = {
+      initialTemplateId,
+      targetTemplateId,
+      mapping: innerMappingSchema,
+    };
+    setMappingSchema(schema);
+
+    console.log('Mapping schema:', schema);
+  }
 
   const buildMappingInnerSchema = async (templateId) => {
     const mapping = {};
 
     const res = await fetchAndProcessSectionsData(templateId);
 
-    res.data.sections.forEach(section => {
-      section.questions.forEach(question => {
+    res?.data?.sections?.forEach(section => {
+      section?.questions?.forEach(question => {
         mapping[question.id] = ""
       });
     });
@@ -84,20 +83,6 @@ export const SectionsMappingProvider = ({ children }) => {
     }));
   }
   // --- End Mapping schema logic ---
-
-  // --- JSON path logic ---
-  const buildJsonPath = (jsonPath, key, type) => {
-    const jpKey = type === 'array'
-      ? `${key}[*]`
-      : key;
-
-    const currentJsonPath = jsonPath
-      ? `${jsonPath}.${jpKey}`
-      : `$.${key}`;
-
-    return currentJsonPath;
-  }
-  // --- End JSON path logic ---
 
   // --- API logic ---
   const getMappings = async () => axios.get(`/dmp_mapping`);
@@ -129,18 +114,33 @@ export const SectionsMappingProvider = ({ children }) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (templateMappingId) {
-  //     getMapping(templateMappingId)
-  //       .then(res => {
-  //         const { source_id, target_id, mapping } = res.data;
-  //         setInitialTemplateId(source_id);
-  //         setTargetTemplateId(target_id);
-  //         setMappingSchema({mapping});
-  //       });
-  //   }
-  // }, [templateMappingId]);
+  useEffect(() => {
+    if (templateMappingId) {
+      getMapping(templateMappingId)
+        .then(res => {
+          const { source_id, target_id, mapping } = res.data;
+          setInitialTemplateId(source_id);
+          setTargetTemplateId(target_id);
+          setMappingSchema({mapping});
+        });
+    }
+  }, [templateMappingId]);
   // --- End API logic ---
+
+  
+  // --- JSON path logic ---
+  const buildJsonPath = (jsonPath, key, type) => {
+    const jpKey = type === 'array'
+      ? `${key}[*]`
+      : key;
+
+    const currentJsonPath = jsonPath
+      ? `${jsonPath}.${jpKey}`
+      : `$.${key}`;
+
+    return currentJsonPath;
+  }
+  // --- End JSON path logic ---
 
   return (
     <SectionsMappingContext.Provider
