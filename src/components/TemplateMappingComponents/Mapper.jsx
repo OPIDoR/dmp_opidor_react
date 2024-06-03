@@ -25,6 +25,7 @@ function Mapper({ mappingType }) {
   };
 
   useEffect(() => {
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -37,7 +38,7 @@ function Mapper({ mappingType }) {
     if (targetRef.current) {
       const rect = targetRef.current.getBoundingClientRect();
       const distanceFromTop = rect.top;
-      const calculatedHeight = `calc(100vh - ${distanceFromTop}px)`;
+      const calculatedHeight = `calc(100vh - ${distanceFromTop}px - 100px)`;
       setHeight(calculatedHeight);
     }
   };
