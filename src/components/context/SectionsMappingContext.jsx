@@ -114,17 +114,46 @@ export const SectionsMappingProvider = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    if (templateMappingId) {
-      getMapping(templateMappingId)
-        .then(res => {
-          const { source_id, target_id, mapping } = res.data;
-          setInitialTemplateId(source_id);
-          setTargetTemplateId(target_id);
-          setMappingSchema({mapping});
-        });
+  // useEffect(() => {
+  //   if (!templateMappingId) return; // Ajoutez cette vérification pour éviter de traiter un ID nul ou non défini
+  
+  //   const fetchMapping = async () => {
+  //     const res = await getMapping(templateMappingId);
+  //     const { source_id, target_id, mapping } = res.data;
+  //     console.log("data: ", res.data);
+  //     setInitialTemplateId(source_id);
+  //     setTargetTemplateId(target_id);
+  //     setMappingSchema({mapping});
+  //   };
+  
+  //   fetchMapping();
+  // }, [templateMappingId]); // Assurez-vous que cette dépendance est nécessaire et correcte
+
+  const [isLoading, setIsLoading] = useState(true); // Ajout d'un état de chargement
+
+useEffect(() => {
+  if (!templateMappingId) {
+    setIsLoading(false);
+    return;
+  }
+
+  const fetchMapping = async () => {
+    setIsLoading(true); // Commence le chargement
+    try {
+      const res = await getMapping(templateMappingId);
+      const { source_id, target_id, mapping } = res.data;
+      setInitialTemplateId(source_id);
+      setTargetTemplateId(target_id);
+      setMappingSchema({mapping});
+    } catch (error) {
+      console.error('Failed to fetch mapping:', error);
     }
-  }, [templateMappingId]);
+    setIsLoading(false); // Termine le chargement
+  };
+
+  fetchMapping();
+}, [templateMappingId]);
+  
   // --- End API logic ---
 
   
@@ -158,6 +187,7 @@ export const SectionsMappingProvider = ({ children }) => {
         handleInsert, setHandleInsert,
         getMappings, getMapping, newMapping, updateMapping, deleteMapping, saveMapping,
         templateMappingId, setTemplateMappingId,
+        isLoading,
       }}
     >
       {children}
