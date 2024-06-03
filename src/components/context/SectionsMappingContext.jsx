@@ -6,8 +6,11 @@ export const SectionsMappingContext = createContext();
 
 export const SectionsMappingProvider = ({ children }) => {
   
+  // --- Mapping logic ---
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
+  const [templateMappingId, setTemplateMappingId] = useState(null);
+  // --- End Mapping logic ---
 
   // --- Editor logic ---
   const DEFAULT_REF = useRef(null);
@@ -99,24 +102,44 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- API logic ---
   const getMappings = async () => axios.get(`/dmp_mapping`);
   const getMapping = async (id) => axios.get(`/dmp_mapping/${id}`);
-  const newMapping = async () => {
+  const newMapping = async (data) => axios.post(`/dmp_mapping`, data);
 
-    console.log('Mapping schema:', mappingSchema);
-    
-    const res = await axios.post(`/dmp_mapping`, {
+  const updateMapping = async (data) => axios.put(`/dmp_mapping/${templateMappingId}`, data);
+  const deleteMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
+
+  const saveMapping = async () => {
+    const data = {
       dmp_mapping: {
         mapping: mappingSchema.mapping,
         source_id: initialTemplateId,
         target_id: targetTemplateId,
         type_mapping: "form",
       }
-    })
+    };
+    
+    if (templateMappingId) 
+      await updateMapping(data);
+    else {
+      const res = await newMapping(data);
+      console.log('New mapping:', res);
+      if (res?.data?.mapping_data?.id)
+        window.location.href = `/super_admin/template_mappings/${res.data.mapping_data.id}/edit`;
+      else
+        console.error('Redirection error:', res);
+    }
+  }
 
-    console.log('New mapping:', res);
-  };
-
-  const updateMapping = async (id, data) => axios.put(`/dmp_mapping/${id}`, data);
-  const deleteMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
+  // useEffect(() => {
+  //   if (templateMappingId) {
+  //     getMapping(templateMappingId)
+  //       .then(res => {
+  //         const { source_id, target_id, mapping } = res.data;
+  //         setInitialTemplateId(source_id);
+  //         setTargetTemplateId(target_id);
+  //         setMappingSchema({mapping});
+  //       });
+  //   }
+  // }, [templateMappingId]);
   // --- End API logic ---
 
   return (
@@ -133,7 +156,8 @@ export const SectionsMappingProvider = ({ children }) => {
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema, insertInMappingSchema,
         handleInsert, setHandleInsert,
-        getMappings, getMapping, newMapping, updateMapping, deleteMapping,
+        getMappings, getMapping, newMapping, updateMapping, deleteMapping, saveMapping,
+        templateMappingId, setTemplateMappingId,
       }}
     >
       {children}

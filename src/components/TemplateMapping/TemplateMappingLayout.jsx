@@ -14,18 +14,15 @@ const toastOptions = {
 
 function TemplateMappingLayout({
   locale = 'en_GB',
-  templateId,
+  mappingId,
 }) {
-  // --- STATE ---
-  console.log("TML", templateId);
-
-  // --- RENDER ---
   return (
     <Global>
       <TemplateProvider>
         <SectionsMappingProvider>
           <TemplateMapping
             locale={locale}
+            mappingId={mappingId}
             readonly
           />
           <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />

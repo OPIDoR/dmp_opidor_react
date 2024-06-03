@@ -6,18 +6,21 @@ import TemplateSelectorsContent from "../TemplateMappingComponents/TemplateSelec
 import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
 
-function TemplateMapping({ data, locale }) {
+function TemplateMapping({ data, locale, mappingId }) {
+  // --- STATE ---
   const { i18n } = useTranslation();
   const { setLocale } = useContext(GlobalContext);
   const {
     enableMapping,
     initialTemplateId,
     targetTemplateId,
-    newMapping,
+    setTemplateMappingId,
+    saveMapping,
   } = useSectionsMapping();
 
   const [mappingType, setMappingType] = useState('formToForm');
 
+  // --- EFFECTS ---
   useEffect(() => {
     enableMapping();
     setLocale(locale);
@@ -28,6 +31,11 @@ function TemplateMapping({ data, locale }) {
     console.log(initialTemplateId, targetTemplateId);
   }, [locale]);
 
+  useEffect(() => {
+    setTemplateMappingId(mappingId);
+  }, [mappingId]);
+
+  // --- RENDER ---
   return (
     <>
       <h1>Template Mapping</h1>
@@ -48,10 +56,7 @@ function TemplateMapping({ data, locale }) {
       }}>
         <CustomButton
           title="Save mapping"
-          handleClick={async () => {
-            const res = await newMapping();
-            console.log(res);
-          }}
+          handleClick={saveMapping}
           buttonColor="orange"
         />
       </div>
