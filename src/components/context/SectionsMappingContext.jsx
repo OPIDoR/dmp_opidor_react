@@ -9,6 +9,7 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- Mapping logic ---
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [templateMappingId, setTemplateMappingId] = useState(null);
   // --- End Mapping logic ---
 
@@ -108,8 +109,8 @@ export const SectionsMappingProvider = ({ children }) => {
     else {
       const res = await newMapping(data);
       console.log('New mapping:', res);
-      if (res?.data?.mapping_data?.id)
-        window.location.href = `/super_admin/template_mappings/${res.data.mapping_data.id}/edit`;
+      if (res?.data?.id)
+        window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
       else
         console.error('Redirection error:', res);
     }
@@ -130,31 +131,30 @@ export const SectionsMappingProvider = ({ children }) => {
   //   fetchMapping();
   // }, [templateMappingId]); // Assurez-vous que cette dépendance est nécessaire et correcte
 
-  const [isLoading, setIsLoading] = useState(true); // Ajout d'un état de chargement
+  useEffect(() => {
+    if (!templateMappingId) {
+      setIsLoading(false);
+      return;
+    }
 
-  // useEffect(() => {
-  //   if (!templateMappingId) {
-  //     setIsLoading(false);
-  //     return;
-  //   }
+    const fetchMapping = async () => {
+      setIsLoading(true); // Commence le chargement
+      try {
+        const res = await getMapping(templateMappingId);
+        console.log("data: ", res.data);
+        const { source_id, target_id, mapping } = res.data;
+        console.log("data: ", res.data);
+        setInitialTemplateId(source_id);
+        setTargetTemplateId(target_id);
+        setMappingSchema({mapping});
+      } catch (error) {
+        console.error('Failed to fetch mapping:', error);
+      }
+      setIsLoading(false); // Termine le chargement
+    };
 
-  //   const fetchMapping = async () => {
-  //     setIsLoading(true); // Commence le chargement
-  //     try {
-  //       const res = await getMapping(templateMappingId);
-  //       console.log("data: ", res.data);
-  //       const { source_id, target_id, mapping } = res.data;
-  //       setInitialTemplateId(source_id);
-  //       setTargetTemplateId(target_id);
-  //       setMappingSchema({mapping});
-  //     } catch (error) {
-  //       console.error('Failed to fetch mapping:', error);
-  //     }
-  //     setIsLoading(false); // Termine le chargement
-  //   };
-
-  //   fetchMapping();
-  // }, [templateMappingId]);
+    fetchMapping();
+  }, [templateMappingId]);
   
   // --- End API logic ---
 
