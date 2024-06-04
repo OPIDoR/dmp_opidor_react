@@ -38,18 +38,18 @@ function TemplateSelector({
         } catch (err) {
           console.error(err);
         }
-        console.log(fetchedOptions);
         const defaultOption = defaultValue ? fetchedOptions.find(option => option.value === defaultValue) : fetchedOptions[0] || null;
-        const value = defaultOption ? defaultOption.value : fetchedOptions[0].value || null;
-
-        field.onChange(value);
-        onTemplateChange(value);
+        if (defaultOption) {
+          field.onChange(defaultOption.value);
+          onTemplateChange(defaultOption.value);
+        }
       }
       setOptions(fetchedOptions);
+
     };
 
     fetchData();
-  }, [requestParams, data]);
+  }, [requestParams, data, defaultValue, onTemplateChange]);
 
   const selectedOption = options.find(option => option.value === field.value) || null;
 
