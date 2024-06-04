@@ -63,6 +63,7 @@ function Question({
     USAGE_TARGET,
     DEFAULT_REF,
     setCurrentlyOpenedQuestion,
+    mappingSchema,
   } = useSectionsMapping();
 
   const currentEditorRef = useRef(null);
@@ -256,7 +257,7 @@ function Question({
           <MappingEditor
             ref={currentEditorRef}
             label="Edit Export Template"
-            defaultValue=""
+            defaultValue={mappingSchema.mapping[questionId] || ''}
           />
           <p>{question.id}</p>
           <p>{questionId}</p>
