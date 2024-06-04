@@ -5,7 +5,7 @@ import axios from '../../utils/AxiosClient';
 export const SectionsMappingContext = createContext();
 
 export const SectionsMappingProvider = ({ children }) => {
-  
+
   // --- Mapping logic ---
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
@@ -16,10 +16,10 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- Editor logic ---
   const DEFAULT_REF = useRef(null);
   const [editorRef, setEditorRef] = useState(DEFAULT_REF);
-  const [handleInsert, setHandleInsert] = useState(() => () => {});
+  const [handleInsert, setHandleInsert] = useState(() => () => { });
   const [currentlyOpenedQuestion, setCurrentlyOpenedQuestion] = useState(null);
   // --- End Editor logic ---
-  
+
   // --- Forms properties logic ---
   const USAGE_INITIAL = 'initial';
   const USAGE_TARGET = 'target';
@@ -40,7 +40,7 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- Mapping schema logic ---
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
-  const [mappingSchema, setMappingSchema] = useState({mapping: {}});
+  const [mappingSchema, setMappingSchema] = useState({ mapping: {} });
 
   const insertInMappingSchema = (value) => {
     setMappingSchema(prev => ({
@@ -70,9 +70,11 @@ export const SectionsMappingProvider = ({ children }) => {
         type_mapping: "form",
       }
     };
-    
-    if (templateMappingId) 
+
+    if (templateMappingId) {
       await updateMapping(data);
+      console.log("UPDATED");
+    }
     else {
       const res = await newMapping(data);
       console.log('New mapping:', res);
@@ -95,7 +97,7 @@ export const SectionsMappingProvider = ({ children }) => {
         console.log("data: ", res.data);
         setInitialTemplateId(source_id);
         setTargetTemplateId(target_id);
-        setMappingSchema({mapping});
+        setMappingSchema({ mapping });
       } catch (error) {
         console.error('Failed to fetch mapping:', error);
       }
@@ -111,10 +113,10 @@ export const SectionsMappingProvider = ({ children }) => {
   //   console.log('initialTemplateId:', initialTemplateId);
   //   console.log('targetTemplateId:', targetTemplateId);
   // });
-  
+
   // --- End API logic ---
 
-  
+
   // --- JSON path logic ---
   const buildJsonPath = (jsonPath, key, type) => {
     const jpKey = type === 'array'
