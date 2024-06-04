@@ -41,39 +41,6 @@ export const SectionsMappingProvider = ({ children }) => {
   const [initialTemplateId, setInitialTemplateId] = useState(5);
   const [targetTemplateId, setTargetTemplateId] = useState(1);
   const [mappingSchema, setMappingSchema] = useState({mapping: {}});
-  const { fetchAndProcessSectionsData } = useTemplate();
-
-  useEffect(() => {
-    if (!mapping) return;
-    buildMappingSchema();
-    setIsLoading(false);
-  }, [initialTemplateId, targetTemplateId, templateMappingId]);
-
-  async function buildMappingSchema() {
-    const innerMappingSchema = await buildMappingInnerSchema(targetTemplateId);
-    const schema = {
-      initialTemplateId,
-      targetTemplateId,
-      mapping: innerMappingSchema,
-    };
-    setMappingSchema(schema);
-
-    console.log('Mapping schema:', schema);
-  }
-
-  const buildMappingInnerSchema = async (templateId) => {
-    const mapping = {};
-
-    const res = await fetchAndProcessSectionsData(templateId);
-
-    res?.data?.sections?.forEach(section => {
-      section?.questions?.forEach(question => {
-        mapping[question.id] = ""
-      });
-    });
-
-    return mapping;
-  }
 
   const insertInMappingSchema = (value) => {
     setMappingSchema(prev => ({
