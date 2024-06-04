@@ -14,14 +14,12 @@ const MappingEditor = forwardRef(({
 
   const [value, setValue] = useState(defaultValue);
 
-
   const {
     editorRef, 
     setHandleInsert, 
     insertInMappingSchema,
     mappingSchema
   } = useSectionsMapping();
-
 
   // --- MappingButton logic ---
   const handleInsert = ({ path, label: insertLabel }) => {
@@ -34,16 +32,18 @@ const MappingEditor = forwardRef(({
   };
 
   useEffect(() => {
-    setValue(mappingSchema.mapping[questionId] || '');
-  }, [mappingSchema.mapping[questionId]]);
-
-  useEffect(() => {
     setHandleInsert(() => handleInsert);
   }, [editorRef]);
   // --- End MappingButton logic ---
 
+  // --- Mapping schema logic ---
   useEffect(() => {
     const editor = editorRef.current;
+
+    const handleChange = () => {
+      insertInMappingSchema(editor.getContent());
+    };
+
     const handleKeyDown = (e) => {
       insertInMappingSchema(editor.getContent());
       if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) { // Backspace or Delete
@@ -57,15 +57,22 @@ const MappingEditor = forwardRef(({
     };
 
     if (editor) {
+      editor.on('change', handleChange);
       editor.on('keydown', handleKeyDown);
     }
 
     return () => {
       if (editor) {
+        editor.off('change', handleChange);
         editor.off('keydown', handleKeyDown);
       }
     };
   }, [editorRef]);
+
+  useEffect(() => {
+    setValue(mappingSchema.mapping[questionId] || '');
+  }, [mappingSchema.mapping[questionId]]);
+  // --- End Mapping schema logic ---
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
