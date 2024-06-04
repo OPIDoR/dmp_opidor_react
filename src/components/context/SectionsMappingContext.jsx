@@ -59,8 +59,12 @@ export const SectionsMappingProvider = ({ children }) => {
   const newMapping = async (data) => axios.post(`/dmp_mapping`, data);
 
   const updateMapping = async (data) => axios.put(`/dmp_mapping/${templateMappingId}`, data);
-  const deleteMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
+  const destroyMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
 
+  /**
+   * Save the current mapping
+   * If the mapping is new, redirect to the edit page
+   */
   const saveMapping = async () => {
     const data = {
       dmp_mapping: {
@@ -83,6 +87,15 @@ export const SectionsMappingProvider = ({ children }) => {
       else
         console.error('Redirection error:', res);
     }
+  }
+
+  /**
+   * Delete the current mapping and redirect to the index page
+   */
+  const deleteMapping = async () => {
+    if (!templateMappingId) return;
+    await destroyMapping(templateMappingId);
+    window.location.href = '/super_admin/template_mappings';
   }
 
   useEffect(() => {
@@ -149,7 +162,8 @@ export const SectionsMappingProvider = ({ children }) => {
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema, insertInMappingSchema,
         handleInsert, setHandleInsert,
-        getMappings, getMapping, newMapping, updateMapping, deleteMapping, saveMapping,
+        // getMappings, getMapping, newMapping, updateMapping, destroyMapping, 
+        saveMapping, deleteMapping,
         templateMappingId, setTemplateMappingId,
         isLoading,
       }}

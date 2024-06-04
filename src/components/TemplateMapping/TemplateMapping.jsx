@@ -16,7 +16,7 @@ function TemplateMapping({ data, locale, mappingId }) {
     initialTemplateId,
     targetTemplateId,
     templateMappingId, setTemplateMappingId,
-    saveMapping,
+    saveMapping, deleteMapping,
     isLoading,
   } = useSectionsMapping();
 
@@ -63,6 +63,19 @@ function TemplateMapping({ data, locale, mappingId }) {
               title={templateMappingId ? "Save mapping" : "Create mapping"}
               handleClick={saveMapping}
               buttonColor="orange"
+            />
+          </div>
+          <div>
+            <h3 style={{
+              color: "red",
+              marginTop: "20px",
+              fontSize: "2rem",
+              fontWeight: "bold",
+            }}>Danger zone</h3>
+            <CustomButton
+              title="⚠ Delete mapping"
+              handleClick={deleteMapping}
+              buttonColor="red"
             />
           </div>
         </>
