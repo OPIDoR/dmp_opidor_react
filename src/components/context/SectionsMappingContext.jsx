@@ -86,10 +86,14 @@ export const SectionsMappingProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    if (!templateMappingId) return;
+    if (!mapping) return;
+    setIsLoading(true);
+    if (!templateMappingId) {
+      setIsLoading(false);
+      return;
+    }
 
     const fetchMapping = async () => {
-      setIsLoading(true); // Commence le chargement
       try {
         const res = await getMapping(templateMappingId);
         console.log("data: ", res.data);
@@ -101,7 +105,7 @@ export const SectionsMappingProvider = ({ children }) => {
       } catch (error) {
         console.error('Failed to fetch mapping:', error);
       }
-      setIsLoading(false); // Termine le chargement
+      setIsLoading(false);
     };
 
     fetchMapping();
