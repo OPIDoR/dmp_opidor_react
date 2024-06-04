@@ -8,7 +8,7 @@ import useSectionsMapping from "../../hooks/useSectionsMapping";
  * This is a React functional component that renders a TinyMCE editor for mapping text input. It receives several props including `label`, `defaultValue`.
  */
 const MappingEditor = forwardRef(({
-  label, defaultValue = null
+  label, defaultValue = null, questionId,
 }, ref) => {
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
 
@@ -19,6 +19,7 @@ const MappingEditor = forwardRef(({
     editorRef, 
     setHandleInsert, 
     insertInMappingSchema,
+    mappingSchema
   } = useSectionsMapping();
 
 
@@ -31,6 +32,10 @@ const MappingEditor = forwardRef(({
     }
     console.log("JSON PATH:", path)
   };
+
+  useEffect(() => {
+    setValue(mappingSchema.mapping[questionId] || '');
+  }, [mappingSchema.mapping[questionId]]);
 
   useEffect(() => {
     setHandleInsert(() => handleInsert);

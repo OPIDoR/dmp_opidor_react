@@ -257,7 +257,7 @@ function Question({
           <MappingEditor
             ref={currentEditorRef}
             label="Edit Export Template"
-            defaultValue={mappingSchema.mapping[questionId] || ''}
+            questionId={questionId}
           />
           <p>{question.id}</p>
           <p>{questionId}</p>
