@@ -11,7 +11,6 @@ function Mapper({ mappingType }) {
     editorRef,
     initialTemplateId, 
     targetTemplateId,
-    isLoading,
   } = useSectionsMapping();
 
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
@@ -43,12 +42,6 @@ function Mapper({ mappingType }) {
       setHeight(calculatedHeight);
     }
   };
-
-  
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
 
   return <div className="row" style={{
     height: height,

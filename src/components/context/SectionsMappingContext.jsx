@@ -83,26 +83,8 @@ export const SectionsMappingProvider = ({ children }) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (!templateMappingId) return; // Ajoutez cette vérification pour éviter de traiter un ID nul ou non défini
-  
-  //   const fetchMapping = async () => {
-  //     const res = await getMapping(templateMappingId);
-  //     const { source_id, target_id, mapping } = res.data;
-  //     console.log("data: ", res.data);
-  //     setInitialTemplateId(source_id);
-  //     setTargetTemplateId(target_id);
-  //     setMappingSchema({mapping});
-  //   };
-  
-  //   fetchMapping();
-  // }, [templateMappingId]); // Assurez-vous que cette dépendance est nécessaire et correcte
-
   useEffect(() => {
-    if (!templateMappingId) {
-      setIsLoading(false);
-      return;
-    }
+    if (!templateMappingId) return;
 
     const fetchMapping = async () => {
       setIsLoading(true); // Commence le chargement
@@ -122,6 +104,13 @@ export const SectionsMappingProvider = ({ children }) => {
 
     fetchMapping();
   }, [templateMappingId]);
+
+  // useEffect(() => {
+  //   console.log('mappingSchema:', mappingSchema);
+  //   console.log('templateMappingId:', templateMappingId);
+  //   console.log('initialTemplateId:', initialTemplateId);
+  //   console.log('targetTemplateId:', targetTemplateId);
+  // });
   
   // --- End API logic ---
 

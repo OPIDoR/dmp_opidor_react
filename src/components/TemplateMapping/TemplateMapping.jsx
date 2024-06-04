@@ -5,6 +5,7 @@ import useSectionsMapping from "../../hooks/useSectionsMapping";
 import TemplateSelectorsContent from "../TemplateMappingComponents/TemplateSelectorsContent";
 import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
+import CustomSpinner from "../Shared/CustomSpinner";
 
 function TemplateMapping({ data, locale, mappingId }) {
   // --- STATE ---
@@ -16,6 +17,7 @@ function TemplateMapping({ data, locale, mappingId }) {
     targetTemplateId,
     templateMappingId, setTemplateMappingId,
     saveMapping,
+    isLoading,
   } = useSectionsMapping();
 
   const [mappingType, setMappingType] = useState('formToForm');
@@ -40,27 +42,31 @@ function TemplateMapping({ data, locale, mappingId }) {
     <>
       <h1>Template Mapping</h1>
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
-      <TemplateSelectorsContent
-        data={data}
-        mappingType={mappingType}
-        setMappingType={setMappingType}
-      />
-      <Mapper
-        mappingType={mappingType}
-      />
-      <div style={{
-        alignContent:"center",
-        display:"flex",
-        justifyContent:"center",
-        marginTop: "20px"
-      }}>
-        <CustomButton
-          title={templateMappingId ? "Save mapping" : "Create mapping"}
-          handleClick={saveMapping}
-          buttonColor="orange"
-        />
-      </div>
-      
+      {isLoading
+        ? <CustomSpinner />
+        : <>
+          <TemplateSelectorsContent
+            data={data}
+            mappingType={mappingType}
+            setMappingType={setMappingType}
+          />
+          <Mapper
+            mappingType={mappingType}
+          />
+          <div style={{
+            alignContent: "center",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px"
+          }}>
+            <CustomButton
+              title={templateMappingId ? "Save mapping" : "Create mapping"}
+              handleClick={saveMapping}
+              buttonColor="orange"
+            />
+          </div>
+        </>
+      }
     </>
   );
 }
