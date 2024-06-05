@@ -162,7 +162,7 @@ export const SectionsMappingProvider = ({ children }) => {
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema, insertInMappingSchema,
         handleInsert, setHandleInsert,
-        // getMappings, getMapping, newMapping, updateMapping, destroyMapping, 
+        getMappings, // getMapping, newMapping, updateMapping, destroyMapping, 
         saveMapping, deleteMapping,
         templateMappingId, setTemplateMappingId,
         isLoading,
