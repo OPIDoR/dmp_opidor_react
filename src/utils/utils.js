@@ -15,7 +15,7 @@ export function exists(data, list, keys) {
 }
 
 export function except(data, excludedKeys) {
-  const rest = {...data};
+  const rest = { ...data };
   excludedKeys.forEach(key => {
     delete rest[key];
   });
@@ -90,3 +90,7 @@ export function flattenObject(obj, prefix = '', result = {}) {
   }
   return result;
 }
+
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
