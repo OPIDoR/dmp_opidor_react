@@ -63,7 +63,7 @@ const TableList = ({ columns, defaultSortKey, onRowClick, dataCatcher }) => {
             {columns.map((column) => (
               <th key={column.key} onClick={() => requestSort(column.key)}>
                 {capitalizeFirstLetter(column.label)}
-                <i className={column.key === sortConfig.key ? sortConfig.icon : 'fas fa-sort'} aria-hidden="true" style={{ float: "right", fontSize: "1.2em" }}>
+                <i className={column.key === sortConfig.key ? sortConfig.icon : 'fas fa-sort'} aria-hidden="true" style={{ float: "right", fontSize: "1.2em", cursor: "pointer" }}>
                   <span className="screen-reader-text">
                     {`${column.label} ` + (column.key === sortConfig.key && sortConfig.direction === 'ascending' ? 'sorted ascending' : 'sorted descending')}
                   </span>

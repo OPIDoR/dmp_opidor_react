@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import TableList from '../TemplateMappingComponents/TableList';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
-import { format } from 'date-fns';
 
 function TemplateMappingsList() {
   const { getMappings } = useSectionsMapping();
@@ -12,7 +11,7 @@ function TemplateMappingsList() {
 
   const columns = [
     { key: 'id', label: 'ID' },
-    { key: 'type_mapping', label: 'Type Mapping' },
+    { key: 'type_mapping', label: 'Mapping Type' },
     { key: 'source_id', label: 'Source ID' },
     { key: 'target_id', label: 'Target ID' },
     { key: 'created_at', label: 'Created At', type: 'date' },
