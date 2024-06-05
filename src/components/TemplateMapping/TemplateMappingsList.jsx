@@ -6,19 +6,21 @@ import { capitalizeFirstLetter } from '../../utils/utils.js';
 function TemplateMappingsListLayout() {
   const [mappings, setMappings] = useState([]);
   const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: '',
-    icon: 'fas fa-sort'
+    key: 'id', // Définir une clé de tri par défaut
+    direction: 'ascending',
+    icon: 'fas fa-sort-up'
   });
 
   const { getMappings } = useSectionsMapping();
 
   useEffect(() => {
     getMappings()
-      .then(response => {
-        setMappings(response.data.mappings);
+     .then(response => {
+        const initialMappings = response.data.mappings;
+        setMappings(initialMappings);
+        sortArray(initialMappings, sortConfig.key, sortConfig.direction);
       })
-      .catch(error => {
+     .catch(error => {
         console.error('There was an error fetching the mappings:', error);
       });
   }, []);
@@ -34,15 +36,16 @@ function TemplateMappingsListLayout() {
       direction = 'descending';
       icon = 'fas fa-sort-down';
     } else if (sortConfig.key === key && sortConfig.direction === 'descending') {
-      direction = '';
-      icon = 'fas fa-sort';
+      direction = 'ascending'; // Retour à l'état sans tri
+      icon = 'fas fa-sort-up';
     }
     setSortConfig({ key, direction, icon });
-    sortArray(key, direction);
+    sortArray(mappings, key, direction);
   };
 
-  const sortArray = (key, direction) => {
-    let sortedMappings = [...mappings];
+  const sortArray = (data, key, direction) => {
+    if (!data.length) return; // Vérifie si les données sont chargées
+    let sortedMappings = [...data];
     if (direction !== '') {
       sortedMappings.sort((a, b) => {
         if (a[key] < b[key]) {
@@ -53,8 +56,6 @@ function TemplateMappingsListLayout() {
         }
         return 0;
       });
-    } else {
-      sortedMappings = [...mappings]; // Reset to original
     }
     setMappings(sortedMappings);
   };
