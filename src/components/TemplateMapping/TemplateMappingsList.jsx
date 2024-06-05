@@ -73,7 +73,7 @@ function TemplateMappingsListLayout() {
                   fontSize: "1.2em",
                 }}>
                   <span className="screen-reader-text">
-                    {/* TODO: screen reader text */}
+                    {`${key.replace('_', ' ')} ` + (key === sortConfig.key && sortConfig.direction === 'ascending' ? 'sorted ascending' : 'sorted descending')}
                   </span>
                 </i>
               </th>
