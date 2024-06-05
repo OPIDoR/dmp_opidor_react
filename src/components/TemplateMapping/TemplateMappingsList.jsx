@@ -3,7 +3,7 @@ import '../../i18n.js';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import { capitalizeFirstLetter } from '../../utils/utils.js';
 
-function TemplateMappingsListLayout() {
+function TemplateMappingsList() {
   const [mappings, setMappings] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     key: 'id', // Set a default sort key
@@ -97,4 +97,4 @@ function TemplateMappingsListLayout() {
   );
 }
 
-export default TemplateMappingsListLayout;
+export default TemplateMappingsList;
