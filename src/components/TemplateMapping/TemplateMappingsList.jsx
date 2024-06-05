@@ -6,7 +6,7 @@ import { capitalizeFirstLetter } from '../../utils/utils.js';
 function TemplateMappingsListLayout() {
   const [mappings, setMappings] = useState([]);
   const [sortConfig, setSortConfig] = useState({
-    key: 'id', // Définir une clé de tri par défaut
+    key: 'id', // Set a default sort key
     direction: 'ascending',
     icon: 'fas fa-sort-up'
   });
@@ -36,7 +36,7 @@ function TemplateMappingsListLayout() {
       direction = 'descending';
       icon = 'fas fa-sort-down';
     } else if (sortConfig.key === key && sortConfig.direction === 'descending') {
-      direction = 'ascending'; // Retour à l'état sans tri
+      direction = 'ascending'; // Back to no sort state
       icon = 'fas fa-sort-up';
     }
     setSortConfig({ key, direction, icon });
@@ -44,7 +44,7 @@ function TemplateMappingsListLayout() {
   };
 
   const sortArray = (data, key, direction) => {
-    if (!data.length) return; // Vérifie si les données sont chargées
+    if (!data.length) return; //  Checks if data is loaded
     let sortedMappings = [...data];
     if (direction !== '') {
       sortedMappings.sort((a, b) => {
