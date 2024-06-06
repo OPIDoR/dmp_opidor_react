@@ -24,25 +24,6 @@ function Mapper({ mappingType }) {
     padding: "0 1em",
   };
 
-  useEffect(() => {
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  });
-
-
-  const handleScroll = () => {
-    if (targetRef.current) {
-      const rect = targetRef.current.getBoundingClientRect();
-      const distanceFromTop = rect.top;
-      const calculatedHeight = `calc(100vh - ${distanceFromTop}px - 100px)`;
-      setHeight(calculatedHeight);
-    }
-  };
-
   return <div className="row" style={{
     height: height,
     maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
