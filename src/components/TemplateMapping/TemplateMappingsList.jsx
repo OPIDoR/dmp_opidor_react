@@ -1,5 +1,5 @@
 import React from 'react';
-import TableList from '../TemplateMappingComponents/TableList';
+import TableList from '../Shared/TableList.jsx';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 
 function TemplateMappingsList() {
