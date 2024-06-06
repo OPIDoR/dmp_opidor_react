@@ -8,7 +8,7 @@ import service from "../../services/service";
 import { GlobalContext } from "../context/Global";
 import CustomSelect from "../Shared/CustomSelect";
 
-function FormSelector({ className, selectedTemplateName, fragmentId, setFragment, setTemplate, formSelector }) {
+function FormSelector({ className, displayedTemplate, fragmentId, setFragment, setTemplate, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
@@ -25,12 +25,12 @@ function FormSelector({ className, selectedTemplateName, fragmentId, setFragment
       setFormSelector((prev) => ({ ...prev, [fragmentId]: data?.length > 1 }));
       data.forEach((template) => {
         setLoadedTemplates({ ...loadedTemplates, [template.name]: template.schema });
-        if (template.name === selectedTemplateName) setSelectedTemplate(template);
+        if (template.name === displayedTemplate.name) setSelectedTemplate(template);
       });
     })
     .catch(console.error)
     .finally(() => setLoading(false));
-  }, [className, selectedTemplateName])
+  }, [className, displayedTemplate])
 
 
   const handleSelectTemplate = (e) => {
