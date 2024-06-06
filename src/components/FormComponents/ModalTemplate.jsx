@@ -29,6 +29,7 @@ function ModalTemplate({
   header,
   templateId,
   readonly = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
@@ -160,6 +161,7 @@ function ModalTemplate({
             templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
+            isConst={isConst}
           ></FragmentList>
         )}
         {!readonly && (
