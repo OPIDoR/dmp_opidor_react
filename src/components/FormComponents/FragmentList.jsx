@@ -11,8 +11,10 @@ function FragmentList({
   parent = 'form',
   templateToString = [],
   tableHeader = null,
-  readonly = false
+  readonly = false,
+  isConst = false
 }) {
+  const edit = !readonly;
   return (
     <>
       {fragmentsList && (
@@ -39,26 +41,24 @@ function FragmentList({
                   ></td>
                   <td style={{ width: "200px" }}>
                     <div className={styles.table_container}>
-                      {!readonly && (
-                        <>
-                          {parent === 'form' && (
-                            <FaPenToSquare
-                              size={18}
-                              onClick={() => handleEdit(idx)}
-                              className={styles.icon}
-                            />
-                          )}
-                          <FaXmark
-                            onClick={(e) => handleDelete(idx)}
-                            size={18}
-                            className={styles.icon}
-                          />
-                        </>
+                      {parent === 'form' && edit && !isConst && (
+                        <FaPenToSquare
+                          size={18}
+                          onClick={() => handleEdit(idx)}
+                          className={styles.icon}
+                        />
                       )}
-                      {readonly && parent === 'form' && (
+                      {(isConst || readonly) && parent === 'form' && (
                         <FaEye
                           size={18}
                           onClick={() => handleEdit(idx)}
+                          className={styles.icon}
+                        />
+                      )}
+                      {(edit || (edit && isConst)) && (
+                        <FaXmark
+                          onClick={(e) => handleDelete(idx)}
+                          size={18}
                           className={styles.icon}
                         />
                       )}
