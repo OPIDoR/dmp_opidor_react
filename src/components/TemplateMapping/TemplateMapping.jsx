@@ -7,6 +7,7 @@ import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
 import CustomSpinner from "../Shared/CustomSpinner";
 import Swal from "sweetalert2";
+import { t } from "i18next";
 
 function TemplateMapping({ data, locale, mappingId }) {
   // --- STATE ---
@@ -61,7 +62,16 @@ function TemplateMapping({ data, locale, mappingId }) {
 
   return (
     <>
-      <h1>Template Mapping</h1>
+      <div className="row">
+        <div className="col-md-12">
+          <h1>
+            <a href="/super_admin/template_mappings"
+              className="btn btn-primary pull-right">{t('View all mappings')}</a>
+            {t(templateMappingId ? (`Edit Mapping ${templateMappingId}`) : 'New Mapping')}
+
+          </h1>
+        </div>
+      </div>
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       {isLoading
         ? <CustomSpinner />

@@ -1,6 +1,7 @@
 import React from 'react';
 import TableList from '../Shared/TableList.jsx';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
+import { t } from 'i18next';
 
 function TemplateMappingsList() {
   const { getMappings } = useSectionsMapping();
@@ -19,12 +20,23 @@ function TemplateMappingsList() {
   ];
 
   return (
-    <TableList
-      dataCatcher={getMappings}
-      columns={columns}
-      defaultSortKey="id"
-      onRowClick={handleRowClick}
-    />
+    <>
+      <div className="row">
+        <div className="col-md-12">
+          <h1>
+            {t('Template Mappings')}
+            <a href="/super_admin/template_mappings/new"
+              className="btn btn-primary pull-right">{t('New Mapping')}</a>
+          </h1>                                                                                                                                                    
+        </div>
+      </div>
+      <TableList
+        dataCatcher={getMappings}
+        columns={columns}
+        defaultSortKey="id"
+        onRowClick={handleRowClick}
+      />
+    </>
   );
 }
 
