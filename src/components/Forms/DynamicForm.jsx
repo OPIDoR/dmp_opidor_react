@@ -22,11 +22,9 @@ function DynamicForm({
   setScriptsData = null,
   questionId = null,
   madmpSchemaId = null,
-  setFragmentId = null,
-  setAnswerId = null,
+  setAnswer = null,
   formSelector = {},
   readonly,
-  fetchAnswersData = false,
 }) {
   const { t } = useTranslation();
   const {
@@ -35,8 +33,6 @@ function DynamicForm({
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
-    setQuestionsWithGuidance,
-    planData,
   } = useContext(GlobalContext);
   const methods = useForm({ defaultValues: formData });
   const [loading, setLoading] = useState(false);
@@ -48,52 +44,32 @@ function DynamicForm({
     setLoading(true);
     if (fragmentId) {
       if (formData[fragmentId]) {
-        if(loadedTemplates[formData[fragmentId].template_name]) {
+        if (loadedTemplates[formData[fragmentId].template_name]) {
           setTemplate(loadedTemplates[formData[fragmentId].template_name]);
         } else {
           service.getSchema(formData[fragmentId].schema_id).then((res) => {
             setTemplate(res.data);
             setExternalImports(template?.schema?.externalImports || {});
             setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
-          }).catch(console.error)
-            .finally(() => setLoading(false));
+          }).catch(console.error);
         }
         methods.reset(formData[fragmentId]);
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
-          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template.schema });
+          setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
           setFormData({ [fragmentId]: res.data.fragment });
           methods.reset(res.data.fragment);
-        }).catch(console.error)
-          .finally(() => setLoading(false));
+        }).catch(console.error);
       }
     } else {
-      service.createFragment(null, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
-        const updatedResearchOutput = { ...displayedResearchOutput };
-        setTemplate(res.data.template);
-        const fragment = res.data.fragment;
-        const template = res.data.template;
-        const answerId = res.data.answer_id
-        setLoadedTemplates({ ...loadedTemplates, [template.name]: template.schema });
-        setFormData({ [fragment.id]: fragment });
-        setFragmentId(fragment.id);
-        setAnswerId(answerId);
-        updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
-        setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
-      }).catch(console.error)
-        .finally(() => setLoading(false));
+      service.getSchema(madmpSchemaId).then((res) => {
+        setTemplate(res.data);
+        setExternalImports(template?.schema?.externalImports || {});
+        setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
+      }).catch(console.error);
     }
-
-    if(fetchAnswersData) {
-      writePlan.getPlanData(planData.id)
-        .then((res) => {
-          const { questions_with_guidance } = res.data;
-          setQuestionsWithGuidance(questions_with_guidance || []);
-        })
-        .catch(() => setQuestionsWithGuidance([]));
-      setLoading(false);
-    }
+    setLoading(false);
   }, [fragmentId]);
 
   useEffect(() => {
@@ -118,23 +94,39 @@ function DynamicForm({
    */
   const handleSaveForm = async (data) => {
     setLoading(true);
-
-    let response;
-    try {
-      response = await service.saveFragment(fragmentId, data);
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-      return setLoading(false);
+    if (fragmentId) {
+      let response;
+      try {
+        response = await service.saveFragment(fragmentId, data);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+        return setLoading(false);
+      }
+      if (response.data.plan_title) {
+        document.getElementById('plan-title').innerHTML = response.data.plan_title;
+      }
+      setFormData({ [fragmentId]: response.data.fragment });
+    } else {
+      handleSaveNew(data);
     }
-
-    if (response.data.plan_title) {
-      document.getElementById('plan-title').innerHTML = response.data.plan_title;
-    }
-
-    setFormData({ [fragmentId]: response.data.fragment });
 
     setLoading(false);
   };
+
+  const handleSaveNew = (data) => {
+    service.createFragment(data, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
+      const updatedResearchOutput = { ...displayedResearchOutput };
+      const fragment = res.data.fragment;
+      const template = res.data.template;
+      const answerId = res.data.answer_id
+      setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
+      setTemplate(template);
+      setFormData({ [fragment.id]: fragment });
+      setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: madmpSchemaId });
+      updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
+      setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
+    }).catch(console.error);
+  }
 
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
@@ -148,7 +140,7 @@ function DynamicForm({
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
           {!readonly && <FormSelector
             className={className}
-            selectedTemplateName={template.name}
+            displayedTemplate={template}
             fragmentId={fragmentId}
             setFragment={methods.reset}
             setTemplate={setTemplate}

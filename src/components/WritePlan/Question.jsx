@@ -17,6 +17,7 @@ import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
 
 function Question({
+  planId,
   question,
   questionIdx,
   sectionId,
@@ -24,16 +25,13 @@ function Question({
   readonly,
 }) {
   const {
-    planData,
     openedQuestions,
     setOpenedQuestions,
     displayedResearchOutput,
     questionsWithGuidance,
-    setUrlParams,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
-  const [fragmentId, setFragmentId] = useState(null);
-  const [answerId, setAnswerId] = useState(null);
+  const [answer, setAnswer] = useState({});
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
 
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
@@ -46,26 +44,18 @@ function Question({
   const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
   const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
 
-  const [currentResearchOutput, setCurrentResearchOutput] = useState(null);
-
   const { formSelectors } = useContext(GlobalContext);
 
   const { t } = useTranslation();
 
   useEffect(() => {
-    const answer = displayedResearchOutput?.answers?.find(
-      (answer) => question?.id === answer?.question_id
+    const ans = displayedResearchOutput?.answers?.find(
+      (a) => question?.id === a?.question_id
     );
-    setAnswerId(answer?.answer_id);
-    setFragmentId(answer?.fragment_id);
-
-    const queryParameters = new URLSearchParams(window.location.search);
-    setUrlParams({ research_output: queryParameters.get('research_output') });
-
-    setCurrentResearchOutput(Number.parseInt(queryParameters.get('research_output'), 10));
+    setAnswer(ans);
 
     handleIconClick(null, 'formSelector');
-  }, [displayedResearchOutput, question.id, currentResearchOutput]);
+  }, [displayedResearchOutput, question.id]);
 
   /**
    * Handles toggling the open/collapse state of a question.
@@ -92,9 +82,6 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
-
-    const queryParameters = new URLSearchParams(window.location.search);
-    setUrlParams({ research_output: queryParameters.get('research_output') });
 
     handleIconClick(null, 'formSelector');
   };
@@ -165,7 +152,7 @@ function Question({
    * @returns {boolean} True if the question is opened, false otherwise.
    */
   const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId] && (displayedResearchOutput.id === currentResearchOutput);
+    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId];
 
   return (
     <>
@@ -249,7 +236,7 @@ function Question({
                     </div>
                   )}
 
-                  {fragmentId && answerId && (
+                  {answer && (
                     <div>
                       <ReactTooltip
                         id="commentTip"
@@ -281,7 +268,7 @@ function Question({
                     </div>
                   )}
 
-                  {isQuestionOpened() && formSelectors[fragmentId] && (
+                  {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
                     <div>
                       <ReactTooltip
                         id="form-changer-show-button"
@@ -366,7 +353,7 @@ function Question({
             </Panel.Title>
           </Panel.Heading>
           <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
-            {isQuestionOpened() && (
+            {isQuestionOpened() && answer && (
               <div>
                 {!readonly && scriptsData.scripts.length > 0 && (
                   <RunsModal
@@ -374,16 +361,16 @@ function Question({
                     setshowModalRuns={setShowRunsModal}
                     setFillColorIconRuns={setFillRunsIconColor}
                     scriptsData={scriptsData}
-                    fragmentId={fragmentId}
+                    fragmentId={answer.fragment_id}
                   />
                 )}
                 <CommentModal
                   show={showCommentModal}
                   setshowModalComment={setShowCommentModal}
                   setFillColorIconComment={setFillCommentIconColor}
-                  answerId={answerId}
+                  answerId={answer.id}
                   researchOutputId={displayedResearchOutput.id}
-                  planId={planData.id}
+                  planId={planId}
                   questionId={question.id}
                   readonly={readonly}
                 />
@@ -392,44 +379,26 @@ function Question({
                   setShowGuidanceModal={setShowGuidanceModal}
                   setFillColorGuidanceIcon={setFillGuidanceIconColor}
                   questionId={questionId}
-                  planId={planData.id}
+                  planId={planId}
                 />)}
               </div>
             )}
             {isQuestionOpened() ? (
               <>
-                {fragmentId && answerId ? (
-                  <DynamicForm
-                    fragmentId={fragmentId}
-                    className={question?.madmp_schema?.classname}
-                    setScriptsData={setScriptsData}
-                    readonly={readonly}
-                    formSelector={{
-                      show: showFormSelectorModal,
-                      setShowFormSelectorModal,
-                      setFillFormSelectorIconColor,
-                    }}
-                    fetchAnswersData={true}
-                  />
-                ) : readonly ?
-                  (
-                    <Label bsStyle="primary">{t('Question not answered.')}</Label>
-                  ) :
+                {readonly && !answer.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
                   (<DynamicForm
-                    fragmentId={null}
+                    fragmentId={answer?.fragment_id}
                     className={question?.madmp_schema?.classname}
                     setScriptsData={setScriptsData}
                     questionId={question.id}
                     madmpSchemaId={question.madmp_schema?.id}
-                    setFragmentId={setFragmentId}
-                    setAnswerId={setAnswerId}
+                    setAnswer={setAnswer}
                     readonly={readonly}
                     formSelector={{
                       show: showFormSelectorModal,
                       setShowFormSelectorModal,
                       setFillFormSelectorIconColor,
                     }}
-                    fetchAnswersData={true}
                   />)
                 }
               </>
