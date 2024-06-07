@@ -83,10 +83,10 @@ const postImportProduct = async (planId, uuid) => {
  * @param id - The `id` parameter is the unique identifier of the research output that needs to be deleted.
  * @returns a Promise that resolves to the response object returned by the axios.delete() method.
  */
-const deleteResearchOutput = async (researchOutputId, planId) => {
+const deleteResearchOutput = async (researchOutputId) => {
   let response;
   try {
-    response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, { headers: createHeaders({}, true)});
+    response = await axios.delete(`/research_outputs/${researchOutputId}`, { headers: createHeaders({}, true)});
   } catch (error) {
     toast.error(getErrorMessage(error));
   }
