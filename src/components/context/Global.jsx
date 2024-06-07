@@ -43,7 +43,7 @@ function Global({ children }) {
   const [loadedTemplates, setLoadedTemplates] = useState({});
   // Write Plan
   const [loadedSectionsData, setLoadedSectionsData] = useState({});
-  const [researchOutputs, setResearchOutputs] = useState(null);
+  const [researchOutputs, setResearchOutputs] = useState([]);
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
   const [openedQuestions, setOpenedQuestions] = useState(null);
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);

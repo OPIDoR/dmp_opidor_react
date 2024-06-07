@@ -59,25 +59,27 @@ function WritePlan({
 
         const { research_outputs, questions_with_guidance } = res.data;
 
-        let currentResearchOutput = research_outputs?.[0];
-        if (researchOutputId) {
-          const researchOutput = research_outputs
-            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
-          if (researchOutput) {
-            currentResearchOutput = researchOutput;
+        if (research_outputs.length > 0) {
+          let currentResearchOutput = research_outputs[0];
+          if (researchOutputId) {
+            const researchOutput = research_outputs
+              .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+            if (researchOutput) {
+              currentResearchOutput = researchOutput;
+            }
           }
-        }
 
-        setDisplayedResearchOutput(currentResearchOutput);
-        setLoadedSectionsData({[currentResearchOutput.template.id]: currentResearchOutput.template})
-        !researchOutputs && setResearchOutputs(research_outputs);
+          setDisplayedResearchOutput(currentResearchOutput);
+          setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
+          researchOutputs.length === 0 && setResearchOutputs(research_outputs);
+        }
         setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
 
-      window.addEventListener("scroll", (e) => handleScroll(e));
+    window.addEventListener("scroll", (e) => handleScroll(e));
   }, [planId]);
 
   const handleScroll = () => {
@@ -86,7 +88,7 @@ function WritePlan({
 
     const sectionContent = document.querySelector('#sections-content');
     const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
-    if(!sectionContent) return;
+    if (!sectionContent) return;
 
     if (bottomRoNavBar >= bottomSectionContent) {
       sectionContent.style.borderBottomLeftRadius = '0';
@@ -105,12 +107,12 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      {!error && researchOutputs && researchOutputs.length > 0 && (
+      {!error && researchOutputs.length > 0 && (
         <>
           <div style={{ margin: '10px 30px 10px 30px' }}>
             <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
           </div>
-          <PlanInformations/>
+          <PlanInformations />
           <div className={styles.section}>
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
             <div className={styles.main}>
@@ -125,13 +127,13 @@ function WritePlan({
           </div>
         </>
       )}
-      {!loading && !error && researchOutputs?.length === 0 && (
+      {!loading && !error && researchOutputs.length === 0 && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Panel style={{ width: '700px' }}>
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} edit={false} />
+                <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} edit={false} />
               </div>
             </Panel.Body>
           </Panel>
