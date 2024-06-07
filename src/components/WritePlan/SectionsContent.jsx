@@ -106,7 +106,7 @@ function SectionsContent({ planId, templateId, readonly }) {
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
-        researchOutput.deleteResearchOutput(displayedResearchOutput.id, planId).then(({ data }) => {
+        researchOutput.deleteResearchOutput(displayedResearchOutput.id).then(({ data }) => {
           setResearchOutputs(data.research_outputs);
 
           const updatedOpenedQuestions = { ...openedQuestions };
