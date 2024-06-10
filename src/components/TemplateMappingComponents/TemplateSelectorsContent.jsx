@@ -3,6 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import TemplateSelector from "./TemplateSelector";
 import { TemplateProvider } from "../context/TemplateContext";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
+import InputText from "../FormComponents/InputText";
 
 export function TemplateSelectorsContent({ data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
@@ -21,7 +22,9 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
   return <div className="row">
     <FormProvider {...methods}>
       <TemplateProvider>
+        {/* <InputText label="Mapping Name" propName="templateMappingName" hidden={false} /> */}
         <div className="col-md-12">
+          <InputText label="Mapping Name" propName="templateMappingName" hidden={false} disableMapping />
           <TemplateSelector
             label="Mapping Type"
             propName="mappingType"

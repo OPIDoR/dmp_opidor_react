@@ -22,6 +22,7 @@ function InputText({
   readonly = false,
   min,
   jsonPath = null,
+  disableMapping = false,
 }) {
   const { mapping } = useSectionsMapping();
   const { register } = useFormContext();
@@ -49,7 +50,7 @@ function InputText({
         </div>
       )}
       <div>
-        {!mapping &&
+        {(!mapping || disableMapping) &&
           <input
             {...register(propName, {
               valueAsNumber: type === 'number'
@@ -62,7 +63,7 @@ function InputText({
             min={min}
           />
         }
-        <MappingButton path={jsonPath} label={label}/>
+        {!disableMapping && <MappingButton path={jsonPath} label={label}/> }
       </div>
     </div>
   );

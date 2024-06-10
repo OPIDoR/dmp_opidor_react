@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
 import useTemplate from '../../hooks/useTemplate.js';
+import * as styles from '../assets/css/form.module.css';
 
 function TemplateSelector({
   label,
@@ -55,7 +56,8 @@ function TemplateSelector({
 
   return (
     <div className="form-group">
-      <label>{label}</label>
+      <strong className={styles.dot_label}></strong>
+      <label className={styles.label_form}>{label}</label>
       {tooltip && <p>{tooltip}</p>}
       <CustomSelect
         propName={propName}
