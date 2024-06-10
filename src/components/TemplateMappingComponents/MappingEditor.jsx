@@ -56,13 +56,13 @@ const MappingEditor = forwardRef(({
       }
     };
 
-    if (editor) {
+    if (editor && editorRef.on) {
       editor.on('change', handleChange);
       editor.on('keydown', handleKeyDown);
     }
 
     return () => {
-      if (editor) {
+      if (editor && editorRef.off) {
         editor.off('change', handleChange);
         editor.off('keydown', handleKeyDown);
       }

@@ -32,7 +32,6 @@ function Question({
     questionsWithGuidance,
     setUrlParams,
     formSelectors,
-    formData,
   } = useContext(GlobalContext);
 
   const {
@@ -59,11 +58,10 @@ function Question({
   const {
     mapping,
     forms,
-    setEditorRef,
+    setEditorRef, 
     USAGE_TARGET,
     DEFAULT_REF,
     setCurrentlyOpenedQuestion,
-    mappingSchema,
   } = useSectionsMapping();
 
   const currentEditorRef = useRef(null);
@@ -114,7 +112,7 @@ function Question({
 
     if (forms[id]?.usage === USAGE_TARGET) {
       setEditorRef(expanded ? currentEditorRef : DEFAULT_REF);
-      setCurrentlyOpenedQuestion(expanded 
+      setCurrentlyOpenedQuestion(expanded
         ? questionId
         : null
       );
@@ -254,13 +252,13 @@ function Question({
           />
         ) : (
           <>
-          <MappingEditor
-            ref={currentEditorRef}
-            label="Edit Export Template"
-            questionId={questionId}
-          />
-          <p>{question.id}</p>
-          <p>{questionId}</p>
+            {forms[id].usage === USAGE_TARGET &&
+              <MappingEditor
+                ref={currentEditorRef}
+                label="Edit Export Template"
+                questionId={questionId}
+              />
+            }
           </>
         )
         }
