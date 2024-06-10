@@ -11,6 +11,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const enableMapping = () => setMapping(true);
   const [isLoading, setIsLoading] = useState(true);
   const [templateMappingId, setTemplateMappingId] = useState(null);
+  const [templateMappingName, setTemplateMappingName] = useState("Mapping");
   // --- End Mapping logic ---
 
   // --- Mapping Type logic ---
@@ -162,24 +163,43 @@ export const SectionsMappingProvider = ({ children }) => {
   return (
     <SectionsMappingContext.Provider
       value={{
+        // --- Mapping logic ---
         mapping, setMapping, enableMapping,
-        editorRef, setEditorRef,
-        currentlyOpenedQuestion, setCurrentlyOpenedQuestion,
+        templateMappingId, setTemplateMappingId,
+        templateMappingName, setTemplateMappingName,
+        isLoading,
+        // --- End Mapping logic ---
+        
+        // --- JSON path logic ---
         buildJsonPath,
+        // --- End JSON path logic ---
+
+        // --- Forms properties logic ---
         forms, setIsStructuredModel, setIsHiddenQuestionsFields, setUsage,
+        // --- End Forms properties logic ---
+
+        // --- Editor logic ---
+        editorRef, setEditorRef,
         USAGE_INITIAL, USAGE_TARGET,
         DEFAULT_REF,
+        currentlyOpenedQuestion, setCurrentlyOpenedQuestion,
+        handleInsert, setHandleInsert,
+        // --- End Editor logic ---
+
+        // --- Mapping schema logic ---
         initialTemplateId, setInitialTemplateId,
         targetTemplateId, setTargetTemplateId,
         mappingSchema, setMappingSchema, insertInMappingSchema,
-        handleInsert, setHandleInsert,
+        // --- End Mapping schema logic ---
+
+        // --- API logic ---
         getMappings, // getMapping, newMapping, updateMapping, destroyMapping, 
         saveMapping, deleteMapping,
-        templateMappingId, setTemplateMappingId,
-        isLoading,
+        // --- End API logic ---
+
         // --- Mapping Type logic ---
         TYPE_FORM, TYPE_JSON,
-        mappingType, setMappingType
+        mappingType, setMappingType,
         // --- End Mapping Type logic ---
       }}
     >
