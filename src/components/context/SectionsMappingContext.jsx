@@ -54,24 +54,29 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- End Mapping schema logic ---
 
   // --- API logic ---
-  const getMappings = async () => axios.get(`/dmp_mapping`);
-  const getMapping = async (id) => axios.get(`/dmp_mapping/${id}`);
-  const newMapping = async (data) => axios.post(`/dmp_mapping`, data);
+  const MAPPING_URL = '/super_admin/template_mappings';
+  const MAPPING_OPTIONS = { headers: { 'Accept': 'application/json' } };
+  
+  const getMappings = async () => axios.get(MAPPING_URL, MAPPING_OPTIONS);
+  const getMapping = async (id) => axios.get(`${MAPPING_URL}/${id}`);
+  const newMapping = async (data) => axios.post(MAPPING_URL, data);
 
-  const updateMapping = async (data) => axios.put(`/dmp_mapping/${templateMappingId}`, data);
-  const destroyMapping = async (id) => axios.delete(`/dmp_mapping/${id}`);
+  const updateMapping = async (data) => axios.put(`${MAPPING_URL}/${templateMappingId}`, data);
+  const destroyMapping = async (id) => axios.delete(`${MAPPING_URL}/${id}`);
 
   /**
    * Save the current mapping
    * If the mapping is new, redirect to the edit page
    */
   const saveMapping = async () => {
+    // console.log(mappingSchema.mapping);
     const data = {
       dmp_mapping: {
         mapping: mappingSchema.mapping,
         source_id: initialTemplateId,
         target_id: targetTemplateId,
         type_mapping: "form",
+        name: "Mapping"
       }
     };
 
