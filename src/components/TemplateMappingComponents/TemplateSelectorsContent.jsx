@@ -11,6 +11,7 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
     initialTemplateId, setInitialTemplateId,
     targetTemplateId, setTargetTemplateId,
     templateMappingId,
+    TYPE_FORM, TYPE_JSON,
   } = useSectionsMapping();
 
   useEffect(() => {
@@ -26,8 +27,8 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
             propName="mappingType"
             defaultValue={initialTemplateId}
             data={[
-              { value: 'formToForm', label: 'Form To Form' },
-              { value: 'formToJson', label: 'Form To JSON' },
+              TYPE_FORM,
+              TYPE_JSON,
             ]}
             onTemplateChange={setMappingType}
             readonly={templateMappingId}

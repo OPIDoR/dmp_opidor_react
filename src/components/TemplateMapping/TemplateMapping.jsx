@@ -20,9 +20,8 @@ function TemplateMapping({ data, locale, mappingId }) {
     templateMappingId, setTemplateMappingId,
     saveMapping, deleteMapping,
     isLoading,
+    mappingType, setMappingType
   } = useSectionsMapping();
-
-  const [mappingType, setMappingType] = useState('formToForm');
 
   // --- EFFECTS ---
   useEffect(() => {

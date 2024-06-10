@@ -13,6 +13,12 @@ export const SectionsMappingProvider = ({ children }) => {
   const [templateMappingId, setTemplateMappingId] = useState(null);
   // --- End Mapping logic ---
 
+  // --- Mapping Type logic ---
+  const TYPE_FORM = { value: 'formToForm', label: 'Form To Form' };
+  const TYPE_JSON = { value: 'formToJson', label: 'Form To JSON' };
+  const [mappingType, setMappingType] = useState(TYPE_FORM.value);
+  // --- End Mapping Type logic ---
+
   // --- Editor logic ---
   const DEFAULT_REF = useRef(null);
   const [editorRef, setEditorRef] = useState(DEFAULT_REF);
@@ -56,7 +62,7 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- API logic ---
   const MAPPING_URL = '/super_admin/template_mappings';
   const MAPPING_OPTIONS = { headers: { 'Accept': 'application/json' } };
-  
+
   const getMappings = async () => axios.get(MAPPING_URL, MAPPING_OPTIONS);
   const getMapping = async (id) => axios.get(`${MAPPING_URL}/${id}`);
   const newMapping = async (data) => axios.post(MAPPING_URL, data);
@@ -171,6 +177,10 @@ export const SectionsMappingProvider = ({ children }) => {
         saveMapping, deleteMapping,
         templateMappingId, setTemplateMappingId,
         isLoading,
+        // --- Mapping Type logic ---
+        TYPE_FORM, TYPE_JSON,
+        mappingType, setMappingType
+        // --- End Mapping Type logic ---
       }}
     >
       {children}
