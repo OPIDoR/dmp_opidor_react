@@ -42,9 +42,9 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
             <Tab eventKey={"create"} title={t("Create")}>
               <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
             </Tab>
-            {/* <Tab eventKey="import" title={t("Import")}>
+            <Tab eventKey="import" title={t("Import")}>
               <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />
-            </Tab> */}
+            </Tab>
           </Tabs>
         )}
       </Modal.Body>
