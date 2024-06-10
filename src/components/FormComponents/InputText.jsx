@@ -23,11 +23,20 @@ function InputText({
   min,
   jsonPath = null,
   disableMapping = false,
+  onChange,
 }) {
   const { mapping } = useSectionsMapping();
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
   const [isRequired] = useState(false);
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setValue(propName, newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
 
   return (
     <div className="form-group">
@@ -35,22 +44,20 @@ function InputText({
         <div className={styles.label_form}>
           <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipedLabelId}>{label}</label>
-          {
-            tooltip && (
-              <ReactTooltip
-                id={tooltipedLabelId}
-                place="bottom"
-                effect="solid"
-                variant="info"
-                style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
-            )
-          }
+          {tooltip && (
+            <ReactTooltip
+              id={tooltipedLabelId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              style={{ width: '300px', textAlign: 'center' }}
+              content={tooltip}
+            />
+          )}
         </div>
       )}
       <div>
-        {(!mapping || disableMapping) &&
+        {(!mapping || disableMapping) && (
           <input
             {...register(propName, {
               valueAsNumber: type === 'number'
@@ -61,11 +68,13 @@ function InputText({
             placeholder={placeholder}
             readOnly={readonly === true}
             min={min}
+            onChange={handleChange}
           />
-        }
+        )}
         {!disableMapping && <MappingButton path={jsonPath} label={label}/> }
       </div>
     </div>
   );
 }
+
 export default InputText;

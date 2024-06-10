@@ -5,13 +5,14 @@ import { TemplateProvider } from "../context/TemplateContext";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import InputText from "../FormComponents/InputText";
 
-export function TemplateSelectorsContent({ data, mappingType, setMappingType }) {
+export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
 
   const {
     initialTemplateId, setInitialTemplateId,
     targetTemplateId, setTargetTemplateId,
-    templateMappingId,
+    templateMappingId, 
+    templateMappingName, setTemplateMappingName,
     TYPE_FORM, TYPE_JSON,
   } = useSectionsMapping();
 
@@ -22,9 +23,14 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
   return <div className="row">
     <FormProvider {...methods}>
       <TemplateProvider>
-        {/* <InputText label="Mapping Name" propName="templateMappingName" hidden={false} /> */}
         <div className="col-md-12">
-          <InputText label="Mapping Name" propName="templateMappingName" hidden={false} disableMapping />
+          <InputText 
+            label="Mapping Name" 
+            propName="templateMappingName" 
+            hidden={false} 
+            disableMapping 
+            defaultValue={templateMappingName} 
+            onChange={(value) => setTemplateMappingName(value)}/>
           <TemplateSelector
             label="Mapping Type"
             propName="mappingType"
@@ -62,4 +68,4 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
   </div>;
 }
 
-export default TemplateSelectorsContent;
+export default MappingPropertiesForm;

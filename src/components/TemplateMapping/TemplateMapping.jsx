@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
-import TemplateSelectorsContent from "../TemplateMappingComponents/TemplateSelectorsContent";
+import MappingPropertiesForm from "../TemplateMappingComponents/MappingPropertiesForm";
 import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
 import CustomSpinner from "../Shared/CustomSpinner";
@@ -75,7 +75,7 @@ function TemplateMapping({ data, locale, mappingId }) {
       {isLoading
         ? <CustomSpinner />
         : <>
-          <TemplateSelectorsContent
+          <MappingPropertiesForm
             data={data}
             mappingType={mappingType}
             setMappingType={setMappingType}
