@@ -11,6 +11,7 @@ function Mapper({ mappingType }) {
     editorRef,
     initialTemplateId, 
     targetTemplateId,
+    TYPE_FORM,
   } = useSectionsMapping();
 
   const INNER_SCROLLING_DEFAULT_HEIGHT = "calc(100vh - 100px)";
@@ -37,7 +38,7 @@ function Mapper({ mappingType }) {
     </div>
     <div ref={targetRef} className="col-md-6">
       <TemplateProvider>
-        {mappingType === 'formToForm'
+        {mappingType === TYPE_FORM.value
           ?
           <div style={{ ...innerScrollingFormsStyle, right: "0" }}>
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />

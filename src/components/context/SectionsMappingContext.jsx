@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
-import useTemplate from '../../hooks/useTemplate';
 import axios from '../../utils/AxiosClient';
 
 export const SectionsMappingContext = createContext();
@@ -15,8 +14,8 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- End Mapping logic ---
 
   // --- Mapping Type logic ---
-  const TYPE_FORM = { value: 'formToForm', label: 'Form To Form' };
-  const TYPE_JSON = { value: 'formToJson', label: 'Form To JSON' };
+  const TYPE_FORM = { value: 'form', label: 'Form To Form' };
+  const TYPE_JSON = { value: 'json', label: 'Form To JSON' };
   const [mappingType, setMappingType] = useState(TYPE_FORM.value);
   // --- End Mapping Type logic ---
 
@@ -82,8 +81,8 @@ export const SectionsMappingProvider = ({ children }) => {
         mapping: mappingSchema.mapping,
         source_id: initialTemplateId,
         target_id: targetTemplateId,
-        type_mapping: "form",
-        name: "Mapping"
+        type_mapping: mappingType,
+        name: templateMappingName
       }
     };
 
@@ -127,6 +126,8 @@ export const SectionsMappingProvider = ({ children }) => {
         setInitialTemplateId(source_id);
         setTargetTemplateId(target_id);
         setMappingSchema({ mapping });
+        setMappingType(res.data.type_mapping);
+        setTemplateMappingName(res.data.name);
       } catch (error) {
         console.error('Failed to fetch mapping:', error);
       }
