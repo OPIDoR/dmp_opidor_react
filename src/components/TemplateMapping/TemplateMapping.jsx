@@ -81,9 +81,11 @@ function TemplateMapping({ data, locale, mappingId }) {
             mappingType={mappingType}
             setMappingType={setMappingType}
           />
-          <Mapper
-            mappingType={mappingType}
-          />
+          {templateMappingId && (
+            <Mapper
+              mappingType={mappingType}
+            />
+          )}
           <div style={{
             alignContent: "center",
             display: "flex",
@@ -96,19 +98,21 @@ function TemplateMapping({ data, locale, mappingId }) {
               buttonColor="orange"
             />
           </div>
-          <div>
-            <h3 style={{
-              color: "red",
-              marginTop: "20px",
-              fontSize: "2rem",
-              fontWeight: "bold",
-            }}>Danger zone</h3>
-            <CustomButton
-              title="⚠ Delete mapping"
-              handleClick={handleDeleteMapping}
-              buttonColor="red"
-            />
-          </div>
+          {templateMappingId && (
+            <div>
+              <h3 style={{
+                color: "red",
+                marginTop: "20px",
+                fontSize: "2rem",
+                fontWeight: "bold",
+              }}>Danger zone</h3>
+              <CustomButton
+                title="⚠ Delete mapping"
+                handleClick={handleDeleteMapping}
+                buttonColor="red"
+              />
+            </div>
+          )}
         </>
       }
     </>

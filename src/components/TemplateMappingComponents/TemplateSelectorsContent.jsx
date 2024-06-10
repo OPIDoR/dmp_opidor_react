@@ -10,6 +10,7 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
   const {
     initialTemplateId, setInitialTemplateId,
     targetTemplateId, setTargetTemplateId,
+    templateMappingId,
   } = useSectionsMapping();
 
   useEffect(() => {
@@ -29,25 +30,28 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
               { value: 'formToJson', label: 'Form To JSON' },
             ]}
             onTemplateChange={setMappingType}
+            readonly={templateMappingId}
           />
         </div>
         <div className="col-md-6">
-          {/* <h2>Initial Template</h2> */}
           <TemplateSelector
             label="Initial Template"
             propName="structuredTemplateId"
             defaultValue={initialTemplateId}
             requestParams="?type=structured"
-            onTemplateChange={setInitialTemplateId} />
+            onTemplateChange={setInitialTemplateId}
+            readonly={templateMappingId}
+          />
         </div>
         <div className="col-md-6">
-          {/* <h2>Target Template</h2> */}
           <TemplateSelector
             label="Target Template"
             propName="classicTemplateId"
             defaultValue={targetTemplateId}
             requestParams={"?type=classic"}
-            onTemplateChange={setTargetTemplateId} />
+            onTemplateChange={setTargetTemplateId}
+            readonly={templateMappingId}
+          />
         </div>
       </TemplateProvider>
     </FormProvider>
