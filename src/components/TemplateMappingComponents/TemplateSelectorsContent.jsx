@@ -20,7 +20,7 @@ export function TemplateSelectorsContent({ data, mappingType, setMappingType }) 
   return <div className="row">
     <FormProvider {...methods}>
       <TemplateProvider>
-        <div>
+        <div className="col-md-12">
           <TemplateSelector
             label="Mapping Type"
             propName="mappingType"
