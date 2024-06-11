@@ -87,7 +87,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
                   </button>
                   <ul className="dropdown-menu" aria-labelledby={`action-${item.id}`}>
                     {actions.map(action => (
-                      <li key={action.label}><a href="#" onClick={() => action.action(item.id)}>{action.label}</a></li>
+                      <li key={action.label}><a onClick={() => action.action(item.id)} style={{ cursor: 'pointer' }}>{action.label}</a></li>
                     ))}
                   </ul>
                 </div>
