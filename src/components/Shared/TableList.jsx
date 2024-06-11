@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/utils.js';
 
-const TableList = ({ columns, defaultSortKey, onRowClick, dataCatcher }) => {
+const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }) => {
   const [data, setData] = useState([]);
 
   const [sortConfig, setSortConfig] = useState({
@@ -71,14 +71,27 @@ const TableList = ({ columns, defaultSortKey, onRowClick, dataCatcher }) => {
                 </i>
               </th>
             ))}
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {data.map(item => (
-            <tr key={item.id} onClick={() => onRowClick(item.id)} style={{ cursor: 'pointer' }}>
+            <tr key={item.id} onClick={() => onRowClick && onRowClick(item.id)} style={{ cursor: onRowClick ? 'pointer' : 'initial' }}>
               {columns.map(column => (
                 <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter)}</td>
               ))}
+              <td>
+                <div className="dropdown">
+                  <button className="btn btn-link dropdown-toggle" type="button" id={`action-${item.id}`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions<span className="caret"></span>
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby={`action-${item.id}`}>
+                    {actions.map(action => (
+                      <li key={action.label}><a href="#" onClick={() => action.action(item.id)}>{action.label}</a></li>
+                    ))}
+                  </ul>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>

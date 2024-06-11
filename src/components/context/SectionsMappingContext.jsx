@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 import axios from '../../utils/AxiosClient';
+import { t } from 'i18next';
 
 export const SectionsMappingContext = createContext();
 
@@ -103,11 +104,46 @@ export const SectionsMappingProvider = ({ children }) => {
   /**
    * Delete the current mapping and redirect to the index page
    */
-  const deleteMapping = async () => {
-    if (!templateMappingId) return;
-    await destroyMapping(templateMappingId);
+  const deleteMapping = async (id) => {
+    if (!id && !templateMappingId) return;
+    await destroyMapping(id || templateMappingId);
     window.location.href = '/super_admin/template_mappings';
   }
+
+  const duplicateMapping = async (id) => {
+    const originalMappingData = await getMapping(id);
+    const data = {
+      dmp_mapping: {
+        mapping: originalMappingData.data.mapping,
+        source_id: originalMappingData.data.source_id,
+        target_id: originalMappingData.data.target_id,
+        type_mapping: originalMappingData.data.type_mapping,
+        name: `${originalMappingData.data.name} (${t('copy')})`
+      }
+    };
+    const res = await newMapping(data);
+    if (res?.data?.id)
+      window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
+    else
+      console.error('Redirection error:', res);
+  }
+
+  const fetchMapping = async () => {
+    try {
+      const res = await getMapping(templateMappingId);
+      console.log("data: ", res.data);
+      const { source_id, target_id, mapping } = res.data;
+      console.log("data: ", res.data);
+      setInitialTemplateId(source_id);
+      setTargetTemplateId(target_id);
+      setMappingSchema({ mapping });
+      setMappingType(res.data.type_mapping);
+      setTemplateMappingName(res.data.name);
+    } catch (error) {
+      console.error('Failed to fetch mapping:', error);
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     if (!mapping) return;
@@ -116,23 +152,6 @@ export const SectionsMappingProvider = ({ children }) => {
       setIsLoading(false);
       return;
     }
-
-    const fetchMapping = async () => {
-      try {
-        const res = await getMapping(templateMappingId);
-        console.log("data: ", res.data);
-        const { source_id, target_id, mapping } = res.data;
-        console.log("data: ", res.data);
-        setInitialTemplateId(source_id);
-        setTargetTemplateId(target_id);
-        setMappingSchema({ mapping });
-        setMappingType(res.data.type_mapping);
-        setTemplateMappingName(res.data.name);
-      } catch (error) {
-        console.error('Failed to fetch mapping:', error);
-      }
-      setIsLoading(false);
-    };
 
     fetchMapping();
   }, [templateMappingId]);
@@ -195,7 +214,7 @@ export const SectionsMappingProvider = ({ children }) => {
 
         // --- API logic ---
         getMappings, // getMapping, newMapping, updateMapping, destroyMapping, 
-        saveMapping, deleteMapping,
+        saveMapping, deleteMapping, duplicateMapping,
         // --- End API logic ---
 
         // --- Mapping Type logic ---

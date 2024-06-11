@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import useTemplate from '../../hooks/useTemplate.js';
 
 function TemplateMappingsList() {
-  const { getMappings } = useSectionsMapping();
+  const { getMappings, duplicateMapping, deleteMapping } = useSectionsMapping();
   const { getSectionsData } = useTemplate();
   const [sections, setSections] = useState([]);
 
@@ -19,10 +19,6 @@ function TemplateMappingsList() {
     });
   }, []);
 
-  const handleRowClick = (id) => {
-    window.location.href = `/super_admin/template_mappings/${id}/edit`;
-  };
-
   const columns = [
     { key: 'id', label: 'ID' },
     { key: 'name', label: 'Name'},
@@ -32,6 +28,12 @@ function TemplateMappingsList() {
     { key: 'created_at', label: 'Created At', type: 'date' },
     { key: 'updated_at', label: 'Updated At', type: 'date' }
   ];
+
+  const actions = [
+    { label: t('Duplicate'), action: (id) => duplicateMapping(id) },
+    { label: t('Edit'), action: (id) => window.location.href = `/super_admin/template_mappings/${id}/edit` },
+    { label: t('Delete'), action: (id) => deleteMapping(id) }
+  ];  
 
   return (
     <>
@@ -47,8 +49,8 @@ function TemplateMappingsList() {
       <TableList
         dataCatcher={getMappings}
         columns={columns}
+        actions={actions}
         defaultSortKey="created_at"
-        onRowClick={handleRowClick}
       />
     </>
   );
