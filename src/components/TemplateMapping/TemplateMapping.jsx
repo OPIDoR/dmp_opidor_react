@@ -6,7 +6,6 @@ import MappingPropertiesForm from "../TemplateMappingComponents/MappingPropertie
 import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
 import CustomSpinner from "../Shared/CustomSpinner";
-import Swal from "sweetalert2";
 import { t } from "i18next";
 
 function TemplateMapping({ data, locale, mappingId }) {
@@ -37,27 +36,6 @@ function TemplateMapping({ data, locale, mappingId }) {
   useEffect(() => {
     setTemplateMappingId(mappingId);
   }, [mappingId]);
-
-  const handleDeleteMapping = () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteMapping();
-        Swal.fire(
-          'Deleted!',
-          'Your mapping has been deleted.',
-          'success'
-        )
-      }
-    });
-  };
 
   return (
     <>
@@ -107,7 +85,7 @@ function TemplateMapping({ data, locale, mappingId }) {
               }}>Danger zone</h3>
               <CustomButton
                 title="⚠ Delete mapping"
-                handleClick={handleDeleteMapping}
+                handleClick={deleteMapping}
                 buttonColor="red"
               />
             </div>

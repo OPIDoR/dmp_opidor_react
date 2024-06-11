@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 import axios from '../../utils/AxiosClient';
 import { t } from 'i18next';
+import Swal from "sweetalert2";
 
 export const SectionsMappingContext = createContext();
 
@@ -76,7 +77,6 @@ export const SectionsMappingProvider = ({ children }) => {
    * If the mapping is new, redirect to the edit page
    */
   const saveMapping = async () => {
-    // console.log(mappingSchema.mapping);
     const data = {
       dmp_mapping: {
         mapping: mappingSchema.mapping,
@@ -104,9 +104,13 @@ export const SectionsMappingProvider = ({ children }) => {
   /**
    * Delete the current mapping and redirect to the index page
    */
-  const deleteMapping = async (id) => {
+  const deleteMapping = async ({id}) => {
     if (!id && !templateMappingId) return;
+    const res = await areYouSureModal();
+    if (!res.isConfirmed) return;
     await destroyMapping(id || templateMappingId);
+    confirmationModal();
+
     window.location.href = '/super_admin/template_mappings';
   }
 
@@ -180,6 +184,35 @@ export const SectionsMappingProvider = ({ children }) => {
   }
   // --- End JSON path logic ---
 
+  // --- Alerts logic ---
+  const areYouSureModal = async () => {
+    return Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+    // .then((result) => {
+    //   if (result.isConfirmed) {
+    //     deleteMapping();
+    //     confirmationModal();
+    //   }
+    // });
+  };
+
+  const confirmationModal = async () => {
+    return Swal.fire(
+      'Deleted!',
+      'Your mapping has been deleted.',
+      'success'
+    );
+  }
+
+  // --- End Alerts logic ---
+
   return (
     <SectionsMappingContext.Provider
       value={{
@@ -189,7 +222,7 @@ export const SectionsMappingProvider = ({ children }) => {
         templateMappingName, setTemplateMappingName,
         isLoading,
         // --- End Mapping logic ---
-        
+
         // --- JSON path logic ---
         buildJsonPath,
         // --- End JSON path logic ---
