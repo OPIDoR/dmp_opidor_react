@@ -25,14 +25,14 @@ export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
       <TemplateProvider>
         <div className="col-md-12">
           <InputText 
-            label="Mapping Name" 
+            label="Name" 
             propName="templateMappingName" 
             hidden={false} 
             disableMapping 
             defaultValue={templateMappingName} 
             onChange={(value) => setTemplateMappingName(value)}/>
           <TemplateSelector
-            label="Mapping Type"
+            label="Type"
             propName="mappingType"
             defaultValue={initialTemplateId}
             data={[

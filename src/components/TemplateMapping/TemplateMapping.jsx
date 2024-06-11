@@ -19,7 +19,8 @@ function TemplateMapping({ data, locale, mappingId }) {
     templateMappingId, setTemplateMappingId,
     saveMapping, deleteMapping,
     isLoading,
-    mappingType, setMappingType
+    mappingType, setMappingType,
+    templateMappingName,
   } = useSectionsMapping();
 
   // --- EFFECTS ---
@@ -44,7 +45,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           <h1>
             <a href="/super_admin/template_mappings"
               className="btn btn-primary pull-right">{t('View all mappings')}</a>
-            {t(templateMappingId ? (`Edit Mapping ${templateMappingId}`) : 'New Mapping')}
+            {t(templateMappingId ? (`${templateMappingName !== '' ? `${t('Edit')} \"${templateMappingName}\"` : "Please enter a valid name"}`) : 'New Mapping')}
 
           </h1>
         </div>

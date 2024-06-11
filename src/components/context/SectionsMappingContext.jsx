@@ -12,7 +12,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const enableMapping = () => setMapping(true);
   const [isLoading, setIsLoading] = useState(true);
   const [templateMappingId, setTemplateMappingId] = useState(null);
-  const [templateMappingName, setTemplateMappingName] = useState("Mapping");
+  const [templateMappingName, setTemplateMappingName] = useState(t('New Mapping'));
   // --- End Mapping logic ---
 
   // --- Mapping Type logic ---
