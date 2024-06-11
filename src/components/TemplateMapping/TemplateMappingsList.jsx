@@ -25,7 +25,8 @@ function TemplateMappingsList() {
 
   const columns = [
     { key: 'id', label: 'ID' },
-    { key: 'type_mapping', label: 'Mapping Type' },
+    { key: 'name', label: 'Name'},
+    { key: 'type_mapping', label: 'Type' },
     { key: 'source_id', label: 'Source', formatter: (id) => sections[id] || id },
     { key: 'target_id', label: 'Target', formatter: (id) => sections[id] || id },
     { key: 'created_at', label: 'Created At', type: 'date' },
@@ -46,7 +47,7 @@ function TemplateMappingsList() {
       <TableList
         dataCatcher={getMappings}
         columns={columns}
-        defaultSortKey="id"
+        defaultSortKey="created_at"
         onRowClick={handleRowClick}
       />
     </>
