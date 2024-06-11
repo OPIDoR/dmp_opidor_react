@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
@@ -43,6 +44,11 @@ function Section({ section, readonly }) {
       <p className={styles.title}>
         {section.number}. {section.title}
       </p>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize([section.description]),
+        }}
+      />
       <div className="column">
         <div className={styles.collapse_title}>
           <button
@@ -72,21 +78,23 @@ function Section({ section, readonly }) {
           </button>
         </div>
       </div>
-      {section.questions.filter((question) => {
-        if (question?.madmp_schema?.classname === 'personal_data_issues') {
-          return displayedResearchOutput.hasPersonalData;
-        }
-        return true;
-      }).map((question, idx) => (
-        <Question
-          key={question.id}
-          question={question}
-          questionIdx={(idx + 1)}
-          sectionId={sectionId}
-          sectionNumber={section.number}
-          readonly={readonly}
-        />
-      ))}
+  {
+    section.questions.filter((question) => {
+      if (question?.madmp_schema?.classname === 'personal_data_issues') {
+        return displayedResearchOutput.hasPersonalData;
+      }
+      return true;
+    }).map((question, idx) => (
+      <Question
+        key={question.id}
+        question={question}
+        questionIdx={(idx + 1)}
+        sectionId={sectionId}
+        sectionNumber={section.number}
+        readonly={readonly}
+      />
+    ))
+  }
     </>
   );
 }
