@@ -19,7 +19,7 @@ export const TemplateProvider = ({ children }) => {
  */
   const getPlanData = async (planId) => axios.get(`/plans/${planId}/answers_data`);
 
-  const getSectionsData = async (templateId) => axios.get(`/templates/${templateId}`);
+  const getSectionsData = async (templateId) => axios.get(`/templates/${templateId || ''}`);
 
   const fetchAndProcessSectionsData = async (templateId, afterFetchTreatment, params) => {
     try {

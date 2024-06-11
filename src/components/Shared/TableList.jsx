@@ -48,7 +48,8 @@ const TableList = ({ columns, defaultSortKey, onRowClick, dataCatcher }) => {
     setData(sortedData);
   };
 
-  const formatValue = (value, type) => {
+  const formatValue = (value, type, formatter) => {
+    if (formatter) return formatter(value);
     if (type === 'date') {
       return new Date(value).toLocaleDateString();
     }
@@ -76,7 +77,7 @@ const TableList = ({ columns, defaultSortKey, onRowClick, dataCatcher }) => {
           {data.map(item => (
             <tr key={item.id} onClick={() => onRowClick(item.id)} style={{ cursor: 'pointer' }}>
               {columns.map(column => (
-                <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type)}</td>
+                <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter)}</td>
               ))}
             </tr>
           ))}
