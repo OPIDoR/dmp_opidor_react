@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useRef } from 'react';
 import axios from '../../utils/AxiosClient';
 import { t } from 'i18next';
 import Swal from "sweetalert2";
+import toast from 'react-hot-toast';
 
 export const SectionsMappingContext = createContext();
 
@@ -88,8 +89,9 @@ export const SectionsMappingProvider = ({ children }) => {
     };
 
     if (templateMappingId) {
-      await updateMapping(data);
-      console.log("UPDATED");
+      await updateMapping(data)
+        .then(() => toast.success('Mapping updated'))
+        .catch(error => toast.error('Failed to update mapping:', error));
     }
     else {
       const res = await newMapping(data);
