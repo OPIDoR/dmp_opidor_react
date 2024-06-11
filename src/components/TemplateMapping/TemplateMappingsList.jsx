@@ -30,8 +30,8 @@ function TemplateMappingsList() {
   ];
 
   const actions = [
-    { label: t('Duplicate'), action: (id) => duplicateMapping(id) },
     { label: t('Edit'), action: (id) => window.location.href = `/super_admin/template_mappings/${id}/edit` },
+    { label: t('Duplicate'), action: (id) => duplicateMapping(id) },
     { label: t('Delete'), action: (id) => deleteMapping({id}) }
   ];  
 

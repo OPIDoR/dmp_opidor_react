@@ -45,7 +45,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           <h1>
             <a href="/super_admin/template_mappings"
               className="btn btn-primary pull-right">{t('View all mappings')}</a>
-            {t(templateMappingId ? (`${templateMappingName !== '' ? `${t('Edit')} \"${templateMappingName}\"` : "Please enter a valid name"}`) : 'New Mapping')}
+            {(templateMappingId ? (`${t('Edit Mapping')} ${templateMappingId}: ${templateMappingName !== '' ? `\"${templateMappingName}\"` : "Please enter a valid name"}`) : t('Create Mapping'))}
 
           </h1>
         </div>
@@ -71,7 +71,7 @@ function TemplateMapping({ data, locale, mappingId }) {
             marginTop: "20px"
           }}>
             <CustomButton
-              title={templateMappingId ? "Save mapping" : "Create mapping"}
+              title={templateMappingId ? "Save" : "Create"}
               handleClick={saveMapping}
               buttonColor="orange"
             />
