@@ -45,8 +45,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           <h1>
             <a href="/super_admin/template_mappings"
               className="btn btn-primary pull-right">{t('View all mappings')}</a>
-            {(templateMappingId ? (`${t('Edit Mapping')} ${templateMappingId}: ${templateMappingName !== '' ? `\"${templateMappingName}\"` : "Please enter a valid name"}`) : t('Create Mapping'))}
-
+            {(templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))}
           </h1>
         </div>
       </div>
