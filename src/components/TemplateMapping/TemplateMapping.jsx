@@ -42,10 +42,21 @@ function TemplateMapping({ data, locale, mappingId }) {
     <>
       <div className="row">
         <div className="col-md-12">
-          <h1>
-            <a href="/super_admin/template_mappings"
-              className="btn btn-primary pull-right">{t('View all mappings')}</a>
-            {(templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))}
+          <h1 style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <a href="/super_admin/template_mappings"
+                className="btn btn-primary pull-left">{t('← All Mappings')}</a>
+            </div>
+            <span>{(templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))}</span>
+            <div>
+              <div style={{ visibility: templateMappingId ? 'visible' : 'hidden' }}>
+                <CustomButton
+                  title="💾 Save mapping"
+                  handleClick={saveMapping}
+                  buttonColor="orange"
+                />
+              </div>
+            </div>
           </h1>
         </div>
       </div>
@@ -69,11 +80,13 @@ function TemplateMapping({ data, locale, mappingId }) {
             justifyContent: "center",
             marginTop: "20px"
           }}>
-            <CustomButton
-              title={templateMappingId ? "Save" : "Create"}
-              handleClick={saveMapping}
-              buttonColor="orange"
-            />
+            {!templateMappingId &&
+              <CustomButton
+                title="+ Create Mapping"
+                handleClick={saveMapping}
+                buttonColor="orange"
+              />
+            }
           </div>
           {templateMappingId && (
             <div>
