@@ -80,7 +80,9 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
 
     return (
       <>
-        {collapseData.text}<i className={collapseData.buttonClass} aria-hidden="true" style={{ cursor: "pointer", display:"inline" }} onClick={() => toggleExpand(id, key)}></i>
+        <span onClick={() => toggleExpand(id, key)} style={{cursor:'pointer'}}>
+          {collapseData.text}<i className={collapseData.buttonClass} aria-hidden="true" style={{ cursor: "pointer", display:"inline" }}></i>
+        </span>
       </>
     );
   };
