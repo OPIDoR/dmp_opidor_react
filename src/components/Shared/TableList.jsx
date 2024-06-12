@@ -3,6 +3,7 @@ import { capitalizeFirstLetter } from '../../utils/utils.js';
 
 const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }) => {
   const [data, setData] = useState([]);
+  const [expanded, setExpanded] = useState({});
 
   const [sortConfig, setSortConfig] = useState({
     key: defaultSortKey,
@@ -48,12 +49,40 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
     setData(sortedData);
   };
 
-  const formatValue = (value, type, formatter) => {
+  const toggleExpand = (id, key) => {
+    const currentKey = `${id}-${key}`;
+    setExpanded(prev => ({
+      ...prev,
+      [currentKey]: !prev[currentKey]
+    }));
+  };
+
+  const formatValue = (value, type, formatter, id, key) => {
     if (formatter) return formatter(value);
     if (type === 'date') {
       return new Date(value).toLocaleDateString();
     }
-    return capitalizeFirstLetter(value.toString());
+
+    const stringValue = capitalizeFirstLetter(value.toString());
+    if (stringValue.length <= 40) return stringValue;
+
+    // If the string is too long, collapse it and display a button to expand/collapse it
+    const isExpanded = expanded[`${id}-${key}`];
+    const collapseData = !isExpanded 
+      ? {
+          text: `${stringValue.substring(0, 30)}...`,
+          buttonClass: 'fas fa-sort-down',
+      }
+      : {
+          text: stringValue,
+          buttonClass: 'fas fa-sort-up',
+      };
+
+    return (
+      <>
+        {collapseData.text}<i className={collapseData.buttonClass} aria-hidden="true" style={{ cursor: "pointer", display:"inline" }} onClick={() => toggleExpand(id, key)}></i>
+      </>
+    );
   };
 
   return (
@@ -78,7 +107,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
           {data.map(item => (
             <tr key={item.id} onClick={() => onRowClick && onRowClick(item.id)} style={{ cursor: onRowClick ? 'pointer' : 'initial' }}>
               {columns.map(column => (
-                <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter)}</td>
+                <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter, item.id, column.key)}</td>
               ))}
               <td>
                 <div className="dropdown">
