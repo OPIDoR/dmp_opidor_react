@@ -6,7 +6,8 @@ import MappingPropertiesForm from "../TemplateMappingComponents/MappingPropertie
 import Mapper from "../TemplateMappingComponents/Mapper";
 import CustomButton from "../Styled/CustomButton";
 import CustomSpinner from "../Shared/CustomSpinner";
-import ContentHeading from "./ContentHeading";
+import ContentHeading from "../Shared/ContentHeading";
+import { t } from "i18next";
 
 function TemplateMapping({ data, locale, mappingId }) {
   // --- STATE ---
@@ -39,9 +40,21 @@ function TemplateMapping({ data, locale, mappingId }) {
 
   return (
     <>
-      <ContentHeading 
-        templateMappingId={templateMappingId}
-        saveMapping={saveMapping}
+      <ContentHeading
+        title={
+          (templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))
+        }
+        leftChildren={
+          <a href="/super_admin/template_mappings" className="btn btn-primary pull-left">{t('← All Mappings')}</a>
+        }
+        rightChildren={
+          <div style={{ visibility: templateMappingId ? 'visible' : 'hidden' }}>
+            <CustomButton
+              title="💾 Save mapping"
+              handleClick={saveMapping}
+              buttonColor="orange" />
+          </div>
+        }
       />
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       {isLoading
