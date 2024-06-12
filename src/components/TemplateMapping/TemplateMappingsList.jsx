@@ -3,6 +3,7 @@ import TableList from '../Shared/TableList.jsx';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import { t } from 'i18next';
 import useTemplate from '../../hooks/useTemplate.js';
+import ContentHeading from '../Shared/ContentHeading.jsx';
 
 function TemplateMappingsList() {
   const { getMappings, duplicateMapping, deleteMapping } = useSectionsMapping();
@@ -37,15 +38,11 @@ function TemplateMappingsList() {
 
   return (
     <>
-      <div className="row">
-        <div className="col-md-12">
-          <h1>
-            {t('Template Mappings')}
-            <a href="/super_admin/template_mappings/new"
-              className="btn btn-primary pull-right">{t('New Mapping')}</a>
-          </h1>                                                                                                                                                    
-        </div>
-      </div>
+      <ContentHeading 
+        title={t('Template Mappings')} 
+        rightChildren={<a href="/super_admin/template_mappings/new" 
+        className="btn btn-primary pull-right">{t('New Mapping')}</a>} 
+      />
       <TableList
         dataCatcher={getMappings}
         columns={columns}
