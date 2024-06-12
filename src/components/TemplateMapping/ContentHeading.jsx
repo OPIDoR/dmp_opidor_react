@@ -9,6 +9,9 @@ function ContentHeading({ templateMappingId, saveMapping }) {
     zIndex: 1000,
     backgroundColor: "white",
     width: "100%",
+    // border: "2px solid #C6503D",
+    // borderTopWidth: "0",
+    borderRadius: "0 0 5px 5px",
   };
 
   return (
