@@ -15,13 +15,9 @@ function ContentHeading({ title, leftChildren, rightChildren}) {
     <div className="row content-heading" style={stickyStyle}>
       <div className="col-md-12">
         <h1 style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            {leftChildren}
-          </div>
+          {leftChildren && (<div>{leftChildren}</div>)}
           <span>{title}</span>
-          <div>
-            {rightChildren}
-          </div>
+          {rightChildren && (<div>{rightChildren}</div>)}
         </h1>
       </div>
     </div>
