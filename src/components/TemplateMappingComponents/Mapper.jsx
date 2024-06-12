@@ -30,11 +30,17 @@ function Mapper({ mappingType }) {
     maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
   }}>
     <div className="col-md-6">
+      {editorRef.current 
+      ?
       <div style={innerScrollingFormsStyle}>
-        <TemplateProvider>
-          <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
-        </TemplateProvider>
-      </div>
+      <TemplateProvider>
+        <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+      </TemplateProvider>
+    </div>
+      :
+      <p><i className="fas fa-info"></i> Open a question in your target template to get started.</p>
+      }
+      
     </div>
     <div ref={targetRef} className="col-md-6">
       <TemplateProvider>
