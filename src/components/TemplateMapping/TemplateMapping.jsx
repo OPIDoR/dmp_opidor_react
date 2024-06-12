@@ -20,7 +20,6 @@ function TemplateMapping({ data, locale, mappingId }) {
     saveMapping, deleteMapping,
     isLoading,
     mappingType, setMappingType,
-    templateMappingName,
   } = useSectionsMapping();
 
   // --- EFFECTS ---
@@ -40,26 +39,10 @@ function TemplateMapping({ data, locale, mappingId }) {
 
   return (
     <>
-      <div className="row">
-        <div className="col-md-12">
-          <h1 style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
-              <a href="/super_admin/template_mappings"
-                className="btn btn-primary pull-left">{t('← All Mappings')}</a>
-            </div>
-            <span>{(templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))}</span>
-            <div>
-              <div style={{ visibility: templateMappingId ? 'visible' : 'hidden' }}>
-                <CustomButton
-                  title="💾 Save mapping"
-                  handleClick={saveMapping}
-                  buttonColor="orange"
-                />
-              </div>
-            </div>
-          </h1>
-        </div>
-      </div>
+      <ContentHeading 
+        templateMappingId={templateMappingId}
+        saveMapping={saveMapping}
+      />
       <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
       {isLoading
         ? <CustomSpinner />
@@ -110,3 +93,27 @@ function TemplateMapping({ data, locale, mappingId }) {
 }
 
 export default TemplateMapping;
+
+
+function ContentHeading({templateMappingId, saveMapping}) {
+  return <div className="row">
+    <div className="col-md-12">
+      <h1 style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <a href="/super_admin/template_mappings"
+            className="btn btn-primary pull-left">{t('← All Mappings')}</a>
+        </div>
+        <span>{(templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))}</span>
+        <div>
+          <div style={{ visibility: templateMappingId ? 'visible' : 'hidden' }}>
+            <CustomButton
+              title="💾 Save mapping"
+              handleClick={saveMapping}
+              buttonColor="orange" />
+          </div>
+        </div>
+      </h1>
+    </div>
+  </div>;
+}
+
