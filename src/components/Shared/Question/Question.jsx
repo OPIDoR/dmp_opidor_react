@@ -73,7 +73,10 @@ function Question({
   // --- BEHAVIOURS ---  
   useEffect(() => {
     if (mapping) {
-      setOpenedQuestions({});
+      setOpenedQuestions({
+        ...openedQuestions,
+        [DRO_ID]: {}
+      });
     }
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
