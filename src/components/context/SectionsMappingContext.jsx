@@ -12,6 +12,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const [mapping, setMapping] = useState(false);
   const enableMapping = () => setMapping(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [templateMappingId, setTemplateMappingId] = useState(null);
   const [templateMappingName, setTemplateMappingName] = useState(t('New Mapping'));
   // --- End Mapping logic ---
@@ -136,7 +137,10 @@ export const SectionsMappingProvider = ({ children }) => {
 
   const fetchMapping = async () => {
     try {
-      const res = await getMapping(templateMappingId);
+      const res = await getMapping(templateMappingId)
+        .catch(() => setIsError(true));
+      if (!res) return;
+
       console.log("data: ", res.data);
       const { source_id, target_id, mapping } = res.data;
       console.log("data: ", res.data);
@@ -216,7 +220,7 @@ export const SectionsMappingProvider = ({ children }) => {
         mapping, setMapping, enableMapping,
         templateMappingId, setTemplateMappingId,
         templateMappingName, setTemplateMappingName,
-        isLoading,
+        isLoading, isError,
         // --- End Mapping logic ---
 
         // --- JSON path logic ---

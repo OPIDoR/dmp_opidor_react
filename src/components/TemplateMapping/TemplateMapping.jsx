@@ -8,6 +8,7 @@ import CustomButton from "../Styled/CustomButton";
 import CustomSpinner from "../Shared/CustomSpinner";
 import ContentHeading from "../Shared/ContentHeading";
 import { t } from "i18next";
+import CustomError from "../Shared/CustomError";
 
 function TemplateMapping({ data, locale, mappingId }) {
   // --- STATE ---
@@ -19,7 +20,7 @@ function TemplateMapping({ data, locale, mappingId }) {
     targetTemplateId,
     templateMappingId, setTemplateMappingId,
     saveMapping, deleteMapping,
-    isLoading,
+    isLoading, isError,
     mappingType, setMappingType,
   } = useSectionsMapping();
 
@@ -37,6 +38,20 @@ function TemplateMapping({ data, locale, mappingId }) {
   useEffect(() => {
     setTemplateMappingId(mappingId);
   }, [mappingId]);
+
+
+  if (isError) 
+    return (
+      // <p>{t('An error occurred while loading the mapping.')}</p>
+      <CustomError 
+        error={{
+          message: t('Mapping not found'),
+          error: t('This error occurred while loading the mapping'),
+          home: false
+        }}
+        handleClose={() => window.location.href = '/super_admin/template_mappings'}
+      />
+    )
 
   return (
     <>
