@@ -26,7 +26,7 @@ const MappingEditor = forwardRef(({
     const editor = editorRef.current;
     if (editor) {
       const formattedLabel = path.replace(/^\$./, '').split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' > ');
-      const content = `<samp json-path="${path}" contenteditable="false">${formattedLabel}</samp>`;
+      const content = `<samp json-path="${path}" data-label="${formattedLabel}" contenteditable="false"></samp>`;
       editor.execCommand('mceInsertContent', false, content);
       insertInMappingSchema(editor.getContent());
     }
@@ -103,20 +103,25 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable]',
-            valid_elements: 'samp[json-path|style|contenteditable]',
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable|data-label]',
+            valid_elements: 'samp[json-path|style|contenteditable|data-label]',
             paste_preprocess: function (plugin, args) {
               args.content = args.content.replace(/<samp([^>]+)>/g, function (match) {
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
               });
             },
             content_style: `
-            samp[json-path] { 
+            samp[json-path] {
               background-color: #b4d7ff; 
               padding: 3px 5px; 
               border-radius: 5px; 
               font-size: 16px; 
               font-family: monospace;
+            }
+
+            samp[json-path]::before {
+              content: attr(data-label);
+              white-space: pre;
             }
             `,
 
