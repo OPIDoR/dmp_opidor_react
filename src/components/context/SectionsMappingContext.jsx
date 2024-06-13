@@ -53,11 +53,15 @@ export const SectionsMappingProvider = ({ children }) => {
   const [mappingSchema, setMappingSchema] = useState({ mapping: {} });
 
   const insertInMappingSchema = (value) => {
+    const cleanedValue = value.replace(/<samp([^>]+)>/g, (match) => {
+      return match.replace(/ data-label="[^"]*"| contenteditable="[^"]*"/g, '');
+    });
+  
     setMappingSchema(prev => ({
       ...prev,
       mapping: {
         ...prev.mapping,
-        [currentlyOpenedQuestion]: value
+        [currentlyOpenedQuestion]: cleanedValue
       }
     }));
   }
@@ -79,6 +83,7 @@ export const SectionsMappingProvider = ({ children }) => {
    * If the mapping is new, redirect to the edit page
    */
   const saveMapping = async () => {
+    console.log(mappingSchema.mapping);
     const data = {
       dmp_mapping: {
         mapping: mappingSchema.mapping,
