@@ -72,12 +72,6 @@ function Question({
 
   // --- BEHAVIOURS ---  
   useEffect(() => {
-    if (mapping) {
-      setOpenedQuestions({
-        ...openedQuestions,
-        [DRO_ID]: {}
-      });
-    }
     if (displayedResearchOutput) {
       const answer = displayedResearchOutput.answers?.find(
         (answer) => question?.id === answer?.question_id
