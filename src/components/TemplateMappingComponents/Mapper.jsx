@@ -38,7 +38,7 @@ function Mapper({ mappingType }) {
       </TemplateProvider>
     </div>
       :
-      <p><i className="fas fa-info"></i> Open a question in your target template to get started.</p>
+      <p><i className="fas fa-info"/> Open a question in the target template to get started.</p>
       }
       
     </div>

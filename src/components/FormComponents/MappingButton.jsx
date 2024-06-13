@@ -8,17 +8,17 @@ function MappingButton({ path, label }) {
   // --- RENDER ---
   return (
     <>
-    {console.log(editorRef)}
-      {mapping && 
-        editorRef && editorRef.current
-        ?
-        <CustomButton
-          title="Add to mapping →"
-          handleClick={() => handleInsert({ path, label })}
-          buttonColor="white"
-        />
-        :
-        <p>(Please open a target template question)</p>
+      {mapping &&
+        (editorRef && editorRef.current
+          ?
+          <CustomButton
+            title="Add to mapping →"
+            handleClick={() => handleInsert({ path, label })}
+            buttonColor="white"
+          />
+          :
+          <p><i className="fas fa-info"/> Open a question in the target template to get started.</p>
+        )
       }
     </>
   )
