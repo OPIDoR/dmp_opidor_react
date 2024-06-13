@@ -25,7 +25,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path, label: insertLabel }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}"><span contenteditable="false">${insertLabel.toLowerCase()}</span></samp>&nbsp;`);
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" contenteditable="false">${insertLabel.toLowerCase()}</samp>`);
       insertInMappingSchema(editor.getContent()); // useEffect instead?
     }
     console.log("JSON PATH:", path)
@@ -100,9 +100,9 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style],span[contenteditable]',
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable]',
             // Workaround to allow the jsonPath attribute on the iframe tag
-            valid_elements: 'samp[json-path|style]',
+            valid_elements: 'samp[json-path|style|contenteditable]',
             paste_preprocess: function(plugin, args) {
               args.content = args.content.replace(/<samp([^>]+)>/g, function(match) {
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
