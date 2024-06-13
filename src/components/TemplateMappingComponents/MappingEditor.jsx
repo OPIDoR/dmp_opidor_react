@@ -15,8 +15,8 @@ const MappingEditor = forwardRef(({
   const [value, setValue] = useState(defaultValue);
 
   const {
-    editorRef, 
-    setHandleInsert, 
+    editorRef,
+    setHandleInsert,
     insertInMappingSchema,
     mappingSchema
   } = useSectionsMapping();
@@ -25,7 +25,7 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path, label: insertLabel }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" contenteditable="false">${insertLabel.toLowerCase()}</samp>`);
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" data-label="${insertLabel}" contenteditable="false"></samp>`);
       insertInMappingSchema(editor.getContent()); // useEffect instead?
     }
     console.log("JSON PATH:", path)
@@ -100,15 +100,27 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable]',
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable|data-label]',
             // Workaround to allow the jsonPath attribute on the iframe tag
-            valid_elements: 'samp[json-path|style|contenteditable]',
-            paste_preprocess: function(plugin, args) {
-              args.content = args.content.replace(/<samp([^>]+)>/g, function(match) {
+            valid_elements: 'samp[json-path|style|contenteditable|data-label]',
+            paste_preprocess: function (plugin, args) {
+              args.content = args.content.replace(/<samp([^>]+)>/g, function (match) {
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
               });
             },
-            content_style: `samp[json-path] { background-color:#b4d7ff; padding: 3px 5px; border-radius: 5px; font-size: 16px; font: monospace; }`,
+            content_style: `
+            samp[json-path] { 
+              background-color:#b4d7ff; 
+              padding: 3px 5px; 
+              border-radius: 5px; 
+              font-size: 16px; 
+              font: monospace; 
+            }
+              
+            samp[json-path]::before {
+              content: attr(data-label)
+            }
+            `,
 
             paste_as_text: false,
             paste_block_drop: true,
