@@ -45,6 +45,7 @@ const MappingEditor = forwardRef(({
     };
 
     const handleKeyDown = (e) => {
+      
       if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) {
         const node = editor.selection.getNode();
         if (node.nodeName === 'SAMP' && node.getAttribute('json-path')) {
@@ -56,13 +57,13 @@ const MappingEditor = forwardRef(({
       insertInMappingSchema(editor.getContent());
     };
 
-    if (editor && editorRef.on) {
+    if (editor && editor.on) {
       editor.on('change', handleChange);
       editor.on('keydown', handleKeyDown);
     }
 
     return () => {
-      if (editor && editorRef.off) {
+      if (editor && editor.off) {
         editor.off('change', handleChange);
         editor.off('keydown', handleKeyDown);
       }
@@ -144,13 +145,13 @@ const MappingEditor = forwardRef(({
             //   font-size: 16px; 
             //   font-family: monospace; 
             // }
-            
+
             // samp[data-display-path]::before {
             //   content: attr(data-display-path) ' ';
             //   white-space: pre;
             // }
             // `,
-            
+
             // content_style: `
             // samp[json-path] { 
             //   background-color:#b4d7ff; 
@@ -159,7 +160,7 @@ const MappingEditor = forwardRef(({
             //   font-size: 16px; 
             //   font: monospace; 
             // }
-              
+
             // samp[json-path]::before {
             //   content: attr(json-path);
             //   content: replace(replace(attr(json-path), /\\$\\./, ''), /\\./g, ' > ');
