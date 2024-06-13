@@ -25,7 +25,9 @@ const MappingEditor = forwardRef(({
   const handleInsert = ({ path }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" contenteditable="false"></samp>`);
+      const formattedLabel = path.replace(/^\$./, '').split('.').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' > ');
+      const content = `<samp json-path="${path}" contenteditable="false">${formattedLabel}</samp>`;
+      editor.execCommand('mceInsertContent', false, content);
       insertInMappingSchema(editor.getContent());
     }
     console.log("JSON PATH:", path)
@@ -115,11 +117,6 @@ const MappingEditor = forwardRef(({
               border-radius: 5px; 
               font-size: 16px; 
               font-family: monospace;
-            }
-
-            samp[json-path]::before {
-              content: attr(json-path); /*data-display-path*/
-              white-space: pre;
             }
             `,
 
