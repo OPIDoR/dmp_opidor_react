@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CodeEditor from "./CodeEditor";
@@ -6,10 +6,10 @@ import { TemplateProvider } from "../context/TemplateContext";
 
 function Mapper({ mappingType }) {
   const targetRef = useRef(null);
-  const { 
+  const {
     USAGE_INITIAL, USAGE_TARGET,
     editorRef,
-    initialTemplateId, 
+    initialTemplateId,
     targetTemplateId,
     TYPE_FORM,
   } = useSectionsMapping();
@@ -30,17 +30,15 @@ function Mapper({ mappingType }) {
     maxHeight: INNER_SCROLLING_DEFAULT_HEIGHT,
   }}>
     <div className="col-md-6">
-      {editorRef.current 
-      ?
-      <div style={innerScrollingFormsStyle}>
-      <TemplateProvider>
-        <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
-      </TemplateProvider>
-    </div>
-      :
-      <p><i className="fas fa-info"/> Open a question in the target template to get started.</p>
+      <div style={{ ...innerScrollingFormsStyle, visibility: !editorRef.current ? 'hidden' : '' }}>
+        <TemplateProvider>
+          <SectionsContent templateId={initialTemplateId} readonly id='left' mappingUsage={USAGE_INITIAL} />
+        </TemplateProvider>
+      </div>
+      {!editorRef.current &&
+        <p><i className="fas fa-info" /> Open a question in the target template to get started.</p>
       }
-      
+
     </div>
     <div ref={targetRef} className="col-md-6">
       <TemplateProvider>
@@ -50,7 +48,7 @@ function Mapper({ mappingType }) {
             <SectionsContent templateId={targetTemplateId} id='right' hiddenFields mappingUsage={USAGE_TARGET} />
           </div>
           :
-          <CodeEditor templateId={targetTemplateId} ref={editorRef}/>
+          <CodeEditor templateId={targetTemplateId} ref={editorRef} />
         }
       </TemplateProvider>
     </div>
