@@ -22,11 +22,11 @@ const MappingEditor = forwardRef(({
   } = useSectionsMapping();
 
   // --- MappingButton logic ---
-  const handleInsert = ({ path, label: insertLabel }) => {
+  const handleInsert = ({ path }) => {
     const editor = editorRef.current;
     if (editor) {
-      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" data-label="${insertLabel}" contenteditable="false"></samp>`);
-      insertInMappingSchema(editor.getContent()); // useEffect instead?
+      editor.execCommand('mceInsertContent', false, `<samp json-path="${path}" contenteditable="false"></samp>`);
+      insertInMappingSchema(editor.getContent());
     }
     console.log("JSON PATH:", path)
   };
@@ -45,8 +45,7 @@ const MappingEditor = forwardRef(({
     };
 
     const handleKeyDown = (e) => {
-      insertInMappingSchema(editor.getContent());
-      if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) { // Backspace or Delete
+      if ((e.keyCode === 8 || e.keyCode === 46) && editor.selection) {
         const node = editor.selection.getNode();
         if (node.nodeName === 'SAMP' && node.getAttribute('json-path')) {
           e.preventDefault();
@@ -54,6 +53,7 @@ const MappingEditor = forwardRef(({
           editor.fire('ContentChanged');
         }
       }
+      insertInMappingSchema(editor.getContent());
     };
 
     if (editor && editorRef.on) {
@@ -100,9 +100,8 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable|data-label]',
-            // Workaround to allow the jsonPath attribute on the iframe tag
-            valid_elements: 'samp[json-path|style|contenteditable|data-label]',
+            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable]',
+            valid_elements: 'samp[json-path|style|contenteditable]',
             paste_preprocess: function (plugin, args) {
               args.content = args.content.replace(/<samp([^>]+)>/g, function (match) {
                 return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
@@ -110,17 +109,63 @@ const MappingEditor = forwardRef(({
             },
             content_style: `
             samp[json-path] { 
-              background-color:#b4d7ff; 
+              background-color: #b4d7ff; 
               padding: 3px 5px; 
               border-radius: 5px; 
               font-size: 16px; 
-              font: monospace; 
+              font-family: monospace;
             }
-              
+
             samp[json-path]::before {
-              content: attr(data-label)
+              content: attr(json-path); /*data-display-path*/
+              white-space: pre;
             }
             `,
+
+            // onInit: (_evt, editor) => {
+            //   ref.current = editor;
+            //   editor.on('GetContent', function(e) {
+            //     var content = e.content;
+            //     e.content = content.replace(/<samp([^>]+)>/g, function(match, content) {
+            //       var jsonPath = match.match(/json-path="([^"]+)"/);
+            //       if (jsonPath) {
+            //         var displayPath = jsonPath[1].replace(/\$\./, '').replace(/\./g, ' > ');
+            //         return match.replace(/<samp/, `<samp data-display-path="${displayPath}"`);
+            //       }
+            //       return match;
+            //     });
+            //   });
+            // },
+            // content_style: `
+            // samp[json-path] { 
+            //   background-color: #b4d7ff; 
+            //   padding: 3px 5px; 
+            //   border-radius: 5px; 
+            //   font-size: 16px; 
+            //   font-family: monospace; 
+            // }
+            
+            // samp[data-display-path]::before {
+            //   content: attr(data-display-path) ' ';
+            //   white-space: pre;
+            // }
+            // `,
+            
+            // content_style: `
+            // samp[json-path] { 
+            //   background-color:#b4d7ff; 
+            //   padding: 3px 5px; 
+            //   border-radius: 5px; 
+            //   font-size: 16px; 
+            //   font: monospace; 
+            // }
+              
+            // samp[json-path]::before {
+            //   content: attr(json-path);
+            //   content: replace(replace(attr(json-path), /\\$\\./, ''), /\\./g, ' > ');
+            //   white-space: pre;
+            // }
+            // `,
 
             paste_as_text: false,
             paste_block_drop: true,
