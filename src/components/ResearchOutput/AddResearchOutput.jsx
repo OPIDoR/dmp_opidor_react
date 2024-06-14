@@ -7,7 +7,7 @@ import styled from "styled-components";
 import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
-import { createOptions } from "../../utils/GeneratorUtils";
+import { createOptions, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
 import { getErrorMessage, pick } from "../../utils/utils";
@@ -41,12 +41,12 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
     if (edit) {
       setAbbreviation(displayedResearchOutput.abbreviation);
       setTitle(displayedResearchOutput.title);
-      setHasPersonalData(displayedResearchOutput.hasPersonalData);
+      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
       setType(displayedResearchOutput.type);
     }
 
     if (!edit) {
-      const maxOrder = researchOutputs && researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
+      const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(false);
@@ -77,7 +77,8 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       title,
       type,
       configuration: {
-        hasPersonalData
+        hasPersonalData,
+        dataType: researchOutputTypeToDataType(type),
       }
     };
 

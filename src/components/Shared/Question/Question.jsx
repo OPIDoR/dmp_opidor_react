@@ -16,6 +16,7 @@ import MappingEditor from "../../TemplateMappingComponents/MappingEditor";
 import { set } from "date-fns";
 
 function Question({
+  planId,
   question,
   questionIdx,
   sectionId,
@@ -25,12 +26,10 @@ function Question({
 }) {
   // --- STATE ---
   const {
-    planData,
     openedQuestions,
     setOpenedQuestions,
     displayedResearchOutput,
     questionsWithGuidance,
-    setUrlParams,
     formSelectors,
   } = useContext(GlobalContext);
 
@@ -81,7 +80,7 @@ function Question({
     }
 
     const queryParameters = new URLSearchParams(window.location.search);
-    setUrlParams({ research_output: queryParameters.get('research_output') });
+    // setUrlParams({ research_output: queryParameters.get('research_output') });
 
     handleIconClick(null, 'formSelector');
   }, [displayedResearchOutput, question.id]);
@@ -104,7 +103,7 @@ function Question({
     setOpenedQuestions(updatedState);
 
     const queryParameters = new URLSearchParams(window.location.search);
-    setUrlParams({ research_output: queryParameters.get('research_output') });
+    // setUrlParams({ research_output: queryParameters.get('research_output') });
     handleIconClick(null, 'formSelector');
 
     if (forms[id]?.usage === USAGE_TARGET) {
@@ -234,7 +233,7 @@ function Question({
           <ModalsContainer
             readonly={readonly}
             displayedResearchOutput={displayedResearchOutput}
-            planData={planData}
+            // planData={planData}
             questionId={questionId}
             questionsWithGuidance={questionsWithGuidance}
             question={question}

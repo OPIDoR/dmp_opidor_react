@@ -43,6 +43,8 @@ const create = async (jsonObject) => axios.post(`/research_outputs`, jsonObject,
 
 const update = async (id, jsonObject) => axios.patch(`/research_outputs/${id}`, jsonObject, { headers: createHeaders({}, true)});
 
+const get = async (roId) => axios.get(`/research_outputs/${roId}`);
+
 /**
  * This function adds a new object to a list in session storage.
  * @param planId - The ID of the plan to which the product is being imported.
@@ -81,10 +83,10 @@ const postImportProduct = async (planId, uuid) => {
  * @param id - The `id` parameter is the unique identifier of the research output that needs to be deleted.
  * @returns a Promise that resolves to the response object returned by the axios.delete() method.
  */
-const deleteResearchOutput = async (researchOutputId, planId) => {
+const deleteResearchOutput = async (researchOutputId) => {
   let response;
   try {
-    response = await axios.delete(`/research_outputs/${researchOutputId}?plan_id=${planId}`, { headers: createHeaders({}, true)});
+    response = await axios.delete(`/research_outputs/${researchOutputId}`, { headers: createHeaders({}, true)});
   } catch (error) {
     toast.error(getErrorMessage(error));
   }
@@ -127,6 +129,7 @@ const getProducts = async (id) => {
 export default {
   create,
   update,
+  get,
   postImportProduct,
   deleteResearchOutput,
   getPlans,

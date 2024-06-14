@@ -33,6 +33,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     setQuestionsWithGuidance,
     setCurrentOrg,
     currentOrg,
+    locale,
   } = useContext(GlobalContext);
 
   /**
@@ -44,7 +45,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     const orgName = currentOrgName || currentOrg.name;
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId)
+    guidances.getGuidanceGroups(planId, locale)
       .then((res) => {
         let guidance_groups = [];
         const { data } = res.data;
@@ -136,7 +137,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     let response;
     try {
-      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, planId);
+      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, planId, locale);
     } catch (error) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
@@ -160,6 +161,25 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   };
 
   const limitHasBeenReached = () => countSelectedGuidances() > GUIDANCES_GROUPS_LIMIT;
+
+  if (data?.length === 0) {
+    return (
+      <div style={{
+        width: '100%',
+        border: '1px solid #cccccc',
+        borderRadius: '4px',
+        margin: '0 10px 0 10px',
+        color: '#212529',
+        backgroundColor: '#e9ecef',
+        fontSize: '24px',
+        textAlign: 'center',
+        padding: '10px',
+        cursor: 'not-allowed',
+      }}>
+        {t('No guidances available')}
+      </div>
+    );
+  }
 
   return (
     <PanelGroup accordion id="accordion-guidance-choice">

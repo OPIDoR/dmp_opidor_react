@@ -70,6 +70,7 @@ function TinyArea ({
               {...newField}
               onEditorChange={(newText) => onChange(newText)}
               initialValue={defaultValue}
+              licenseKey='gpl'
               init={{
                 statusbar: true,
                 menubar: false,

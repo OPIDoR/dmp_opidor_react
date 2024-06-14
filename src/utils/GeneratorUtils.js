@@ -100,3 +100,13 @@ export function filterOptions(options, value) {
     }, 500);
   });
 }
+
+export function researchOutputTypeToDataType(type) {
+  switch(type) {
+    case 'Logiciel':
+    case 'Software':
+      return 'software';
+    default:
+      return 'none';
+  }
+}

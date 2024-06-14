@@ -28,6 +28,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const {
     planInformations,
     questionsWithGuidance,
+    locale,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
@@ -56,7 +57,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId)
+    guidances.getGuidanceGroups(planId, locale)
       .then((res) => setGuidancesGroups(
         res?.data?.data?.flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
           ?.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
@@ -98,34 +99,22 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                 ))}
               </>
             )}
-            {
-              Object.keys(data?.[indexTab]?.groups).length > 0 && (
-                <>
-                  {
-                    Object.keys(data?.[indexTab]?.groups).map((ref, idx) => (
-                      <div key={`guidance-ref-${ref}-${idx}`}>
-                        {Object.keys(data?.[indexTab]?.groups?.[ref]).map((theme, themeId) => (
-                          <div key={`guidance-theme-${themeId}`}>
-                            {idx === 0 && <Theme alt={theme}>{theme}</Theme>}
-                            {data?.[indexTab]?.groups?.[ref]?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
-                              <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                                <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>
-                                <div
-                                  key={`guidance-theme-${themeId}-id-${id}`}
-                                  dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize(g.text),
-                                  }}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                  ))
-                  }
-                </>
-              )
-            }
+            {Object.keys(data?.[indexTab]?.groups).map((theme, themeId) => (
+              <div key={`guidance-theme-${themeId}`}>
+                {themeId === 0 && <Theme alt={theme}>{theme}</Theme>}
+                {data?.[indexTab]?.groups?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
+                  <div key={`guidance-theme-${themeId}-id-${id}-content`}>
+                    {id == 0 && <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>}
+                    <div
+                      key={`guidance-theme-${themeId}-id-${id}`}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(g.text),
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
           </ScrollNav>
         </NavBodyText>
       </NavBody>
