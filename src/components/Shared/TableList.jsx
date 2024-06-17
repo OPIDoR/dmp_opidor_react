@@ -68,7 +68,6 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
     const stringValue = capitalizeFirstLetter(value.toString());
     if (stringValue.length <= 40) return stringValue;
 
-    // If the string is too long, collapse it and display a button to expand/collapse it
     const isExpanded = expanded[`${id}-${key}`];
     const collapseData = !isExpanded
       ? {
@@ -90,7 +89,8 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, data.length);
+  const totalItems = data.length;
 
   const filteredData = data.filter(item => {
     return columns.some(column => formatValue(item[column.key], column.type, column.formatter, item.id, column.key).toString().toLowerCase().includes(filter.toLowerCase()));
@@ -118,7 +118,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
           </div>
         </div>
         <div className='pull-right'>
-          <span> Page {currentPage} of {totalPages} </span>
+          <span>{`${startIndex + 1}-${endIndex} ${t('of')} ${totalItems} elements`} </span>
           <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className='btn btn-primary'><i className='fas fa-arrow-left'/></button>
           &nbsp;
           <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className='btn btn-primary'><i className='fas fa-arrow-right'/></button>
