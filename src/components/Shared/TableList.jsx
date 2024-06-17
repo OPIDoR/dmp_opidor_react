@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/utils.js';
 import { t } from 'i18next';
 
-const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }) => {
+const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, itemsPerPage = 10 }) => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState('');
   const [expanded, setExpanded] = useState({});
@@ -11,6 +11,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
     direction: 'ascending',
     icon: 'fas fa-sort-up'
   });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     dataCatcher()
@@ -88,9 +89,15 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
     );
   };
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  
   const filteredData = data.filter(item => {
     return columns.some(column => formatValue(item[column.key], column.type, column.formatter, item.id, column.key).toString().toLowerCase().includes(filter.toLowerCase()));
   });
+  
+  const currentData = filteredData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
     <div className="table-responsive">
@@ -126,7 +133,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
           </tr>
         </thead>
         <tbody>
-          {filteredData.map(item => (
+          {currentData.map(item => (
             <tr key={item.id} onClick={() => onRowClick && onRowClick(item.id)} style={{ cursor: onRowClick ? 'pointer' : 'initial' }}>
               {columns.map(column => (
                 <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter, item.id, column.key)}</td>
@@ -147,6 +154,11 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
           ))}
         </tbody>
       </table>
+      <div>
+        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+        <span> Page {currentPage} of {totalPages} </span>
+        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+      </div>
     </div>
   );
 };
