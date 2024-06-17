@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/utils.js';
+import { t } from 'i18next';
 
 const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }) => {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState('');
   const [expanded, setExpanded] = useState({});
-
   const [sortConfig, setSortConfig] = useState({
     key: defaultSortKey,
     direction: 'ascending',
@@ -68,27 +69,46 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
 
     // If the string is too long, collapse it and display a button to expand/collapse it
     const isExpanded = expanded[`${id}-${key}`];
-    const collapseData = !isExpanded 
+    const collapseData = !isExpanded
       ? {
-          text: `${stringValue.substring(0, 30)}...`,
-          buttonClass: 'fas fa-sort-down',
+        text: `${stringValue.substring(0, 30)}...`,
+        buttonClass: 'fas fa-sort-down',
       }
       : {
-          text: stringValue,
-          buttonClass: 'fas fa-sort-up',
+        text: stringValue,
+        buttonClass: 'fas fa-sort-up',
       };
 
     return (
       <>
-        <span onClick={() => toggleExpand(id, key)} style={{cursor:'pointer'}}>
-          {collapseData.text}<i className={collapseData.buttonClass} aria-hidden="true" style={{ cursor: "pointer", display:"inline" }}></i>
+        <span onClick={() => toggleExpand(id, key)} style={{ cursor: 'pointer' }}>
+          {collapseData.text}<i className={collapseData.buttonClass} aria-hidden="true" style={{ cursor: "pointer", display: "inline" }}></i>
         </span>
       </>
     );
   };
 
+  const filteredData = data.filter(item => {
+    return columns.some(column => formatValue(item[column.key], column.type, column.formatter, item.id, column.key).toString().toLowerCase().includes(filter.toLowerCase()));
+  });
+
   return (
     <div className="table-responsive">
+      <div className='form-group'>
+        <div className='input-group' style={{ marginBottom: '10px' }}>
+          <span className="input-group-addon" id="search-addon">
+            <span className="fas fa-magnifying-glass" aria-hidden="true"></span>
+          </span>
+          <input
+            type="text"
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            placeholder={`${t('Filter')}...`}
+            name="search"
+            id="search"
+          />
+        </div>
+      </div>
       <table className="table table-hover">
         <thead>
           <tr>
@@ -106,7 +126,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher }
           </tr>
         </thead>
         <tbody>
-          {data.map(item => (
+          {filteredData.map(item => (
             <tr key={item.id} onClick={() => onRowClick && onRowClick(item.id)} style={{ cursor: onRowClick ? 'pointer' : 'initial' }}>
               {columns.map(column => (
                 <td key={`${item.id}-${column.key}`}>{formatValue(item[column.key], column.type, column.formatter, item.id, column.key)}</td>
