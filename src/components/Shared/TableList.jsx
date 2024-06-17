@@ -91,29 +91,37 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  
+
   const filteredData = data.filter(item => {
     return columns.some(column => formatValue(item[column.key], column.type, column.formatter, item.id, column.key).toString().toLowerCase().includes(filter.toLowerCase()));
   });
-  
+
   const currentData = filteredData.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
     <div className="table-responsive">
-      <div className='form-group'>
-        <div className='input-group' style={{ marginBottom: '10px' }}>
-          <span className="input-group-addon" id="search-addon">
-            <span className="fas fa-magnifying-glass" aria-hidden="true"></span>
-          </span>
-          <input
-            type="text"
-            value={filter}
-            onChange={e => setFilter(e.target.value)}
-            placeholder={`${t('Filter')}...`}
-            name="search"
-            id="search"
-          />
+      <div>
+        <div className='form-group pull-left'>
+          <div className='input-group'>
+            <span className="input-group-addon" id="search-addon">
+              <span className="fas fa-magnifying-glass" aria-hidden="true"></span>
+            </span>
+            <input
+              type="text"
+              value={filter}
+              onChange={e => setFilter(e.target.value)}
+              placeholder={`${t('Filter')}...`}
+              name="search"
+              id="search"
+            />
+          </div>
+        </div>
+        <div className='pull-right'>
+          <span> Page {currentPage} of {totalPages} </span>
+          <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className='btn btn-primary'><i className='fas fa-arrow-left'/></button>
+          &nbsp;
+          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className='btn btn-primary'><i className='fas fa-arrow-right'/></button>
         </div>
       </div>
       <table className="table table-hover">
@@ -154,11 +162,6 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
           ))}
         </tbody>
       </table>
-      <div>
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-        <span> Page {currentPage} of {totalPages} </span>
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-      </div>
     </div>
   );
 };
