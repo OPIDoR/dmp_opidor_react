@@ -63,11 +63,18 @@ function TemplateMapping({ data, locale, mappingId }) {
           <a href="/super_admin/template_mappings" className="btn btn-primary pull-left">{t('← All Mappings')}</a>
         }
         rightChildren={
-          <div style={{ visibility: templateMappingId ? 'visible' : 'hidden' }}>
+          <div style={{ visibility: templateMappingId ? 'visible' : 'hidden', display: 'flex' }}>
             <CustomButton
               title="💾 Save mapping"
               handleClick={saveMapping}
-              buttonColor="orange" />
+              buttonColor="orange" 
+            />
+            &nbsp;
+            <CustomButton
+                title="🚮"
+                handleClick={deleteMapping}
+                buttonColor="red"
+              />
           </div>
         }
       />
@@ -99,7 +106,7 @@ function TemplateMapping({ data, locale, mappingId }) {
               />
             }
           </div>
-          {templateMappingId && (
+          {/* {templateMappingId && (
             <div>
               <h3 style={{
                 color: "red",
@@ -113,7 +120,7 @@ function TemplateMapping({ data, locale, mappingId }) {
                 buttonColor="red"
               />
             </div>
-          )}
+          )} */}
         </>
       }
     </>
