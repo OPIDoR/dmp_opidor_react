@@ -51,13 +51,10 @@ const get = async (roId) => axios.get(`/research_outputs/${roId}`);
  * @param researchOutputId - The researchOutputId parameter is a unique identifier for a product that is being imported.
  * @returns an object with a "data" property that contains the updated data stored in the session storage.
  */
-const postImportProduct = async (planId, researchOutputId) => {
+const postImportProduct = async ({ planId, uuid }) => {
   let res;
   try {
-    res = await axios.post('/research_outputs/import', {
-      plan_id: planId,
-      uuid: researchOutputId
-    }, { headers: createHeaders({}, true)});
+    res = await axios.post(`/research_outputs/import?plan_id=${planId}`, { uuid }, { headers: createHeaders({}, true)});
   } catch (error) {
     return toast.error(getErrorMessage(error));
   }
