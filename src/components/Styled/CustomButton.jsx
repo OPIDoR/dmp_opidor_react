@@ -36,6 +36,10 @@ const DivButton = styled.div`
   display: flex;
   justify-content: ${(props) => (props.$position || "start")};
 `;
+const flexMiddle = {
+  display: "flex",
+  alignItems: "center",
+};
 
 const Button = (props) => {
   switch (props.$buttonType) {
@@ -54,7 +58,7 @@ const Button = (props) => {
  * button is styled using CSS-in-JS with the help of the styled-components library. The component returns a div that contains a button element with an
  * onClick event listener that triggers the handleClick function passed as a prop.
  */
-function CustomButton({ handleClick, title, buttonType = 'button', buttonColor, position, disabled }) {
+function CustomButton({ handleClick, icon, title, buttonType = 'button', buttonColor, position, disabled }) {
   const handleButtonAction = (e) => {
     handleClick?.(e);
   };
@@ -62,7 +66,10 @@ function CustomButton({ handleClick, title, buttonType = 'button', buttonColor, 
   return (
     <DivButton $position={position}>
       <Button type={buttonType} className="btn btn-primary" $buttonType={buttonColor} onClick={handleButtonAction} disabled={disabled}>
-        {title}
+        <div style={flexMiddle}>
+          {icon && <span style={flexMiddle}>{icon}</span>}
+          {title && <span>&nbsp;{title}</span>}
+        </div>
       </Button>
     </DivButton>
   );

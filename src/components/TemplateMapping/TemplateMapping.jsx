@@ -9,6 +9,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import ContentHeading from "../Shared/ContentHeading";
 import { t } from "i18next";
 import CustomError from "../Shared/CustomError";
+import { FaSave, FaTrashAlt, FaPlus } from "react-icons/fa";
 
 function TemplateMapping({ data, locale, mappingId }) {
   // --- STATE ---
@@ -39,7 +40,6 @@ function TemplateMapping({ data, locale, mappingId }) {
     setTemplateMappingId(mappingId);
   }, [mappingId]);
 
-
   if (isError) 
     return (
       // <p>{t('An error occurred while loading the mapping.')}</p>
@@ -65,13 +65,14 @@ function TemplateMapping({ data, locale, mappingId }) {
         rightChildren={
           <div style={{ visibility: templateMappingId ? 'visible' : 'hidden', display: 'flex' }}>
             <CustomButton
-              title="💾 Save mapping"
+              title="Save mapping"
+              icon={<FaSave />}
               handleClick={saveMapping}
               buttonColor="orange" 
             />
             &nbsp;
             <CustomButton
-                title="🚮"
+                icon={<FaTrashAlt />}
                 handleClick={deleteMapping}
                 buttonColor="red"
               />
@@ -100,27 +101,12 @@ function TemplateMapping({ data, locale, mappingId }) {
           }}>
             {!templateMappingId &&
               <CustomButton
-                title="+ Create Mapping"
+                icon={<FaPlus />}
                 handleClick={saveMapping}
                 buttonColor="orange"
               />
             }
           </div>
-          {/* {templateMappingId && (
-            <div>
-              <h3 style={{
-                color: "red",
-                marginTop: "20px",
-                fontSize: "2rem",
-                fontWeight: "bold",
-              }}>Danger zone</h3>
-              <CustomButton
-                title="⚠ Delete mapping"
-                handleClick={deleteMapping}
-                buttonColor="red"
-              />
-            </div>
-          )} */}
         </>
       }
     </>
