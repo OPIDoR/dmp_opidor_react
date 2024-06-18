@@ -47,10 +47,10 @@ function WritePlan({
   const { setIsOpen } = useTour();
 
   const handleWebsocketData = useCallback((data) => {
-    if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
+    if (data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
       setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
     }
-    if(data.target === 'dynamic_form') {
+    if (data.target === 'dynamic_form') {
       setFormData({ [data.fragment_id]: data.payload })
     }
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
@@ -60,7 +60,7 @@ function WritePlan({
   }, [locale])
 
   useEffect(() => {
-    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
+    if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
     subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
       {
         connected: () => console.log("connected!"),
@@ -108,7 +108,7 @@ function WritePlan({
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
 
-      window.addEventListener("scroll", (e) => handleScroll(e));
+    window.addEventListener("scroll", (e) => handleScroll(e));
   }, [planId]);
 
   const handleScroll = () => {
@@ -117,7 +117,7 @@ function WritePlan({
 
     const sectionContent = document.querySelector('#sections-content');
     const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
-    if(!sectionContent) return;
+    if (!sectionContent) return;
 
     if (bottomRoNavBar >= bottomSectionContent) {
       sectionContent.style.borderBottomLeftRadius = '0';
@@ -138,9 +138,10 @@ function WritePlan({
       {error && <CustomError error={error}></CustomError>}
       {!error && researchOutputs && (
         <>
-          <div style={{ margin: '10px 30px 10px 30px' }}>
-            <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
-          </div>
+          {!readonly &&
+            <div style={{ margin: '10px 30px 10px 30px' }}>
+              <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
+            </div>}
           {
             planInformations && (
               <div style={{
