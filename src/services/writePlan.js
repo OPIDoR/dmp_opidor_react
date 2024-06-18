@@ -7,7 +7,6 @@ import axios from '../utils/AxiosClient';
  * does not.
  */
 const getPlanData = async (planId) => axios.get(`/plans/${planId}/research_outputs_data`);
-
 const getSectionsData = async (templateId) => axios.get(`/templates/${templateId}`);
 
 // eslint-disable-next-line import/no-anonymous-default-export
