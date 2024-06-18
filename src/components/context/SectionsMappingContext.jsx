@@ -85,7 +85,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const saveMapping = async () => {
     console.log(mappingSchema.mapping);
     const data = {
-      dmp_mapping: {
+      template_mapping: {
         mapping: mappingSchema.mapping,
         source_id: initialTemplateId,
         target_id: targetTemplateId,
@@ -125,7 +125,7 @@ export const SectionsMappingProvider = ({ children }) => {
   const duplicateMapping = async (id) => {
     const originalMappingData = await getMapping(id);
     const data = {
-      dmp_mapping: {
+      template_mapping: {
         mapping: originalMappingData.data.mapping,
         source_id: originalMappingData.data.source_id,
         target_id: originalMappingData.data.target_id,
