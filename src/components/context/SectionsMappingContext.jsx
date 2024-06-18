@@ -73,10 +73,10 @@ export const SectionsMappingProvider = ({ children }) => {
 
   const getMappings = async () => axios.get(MAPPING_URL, MAPPING_OPTIONS);
   const getMapping = async (id) => axios.get(`${MAPPING_URL}/${id}`);
-  const newMapping = async (data) => axios.post(MAPPING_URL, data);
+  const newMapping = async (data) => axios.post(MAPPING_URL, {...data, ...MAPPING_OPTIONS});
 
-  const updateMapping = async (data) => axios.put(`${MAPPING_URL}/${templateMappingId}`, data);
-  const destroyMapping = async (id) => axios.delete(`${MAPPING_URL}/${id}`);
+  const updateMapping = async (data) => axios.put(`${MAPPING_URL}/${templateMappingId}`, {...data, ...MAPPING_OPTIONS});
+  const destroyMapping = async (id) => axios.delete(`${MAPPING_URL}/${id}`, MAPPING_OPTIONS);
 
   /**
    * Save the current mapping

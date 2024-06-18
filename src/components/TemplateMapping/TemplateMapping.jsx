@@ -102,6 +102,7 @@ function TemplateMapping({ data, locale, mappingId }) {
             {!templateMappingId &&
               <CustomButton
                 icon={<FaPlus />}
+                title={t('Create Mapping')}
                 handleClick={saveMapping}
                 buttonColor="orange"
               />
