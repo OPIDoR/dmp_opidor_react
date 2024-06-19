@@ -129,6 +129,13 @@ function TableList ({ columns, actions, defaultSortKey, onRowClick, dataCatcher,
           </tr>
         </thead>
         <tbody>
+          {currentData.length === 0 && (
+            <tr>
+              <td colSpan={columns.length + 1} className='text-center'>
+                <i className='fas fa-exclamation-circle' /> <strong>{t('No data found')}</strong>
+              </td>
+            </tr>
+          )}
           {currentData.map(item => (
             <tr key={item.id} onClick={() => onRowClick && onRowClick(item.id)} style={{ cursor: onRowClick ? 'pointer' : 'initial' }}>
               {columns.map(column => (
@@ -137,7 +144,7 @@ function TableList ({ columns, actions, defaultSortKey, onRowClick, dataCatcher,
               <td>
                 <div className="dropdown">
                   <button className="btn btn-link dropdown-toggle" type="button" id={`action-${item.id}`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Actions<span className="caret"></span>
+                    {t('Actions')}<span className="caret"></span>
                   </button>
                   <ul className="dropdown-menu" aria-labelledby={`action-${item.id}`}>
                     {actions.map(action => (
