@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import CustomSelect from '../Shared/CustomSelect.jsx';
-import useTemplate from '../../hooks/useTemplate.js';
+import { sectionsContent } from '../../services';
 import * as styles from '../assets/css/form.module.css';
 
 function TemplateSelector({

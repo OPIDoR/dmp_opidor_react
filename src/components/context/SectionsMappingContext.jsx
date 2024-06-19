@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
-import axios from '../../utils/AxiosClient';
 import { t } from 'i18next';
 import Swal from "sweetalert2";
 import toast from 'react-hot-toast';
+import { templateMapping } from '../../services';
 
 export const SectionsMappingContext = createContext();
 
@@ -68,16 +68,6 @@ export const SectionsMappingProvider = ({ children }) => {
   // --- End Mapping schema logic ---
 
   // --- API logic ---
-  const MAPPING_URL = '/super_admin/template_mappings';
-  const MAPPING_OPTIONS = { headers: { 'Accept': 'application/json' } };
-
-  const getMappings = async () => axios.get(MAPPING_URL, MAPPING_OPTIONS);
-  const getMapping = async (id) => axios.get(`${MAPPING_URL}/${id}`);
-  const newMapping = async (data) => axios.post(MAPPING_URL, {...data, ...MAPPING_OPTIONS});
-
-  const updateMapping = async (data) => axios.put(`${MAPPING_URL}/${templateMappingId}`, {...data, ...MAPPING_OPTIONS});
-  const destroyMapping = async (id) => axios.delete(`${MAPPING_URL}/${id}`, MAPPING_OPTIONS);
-
   /**
    * Save the current mapping
    * If the mapping is new, redirect to the edit page
@@ -95,12 +85,12 @@ export const SectionsMappingProvider = ({ children }) => {
     };
 
     if (templateMappingId) {
-      await updateMapping(data)
+      await templateMapping.updateMapping(templateMappingId, data)
         .then(() => toast.success('Mapping updated'))
         .catch(error => toast.error('Failed to update mapping:', error));
     }
     else {
-      const res = await newMapping(data);
+      const res = await templateMapping.newMapping(data);
       console.log('New mapping:', res);
       if (res?.data?.id)
         window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
@@ -123,7 +113,7 @@ export const SectionsMappingProvider = ({ children }) => {
   }
 
   const duplicateMapping = async (id) => {
-    const originalMappingData = await getMapping(id);
+    const originalMappingData = await templateMapping.getMapping(id);
     const data = {
       template_mapping: {
         mapping: originalMappingData.data.mapping,
@@ -133,7 +123,7 @@ export const SectionsMappingProvider = ({ children }) => {
         name: `${originalMappingData.data.name} (${t('copy')})`
       }
     };
-    const res = await newMapping(data);
+    const res = await templateMapping.newMapping(data);
     if (res?.data?.id)
       window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
     else
@@ -142,7 +132,7 @@ export const SectionsMappingProvider = ({ children }) => {
 
   const fetchMapping = async () => {
     try {
-      const res = await getMapping(templateMappingId)
+      const res = await templateMapping.getMapping(templateMappingId)
         .catch(() => setIsError(true));
       if (!res) return;
 
@@ -251,7 +241,6 @@ export const SectionsMappingProvider = ({ children }) => {
         // --- End Mapping schema logic ---
 
         // --- API logic ---
-        getMappings, // getMapping, newMapping, updateMapping, destroyMapping, 
         saveMapping, deleteMapping, duplicateMapping,
         // --- End API logic ---
 

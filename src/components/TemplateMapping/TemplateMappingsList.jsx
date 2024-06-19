@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import TableList from '../Shared/TableList.jsx';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import { t } from 'i18next';
-import { sectionsContent } from '../../services';
+import { sectionsContent, templateMapping } from '../../services';
 import ContentHeading from '../Shared/ContentHeading.jsx';
 
 function TemplateMappingsList() {
-  const { getMappings, duplicateMapping, deleteMapping } = useSectionsMapping();
+  const { duplicateMapping, deleteMapping } = useSectionsMapping();
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     sectionsContent.getSectionsData().then(response => {
+      console.log("response", response);
       const sectionsMap = response.data.reduce((acc, section) => {
         acc[section.id] = section.title;
         return acc;
@@ -18,6 +19,8 @@ function TemplateMappingsList() {
       setSections(sectionsMap);
     });
   }, []);
+
+  console.log("tm", templateMapping);
 
   const columns = [
     { key: 'id', label: 'ID' },
@@ -43,7 +46,7 @@ function TemplateMappingsList() {
         className="btn btn-primary pull-right">{t('New Mapping')}</a>} 
       />
       <TableList
-        dataCatcher={getMappings}
+        dataCatcher={templateMapping.getMappings}
         columns={columns}
         actions={actions}
         defaultSortKey="created_at"

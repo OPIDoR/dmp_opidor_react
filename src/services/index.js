@@ -9,6 +9,7 @@ import planCreation from "./planCreation";
 import researchOutput from "./researchOutput";
 import service from "./service";
 import sectionsContent from "./sectionsContent";
+import templateMapping from "./templateMapping";
 
 export {
   comments,
@@ -22,4 +23,5 @@ export {
   researchOutput,
   service,
   sectionsContent,
+  templateMapping,
 };
