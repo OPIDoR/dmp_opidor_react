@@ -18,7 +18,7 @@ function TableOptionsBar({ filter, setFilter, startIndex, endIndex, totalItems, 
       </div>
     </div>
     <div className='pull-right'>
-      <span>{`${startIndex + 1}-${endIndex} ${t('of')} ${totalItems} ${t('elements')}`} </span>
+      <span>{`${totalItems > 0 ? startIndex + 1 : 0}-${endIndex} ${t('of')} ${totalItems} ${t('elements')}`} </span>
       <button disabled={currentPage <= 1} onClick={() => setCurrentPage(currentPage - 1)} className='btn btn-primary'><i className='fas fa-arrow-left' /></button>
       &nbsp;
       <button disabled={currentPage >= totalPages} onClick={() => setCurrentPage(currentPage + 1)} className='btn btn-primary'><i className='fas fa-arrow-right' /></button>
