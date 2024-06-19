@@ -106,7 +106,7 @@ export const SectionsMappingProvider = ({ children }) => {
     if (!id && !templateMappingId) return;
     const res = await areYouSureModal();
     if (!res.isConfirmed) return;
-    await destroyMapping(id || templateMappingId);
+    await templateMapping.destroyMapping(id || templateMappingId);
     confirmationModal();
 
     window.location.href = '/super_admin/template_mappings';
