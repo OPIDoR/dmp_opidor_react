@@ -18,7 +18,7 @@ function TemplateMapping({ data, locale, mappingId }) {
   const {
     enableMapping,
     initialTemplateId,
-    targetTemplateId,
+    targetTemplateId, templateMappingName,
     templateMappingId, setTemplateMappingId,
     saveMapping, deleteMapping,
     isLoading, isError,
@@ -58,7 +58,11 @@ function TemplateMapping({ data, locale, mappingId }) {
     <>
       <ContentHeading
         title={
-          (templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))
+          templateMappingId 
+            ? templateMappingName !== ''
+              ? `${t('Edit')} \"${templateMappingName.length <= 30 ? templateMappingName : templateMappingName.substring(0, 30) + '...'}\"` 
+              : t("Please enter a valid name")
+            : 'New Mapping'
         }
         leftChildren={
           <a href={`/super_admin/template_mappings${ANCHOR_CONTENT}`} className="btn btn-primary pull-left">{t('← All Mappings')}</a>

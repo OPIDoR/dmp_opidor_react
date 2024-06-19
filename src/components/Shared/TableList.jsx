@@ -67,7 +67,7 @@ function TableList ({ columns, actions, defaultSortKey, onRowClick, dataCatcher,
     }
 
     const stringValue = capitalizeFirstLetter(value.toString());
-    if (stringValue.length <= 40) return stringValue;
+    if (stringValue.length <= 30) return stringValue;
 
     const isExpanded = expanded[`${id}-${key}`];
     const collapseData = !isExpanded
