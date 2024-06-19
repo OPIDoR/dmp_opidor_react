@@ -118,7 +118,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
           </div>
         </div>
         <div className='pull-right'>
-          <span>{`${startIndex + 1}-${endIndex} ${t('of')} ${totalItems} elements`} </span>
+          <span>{`${startIndex + 1}-${endIndex} ${t('of')} ${totalItems} ${t('elements')}`} </span>
           <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className='btn btn-primary'><i className='fas fa-arrow-left'/></button>
           &nbsp;
           <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className='btn btn-primary'><i className='fas fa-arrow-right'/></button>
@@ -129,7 +129,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
           <tr>
             {columns.map((column) => (
               <th key={column.key} onClick={() => requestSort(column.key)}>
-                {capitalizeFirstLetter(column.label)}
+                {capitalizeFirstLetter(t(column.label))}
                 <i className={column.key === sortConfig.key ? sortConfig.icon : 'fas fa-sort'} aria-hidden="true" style={{ float: "right", fontSize: "1.2em", cursor: "pointer" }}>
                   <span className="screen-reader-text">
                     {`${column.label} ` + (column.key === sortConfig.key && sortConfig.direction === 'ascending' ? 'sorted ascending' : 'sorted descending')}
@@ -137,7 +137,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
                 </i>
               </th>
             ))}
-            <th>Actions</th>
+            <th>{t('Actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -153,7 +153,7 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
                   </button>
                   <ul className="dropdown-menu" aria-labelledby={`action-${item.id}`}>
                     {actions.map(action => (
-                      <li key={action.label}><a onClick={() => action.action(item.id)} style={{ cursor: 'pointer' }}>{action.label}</a></li>
+                      <li key={action.label}><a onClick={() => action.action(item.id)} style={{ cursor: 'pointer' }}>{t(action.label)}</a></li>
                     ))}
                   </ul>
                 </div>

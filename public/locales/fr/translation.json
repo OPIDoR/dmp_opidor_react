@@ -201,5 +201,8 @@
   "Search...": "Rechercher...",
   "Your plan does not yet include any research output": "Votre plan ne comporte encore aucun produit de recherche",
   "Create a research output": "Créer un produit de recherche",
-  "A ‘type’ is required to create a search product.": "Un \"type\" est nécessaire pour créer un produit de recherche."
+  "A ‘type’ is required to create a search product.": "Un \"type\" est nécessaire pour créer un produit de recherche.",
+  "Template Mappings": "Correspondances de modèles",
+  "of": "sur",
+  "Filter": "Filtrer"
 }
