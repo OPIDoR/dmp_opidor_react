@@ -4,6 +4,7 @@ import TemplateSelector from "./TemplateSelector";
 import { TemplateProvider } from "../context/TemplateContext";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import InputText from "../FormComponents/InputText";
+import { t } from "i18next";
 
 export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
   const methods = useForm({ defaultValues: data });
@@ -25,14 +26,14 @@ export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
       <TemplateProvider>
         <div className="col-md-12">
           <InputText 
-            label="Name" 
+            label={t("Name")} 
             propName="templateMappingName" 
             hidden={false} 
             disableMapping 
             defaultValue={templateMappingName} 
             onChange={(value) => setTemplateMappingName(value)}/>
           <TemplateSelector
-            label="Type"
+            label={t("Type")}
             propName="mappingType"
             defaultValue={initialTemplateId}
             data={[
@@ -45,7 +46,7 @@ export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
         </div>
         <div className="col-md-6">
           <TemplateSelector
-            label="Initial Template"
+            label={t("Source Template")}
             propName="structuredTemplateId"
             defaultValue={initialTemplateId}
             requestParams="?type=structured"
@@ -55,7 +56,7 @@ export function MappingPropertiesForm({ data, mappingType, setMappingType }) {
         </div>
         <div className="col-md-6">
           <TemplateSelector
-            label="Target Template"
+            label={t("Target Template")}
             propName="classicTemplateId"
             defaultValue={targetTemplateId}
             requestParams={"?type=classic"}

@@ -65,7 +65,7 @@ function TemplateMapping({ data, locale, mappingId }) {
         rightChildren={
           <div style={{ visibility: templateMappingId ? 'visible' : 'hidden', display: 'flex' }}>
             <CustomButton
-              title="Save mapping"
+              title={t("Save mapping")}
               icon={<FaSave />}
               handleClick={saveMapping}
               buttonColor="orange" 
@@ -79,7 +79,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           </div>
         }
       />
-      <p>Here you can map the sections of a structured template to the sections of a classic template.</p>
+      <p>{t('Here you can map the sections of a structured template to the sections of a classic template.')}</p>
       {isLoading
         ? <CustomSpinner />
         : <>
