@@ -67,6 +67,10 @@ export const SectionsMappingProvider = ({ children }) => {
   }
   // --- End Mapping schema logic ---
 
+    // --- Routing logic ---
+    const ANCHOR_CONTENT = '#content';
+    // --- End Routing logic ---
+
   // --- API logic ---
   /**
    * Save the current mapping
@@ -91,7 +95,7 @@ export const SectionsMappingProvider = ({ children }) => {
       const res = await templateMapping.newMapping(data);
       console.log('New mapping:', res);
       if (res?.data?.id)
-        window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
+        window.location.href = `/super_admin/template_mappings/${res.data.id}/edit${ANCHOR_CONTENT}`;
       else
         console.error('Redirection error:', res);
     }
@@ -107,7 +111,7 @@ export const SectionsMappingProvider = ({ children }) => {
     await templateMapping.destroyMapping(id || templateMappingId);
     confirmationModal();
 
-    window.location.href = '/super_admin/template_mappings';
+    window.location.href = `/super_admin/template_mappings${ANCHOR_CONTENT}`;
   }
 
   const duplicateMapping = async (id) => {
@@ -121,7 +125,7 @@ export const SectionsMappingProvider = ({ children }) => {
     };
     const res = await templateMapping.newMapping(data);
     if (res?.data?.id)
-      window.location.href = `/super_admin/template_mappings/${res.data.id}/edit`;
+      window.location.href = `/super_admin/template_mappings/${res.data.id}/edit${ANCHOR_CONTENT}`;
     else
       console.error('Redirection error:', res);
   }
@@ -244,6 +248,10 @@ export const SectionsMappingProvider = ({ children }) => {
         TYPE_FORM, TYPE_JSON,
         mappingType, setMappingType,
         // --- End Mapping Type logic ---
+
+        // --- Routing logic ---
+        ANCHOR_CONTENT,
+        // --- End Routing logic ---
       }}
     >
       {children}

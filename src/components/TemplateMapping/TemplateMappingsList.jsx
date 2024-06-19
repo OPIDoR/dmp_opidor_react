@@ -6,7 +6,11 @@ import { sectionsContent, templateMapping } from '../../services';
 import ContentHeading from '../Shared/ContentHeading.jsx';
 
 function TemplateMappingsList() {
-  const { duplicateMapping, deleteMapping } = useSectionsMapping();
+  const { 
+    duplicateMapping, 
+    deleteMapping,
+    ANCHOR_CONTENT
+  } = useSectionsMapping();
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
@@ -33,7 +37,7 @@ function TemplateMappingsList() {
   ];
 
   const actions = [
-    { label: 'Edit', action: (id) => window.location.href = `/super_admin/template_mappings/${id}/edit` },
+    { label: 'Edit', action: (id) => window.location.href = `/super_admin/template_mappings/${id}/edit${ANCHOR_CONTENT}` },
     { label: 'Duplicate', action: (id) => duplicateMapping(id) },
     { label: 'Delete', action: (id) => deleteMapping({id}) }
   ];  
@@ -42,8 +46,7 @@ function TemplateMappingsList() {
     <>
       <ContentHeading 
         title={t('Template Mappings')} 
-        rightChildren={<a href="/super_admin/template_mappings/new" 
-        className="btn btn-primary pull-right">{t('New Mapping')}</a>} 
+        rightChildren={<a href={`/super_admin/template_mappings/new${ANCHOR_CONTENT}`} className="btn btn-primary pull-right">{t('New Mapping')}</a>} 
       />
       <TableList
         dataCatcher={templateMapping.getMappings}

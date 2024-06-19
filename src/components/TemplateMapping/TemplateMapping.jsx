@@ -23,6 +23,7 @@ function TemplateMapping({ data, locale, mappingId }) {
     saveMapping, deleteMapping,
     isLoading, isError,
     mappingType, setMappingType,
+    ANCHOR_CONTENT
   } = useSectionsMapping();
 
   // --- EFFECTS ---
@@ -49,7 +50,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           error: t('This error occurred while loading the mapping'),
           home: false
         }}
-        handleClose={() => window.location.href = '/super_admin/template_mappings'}
+        handleClose={() => window.location.href = `/super_admin/template_mappings${ANCHOR_CONTENT}`}
       />
     )
 
@@ -60,7 +61,7 @@ function TemplateMapping({ data, locale, mappingId }) {
           (templateMappingId ? `${t('Edit Mapping')} ${templateMappingId}` : t('Create Mapping'))
         }
         leftChildren={
-          <a href="/super_admin/template_mappings" className="btn btn-primary pull-left">{t('← All Mappings')}</a>
+          <a href={`/super_admin/template_mappings${ANCHOR_CONTENT}`} className="btn btn-primary pull-left">{t('← All Mappings')}</a>
         }
         rightChildren={
           <div style={{ visibility: templateMappingId ? 'visible' : 'hidden', display: 'flex' }}>
