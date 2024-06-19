@@ -62,9 +62,9 @@ function WritePlan({
       org: res?.data?.org,
       publishedDate: res?.data?.publishedDate,
     });
-  
+
     if (openedQuestions && openedQuestions[displayedResearchOutput.id]) return;
-  
+
     const updatedCollapseState = {
       ...openedQuestions,
       [displayedResearchOutput.id]: {},
@@ -75,10 +75,10 @@ function WritePlan({
 
   // --- BEHAVIOURS ---
   const handleWebsocketData = useCallback((data) => {
-    if(data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
+    if (data.target === 'research_output_infobox' && displayedResearchOutput.id === data.research_output_id) {
       setDisplayedResearchOutput({ ...displayedResearchOutput, ...data.payload })
     }
-    if(data.target === 'dynamic_form') {
+    if (data.target === 'dynamic_form') {
       setFormData({ [data.fragment_id]: data.payload })
     }
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
@@ -88,7 +88,7 @@ function WritePlan({
   }, [locale])
 
   useEffect(() => {
-    if(subscriptionRef.current) subscriptionRef.current.unsubscribe();
+    if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
     subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
       {
         connected: () => console.log("connected!"),
@@ -116,31 +116,31 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    const res = await sectionsContent.getPlanData(planId)
-                        .catch((error) => setError(error))
-                        .finally(() => setLoading(false));
+    sectionsContent.getPlanData(planId)
+      .then((res) => {
+        setPlanData(res.data);
+        setDmpId(res.data.dmp_id);
 
-    setPlanData(res.data);
-    setDmpId(res.data.dmp_id);
+        const { research_outputs, questions_with_guidance } = res.data;
 
-    const { research_outputs, questions_with_guidance } = res.data;
+        let currentResearchOutput = research_outputs?.[0];
+        if (researchOutputId) {
+          const researchOutput = research_outputs
+            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+          if (researchOutput) {
+            currentResearchOutput = researchOutput;
+          }
+        }
 
-    let currentResearchOutput = research_outputs?.[0];
-    if (researchOutputId) {
-      const researchOutput = research_outputs
-        .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
-      if (researchOutput) {
-        currentResearchOutput = researchOutput;
-      }
-    }
+        setDisplayedResearchOutput(currentResearchOutput);
+        !researchOutputs && setResearchOutputs(research_outputs);
+        setQuestionsWithGuidance(questions_with_guidance || []);
+        setFormData(null);
 
-    setDisplayedResearchOutput(currentResearchOutput);
-    !researchOutputs && setResearchOutputs(research_outputs);
-    setQuestionsWithGuidance(questions_with_guidance || []);
-    setFormData(null);
-
-    window.addEventListener("scroll", (e) => handleScroll(e)
-    );
+        window.addEventListener("scroll", (e) => handleScroll(e));
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }
 
   const handleScroll = () => {
@@ -149,12 +149,12 @@ function WritePlan({
 
     const sectionContent = document.querySelector('#sections-content');
     const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
-    if(!sectionContent) return;
+    if (!sectionContent) return;
 
-    sectionContent.style.borderBottomLeftRadius = 
+    sectionContent.style.borderBottomLeftRadius =
       bottomRoNavBar >= bottomSectionContent ? '0' : '8px';
 
-    sectionContent.style.borderTopLeftRadius = 
+    sectionContent.style.borderTopLeftRadius =
       topRoNavBar <= topSectionContent ? '0' : '8px';
   }
 
@@ -222,7 +222,7 @@ function WritePlan({
               {planId && displayedResearchOutput && (
                 <TemplateProvider>
                   <SectionsContent templateId={templateId} readonly={readonly} afterFetchTreatment={updatePlanAfterFetchTreatment}>
-                    <ResearchOutput planId={planId} readonly={readonly} researchOutputs={researchOutputs}/>
+                    <ResearchOutput planId={planId} readonly={readonly} researchOutputs={researchOutputs} />
                   </SectionsContent>
                 </TemplateProvider>
               )}
@@ -236,7 +236,7 @@ function WritePlan({
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} edit={false} />
+                <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} edit={false} />
               </div>
             </Panel.Body>
           </Panel>
