@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils/utils.js';
 import { t } from 'i18next';
+import TableOptionsBar from './TableOptionsBar.jsx';
 
-const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, itemsPerPage = 10 }) => {
+function TableList ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, itemsPerPage = 10 }) {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState('');
   const [expanded, setExpanded] = useState({});
@@ -101,29 +102,16 @@ const TableList = ({ columns, actions, defaultSortKey, onRowClick, dataCatcher, 
 
   return (
     <div className="table-responsive">
-      <div>
-        <div className='form-group pull-left'>
-          <div className='input-group'>
-            <span className="input-group-addon" id="search-addon">
-              <span className="fas fa-magnifying-glass" aria-hidden="true"></span>
-            </span>
-            <input
-              type="text"
-              value={filter}
-              onChange={e => setFilter(e.target.value)}
-              placeholder={`${t('Filter')}...`}
-              name="search"
-              id="search"
-            />
-          </div>
-        </div>
-        <div className='pull-right'>
-          <span>{`${startIndex + 1}-${endIndex} ${t('of')} ${totalItems} ${t('elements')}`} </span>
-          <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className='btn btn-primary'><i className='fas fa-arrow-left'/></button>
-          &nbsp;
-          <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className='btn btn-primary'><i className='fas fa-arrow-right'/></button>
-        </div>
-      </div>
+      <TableOptionsBar 
+        filter={filter}
+        setFilter={setFilter}
+        startIndex={startIndex}
+        endIndex={endIndex}
+        totalItems={totalItems}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
       <table className="table table-hover">
         <thead>
           <tr>
