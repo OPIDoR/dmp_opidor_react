@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import TableList from '../Shared/TableList.jsx';
 import useSectionsMapping from '../../hooks/useSectionsMapping.js';
 import { t } from 'i18next';
-import useTemplate from '../../hooks/useTemplate.js';
+import { sectionsContent } from '../../services';
 import ContentHeading from '../Shared/ContentHeading.jsx';
 
 function TemplateMappingsList() {
   const { getMappings, duplicateMapping, deleteMapping } = useSectionsMapping();
-  const { getSectionsData } = useTemplate();
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
-    getSectionsData().then(response => {
+    sectionsContent.getSectionsData().then(response => {
       const sectionsMap = response.data.reduce((acc, section) => {
         acc[section.id] = section.title;
         return acc;

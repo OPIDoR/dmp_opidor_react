@@ -19,7 +19,6 @@ import { useTour } from "../Shared/Joyride/JoyrideContext";
 import ResearchOutput from "../ResearchOutput/ResearchOutput";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
 import { TemplateProvider } from "../context/TemplateContext";
-import useTemplate from "../../hooks/useTemplate";
 
 const locales = { fr, en: enGB };
 
@@ -48,8 +47,6 @@ function WritePlan({
     setOpenedQuestions,
     setPlanInformations,
   } = useContext(GlobalContext);
-
-  const { getPlanData } = useTemplate();
 
   const subscriptionRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -119,7 +116,7 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    const res = await getPlanData(planId)
+    const res = await sectionsContent.getPlanData(planId)
                         .catch((error) => setError(error))
                         .finally(() => setLoading(false));
 

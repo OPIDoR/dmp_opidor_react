@@ -15,7 +15,6 @@ function TemplateSelector({
   onTemplateChange,
 }) {
   const { control } = useFormContext();
-  const { getSectionsData } = useTemplate();
   const { field } = useController({ control, name: propName, defaultValue });
   const [options, setOptions] = useState([]);
 
@@ -31,7 +30,7 @@ function TemplateSelector({
         fetchedOptions = data;
       } else {
         try {
-          const res = await getSectionsData(requestParams);
+          const res = await sectionsContent.getSectionsData(requestParams);
           fetchedOptions = res.data.map(option => ({
             value: option.id,
             label: option.title
