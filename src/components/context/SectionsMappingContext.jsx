@@ -56,7 +56,7 @@ export const SectionsMappingProvider = ({ children }) => {
     const cleanedValue = value.replace(/<samp([^>]+)>/g, (match) => {
       return match.replace(/ data-label="[^"]*"| contenteditable="[^"]*"/g, '');
     });
-  
+
     setMappingSchema(prev => ({
       ...prev,
       mapping: {
@@ -75,13 +75,11 @@ export const SectionsMappingProvider = ({ children }) => {
   const saveMapping = async () => {
     console.log(mappingSchema.mapping);
     const data = {
-      template_mapping: {
-        mapping: mappingSchema.mapping,
-        source_id: initialTemplateId,
-        target_id: targetTemplateId,
-        type_mapping: mappingType,
-        name: templateMappingName
-      }
+      mapping: mappingSchema.mapping,
+      source_id: initialTemplateId,
+      target_id: targetTemplateId,
+      type_mapping: mappingType,
+      name: templateMappingName
     };
 
     if (templateMappingId) {
@@ -102,7 +100,7 @@ export const SectionsMappingProvider = ({ children }) => {
   /**
    * Delete the current mapping and redirect to the index page
    */
-  const deleteMapping = async ({id}) => {
+  const deleteMapping = async ({ id }) => {
     if (!id && !templateMappingId) return;
     const res = await areYouSureModal();
     if (!res.isConfirmed) return;
@@ -115,13 +113,11 @@ export const SectionsMappingProvider = ({ children }) => {
   const duplicateMapping = async (id) => {
     const originalMappingData = await templateMapping.getMapping(id);
     const data = {
-      template_mapping: {
-        mapping: originalMappingData.data.mapping,
-        source_id: originalMappingData.data.source_id,
-        target_id: originalMappingData.data.target_id,
-        type_mapping: originalMappingData.data.type_mapping,
-        name: `${originalMappingData.data.name} (${t('copy')})`
-      }
+      mapping: originalMappingData.data.mapping,
+      source_id: originalMappingData.data.source_id,
+      target_id: originalMappingData.data.target_id,
+      type_mapping: originalMappingData.data.type_mapping,
+      name: `${originalMappingData.data.name} (${t('copy')})`
     };
     const res = await templateMapping.newMapping(data);
     if (res?.data?.id)
