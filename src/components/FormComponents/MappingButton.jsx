@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CustomButton from "../Styled/CustomButton";
 
@@ -17,7 +18,7 @@ function MappingButton({ path, label }) {
             buttonColor="white"
           />
           :
-          <p><i className="fas fa-info"/> Open a question in the target template to get started.</p>
+          <p><i className="fas fa-info"/> {t('Open a question in the target template to get started.')}</p>
         )
       }
     </>

@@ -3,6 +3,7 @@ import SectionsContent from "../Shared/SectionsContent/SectionsContent";
 import useSectionsMapping from "../../hooks/useSectionsMapping";
 import CodeEditor from "./CodeEditor";
 import { TemplateProvider } from "../context/TemplateContext";
+import { t } from "i18next";
 
 function Mapper({ mappingType }) {
   const targetRef = useRef(null);
@@ -36,7 +37,7 @@ function Mapper({ mappingType }) {
         </TemplateProvider>
       </div>
       {!editorRef.current &&
-        <p><i className="fas fa-info" /> Open a question in the target template to get started.</p>
+        <p><i className="fas fa-info" /> {t('Open a question in the target template to get started.')}</p>
       }
 
     </div>

@@ -62,10 +62,10 @@ function TemplateMapping({ data, locale, mappingId }) {
             ? templateMappingName !== ''
               ? `${t('Edit')} \"${templateMappingName.length <= 30 ? templateMappingName : templateMappingName.substring(0, 30) + '...'}\"` 
               : t("Please enter a valid name")
-            : 'New Mapping'
+            : t('New Mapping')
         }
         leftChildren={
-          <a href={`/super_admin/template_mappings${ANCHOR_CONTENT}`} className="btn btn-primary pull-left">{t('← All Mappings')}</a>
+          <a href={`/super_admin/template_mappings${ANCHOR_CONTENT}`} className="btn btn-primary pull-left">← {t('All Mappings')}</a>
         }
         rightChildren={
           <div style={{ visibility: templateMappingId ? 'visible' : 'hidden', display: 'flex' }}>

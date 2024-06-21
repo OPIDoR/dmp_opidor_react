@@ -204,6 +204,19 @@
   "A ‘type’ is required to create a search product.": "Un \"type\" est nécessaire pour créer un produit de recherche.",
   "Template Mappings": "Correspondances de modèles",
   "of": "sur",
+  "elements": "éléments",
   "Filter": "Filtrer",
-  "Here you can map the sections of a structured template to the sections of a classic template.": "Ici, vous pouvez faire correspondre les sections d'un modèle structuré aux sections d'un modèle classique."
+  "Here you can map the sections of a structured template to the sections of a classic template.": "Ici, vous pouvez faire correspondre les sections d'un modèle structuré aux sections d'un modèle classique.",
+  "Target": "Cible",
+  "Target Template": "Modèle cible",
+  "Source Template": "Modèle source",
+  "Created At": "Créé le",
+  "Updated At": "Mis à jour le",
+  "No template mappings found": "Aucune correspondance de modèle trouvée",
+  "New Mapping": "Nouvelle correspondance",
+  "All Mappings": "Toutes les correspondances",
+  "Create Mapping": "Créer",
+  "Save mapping": "Enregistrer",
+  "Open a question in the target template to get started.": "Ouvrez une question dans le modèle cible pour commencer.",
+  "Edit Export Template": "Modifier le modèle d'export"
 }

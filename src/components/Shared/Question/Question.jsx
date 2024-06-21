@@ -14,6 +14,7 @@ import useSectionsMapping from "../../../hooks/useSectionsMapping";
 import { useForm } from "react-hook-form";
 import MappingEditor from "../../TemplateMappingComponents/MappingEditor";
 import { set } from "date-fns";
+import { t } from "i18next";
 
 function Question({
   question,
@@ -252,7 +253,7 @@ function Question({
             {forms[id].usage === USAGE_TARGET &&
               <MappingEditor
                 ref={currentEditorRef}
-                label="Edit Export Template"
+                label={t("Edit Export Template")}
                 questionId={questionId}
               />
             }
