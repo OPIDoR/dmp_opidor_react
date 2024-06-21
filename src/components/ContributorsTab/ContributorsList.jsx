@@ -10,13 +10,16 @@ import * as styles from '../assets/css/form.module.css';
 
 function ContributorsList({ contributors, template, handleEdit, handleDelete, readonly = false }) {
   const { t } = useTranslation();
+  const pageSize = 10;
+  const [page, setPage] = useState(1);
   const [currentData, setCurrentData] = useState([]);
 
   /**
    * The onChangePage function updates the state with a new page of items.
    */
-  const onChangePage = (pageOfItems) => {
+  const onChangePage = (pageOfItems, page) => {
     // update state with new page of items
+    setPage(page - 1);
     setCurrentData(pageOfItems);
   };
 
@@ -68,7 +71,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                     <FaPenToSquare
                       data-tooltip-id="contributor-edit-button"
                       size={18}
-                      onClick={() => handleEdit(idx)}
+                      onClick={() => handleEdit(pageSize * page + idx)}
                       className={styles.icon}
                     />
                     {contributors.length > 1 &&
@@ -83,7 +86,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                         <FaXmark
                           data-tooltip-id="contributor-delete-button"
                           size={18}
-                          onClick={() => handleDelete(idx)}
+                          onClick={() => handleDelete(pageSize * page + idx)}
                           className={styles.icon}
                         />
                       </>
@@ -106,7 +109,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
       {contributors.length > 0 && (
         <div className="row text-right">
           <div className="mx-auto">
-            <Pagination items={contributors} onChangePage={onChangePage} pageSize={10} />
+            <Pagination items={contributors} onChangePage={onChangePage} pageSize={pageSize} />
           </div>
         </div>
       )}
