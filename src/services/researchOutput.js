@@ -48,33 +48,17 @@ const get = async (roId) => axios.get(`/research_outputs/${roId}`);
 /**
  * This function adds a new object to a list in session storage.
  * @param planId - The ID of the plan to which the product is being imported.
- * @param uuid - The uuid parameter is a unique identifier for a product that is being imported.
+ * @param researchOutputId - The researchOutputId parameter is a unique identifier for a product that is being imported.
  * @returns an object with a "data" property that contains the updated data stored in the session storage.
  */
-const postImportProduct = async (planId, uuid) => {
+const postImportProduct = async ({ planId, uuid }) => {
+  let res;
   try {
-    //   const objectProduct = {
-    //     "plan_id": planId,
-    //     "uuid": uuid
-    // }
-    //const response = await axios.post("/research_outputs/import", objectProduct, "config");
-    const jsonObject = {
-      id: new Date().getTime(),
-      abbreviation: "Import test",
-      metadata: {
-        hasPersonalData: false,
-        abbreviation: "test1",
-      },
-    };
-    const saved = sessionStorage.getItem("data");
-    const copieData = { ...JSON.parse(saved) };
-    const newList = [...copieData.plan.research_outputs, jsonObject];
-    copieData["plan"]["research_outputs"] = newList;
-    sessionStorage.setItem("data", JSON.stringify(copieData));
-    return { data: copieData };
+    res = await axios.post(`/research_outputs/import?plan_id=${planId}`, { uuid }, { headers: createHeaders({}, true)});
   } catch (error) {
-    toast.error(getErrorMessage(error));
+    return toast.error(getErrorMessage(error));
   }
+  return res;
 }
 
 /**
@@ -99,30 +83,17 @@ const deleteResearchOutput = async (researchOutputId) => {
  * unclear what data is being returned.
  */
 const getPlans = async () => {
+  let res;
   try {
-    //const response = await axios.get("/plans");
-    //return response;
-    return { data: plans };
+    res = await axios.get("/plans", {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
   } catch (error) {
-    console.error(error);
+    return error;
   }
-}
-
-/**
- * This function retrieves products data using an ID and token.
- * @param id - The `id` parameter is likely an identifier for a specific plan or research output. It is used in the commented out axios request to
- * retrieve data from an API endpoint.
- * @returns An object with a "data" property that contains the "products" data. However, the "products" variable is not defined in the code snippet, so
- * it is unclear what data is being returned.
- */
-const getProducts = async (id) => {
-  try {
-    //const response = await axios.get(`/plans/${id}/research_outputs`);
-    //return response;
-    return { data: products };
-  } catch (error) {
-    console.error(error);
-  }
+  return res;
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -133,5 +104,4 @@ export default {
   postImportProduct,
   deleteResearchOutput,
   getPlans,
-  getProducts,
 };
