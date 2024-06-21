@@ -20,7 +20,7 @@ function PlanInformations() {
   const { setIsOpen } = useTour();
 
   const planInformationsMessage = displayedResearchOutput?.configuration.moduleId ?
-    'This research output uses the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).' :
+    'This research output uses the <0>"{{model}}"</0> model (version: {{version}}, published on: {{publishedDate}}).' :
     'This plan is based on the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).';
 
 
