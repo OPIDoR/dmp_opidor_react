@@ -84,6 +84,8 @@ function ImportResearchOutput({ planId, handleClose }) {
     setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
     setUrlParams({ research_output: current_research_output });
 
+    handleClose();
+
     return toast.success(res?.data?.message);
   };
 
