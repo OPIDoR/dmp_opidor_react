@@ -1,7 +1,10 @@
 import axios from '../utils/AxiosClient';
+import createHeaders from '../utils/HeaderBuilder';
+
 
 const MAPPING_URL = '/super_admin/template_mappings';
-const MAPPING_OPTIONS = { headers: { 'Accept': 'application/json' } };
+const MAPPING_OPTIONS = {headers: createHeaders({'Accept': 'application/json'}, true)};
+console.log(MAPPING_OPTIONS);
 
 const getMappings = async () => axios.get(MAPPING_URL, MAPPING_OPTIONS);
 const getMapping = async (id) => axios.get(`${MAPPING_URL}/${id}`);
