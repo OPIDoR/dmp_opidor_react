@@ -60,13 +60,13 @@ function ImportResearchOutput({ planId, handleClose }) {
   /**
    * This function handles the import of a product plan and updates the product data.
    */
-  const handleImportPlan = async (e) => {
+  const handleImportResearchOutput = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
     let res;
     try {
-      res = await researchOutput.postImportProduct(  {
+      res = await researchOutput.importResearchOutput(  {
         planId,
         uuid: selectedResearchOutput.uuid,
       });
@@ -75,18 +75,16 @@ function ImportResearchOutput({ planId, handleClose }) {
       return toast.error(t('An error occured during import !'));
     }
 
-    const { research_outputs, current_research_output } = res?.data?.data;
+    const { research_outputs, created_ro_id } = res?.data;
 
-    const currentResearchOutput = research_outputs.find(({ id }) => id === current_research_output);
 
+    setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
     setResearchOutputs(research_outputs);
-    setDisplayedResearchOutput(currentResearchOutput);
-    setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
-    setUrlParams({ research_output: current_research_output });
+    // setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
+    setUrlParams({ research_output: created_ro_id });
 
-    handleClose();
-
-    return toast.success(res?.data?.message);
+    toast.success(t("Research output successfully imported."));
+    return handleClose();
   };
 
   return (
@@ -124,7 +122,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
           {t("Close")}
         </Button>
-        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportPlan}>
+        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput}>
           {t("Import")}
         </Button>
       </EndButton>
