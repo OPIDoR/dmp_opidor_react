@@ -25,7 +25,7 @@ function GeneralInfoLayout({
 }) {
   return(
     <Global>
-      {isClassic && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
+      {isClassic && !readonly && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
       <GeneralInfo
         locale={locale}
         planId={planId}

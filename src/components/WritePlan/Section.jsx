@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
@@ -39,6 +40,11 @@ function Section({ planId, section, readonly }) {
       <p className={styles.title}>
         {section.number}. {section.title}
       </p>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize([section.description]),
+        }}
+      />
       <div className="column">
         <div className={styles.collapse_title}>
           <button

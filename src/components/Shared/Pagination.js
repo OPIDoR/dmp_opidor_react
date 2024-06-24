@@ -9,12 +9,7 @@ const propTypes = {
   pageSize: PropTypes.number,
 };
 
-const defaultProps = {
-  initialPage: 1,
-  pageSize: 9,
-};
-
-const Pagination = ({ items, onChangePage, initialPage, pageSize }) => {
+const Pagination = ({ items, onChangePage, initialPage = 1, pageSize = 9 }) => {
   const [pager, setPager] = useState({});
 
   useEffect(() => {
@@ -32,7 +27,7 @@ const Pagination = ({ items, onChangePage, initialPage, pageSize }) => {
     const pageOfItems = items.slice(newPager.startIndex, newPager.endIndex + 1);
 
     setPager(newPager);
-    onChangePage(pageOfItems);
+    onChangePage(pageOfItems, page);
   };
 
   const getPager = (totalItems, currentPage = 1, pageSize = 10) => {
@@ -112,5 +107,4 @@ const Pagination = ({ items, onChangePage, initialPage, pageSize }) => {
 };
 
 Pagination.propTypes = propTypes;
-Pagination.defaultProps = defaultProps;
 export default Pagination;
