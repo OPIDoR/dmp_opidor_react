@@ -32,6 +32,7 @@ function SelectWithCreate({
   registries,
   overridable = false,
   readonly = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const {
@@ -277,6 +278,7 @@ function SelectWithCreate({
             templateToString={template?.schema?.to_string}
             tableHeader={header}
             readonly={readonly}
+            isConst={isConst}
           />
         )}
       </div>

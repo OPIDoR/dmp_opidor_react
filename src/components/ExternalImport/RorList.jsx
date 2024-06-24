@@ -65,7 +65,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
   /**
    * The onChangePage function updates the state with a new page of items.
    */
-  const onChangePage = (pageOfItems) => {
+  const onChangePage = (pageOfItems, page) => {
     // update state with new page of items
     setCurrentData(pageOfItems);
   };

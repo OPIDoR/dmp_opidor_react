@@ -64,7 +64,8 @@ function FormBuilder({ template, readonly }) {
               templateName={prop.items.template_name}
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
-              readonly={readonly || isConst}
+              readonly={readonly}
+              isConst={isConst}
             ></SelectWithCreate>,
           );
           continue;
@@ -163,7 +164,8 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
-              readonly={readonly || isConst}
+              readonly={readonly}
+              isConst={isConst}
             ></ModalTemplate>,
           );
         }

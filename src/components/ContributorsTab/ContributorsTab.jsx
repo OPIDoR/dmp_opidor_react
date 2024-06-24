@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
+
 import { service } from "../../services";
 import CustomButton from "../Styled/CustomButton";
 import ContributorsList from "./ContributorsList";
 import ModalForm from "../Forms/ModalForm";
-import { useContext } from "react";
 import { GlobalContext } from "../context/Global";
-import Swal from "sweetalert2";
 import swalUtils from "../../utils/swalUtils";
 import CustomSpinner from "../Shared/CustomSpinner";
+import * as styles from '../assets/css/form.module.css';
+import { checkFragmentExists } from "../../utils/JsonFragmentsUtils";
 
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
@@ -44,33 +46,34 @@ function ContributorsTab({ planId, locale, readonly }) {
   const handleSave = async (data) => {
     const newContributorsList = [...contributors];
     setLoading(true);
-    if (index !== null && fragmentId) {
-      service.saveFragment(fragmentId, data)
-        .then((res) => {
-          newContributorsList[index].data = res.data.fragment;
-          setContributors(newContributorsList);
-        }).catch((error) => {
-          setError(error);
-        }).finally(() => {
-          handleClose();
-          setLoading(false);
-        });
+    if (checkFragmentExists(contributors.map((c) => c.data), data, template.schema['unicity'])) {
+      setError(t('This record already exists.'));
     } else {
-      service.createFragment(data, template.id, dmpId)
-        .then((res) => {
-          newContributorsList.unshift({
-            id: res.data.fragment.id,
-            data: res.data.fragment,
-            roles: []
-          })
-          setContributors(newContributorsList);
-        }).catch((error) => {
-          setError(error);
-        }).finally(() => {
-          handleClose();
-          setLoading(false);
-        });
+      if (index !== null && fragmentId) {
+        service.saveFragment(fragmentId, data)
+          .then((res) => {
+            newContributorsList[index].data = res.data.fragment;
+            setContributors(newContributorsList);
+          }).catch((error) => {
+            setError(error);
+          });
+      } else {
+        service.createFragment(data, template.id, dmpId)
+          .then((res) => {
+            newContributorsList.unshift({
+              id: res.data.fragment.id,
+              data: res.data.fragment,
+              roles: []
+            })
+            setContributors(newContributorsList);
+          }).catch((error) => {
+            setError(error);
+          });
+      }
     }
+    document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    handleClose();
+    setLoading(false);
   };
 
   const handleClose = () => {
@@ -106,6 +109,7 @@ function ContributorsTab({ planId, locale, readonly }) {
   return (
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true} />}
+      <span className={styles.errorMessage}>{error}</span>
       <ContributorsList
         contributors={contributors}
         template={template}
