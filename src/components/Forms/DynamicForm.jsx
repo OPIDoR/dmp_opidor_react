@@ -59,7 +59,7 @@ function DynamicForm({
       service.getSchema(madmpSchemaId).then((res) => {
         setTemplate(res.data);
         // console.log(res.data)
-        setCurrentJsonPath(`$.${res.data.name}`);
+        setCurrentJsonPath(`$.${res.data.property_name}`);
         setLoadedTemplates({ ...loadedTemplates, [template?.name]: res.data });
       }).catch(console.error)
         .finally(() => setLoading(false));
