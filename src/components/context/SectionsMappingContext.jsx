@@ -111,7 +111,7 @@ export const SectionsMappingProvider = ({ children }) => {
     await templateMapping.destroyMapping(id || templateMappingId);
     confirmationModal();
 
-    window.location.href = `/super_admin/template_mappings${ANCHOR_CONTENT}`;
+    window.location.href = `/super_admin/template_mappings`;
   }
 
   const duplicateMapping = async (id) => {
