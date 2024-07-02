@@ -75,7 +75,7 @@ const MappingEditor = forwardRef(({
 
   function addAttrIntoEditorContentTags() {
     const value = mappingSchema.mapping[questionId]?.replace(/<samp([^>]+)>/g, (match) => {
-      // COnstruire data-path
+      // build data-path
       const jsonPathMatch = match.match(/json-path="([^"]+)"/);
       if (jsonPathMatch) {
         const jsonPath = jsonPathMatch[1];
@@ -118,13 +118,7 @@ const MappingEditor = forwardRef(({
             width: '100%',
             autoresize_bottom_margin: 10,
             branding: false,
-            extended_valid_elements: 'iframe[tooltip], a[href|target=_blank], samp[json-path|style|contenteditable|data-label]',
-            valid_elements: 'samp[json-path|style|contenteditable|data-label]',
-            paste_preprocess: function (plugin, args) {
-              args.content = args.content.replace(/<samp([^>]+)>/g, function (match) {
-                return match.replace(/json-path="([^"]+)"/g, 'data-path="$1"');
-              });
-            },
+            extended_valid_elements: 'iframe[tooltip],a[href|target=_blank],samp[json-path|style|contenteditable|data-label]',
             content_style: `
             samp[json-path] {
               background-color: #b4d7ff; 
