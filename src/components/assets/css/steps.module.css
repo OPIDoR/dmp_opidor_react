@@ -38,6 +38,17 @@
   color: var(--white);
 }
 
+.disabled {
+  border-radius: 8px;
+  border: solid;
+  border-color: grey;
+  border-width: 1px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px 0;
+  cursor: not-allowed !important;
+}
+
 .title {
   font-size: 25px;
   margin: 20px 0px 10px 0;
