@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Panel } from 'react-bootstrap';
+import { Panel, Tabs, Tab } from 'react-bootstrap';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -11,7 +11,9 @@ import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
+import ImportResearchOutput from "../ResearchOutput/ImportResearchOutput";
 import PlanInformations from "./PlanInformations";
+import * as modalStyles from "../assets/css/modal.module.css";
 
 function WritePlan({
   locale = 'en_GB',
@@ -133,7 +135,14 @@ function WritePlan({
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} edit={false} />
+                <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
+                  <Tab eventKey={"create"} title={t("Create")}>
+                    <AddResearchOutput planId={planId} handleClose={null} close={false} show={true} edit={false} />
+                  </Tab>
+                  <Tab eventKey="import" title={t("Import")}>
+                    <ImportResearchOutput planId={planId} handleClose={null}  close={false} show={true} />
+                  </Tab>
+                </Tabs>
               </div>
             </Panel.Body>
           </Panel>
