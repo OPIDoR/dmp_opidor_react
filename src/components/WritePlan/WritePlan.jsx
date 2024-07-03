@@ -137,10 +137,10 @@ function WritePlan({
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                 <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
                   <Tab eventKey={"create"} title={t("Create")}>
-                    <AddResearchOutput planId={planId} handleClose={null} close={false} show={true} edit={false} />
+                    <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} edit={false} />
                   </Tab>
                   <Tab eventKey="import" title={t("Import")}>
-                    <ImportResearchOutput planId={planId} handleClose={null}  close={false} show={true} />
+                    <ImportResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} />
                   </Tab>
                 </Tabs>
               </div>
