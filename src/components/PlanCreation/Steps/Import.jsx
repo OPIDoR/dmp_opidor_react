@@ -76,7 +76,7 @@ function Import({ prevStep, params, setUrlParams }) {
   return (
     <div>
       {loading && <CustomSpinner />}
-      {templates.length === 0 && (
+      {!loading && templates.length === 0 && (
         <h2>{t('There don\'t seem to be any templates that meet these criteria.')}</h2>
       )}
       {!loading && templates.length >= 0 && (
