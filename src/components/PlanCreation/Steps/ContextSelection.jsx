@@ -9,7 +9,7 @@ import * as styles from "../../assets/css/steps.module.css";
  * @returns A React component that renders a form with two radio buttons and a button to validate the user's choice. The component also uses context to
  * set the value of the selected radio button.
  */
-function ContextSelection({ nextStep, set, params }) {
+function ContextSelection({ prevStep, nextStep, set, params }) {
   const { t } = useTranslation();
 
   const categories = [
@@ -24,7 +24,7 @@ function ContextSelection({ nextStep, set, params }) {
       description: t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.'),
     }
   ];
- 
+
   return (
     <div>
       <h2>{t('Select the context in which you are developing your data management plan')}</h2>
@@ -50,6 +50,9 @@ function ContextSelection({ nextStep, set, params }) {
           </div>
         ))
       }
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {prevStep}
+      </div>
     </div>
   );
 }
