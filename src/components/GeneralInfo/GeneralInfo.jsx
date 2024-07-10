@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Panel } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import { useTranslation } from "react-i18next";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
@@ -58,13 +58,13 @@ function GeneralInfo({
       {!readonly && researchContext === 'research_project' && (
         <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale}/>
       )}
-      <Panel
+      <Card
         expanded={isOpenProjectForm}
-        className={styles.panel}
+        className={styles.card}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
         onToggle={(expanded) => setIsOpenProjectForm(expanded)}>
-        <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Panel.Title toggle>
+        <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
+          <Card.Title toggle>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
                 <div className={styles.title}>{projectFormLabel}</div>
@@ -78,19 +78,19 @@ function GeneralInfo({
                 )}
               </span>
             </div>
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body className={styles.panel_body} collapsible={true}>
+          </Card.Title>
+        </Card.Heading>
+        <Card.Body className={styles.card_body} collapsible={true}>
           {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
-        </Panel.Body>
-      </Panel>
-      <Panel
+        </Card.Body>
+      </Card>
+      <Card
         expanded={isOpenMetaForm}
-        className={styles.panel}
+        className={styles.card}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
         onToggle={(expanded) => setIsOpenMetaForm(expanded)}>
-        <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Panel.Title toggle>
+        <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
+          <Card.Title toggle>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
                 <div className={styles.title}>{t("Plan Information")}</div>
@@ -104,9 +104,9 @@ function GeneralInfo({
                 )}
               </span>
             </div>
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body className={styles.panel_body} collapsible={true}>
+          </Card.Title>
+        </Card.Heading>
+        <Card.Body className={styles.card_body} collapsible={true}>
           <div className="form-check form-switch" style={{ marginLeft: '15px' }}>
             <input
               type="checkbox"
@@ -122,8 +122,8 @@ function GeneralInfo({
             </label>
           </div>
           {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     </>
   );
 }

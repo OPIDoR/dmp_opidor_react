@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import * as styles from "../assets/css/write_plan.module.css";
-import { Panel } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
-import { GlobalContext } from "../context/Global";
 import { useTranslation } from "react-i18next";
-import PanelBody from "react-bootstrap/lib/PanelBody";
+
+import { GlobalContext } from "../context/Global";
+import * as styles from "../assets/css/write_plan.module.css";
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   const { t } = useTranslation();
@@ -16,20 +16,20 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
   } = useContext(GlobalContext);
 
   return (
-    <Panel
-      className={styles.panel}
+    <Card
+      className={styles.card}
       style={{
         borderRadius: "10px",
         borderWidth: "2px",
         borderColor: "var(--dark-blue)",
       }}
     >
-      <Panel.Heading style={{
+      <Card.Heading style={{
         backgroundColor: "rgb(28, 81, 112)",
         borderRadius: "5px 5px 0 0",
         color: "#fff",
       }}>
-        <Panel.Title style={{
+        <Card.Title style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -69,9 +69,9 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
               </>
             )}
           </span>
-        </Panel.Title>
-      </Panel.Heading>
-      <PanelBody>
+        </Card.Title>
+      </Card.Heading>
+      <Card.Body>
         <ul>
           <li>
             {t('Short name')} : <strong>{displayedResearchOutput.abbreviation}</strong>
@@ -86,8 +86,8 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
             {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
           </li>
         </ul>
-      </PanelBody>
-    </Panel>
+      </Card.Body>
+    </Card>
   );
 }
 

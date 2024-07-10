@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
-import { Panel, Label } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Badge from "react-bootstrap/Badge";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
@@ -157,10 +158,10 @@ function Question({
   return (
     <>
       {
-        <Panel
+        <Card
           id="question-panel"
           expanded={isQuestionOpened()}
-          className={styles.panel}
+          className={styles.card}
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
@@ -168,15 +169,15 @@ function Question({
           }}
           onToggle={(expanded) => handleQuestionCollapse(expanded)}
         >
-          <Panel.Heading style={{ background: "white", borderRadius: "18px" }}>
-            <Panel.Title toggle>
+          <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
+            <Card.Title toggle>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
                   <div className={styles.question_number}>
                     {sectionNumber}.{questionIdx}
                   </div>
                   <div
-                    className={styles.panel_title}
+                    className={styles.card_title}
                     style={{
                       fontSize: '18px',
                       fontWeight: 'bold',
@@ -211,7 +212,7 @@ function Question({
                       />
                       <div
                         data-tooltip-id="guidanceTip"
-                        className={styles.panel_icon}
+                        className={styles.card_icon}
                         onClick={(e) => {
                           handleIconClick(e, "guidance");
                         }}
@@ -247,7 +248,7 @@ function Question({
                       />
                       <div
                         data-tooltip-id="commentTip"
-                        className={styles.panel_icon}
+                        className={styles.card_icon}
                         onClick={(e) => {
                           handleQuestionCollapse(true);
                           handleIconClick(e, "comment");
@@ -279,7 +280,7 @@ function Question({
                       />
                       <div
                         data-tooltip-id="form-changer-show-button"
-                        className={styles.panel_icon}
+                        className={styles.card_icon}
                         onClick={(e) => {
                           handleIconClick(e, "formSelector");
                         }}
@@ -314,7 +315,7 @@ function Question({
                       />
                       <div
                         data-tooltip-id="scriptTip"
-                        className={styles.panel_icon}
+                        className={styles.card_icon}
                         onClick={(e) => {
                           handleIconClick(e, "runs");
                         }}
@@ -350,9 +351,9 @@ function Question({
                   )}
                 </div>
               </div>
-            </Panel.Title>
-          </Panel.Heading>
-          <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
+            </Card.Title>
+          </Card.Heading>
+          <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
             {isQuestionOpened() && answer && (
               <div>
                 {!readonly && scriptsData.scripts.length > 0 && (
@@ -385,7 +386,7 @@ function Question({
             )}
             {isQuestionOpened() ? (
               <>
-                {readonly && !answer.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
+                {readonly && !answer.id ? (<Badge bsStyle="primary">{t('Question not answered.')}</Badge>) :
                   (<DynamicForm
                     fragmentId={answer?.fragment_id}
                     className={question?.madmp_schema?.classname}
@@ -405,8 +406,8 @@ function Question({
             ) : (
               <></>
             )}
-          </Panel.Body>
-        </Panel>
+          </Card.Body>
+        </Card>
       }
     </>
   );

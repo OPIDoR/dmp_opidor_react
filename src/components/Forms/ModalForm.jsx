@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, FormProvider } from "react-hook-form";
-import { Modal, Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import { ExternalImport } from '../ExternalImport';

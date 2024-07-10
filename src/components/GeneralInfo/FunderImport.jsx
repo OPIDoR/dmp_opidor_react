@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Panel } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import { useTranslation } from 'react-i18next';
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
@@ -110,9 +110,9 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
   return (
 
-    <Panel
+    <Card
       expanded={isOpenFunderImport}
-      className={styles.panel}
+      className={styles.card}
       style={{
         border: "2px solid var(--dark-blue)",
         borderRadius: "10px",
@@ -121,8 +121,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     >
       {loading && <CustomSpinner isOverlay={true} />}
       {error && <CustomError error={error} />}
-      <Panel.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
-        <Panel.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
+      <Card.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
+        <Card.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
           <div className={styles.question_title}>
             <div className={styles.question_text}>
               <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
@@ -135,9 +135,9 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
               )}
             </span>
           </div>
-        </Panel.Title>
-      </Panel.Heading>
-      <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+        </Card.Title>
+      </Card.Heading>
+      <Card.Body collapsible className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
         {!error && funders && (
           <div className={styles.container_anr}>
             <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
@@ -174,8 +174,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
             )}
           </div>
         )}
-      </Panel.Body>
-    </Panel>
+      </Card.Body>
+    </Card>
   )
 
 }

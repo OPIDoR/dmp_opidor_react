@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { GlobalContext } from "../context/Global";
 import ResearchOutputsNavBar from "./styles/ResearchOutputsNavBar";
-import { Panel, PanelGroup } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import CardGroup from "react-bootstrap/CardGroup";
 import { MdAddCircleOutline } from "react-icons/md";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import { useTranslation } from "react-i18next";
@@ -67,7 +68,7 @@ function ResearchOutputsTabs({ planId, readonly }) {
         <ResearchOutputsNavBar className="navbar-inverse" id="ro-nav-bar">
           <div className="collapse navbar-collapse">
             {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
-              <PanelGroup 
+              <CardGroup 
                 activeKey={activeGroup}
                 onSelect={handleSelect}
                 accordion 
@@ -79,21 +80,21 @@ function ResearchOutputsTabs({ planId, readonly }) {
                   const end = i * RESEARCH_OUTPUTS_PER_PAGE + RESEARCH_OUTPUTS_PER_PAGE;
 
                   return (
-                    <Panel 
+                    <Card 
                       key={i}
                       eventKey={i}
                       style={{ borderColor: "white" }}
                     >
-                      <Panel.Heading style={{ background: "var(--dark-blue)" }}>
-                        <Panel.Title
+                      <Card.Heading style={{ background: "var(--dark-blue)" }}>
+                        <Card.Title
                           toggle
                           className={styles.nav_title}
                         >
                           {start} - {end}
-                        </Panel.Title>
-                      </Panel.Heading>
+                        </Card.Title>
+                      </Card.Heading>
 
-                      <Panel.Body
+                      <Card.Body
                         collapsible={true}
                         style={{ padding: "0px 0px 0px 0px" }}
                       >
@@ -118,11 +119,11 @@ function ResearchOutputsTabs({ planId, readonly }) {
                             </li>
                           ))}
                         </ul>
-                      </Panel.Body>
-                    </Panel>
+                      </Card.Body>
+                    </Card>
                   );
                 })}
-              </PanelGroup>
+              </CardGroup>
             ) : (
               <ul className={`nav navbar-nav ${styles.research_outputs_tabs}`}>
                 {researchOutputs.map((el, idx) => (

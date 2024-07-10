@@ -35,12 +35,12 @@
   font-size: 30px;
   color: white;
 }
-.panel {
+.card {
   margin: 20px;
   position: relative;
 }
 
-:global(.panel-heading a) {
+:global(.card-heading a) {
   background-color: white;
   text-decoration: none;
   border-radius: 10px;
@@ -50,7 +50,7 @@
   background-color: var(--dark-blue);
 }
 
-.panel_body {
+.card_body {
   position: relative;
 }
 

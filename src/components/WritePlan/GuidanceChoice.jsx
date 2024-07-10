@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Panel, PanelGroup } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import CardGroup from "react-bootstrap/CardGroup";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { TbBulbFilled } from "react-icons/tb";
 import { Tooltip as ReactTooltip } from "react-tooltip";
@@ -182,10 +183,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   }
 
   return (
-    <PanelGroup accordion id="accordion-guidance-choice">
-      <Panel eventKey="1" className="funder-import">
-        <Panel.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
-          <Panel.Title
+    <CardGroup accordion id="accordion-guidance-choice">
+      <Card eventKey="1" className="funder-import">
+        <Card.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
+          <Card.Title
             toggle
             onClick={(e) => setIsOpen(!isOpen)}
             style={{
@@ -214,9 +215,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                 )}
               </div>
             </div>
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body collapsible>
+          </Card.Title>
+        </Card.Heading>
+        <Card.Body collapsible>
           <div style={description}>
             <div style={{ textAlign: 'justify' }}>
                <Trans
@@ -370,9 +371,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
               </div>
             </div>
           </div>
-        </Panel.Body>
-      </Panel>
-    </PanelGroup>
+        </Card.Body>
+      </Card>
+    </CardGroup>
   );
 }
 

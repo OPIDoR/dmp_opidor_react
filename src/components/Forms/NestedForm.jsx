@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm, FormProvider } from "react-hook-form";
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';

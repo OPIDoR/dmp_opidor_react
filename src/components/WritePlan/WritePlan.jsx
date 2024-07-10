@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Panel } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -129,14 +129,14 @@ function WritePlan({
       )}
       {!loading && !error && researchOutputs.length === 0 && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Panel style={{ width: '700px' }}>
-            <Panel.Body>
+          <Card style={{ width: '700px' }}>
+            <Card.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                 <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} edit={false} />
               </div>
-            </Panel.Body>
-          </Panel>
+            </Card.Body>
+          </Card>
         </div>
       )}
     </div>
