@@ -108,7 +108,7 @@ export default (t) => [
           height: '70px',
         }}>
            <FaWrench size={54} style={{ margin: '-20px 10px 0 5px' }} />
-          <p>{t('To report a technical error or provide feedback on the OPIDoR DMP tool, click on the key.')}</p>
+          <p>{t('To report a technical error or provide feedback on the DMP OPIDoR tool, click on the key.')}</p>
         </div>
       </>
     ),
