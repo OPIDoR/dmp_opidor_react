@@ -185,7 +185,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   return (
     <CardGroup accordion id="accordion-guidance-choice">
       <Card eventKey="1" className="funder-import">
-        <Card.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
+        <Card.Header style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
           <Card.Title
             toggle
             onClick={(e) => setIsOpen(!isOpen)}
@@ -216,7 +216,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
               </div>
             </div>
           </Card.Title>
-        </Card.Heading>
+        </Card.Header>
         <Card.Body collapsible>
           <div style={description}>
             <div style={{ textAlign: 'justify' }}>

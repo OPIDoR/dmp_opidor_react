@@ -24,7 +24,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
         borderColor: "var(--dark-blue)",
       }}
     >
-      <Card.Heading style={{
+      <Card.Header style={{
         backgroundColor: "rgb(28, 81, 112)",
         borderRadius: "5px 5px 0 0",
         color: "#fff",
@@ -70,7 +70,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
             )}
           </span>
         </Card.Title>
-      </Card.Heading>
+      </Card.Header>
       <Card.Body>
         <ul>
           <li>

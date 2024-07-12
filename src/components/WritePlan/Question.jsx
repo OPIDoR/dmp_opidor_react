@@ -169,7 +169,7 @@ function Question({
           }}
           onToggle={(expanded) => handleQuestionCollapse(expanded)}
         >
-          <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
+          <Card.Header style={{ background: "white", borderRadius: "18px" }}>
             <Card.Title toggle>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
@@ -352,7 +352,7 @@ function Question({
                 </div>
               </div>
             </Card.Title>
-          </Card.Heading>
+          </Card.Header>
           <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
             {isQuestionOpened() && answer && (
               <div>

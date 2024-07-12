@@ -85,14 +85,14 @@ function ResearchOutputsTabs({ planId, readonly }) {
                       eventKey={i}
                       style={{ borderColor: "white" }}
                     >
-                      <Card.Heading style={{ background: "var(--dark-blue)" }}>
+                      <Card.Header style={{ background: "var(--dark-blue)" }}>
                         <Card.Title
                           toggle
                           className={styles.nav_title}
                         >
                           {start} - {end}
                         </Card.Title>
-                      </Card.Heading>
+                      </Card.Header>
 
                       <Card.Body
                         collapsible={true}
