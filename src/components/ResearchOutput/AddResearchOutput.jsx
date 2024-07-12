@@ -182,7 +182,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             {t("Close")}
           </Button>
         )}
-        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
+        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
           {t(edit ? "Save" : "Add")}
         </Button>
       </EndButton>

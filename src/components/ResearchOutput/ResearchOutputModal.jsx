@@ -15,7 +15,7 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
   const { t } = useTranslation();
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal size="xl" show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t(edit ? 'Edit research output' : 'Create or import a research output')}</Modal.Title>
       </Modal.Header>

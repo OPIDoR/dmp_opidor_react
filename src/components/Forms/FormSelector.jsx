@@ -77,7 +77,7 @@ function FormSelector({ className, displayedTemplate, fragmentId, setFragment, s
                     >
                       {t("Close")}
                     </Button>
-                    <Button onClick={handleChangeForm} bsStyle="primary" type="submit" style={{ margin: '0 5px 0 5px' }}>
+                    <Button onClick={handleChangeForm} variant="primary" type="submit" style={{ margin: '0 5px 0 5px' }}>
                       {t('Save')}
                     </Button>
                   </div>

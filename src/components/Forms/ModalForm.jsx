@@ -39,7 +39,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   return (
-    <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
+    <Modal size="xl" className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
@@ -59,7 +59,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
           {t("Close")}
         </Button>
         {!readonly && (
-          <Button bsStyle="primary" type="submit" form="modal-form">
+          <Button variant="primary" type="submit" form="modal-form">
             {t('Save')}
           </Button>
         )}

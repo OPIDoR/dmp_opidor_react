@@ -386,7 +386,7 @@ function Question({
             )}
             {isQuestionOpened() ? (
               <>
-                {readonly && !answer.id ? (<Badge bsStyle="primary">{t('Question not answered.')}</Badge>) :
+                {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
                   (<DynamicForm
                     fragmentId={answer?.fragment_id}
                     className={question?.madmp_schema?.classname}
