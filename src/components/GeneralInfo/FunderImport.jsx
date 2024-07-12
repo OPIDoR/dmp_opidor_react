@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Card from "react-bootstrap/Card";
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
+
 import { useTranslation } from 'react-i18next';
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
-import styled from "styled-components";
 import { toast } from "react-hot-toast";
 
 import * as styles from "../assets/css/general_info.module.css";
@@ -15,15 +18,6 @@ import { service } from "../../services";
 import { filterOptions } from "../../utils/GeneratorUtils";
 import { getErrorMessage } from "../../utils/utils";
 
-
-export const ButtonSave = styled.button`+
-  margin: 10px 2px 2px 0px;
-  color: #000;
-  font-size: 18px;
-  color: var(--dark-blue) !important;
-  font-family: "Helvetica Neue", sans-serif !important;
-  border-radius: 8px !important;
-`;
 
 function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale }) {
   const { t } = useTranslation();
@@ -109,72 +103,77 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   };
 
   return (
-
     <Card
-      expanded={isOpenFunderImport}
       className={styles.card}
       style={{
         border: "2px solid var(--dark-blue)",
         borderRadius: "10px",
-      }}
-      onToggle={(expanded) => setIsOpenFunderImport(expanded)}
-    >
+      }}>
       {loading && <CustomSpinner isOverlay={true} />}
       {error && <CustomError error={error} />}
-      <Card.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
-        <Card.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
-          <div className={styles.question_title}>
-            <div className={styles.question_text}>
-              <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+      <Card.Header className="funder-import" style={{ background: "var(--dark-blue)", borderBottom: "none" }}>
+        <Button
+          style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none' }}
+          onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
+          aria-controls="funder-import-collapse"
+          aria-expanded={isOpenFunderImport}
+        >
+          <Card.Title>
+            <div className={styles.question_title}>
+              <div className={styles.question_text}>
+                <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+              </div>
+              <span className={styles.question_icons}>
+                {isOpenFunderImport ? (
+                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                ) : (
+                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                )}
+              </span>
             </div>
-            <span className={styles.question_icons}>
-              {isOpenFunderImport ? (
-                <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-              ) : (
-                <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-              )}
-            </span>
-          </div>
-        </Card.Title>
-      </Card.Heading>
-      <Card.Body collapsible className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
-        {!error && funders && (
-          <div className={styles.container_anr}>
-            <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-            {funders.length > 1 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Please select a funder")}</label>
-                </div>
-                <CustomSelect
-                  options={funders}
-                  selectedOption={selectedFunder || null}
-                  onSelectChange={(e) => handleSelectFunder(e)}
-                />
+          </Card.Title>
+        </Button>
+      </Card.Header>
+      <Collapse in={isOpenFunderImport}>
+        <div id="funder-import-collapse">
+          <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+            {!error && funders && (
+              <div className={styles.container_anr}>
+                <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+                {funders.length > 1 && (
+                  <div>
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Please select a funder")}</label>
+                    </div>
+                    <CustomSelect
+                      options={funders}
+                      selectedOption={selectedFunder || null}
+                      onSelectChange={(e) => handleSelectFunder(e)}
+                    />
+                  </div>
+                )}
+                {fundedProjects.length > 0 && (
+                  <div style={{ paddingBottom: '10px' }}>
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Then Select project acronym, title or ID")}</label>
+                    </div>
+                    <CustomSelect
+                      options={fundedProjects}
+                      selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
+                      onSelectChange={(e) => setSelectedProject(e.object)}
+                      async={true}
+                      asyncCallback={(value) => filterOptions(fundedProjects, value)}
+                    />
+                  </div>
+                )}
+                {selectedProject && (
+                  <Button variant="light" onClick={handleSaveFunding}>{t("Save")}</Button>
+                )}
               </div>
             )}
-            {fundedProjects.length > 0 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Then Select project acronym, title or ID")}</label>
-                </div>
-                <CustomSelect
-                  options={fundedProjects}
-                  selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                  onSelectChange={(e) => setSelectedProject(e.object)}
-                  async={true}
-                  asyncCallback={(value) => filterOptions(fundedProjects, value)}
-                />
-              </div>
-            )}
-            {selectedProject && (
-              <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                {t("Save")}
-              </ButtonSave>
-            )}
-          </div>
-        )}
-      </Card.Body>
+          </Card.Body>
+        </div>
+      </Collapse>
     </Card>
   )
 

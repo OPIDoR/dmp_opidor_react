@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Collapse from "react-bootstrap/Collapse";
+
 import { useTranslation } from "react-i18next";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
@@ -8,7 +12,7 @@ import * as styles from "../assets/css/general_info.module.css";
 import { generalInfo } from "../../services";
 import { GlobalContext } from "../context/Global";
 import DynamicForm from "../Forms/DynamicForm";
-import FunderImport from "./FunderImport";
+import FunderImport from "./FunderImport.jsx";
 import { getErrorMessage } from "../../utils/utils";
 
 function GeneralInfo({
@@ -52,77 +56,97 @@ function GeneralInfo({
 
     return toast.success(response?.data?.msg);
   };
-  
+
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
-        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale}/>
+        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale} />
       )}
       <Card
-        expanded={isOpenProjectForm}
         className={styles.card}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
-        onToggle={(expanded) => setIsOpenProjectForm(expanded)}>
-        <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Card.Title toggle>
-            <div className={styles.question_title}>
-              <div className={styles.question_text}>
-                <div className={styles.title}>{projectFormLabel}</div>
-              </div>
+      >
+        <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none'  }}>
+          <Button
+            style={{ backgroundColor: 'white', width: '100%', border: 'none' }}
+            onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}
+            aria-controls="project-form-collapse"
+            aria-expanded={isOpenProjectForm}
+          >
+            <Card.Title>
+              <div className={styles.question_title}>
+                <div className={styles.question_text}>
+                  <div className={styles.title}>{projectFormLabel}</div>
+                </div>
 
-              <span className={styles.question_icons}>
-                {isOpenProjectForm ? (
-                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                ) : (
-                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                )}
-              </span>
-            </div>
-          </Card.Title>
-        </Card.Heading>
-        <Card.Body className={styles.card_body} collapsible={true}>
-          {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
-        </Card.Body>
+                <span className={styles.question_icons}>
+                  {isOpenProjectForm ? (
+                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                  ) : (
+                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                  )}
+                </span>
+              </div>
+            </Card.Title>
+          </Button>
+        </Card.Header>
+        <Collapse in={isOpenProjectForm}>
+          <div id="project-form-collapse">
+            <Card.Body className={styles.card_body}>
+              {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
+            </Card.Body>
+          </div>
+        </Collapse>
       </Card>
       <Card
-        expanded={isOpenMetaForm}
         className={styles.card}
         style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
-        onToggle={(expanded) => setIsOpenMetaForm(expanded)}>
-        <Card.Heading style={{ background: "white", borderRadius: "18px" }}>
-          <Card.Title toggle>
-            <div className={styles.question_title}>
-              <div className={styles.question_text}>
-                <div className={styles.title}>{t("Plan Information")}</div>
-              </div>
+      >
+        <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none' }}>
+          <Button
+            style={{ backgroundColor: 'white', width: '100%', border: 'none' }}
+            onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}
+            aria-controls="meta-form-collapse"
+            aria-expanded={isOpenMetaForm}
+          >
+            <Card.Title>
+              <div className={styles.question_title}>
+                <div className={styles.question_text}>
+                  <div className={styles.title}>{t("Plan Information")}</div>
+                </div>
 
-              <span className={styles.question_icons}>
-                {isOpenMetaForm ? (
-                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                ) : (
-                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
-                )}
-              </span>
-            </div>
-          </Card.Title>
-        </Card.Heading>
-        <Card.Body className={styles.card_body} collapsible={true}>
-          <div className="form-check form-switch" style={{ marginLeft: '15px' }}>
-            <input
-              type="checkbox"
-              id="is_test"
-              checked={isTestPlan}
-              onClick={() => setIsTestPlan(!isTestPlan)}
-              onChange={(e) => handleClickIsTestPlan(e)}
-              disabled={readonly}
-              style={{ marginRight: '10px' }}
-            />
-            <label className="form-check-label" htmlFor="is_test">
-              {t('Test Plan (e.g. as part of a training course)')}
-            </label>
+                <span className={styles.question_icons}>
+                  {isOpenMetaForm ? (
+                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                  ) : (
+                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                  )}
+                </span>
+              </div>
+            </Card.Title>
+          </Button>
+        </Card.Header>
+        <Collapse in={isOpenMetaForm}>
+          <div id="meta-form-collapse">
+            <Card.Body className={styles.card_body}>
+              <div className="form-check form-switch" style={{ marginLeft: '15px' }}>
+                <input
+                  type="checkbox"
+                  id="is_test"
+                  checked={isTestPlan}
+                  onClick={() => setIsTestPlan(!isTestPlan)}
+                  onChange={(e) => handleClickIsTestPlan(e)}
+                  disabled={readonly}
+                  style={{ marginRight: '10px' }}
+                />
+                <label className="form-check-label" htmlFor="is_test">
+                  {t('Test Plan (e.g. as part of a training course)')}
+                </label>
+              </div>
+              {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
+            </Card.Body>
           </div>
-          {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
-        </Card.Body>
+        </Collapse>
       </Card>
     </>
   );
