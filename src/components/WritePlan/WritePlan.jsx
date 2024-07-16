@@ -8,7 +8,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
-import ResearchOutputsTabs from "./ResearchOutputsTabs";
+import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
 import * as styles from "../assets/css/sidebar.module.css";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
 import PlanInformations from "./PlanInformations";
@@ -113,9 +113,9 @@ function WritePlan({
             <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
           </div>
           <PlanInformations />
-          <div className={styles.section}>
-            <ResearchOutputsTabs planId={planId} readonly={readonly} />
-            <div className={styles.main}>
+          <div style={{ margin: '10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+            <ResearchOutputsSidebar planId={planId} readonly={readonly} />
+            <div style={{ width: '100%', height: '100%' }}>
               {planId && (
                 <SectionsContent
                   planId={planId}
