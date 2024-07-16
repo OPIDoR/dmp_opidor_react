@@ -25,14 +25,14 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
       }}
     >
       <Card.Header style={{
-        backgroundColor: "rgb(28, 81, 112)",
+        backgroundColor: "var(--dark-blue)",
         borderRadius: "5px 5px 0 0",
-        color: "#fff",
       }}>
         <Card.Title style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          color: "#fff",
         }}>
           <strong>{displayedResearchOutput?.title}</strong>
           <span id="actions" style={{ display: "flex" }}>
