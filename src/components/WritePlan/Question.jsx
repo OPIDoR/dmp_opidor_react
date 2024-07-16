@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
-import Card from "react-bootstrap/Card";
+
 import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Collapse from "react-bootstrap/Collapse";
+
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { BsGear } from "react-icons/bs";
@@ -159,254 +163,264 @@ function Question({
     <>
       {
         <Card
-          id="question-panel"
-          expanded={isQuestionOpened()}
+          id={`question-panel-${question.id}`}
           className={styles.card}
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
             borderColor: "var(--dark-blue)",
+            marginBottom: '20px',
           }}
-          onToggle={(expanded) => handleQuestionCollapse(expanded)}
         >
-          <Card.Header style={{ background: "white", borderRadius: "18px" }}>
-            <Card.Title toggle>
-              <div className={styles.question_title}>
-                <div className={styles.question_text}>
-                  <div className={styles.question_number}>
-                    {sectionNumber}.{questionIdx}
+          <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none' }}>
+            <Button
+              style={{ backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0' }}
+              onClick={() => handleQuestionCollapse(!isQuestionOpened())}
+              aria-controls={`card-collapse-${question.id}`}
+              aria-expanded={isQuestionOpened()}
+            >
+              <Card.Title>
+                <div className={styles.question_title}>
+                  <div className={styles.question_text}>
+                    <div className={styles.question_number}>
+                      {sectionNumber}.{questionIdx}
+                    </div>
+                    <div
+                      className={styles.card_title}
+                      style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        whiteSpace: 'break-spaces',
+                        textAlign: 'justify',
+                        hyphens: 'auto',
+                        paddingRight: '20px',
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize([question.text]),
+                      }}
+                    />
                   </div>
-                  <div
-                    className={styles.card_title}
-                    style={{
-                      fontSize: '18px',
-                      fontWeight: 'bold',
-                      whiteSpace: 'break-spaces',
-                      textAlign: 'justify',
-                      hyphens: 'auto',
-                      paddingRight: '20px',
-                    }}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize([question.text]),
-                    }}
-                  />
-                </div>
 
-                <div
-                  id="icons-container"
-                  className={styles.question_icons}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    maxWidth: '200px',
-                  }}
-                >
-                  {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
-                    <div>
-                      <ReactTooltip
-                        id="guidanceTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Guidance")}
-                      />
-                      <div
-                        data-tooltip-id="guidanceTip"
-                        className={styles.card_icon}
-                        onClick={(e) => {
-                          handleIconClick(e, "guidance");
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <TbBulbFilled
+                  <div
+                    id="icons-container"
+                    className={styles.question_icons}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      maxWidth: '200px',
+                    }}
+                  >
+                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+                      <div>
+                        <ReactTooltip
+                          id="guidanceTip"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t("Guidance")}
+                        />
+                        <div
+                          data-tooltip-id="guidanceTip"
+                          className={styles.card_icon}
+                          onClick={(e) => {
+                            handleIconClick(e, "guidance");
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          {isQuestionOpened() && (
+                            <TbBulbFilled
+                              size={32}
+                              fill={
+                                isQuestionOpened()
+                                  ? fillGuidanceIconColor
+                                  : "var(--dark-blue)"
+                              }
+                              style={{
+                                color: isQuestionOpened()
+                                  ? fillGuidanceIconColor
+                                  : "var(--dark-blue)"
+                              }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {answer && (
+                      <div>
+                        <ReactTooltip
+                          id="commentTip"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t("Comments")}
+                        />
+                        <div
+                          data-tooltip-id="commentTip"
+                          className={styles.card_icon}
+                          onClick={(e) => {
+                            handleQuestionCollapse(true);
+                            handleIconClick(e, "comment");
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          {isQuestionOpened() && (
+                            <CommentSVG
+                              size={32}
+                              fill={
+                                isQuestionOpened()
+                                  ? fillCommentIconColor
+                                  : "var(--dark-blue)"
+                              }
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
+                      <div>
+                        <ReactTooltip
+                          id="form-changer-show-button"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t('List of customized forms')}
+                        />
+                        <div
+                          data-tooltip-id="form-changer-show-button"
+                          className={styles.card_icon}
+                          onClick={(e) => {
+                            handleIconClick(e, "formSelector");
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          <IoShuffleOutline
+                            data-tooltip-id="form-change-show-button"
                             size={32}
                             fill={
                               isQuestionOpened()
-                                ? fillGuidanceIconColor
+                                ? fillFormSelectorIconColor
                                 : "var(--dark-blue)"
                             }
                             style={{
                               color: isQuestionOpened()
-                                ? fillGuidanceIconColor
+                                ? fillFormSelectorIconColor
                                 : "var(--dark-blue)"
                             }}
                           />
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {answer && (
-                    <div>
-                      <ReactTooltip
-                        id="commentTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Comments")}
-                      />
-                      <div
-                        data-tooltip-id="commentTip"
-                        className={styles.card_icon}
-                        onClick={(e) => {
-                          handleQuestionCollapse(true);
-                          handleIconClick(e, "comment");
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <CommentSVG
-                            size={32}
-                            fill={
-                              isQuestionOpened()
-                                ? fillCommentIconColor
-                                : "var(--dark-blue)"
-                            }
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
-                    <div>
-                      <ReactTooltip
-                        id="form-changer-show-button"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t('List of customized forms')}
-                      />
-                      <div
-                        data-tooltip-id="form-changer-show-button"
-                        className={styles.card_icon}
-                        onClick={(e) => {
-                          handleIconClick(e, "formSelector");
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        <IoShuffleOutline
-                          data-tooltip-id="form-change-show-button"
-                          size={32}
-                          fill={
-                            isQuestionOpened()
-                              ? fillFormSelectorIconColor
-                              : "var(--dark-blue)"
-                          }
-                          style={{
-                            color: isQuestionOpened()
-                              ? fillFormSelectorIconColor
-                              : "var(--dark-blue)"
-                          }}
+                    {scriptsData.scripts.length > 0 && (
+                      <div>
+                        <ReactTooltip
+                          id="scriptTip"
+                          place="bottom"
+                          effect="solid"
+                          variant="info"
+                          content={t("Tools")}
                         />
+                        <div
+                          data-tooltip-id="scriptTip"
+                          className={styles.card_icon}
+                          onClick={(e) => {
+                            handleIconClick(e, "runs");
+                          }}
+                          style={{ marginLeft: "5px" }}
+                        >
+                          {isQuestionOpened() && (
+                            <BsGear
+                              size={32}
+                              style={{ marginTop: "6px" }}
+                              fill={
+                                isQuestionOpened()
+                                  ? fillRunsIconColor
+                                  : "var(--dark-blue)"
+                              }
+                            />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {scriptsData.scripts.length > 0 && (
-                    <div>
-                      <ReactTooltip
-                        id="scriptTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Tools")}
-                      />
-                      <div
-                        data-tooltip-id="scriptTip"
-                        className={styles.card_icon}
-                        onClick={(e) => {
-                          handleIconClick(e, "runs");
-                        }}
+                    {isQuestionOpened() ? (
+                      <TfiAngleUp
                         style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <BsGear
-                            size={32}
-                            style={{ marginTop: "6px" }}
-                            fill={
-                              isQuestionOpened()
-                                ? fillRunsIconColor
-                                : "var(--dark-blue)"
-                            }
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {isQuestionOpened() ? (
-                    <TfiAngleUp
-                      style={{ marginLeft: "5px" }}
-                      size={32}
-                      className={styles.down_icon}
-                    />
-                  ) : (
-                    <TfiAngleDown
-                      style={{ marginLeft: "5px" }}
-                      size={32}
-                      className={styles.down_icon}
-                    />
-                  )}
+                        size={32}
+                        className={styles.down_icon}
+                      />
+                    ) : (
+                      <TfiAngleDown
+                        style={{ marginLeft: "5px" }}
+                        size={32}
+                        className={styles.down_icon}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Card.Title>
+              </Card.Title>
+            </Button>
           </Card.Header>
-          <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
-            {isQuestionOpened() && answer && (
-              <div>
-                {!readonly && scriptsData.scripts.length > 0 && (
-                  <RunsModal
-                    show={showRunsModal}
-                    setshowModalRuns={setShowRunsModal}
-                    setFillColorIconRuns={setFillRunsIconColor}
-                    scriptsData={scriptsData}
-                    fragmentId={answer.fragment_id}
-                  />
+          <Collapse in={isQuestionOpened()}>
+            <div id={`card-collapse-${question.id}`}>
+              <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }}>
+                {isQuestionOpened() && answer && (
+                  <div>
+                    {!readonly && scriptsData.scripts.length > 0 && (
+                      <RunsModal
+                        show={showRunsModal}
+                        setshowModalRuns={setShowRunsModal}
+                        setFillColorIconRuns={setFillRunsIconColor}
+                        scriptsData={scriptsData}
+                        fragmentId={answer.fragment_id}
+                      />
+                    )}
+                    <CommentModal
+                      show={showCommentModal}
+                      setshowModalComment={setShowCommentModal}
+                      setFillColorIconComment={setFillCommentIconColor}
+                      answerId={answer.id}
+                      researchOutputId={displayedResearchOutput.id}
+                      planId={planId}
+                      questionId={question.id}
+                      readonly={readonly}
+                    />
+                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                      show={showGuidanceModal}
+                      setShowGuidanceModal={setShowGuidanceModal}
+                      setFillColorGuidanceIcon={setFillGuidanceIconColor}
+                      questionId={questionId}
+                      planId={planId}
+                    />)}
+                  </div>
                 )}
-                <CommentModal
-                  show={showCommentModal}
-                  setshowModalComment={setShowCommentModal}
-                  setFillColorIconComment={setFillCommentIconColor}
-                  answerId={answer.id}
-                  researchOutputId={displayedResearchOutput.id}
-                  planId={planId}
-                  questionId={question.id}
-                  readonly={readonly}
-                />
-                {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                  show={showGuidanceModal}
-                  setShowGuidanceModal={setShowGuidanceModal}
-                  setFillColorGuidanceIcon={setFillGuidanceIconColor}
-                  questionId={questionId}
-                  planId={planId}
-                />)}
-              </div>
-            )}
-            {isQuestionOpened() ? (
-              <>
-                {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
-                  (<DynamicForm
-                    fragmentId={answer?.fragment_id}
-                    className={question?.madmp_schema?.classname}
-                    setScriptsData={setScriptsData}
-                    questionId={question.id}
-                    madmpSchemaId={question.madmp_schema?.id}
-                    setAnswer={setAnswer}
-                    readonly={readonly}
-                    formSelector={{
-                      show: showFormSelectorModal,
-                      setShowFormSelectorModal,
-                      setFillFormSelectorIconColor,
-                    }}
-                  />)
-                }
-              </>
-            ) : (
-              <></>
-            )}
-          </Card.Body>
+                {isQuestionOpened() ? (
+                  <>
+                    {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
+                      (<DynamicForm
+                        fragmentId={answer?.fragment_id}
+                        className={question?.madmp_schema?.classname}
+                        setScriptsData={setScriptsData}
+                        questionId={question.id}
+                        madmpSchemaId={question.madmp_schema?.id}
+                        setAnswer={setAnswer}
+                        readonly={readonly}
+                        formSelector={{
+                          show: showFormSelectorModal,
+                          setShowFormSelectorModal,
+                          setFillFormSelectorIconColor,
+                        }}
+                      />)
+                    }
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Card.Body>
+            </div>
+          </Collapse>
         </Card>
       }
     </>
