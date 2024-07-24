@@ -218,5 +218,6 @@
   "There don't seem to be any templates that meet these criteria.": "Il ne semble pas y avoir de modèle qui répondent aux critères.",
   "Select a template": "Sélectionnez un modèle",
   "Import was successful !": "Import réussi avec succès !",
-  "An error has occurred while import plan.": "Une erreur est survenue pendant l'import du plan."
+  "An error has occurred while import plan.": "Une erreur est survenue pendant l'import du plan.",
+  "Duplicate": "Dupliquer"
 }
