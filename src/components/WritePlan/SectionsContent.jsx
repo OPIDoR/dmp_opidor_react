@@ -42,8 +42,6 @@ function SectionsContent({ planId, templateId, readonly }) {
     }
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
 
-
-
   useEffect(() => {
     if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
     subscriptionRef.current = consumer.subscriptions.create({ channel: "PlanChannel", id: planId },
@@ -129,6 +127,31 @@ function SectionsContent({ planId, templateId, readonly }) {
     setEdit(true);
   };
 
+  const handleDuplicate = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    console.log(displayedResearchOutput)
+
+    let res;
+    try {
+      res = await researchOutput.importResearchOutput({
+        planId,
+        uuid: displayedResearchOutput.uuid,
+      });
+    } catch (err) {
+      return toast.error(t('An error occured during import !'));
+    }
+
+    const { research_outputs, created_ro_id } = res?.data;
+
+    setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
+    setResearchOutputs(research_outputs);
+    setUrlParams({ research_output: created_ro_id });
+
+    toast.success(t("Research output successfully imported."));
+  }
+
   const handleClose = (e) => {
     setShow(false);
     setEdit(false);
@@ -142,7 +165,12 @@ function SectionsContent({ planId, templateId, readonly }) {
       {!error && displayedResearchOutput?.template?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
-            <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
+            <ResearchOutputInfobox
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              handleDuplicate={handleDuplicate}
+              readonly={readonly}
+            />
             {displayedResearchOutput?.template?.sections?.map((section) => (
               <Section
                 key={section.id}

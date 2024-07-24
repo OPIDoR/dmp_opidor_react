@@ -4,11 +4,12 @@ import { Panel } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
+import { BiDuplicate } from "react-icons/bi";
 import { GlobalContext } from "../context/Global";
 import { useTranslation } from "react-i18next";
 import PanelBody from "react-bootstrap/lib/PanelBody";
 
-function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
+function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, readonly }) {
   const { t } = useTranslation();
   const {
     researchOutputs,
@@ -49,6 +50,22 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, readonly }) {
                   id="editBtn"
                 >
                   <AiOutlineEdit size={22} />
+                </button>
+              </>
+            )}
+            {!readonly && (
+              <>
+                <Tooltip anchorSelect="#duplicateBtn" place="bottom">
+                  {t("Duplicate")}
+                </Tooltip>
+                <button
+                  type="button"
+                  className="btn btn-link btn-sm m-0 p-0"
+                  style={{ outline: "none", color: "#fff", padding: 0, margin: "2px 5px 0 5px" }}
+                  onClick={handleDuplicate}
+                  id="duplicateBtn"
+                >
+                  <BiDuplicate size={22} />
                 </button>
               </>
             )}
