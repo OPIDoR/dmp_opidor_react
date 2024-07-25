@@ -22,6 +22,7 @@ const Dropzone = styled.div`
   height: 200px;
   cursor: pointer;
   position: relative;
+  color: var(--rust);
 
   input[type='file'] {
     position: absolute;
