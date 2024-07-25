@@ -9,14 +9,13 @@ function ActionSelection({ nextStep, set, params }) {
   const actions = [
     {
       id: 'create',
-      title: t('Create a plan'),
+      title: t('Create new plan'),
       description: t('You create a new plan from a plan template proposed in DMP OPIDoR.'),
     },
     {
       id: 'import',
-      title: t('Import an existing plan'),
+      title: <>{t('Import an existing plan')} <span style={{ fontSize: '14px', fontWeight: 200 }}>({t('Only available for structured management plans')})</span></>,
       description: t('You want to reuse information from an existing plan using a json file.')
-      // t('This feature is only available for structured management plans.'),
     }
   ];
 

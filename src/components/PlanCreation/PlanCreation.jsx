@@ -135,10 +135,10 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
           }),
         },
         {
-          label: t('Import plan'),
+          label: t('Template selection'),
           component: <Import />,
           value: '',
-          set: () => console.log('Toto'),
+          set: () => {},
         },
       ]);
     }
@@ -175,7 +175,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-12">
-          <h1>{t('Create or import your plan')}</h1>
+          <h1>{t('Create a plan')}</h1>
           <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
             <Stepper
               activeStep={currentStep}

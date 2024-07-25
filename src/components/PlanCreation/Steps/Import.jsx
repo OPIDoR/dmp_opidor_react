@@ -81,9 +81,8 @@ function Import({ prevStep, params, setUrlParams }) {
       )}
       {!loading && templates.length >= 0 && (
         <>
-          <h2>{t('Select the model into which the DMP will be imported.')}</h2>
+          <h2>{t('Select the model into which the plan will be imported')}</h2>
 
-          <h2>{t('Templace choice')}</h2>
           <CustomSelect
             key={`select-target-template`}
             options={templates}

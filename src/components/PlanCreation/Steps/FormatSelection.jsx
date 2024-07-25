@@ -15,7 +15,7 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
     {
       id: 'rda',
       title: t('RDA DMP Common Standard Format'),
-      description: t('You want to reuse information from an existing plan using a json file.')
+      description: t('The json file is in the RDA DMP Common Standard format.')
     }
   ];
 
@@ -60,7 +60,7 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
 
   return (
     <div>
-      <h2>{t('Select the modality with which you wish to create your plan')}</h2>
+      <h2>{t('Select the plan format to be imported')}</h2>
       {stepsList}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {prevStep}
