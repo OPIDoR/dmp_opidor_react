@@ -1,12 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import toast from 'react-hot-toast';
+import styled from 'styled-components';
+import prettyBytes from 'pretty-bytes';
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { FaTrash } from "react-icons/fa6";
 
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomSelect } from "../../Shared";
-import { clearLocalStorage, getErrorMessage } from '../../../utils/utils';
+import { clearLocalStorage } from '../../../utils/utils';
 import getTemplates from "./data";
 import { planCreation } from "../../../services";
+
+const Dropzone = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed var(--rust);
+  background-color: transparent;
+  border-radius: 3px;
+  height: 200px;
+  cursor: pointer;
+  position: relative;
+
+  input[type='file'] {
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  section {
+    position: absolute;
+    text-align: center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &.overlay {
+    background-color: rgba(62, 62, 62, 0.3);
+    border-color: #787878;
+  }
+`;
 
 function Import({ prevStep, params, setUrlParams }) {
   const { t } = useTranslation();
@@ -14,6 +53,7 @@ function Import({ prevStep, params, setUrlParams }) {
   const [templates, setTemplates] = useState([]);
   const [file, setFile] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const dropZoneRef = useRef();
 
   useEffect(() => {
     const fetchTemplates = async (opts) => {
@@ -44,6 +84,7 @@ function Import({ prevStep, params, setUrlParams }) {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setFile(file);
+    return dropZoneRef.current.classList.remove('overlay');
   };
 
   const handleImport = async () => {
@@ -73,6 +114,16 @@ function Import({ prevStep, params, setUrlParams }) {
     return window.location = res?.request?.responseURL;
   }
 
+  const onDragHandler = (e, action) => {
+    e.preventDefault();
+
+    if (action === 'over') {
+      return dropZoneRef.current.classList.add('overlay');
+    }
+
+    return dropZoneRef.current.classList.remove('overlay');
+  }
+
   return (
     <div>
       {loading && <CustomSpinner />}
@@ -91,15 +142,33 @@ function Import({ prevStep, params, setUrlParams }) {
             onSelectChange={(e) => setSelectedTemplate(e)}
           />
 
-          <h2>{t('File')}</h2>
-          <input
-            type="file"
-            placeholder="DMP File"
-            aria-describedby="upload-dmp"
-            onChange={handleFileUpload}
-            disabled={!selectedTemplate}
-          />
-
+          {selectedTemplate && (
+            <>
+              <h2>{t('File')}</h2>
+              <Dropzone
+                ref={dropZoneRef}
+                onDragOver={(e) => onDragHandler(e, 'over')}
+                onDragLeave={(e) => onDragHandler(e, 'leave')}
+              >
+                <section>
+                  <IoCloudUploadOutline size={64} />
+                  <h2>{t('Choose a file or drag it')}</h2>
+                </section>
+                <input
+                  type="file"
+                  placeholder="DMP File"
+                  aria-describedby="upload-dmp"
+                  onChange={handleFileUpload}
+                  disabled={!selectedTemplate}
+                />
+              </Dropzone>
+              {file && (
+                <h2>
+                  {file.name} ({prettyBytes(Number.parseInt(file.size, 10))})
+                </h2>
+              )}
+            </>
+          )}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
             {prevStep}
             <div className="row" style={{ margin: '0 0 0 25px' }}>
