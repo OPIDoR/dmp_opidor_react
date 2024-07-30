@@ -58,26 +58,39 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     setLoading(true);
 
     guidances.getGuidances(planId, questionId)
-      .then(({ data }) => {
-        const guidancesData = data?.guidances.map(guidance => {
-          const groups = guidance.groups.reduce((acc, group) => {
-            const [groupInfo, guidanceInfo] = group;
-            const groupName = groupInfo.name;
-            acc[groupName] = guidanceInfo['Data Description'];
-            return acc;
-          }, {});
-          return {
-            name: guidance.name,
-            title: 'Data Description',
-            groups,
-            annotations: guidance.annotations
+    .then(({ data }) => {
+      const guidancesData = data?.guidances.map((guidance) => {
+        const groups = guidance.groups.reduce((acc, group) => {
+          const [groupInfo, guidanceInfo] = group;
+          const groupName = groupInfo.name;
+
+          const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
+
+          acc[groupName] = {
+            title: descriptionKey,
+            guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
           };
-        });
-        setData(guidancesData);
-        setActiveTab(guidancesData?.[0]?.name || '');
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+
+          return acc;
+        }, {});
+
+        const title = Object.values(groups).at(0).title;
+
+        return {
+          name: guidance.name,
+          title,
+          groups,
+          annotations: guidance.annotations || [],
+        };
+      });
+
+      console.log(guidancesData)
+
+      setData(guidancesData);
+      setActiveTab(guidancesData?.at(0)?.name || '');
+    })
+    .catch((error) => setError(error))
+    .finally(() => setLoading(false));
   }, [planId, questionId]);
 
   /**
@@ -106,19 +119,19 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
             {data?.filter(({ name }) => name === activeTab).map(({ title, groups }, dId) => (
               <div key={`guidance-${dId}`}>
                 <Theme alt={title}>{title}</Theme>
-                {Object.entries(groups).map(([key, guidances]) => (
-                  <div>
-                    <SubTitle key={`guidance-subtitle-${dId}`}>{key}</SubTitle>
-                    {guidances.map((guidance) => (
-                        <div
+                {Object.keys(groups)?.map((key) => 
+                  groups[key].guidances.map((guidance) => (
+                    <div>
+                      <SubTitle key={`guidance-subtitle-${dId}`}>{groups[key].title}</SubTitle>
+                      <div
                         key={`guidance-value-${dId}`}
                         dangerouslySetInnerHTML={{
                           __html: DOMPurify.sanitize(guidance.text),
                         }}
                       />
-                    ))}
-                  </div>
-                ))}
+                    </div>
+                  ))
+                )}
               </div>
             ))}
           </ScrollNav>
