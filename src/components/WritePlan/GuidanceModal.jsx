@@ -64,6 +64,8 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
           const [groupInfo, guidanceInfo] = group;
           const groupName = groupInfo.name;
 
+          console.log(group)
+
           const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
 
           acc[groupName] = {
@@ -119,19 +121,19 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
             {data?.filter(({ name }) => name === activeTab).map(({ title, groups }, dId) => (
               <div key={`guidance-${dId}`}>
                 <Theme alt={title}>{title}</Theme>
-                {Object.keys(groups)?.map((key) => 
-                  groups[key].guidances.map((guidance) => (
-                    <div>
-                      <SubTitle key={`guidance-subtitle-${dId}`}>{groups[key].title}</SubTitle>
+                {Object.keys(groups)?.map((groupName) => (
+                  <div>
+                    <SubTitle key={`guidance-subtitle-${dId}`}>{groupName}</SubTitle>
+                    {groups[groupName].guidances.map((guidance, id) => (
                       <div
                         key={`guidance-value-${dId}`}
                         dangerouslySetInnerHTML={{
                           __html: DOMPurify.sanitize(guidance.text),
                         }}
                       />
-                    </div>
-                  ))
-                )}
+                    ))}
+                  </div>
+                ))}
               </div>
             ))}
           </ScrollNav>
