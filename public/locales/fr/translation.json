@@ -227,5 +227,6 @@
   "Choose a file or drag it": "Choisissez un fichier ou cliquez-déposez",
   "Do you want to duplicate the search output?": "Voulez vous dupliquer le produit de recherche ?",
   "Remember to rename your search output after duplication.": "Pensez à renommer votre produit de recherche après duplication.",
-  "Yes, duplicate!": "Oui, dupliquer !"
+  "Yes, duplicate!": "Oui, dupliquer !",
+  "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas."
 }
