@@ -102,7 +102,7 @@ function Import({ prevStep, params, setUrlParams }) {
       res = await planCreation.importPlan(formData);
     } catch(error) {
       setLoading(false);
-      return toast.error(t('An error has occurred while import plan.'));
+      return toast.error(error?.response?.data?.message || t('An error has occurred while import plan.'));
     }
 
     setUrlParams({ step: undefined });
@@ -112,7 +112,7 @@ function Import({ prevStep, params, setUrlParams }) {
 
     setLoading(false);
 
-    return window.location = res?.request?.responseURL;
+    return window.location = `/plans/${res?.data?.data?.planId}`;
   }
 
   const onDragHandler = (e, action) => {

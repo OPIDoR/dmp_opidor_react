@@ -77,6 +77,7 @@ const importPlan = async (formData) => axios.post('/plans/import', formData, {
   headers: {
     ...createHeaders({}, true),
     'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
   },
   maxRedirects: 0,
 });

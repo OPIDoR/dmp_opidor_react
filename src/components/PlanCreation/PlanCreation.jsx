@@ -1,6 +1,7 @@
 import React, { act, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
+import { Toaster } from 'react-hot-toast';
 
 import { CustomButton } from "../Styled";
 import {
@@ -14,6 +15,10 @@ import {
 import * as styles from '../assets/css/main.module.css';
 import * as stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
+
+const toastOptions = {
+  duration: 5000,
+};
 
 function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
   const { t, i18n } = useTranslation();
@@ -214,6 +219,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
     </div>
   );
 }
