@@ -224,5 +224,8 @@
   "Select the plan format to be imported": "Sélectionner le format du plan à importer",
   "File": "Fichier",
   "Format selection": "Choix du format",
-  "Choose a file or drag it": "Choisissez un fichier ou cliquez-déposez"
+  "Choose a file or drag it": "Choisissez un fichier ou cliquez-déposez",
+  "Do you want to duplicate the search output?": "Voulez vous dupliquer le produit de recherche ?",
+  "Remember to rename your search output after duplication.": "Pensez à renommer votre produit de recherche après duplication.",
+  "Yes, duplicate!": "Oui, dupliquer !"
 }
