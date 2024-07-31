@@ -5,9 +5,10 @@ import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 import { BiDuplicate } from "react-icons/bi";
-import { GlobalContext } from "../context/Global";
 import { useTranslation } from "react-i18next";
 import PanelBody from "react-bootstrap/lib/PanelBody";
+
+import { GlobalContext } from "../context/Global";
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, readonly }) {
   const { t } = useTranslation();
