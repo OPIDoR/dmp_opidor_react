@@ -17,6 +17,10 @@ export const NavBodyText = styled.div`
   height: 310px;
   max-height: 310px;
   border-radius: 10px;
+
+  a {
+    text-decoration: underline;
+  }
 `;
 
 export const ScrollNav = styled.div`
