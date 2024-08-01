@@ -28,7 +28,6 @@ function InputText({
     <div className="form-group">
       {hidden === false && (
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipedLabelId}>{label}</label>
           {
             tooltip && (

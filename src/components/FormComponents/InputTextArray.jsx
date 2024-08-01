@@ -24,7 +24,6 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
   return (
     <div>
       <div className={styles.label_form}>
-        <strong className={styles.dot_label}></strong>
         <label data-tooltip-id={inputTextTooltipId}>{label}</label>
         {
           tooltip && (

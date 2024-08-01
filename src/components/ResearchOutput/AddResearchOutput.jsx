@@ -124,7 +124,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
     <div style={{ margin: "25px" }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Short name')}</label>
         </div>
         <input
@@ -139,7 +138,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Name')}</label>
         </div>
         <input
@@ -151,7 +149,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Type')}</label>
         </div>
         {options && (

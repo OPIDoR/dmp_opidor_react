@@ -239,7 +239,6 @@ function SelectContributorMultiple({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -281,7 +280,7 @@ function SelectContributorMultiple({
           )}
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
+        {template && contributorList.length > 0 && (
           <PersonsList
             personsList={contributorList}
             handleEdit={handleEdit}

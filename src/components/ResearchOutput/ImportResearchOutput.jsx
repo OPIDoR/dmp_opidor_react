@@ -91,7 +91,6 @@ function ImportResearchOutput({ planId, handleClose }) {
     <div style={{ margin: "25px" }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t("Choose plan")}</label>
         </div>
         {plans.length > 0 && (
@@ -106,7 +105,6 @@ function ImportResearchOutput({ planId, handleClose }) {
 
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t("Choose research output")}</label>
         </div>
         {selectedPlan?.researchOutputs?.length > 0 && (

@@ -81,7 +81,6 @@ function SubForm({
       <div className="form-group">
         <span className={styles.errorMessage}>{error}</span>
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
         </div>
         <div

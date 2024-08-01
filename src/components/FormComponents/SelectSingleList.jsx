@@ -152,7 +152,6 @@ function SelectSingleList({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
