@@ -141,7 +141,6 @@ function ModalTemplate({
     <>
       <div className={`p-2 mb-2`}>
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
@@ -156,7 +155,7 @@ function ModalTemplate({
           }
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
+        {template && fragmentsList.length > 0 && (
           <FragmentList
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}

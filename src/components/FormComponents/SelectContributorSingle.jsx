@@ -217,7 +217,6 @@ function SelectContributorSingle({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -261,7 +260,7 @@ function SelectContributorSingle({
           )}
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
+        {template && (contributor ? [contributor] : []).length > 0 && (
           <PersonsList
             personsList={contributor ? [contributor] : []}
             handleEdit={handleEdit}

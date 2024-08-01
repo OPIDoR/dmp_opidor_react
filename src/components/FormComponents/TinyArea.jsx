@@ -42,7 +42,6 @@ function TinyArea({
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
           {
             tooltip && (
