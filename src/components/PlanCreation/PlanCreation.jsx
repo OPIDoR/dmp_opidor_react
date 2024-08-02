@@ -57,6 +57,8 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     'en-GB': 'English (UK)'
   };
 
+  const [currentAction, setCurrentAction] = useState('create');
+
   const [steps, setSteps] = useState([]);
   const dataSteps = [
     {
@@ -67,6 +69,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
         ...params,
         action,
       }),
+      actions: ['create', 'import'],
     },
     {
       label: t('Context selection'),
@@ -76,6 +79,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
         ...params,
         researchContext,
       }),
+      actions: ['create', 'import'],
     },
     {
       label: t('Language selection'),
@@ -85,7 +89,40 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
         ...params,
         templateLanguage,
       }),
+      actions: ['create', 'import'],
     },
+    {
+      label: t('Template selection'),
+      component: <TemplateSelection />,
+      value: params.templateName,
+      set: (selectedTemplate, templateName) => setParams({
+        ...params,
+        selectedTemplate,
+        templateName,
+      }),
+      actions: ['create'],
+    },
+    {
+      label: t('Format selection'),
+      component: <FormatSelection />,
+      value: formats[params.format],
+      set: (format) => setParams({
+        ...params,
+        format,
+      }),
+      actions: ['import'],
+    },
+    {
+      label: t('Template selection'),
+      component: <Import />,
+      value: params.templateName,
+      set: (selectedTemplate, templateName) => setParams({
+        ...params,
+        selectedTemplate,
+        templateName,
+      }),
+      actions: ['import'],
+    }
   ];
 
   useEffect(() => {
@@ -99,6 +136,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     const researchContext = params.researchContext || localStorage.getItem('researchContext') || null;
 
     const action = localStorage.getItem('action');
+    setCurrentAction(action);
 
     setParams({
       ...params,
@@ -111,53 +149,17 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
       isStructured: params.isStructured || isStructuredValue ? isStructuredValue === 'true' : null,
     });
 
-    if (action === 'create') {
-      setSteps([
-        ...dataSteps,
-        {
-          label: t('Template selection'),
-          component: <TemplateSelection />,
-          value: params.templateName,
-          set: (selectedTemplate, templateName) => setParams({
-            ...params,
-            selectedTemplate,
-            templateName,
-          }),
-        },
-      ]);
-    }
-
-    if (action === 'import') {
-      setSteps([
-        ...dataSteps,
-        {
-          label: t('Format selection'),
-          component: <FormatSelection />,
-          value: formats[params.format],
-          set: (format) => setParams({
-            ...params,
-            format,
-          }),
-        },
-        {
-          label: t('Template selection'),
-          component: <Import />,
-          value: '',
-          set: () => {},
-        },
-      ]);
-    }
-
     const queryParameters = new URLSearchParams(window.location.search);
     let step = Number.parseInt(queryParameters.get('step') || 0, 10);
 
     if (!action) {
+      setCurrentAction('create');
       step = 0;
     }
 
     setCurrentStep(step);
     setUrlParams({ step: `${step || 0}` });
-  }, [locale, currentOrgId, currentOrgName, currentStep]);
+  }, [locale, currentOrgId, currentOrgName, currentStep, currentAction, params.templateName]);
 
   const prevStep = <CustomButton
     handleClick={() => handleStep(currentStep - 1)}
@@ -193,7 +195,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
               className={stepperStyles.stepper_steps}
             >
               {
-                steps.map(({ label, value }, index) => (
+                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ label, value }, index) => (
                   <Step
                     key={`step-${index}`}
                     label={<>{label}<br /><small><i>{value && `(${value})`}</i></small></>}
@@ -204,7 +206,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
             </Stepper>
             <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
               {
-                steps.map(({ component, set }, index) => {
+                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ component, set }, index) => {
                   return currentStep === index && React.cloneElement(component, {
                     key: `step-${index}-component`,
                     nextStep,
