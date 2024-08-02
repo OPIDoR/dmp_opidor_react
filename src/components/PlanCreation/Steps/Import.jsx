@@ -48,7 +48,7 @@ const Dropzone = styled.div`
   }
 `;
 
-function Import({ prevStep, params, setUrlParams }) {
+function Import({ prevStep, params, set, setUrlParams }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -81,6 +81,13 @@ function Import({ prevStep, params, setUrlParams }) {
 
     fetchTemplates(params);
   }, []);
+
+  const handleSelectedTemplate = (tmpl) => {
+    set(tmpl.value, tmpl.label);
+    localStorage.setItem('templateId', tmpl.value);
+    localStorage.setItem('templateName', tmpl.label);
+    setSelectedTemplate(tmpl);
+  }
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -140,7 +147,7 @@ function Import({ prevStep, params, setUrlParams }) {
             options={templates}
             placeholder={t('Select a template')}
             selectedOption={selectedTemplate}
-            onSelectChange={(e) => setSelectedTemplate(e)}
+            onSelectChange={(e) => handleSelectedTemplate(e)}
           />
 
           {selectedTemplate && (
