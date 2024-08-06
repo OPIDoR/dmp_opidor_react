@@ -69,9 +69,6 @@ export function clearLocalStorage() {
   if (localStorage.getItem('researchContext')) {
     localStorage.removeItem('researchContext');
   }
-  if (localStorage.getItem('isStructured')) {
-    localStorage.removeItem('isStructured');
-  }
   if (localStorage.getItem('templateId')) {
     localStorage.removeItem('templateId');
   }

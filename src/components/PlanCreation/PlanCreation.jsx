@@ -145,7 +145,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
       researchContext,
       templateLanguage: localStorage.getItem('templateLanguage'),
       selectedTemplate: params.selectedTemplate || Number.parseInt(localStorage.getItem('templateId'), 10) || null,
-      templateName: localStorage.getItem('templateName'),
+      templateName: params.templateName || localStorage.getItem('templateName'),
       isStructured: params.isStructured || isStructuredValue ? isStructuredValue === 'true' : null,
     });
 
