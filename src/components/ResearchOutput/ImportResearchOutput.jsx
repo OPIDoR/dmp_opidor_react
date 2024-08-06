@@ -15,9 +15,8 @@ const EndButton = styled.div`
 
 function ImportResearchOutput({ planId, handleClose }) {
   const {
-    researchOutputs, setResearchOutputs,
+    setResearchOutputs,
     setDisplayedResearchOutput,
-    setLoadedSectionsData,
     setUrlParams,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
@@ -38,10 +37,6 @@ function ImportResearchOutput({ planId, handleClose }) {
         })),
       }));
       setPlans(plans || []);
-      if (plans.length > 0) {
-        setSelectedPlan(plans?.at(0));
-        setSelectedResearchOutput(plans?.at(0)?.researchOutputs?.at(0));
-      }
     });
   }, []);
 
@@ -88,7 +83,7 @@ function ImportResearchOutput({ planId, handleClose }) {
   };
 
   return (
-    <div style={{ margin: "25px" }}>
+    <div style={{ margin: "25px", width: "1000px" }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label>{t("Choose plan")}</label>
@@ -103,19 +98,19 @@ function ImportResearchOutput({ planId, handleClose }) {
         )}
       </div>
 
-      <div className="form-group">
-        <div className={stylesForm.label_form}>
-          <label>{t("Choose research output")}</label>
-        </div>
-        {selectedPlan?.researchOutputs?.length > 0 && (
+      {selectedPlan?.researchOutputs?.length > 0 && (
+      < div className="form-group">
+          <div className={stylesForm.label_form}>
+            <label>{t("Choose research output")}</label>
+          </div>
           <CustomSelect
             onSelectChange={(e) => handleSelectResearchOutput(e)}
             options={selectedPlan.researchOutputs}
             selectedOption={selectedResearchOutput}
             placeholder={t("Select a value from the list")}
           />
-        )}
-      </div>
+        </div>
+      )}
       <EndButton>
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
           {t("Close")}
