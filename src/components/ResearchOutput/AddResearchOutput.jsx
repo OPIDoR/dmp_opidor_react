@@ -121,7 +121,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
   };
 
   return (
-    <div style={{ margin: "25px" }}>
+    <div style={{ margin: "25px", width: "1000px" }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label>{t('Short name')}</label>
