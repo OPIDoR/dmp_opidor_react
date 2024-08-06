@@ -45,7 +45,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     };
 
     const fetchTemplates = async (opts) => {
-      setLoading(true);
+      if (!params.templateName) {
+        setLoading(true);
+      }
 
       let templatesData;
       try {
