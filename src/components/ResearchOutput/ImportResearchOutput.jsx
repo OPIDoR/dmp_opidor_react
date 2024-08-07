@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import * as stylesForm from "../assets/css/form.module.css";
@@ -59,6 +59,11 @@ function ImportResearchOutput({ planId, handleClose }) {
     e.preventDefault();
     e.stopPropagation();
 
+    console.log({
+      planId,
+      uuid: selectedResearchOutput.uuid,
+    })
+
     let res;
     try {
       res = await researchOutput.importResearchOutput(  {
@@ -72,7 +77,6 @@ function ImportResearchOutput({ planId, handleClose }) {
 
     const { research_outputs, created_ro_id } = res?.data;
 
-
     setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
     setResearchOutputs(research_outputs);
     // setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
@@ -83,20 +87,27 @@ function ImportResearchOutput({ planId, handleClose }) {
   };
 
   return (
-    <div style={{ margin: "25px", width: "1000px" }}>
-      <div className="form-group">
-        <div className={stylesForm.label_form}>
-          <label>{t("Choose plan")}</label>
-        </div>
-        {plans.length > 0 && (
+    <div style={{ margin: "25px", width: "600px" }}>
+      {plans.length > 0 ? (
+        <div className="form-group">
+          <div className={stylesForm.label_form}>
+            <label>{t("Choose plan")}</label>
+          </div>
+
           <CustomSelect
             onSelectChange={(e) => handleSelectPlan(e)}
             options={plans}
             selectedOption={selectedPlan}
             placeholder={t("Select a value from the list")}
           />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="form-group">
+          <Alert bsStyle="warning">
+            {t('No plans comply with the import rules (at least one research output or type of research output).')}
+          </Alert>
+        </div>
+      )}
 
       {selectedPlan?.researchOutputs?.length > 0 && (
       < div className="form-group">
