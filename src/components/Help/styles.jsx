@@ -77,7 +77,21 @@ export const FaqContent = styled.div`
     opacity: 0.4;
   }
 
+  p:has(img) {
+    text-align: center;
+  }
+
   img {
     max-width: 100%;
+    border: 1px solid var(--dark-blue);
+    border-radius: 8px;
+  }
+
+  video {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border: 1px solid var(--dark-blue);
+    border-radius: 8px;
   }
 `;
