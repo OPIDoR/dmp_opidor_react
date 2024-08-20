@@ -34,7 +34,8 @@
     "react-select": "^5.7.0",
     "react-tooltip": "^5.13.1",
     "styled-components": "^6.0.7",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "vanilla-cookieconsent": "^3.0.1"
   },
   "eslintConfig": {
     "extends": [
