@@ -353,27 +353,31 @@ function Question({
             </Panel.Title>
           </Panel.Heading>
           <Panel.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }} collapsible={true}>
-            {isQuestionOpened() && answer && (
+            {isQuestionOpened() && (
               <div>
-                {!readonly && scriptsData.scripts.length > 0 && (
-                  <RunsModal
-                    show={showRunsModal}
-                    setshowModalRuns={setShowRunsModal}
-                    setFillColorIconRuns={setFillRunsIconColor}
-                    scriptsData={scriptsData}
-                    fragmentId={answer.fragment_id}
-                  />
+                {answer && (
+                  <>
+                    {!readonly && scriptsData.scripts.length > 0 && (
+                      <RunsModal
+                        show={showRunsModal}
+                        setshowModalRuns={setShowRunsModal}
+                        setFillColorIconRuns={setFillRunsIconColor}
+                        scriptsData={scriptsData}
+                        fragmentId={answer.fragment_id}
+                      />
+                    )}
+                    <CommentModal
+                      show={showCommentModal}
+                      setshowModalComment={setShowCommentModal}
+                      setFillColorIconComment={setFillCommentIconColor}
+                      answerId={answer.id}
+                      researchOutputId={displayedResearchOutput.id}
+                      planId={planId}
+                      questionId={question.id}
+                      readonly={readonly}
+                    />
+                  </>
                 )}
-                <CommentModal
-                  show={showCommentModal}
-                  setshowModalComment={setShowCommentModal}
-                  setFillColorIconComment={setFillCommentIconColor}
-                  answerId={answer.id}
-                  researchOutputId={displayedResearchOutput.id}
-                  planId={planId}
-                  questionId={question.id}
-                  readonly={readonly}
-                />
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showGuidanceModal}
                   setShowGuidanceModal={setShowGuidanceModal}
