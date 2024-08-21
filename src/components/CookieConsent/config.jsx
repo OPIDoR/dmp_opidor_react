@@ -79,6 +79,9 @@ export default {
           {
             name: /^(_pk_id.*)/,
           },
+          {
+            name: /^(_pk_ses.*)/,
+          },
         ],
       },
 
@@ -180,6 +183,11 @@ export default {
                     name: '_pk_id.*',
                     domain: location.hostname,
                     desc: 'Ces cookies sont utilisés par Piwik pour distinguer les utilisateurs uniques en attribuant un identifiant unique généré aléatoirement et permet de traquer la navigation.',
+                  },
+                  {
+                    name: '_pk_ses.*',
+                    domain: location.hostname,
+                    desc: 'Ces cookies sont utilisés par Piwik pour distinguer les utilisateurs uniques en attribuant une session unique générée aléatoirement.',
                   },
                 ],
               },
