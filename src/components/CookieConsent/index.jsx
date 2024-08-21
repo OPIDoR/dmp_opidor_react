@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import styled from 'styled-components';
 import { MdOutlineCookie } from 'react-icons/md';
 import * as cookieConsent from 'vanilla-cookieconsent';
@@ -29,6 +31,8 @@ const CookieButton = styled.div`
 `;
 
 const CookieConsent = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     cookieConsent.run(config);
   }, []);
@@ -40,9 +44,21 @@ const CookieConsent = () => {
   };
 
   return (
-    <CookieButton onClick={resetCookieConsent}>
-      <MdOutlineCookie size={28} />
-    </CookieButton>
+    <>
+      <ReactTooltip
+        id="cookie-settings-button"
+        place="right"
+        effect="solid"
+        variant="info"
+        content={t('Cookie preferences')}
+      />
+      <CookieButton
+        data-tooltip-id="cookie-settings-button"
+        onClick={resetCookieConsent}
+      >
+        <MdOutlineCookie size={28} />
+      </CookieButton>
+    </>
   );
 };
 
