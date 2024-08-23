@@ -7,7 +7,7 @@ import InnerModal from '../Shared/InnerModal/InnerModal';
 import Comment from '../Shared/Comment';
 import { comments as commentsService } from '../../services';
 
-function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
+function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
   const { t } = useTranslation();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -61,6 +61,7 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             inModal={true}
             comments={comments}
             updateComments={updateComments}
+            setAnswer={setAnswer}
           />
         )}
       </InnerModal.Body>

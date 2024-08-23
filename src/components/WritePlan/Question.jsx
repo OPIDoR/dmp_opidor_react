@@ -236,37 +236,35 @@ function Question({
                     </div>
                   )}
 
-                  {answer && (
-                    <div>
-                      <ReactTooltip
-                        id="commentTip"
-                        place="bottom"
-                        effect="solid"
-                        variant="info"
-                        content={t("Comments")}
-                      />
-                      <div
-                        data-tooltip-id="commentTip"
-                        className={styles.panel_icon}
-                        onClick={(e) => {
-                          handleQuestionCollapse(true);
-                          handleIconClick(e, "comment");
-                        }}
-                        style={{ marginLeft: "5px" }}
-                      >
-                        {isQuestionOpened() && (
-                          <CommentSVG
-                            size={32}
-                            fill={
-                              isQuestionOpened()
-                                ? fillCommentIconColor
-                                : "var(--dark-blue)"
-                            }
-                          />
-                        )}
-                      </div>
+                  <div>
+                    <ReactTooltip
+                      id="commentTip"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t("Comments")}
+                    />
+                    <div
+                      data-tooltip-id="commentTip"
+                      className={styles.panel_icon}
+                      onClick={(e) => {
+                        handleQuestionCollapse(true);
+                        handleIconClick(e, "comment");
+                      }}
+                      style={{ marginLeft: "5px" }}
+                    >
+                      {isQuestionOpened() && (
+                        <CommentSVG
+                          size={32}
+                          fill={
+                            isQuestionOpened()
+                              ? fillCommentIconColor
+                              : "var(--dark-blue)"
+                          }
+                        />
+                      )}
                     </div>
-                  )}
+                  </div>
 
                   {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
                     <div>
@@ -366,18 +364,19 @@ function Question({
                         fragmentId={answer.fragment_id}
                       />
                     )}
-                    <CommentModal
-                      show={showCommentModal}
-                      setshowModalComment={setShowCommentModal}
-                      setFillColorIconComment={setFillCommentIconColor}
-                      answerId={answer.id}
-                      researchOutputId={displayedResearchOutput.id}
-                      planId={planId}
-                      questionId={question.id}
-                      readonly={readonly}
-                    />
                   </>
                 )}
+                <CommentModal
+                  show={showCommentModal}
+                  setshowModalComment={setShowCommentModal}
+                  setFillColorIconComment={setFillCommentIconColor}
+                  answerId={answer?.id}
+                  setAnswer={setAnswer}
+                  researchOutputId={displayedResearchOutput.id}
+                  planId={planId}
+                  questionId={question.id}
+                  readonly={readonly}
+                />
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showGuidanceModal}
                   setShowGuidanceModal={setShowGuidanceModal}

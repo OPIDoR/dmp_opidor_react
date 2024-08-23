@@ -64,8 +64,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
           const [groupInfo, guidanceInfo] = group;
           const groupName = groupInfo.name;
 
-          console.log(group)
-
           const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
 
           acc[groupName] = {
@@ -85,8 +83,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
           annotations: guidance.annotations || [],
         };
       });
-
-      console.log(guidancesData)
 
       setData(guidancesData);
       setActiveTab(guidancesData?.at(0)?.name || '');
