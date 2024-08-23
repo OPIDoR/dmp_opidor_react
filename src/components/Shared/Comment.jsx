@@ -29,6 +29,7 @@ function Comment({
   inModal = false,
   commentsData,
   updateComments,
+  setAnswer,
 }) {
   const { t, i18n } = useTranslation();
   const editorContentRef = useRef(null);
@@ -189,6 +190,10 @@ function Comment({
     updateTitle([newNote, ...comments]);
 
     updateComments([newNote, ...comments]);
+
+    if(data.answer_created) {
+      setAnswer(data.answer);
+    }
 
     return toast.success(t('Comment sent successfully.'));
   }
