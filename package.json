@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@directus/sdk": "^16.0.0",
+    "@directus/sdk": "^17.0.0",
     "@tinymce/tinymce-react": "^5.0.0",
     "axios": "^1.3.2",
     "bootstrap": "^3.3.0",
@@ -25,7 +25,7 @@
     "react-form-stepper": "^2.0.3",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.0",
-    "react-i18next": "^14.0.0",
+    "react-i18next": "^15.0.0",
     "react-icons": "^5.0.0",
     "react-joyride": "^2.7.2",
     "react-loader-spinner": "^6.1.0",
@@ -58,7 +58,7 @@
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "^0.8.0",
     "@testing-library/jest-dom": "^6.1.0",
-    "@testing-library/react": "^15.0.0",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "enzyme": "^3.11.0",
     "react-test-renderer": "^18.2.0"
