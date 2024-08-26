@@ -25,6 +25,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
     setResearchOutputs,
     setUrlParams,
     researchOutputs,
+    configuration,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{value: '', label: ''}]);
@@ -72,6 +73,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       return toast.error(t('Un "type" est nécessaire pour créer un produit de recherche.'));
     }
 
+    const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none' ;
     const researchOutputInfo = {
       plan_id: planId,
       abbreviation,
@@ -79,7 +81,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       type,
       configuration: {
         hasPersonalData,
-        dataType: researchOutputTypeToDataType(type),
+        dataType,
       }
     };
 
@@ -158,7 +160,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={edit}
+            isDisabled={!configuration?.enableResearchOutputTypeChange}
           />
         )}
       </div>
