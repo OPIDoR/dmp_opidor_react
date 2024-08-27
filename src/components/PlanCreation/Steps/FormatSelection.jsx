@@ -63,7 +63,7 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
       <h2>{t('Select the plan format to be imported')}</h2>
       {stepsList}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {prevStep}
+        {prevStep('format')}
       </div>
     </div>
   );

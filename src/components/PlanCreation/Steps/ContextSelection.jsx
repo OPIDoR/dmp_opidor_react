@@ -51,7 +51,7 @@ function ContextSelection({ prevStep, nextStep, set, params }) {
         ))
       }
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {prevStep}
+        {prevStep('researchContext')}
       </div>
     </div>
   );
