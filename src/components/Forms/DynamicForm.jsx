@@ -34,7 +34,7 @@ function DynamicForm({
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const methods = useForm({ defaultValues: formData });
+  const methods = useForm({ defaultValues: {} });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
