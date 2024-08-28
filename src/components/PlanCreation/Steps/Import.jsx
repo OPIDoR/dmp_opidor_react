@@ -178,7 +178,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
             </>
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-            {prevStep(['templateId', 'templateName'])}
+            {prevStep}
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleImport}
