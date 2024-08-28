@@ -271,7 +271,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       {!loading && !error && (
         <>
           <Trans
-              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all OPIDoR DMP functionalities.<br>They are identified by the icon : <structuredIcon />"
+              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all DMP OPIDoR functionalities.<br>They are identified by the icon : <structuredIcon />"
               components={{
                 br: <br />,
                 structuredIcon: <PiTreeStructureDuotone style={{ verticalAlign: 'middle' }} />,
