@@ -166,7 +166,6 @@ function SelectContributorMultiple({
           newContributorList[index] = {
             ...newContributorList[index],
             person: savedFragment,
-            role: defaultRole,
             action: newContributorList[index].action || 'update'
           };
           field.onChange(newContributorList);

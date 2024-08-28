@@ -45,7 +45,6 @@ function SelectSingleList({
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [showNestedForm, setShowNestedForm] = useState(false);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
@@ -61,12 +60,6 @@ function SelectSingleList({
       setSelectedRegistry(registriesData[0]);
     }
   }, [field.value, defaultValue, registries])
-
-  useEffect(() => {
-    if (registryType !== 'complex') {
-      setSelectedOption(selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
-    }
-  }, [selectedValue])
 
   /*
   A hook that is called when the component is mounted.
@@ -134,14 +127,14 @@ function SelectSingleList({
     setEditedFragment({});
     setShowNestedForm(false);
   }
-  
+
   const handleDeleteList = (e) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
@@ -198,7 +191,9 @@ function SelectSingleList({
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
-                    selectedOption={selectedOption}
+                    selectedOption={
+                      selectedValue ? options.find(o => o.value === selectedValue) : nullValue
+                    }
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                     placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
