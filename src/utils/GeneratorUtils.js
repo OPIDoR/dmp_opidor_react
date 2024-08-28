@@ -34,12 +34,15 @@ export function parsePattern(data, keys = []) {
  */
 export function createOptions(registryValues, locale) {
   return [{ value: '', label: '' }, ...registryValues.map((option) => {
-    const { label, ...optionValue } = option;
-    const value = label ? label[locale] : optionValue[locale];
+    let { label, value, ...optionValue } = option;
+    label = label ? label[locale] : optionValue[locale];
+    if(!value) {
+      value = label;
+    }
 
     return {
       value,
-      label: value,
+      label,
       object: optionValue,
     };
   })];
