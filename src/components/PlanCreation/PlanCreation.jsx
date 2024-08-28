@@ -1,4 +1,4 @@
-import React, { act, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
 import { Toaster } from 'react-hot-toast';
@@ -64,7 +64,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Action selection'),
       component: <ActionSelection />,
-      key: 'action',
       value: actions[params.action],
       set: (action) => setParams({
         ...params,
@@ -75,7 +74,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Context selection'),
       component: <ContextSelection />,
-      key: 'researchContext',
       value: context[params.researchContext],
       set: (researchContext) => setParams({
         ...params,
@@ -86,7 +84,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Language selection'),
       component: <LangSelection />,
-      key: 'templateLanguage',
       value: languages[params.templateLanguage],
       set: (templateLanguage) => setParams({
         ...params,
@@ -97,7 +94,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Template selection'),
       component: <TemplateSelection />,
-      key: ['templateId', 'templateName'],
       value: params.templateName,
       set: (selectedTemplate, templateName) => setParams({
         ...params,
@@ -109,7 +105,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     {
       label: t('Format selection'),
       component: <FormatSelection />,
-      key: 'format',
       value: formats[params.format],
       set: (format) => setParams({
         ...params,
@@ -121,7 +116,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
       label: t('Template selection'),
       component: <Import />,
       value: params.templateName,
-      key: ['templateId', 'templateName'],
       set: (selectedTemplate, templateName) => setParams({
         ...params,
         selectedTemplate,
@@ -167,43 +161,21 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     setUrlParams({ step: `${step || 0}` });
   }, [locale, currentOrgId, currentOrgName, currentStep, currentAction, params.templateName]);
 
-  const clearParams = (keys) => {
-    const paramKeys = Array.isArray(keys) ? keys : [keys];
-    setParams((params) => {
-      const updatedParams = paramKeys.reduce((acc, k) => {
-        if (localStorage.getItem(k)) {
-          localStorage.removeItem(k);
-        }
-
-        const { [k]: _, ...rest } = acc;
-        return rest;
-      }, params);
-
-      return updatedParams;
-    });
-  }
-
-  const prevStep = (keys) => {
-    return (
-      <CustomButton
-        handleClick={() => {
-          clearParams(keys);
-          return handleStep(currentStep - 1);
-        }}
-        title={t("Go back to previous step")}
-        position="start"
-      />
-    );
-  };
+  const prevStep = (<CustomButton
+    handleClick={() => {
+      return handleStep(currentStep - 1);
+    }}
+    title={t("Go back to previous step")}
+    position="start"
+  />);
 
   const nextStep = () => {
     handleStep(currentStep + 1);
   };
 
-  const handleStep = (index, keys) => {
+  const handleStep = (index) => {
     if (index < 0 || index > steps.length) { return; }
 
-    clearParams(keys);
     setCurrentStep(index);
     setUrlParams({ step: index });
   };
@@ -225,11 +197,11 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
               className={stepperStyles.stepper_steps}
             >
               {
-                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ label, value, key }, index) => (
+                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ label, value }, index) => (
                   <Step
                     key={`step-${index}`}
                     label={<>{label}<br /><small><i>{value && `(${value})`}</i></small></>}
-                    onClick={() => handleStep(index, key)}
+                    onClick={() => handleStep(index)}
                   />
                 ))
               }

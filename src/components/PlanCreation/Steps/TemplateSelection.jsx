@@ -290,7 +290,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
             }
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {prevStep(['templateId', 'templateName'])}
+            {prevStep}
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleSendTemplateId}
