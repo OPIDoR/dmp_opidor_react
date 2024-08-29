@@ -160,7 +160,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={!configuration?.enableResearchOutputTypeChange}
+            isDisabled={edit || !configuration?.enableResearchOutputTypeChange}
           />
         )}
       </div>
