@@ -34,6 +34,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
+  const [disableType, setDisableType] = useState(false);
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
@@ -54,6 +55,11 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       setHasPersonalData(false);
       setType(null);
     }
+
+    setDisableType(
+      (edit && !configuration.enableResearchOutputTypeChange) || (!edit && false)
+    );
+
   }, [locale]);
 
   /**
@@ -160,7 +166,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={edit || !configuration?.enableResearchOutputTypeChange}
+            isDisabled={disableType}
           />
         )}
       </div>
