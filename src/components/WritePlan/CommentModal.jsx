@@ -16,6 +16,8 @@ function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconCo
   const { userId } = useContext(GlobalContext);
 
   useEffect(() => {
+    if(!answerId) return;
+
     setLoading(true);
     commentsService.get(answerId)
       .then(({ data }) => {
