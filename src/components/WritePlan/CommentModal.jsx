@@ -4,7 +4,7 @@ import CustomSpinner from '../Shared/CustomSpinner';
 import CustomError from '../Shared/CustomError';
 import { useTranslation } from 'react-i18next';
 import InnerModal from '../Shared/InnerModal/InnerModal';
-import Comment from '../Shared/Comment';
+import CommentList from '../Shared/CommentList';
 import { comments as commentsService } from '../../services';
 
 function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
@@ -53,7 +53,7 @@ function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconCo
         {loading && <CustomSpinner />}
         {!loading && error && <CustomError error={error} />}
         {!loading && !error && comments && (
-          <Comment
+          <CommentList
             answerId={answerId}
             researchOutputId={researchOutputId}
             planId={planId}
