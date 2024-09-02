@@ -12,14 +12,14 @@ import Global from '../context/Global.jsx';
 import EditorComment from '../WritePlan/EditorComment.jsx';
 import CustomSpinner from './CustomSpinner.jsx';
 import CustomError from './CustomError.jsx';
-import { comments as commentsService } from '../../services';
+import { comments as commentsService } from '../../services/index.js';
 import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles.jsx';
 import '../../i18n.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 const locales = { fr, en: enGB };
 
-function Comment({
+function CommentList({
   answerId,
   researchOutputId,
   planId,
@@ -283,4 +283,4 @@ function Comment({
   );
 }
 
-export default Comment;
+export default CommentList;
