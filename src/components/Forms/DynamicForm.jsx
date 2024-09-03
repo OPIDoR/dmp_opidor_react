@@ -59,7 +59,7 @@ function DynamicForm({
           setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
           setFormData({ [fragmentId]: res.data.fragment });
-          setAnswer({id: res.data.answer_id, fragment_id: res.data.fragment.id });
+          if(res.data.answer_id) setAnswer({id: res.data.answer_id, fragment_id: res.data.fragment.id });
           methods.reset(res.data.fragment);
         }).catch(console.error);
       }
