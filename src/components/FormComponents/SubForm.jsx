@@ -27,6 +27,7 @@ function SubForm({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const [error, setError] = useState(null);
   const [showNestedForm, setShowNestedForm] = useState(false);
   const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
@@ -82,6 +83,18 @@ function SubForm({
         <span className={styles.errorMessage}>{error}</span>
         <div className={styles.label_form}>
           <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
         <div
           id={`nested-form-${propName}`}
