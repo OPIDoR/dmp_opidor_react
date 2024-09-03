@@ -28,6 +28,7 @@ function FormBuilder({ template, readonly }) {
       const tooltip = prop[`tooltip@${locale}`];
       const defaultValue = defaults?.[key];
       const isConst = prop['isConst'];
+      const example = prop[`example@${locale}`];
       /**
        * REGISTRIES
        */
@@ -202,6 +203,7 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               tooltip={tooltip}
               defaultValue={defaultValue}
+              placeholder={example}
               readonly={readonly || isConst}
             ></TinyArea>,
           );
@@ -213,7 +215,7 @@ function FormBuilder({ template, readonly }) {
               key={key}
               label={formLabel}
               type={prop.format || prop.type}
-              placeholder={''}
+              placeholder={example}
               propName={key}
               tooltip={tooltip}
               hidden={prop.hidden}

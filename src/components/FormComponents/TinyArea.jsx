@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { useTranslation } from 'react-i18next';
 import uniqueId from 'lodash.uniqueid';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
@@ -29,9 +30,11 @@ function TinyArea({
   label,
   propName,
   tooltip,
+  placeholder,
   defaultValue = null,
   readonly = false,
 }) {
+  const { t } = useTranslation();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName });
   const { onChange, ...newField } = field;
@@ -64,6 +67,7 @@ function TinyArea({
               initialValue={defaultValue}
               licenseKey='gpl'
               init={{
+                placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,
                 statusbar: true,
                 menubar: false,
                 toolbar: 'bold italic underline | fontsizeselect forecolor | bullist numlist | link | table',
