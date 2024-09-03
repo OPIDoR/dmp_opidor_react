@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { useTranslation } from "react-i18next";
 import uniqueId from 'lodash.uniqueid';
+
 import * as styles from '../assets/css/form.module.css';
 
 /**
@@ -20,6 +22,7 @@ function InputText({
   readonly = false,
   min,
 }) {
+  const { t } = useTranslation();
   const { register } = useFormContext();
   const [isRequired] = useState(false);
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
@@ -50,7 +53,7 @@ function InputText({
         defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
-        placeholder={placeholder}
+        placeholder={placeholder ? `${t('e.g.')} ${placeholder}` : null}
         readOnly={readonly === true}
         min={min}
       />
