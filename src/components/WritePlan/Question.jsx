@@ -31,7 +31,7 @@ function Question({
     questionsWithGuidance,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
-  const [answer, setAnswer] = useState({});
+  const [answer, setAnswer] = useState(null);
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
 
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
@@ -361,7 +361,7 @@ function Question({
                         setshowModalRuns={setShowRunsModal}
                         setFillColorIconRuns={setFillRunsIconColor}
                         scriptsData={scriptsData}
-                        fragmentId={answer.fragment_id}
+                        fragmentId={answer?.fragment_id}
                       />
                     )}
                   </>
@@ -388,7 +388,7 @@ function Question({
             )}
             {isQuestionOpened() ? (
               <>
-                {readonly && !answer.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
+                {readonly && !answer?.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
                   (<DynamicForm
                     fragmentId={answer?.fragment_id}
                     className={question?.madmp_schema?.classname}
