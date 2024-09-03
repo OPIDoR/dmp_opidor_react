@@ -12,7 +12,7 @@ import Global from '../context/Global.jsx';
 import EditorComment from '../WritePlan/EditorComment.jsx';
 import CustomSpinner from './CustomSpinner.jsx';
 import CustomError from './CustomError.jsx';
-import { comments as commentsService } from '../../services/index.js';
+import { comments as commentsService } from '../../services';
 import { NavBodyText, ScrollNav, CommentsCard } from '../WritePlan/styles/CommentModalStyles.jsx';
 import '../../i18n.js';
 import swalUtils from '../../utils/swalUtils.js';
@@ -27,9 +27,8 @@ function CommentList({
   userId,
   readonly,
   inModal = false,
-  commentsData,
-  updateComments,
   setAnswer,
+  setCommentsNumber,
 }) {
   const { t, i18n } = useTranslation();
   const editorContentRef = useRef(null);
@@ -41,16 +40,10 @@ function CommentList({
   const [comment, setComment] = useState(null);
 
   useEffect(() => {
-    if (commentsData) {
-      setComments(commentsData);
-      return updateTitle(commentsData || []);
-    }
-
     setLoading(true);
     commentsService.get(answerId)
       .then(({ data }) => {
         setComments(data?.notes || []);
-        updateTitle(data?.notes || [])
       })
       .catch((error) => setError({
         code: error?.response?.status,
@@ -59,9 +52,12 @@ function CommentList({
         home: false,
       }))
       .finally(() => setLoading(false));
-
-    updateTitle(comments);
   }, [answerId]);
+
+  useEffect(() => {
+    updateTitle(comments || [])
+    setCommentsNumber(comments.length || 0)
+  }, [comments]);
 
   /**
    * "updateParentText" is a function that takes in a parameter called "updatedText" and then sets the value of "editorContentRef.current" to
@@ -95,10 +91,7 @@ function CommentList({
           const updatedComments = [...comments];
           updatedComments.splice(index, 1);
           setComments(updatedComments);
-
           updateTitle(updatedComments);
-
-          updateComments(updatedComments);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
         })
@@ -182,14 +175,12 @@ function CommentList({
       ...note,
       ...data?.note,
     };
-    setComments((prevData) => [newNote, ...prevData]);
 
     setText(null);
     setIsUpdate(false);
 
     updateTitle([newNote, ...comments]);
-
-    updateComments([newNote, ...comments]);
+    setComments([newNote, ...comments]);
 
     if(data.answer_created) {
       setAnswer(data.answer);
