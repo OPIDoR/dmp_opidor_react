@@ -56,7 +56,10 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       setType(null);
     }
 
-    setDisableType(edit && configuration.enableResearchOutputTypeChange);
+    setDisableType(
+      (edit && !configuration.enableResearchOutputTypeChange) || (!edit && false)
+    );
+
   }, [locale]);
 
   /**
