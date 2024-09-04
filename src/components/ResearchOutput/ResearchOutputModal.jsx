@@ -36,11 +36,11 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
           </fieldset>
         </div>
         {edit ? (
-          <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
+          <AddResearchOutput planId={planId} handleClose={handleClose} show={show} inEdition={edit} />
         ) : (
           <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
             <Tab eventKey={"create"} title={t("Create")}>
-              <AddResearchOutput planId={planId} handleClose={handleClose} show={show} edit={edit} />
+              <AddResearchOutput planId={planId} handleClose={handleClose} show={show} inEdition={edit} />
             </Tab>
             <Tab eventKey="import" title={t("Import")}>
               <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />

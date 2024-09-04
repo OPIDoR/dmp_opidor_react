@@ -17,7 +17,7 @@ const EndButton = styled.div`
   justify-content: end;
 `;
 
-function AddResearchOutput({ planId, handleClose, edit = false, close = true }) {
+function AddResearchOutput({ planId, handleClose, inEdition = false, close = true }) {
   const {
     locale,
     displayedResearchOutput, setDisplayedResearchOutput,
@@ -34,31 +34,28 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
-  const [disableType, setDisableType] = useState(false);
+  const [disableTypeChange, setDisableTypeChange] = useState(false);
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
 
-    if (edit) {
+    if (inEdition) {
       setAbbreviation(displayedResearchOutput.abbreviation);
       setTitle(displayedResearchOutput.title);
       setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
       setType(displayedResearchOutput.type);
     }
 
-    if (!edit) {
+    if (!inEdition) {
       const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(false);
       setType(null);
     }
-
-    setDisableType(
-      (edit && !configuration.enableResearchOutputTypeChange) || (!edit && false)
-    );
+    setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
 
   }, [locale]);
 
@@ -91,7 +88,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       }
     };
 
-    if (edit) {
+    if (inEdition) {
       let res;
       try {
         res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
@@ -166,7 +163,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={disableType}
+            isDisabled={disableTypeChange}
           />
         )}
       </div>
@@ -198,7 +195,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
           </Button>
         )}
         <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
-          {t(edit ? "Save" : "Add")}
+          {t(inEdition ? "Save" : "Add")}
         </Button>
       </EndButton>
     </div>
