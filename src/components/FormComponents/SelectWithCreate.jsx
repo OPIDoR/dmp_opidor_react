@@ -52,6 +52,8 @@ function SelectWithCreate({
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
+  const filteredFragmentList = fragmentsList.filter((el) => el.action !== 'delete');
+
   useEffect(() => {
     setFragmentsList(field.value || [])
   }, [field.value])
@@ -125,7 +127,7 @@ function SelectWithCreate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const updatedFragmentList = fragmentsList;
+        const updatedFragmentList = [...fragmentsList];
         updatedFragmentList[idx]['action'] = 'delete';
         field.onChange(updatedFragmentList);
         setFragmentsList(updatedFragmentList);
@@ -269,7 +271,7 @@ function SelectWithCreate({
           </div>
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && fragmentsList.length > 0 && (
+        {template && filteredFragmentList.length > 0 && (
           <FragmentList
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}

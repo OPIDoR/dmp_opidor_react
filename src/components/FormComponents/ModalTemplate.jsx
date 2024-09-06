@@ -47,6 +47,8 @@ function ModalTemplate({
 
   const [template, setTemplate] = useState(null);
 
+  const filteredFragmentList = fragmentsList.filter((el) => el.action !== 'delete');
+
   useEffect(() => {
     setFragmentsList(field.value || [])
   }, [field.value])
@@ -120,7 +122,7 @@ function ModalTemplate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const filteredList = fragmentsList.filter((el) => el.action !== 'delete');
+        const filteredList = [...filteredFragmentList];
         filteredList[idx]['action'] = 'delete';
         field.onChange(filteredList);
         setFragmentsList(filteredList);
@@ -155,7 +157,7 @@ function ModalTemplate({
           }
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && fragmentsList.length > 0 && (
+        {template && filteredFragmentList.length > 0 && (
           <FragmentList
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}
