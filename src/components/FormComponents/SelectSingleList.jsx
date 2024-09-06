@@ -45,6 +45,7 @@ function SelectSingleList({
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
+  const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
@@ -60,6 +61,21 @@ function SelectSingleList({
       setSelectedRegistry(registriesData[0]);
     }
   }, [field.value, defaultValue, registries])
+
+  useEffect(() => {
+    if(!options) return;
+
+    if(field.value) {
+      const selectedOpt = options.find(o => o.value === field.value) || null;
+      if(selectedOpt === null && overridable === true) {
+        setSelectedOption({ value: field.value, label: field.value });
+      } else {
+        setSelectedOption(selectedOpt)
+      }
+    } else {
+      setSelectedOption(nullValue);
+    }
+  }, [field.value, options]);
 
   /*
   A hook that is called when the component is mounted.
@@ -191,9 +207,7 @@ function SelectSingleList({
                   <CustomSelect
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
-                    selectedOption={
-                      selectedValue ? options.find(o => o.value === selectedValue) : nullValue
-                    }
+                    selectedOption={selectedOption}
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
                     placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
