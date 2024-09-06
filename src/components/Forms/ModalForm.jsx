@@ -58,7 +58,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
           {t("Close")}
         </Button>
         {!readonly && (
-          <Button bsStyle="primary" type="submit" form="modal-form">
+          <Button bsStyle="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
             {t('Save')}
           </Button>
         )}
