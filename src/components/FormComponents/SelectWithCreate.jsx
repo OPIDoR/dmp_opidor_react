@@ -44,7 +44,7 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState(field.value)
+  const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
