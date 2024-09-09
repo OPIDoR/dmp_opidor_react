@@ -13,7 +13,7 @@ import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
+import { except, fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -53,7 +53,13 @@ function SelectSingleList({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
-    setSelectedValue(field.value || defaultValue || nullValue);
+    if (registryType === 'complex') {
+      setSelectedValue(
+        except(field.value, ['template_name', 'id', 'schema_id']) || defaultValue || nullValue
+      );
+    } else {
+      setSelectedValue(field.value || defaultValue || nullValue);
+    }
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
@@ -63,18 +69,19 @@ function SelectSingleList({
   }, [field.value, defaultValue, registries])
 
   useEffect(() => {
-    if(!options) return;
+    if (!options) return;
+    if (registryType === 'complex') return setSelectedOption(nullValue);
 
-    if(field.value) {
-      const selectedOpt = options.find(o => o.value === field.value) || null;
-      if(selectedOpt === null && overridable === true) {
-        setSelectedOption({ value: field.value, label: field.value });
+      if (field.value) {
+        const selectedOpt = options.find(o => o.value === field.value) || null;
+        if (selectedOpt === null && overridable === true) {
+          setSelectedOption({ value: field.value, label: field.value });
+        } else {
+          setSelectedOption(selectedOpt)
+        }
       } else {
-        setSelectedOption(selectedOpt)
+        setSelectedOption(nullValue);
       }
-    } else {
-      setSelectedOption(nullValue);
-    }
   }, [field.value, options]);
 
   /*
