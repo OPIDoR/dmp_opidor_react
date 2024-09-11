@@ -52,7 +52,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
-      setHasPersonalData(false);
+      setHasPersonalData(configuration.enableHasPersonalData);
       setType(null);
     }
     setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
