@@ -36,7 +36,7 @@ function TinyArea({
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { field } = useController({ control, name: propName, defaultValue: '' });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
   const editorRef = useRef(null);
