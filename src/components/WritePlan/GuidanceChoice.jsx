@@ -291,16 +291,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                       {
                         group.guidance_groups.map((guidance, key) => (
                           <div key={`guidance-group-${index}-childs-${key}-parent`}>
-                            <ReactTooltip
-                              id={`guidance-group-${index}-childs-${key}-tooltip`}
-                              key={`guidance-group-${index}-childs-${key}-tooltip`}
-                              place="bottom"
-                              effect="solid"
-                              variant="info"
-                              content={guidance.description}
-                            />
                             <div
-                              data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
                               style={{ display: 'flex', alignItems: 'center', }}
                               key={`guidance-group-${index}-childs-${key}-section`}
                               id={`guidance-group-${index}-childs-${key}-section`}
@@ -335,8 +326,16 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                                   )
                                 }
                               </div>
-
+                              <ReactTooltip
+                                id={`guidance-group-${index}-childs-${key}-tooltip`}
+                                key={`guidance-group-${index}-childs-${key}-tooltip`}
+                                place="bottom"
+                                effect="solid"
+                                variant="info"
+                                content={guidance.description}
+                              />
                               <label
+                                data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
                                 className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
                                 style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
                                 onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}

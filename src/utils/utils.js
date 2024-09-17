@@ -60,11 +60,14 @@ export function getErrorMessage(error) {
 }
 
 export function clearLocalStorage() {
+  if (localStorage.getItem('action')) {
+    localStorage.removeItem('action');
+  }
+  if (localStorage.getItem('format')) {
+    localStorage.removeItem('format');
+  }
   if (localStorage.getItem('researchContext')) {
     localStorage.removeItem('researchContext');
-  }
-  if (localStorage.getItem('isStructured')) {
-    localStorage.removeItem('isStructured');
   }
   if (localStorage.getItem('templateId')) {
     localStorage.removeItem('templateId');

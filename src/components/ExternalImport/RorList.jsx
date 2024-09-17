@@ -82,18 +82,18 @@ function RorList({ fragment, setFragment, mapping = {} }) {
       acronyms: el.acronyms?.[0],
     };
 
-    mapping = {
-      affiliationName: 'acronyms[0]',
-    };
-
     if (mapping && Object.keys(mapping)?.length > 0) {
       const matchData = data.find(({ ror }) => ror.toLowerCase().includes(el.ror.toLowerCase()));
- 
+
       if (matchData) {
         const flattenedMapping = flattenObject(mapping);
 
         for (const [key, value] of Object.entries(flattenedMapping)) {
-          set(obj, key, get(matchData, value));
+          if (key === 'name') {
+            set(obj, value, Object.values(get(matchData, key))?.at(0) || '');
+          } else {
+            set(obj, value, get(matchData, key) || '');
+          }
         }
       }
     }

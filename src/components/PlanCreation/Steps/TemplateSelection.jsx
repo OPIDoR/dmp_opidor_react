@@ -7,10 +7,11 @@ import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 
 import * as styles from "../../assets/css/steps.module.css";
-import { planCreation } from "../../../services";
 import { CustomButton } from "../../Styled";
 import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
 import { clearLocalStorage, getErrorMessage } from '../../../utils/utils';
+import getTemplates from "./data";
+import { planCreation } from "../../../services";
 
 function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
   const { t } = useTranslation();
@@ -43,120 +44,28 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       },
     };
 
-    const fetchTemplates = async () => {
-      setLoading(true);
+    const fetchTemplates = async (opts) => {
+      if (!params.templateName) {
+        setLoading(true);
+      }
 
-      let currentTemplatesRes;
+      let templatesData;
       try {
-        currentTemplatesRes = await planCreation.getRecommendedTemplate(params.researchContext, params.templateLanguage);
+        templatesData = await getTemplates(opts);
       } catch (error) {
-        setLoading(false);
-        return handleError(error);
+        return setLoading(false);
       }
 
-      const defaultTemplateID = currentTemplatesRes?.data?.id
-
-      tmpls.default.templates = Array.isArray(currentTemplatesRes?.data)
-        ? currentTemplatesRes?.data
-        : [currentTemplatesRes?.data]
-        // .filter(({ structured }) => structured === params.isStructured)
-        .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase());
-
-      let myOrgTemplatesRes;
-      try {
-        myOrgTemplatesRes = await planCreation.getTemplatesByOrgId(params.currentOrg, params.researchContext);
-      } catch (error) {
-        setLoading(false);
-        return handleError(error);
-      }
-
-      tmpls.myOrg.templates = myOrgTemplatesRes?.data
-        // .filter(({ structured }) => structured === params.isStructured)
-        .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [];
-
-      let fundersRes;
-      try {
-        fundersRes = await planCreation.getFunders(params.researchContext, params.templateLanguage);
-      } catch (error) {
-        setLoading(false);
-        return handleError(error);
-      }
-
-      fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
-
-      for await (const funder of fundersRes) {
-        let fundersTemplatesRes;
-
-        try {
-          fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, params.researchContext);
-        } catch (error) {
-          setLoading(false);
-          handleError(error);
-          break;
-        }
-
-        tmpls.others.data.push({
-          ...funder,
-          type: 'funder',
-          templates: fundersTemplatesRes?.data
-            // .filter(({ structured }) => structured === isStructured)
-            .map((obj) => ({ ...obj, type: 'funder' }))
-            .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
-            .filter(({ id }) => id !== defaultTemplateID)
-            .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
-          selected: false,
-        });
-      }
-
-      let orgsRes;
-      try {
-        orgsRes = await planCreation.getOrgs(params.researchContext, params.templateLanguage);
-      } catch (error) {
-        setLoading(false);
-        return handleError(error);
-      }
-
-      orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }))
-        .filter((option) => option.name.toLowerCase() !== params.currentOrg.name.toLowerCase());
-
-      for await (const org of orgsRes) {
-        let orgTemplatesRes;
-
-        try {
-          orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, params.researchContext);
-        } catch (error) {
-          setLoading(false);
-          handleError(error);
-          break;
-        }
-
-        tmpls.others.data.push({
-          ...org,
-          type: 'org',
-          templates: orgTemplatesRes?.data
-            // .filter(({ structured }) => structured === params.isStructured)
-            .map((obj) => ({ ...obj, type: 'org' }))
-            .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
-            .filter(({ id }) => id !== defaultTemplateID)
-            .filter(({ locale }) => locale?.toLowerCase() === params.templateLanguage.toLowerCase()) || [],
-          selected: false,
-        });
-      }
+      tmpls.default.templates = templatesData.default;
+      tmpls.myOrg.templates = templatesData.myOrg;
+      tmpls.others.data = templatesData.others;
 
       setPlanTemplates(tmpls);
       setLoading(false);
     };
 
-    fetchTemplates();
+    fetchTemplates(params);
   }, [params.currentOrg, params.researchContext, params.templateLanguage, setPlanTemplates, t]);
-
-  const handleError = (error) => setError({
-    code: error?.response?.status,
-    message: error?.response?.statusText,
-    error: error?.response?.data?.message || '',
-    home: false,
-  });
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
@@ -362,7 +271,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       {!loading && !error && (
         <>
           <Trans
-              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all OPIDoR DMP functionalities.<br>They are identified by the icon : <structuredIcon />"
+              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all DMP OPIDoR functionalities.<br>They are identified by the icon : <structuredIcon />"
               components={{
                 br: <br />,
                 structuredIcon: <PiTreeStructureDuotone style={{ verticalAlign: 'middle' }} />,

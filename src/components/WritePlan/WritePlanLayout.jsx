@@ -21,10 +21,12 @@ function WritePlanLayout({
   currentOrgId,
   currentOrgName,
   readonly,
+  configuration,
 }) {
   const { t } = useTranslation();
 
-  return(
+
+  return (
     <Global>
       <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
         <WritePlan
@@ -35,6 +37,7 @@ function WritePlanLayout({
           currentOrgId={currentOrgId}
           currentOrgName={currentOrgName}
           readonly={readonly}
+          configuration={configuration}
           className="research-outputs-tabs"
         />
       </Joyride>

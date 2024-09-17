@@ -44,13 +44,15 @@ function SelectWithCreate({
   const { field } = useController({ control, name: propName });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
-  const [fragmentsList, setFragmentsList] = useState(field.value)
+  const [fragmentsList, setFragmentsList] = useState([])
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
+
+  const filteredFragmentList = fragmentsList.filter((el) => el.action !== 'delete');
 
   useEffect(() => {
     setFragmentsList(field.value || [])
@@ -125,7 +127,7 @@ function SelectWithCreate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const updatedFragmentList = fragmentsList;
+        const updatedFragmentList = [...fragmentsList];
         updatedFragmentList[idx]['action'] = 'delete';
         field.onChange(updatedFragmentList);
         setFragmentsList(updatedFragmentList);
@@ -193,7 +195,6 @@ function SelectWithCreate({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
@@ -270,7 +271,7 @@ function SelectWithCreate({
           </div>
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
+        {template && filteredFragmentList.length > 0 && (
           <FragmentList
             fragmentsList={fragmentsList}
             handleEdit={handleEdit}

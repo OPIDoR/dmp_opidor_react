@@ -10,20 +10,22 @@ import { researchOutput } from "../../services";
 import { createOptions, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
-import { getErrorMessage, pick } from "../../utils/utils";
+import { getErrorMessage } from "../../utils/utils";
 
 const EndButton = styled.div`
   display: flex;
   justify-content: end;
 `;
 
-function AddResearchOutput({ planId, handleClose, edit = false, close = true }) {
+function AddResearchOutput({ planId, handleClose, inEdition = false, close = true }) {
   const {
     locale,
     displayedResearchOutput, setDisplayedResearchOutput,
+    setLoadedSectionsData,
     setResearchOutputs,
     setUrlParams,
     researchOutputs,
+    configuration,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{value: '', label: ''}]);
@@ -32,26 +34,29 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
   const selectedOption = options.find((opt) => opt.value === type);
+  const [disableTypeChange, setDisableTypeChange] = useState(false);
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
       setOptions(createOptions(res.data, locale));
     });
 
-    if (edit) {
+    if (inEdition) {
       setAbbreviation(displayedResearchOutput.abbreviation);
       setTitle(displayedResearchOutput.title);
       setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
       setType(displayedResearchOutput.type);
     }
 
-    if (!edit) {
+    if (!inEdition) {
       const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
-      setHasPersonalData(false);
+      setHasPersonalData(configuration.enableHasPersonalData);
       setType(null);
     }
+    setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
+
   }, [locale]);
 
   /**
@@ -71,6 +76,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       return toast.error(t('Un "type" est nécessaire pour créer un produit de recherche.'));
     }
 
+    const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none' ;
     const researchOutputInfo = {
       plan_id: planId,
       abbreviation,
@@ -78,11 +84,11 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       type,
       configuration: {
         hasPersonalData,
-        dataType: researchOutputTypeToDataType(type),
+        dataType,
       }
     };
 
-    if (edit) {
+    if (inEdition) {
       let res;
       try {
         res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
@@ -108,7 +114,9 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       return;
     }
 
-    setDisplayedResearchOutput(res?.data?.research_outputs?.find(({ id }) => id === res?.data?.created_ro_id));
+    const createdResearchOutput = res?.data?.research_outputs?.find(({ id }) => id === res?.data?.created_ro_id)
+    setDisplayedResearchOutput(createdResearchOutput);
+    setLoadedSectionsData({ [createdResearchOutput.template.id]: createdResearchOutput.template })
     setResearchOutputs(res?.data?.research_outputs);
 
     setUrlParams({ research_output: res?.data?.created_ro_id });
@@ -121,7 +129,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
     <div style={{ margin: "25px" }}>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Short name')}</label>
         </div>
         <input
@@ -136,7 +143,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Name')}</label>
         </div>
         <input
@@ -148,7 +154,6 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <strong className={stylesForm.dot_label}></strong>
           <label>{t('Type')}</label>
         </div>
         {options && (
@@ -158,7 +163,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={edit}
+            isDisabled={disableTypeChange}
           />
         )}
       </div>
@@ -166,6 +171,13 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
         <div className={stylesForm.label_form}>
           <label>{t("Does your research output contain personal data?")}</label>
         </div>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            marginBottom: '10px'
+          }}>
+            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.")}</i>
+          </div>
           <div className="form-check">
           <label className={stylesForm.switch}>
             <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }}/>
@@ -183,7 +195,7 @@ function AddResearchOutput({ planId, handleClose, edit = false, close = true }) 
           </Button>
         )}
         <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
-          {t(edit ? "Save" : "Add")}
+          {t(inEdition ? "Save" : "Add")}
         </Button>
       </EndButton>
     </div>

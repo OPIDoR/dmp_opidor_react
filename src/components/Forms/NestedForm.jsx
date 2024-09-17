@@ -54,7 +54,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
               {t("Cancel")}
             </Button>
             {!readonly && (
-              <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }}>
+              <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
                 {t('Save')}
               </Button>
             )}

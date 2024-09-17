@@ -166,7 +166,6 @@ function SelectContributorMultiple({
           newContributorList[index] = {
             ...newContributorList[index],
             person: savedFragment,
-            role: defaultRole,
             action: newContributorList[index].action || 'update'
           };
           field.onChange(newContributorList);
@@ -239,7 +238,6 @@ function SelectContributorMultiple({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
@@ -281,7 +279,7 @@ function SelectContributorMultiple({
           )}
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && (
+        {template && contributorList.length > 0 && (
           <PersonsList
             personsList={contributorList}
             handleEdit={handleEdit}

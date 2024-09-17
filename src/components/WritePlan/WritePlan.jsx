@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import Card from 'react-bootstrap/Card';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -11,7 +13,9 @@ import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
 import * as styles from "../assets/css/sidebar.module.css";
 import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
+import ImportResearchOutput from "../ResearchOutput/ImportResearchOutput";
 import PlanInformations from "./PlanInformations";
+import * as modalStyles from "../assets/css/modal.module.css";
 
 function WritePlan({
   locale = 'en_GB',
@@ -21,6 +25,7 @@ function WritePlan({
   readonly,
   currentOrgId,
   currentOrgName,
+  configuration,
 }) {
   const { t, i18n } = useTranslation();
   const {
@@ -33,6 +38,7 @@ function WritePlan({
     setLoadedSectionsData,
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
+    setConfiguration,
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,6 +46,10 @@ function WritePlan({
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
   }, [locale])
+
+  useEffect(() => {
+    setConfiguration(configuration);
+  }, [configuration])
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
   //TODO update this , it can make error
@@ -133,7 +143,14 @@ function WritePlan({
             <Card.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} edit={false} />
+                <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
+                  <Tab eventKey={"create"} title={t("Create")}>
+                    <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} inEdition={false} />
+                  </Tab>
+                  <Tab eventKey="import" title={t("Import")}>
+                    <ImportResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} />
+                  </Tab>
+                </Tabs>
               </div>
             </Card.Body>
           </Card>

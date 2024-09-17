@@ -1,36 +1,14 @@
 import React, { useRef, useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/Global';
-import CustomSpinner from '../Shared/CustomSpinner';
-import CustomError from '../Shared/CustomError';
 import { useTranslation } from 'react-i18next';
 import InnerModal from '../Shared/InnerModal/InnerModal';
-import Comment from '../Shared/Comment';
-import { comments as commentsService } from '../../services';
+import CommentList from '../Shared/CommentList';
 
-function CommentModal({ show, setshowModalComment, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
+function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
   const { t } = useTranslation();
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [commentsNumber, setCommentsNumber] = useState(0);
   const modalRef = useRef(null);
   const { userId } = useContext(GlobalContext);
-
-  useEffect(() => {
-    setLoading(true);
-    commentsService.get(answerId)
-      .then(({ data }) => {
-        setComments(data?.notes || []);
-      })
-      .catch((error) => setError({
-        code: error?.response?.status,
-        message: error?.response?.statusText,
-        error: error?.response?.data?.message || '',
-        home: false,
-      }))
-      .finally(() => setLoading(false));
-  }, [answerId]);
-
-  const updateComments = (comments) => setComments(comments);
 
   return (
     <InnerModal show={show} ref={modalRef}>
@@ -43,15 +21,12 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
           setshowModalComment(false);
         }}
       >
-        <InnerModal.Title>
-          {t('Comments')} ({ comments.length || 0 })
+        <InnerModal.Title id={`#notes-title-${questionId}-research-output-${researchOutputId}`}>
+          {t('Comments')} ({commentsNumber})
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body style={{ borderRadius: '0 0 10px 10px' }}>
-        {loading && <CustomSpinner />}
-        {!loading && error && <CustomError error={error} />}
-        {!loading && !error && comments && (
-          <Comment
+        <CommentList
             answerId={answerId}
             researchOutputId={researchOutputId}
             planId={planId}
@@ -59,10 +34,9 @@ function CommentModal({ show, setshowModalComment, setFillColorIconComment, answ
             userId={userId}
             readonly={readonly}
             inModal={true}
-            comments={comments}
-            updateComments={updateComments}
+            setAnswer={setAnswer}
+            setCommentsNumber={setCommentsNumber}
           />
-        )}
       </InnerModal.Body>
     </InnerModal>
   );

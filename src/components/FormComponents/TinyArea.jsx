@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
 import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { useTranslation } from 'react-i18next';
 import uniqueId from 'lodash.uniqueid';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
@@ -29,11 +30,13 @@ function TinyArea({
   label,
   propName,
   tooltip,
+  placeholder,
   defaultValue = null,
   readonly = false,
 }) {
+  const { t } = useTranslation();
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { field } = useController({ control, name: propName, defaultValue: '' });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
   const editorRef = useRef(null);
@@ -42,7 +45,6 @@ function TinyArea({
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
           {
             tooltip && (
@@ -65,6 +67,7 @@ function TinyArea({
               initialValue={defaultValue}
               licenseKey='gpl'
               init={{
+                placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,
                 statusbar: true,
                 menubar: false,
                 toolbar: 'bold italic underline | fontsizeselect forecolor | bullist numlist | link | table',

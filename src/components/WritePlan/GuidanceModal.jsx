@@ -23,7 +23,6 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const [error, setError] = useState(null);
   const [indexTab, setIndexTab] = useState(0);
   const modalRef = useRef(null);
-  const [guidancesGroups, setGuidancesGroups] = useState({});
 
   const {
     planInformations,
@@ -57,23 +56,39 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId, locale)
-      .then((res) => setGuidancesGroups(
-        res?.data?.data?.flatMap((groups) => groups.guidance_groups.flatMap((group) => group))
-          ?.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.name }), {}),
-      ))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
 
     guidances.getGuidances(planId, questionId)
-      .then(({ data }) => {
-        const guidancesData = data?.guidances;
-        setData(guidancesData);
-        const activetab = guidancesData?.[0]?.name || '';
-        setActiveTab(activetab);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+    .then(({ data }) => {
+      const guidancesData = data?.guidances.map((guidance) => {
+        const groups = guidance.groups.reduce((acc, group) => {
+          const [groupInfo, guidanceInfo] = group;
+          const groupName = groupInfo.name;
+
+          const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
+
+          acc[groupName] = {
+            title: descriptionKey,
+            guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+          };
+
+          return acc;
+        }, {});
+
+        const title = Object.values(groups).at(0).title;
+
+        return {
+          name: guidance.name,
+          title,
+          groups,
+          annotations: guidance.annotations || [],
+        };
+      });
+
+      setData(guidancesData);
+      setActiveTab(guidancesData?.at(0)?.name || '');
+    })
+    .catch((error) => setError(error))
+    .finally(() => setLoading(false));
   }, [planId, questionId]);
 
   /**
@@ -99,18 +114,20 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
                 ))}
               </>
             )}
-            {Object.keys(data?.[indexTab]?.groups).map((theme, themeId) => (
-              <div key={`guidance-theme-${themeId}`}>
-                {themeId === 0 && <Theme alt={theme}>{theme}</Theme>}
-                {data?.[indexTab]?.groups?.[theme]?.filter(({ locale }) => locale === locales[planInformations.locale])?.map((g, id) => (
-                  <div key={`guidance-theme-${themeId}-id-${id}-content`}>
-                    {id == 0 && <SubTitle>{guidancesGroups[g.guidance_group_id]}</SubTitle>}
-                    <div
-                      key={`guidance-theme-${themeId}-id-${id}`}
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(g.text),
-                      }}
-                    />
+            {data?.filter(({ name }) => name === activeTab).map(({ title, groups }, dId) => (
+              <div key={`guidance-${dId}`}>
+                <Theme alt={title}>{title}</Theme>
+                {Object.keys(groups)?.map((groupName) => (
+                  <div>
+                    <SubTitle key={`guidance-subtitle-${dId}`}>{groupName}</SubTitle>
+                    {groups[groupName].guidances.map((guidance, id) => (
+                      <div
+                        key={`guidance-value-${dId}`}
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(guidance.text),
+                        }}
+                      />
+                    ))}
                   </div>
                 ))}
               </div>

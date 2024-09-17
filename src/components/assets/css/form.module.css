@@ -38,7 +38,8 @@ a {
   font-weight: bold;
   font-family:  "Helvetica Neue", sans-serif;
 }
-.dot_label {
+.label_form:before {
+  content: '';
   height: 10px;
   width: 10px;
   background-color: var(--blue);

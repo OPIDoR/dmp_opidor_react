@@ -73,6 +73,15 @@ const getFunders = async (researchContext, templateLanguage) => axios.get(`/orgs
  */
 const createPlan = async (template_id) => axios.post(`/plans`, { template_id }, { headers: createHeaders({}, true) });
 
+const importPlan = async (formData) => axios.post('/plans/import', formData, {
+  headers: {
+    ...createHeaders({}, true),
+    'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
+  },
+  maxRedirects: 0,
+});
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getRecommendedTemplate,
@@ -81,4 +90,5 @@ export default {
   getOrgs,
   getFunders,
   createPlan,
+  importPlan,
 };

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
@@ -27,6 +28,7 @@ function SubForm({
   const {
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
+  const [error, setError] = useState(null);
   const [showNestedForm, setShowNestedForm] = useState(false);
   const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
@@ -81,8 +83,19 @@ function SubForm({
       <div className="form-group">
         <span className={styles.errorMessage}>{error}</span>
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
+          {
+            tooltip && (
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            )
+          }
         </div>
         <div
           id={`nested-form-${propName}`}

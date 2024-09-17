@@ -45,7 +45,7 @@ function LangSelection({ prevStep, nextStep, set, params }) {
         ))
       }
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {prevStep}
+      {prevStep}
       </div>
     </div>
   );

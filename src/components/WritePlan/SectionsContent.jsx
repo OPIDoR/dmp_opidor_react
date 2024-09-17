@@ -11,7 +11,8 @@ import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
-import consumer from "../../cable";
+import consumer from "../../cable";"sweetalert2";
+import swalUtils from "../../utils/swalUtils";
 
 function SectionsContent({ planId, templateId, readonly }) {
   const { t } = useTranslation();
@@ -41,8 +42,6 @@ function SectionsContent({ planId, templateId, readonly }) {
       setFormData({ [data.fragment_id]: data.payload })
     }
   }, [displayedResearchOutput, setDisplayedResearchOutput, setFormData])
-
-
 
   useEffect(() => {
     if (subscriptionRef.current) subscriptionRef.current.unsubscribe();
@@ -129,6 +128,43 @@ function SectionsContent({ planId, templateId, readonly }) {
     setEdit(true);
   };
 
+  const handleDuplicate = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    Swal.fire({
+      title: t("Do you want to duplicate the search output?"),
+      text: t("Remember to rename your search output after duplication."),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: t("Close"),
+      confirmButtonText: t("Yes, duplicate!"),
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let res;
+        try {
+          res = await researchOutput.importResearchOutput({
+            planId,
+            uuid: displayedResearchOutput.uuid,
+          });
+        } catch (err) {
+          return toast.error(t('An error occured during import !'));
+        }
+
+        const { research_outputs, created_ro_id } = res?.data;
+
+        setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
+        setResearchOutputs(research_outputs);
+        setUrlParams({ research_output: created_ro_id });
+
+        toast.success(t("Research output successfully imported."));
+      }
+    });
+
+  }
+
   const handleClose = (e) => {
     setShow(false);
     setEdit(false);
@@ -142,7 +178,12 @@ function SectionsContent({ planId, templateId, readonly }) {
       {!error && displayedResearchOutput?.template?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
-            <ResearchOutputInfobox handleEdit={handleEdit} handleDelete={handleDelete} readonly={readonly}></ResearchOutputInfobox>
+            <ResearchOutputInfobox
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              handleDuplicate={handleDuplicate}
+              readonly={readonly}
+            />
             {displayedResearchOutput?.template?.sections?.map((section) => (
               <Section
                 key={section.id}

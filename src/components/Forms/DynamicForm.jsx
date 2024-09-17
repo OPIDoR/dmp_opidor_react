@@ -33,7 +33,7 @@ function DynamicForm({
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
-  const methods = useForm({ defaultValues: formData });
+  const methods = useForm({ defaultValues: {} });
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
@@ -58,6 +58,7 @@ function DynamicForm({
           setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
           setFormData({ [fragmentId]: res.data.fragment });
+          if(res.data.answer_id) setAnswer({id: res.data.answer_id, fragment_id: res.data.fragment.id });
           methods.reset(res.data.fragment);
         }).catch(console.error);
       }

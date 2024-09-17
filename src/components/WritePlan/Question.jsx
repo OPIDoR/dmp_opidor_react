@@ -36,7 +36,7 @@ function Question({
     questionsWithGuidance,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
-  const [answer, setAnswer] = useState({});
+  const [answer, setAnswer] = useState(null);
   const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
 
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
@@ -366,57 +366,61 @@ function Question({
           <Collapse in={isQuestionOpened()}>
             <div id={`card-collapse-${question.id}`}>
               <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }}>
-                {isQuestionOpened() && answer && (
+                {isQuestionOpened() && (
                   <div>
-                    {!readonly && scriptsData.scripts.length > 0 && (
-                      <RunsModal
-                        show={showRunsModal}
-                        setshowModalRuns={setShowRunsModal}
-                        setFillColorIconRuns={setFillRunsIconColor}
-                        scriptsData={scriptsData}
-                        fragmentId={answer.fragment_id}
-                      />
+                    {answer && (
+                      <>
+                        {!readonly && scriptsData.scripts.length > 0 && (
+                          <RunsModal
+                            show={showRunsModal}
+                            setshowModalRuns={setShowRunsModal}
+                            setFillColorIconRuns={setFillRunsIconColor}
+                            scriptsData={scriptsData}
+                            fragmentId={answer.fragment_id}
+                          />
+                        )}
+                        <CommentModal
+                          show={showCommentModal}
+                          setshowModalComment={setShowCommentModal}
+                          setFillColorIconComment={setFillCommentIconColor}
+                          answerId={answer.id}
+                          researchOutputId={displayedResearchOutput.id}
+                          planId={planId}
+                          questionId={question.id}
+                          readonly={readonly}
+                        />
+                        {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                          show={showGuidanceModal}
+                          setShowGuidanceModal={setShowGuidanceModal}
+                          setFillColorGuidanceIcon={setFillGuidanceIconColor}
+                          questionId={questionId}
+                          planId={planId}
+                        />)}
+                      </>
                     )}
-                    <CommentModal
-                      show={showCommentModal}
-                      setshowModalComment={setShowCommentModal}
-                      setFillColorIconComment={setFillCommentIconColor}
-                      answerId={answer.id}
-                      researchOutputId={displayedResearchOutput.id}
-                      planId={planId}
-                      questionId={question.id}
-                      readonly={readonly}
-                    />
-                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                      show={showGuidanceModal}
-                      setShowGuidanceModal={setShowGuidanceModal}
-                      setFillColorGuidanceIcon={setFillGuidanceIconColor}
-                      questionId={questionId}
-                      planId={planId}
-                    />)}
+                    {isQuestionOpened() ? (
+                      <>
+                        {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
+                          (<DynamicForm
+                            fragmentId={answer?.fragment_id}
+                            className={question?.madmp_schema?.classname}
+                            setScriptsData={setScriptsData}
+                            questionId={question.id}
+                            madmpSchemaId={question.madmp_schema?.id}
+                            setAnswer={setAnswer}
+                            readonly={readonly}
+                            formSelector={{
+                              show: showFormSelectorModal,
+                              setShowFormSelectorModal,
+                              setFillFormSelectorIconColor,
+                            }}
+                          />)
+                        }
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
-                )}
-                {isQuestionOpened() ? (
-                  <>
-                    {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
-                      (<DynamicForm
-                        fragmentId={answer?.fragment_id}
-                        className={question?.madmp_schema?.classname}
-                        setScriptsData={setScriptsData}
-                        questionId={question.id}
-                        madmpSchemaId={question.madmp_schema?.id}
-                        setAnswer={setAnswer}
-                        readonly={readonly}
-                        formSelector={{
-                          show: showFormSelectorModal,
-                          setShowFormSelectorModal,
-                          setFillFormSelectorIconColor,
-                        }}
-                      />)
-                    }
-                  </>
-                ) : (
-                  <></>
                 )}
               </Card.Body>
             </div>

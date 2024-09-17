@@ -19,7 +19,7 @@ import swalUtils from '../../utils/swalUtils.js';
 
 const locales = { fr, en: enGB };
 
-function Comment({
+function CommentList({
   answerId,
   researchOutputId,
   planId,
@@ -27,8 +27,8 @@ function Comment({
   userId,
   readonly,
   inModal = false,
-  commentsData,
-  updateComments,
+  setAnswer,
+  setCommentsNumber,
 }) {
   const { t, i18n } = useTranslation();
   const editorContentRef = useRef(null);
@@ -40,16 +40,10 @@ function Comment({
   const [comment, setComment] = useState(null);
 
   useEffect(() => {
-    if (commentsData) {
-      setComments(commentsData);
-      return updateTitle(commentsData || []);
-    }
-
     setLoading(true);
     commentsService.get(answerId)
       .then(({ data }) => {
         setComments(data?.notes || []);
-        updateTitle(data?.notes || [])
       })
       .catch((error) => setError({
         code: error?.response?.status,
@@ -58,9 +52,12 @@ function Comment({
         home: false,
       }))
       .finally(() => setLoading(false));
-
-    updateTitle(comments);
   }, [answerId]);
+
+  useEffect(() => {
+    updateTitle(comments || [])
+    setCommentsNumber(comments.length || 0)
+  }, [comments]);
 
   /**
    * "updateParentText" is a function that takes in a parameter called "updatedText" and then sets the value of "editorContentRef.current" to
@@ -94,10 +91,7 @@ function Comment({
           const updatedComments = [...comments];
           updatedComments.splice(index, 1);
           setComments(updatedComments);
-
           updateTitle(updatedComments);
-
-          updateComments(updatedComments);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
         })
@@ -181,14 +175,16 @@ function Comment({
       ...note,
       ...data?.note,
     };
-    setComments((prevData) => [newNote, ...prevData]);
 
     setText(null);
     setIsUpdate(false);
 
     updateTitle([newNote, ...comments]);
+    setComments([newNote, ...comments]);
 
-    updateComments([newNote, ...comments]);
+    if(data.answer_created) {
+      setAnswer(data.answer);
+    }
 
     return toast.success(t('Comment sent successfully.'));
   }
@@ -278,4 +274,4 @@ function Comment({
   );
 }
 
-export default Comment;
+export default CommentList;

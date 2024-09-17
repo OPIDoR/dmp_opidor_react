@@ -13,7 +13,7 @@ import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
+import { except, fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import swalUtils from '../../utils/swalUtils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
@@ -45,7 +45,7 @@ function SelectSingleList({
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
@@ -53,7 +53,13 @@ function SelectSingleList({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
-    setSelectedValue(field.value || defaultValue || nullValue);
+    if (registryType === 'complex') {
+      setSelectedValue(
+        except(field.value, ['template_name', 'id', 'schema_id']) || defaultValue || nullValue
+      );
+    } else {
+      setSelectedValue(field.value || defaultValue || nullValue);
+    }
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
@@ -63,10 +69,20 @@ function SelectSingleList({
   }, [field.value, defaultValue, registries])
 
   useEffect(() => {
-    if (registryType !== 'complex') {
-      setSelectedOption(selectedValue ? { value: selectedValue, label: selectedValue } : nullValue)
-    }
-  }, [selectedValue])
+    if (!options) return;
+    if (registryType === 'complex') return setSelectedOption(nullValue);
+
+      if (field.value) {
+        const selectedOpt = options.find(o => o.value === field.value) || null;
+        if (selectedOpt === null && overridable === true) {
+          setSelectedOption({ value: field.value, label: field.value });
+        } else {
+          setSelectedOption(selectedOpt)
+        }
+      } else {
+        setSelectedOption(nullValue);
+      }
+  }, [field.value, options]);
 
   /*
   A hook that is called when the component is mounted.
@@ -134,14 +150,14 @@ function SelectSingleList({
     setEditedFragment({});
     setShowNestedForm(false);
   }
-  
+
   const handleDeleteList = (e) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
@@ -152,7 +168,6 @@ function SelectSingleList({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <strong className={styles.dot_label}></strong>
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
