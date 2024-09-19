@@ -58,37 +58,37 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     setLoading(true);
 
     guidances.getGuidances(planId, questionId)
-    .then(({ data }) => {
-      const guidancesData = data?.guidances.map((guidance) => {
-        const groups = guidance.groups.reduce((acc, group) => {
-          const [groupInfo, guidanceInfo] = group;
-          const groupName = groupInfo.name;
+      .then(({ data }) => {
+        const guidancesData = data?.guidances.map((guidance) => {
+          const groups = guidance.groups.reduce((acc, group) => {
+            const [groupInfo, guidanceInfo] = group;
+            const groupName = groupInfo.name;
 
-          const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
+            const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
 
-          acc[groupName] = {
-            title: descriptionKey,
-            guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+            acc[groupName] = {
+              title: descriptionKey,
+              guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+            };
+
+            return acc;
+          }, {});
+
+          const title = Object.values(groups)?.at(0)?.title || '';
+
+          return {
+            name: guidance.name,
+            title,
+            groups,
+            annotations: guidance.annotations || [],
           };
+        });
 
-          return acc;
-        }, {});
-
-        const title = Object.values(groups).at(0).title;
-
-        return {
-          name: guidance.name,
-          title,
-          groups,
-          annotations: guidance.annotations || [],
-        };
-      });
-
-      setData(guidancesData);
-      setActiveTab(guidancesData?.at(0)?.name || '');
-    })
-    .catch((error) => setError(error))
-    .finally(() => setLoading(false));
+        setData(guidancesData);
+        setActiveTab(guidancesData?.at(0)?.name || '');
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, [planId, questionId]);
 
   /**
