@@ -31,15 +31,15 @@ const CookieButton = styled.div`
 `;
 
 const CookieConsent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
+    cookieConsent.setLanguage(i18n.resolvedLanguage || 'fr');
     cookieConsent.run(config);
   }, []);
 
-  const resetCookieConsent = (e) => {
-    e.preventDefault()
-    cookieConsent.reset(true);
+  const resetCookieConsent = () => {
+    cookieConsent.show(true);
     cookieConsent.run(config);
   };
 

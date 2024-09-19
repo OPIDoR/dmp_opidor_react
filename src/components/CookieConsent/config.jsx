@@ -25,7 +25,7 @@ export default {
     preferencesModal: {
       layout: 'box',
       flipButtons: false,
-      equalWeightButtons: true
+      equalWeightButtons: false
     }
   },
 
@@ -103,14 +103,13 @@ export default {
           showPreferencesBtn: 'Gérer les préférences',
           footer: `
             <a href="/privacy" target="_blank">Politique de confidentialité</a>
-            <a href="/terms" target="_blank">Conditions générales d'utilisation</a>
           `,
         },
         preferencesModal: {
           title: 'Préférences de cookies',
           acceptAllBtn: 'Tout accepter',
           acceptNecessaryBtn: 'Tout rejeter',
-          savePreferencesBtn: 'Gérer les préférences',
+          savePreferencesBtn: 'Accepter la sélection',
           closeIconLabel: 'Fermer la modale',
           sections: [
             {
@@ -182,12 +181,14 @@ export default {
                   {
                     name: '_pk_id.*',
                     domain: location.hostname,
-                    desc: 'Ces cookies sont utilisés par Piwik pour distinguer les utilisateurs uniques en attribuant un identifiant unique généré aléatoirement et permet de traquer la navigation.',
+                    desc: 'Ces cookies sont utilisés par Matomo pour distinguer les utilisateurs uniques en attribuant un identifiant unique généré aléatoirement et permet de traquer la navigation.',
+                    duration: '13 mois',
                   },
                   {
                     name: '_pk_ses.*',
                     domain: location.hostname,
-                    desc: 'Ces cookies sont utilisés par Piwik pour distinguer les utilisateurs uniques en attribuant une session unique générée aléatoirement.',
+                    desc: 'Ces cookies sont utilisés par Matomo pour distinguer les utilisateurs uniques en attribuant une session unique générée aléatoirement.',
+                    duration: '13 mois',
                   },
                 ],
               },
@@ -202,7 +203,6 @@ export default {
       en: {
         footer: `
           <a href="/privacy" target="_blank">Terms of use</a>
-          <a href="/terms" target="_blank">Privacy statement</a>
         `,
         consentModal: {
           title: 'Cookies',
@@ -282,19 +282,27 @@ export default {
                   name: 'Cookie',
                   domain: 'Domain',
                   desc: 'Description',
+                  duration: 'Duration',
                 },
                 body: [
                   {
                     name: '_pk_id.*',
                     domain: location.hostname,
-                    desc: 'These cookies are used by Piwik to distinguish unique users by assigning a randomly generated unique identifier and to track browsing behaviour.',
+                    desc: 'These cookies are used by Matomo to distinguish unique users by assigning a randomly generated unique identifier and to track browsing behaviour.',
+                    duration: '13 mounths',
+                  },
+                  {
+                    name: '_pk_ses.*',
+                    domain: location.hostname,
+                    desc: 'These cookies are used by Matomo to distinguish unique users by assigning a randomly generated unique session.',
+                    duration: '13 mounths',
                   },
                 ],
               },
             },
             {
               title: 'Your choices concerning cookies',
-              description: 'You can choose to accept only necessary cookies or to accept all cookies, including analysis cookies. You can also personalise your cookie preferences at any time by accessing the cookie settings on our website..'
+              description: 'You can choose to accept only necessary cookies or to accept all cookies, including analysis cookies. You can also personalise your cookie preferences at any time by accessing the cookie settings on our website..',
             }
           ],
         },
