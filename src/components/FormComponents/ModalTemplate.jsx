@@ -122,7 +122,7 @@ function ModalTemplate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const filteredList = [...filteredFragmentList];
+        const filteredList = [...fragmentsList];
         filteredList[idx]['action'] = 'delete';
         field.onChange(filteredList);
         setFragmentsList(filteredList);
