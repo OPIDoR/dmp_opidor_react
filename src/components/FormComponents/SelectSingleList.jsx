@@ -125,8 +125,8 @@ function SelectSingleList({
     if (!e) return { target: { name: propName, value: '' } }
 
     if (registryType === 'complex') {
-      const action = selectedValue.id ? 'update' : 'create';
-      const value = { ...selectedValue, ...e.object, action };
+      const action = field.value?.id ? 'update' : 'create';
+      const value = { ...field.value, ...e.object, action };
       field.onChange(value);
     } else {
       return field.onChange(e.value);
