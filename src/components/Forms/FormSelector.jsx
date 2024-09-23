@@ -24,7 +24,7 @@ function FormSelector({ className, displayedTemplate, fragmentId, setFragment, s
       setAvailableTemplates(data);
       setFormSelector((prev) => ({ ...prev, [fragmentId]: data?.length > 1 }));
       data.forEach((template) => {
-        setLoadedTemplates({ ...loadedTemplates, [template.name]: template.schema });
+        setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
         if (template.name === displayedTemplate.name) setSelectedTemplate(template);
       });
     })

@@ -50,7 +50,7 @@ function DynamicForm({
           service.getSchema(formData[fragmentId].schema_id).then((res) => {
             setTemplate(res.data);
             setExternalImports(template?.schema?.externalImports || {});
-            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
+            setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
           }).catch(console.error);
         }
         methods.reset(formData[fragmentId]);
@@ -118,10 +118,10 @@ function DynamicForm({
     service.createFragment(data, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
       const updatedResearchOutput = { ...displayedResearchOutput };
       const fragment = res.data.fragment;
-      const template = res.data.template;
-      const answerId = res.data.answer_id
-      setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
-      setTemplate(template);
+      const tplt = res.data.template;
+      const answerId = res.data.answer_id;
+      setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
+      setTemplate(tplt);
       setFormData({ [fragment.id]: fragment });
       setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: madmpSchemaId });
       updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
