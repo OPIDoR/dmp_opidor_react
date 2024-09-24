@@ -183,6 +183,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             propName={key}
             tooltip={tooltip}
+            defaultValue={defaultValue}
             readonly={readonly || isConst}
           ></InputTextArray>,
         );
