@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPlus, FaXmark } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 
 import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
@@ -11,16 +11,12 @@ import CustomButton from '../Styled/CustomButton';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextArray({ label, propName, tooltip, readonly }) {
+function InputTextArray({ label, propName, tooltip, defaultValue = null, readonly = false }) {
   const { t } = useTranslation();
-  const { register } = useFormContext({
-    defaultValues: {
-      [propName]: ['']
-    }
-  });
-  const { fields, append, remove } = useFieldArray({ name: propName });
+  const { control, register } = useFormContext();
+  const { fields, append, remove } = useFieldArray({ control, name: propName });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
-  
+
   return (
     <div>
       <div className={styles.label_form}>
@@ -45,7 +41,7 @@ function InputTextArray({ label, propName, tooltip, readonly }) {
             <div style={{ display: 'flex', alignItems: 'space-between' }}>
               <input
                 key={item.id}
-                {...register(`${propName}.${index}`)}
+                {...register(`${propName}.${index}`, { value: defaultValue })}
                 type="text"
                 className="form-control"
                 style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
