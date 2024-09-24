@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import axios from "axios";
+
 import { externalServices } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import { service } from "../../services";
 
 function Metadore({ fragment, setFragment, mapping = {} }) {
   const { t } = useTranslation();
@@ -18,6 +21,11 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   const [selectedData, setSelectedData] = useState(null);
   const [currentData, setCurrentData] = useState([]);
   const [text, setText] = useState('');
+  const [registry, setRegistry] = useState(null);
+
+  useEffect(() => {
+    service.getRegistryByName('DataLicenses').then(({ data }) => setRegistry(data));
+  }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -54,20 +62,48 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   /**
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
-  const setSelectedValue = (el) => {
+  const setSelectedValue = async (el) => {
     setSelectedData(selectedData === el.id ? null : el.id);
 
+    let obj = {
+      title: el?.attributes?.titles?.at(0)?.title,
+      description:  el?.attributes?.descriptions?.at(0)?.description,
+      versionNumber: el?.attributes?.version,
+      license: {
+        licenseName: el?.attributes?.rightsList?.at(0)?.rights,
+        licenseUrl: el?.attributes?.rightsList?.at(0)?.rightsUri,
+      },
+      idType: 'DOI',
+      datasetId: el?.id,
+    };
     const matchData = data.find(({ id }) => id.toLowerCase() === el.id.toLowerCase());
 
     if (matchData) {
       const flattenedMapping = flattenObject(mapping);
 
       for (const [key, value] of Object.entries(flattenedMapping)) {
-        set(fragment, key, get(matchData, value));
+        set(obj, key, get(matchData, value));
       }
     }
 
-    setFragment({ ...fragment });
+    if (obj?.datasetId) {
+      set(obj, 'datasetId', `https://doi.org/${el?.id}`);
+    }
+
+    if (obj?.license.licenseName) {
+      if (registry) {
+        const { licenseName, licenseUrl } = registry?.find(({ licenseName }) => licenseName.toLowerCase() === obj?.license.licenseName .toLowerCase());
+        if (licenseName) {
+          set(obj, 'license', { licenseName, licenseUrl });
+        }
+      }
+    }
+
+    if (!obj?.license.licenseName && !obj?.license.licenseUrl) {
+      set(obj, 'license', null);
+    }
+
+    setFragment({ ...fragment, ...obj });
   };
 
   /**
