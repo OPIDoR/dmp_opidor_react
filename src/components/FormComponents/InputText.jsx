@@ -48,7 +48,8 @@ function InputText({
       )}
       <input
         {...register(propName, {
-          valueAsNumber: type === 'number'
+          valueAsNumber: type === 'number',
+          value: defaultValue
         })}
         defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}
