@@ -33,7 +33,7 @@ export function parsePattern(data, keys = []) {
  *                   The first option is an empty option with empty value and label.
  */
 export function createOptions(registryValues, locale) {
-  return [{ value: '', label: '' }, ...registryValues.map((option) => {
+  return [...registryValues.map((option) => {
     let { label, value, ...optionValue } = option;
     label = label ? label[locale] : optionValue[locale];
     if(!value) {
