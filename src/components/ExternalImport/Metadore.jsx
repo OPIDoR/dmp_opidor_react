@@ -146,7 +146,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('Search by <DOI> or <Title>')}
+                      placeholder={t('Search by <DOI (e.g. 10.5281/zenodo.13826305)> or <Title>')}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
