@@ -40,6 +40,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     service.getRegistryByName('ResearchDataType').then((res) => {
       const opts = createOptions(res.data, locale);
       setOptions(opts);
+      setType(opts?.at(0).value);
       setSelectedOption(opts?.at(0));
     });
 
@@ -55,7 +56,6 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(configuration.enableHasPersonalData);
-      setType(null);
     }
     setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
 
