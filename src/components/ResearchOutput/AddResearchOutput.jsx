@@ -33,12 +33,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
-  const selectedOption = options.find((opt) => opt.value === type);
+  const [selectedOption, setSelectedOption] = useState(options?.at(0));
   const [disableTypeChange, setDisableTypeChange] = useState(false);
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
-      setOptions(createOptions(res.data, locale));
+      const opts = createOptions(res.data, locale);
+      setOptions(opts);
+      setSelectedOption(opts?.at(0));
     });
 
     if (inEdition) {
@@ -63,6 +65,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
    * This is a function that handles the selection of a value and sets it as the type.
    */
   const handleSelect = (e) => {
+    setSelectedOption(options.find(({ value }) => value === e.value));
     setType(e.value);
   };
 
@@ -73,7 +76,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     e.stopPropagation();
 
     if (!type || type.length === 0) {
-      return toast.error(t('Un "type" est nécessaire pour créer un produit de recherche.'));
+      return toast.error(t('A ‘type’ is required to create a search product.'));
     }
 
     const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none' ;
