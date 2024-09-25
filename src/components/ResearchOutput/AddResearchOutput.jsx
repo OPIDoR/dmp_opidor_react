@@ -40,23 +40,25 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     service.getRegistryByName('ResearchDataType').then((res) => {
       const opts = createOptions(res.data, locale);
       setOptions(opts);
-      setType(opts?.at(0).value);
-      setSelectedOption(opts?.at(0));
+
+      if (inEdition) {
+        setAbbreviation(displayedResearchOutput.abbreviation);
+        setTitle(displayedResearchOutput.title);
+        setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+        setType(displayedResearchOutput.type);
+        setSelectedOption(opts.find(({ value }) => value === displayedResearchOutput.type));
+      }
+
+      if (!inEdition) {
+        const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
+        setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
+        setTitle(`${t('Research output')} ${maxOrder + 1}`);
+        setHasPersonalData(configuration.enableHasPersonalData);
+        setSelectedOption(opts?.at(0));
+        setType(opts?.at(0).value);
+      }
     });
 
-    if (inEdition) {
-      setAbbreviation(displayedResearchOutput.abbreviation);
-      setTitle(displayedResearchOutput.title);
-      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
-      setType(displayedResearchOutput.type);
-    }
-
-    if (!inEdition) {
-      const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
-      setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
-      setTitle(`${t('Research output')} ${maxOrder + 1}`);
-      setHasPersonalData(configuration.enableHasPersonalData);
-    }
     setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
 
   }, [locale]);
