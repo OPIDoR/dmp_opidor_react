@@ -14,7 +14,6 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
-import { writePlan } from "../../services";
 
 function DynamicForm({
   fragmentId,
@@ -38,6 +37,7 @@ function DynamicForm({
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [templateId, setTemplateId] = useState(madmpSchemaId);
   const [externalImports, setExternalImports] = useState({});
 
   useEffect(() => {
@@ -64,7 +64,7 @@ function DynamicForm({
         }).catch(console.error);
       }
     } else {
-      service.getSchema(madmpSchemaId).then((res) => {
+      service.getSchema(templateId).then((res) => {
         setTemplate(res.data);
         setExternalImports(template?.schema?.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
@@ -115,7 +115,7 @@ function DynamicForm({
   };
 
   const handleSaveNew = (data) => {
-    service.createFragment(data, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
+    service.createFragment(data, templateId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
       const updatedResearchOutput = { ...displayedResearchOutput };
       const fragment = res.data.fragment;
       const tplt = res.data.template;
@@ -123,7 +123,7 @@ function DynamicForm({
       setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
       setTemplate(tplt);
       setFormData({ [fragment.id]: fragment });
-      setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: madmpSchemaId });
+      setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId });
       updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
       setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
     }).catch(console.error);
@@ -139,11 +139,10 @@ function DynamicForm({
       {!error && template && (
         <>
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
-          {!readonly && <FormSelector
-            className={className}
+          {!readonly && !fragmentId && <FormSelector
+            classname={className}
             displayedTemplate={template}
-            fragmentId={fragmentId}
-            setFragment={methods.reset}
+            setTemplateId={setTemplateId}
             setTemplate={setTemplate}
             formSelector={formSelector}
           />}
