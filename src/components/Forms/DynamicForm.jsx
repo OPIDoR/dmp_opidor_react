@@ -107,11 +107,10 @@ function DynamicForm({
         document.getElementById('plan-title').innerHTML = response.data.plan_title;
       }
       setFormData({ [fragmentId]: response.data.fragment });
+      setLoading(false);
     } else {
       handleSaveNew(data);
     }
-
-    setLoading(false);
   };
 
   const handleSaveNew = (data) => {
