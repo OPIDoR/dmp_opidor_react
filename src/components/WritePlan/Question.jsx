@@ -37,7 +37,7 @@ function Question({
   const [showGuidanceModal, setShowGuidanceModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [showRunsModal, setShowRunsModal] = useState(false);
-  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false);
+  const [showFormSelectorModal, setShowFormSelectorModal] = useState(true);
 
   const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
   const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
@@ -266,7 +266,7 @@ function Question({
                     </div>
                   </div>
 
-                  {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
+                  {isQuestionOpened() && !answer && formSelectors[question?.madmp_schema?.classname] && (
                     <div>
                       <ReactTooltip
                         id="form-changer-show-button"

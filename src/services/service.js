@@ -47,8 +47,6 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
 
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
-const changeForm = async (fragmentId, templateName, locale) => axios.get(`/madmp_fragments/change_form/${fragmentId}?template_name=${templateName}&locale=${locale}`);
-
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -63,6 +61,5 @@ export default {
   getContributors,
   destroyContributor,
   getSchemasByClass,
-  changeForm,
   runScript,
 };
