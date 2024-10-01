@@ -59,7 +59,16 @@ function DynamicForm({
           setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
           setFormData({ [fragmentId]: res.data.fragment });
-          if(res.data.answer_id) setAnswer({id: res.data.answer_id, fragment_id: res.data.fragment.id });
+          if(res.data.answer_id) {
+            const {
+              answer_id,
+              fragment: {
+                id: fragment_id,
+                schema_id: madmp_schema_id,
+              },
+            } = res?.data;
+            setAnswer({ answer_id, question_id: questionId, fragment_id, madmp_schema_id });
+          }
           methods.reset(res.data.fragment);
         }).catch(console.error);
       }
