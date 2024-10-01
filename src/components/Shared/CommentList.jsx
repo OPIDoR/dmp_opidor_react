@@ -222,6 +222,11 @@ function CommentList({
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && comments && (
         <div>
+          {comments.length === 0 && (
+            <NavBodyText>
+              <CommentsCard style={{ margin: 0 }}>{t('There don\'t seem to be any comments, so add your own!')}</CommentsCard>
+            </NavBodyText>
+          )}
           <ScrollNav>
             {comments.map((comment, idx) => (
               <NavBodyText
