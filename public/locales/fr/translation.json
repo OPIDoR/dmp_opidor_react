@@ -234,5 +234,6 @@
   "Cookie preferences": "Préférences des cookies",
   "Back to top": "Retour en haut de page",
   "e.g.": "ex :",
-  "There don't seem to be any comments, so add your own!": "Il ne semble pas y avoir de commentaire, ajoutez le vôtre !"
+  "There don't seem to be any comments, so add your own!": "Il ne semble pas y avoir de commentaire, ajoutez le vôtre !",
+  "Retrieve data by using DataCite": "Récupérer la description à partir du DOI DataCite"
 }
