@@ -11,7 +11,7 @@ import Section from "./Section";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
-import consumer from "../../cable";"sweetalert2";
+import consumer from "../../cable";
 import swalUtils from "../../utils/swalUtils";
 
 function SectionsContent({ planId, templateId, readonly }) {
