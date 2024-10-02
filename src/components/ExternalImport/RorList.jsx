@@ -78,12 +78,14 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     let obj = {
       affiliationId: el.ror,
       affiliationName: el.name[Object.keys(el.name)[0]],
-      affiliationIdType: 'ROR ID',
-      acronyms: el.acronyms?.[0],
+      affiliationIdType: el?.type,
+      acronyms: Array.isArray(el.acronyms) ? el.acronyms?.[0] : el.acronyms,
     };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
+      console.log(data);
       const matchData = data.find(({ ror }) => ror.toLowerCase().includes(el.ror.toLowerCase()));
+      console.log(matchData)
 
       if (matchData) {
         const flattenedMapping = flattenObject(mapping);
@@ -116,6 +118,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     }
 
     setFilteredData(response.data);
+    setData(response.data);
   };
 
   /**
