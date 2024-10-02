@@ -92,7 +92,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
     if (obj?.license.licenseName) {
       if (registry) {
-        const { licenseName, licenseUrl } = registry?.find(({ licenseName }) => licenseName.toLowerCase() === obj?.license.licenseName .toLowerCase());
+        const { licenseName, licenseUrl } = registry?.find(({ licenseName }) => licenseName.toLowerCase() === obj?.license.licenseName.toLowerCase());
         if (licenseName) {
           set(obj, 'license', { licenseName, licenseUrl });
         }
