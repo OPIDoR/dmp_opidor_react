@@ -161,6 +161,13 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         <div className={stylesForm.label_form}>
           <label>{t('Type')}</label>
         </div>
+        <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            marginBottom: '10px'
+          }}>
+            <i>{t('Select a search product type from the list provided. By default the value “Dataset” is saved.')}</i>
+          </div>
         {options && (
           <CustomSelect
             onSelectChange={handleSelect}
