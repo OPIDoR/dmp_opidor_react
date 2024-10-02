@@ -21,7 +21,6 @@ const headerStyle = {
   alignItems: 'center',
 };
 
-
 function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
@@ -45,7 +44,6 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
       .finally(() => setLoading(false));
   }, [classname, displayedTemplate])
 
-
   const handleSelectTemplate = (e) => {
     setSelectedTemplate(e.object);
     setLoading(true)
@@ -57,7 +55,6 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
       .catch(console.error)
       .finally(() => setLoading(false));
   }
-
 
   return (
     <>
@@ -71,27 +68,30 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
                   <div
                     style={{ ...headerStyle }}
                   >
-                    <label htmlFor={classname} className={styles.label}>{t('Multiple forms are available to answer this question.')}</label>
+                    <label htmlFor={classname}>{t('Please select a form to answer the question')}</label>
                     <div id="header-actions">
-                    <ReactTooltip
-                      id={`${classname}-form-selector-close-button`}
-                      place="bottom"
-                      effect="solid"
-                      variant="info"
-                      content={t('Close')}
-                    />
-                    <FaXmark
-                      data-tooltip-id={`${classname}-form-selector-close-button`}
-                      onClick={() => {
-                        formSelector.setFillFormSelectorIconColor("var(--dark-blue)");
-                        formSelector.setShowFormSelectorModal(false);
-                      }}
-                      variant="info"
-                      size={24}
-                      style={{ margin: '8px 5px 0 5px', cursor: 'pointer', color: 'white' }}
-                    />
+                      <ReactTooltip
+                        id={`${classname}-form-selector-close-button`}
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t('Close')}
+                      />
+                      <FaXmark
+                        data-tooltip-id={`${classname}-form-selector-close-button`}
+                        onClick={() => {
+                          formSelector.setFillFormSelectorIconColor("var(--dark-blue)");
+                          formSelector.setShowFormSelectorModal(false);
+                        }}
+                        variant="info"
+                        size={24}
+                        style={{ margin: '8px 5px 0 5px', cursor: 'pointer', color: 'white' }}
+                      />
                     </div>
                   </div>
+                  <p style={{ color: 'var(--white)', padding: '0 10px' }}>
+                    <i>{t('It is not possible to change the form after saving it.')}</i>
+                  </p>
                   <CustomSelect
                     propName={classname}
                     onSelectChange={handleSelectTemplate}
@@ -102,7 +102,6 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
                     }))}
                     selectedOption={selectedTemplate}
                   />
-                  <p className={styles.label}>{t('You can vizualise a form by choosing it. After saving your form, you won\'t be able to change it.')}</p>
                 </>
               )}
             </div>
