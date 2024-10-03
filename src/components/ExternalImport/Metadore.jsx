@@ -63,7 +63,8 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = async (el) => {
-    setSelectedData(selectedData === el.id ? null : el.id);
+    const selectedDataById = selectedData === el?.id ? null : el?.id;
+    setSelectedData(selectedDataById);
 
     let obj = {
       title: el?.attributes?.titles?.at(0)?.title,
@@ -76,7 +77,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       idType: 'DOI',
       datasetId: el?.id,
     };
-    const matchData = data.find(({ id }) => id.toLowerCase() === el.id.toLowerCase());
+    const matchData = data?.find(({ id }) => id.toLowerCase() === el?.id.toLowerCase());
 
     if (matchData) {
       const flattenedMapping = flattenObject(mapping);
@@ -90,10 +91,11 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       set(obj, 'datasetId', `https://doi.org/${el?.id}`);
     }
 
-    if (obj?.license.licenseName) {
+    if (obj?.license?.licenseName) {
       if (registry) {
-        const { licenseName, licenseUrl } = registry?.find(({ licenseName }) => licenseName.toLowerCase() === obj?.license.licenseName.toLowerCase());
-        if (licenseName) {
+        const res = registry?.find(({ licenseName }) => licenseName?.toLowerCase() === obj?.license?.licenseName.toLowerCase());
+        if (res) {
+          const { licenseName, licenseUrl } = res;
           set(obj, 'license', { licenseName, licenseUrl });
         }
       }
