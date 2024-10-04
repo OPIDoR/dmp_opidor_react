@@ -101,6 +101,23 @@ export function filterOptions(options, value) {
   });
 }
 
+/**
+ * This function is used to add the 'create' action to data in default values
+ */
+export function formatDefaultValues(defaults) {
+  if(defaults === undefined) return {};
+  const formatedDefaults = {...defaults};
+
+  Object.keys(defaults).forEach((prop) => {
+    if(Array.isArray(defaults[prop])) {
+      formatedDefaults[prop] = defaults[prop].map((d) => { return {...d, action: 'create'}});
+    } else if (typeof defaults[prop] === 'object') {
+      formatedDefaults[prop] = {...defaults[prop], action: 'create'};
+    }
+  });
+  return formatedDefaults;
+}
+
 export function researchOutputTypeToDataType(type) {
   switch(type) {
     case 'Logiciel':

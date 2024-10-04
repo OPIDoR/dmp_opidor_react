@@ -24,7 +24,7 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateName,
-  defaultValue = null,
+  defaultRole = null,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -42,7 +42,6 @@ function SelectContributorMultiple({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole] = useState(defaultValue?.[0]?.role || null);
   const [contributorList, setContributorList] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);

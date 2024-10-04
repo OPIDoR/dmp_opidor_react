@@ -4,6 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
 import { ExternalImport } from '../ExternalImport';
+import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
@@ -14,6 +15,12 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
   useEffect(() => {
     methods.reset(methods.formState.dirtyFields);
   }, [data]);
+
+  useEffect(() => {
+    if(!data?.id && template) {
+      methods.reset(formatDefaultValues(template.schema.default?.[locale]));
+    }
+  }, [template, data])
 
   const onValid = (formData, event) => {
     handleSave(formData);
