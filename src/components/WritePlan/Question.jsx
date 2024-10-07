@@ -16,6 +16,12 @@ import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
 
+const closedModalState = {
+  guidance: false,
+  comment: false,
+  runs: false,
+  formSelector: false,
+};
 function Question({
   planId,
   question,
@@ -32,17 +38,13 @@ function Question({
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
   const [answer, setAnswer] = useState(null);
-  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
-
-  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showRunsModal, setShowRunsModal] = useState(false);
-  const [showFormSelectorModal, setShowFormSelectorModal] = useState(true);
-
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
-  const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
+  const [scriptsData, setScriptsData] = useState({ scripts: [] });
+  const [showModals, setShowModals] = useState({
+    guidance: false,
+    comment: false,
+    runs: false,
+    formSelector: true,
+  });
 
   const { formSelectors } = useContext(GlobalContext);
 
@@ -53,8 +55,6 @@ function Question({
       (a) => question?.id === a?.question_id
     );
     setAnswer(ans);
-
-    handleIconClick(null, 'formSelector');
   }, [displayedResearchOutput, question.id]);
 
   /**
@@ -63,8 +63,6 @@ function Question({
    * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = (expanded) => {
-    closeAllModals();
-
     const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
 
     if (!updatedState[sectionId]) {
@@ -82,23 +80,20 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
-
-    handleIconClick(null, 'formSelector');
   };
 
-  const closeAllModals = () => {
-    setShowCommentModal(false);
-    setFillCommentIconColor('var(--dark-blue)');
+  const getFillColor = (isOpened) => {
+    return isOpened ? 'var(--rust)' : 'var(--dark-blue)'
+  }
 
-    setShowGuidanceModal(false);
-    setFillGuidanceIconColor('var(--dark-blue)');
+  const hideModal = (e, modalType) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
 
-    setShowFormSelectorModal(false);
-    setFillFormSelectorIconColor('var(--dark-blue)');
-
-    setShowRunsModal(false);
-    setFillRunsIconColor('var(--dark-blue)');
-  };
+    setShowModals({ ...showModals, [modalType]: false });
+  }
 
   /**
    * Handles the click event for showing modals and updating icon colors based on the modal type.
@@ -111,39 +106,7 @@ function Question({
       e.stopPropagation();
       e.preventDefault();
     }
-
-    // Check if the current modal type is the same as the one that is about to be opened
-    const isModalOpen =
-      (modalType === 'comment' && showCommentModal) ||
-      (modalType === 'guidance' && showGuidanceModal) ||
-      (modalType === 'runs' && showRunsModal) ||
-      (modalType === 'formSelector' && showFormSelectorModal)
-
-    // If the current modal is the same as the one about to be opened, close it
-    if (isModalOpen) {
-      return closeAllModals();
-    }
-
-    // Open the specified modal and update icon colors
-    setShowCommentModal(modalType === 'comment');
-    setFillCommentIconColor(
-      modalType === 'comment' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowGuidanceModal(modalType === 'guidance');
-    setFillGuidanceIconColor(
-      modalType === 'guidance' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowRunsModal(modalType === 'runs');
-    setFillRunsIconColor(
-      modalType === 'runs' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowFormSelectorModal(modalType === 'formSelector');
-    setFillFormSelectorIconColor(
-      modalType === 'formSelector' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
+    setShowModals({ ...closedModalState, [modalType]: true });
   };
 
   /**
@@ -220,16 +183,8 @@ function Question({
                         {isQuestionOpened() && (
                           <TbBulbFilled
                             size={32}
-                            fill={
-                              isQuestionOpened()
-                                ? fillGuidanceIconColor
-                                : "var(--dark-blue)"
-                            }
-                            style={{
-                              color: isQuestionOpened()
-                                ? fillGuidanceIconColor
-                                : "var(--dark-blue)"
-                            }}
+                            fill={getFillColor(showModals.guidance)}
+                            style={{ color: getFillColor(showModals.guidance) }}
                           />
                         )}
                       </div>
@@ -248,7 +203,6 @@ function Question({
                       data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
-                        handleQuestionCollapse(true);
                         handleIconClick(e, "comment");
                       }}
                       style={{ marginLeft: "5px" }}
@@ -256,11 +210,7 @@ function Question({
                       {isQuestionOpened() && (
                         <CommentSVG
                           size={32}
-                          fill={
-                            isQuestionOpened()
-                              ? fillCommentIconColor
-                              : "var(--dark-blue)"
-                          }
+                          fill={getFillColor(showModals.comment)}
                         />
                       )}
                     </div>
@@ -286,16 +236,8 @@ function Question({
                         <IoShuffleOutline
                           data-tooltip-id="form-change-show-button"
                           size={32}
-                          fill={
-                            isQuestionOpened()
-                              ? fillFormSelectorIconColor
-                              : "var(--dark-blue)"
-                          }
-                          style={{
-                            color: isQuestionOpened()
-                              ? fillFormSelectorIconColor
-                              : "var(--dark-blue)"
-                          }}
+                          fill={getFillColor(showModals.formSelector)}
+                          style={{ color: getFillColor(showModals.formSelector) }}
                         />
                       </div>
                     </div>
@@ -322,11 +264,7 @@ function Question({
                           <BsGear
                             size={32}
                             style={{ marginTop: "6px" }}
-                            fill={
-                              isQuestionOpened()
-                                ? fillRunsIconColor
-                                : "var(--dark-blue)"
-                            }
+                            fill={getFillColor(showModals.runs)}
                           />
                         )}
                       </div>
@@ -357,9 +295,8 @@ function Question({
                   <>
                     {!readonly && scriptsData.scripts.length > 0 && (
                       <RunsModal
-                        show={showRunsModal}
-                        setshowModalRuns={setShowRunsModal}
-                        setFillColorIconRuns={setFillRunsIconColor}
+                        shown={showModals.runs === true}
+                        hide={(e) => hideModal(e, 'runs')}
                         scriptsData={scriptsData}
                         fragmentId={answer?.fragment_id}
                       />
@@ -367,9 +304,8 @@ function Question({
                   </>
                 )}
                 <CommentModal
-                  show={showCommentModal}
-                  setshowModalComment={setShowCommentModal}
-                  setFillColorIconComment={setFillCommentIconColor}
+                  shown={showModals.comment === true}
+                  hide={(e) => hideModal(e, 'comment')}
                   answerId={answer?.id || answer?.answer_id}
                   setAnswer={setAnswer}
                   researchOutputId={displayedResearchOutput.id}
@@ -378,9 +314,8 @@ function Question({
                   readonly={readonly}
                 />
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                  show={showGuidanceModal}
-                  setShowGuidanceModal={setShowGuidanceModal}
-                  setFillColorGuidanceIcon={setFillGuidanceIconColor}
+                  show={showModals.guidance === true}
+                  hide={(e) => hideModal(e, 'guidance')}
                   questionId={questionId}
                   planId={planId}
                 />)}
@@ -398,9 +333,8 @@ function Question({
                     setAnswer={setAnswer}
                     readonly={readonly}
                     formSelector={{
-                      show: showFormSelectorModal,
-                      setShowFormSelectorModal,
-                      setFillFormSelectorIconColor,
+                      shown: showModals.formSelector === true,
+                      hide: (e) => hideModal(e, 'formSelector')
                     }}
                   />)
                 }

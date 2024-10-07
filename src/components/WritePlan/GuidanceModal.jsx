@@ -10,12 +10,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
 
-const locales = {
-  fr: 'fr-FR',
-  en: 'en-GB',
-};
-
-function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
+function GuidanceModal({ shown, hide, questionId, planId }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
@@ -25,9 +20,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const modalRef = useRef(null);
 
   const {
-    planInformations,
     questionsWithGuidance,
-    locale,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
@@ -139,15 +132,12 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   };
 
   return (
-    <InnerModal show={show} ref={modalRef}>
+    <InnerModal show={shown} ref={modalRef}>
       <InnerModal.Header
         closeButton
         expandButton
         ref={modalRef}
-        onClose={() => {
-          setShowGuidanceModal(false);
-          setFillColorGuidanceIcon("var(--dark-blue)");
-        }}
+        onClose={hide()}
       >
         <InnerModal.Title>
           {t('Guidance')}
