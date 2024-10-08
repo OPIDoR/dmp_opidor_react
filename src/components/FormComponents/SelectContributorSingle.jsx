@@ -23,7 +23,7 @@ function SelectContributorSingle({
   label,
   tooltip,
   templateName,
-  defaultValue = null,
+  defaultRole = null,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -42,7 +42,6 @@ function SelectContributorSingle({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole] = useState(defaultValue?.role || null);
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);

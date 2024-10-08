@@ -26,7 +26,6 @@ function FormBuilder({ template, readonly }) {
     for (const [key, prop] of Object.entries(properties)) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
-      const defaultValue = defaults?.[key];
       const isConst = prop['isConst'];
       const example = prop[`example@${locale}`];
       /**
@@ -46,7 +45,6 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="complex"
               templateName={prop.template_name}
-              defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleList>,
@@ -81,7 +79,6 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
               registryType="simple"
-              defaultValue={defaultValue}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleList>,
@@ -110,6 +107,7 @@ function FormBuilder({ template, readonly }) {
 
       // CONTRIBUTOR
       if (prop.class === 'Contributor' || prop.class === 'ContributorStandard') {
+        const defaultRole = defaults?.[key]?.role;
         formFields.push(
           <SelectContributorSingle
             key={key}
@@ -117,7 +115,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateName={prop.template_name}
-            defaultValue={defaultValue}
+            defaultRole={defaultRole}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
         );
@@ -142,6 +140,7 @@ function FormBuilder({ template, readonly }) {
        */
       if (prop.type === 'array' && prop.items.type === 'object' && prop.items.template_name) {
         if (prop.items.class === 'Contributor' || prop.items.class === 'ContributorStandard') {
+          const defaultRole = defaults?.[key]?.role;
           formFields.push(
             <SelectContributorMultiple
               key={key}
@@ -150,7 +149,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateName={prop.items.template_name}
-              defaultValue={defaultValue}
+              defaultRole={defaultRole}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
           );
@@ -183,7 +182,6 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             propName={key}
             tooltip={tooltip}
-            defaultValue={defaultValue}
             readonly={readonly || isConst}
           ></InputTextArray>,
         );
@@ -203,7 +201,6 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              defaultValue={defaultValue}
               placeholder={example}
               readonly={readonly || isConst}
             ></TinyArea>,
@@ -220,7 +217,6 @@ function FormBuilder({ template, readonly }) {
               propName={key}
               tooltip={tooltip}
               hidden={prop.hidden}
-              defaultValue={defaultValue}
               readonly={readonly || isConst}
               min={prop.type === 'number' ? 0 : undefined}
             ></InputText>

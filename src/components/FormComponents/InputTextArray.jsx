@@ -11,7 +11,7 @@ import CustomButton from '../Styled/CustomButton';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextArray({ label, propName, tooltip, defaultValue = null, readonly = false }) {
+function InputTextArray({ label, propName, tooltip, readonly = false }) {
   const { t } = useTranslation();
   const { control, register } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: propName });
@@ -41,7 +41,7 @@ function InputTextArray({ label, propName, tooltip, defaultValue = null, readonl
             <div style={{ display: 'flex', alignItems: 'space-between' }}>
               <input
                 key={item.id}
-                {...register(`${propName}.${index}`, { value: defaultValue })}
+                {...register(`${propName}.${index}`, { value: '' })}
                 type="text"
                 className="form-control"
                 style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}

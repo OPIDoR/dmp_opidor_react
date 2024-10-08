@@ -60,7 +60,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
     <>
       {availableTemplates.length > 1 && (
         <>
-          {formSelector.show && (
+          {formSelector.shown && (
             <div className={styles.container} style={{ position: 'relative' }}>
               {selectedTemplate && (
                 <>
@@ -79,10 +79,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
                       />
                       <FaXmark
                         data-tooltip-id={`${classname}-form-selector-close-button`}
-                        onClick={() => {
-                          formSelector.setFillFormSelectorIconColor("var(--dark-blue)");
-                          formSelector.setShowFormSelectorModal(false);
-                        }}
+                        onClick={() => formSelector.hide()}
                         variant="info"
                         size={24}
                         style={{ margin: '8px 5px 0 5px', cursor: 'pointer', color: 'white' }}

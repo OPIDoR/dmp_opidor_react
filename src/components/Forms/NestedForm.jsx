@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
+import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
@@ -17,6 +18,12 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
   useEffect(() => {
     methods.reset(methods.formState.dirtyFields);
   }, [data]);
+
+  useEffect(() => {
+    if(!data?.id && template) {
+      methods.reset(formatDefaultValues(template.schema.default?.[locale]));
+    }
+  }, [template, data])
 
   const onValid = (formData, event) => {
     handleSave(formData);

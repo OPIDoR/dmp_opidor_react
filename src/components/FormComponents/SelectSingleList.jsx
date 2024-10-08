@@ -27,7 +27,6 @@ function SelectSingleList({
   registries,
   registryType,
   templateName,
-  defaultValue = null,
   overridable = false,
   readonly = false,
 }) {
@@ -55,10 +54,10 @@ function SelectSingleList({
   useEffect(() => {
     if (registryType === 'complex') {
       setSelectedValue(
-        except(field.value, ['template_name', 'id', 'schema_id']) || defaultValue || nullValue
+        except(field.value, ['template_name', 'id', 'schema_id']) ||  nullValue
       );
     } else {
-      setSelectedValue(field.value || defaultValue || nullValue);
+      setSelectedValue(field.value ||  nullValue);
     }
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
@@ -66,7 +65,7 @@ function SelectSingleList({
     if (registriesData.length === 1) {
       setSelectedRegistry(registriesData[0]);
     }
-  }, [field.value, defaultValue, registries])
+  }, [field.value, registries])
 
   useEffect(() => {
     if (!options) return;
