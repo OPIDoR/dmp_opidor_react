@@ -14,7 +14,7 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
-import { formatDefaultValues } from '../../utils/GeneratorUtils.js';
+import { formatDefaultValues, generateEmptyDefaults } from '../../utils/GeneratorUtils.js';
 
 function DynamicForm({
   fragmentId,
@@ -104,7 +104,7 @@ function DynamicForm({
   useEffect(() => {
     if(!fragmentId && template) {
       const defaults = formatDefaultValues(template.schema.default?.[locale]);
-      defaults ? methods.reset(defaults) : methods.reset();
+      Object.keys(defaults).length > 0 ? methods.reset(defaults) : methods.reset(generateEmptyDefaults(template.schema.properties));
     }
   }, [template, fragmentId])
   /**

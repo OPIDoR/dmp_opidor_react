@@ -118,6 +118,16 @@ export function formatDefaultValues(defaults) {
   return formatedDefaults;
 }
 
+export function generateEmptyDefaults(properties = {}) {
+  const emtpyDefaults = {};
+  for (const [key, prop] of Object.entries(properties)) {
+    if(prop.type === 'array' && prop.items?.type === 'object') {
+      emtpyDefaults[key] = []
+    }
+  };
+  return emtpyDefaults;
+}
+
 export function researchOutputTypeToDataType(type) {
   switch(type) {
     case 'Logiciel':
