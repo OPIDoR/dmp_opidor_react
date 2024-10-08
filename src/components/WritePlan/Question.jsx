@@ -86,28 +86,17 @@ function Question({
     return isOpened ? 'var(--rust)' : 'var(--dark-blue)'
   }
 
-  const hideModal = (e, modalType) => {
+  /**
+   * Handles a given modal state according to the modalType & the state 
+   */
+  const setModalOpened = (e, modalType, isOpened) => {
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
-
-    setShowModals({ ...showModals, [modalType]: false });
+    setShowModals({ ...closedModalState, [modalType]: isOpened });
   }
 
-  /**
-   * Handles the click event for showing modals and updating icon colors based on the modal type.
-   *
-   * @param {Event} e - The click event object.handleIconClick
-   * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
-   */
-  const handleIconClick = (e, modalType) => {
-    if (e) {
-      e.stopPropagation();
-      e.preventDefault();
-    }
-    setShowModals({ ...closedModalState, [modalType]: true });
-  };
 
   /**
    * Checks if a specific question is opened based on its identifiers within the nested object structure.
@@ -176,7 +165,7 @@ function Question({
                         data-tooltip-id="guidanceTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleIconClick(e, "guidance");
+                          setModalOpened(e, "guidance", true);
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -203,7 +192,7 @@ function Question({
                       data-tooltip-id="commentTip"
                       className={styles.panel_icon}
                       onClick={(e) => {
-                        handleIconClick(e, "comment");
+                        setModalOpened(e, "comment", true);
                       }}
                       style={{ marginLeft: "5px" }}
                     >
@@ -229,7 +218,7 @@ function Question({
                         data-tooltip-id="form-changer-show-button"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleIconClick(e, "formSelector");
+                          setModalOpened(e, "formSelector", true);
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -256,7 +245,7 @@ function Question({
                         data-tooltip-id="scriptTip"
                         className={styles.panel_icon}
                         onClick={(e) => {
-                          handleIconClick(e, "runs");
+                          setModalOpened(e, "runs", true);
                         }}
                         style={{ marginLeft: "5px" }}
                       >
@@ -296,7 +285,7 @@ function Question({
                     {!readonly && scriptsData.scripts.length > 0 && (
                       <RunsModal
                         shown={showModals.runs === true}
-                        hide={(e) => hideModal(e, 'runs')}
+                        hide={(e) => setModalOpened(e, 'runs', false)}
                         scriptsData={scriptsData}
                         fragmentId={answer?.fragment_id}
                       />
@@ -305,7 +294,7 @@ function Question({
                 )}
                 <CommentModal
                   shown={showModals.comment === true}
-                  hide={(e) => hideModal(e, 'comment')}
+                  hide={(e) => setModalOpened(e, 'comment', false)}
                   answerId={answer?.id || answer?.answer_id}
                   setAnswer={setAnswer}
                   researchOutputId={displayedResearchOutput.id}
@@ -315,7 +304,7 @@ function Question({
                 />
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                   show={showModals.guidance === true}
-                  hide={(e) => hideModal(e, 'guidance')}
+                  hide={(e) => setModalOpened(e, 'guidance', false)}
                   questionId={questionId}
                   planId={planId}
                 />)}
@@ -334,7 +323,7 @@ function Question({
                     readonly={readonly}
                     formSelector={{
                       shown: showModals.formSelector === true,
-                      hide: (e) => hideModal(e, 'formSelector')
+                      hide: (e) => setModalOpened(e, 'formSelector', false)
                     }}
                   />)
                 }
