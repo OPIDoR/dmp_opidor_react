@@ -303,7 +303,7 @@ function Question({
                   readonly={readonly}
                 />
                 {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                  show={showModals.guidance === true}
+                  shown={showModals.guidance === true}
                   hide={(e) => setModalOpened(e, 'guidance', false)}
                   questionId={questionId}
                   planId={planId}
