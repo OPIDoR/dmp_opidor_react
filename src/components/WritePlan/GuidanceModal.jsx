@@ -137,7 +137,9 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
         closeButton
         expandButton
         ref={modalRef}
-        onClose={hide()}
+        onClose={() => {
+          hide();
+        }}
       >
         <InnerModal.Title>
           {t('Guidance')}
