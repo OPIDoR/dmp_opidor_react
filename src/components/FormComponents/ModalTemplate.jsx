@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -38,20 +38,16 @@ function ModalTemplate({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { fields, append, update } = useFieldArray({ control, name: propName });
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
-  const [fragmentsList, setFragmentsList] = useState([]);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
 
   const [template, setTemplate] = useState(null);
 
-  const filteredFragmentList = fragmentsList.filter((el) => el.action !== 'delete');
+  const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
 
-  useEffect(() => {
-    setFragmentsList(field.value || [])
-  }, [field.value])
 
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
@@ -83,18 +79,16 @@ function ModalTemplate({
     if (!data) return handleClose();
 
 
-    if (checkFragmentExists(fragmentsList, data, template.schema['unicity'])) {
+    if (checkFragmentExists(fields, data, template.schema['unicity'])) {
       setError(t('This record already exists.'));
     } else {
       if (index !== null) {
-        const newFragmentList = [...fragmentsList];
-        newFragmentList[index] = {
-          ...newFragmentList[index],
+        const updatedFragment = {
+          ...fields[index],
           ...data,
-          action: newFragmentList[index].action || 'update'
+          action: fields[index].action || 'update'
         };
-        field.onChange(newFragmentList);
-        setFragmentsList(newFragmentList);
+        update(index, updatedFragment);
       } else {
         handleSaveNew(data);
       }
@@ -108,9 +102,7 @@ function ModalTemplate({
    * the modalData is set to null, and the modal is closed.
    */
   const handleSaveNew = (data) => {
-    const newFragmentList = [...fragmentsList, { ...data, action: 'create' }];
-    field.onChange(newFragmentList);
-    setFragmentsList(newFragmentList);
+    append({ ...data, action: 'create' });
     handleClose();
   };
 
@@ -122,10 +114,7 @@ function ModalTemplate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const filteredList = [...fragmentsList];
-        filteredList[idx]['action'] = 'delete';
-        field.onChange(filteredList);
-        setFragmentsList(filteredList);
+        update(idx, {...fields[idx], action: 'delete' });
       }
     });
   };
@@ -134,7 +123,7 @@ function ModalTemplate({
    * This function handles the edit functionality for a form element in a React component.
    */
   const handleEdit = (idx) => {
-    setEditedFragment(fragmentsList[idx]);
+    setEditedFragment(fields[idx]);
     setShow(true);
     setIndex(idx);
   };
@@ -159,7 +148,7 @@ function ModalTemplate({
         <span className={styles.errorMessage}>{error}</span>
         {template && filteredFragmentList.length > 0 && (
           <FragmentList
-            fragmentsList={fragmentsList}
+            fragmentsList={fields}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             templateToString={template?.schema?.to_string}

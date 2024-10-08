@@ -14,6 +14,7 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
+import { formatDefaultValues, generateEmptyDefaults } from '../../utils/GeneratorUtils.js';
 
 function DynamicForm({
   fragmentId,
@@ -29,6 +30,7 @@ function DynamicForm({
   const {
     formData, setFormData,
     dmpId,
+    locale,
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
@@ -96,8 +98,15 @@ function DynamicForm({
       setScriptsData({ scripts: [] });
     }
     setExternalImports(template?.schema?.externalImports || {});
+
   }, [template])
 
+  useEffect(() => {
+    if(!fragmentId && template) {
+      const defaults = formatDefaultValues(template.schema.default?.[locale]);
+      Object.keys(defaults).length > 0 ? methods.reset(defaults) : methods.reset(generateEmptyDefaults(template.schema.properties));
+    }
+  }, [template, fragmentId])
   /**
    * It checks if the form is filled in correctly.
    * @param e - the event object

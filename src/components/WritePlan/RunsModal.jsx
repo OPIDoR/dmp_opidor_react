@@ -12,7 +12,7 @@ import { service } from "../../services";
 import swalUtils from "../../utils/swalUtils";
 import { getErrorMessage } from "../../utils/utils";
 
-function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, fragmentId }) {
+function ModalRuns({ shown, hide, scriptsData, fragmentId }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -71,14 +71,13 @@ function ModalRuns({ show, setshowModalRuns, setFillColorIconRuns, scriptsData, 
   }
 
   return (
-    <InnerModal show={show} ref={modalRef}>
+    <InnerModal show={shown} ref={modalRef}>
       <InnerModal.Header
         closeButton
         expandButton
         ref={modalRef}
         onClose={() => {
-          setshowModalRuns(false);
-          setFillColorIconRuns("var(--dark-blue)");
+          hide();
           setError(null);
           setSuccess(null);
         }}
