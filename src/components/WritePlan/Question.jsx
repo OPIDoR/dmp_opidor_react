@@ -295,7 +295,7 @@ function Question({
                 <CommentModal
                   shown={showModals.comment === true}
                   hide={(e) => setModalOpened(e, 'comment', false)}
-                  answerId={answer?.id || answer?.answer_id}
+                  answerId={answer?.id}
                   setAnswer={setAnswer}
                   researchOutputId={displayedResearchOutput.id}
                   planId={planId}
@@ -312,7 +312,7 @@ function Question({
             )}
             {isQuestionOpened() ? (
               <>
-                {readonly && (!answer?.id || !answer?.answer_id) ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
+                {readonly && !answer?.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
                   (<DynamicForm
                     fragmentId={answer?.fragment_id}
                     className={question?.madmp_schema?.classname}

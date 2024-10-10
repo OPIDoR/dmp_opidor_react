@@ -69,7 +69,7 @@ function DynamicForm({
                 schema_id: madmp_schema_id,
               },
             } = res?.data;
-            setAnswer({ answer_id, question_id: questionId, fragment_id, madmp_schema_id });
+            setAnswer({ id: answer_id, question_id: questionId, fragment_id, madmp_schema_id });
           }
           methods.reset(res.data.fragment);
         }).catch(console.error);
@@ -140,7 +140,7 @@ function DynamicForm({
       setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
       setTemplate(tplt);
       setFormData({ [fragment.id]: fragment });
-      setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId });
+      setAnswer({ id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId });
       updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
       setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
     }).catch(console.error);
