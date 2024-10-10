@@ -63,7 +63,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
   const setSelectedValue = async (el) => {
-    const selectedDataById = selectedData === el?.id ? null : el?.id;
+    const selectedDataById = selectedData === el?.attributes?.doi ? null : el?.attributes?.doi;
     setSelectedData(selectedDataById);
 
     let obj = {
@@ -75,9 +75,9 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
         licenseUrl: el?.attributes?.rightsList?.at(0)?.rightsUri,
       },
       idType: 'DOI',
-      datasetId: el?.id,
+      datasetId: el?.attributes?.doi,
     };
-    const matchData = data?.find(({ id }) => id.toLowerCase() === el?.id.toLowerCase());
+    const matchData = data?.find(({ attributes }) => attributes?.doi.toLowerCase() === el?.attributes?.doi.toLowerCase());
 
     if (matchData) {
       const flattenedMapping = flattenObject(mapping);
@@ -88,7 +88,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
     }
 
     if (obj?.datasetId) {
-      set(obj, 'datasetId', `https://doi.org/${el?.id}`);
+      set(obj, 'datasetId', `https://doi.org/${el?.attributes?.doi}`);
     }
 
     if (obj?.license?.licenseName) {
@@ -139,6 +139,11 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>{t('DataCite is an organization that assigns DOIs to research data. If the data you are reusing is identified by a DOI, click on the button, query the DataCite catalog and automatically retrieve the descriptive elements.')}</i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">
@@ -191,7 +196,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
                   <td>
-                    {selectedData === el.id ?
+                    {selectedData === el?.attributes?.doi ?
                       <FaCheckCircle
                         className="text-center"
                         style={{ color: 'green' }}
