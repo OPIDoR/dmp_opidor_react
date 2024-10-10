@@ -148,7 +148,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('Search by <DOI (e.g. 10.5281/zenodo.13826305)> or <Title>')}
+                      placeholder={t('Enter <Title> or <DOI (e.g. 10.57745/2WH9AL)>')}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
@@ -183,6 +183,8 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                 <th scope="col"></th>
                 <th scope="col">{t('DOI')}</th>
                 <th scope="col">{t('Title')}</th>
+                <th scope="col">{t('Publication date')}</th>
+                <th scope="col">{t('Type')}</th>
               </tr>
             </thead>
             <tbody>
@@ -200,8 +202,10 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                         onClick={() => setSelectedValue(el)} />
                     }
                   </td>
-                  <td>{el.id}</td>
+                  <td>{el.attributes.doi}</td>
                   <td>{el.attributes.titles.at(0).title}</td>
+                  <td>{el.attributes.publicationYear}</td>
+                  <td>{el.attributes.types.resourceType || '-'}</td>
                 </tr>
               )) : (
                 <tr>
