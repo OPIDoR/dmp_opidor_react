@@ -210,7 +210,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                   <td>{el.attributes.doi}</td>
                   <td>{el.attributes.titles.at(0).title}</td>
                   <td>{el.attributes.publicationYear}</td>
-                  <td>{el.attributes.types.resourceType || '-'}</td>
+                  <td>{el.attributes.types.resourceTypeGeneral || '-'}</td>
                 </tr>
               )) : (
                 <tr>
