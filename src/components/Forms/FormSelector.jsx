@@ -68,7 +68,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
                   <div
                     style={{ ...headerStyle }}
                   >
-                    <label htmlFor={classname}>{t('Please select a form to answer the question')}</label>
+                    <label htmlFor={classname} style={{fontSize: 'large'}}>{t('Please select a form to answer the question (the Standard form is displayed by default)')}</label>
                     <div id="header-actions">
                       <ReactTooltip
                         id={`${classname}-form-selector-close-button`}
@@ -87,7 +87,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
                     </div>
                   </div>
                   <p style={{ color: 'var(--white)', padding: '0 10px' }}>
-                    <i>{t('It is not possible to change the form after saving it.')}</i>
+                    <i>{t('Select a form from the list to view it. Please note that it is no longer possible to change a form once it has been saved.')}</i>
                   </p>
                   <CustomSelect
                     propName={classname}
