@@ -14,7 +14,7 @@ input is changed, the form is updated. */
 function InputTextArray({ label, propName, tooltip, readonly = false }) {
   const { t } = useTranslation();
   const { control, register } = useFormContext();
-  const { fields, append, remove } = useFieldArray({ control, name: propName });
+  const { fields, append, remove } = useFieldArray({ control, name: propName, keyName: '_id' });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
 
   return (
