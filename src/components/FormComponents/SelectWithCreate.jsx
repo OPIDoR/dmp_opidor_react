@@ -41,7 +41,7 @@ function SelectWithCreate({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const { control } = useFormContext();
-  const { fields, append, update } = useFieldArray({ control, name: propName });
+  const { fields, append, update } = useFieldArray({ control, name: propName, keyName: '_id' });
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState([]);
   const [index, setIndex] = useState(null);

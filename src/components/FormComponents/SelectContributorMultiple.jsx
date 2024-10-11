@@ -29,7 +29,7 @@ function SelectContributorMultiple({
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
-  const { fields, append, update } = useFieldArray({ control, name: propName });
+  const { fields, append, update } = useFieldArray({ control, name: propName, keyName: '_id' });
   const [show, setShow] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
@@ -126,6 +126,11 @@ function SelectContributorMultiple({
    * The handleSelectRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e, index) => {
+    const updatedContributor = {
+      ...fields[index],
+      role: e.value,
+      action: fields[index].action || 'update'
+    };
     update(index, updatedContributor)
   };
 
@@ -145,9 +150,9 @@ function SelectContributorMultiple({
           const savedFragment = res.data.fragment;
           savedFragment.action = 'update';
           const updatedContributor = {
-            ...newContributorList[index],
+            ...fields[index],
             person: savedFragment,
-            action: newContributorList[index].action || 'update'
+            action: fields[index].action || 'update'
           };
           update(index, updatedContributor);
 
@@ -193,7 +198,7 @@ function SelectContributorMultiple({
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...updatedList[idx], action: 'delete'})
+        update(idx, {...fields[idx], action: 'delete'})
       }
     });
   };

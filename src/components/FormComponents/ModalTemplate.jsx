@@ -38,7 +38,7 @@ function ModalTemplate({
     loadedTemplates, setLoadedTemplates,
   } = useContext(GlobalContext);
   const { control } = useFormContext();
-  const { fields, append, update } = useFieldArray({ control, name: propName });
+  const { fields, append, update } = useFieldArray({ control, name: propName, keyName: '_id' });
   const [editedFragment, setEditedFragment] = useState({})
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
