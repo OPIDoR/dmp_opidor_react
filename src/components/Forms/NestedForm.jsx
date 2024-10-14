@@ -20,7 +20,9 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
   const externalImports = template?.schema?.externalImports || {};
 
   useEffect(() => {
-    methods.reset(methods.formState.dirtyFields);
+    if(Object.keys(methods.formState.dirtyFields).length > 0) {
+      methods.reset(methods.formState.dirtyFields);
+    }
   }, [data]);
 
   useEffect(() => {
