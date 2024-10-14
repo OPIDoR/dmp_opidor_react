@@ -143,7 +143,7 @@ function SelectSingleList({
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
-    const newFragment = { ...field.value, ...data, action: data.action || 'update' };
+    const newFragment = { ...field.value, ...data, action: data.action || 'create' };
     field.onChange(newFragment);
 
     setEditedFragment({});
@@ -282,7 +282,7 @@ function SelectSingleList({
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
-                        setEditedFragment(field.value);
+                        setEditedFragment({...field.value, action: 'update'});
                       }}
                       className={styles.icon}
                     />
