@@ -57,8 +57,7 @@ function SubForm({
 
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
-
-    const newFragment = { ...field.value, ...data, action: data.action || 'update' };
+    const newFragment = { ...field.value, ...data, action: data.action || 'create' };
     field.onChange(newFragment);
 
     setEditedFragment({});
@@ -134,7 +133,7 @@ function SubForm({
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
-                        setEditedFragment(field.value);
+                        setEditedFragment({...field.value, action: 'update'});
                       }}
                       className={styles.icon}
                     />
@@ -152,7 +151,7 @@ function SubForm({
         {!readonly && fragmentEmpty(editedFragment) && (
           <CustomButton
             handleClick={() => {
-              setEditedFragment({ action: 'create' });
+              setEditedFragment(null);
               setShowNestedForm(true);
             }}
             title={t("Add an element")}
