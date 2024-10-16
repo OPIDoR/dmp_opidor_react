@@ -238,5 +238,5 @@
   "Retrieve data related to DOI (DataCite)": " Récupérer les informations liées au DOI (DataCite)",
   "Publication date": "Date de publication",
   "Select a search product type from the list provided. By default the value “Dataset” is saved.": "Choisir un type de produit de recherche dans la liste proposée. Par défaut la valeur \"Jeu de données\" est enregistrée.",
-  "DataCite is an organization that assigns DOIs to research data. If the data you are reusing is identified by a DOI, click on the button, query the DataCite catalog and automatically retrieve the descriptive elements.": "DataCite est un organisme qui attribue des DOI aux données de recherche. Si les données que vous réutilisez, est identifié par un DOI, cliquez sur le bouton, interrogez le catalogue DataCite et récupérez automatiquement les éléments descriptifs."
+  "DataCite is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).": "DataCite est une agence d'enregistrement de DOI attribués principalement aux données de recherche. Si vous réutilisez des données identifiées par un DOI enregistré auprès de cette agence, vous pouvez récupérer les éléments descriptifs (métadonnées) associés."
 }
