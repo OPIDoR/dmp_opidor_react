@@ -73,6 +73,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       license: {
         licenseName: el?.attributes?.rightsList?.at(0)?.rights,
         licenseUrl: el?.attributes?.rightsList?.at(0)?.rightsUri,
+        action: 'create',
       },
       idType: 'DOI',
       datasetId: el?.attributes?.doi,
@@ -141,7 +142,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
             <div>
               <div className="row" style={{ marginBottom: '10px' }}>
                 <div>
-                  <i>{t('DataCite is an organization that assigns DOIs to research data. If the data you are reusing is identified by a DOI, click on the button, query the DataCite catalog and automatically retrieve the descriptive elements.')}</i>
+                  <i>{t('DataCite is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).')}</i>
                 </div>
               </div>
               <div className="row">
