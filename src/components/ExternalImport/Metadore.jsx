@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
-import axios from "axios";
+import Select from "react-select";
 
 import { externalServices } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
@@ -12,8 +12,13 @@ import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
 import { service } from "../../services";
 
+const locales = {
+  'en': 'en_GB',
+  'fr': 'fr_FR',
+};
+
 function Metadore({ fragment, setFragment, mapping = {} }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,21 +27,28 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   const [currentData, setCurrentData] = useState([]);
   const [text, setText] = useState('');
   const [registry, setRegistry] = useState(null);
+  const [researchDataTypes, setResearchDataTypes] = useState(null);
+  const [researchDataType, setResearchDataType] = useState(null);
 
   useEffect(() => {
     service.getRegistryByName('DataLicenses').then(({ data }) => setRegistry(data));
+    service.getRegistryByName('ResearchDataType').then(({ data }) => setResearchDataTypes(data.map((type) => ({
+      value: type['en_GB'],
+      label: type[locales[i18n.resolvedLanguage]],
+    }))));
   }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = async (query) => {
+  const getData = async(query, type = null) => {
     setLoading(true);
+    setData([]);
 
     let response;
     try {
-      response = await externalServices.getMetadore(query);
+      response = await externalServices.getMetadore(query, type);
     } catch (error) {
       setError(error);
       return setLoading(false);
@@ -48,7 +60,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
     if (resData.length === 0) { setCurrentData([]); }
 
-    setLoading(false);
+    return setLoading(false);
   };
 
   /**
@@ -112,7 +124,12 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   /**
    * The handleSearchTerm function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleSearchTerm = () => getData(text);
+  const handleSearchTerm = () => getData(text, researchDataType);
+
+  const handleTypeFilter = (el) => {
+    setResearchDataType(el?.value);
+    return getData(text, el?.value);
+  };
 
   /**
    * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
@@ -178,6 +195,28 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       </button>
                     </span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row" style={{ margin: '10px' }}>
+            <div className="">
+              <div className="row">
+                <div>
+                  <Select
+                    menuPortalTarget={document.body}
+                    isClearable
+                    isSearchable
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                      singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+                      control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
+                    }}
+                    onChange={handleTypeFilter}
+                    placeholder={t('Type selection')}
+                    options={researchDataTypes}
+                  />
                 </div>
               </div>
             </div>
