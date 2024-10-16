@@ -108,6 +108,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
    */
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e?.value);
+    setData([]);
+    setFilteredData([]);
 
     let response;
     try {
@@ -197,16 +199,15 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                   <div>
                     <Select
                       menuPortalTarget={document.body}
+                      isClearable
+                      isSearchable
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                         singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
                         control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
                       }}
                       onChange={handleChangeCountry}
-                      defaultValue={{
-                        label: t('Select a country'),
-                        value: t('Select a country'),
-                      }}
+                      placeholder={t('Select a country')}
                       options={countries}
                     />
                   </div>
