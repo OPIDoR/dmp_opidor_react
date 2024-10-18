@@ -1,12 +1,21 @@
 import React, { useRef } from 'react';
 import { useFormContext, useController } from 'react-hook-form';
-import { Editor } from '@tinymce/tinymce-react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { useTranslation } from 'react-i18next';
 import uniqueId from 'lodash.uniqueid';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
+import { Editor } from '@tinymce/tinymce-react';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/codesample';
+import 'tinymce/plugins/autolink';
+import 'tinymce/plugins/accordion';
+import 'tinymce/plugins/quickbars';
+
+import '../../../public/locales/fr/tinymce/fr_FR';
 import * as styles from '../assets/css/form.module.css';
 
 const ReadDiv = styled.div`
@@ -33,12 +42,20 @@ function TinyArea({
   placeholder,
   readonly = false,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { control } = useFormContext();
   const { field } = useController({ control, name: propName, defaultValue: '' });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
   const editorRef = useRef(null);
+
+  const imagesUploadHandler = (blobInfo, progress) => new Promise((resolve, reject) => {
+    if (blobInfo.blob().size > 1024 * 1024) {
+      return reject({ message: t('The file is too large (1mo max.)'), remove: true });
+    }
+
+    return resolve({ location: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/800px-Cat03.jpg' });
+  });
 
   return (
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
@@ -68,8 +85,8 @@ function TinyArea({
                 placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,
                 statusbar: true,
                 menubar: false,
-                toolbar: 'bold italic underline | fontsizeselect forecolor | bullist numlist | link | table',
-                plugins: 'table autoresize link advlist lists autolink',
+                toolbar: 'undo redo | bold italic underline forecolor | styles | alignleft aligncenter alignright alignjustify | bullist numlist | link image table codesample accordion | preview fullscreen',
+                plugins: 'table autoresize link advlist lists autolink image fullscreen preview codesample autolink accordion quickbars',
                 browser_spellcheck: true,
                 advlist_bullet_styles: 'circle,disc,square', // Only disc bullets display on htmltoword
                 target_list: false,
@@ -95,6 +112,12 @@ function TinyArea({
                 // is not supported, see issue https://github.com/tinymce/tinymce/issues/358
                 skin_url: '/tinymce/skins/oxide',
                 content_css: [],
+                language: i18n.resolvedLanguage === 'fr' ? 'fr_FR' : 'en',
+                file_picker_types: 'image',
+                image_uploadtab: true,
+                automatic_uploads: true,
+                images_upload_url: '/api/upload',
+                images_upload_handler: imagesUploadHandler,
               }}
             />
           )}
