@@ -152,7 +152,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {error && <CustomError />}
+      {error && <CustomError error={error} />}
       {!error && (
         <>
           <div className="row" style={{ margin: '10px' }}>
@@ -216,6 +216,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                     onChange={handleTypeFilter}
                     placeholder={t('Type selection')}
                     options={researchDataTypes}
+                    isDisabled={text.length === 0 || !text}
                   />
                 </div>
               </div>
