@@ -64,7 +64,7 @@ function DynamicForm({
         }).catch(console.error);
       }
     } else {
-      service.getForm(questionId, displayedResearchOutput.id).then((res) => {
+      service.getNewForm(questionId, displayedResearchOutput.id).then((res) => {
         const tplt = res.data.template;
         setTemplate(tplt);
         setExternalImports(tplt.schema.externalImports || {});
