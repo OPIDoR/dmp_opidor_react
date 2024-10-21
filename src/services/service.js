@@ -3,6 +3,8 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
+const getNewForm = async (questionId, researchOutputId) => axios.get(`/answers/new_form?question_id=${questionId}&research_output_id=${researchOutputId}`);
+
 const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
   '/madmp_fragments', {
     data,
@@ -51,6 +53,7 @@ const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?frag
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getFragment,
+  getNewForm,
   createFragment,
   destroyFragment,
   getSchema,

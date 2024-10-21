@@ -60,25 +60,16 @@ function DynamicForm({
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
-          setFormData({ [fragmentId]: res.data.fragment });
-          if(res.data.answer_id) {
-            const {
-              answer_id,
-              fragment: {
-                id: fragment_id,
-                schema_id: madmp_schema_id,
-              },
-            } = res?.data;
-            setAnswer({ id: answer_id, question_id: questionId, fragment_id, madmp_schema_id });
-          }
-          methods.reset(res.data.fragment);
+          handleFragmentData(res.data);
         }).catch(console.error);
       }
     } else {
-      service.getSchema(templateId).then((res) => {
-        setTemplate(res.data);
-        setExternalImports(template?.schema?.externalImports || {});
-        setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
+      service.getNewForm(questionId, displayedResearchOutput.id).then((res) => {
+        const tplt = res.data.template;
+        setTemplate(tplt);
+        setExternalImports(tplt.schema.externalImports || {});
+        setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
+        if(res.data.fragment) handleFragmentData(res.data);
       }).catch(console.error);
     }
     setLoading(false);
@@ -148,6 +139,21 @@ function DynamicForm({
 
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
+
+  const handleFragmentData = (data) => {
+    setFormData({ [fragmentId]: data.fragment });
+    if(data.answer_id) {
+      const {
+        answer_id,
+        fragment: {
+          id: fragment_id,
+          schema_id: madmp_schema_id,
+        },
+      } = data;
+      setAnswer({ id: answer_id, question_id: questionId, fragment_id, madmp_schema_id });
+    }
+    methods.reset(data.fragment);
+  }
 
   return (
     <>
