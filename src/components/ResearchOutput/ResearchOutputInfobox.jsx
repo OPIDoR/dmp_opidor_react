@@ -19,7 +19,6 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
 
   return (
     <Panel
-      className={styles.panel}
       style={{
         borderRadius: "10px",
         borderWidth: "2px",
