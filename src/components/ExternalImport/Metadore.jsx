@@ -34,7 +34,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
     service.getRegistryByName('DataLicenses').then(({ data }) => setRegistry(data));
     service.getRegistryByName('ResearchDataType').then(({ data }) => setResearchDataTypes(data.map((type) => ({
       value: type['en_GB'],
-      label: type[locales[i18n.resolvedLanguage]],
+      label: type[locales[i18n.resolvedLanguage] || 'en_GB'],
     }))));
   }, []);
 
