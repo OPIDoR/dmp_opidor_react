@@ -112,7 +112,6 @@ function Question({
         <Panel
           id="question-panel"
           expanded={isQuestionOpened()}
-          className={styles.panel}
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
@@ -264,13 +263,11 @@ function Question({
                     <TfiAngleUp
                       style={{ marginLeft: "5px" }}
                       size={32}
-                      className={styles.down_icon}
                     />
                   ) : (
                     <TfiAngleDown
                       style={{ marginLeft: "5px" }}
                       size={32}
-                      className={styles.down_icon}
                     />
                   )}
                 </div>
