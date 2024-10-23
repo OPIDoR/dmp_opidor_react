@@ -52,7 +52,7 @@ function GeneralInfo({
 
     return toast.success(response?.data?.msg);
   };
-  
+
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
