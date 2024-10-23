@@ -83,9 +83,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
-      console.log(data);
       const matchData = data.find(({ ror }) => ror.toLowerCase().includes(el.ror.toLowerCase()));
-      console.log(matchData)
 
       if (matchData) {
         const flattenedMapping = flattenObject(mapping);
