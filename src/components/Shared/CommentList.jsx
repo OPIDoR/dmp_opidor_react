@@ -55,8 +55,10 @@ function CommentList({
   }, [answerId]);
 
   useEffect(() => {
-    updateTitle(comments || [])
-    setCommentsNumber(comments.length || 0)
+    updateTitle(comments || []);
+    if (setCommentsNumber) {
+      setCommentsNumber(comments.length || 0);
+    }
   }, [comments]);
 
   /**
