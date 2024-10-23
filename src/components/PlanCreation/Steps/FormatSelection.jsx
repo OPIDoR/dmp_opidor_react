@@ -50,7 +50,6 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
       description,
       className: `${styles.step_list} ${params.format === id ? styles.checked : ''}`,
       onClick: () => {
-        console.log(id)
         localStorage.setItem('format', id);
         set(id);
         return nextStep();

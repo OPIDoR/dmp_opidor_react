@@ -88,7 +88,6 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
-      console.log(errorMessage)
       return toast.error(errorMessage);
     }
 
