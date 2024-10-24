@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 import get from 'lodash.get';
@@ -9,8 +9,10 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
 
+import { GlobalContext } from "../context/Global";
+
 function OrcidList({ fragment, setFragment, mapping = {} }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,11 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   const [currentData, setCurrentData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
+  const { locale, setLocale } = useContext(GlobalContext);
+
+  useEffect(() => {
+    i18n.changeLanguage(locale.substring(0, 2));
+  }, [locale]);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
