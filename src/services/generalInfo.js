@@ -22,6 +22,15 @@ const dataFundingOrganization = [
     scriptName: 'CordisDataFetcher',
     registry: 'CordisProjects',
   },
+  {
+    id: 3,
+    label: {
+      fr: 'Anses',
+      en: 'Anses',
+    },
+    scriptName: 'AnsesProjectsDataFetcher',
+    registry: 'AnsesProjects',
+  },
 ];
 
 const getFunders = async () => ({ data: dataFundingOrganization });
