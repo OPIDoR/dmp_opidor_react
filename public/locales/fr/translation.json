@@ -238,7 +238,9 @@
   "Retrieve data related to DOI (DataCite)": " Récupérer les informations liées au DOI (DataCite)",
   "Publication date": "Date de publication",
   "Select a search product type from the list provided. By default the value “Dataset” is saved.": "Choisir un type de produit de recherche dans la liste proposée. Par défaut la valeur \"Jeu de données\" est enregistrée.",
-  "DataCite is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).": "DataCite est une agence d'enregistrement de DOI attribués principalement aux données de recherche. Si vous réutilisez des données identifiées par un DOI enregistré auprès de cette agence, vous pouvez récupérer les éléments descriptifs (métadonnées) associés.",
+  "<0>DataCite</0> is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).": "<0>DataCite</0> est une agence d'enregistrement de DOI attribués principalement aux données de recherche. Si vous réutilisez des données identifiées par un DOI enregistré auprès de cette agence, vous pouvez récupérer les éléments descriptifs (métadonnées) associés.",
   "The file is too large (1mo max.)')": "Le fichier est trop volumineux (1mo max.)",
-  "Personal": "Personne"
+  "Personal": "Personne",
+  "ORCID iD is a unique, permanent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
+  "ROR ID is a unique, permanent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liés à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous."
 }

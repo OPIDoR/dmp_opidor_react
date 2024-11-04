@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect} from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 import get from 'lodash.get';
 import set from 'lodash.set';
@@ -119,6 +119,17 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="ORCID iD is a unique, permanent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below."
+                      components={[<a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ORCID</a>]}
+                    />
+                  </i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">

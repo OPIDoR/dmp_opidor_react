@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaLink } from "react-icons/fa6";
@@ -153,6 +153,17 @@ function RorList({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="ROR ID is a unique, permanent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below."
+                      components={[<a href="https://ror.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ROR</a>]}
+                    />
+                  </i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">
