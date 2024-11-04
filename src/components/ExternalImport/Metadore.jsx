@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
@@ -157,9 +157,15 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
-              <div className="row" style={{ marginBottom: '10px' }}>
+            <div className="row" style={{ marginBottom: '10px' }}>
                 <div>
-                  <i>{t('DataCite is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).')}</i>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="<0>DataCite</0> is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata)."
+                      components={[<a href="https://datacite.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>DataCite</a>]}
+                    />
+                  </i>
                 </div>
               </div>
               <div className="row">
