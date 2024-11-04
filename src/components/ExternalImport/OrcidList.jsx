@@ -20,7 +20,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   const [currentData, setCurrentData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
-  const { locale, setLocale } = useContext(GlobalContext);
+  const { locale } = useContext(GlobalContext);
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
@@ -32,6 +32,15 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
    */
   const getData = async (search) => {
     setLoading(true);
+
+    const urlRegex = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i;
+
+    if (urlRegex.test(search)) {
+      const { orcid } = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i.exec(search)?.groups;
+      if (orcid) {
+        search = orcid;
+      }
+    }
 
     let response;
     try {
