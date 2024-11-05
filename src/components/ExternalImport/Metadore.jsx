@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
@@ -42,7 +42,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = async(query, type = null) => {
+  const getData = async (query, type = null) => {
     setLoading(true);
     setData([]);
 
@@ -80,12 +80,11 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
     let obj = {
       title: el?.attributes?.titles?.at(0)?.title,
-      description:  el?.attributes?.descriptions?.at(0)?.description,
+      description: el?.attributes?.descriptions?.at(0)?.description,
       versionNumber: el?.attributes?.version,
       license: {
         licenseName: el?.attributes?.rightsList?.at(0)?.rights,
         licenseUrl: el?.attributes?.rightsList?.at(0)?.rightsUri,
-        action: 'create',
       },
       idType: 'DOI',
       datasetId: el?.attributes?.doi,
@@ -109,13 +108,18 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
         const res = registry?.find(({ licenseName }) => licenseName?.toLowerCase() === obj?.license?.licenseName.toLowerCase());
         if (res) {
           const { licenseName, licenseUrl } = res;
-          set(obj, 'license', { licenseName, licenseUrl });
+          set(obj, 'license', {
+            ...fragment?.license,
+            licenseName,
+            licenseUrl,
+            action: fragment?.license?.id ? 'update' : 'create'
+          });
         }
       }
     }
 
-    if (!obj?.license.licenseName && !obj?.license.licenseUrl) {
-      set(obj, 'license', null);
+    if (!obj?.license?.licenseName && !obj?.license?.licenseUrl) {
+      set(obj, 'license', fragment?.license?.id ? { id: fragment?.license?.id, action: 'delete' } : null);
     }
 
     setFragment({ ...fragment, ...obj });
@@ -157,7 +161,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
-            <div className="row" style={{ marginBottom: '10px' }}>
+              <div className="row" style={{ marginBottom: '10px' }}>
                 <div>
                   <i>
                     <Trans
@@ -261,8 +265,8 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
-                    { loading ? <CustomSpinner /> : t('No data available') }
+                  <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
+                    {loading ? <CustomSpinner /> : t('No data available')}
                   </td>
                 </tr>
               )}
