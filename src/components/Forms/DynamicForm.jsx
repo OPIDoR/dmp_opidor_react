@@ -113,7 +113,7 @@ function DynamicForm({
         return setLoading(false);
       }
       if (response?.data?.meta_fragment) {
-        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.plan_title;
+        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.plan_title;
         setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
       }
       setFormData({ [fragmentId]: response.data.fragment });
