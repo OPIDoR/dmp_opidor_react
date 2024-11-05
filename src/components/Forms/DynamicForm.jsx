@@ -112,8 +112,9 @@ function DynamicForm({
         toast.error(getErrorMessage(error));
         return setLoading(false);
       }
-      if (response.data.plan_title) {
-        document.getElementById('plan-title').innerHTML = response.data.plan_title;
+      if (response?.data?.meta_fragment) {
+        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.plan_title;
+        setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
       }
       setFormData({ [fragmentId]: response.data.fragment });
       setLoading(false);
