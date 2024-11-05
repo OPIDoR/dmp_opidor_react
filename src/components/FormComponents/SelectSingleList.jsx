@@ -43,21 +43,20 @@ function SelectSingleList({
   const [editedFragment, setEditedFragment] = useState({})
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
-  const [selectedValue, setSelectedValue] = useState(registryType === 'complex' ? {} : null);
+  const [selectedValue, setSelectedValue] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
-  const nullValue = registryType === 'complex' ? {} : null;
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
     if (registryType === 'complex') {
       setSelectedValue(
-        except(field.value, ['template_name', 'id', 'schema_id']) ||  nullValue
+        except(field.value, ['template_name', 'id', 'schema_id']) ||  null
       );
     } else {
-      setSelectedValue(field.value ||  nullValue);
+      setSelectedValue(field.value ||  null);
     }
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
@@ -69,7 +68,7 @@ function SelectSingleList({
 
   useEffect(() => {
     if (!options) return;
-    if (registryType === 'complex') return setSelectedOption(nullValue);
+    if (registryType === 'complex') return setSelectedOption(null);
 
       if (field.value) {
         const selectedOpt = options.find(o => o.value === field.value) || null;
@@ -79,7 +78,7 @@ function SelectSingleList({
           setSelectedOption(selectedOpt)
         }
       } else {
-        setSelectedOption(nullValue);
+        setSelectedOption(null);
       }
   }, [field.value, options]);
 
