@@ -41,10 +41,10 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
-    generalInfo.getFunders().then(({ data }) => {
+    service.getRegistryByName('FundersWithImport').then(({ data }) => {
       const options = data.map((funder) => ({
         value: funder.id,
-        label: funder.label[locale.substring(0, 2)],
+        label: funder.label[locale],
         scriptName: funder.scriptName,
         registry: funder.registry,
       }));
