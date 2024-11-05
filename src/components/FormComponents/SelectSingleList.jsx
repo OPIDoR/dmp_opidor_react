@@ -233,7 +233,7 @@ function SelectSingleList({
                     data-tooltip-id="select-single-list-add-button"
                     onClick={() => {
                       setShowNestedForm(true);
-                      setEditedFragment({ action: 'create' });
+                      setEditedFragment({ action: field.value?.id ?  'update' : 'create' });
                     }}
                     className={styles.icon}
                   />
