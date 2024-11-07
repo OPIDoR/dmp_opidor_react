@@ -231,7 +231,7 @@ function Question({
                     </div>
                   )}
 
-                  {scriptsData.scripts.length > 0 && (
+                  {scriptsData.scripts.length > 0 && answer && (
                     <div>
                       <ReactTooltip
                         id="scriptTip"
