@@ -1,24 +1,23 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, { useRef, useContext, useState } from 'react';
 import { GlobalContext } from '../context/Global';
 import { useTranslation } from 'react-i18next';
 import InnerModal from '../Shared/InnerModal/InnerModal';
 import CommentList from '../Shared/CommentList';
 
-function CommentModal({ show, setshowModalComment, setAnswer, setFillColorIconComment, answerId, researchOutputId, planId, questionId, readonly }) {
+function CommentModal({ shown, hide, setAnswer, answerId, researchOutputId, planId, questionId, readonly }) {
   const { t } = useTranslation();
   const [commentsNumber, setCommentsNumber] = useState(0);
   const modalRef = useRef(null);
   const { userId } = useContext(GlobalContext);
 
   return (
-    <InnerModal show={show} ref={modalRef}>
+    <InnerModal show={shown} ref={modalRef}>
       <InnerModal.Header
         closeButton
         expandButton
         ref={modalRef}
         onClose={() => {
-          setFillColorIconComment("var(--dark-blue)");
-          setshowModalComment(false);
+          hide();
         }}
       >
         <InnerModal.Title id={`#notes-title-${questionId}-research-output-${researchOutputId}`}>

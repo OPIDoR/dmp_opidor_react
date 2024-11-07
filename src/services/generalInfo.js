@@ -3,29 +3,6 @@ import createHeaders from "../utils/HeaderBuilder";
 
 const commonHeaders = createHeaders({}, true);
 
-const dataFundingOrganization = [
-  {
-    id: 1,
-    label: {
-      fr: 'Agence Nationale de la Recherche (ANR)',
-      en: 'French National Research Agency (ANR)',
-    },
-    scriptName: 'AnrProjectDataFetcher',
-    registry: 'AnrProjects',
-  },
-  {
-    id: 2,
-    label: {
-      fr: 'Commission Européenne',
-      en: 'European Commission',
-    },
-    scriptName: 'CordisDataFetcher',
-    registry: 'CordisProjects',
-  },
-];
-
-const getFunders = async () => ({ data: dataFundingOrganization });
-
 const saveIsTestPlan = async (planId, isTestPlan) =>
   axios.post(`/plans/${planId}/set_test`, { is_test: isTestPlan }, { headers: commonHeaders });
 
@@ -42,7 +19,6 @@ const importProject = async (grantId, projectFragmentId, scriptName) =>
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  getFunders,
   saveIsTestPlan,
   importProject,
 };

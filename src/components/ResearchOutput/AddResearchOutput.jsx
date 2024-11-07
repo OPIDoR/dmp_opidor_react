@@ -33,28 +33,32 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
-  const selectedOption = options.find((opt) => opt.value === type);
+  const [selectedOption, setSelectedOption] = useState(options?.at(0));
   const [disableTypeChange, setDisableTypeChange] = useState(false);
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
-      setOptions(createOptions(res.data, locale));
+      const opts = createOptions(res.data, locale);
+      setOptions(opts);
+
+      if (inEdition) {
+        setAbbreviation(displayedResearchOutput.abbreviation);
+        setTitle(displayedResearchOutput.title);
+        setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+        setType(displayedResearchOutput.type);
+        setSelectedOption(opts.find(({ value }) => value === displayedResearchOutput.type));
+      }
+
+      if (!inEdition) {
+        const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
+        setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
+        setTitle(`${t('Research output')} ${maxOrder + 1}`);
+        setHasPersonalData(configuration.enableHasPersonalData);
+        setSelectedOption(opts?.at(0));
+        setType(opts?.at(0).value);
+      }
     });
 
-    if (inEdition) {
-      setAbbreviation(displayedResearchOutput.abbreviation);
-      setTitle(displayedResearchOutput.title);
-      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
-      setType(displayedResearchOutput.type);
-    }
-
-    if (!inEdition) {
-      const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
-      setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
-      setTitle(`${t('Research output')} ${maxOrder + 1}`);
-      setHasPersonalData(configuration.enableHasPersonalData);
-      setType(null);
-    }
     setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
 
   }, [locale]);
@@ -63,6 +67,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
    * This is a function that handles the selection of a value and sets it as the type.
    */
   const handleSelect = (e) => {
+    setSelectedOption(options.find(({ value }) => value === e.value));
     setType(e.value);
   };
 
@@ -73,7 +78,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     e.stopPropagation();
 
     if (!type || type.length === 0) {
-      return toast.error(t('Un "type" est nécessaire pour créer un produit de recherche.'));
+      return toast.error(t('A ‘type’ is required to create a search product.'));
     }
 
     const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none' ;
@@ -156,6 +161,13 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         <div className={stylesForm.label_form}>
           <label>{t('Type')}</label>
         </div>
+        <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            marginBottom: '10px'
+          }}>
+            <i>{t('Select a search product type from the list provided. By default the value “Dataset” is saved.')}</i>
+          </div>
         {options && (
           <CustomSelect
             onSelectChange={handleSelect}

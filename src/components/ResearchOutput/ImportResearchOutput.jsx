@@ -59,11 +59,6 @@ function ImportResearchOutput({ planId, handleClose }) {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log({
-      planId,
-      uuid: selectedResearchOutput.uuid,
-    })
-
     let res;
     try {
       res = await researchOutput.importResearchOutput(  {
@@ -71,7 +66,6 @@ function ImportResearchOutput({ planId, handleClose }) {
         uuid: selectedResearchOutput.uuid,
       });
     } catch (err) {
-      console.log(err);
       return toast.error(t('An error occured during import !'));
     }
 

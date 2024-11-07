@@ -6,12 +6,7 @@
 
 .label {
   color: white;
-}
-
-.form_selector_footer {
-  padding: 5px;
-  display: flex;
-  justify-content: flex-end;
+  font-weight: bold;
 }
 
 .form_change_toggle {

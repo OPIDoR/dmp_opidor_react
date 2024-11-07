@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaLink } from "react-icons/fa6";
@@ -78,8 +78,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     let obj = {
       affiliationId: el.ror,
       affiliationName: el.name[Object.keys(el.name)[0]],
-      affiliationIdType: 'ROR ID',
-      acronyms: el.acronyms?.[0],
+      affiliationIdType: el?.type,
+      acronyms: Array.isArray(el.acronyms) ? el.acronyms?.[0] : el.acronyms,
     };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
@@ -106,6 +106,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
    */
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e?.value);
+    setData([]);
+    setFilteredData([]);
 
     let response;
     try {
@@ -116,6 +118,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     }
 
     setFilteredData(response.data);
+    setData(response.data);
   };
 
   /**
@@ -150,6 +153,17 @@ function RorList({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="ROR ID is a unique, permanent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below."
+                      components={[<a href="https://ror.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ROR</a>]}
+                    />
+                  </i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">
@@ -194,16 +208,15 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                   <div>
                     <Select
                       menuPortalTarget={document.body}
+                      isClearable
+                      isSearchable
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                         singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
                         control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
                       }}
                       onChange={handleChangeCountry}
-                      defaultValue={{
-                        label: t('Select a country'),
-                        value: t('Select a country'),
-                      }}
+                      placeholder={t('Select a country')}
                       options={countries}
                     />
                   </div>
