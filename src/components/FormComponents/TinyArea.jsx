@@ -31,12 +31,11 @@ function TinyArea({
   propName,
   tooltip,
   placeholder,
-  defaultValue = null,
   readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { field } = useController({ control, name: propName, defaultValue: '' });
   const { onChange, ...newField } = field;
   const tinyAreaLabelId = uniqueId('tiny_area_tooltip_id_');
   const editorRef = useRef(null);
@@ -64,7 +63,6 @@ function TinyArea({
             <Editor
               {...newField}
               onEditorChange={(newText) => onChange(newText)}
-              initialValue={defaultValue}
               licenseKey='gpl'
               init={{
                 placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,

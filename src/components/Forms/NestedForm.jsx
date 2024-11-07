@@ -1,22 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm, FormProvider } from "react-hook-form";
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 
+import { GlobalContext } from '../context/Global.jsx';
 import { ExternalImport } from '../ExternalImport';
 import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
+import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
+  const {
+    locale,
+  } = useContext(GlobalContext);
   const methods = useForm({ defaultValues: data });
 
   const externalImports = template?.schema?.externalImports || {};
 
   useEffect(() => {
-    methods.reset(methods.formState.dirtyFields);
+    if(Object.keys(methods.formState.dirtyFields).length > 0) {
+      methods.reset(methods.formState.dirtyFields);
+    }
   }, [data]);
+
+  useEffect(() => {
+    if(!data?.id && template) {
+      methods.reset(formatDefaultValues(template.schema.default?.[locale]));
+    }
+  }, [template, data])
 
   const onValid = (formData, event) => {
     handleSave(formData);

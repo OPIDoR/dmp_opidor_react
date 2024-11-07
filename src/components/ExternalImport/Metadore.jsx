@@ -1,16 +1,24 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import get from 'lodash.get';
 import set from 'lodash.set';
+import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import Select from "react-select";
+
 import { externalServices } from "../../services";
 import CustomSpinner from "../Shared/CustomSpinner";
 import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
+import { service } from "../../services";
+
+const locales = {
+  'en': 'en_GB',
+  'fr': 'fr_FR',
+};
 
 function Metadore({ fragment, setFragment, mapping = {} }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,17 +26,29 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   const [selectedData, setSelectedData] = useState(null);
   const [currentData, setCurrentData] = useState([]);
   const [text, setText] = useState('');
+  const [registry, setRegistry] = useState(null);
+  const [researchDataTypes, setResearchDataTypes] = useState(null);
+  const [researchDataType, setResearchDataType] = useState(null);
+
+  useEffect(() => {
+    service.getRegistryByName('DataLicenses').then(({ data }) => setRegistry(data));
+    service.getRegistryByName('ResearchDataType').then(({ data }) => setResearchDataTypes(data.map((type) => ({
+      value: type['en_GB'],
+      label: type[locales[i18n.language] || locales.fr],
+    }))));
+  }, []);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
    * data.
    */
-  const getData = async (query) => {
+  const getData = async (query, type = null) => {
     setLoading(true);
+    setData([]);
 
     let response;
     try {
-      response = await externalServices.getMetadore(query);
+      response = await externalServices.getMetadore(query, type);
     } catch (error) {
       setError(error);
       return setLoading(false);
@@ -40,7 +60,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
     if (resData.length === 0) { setCurrentData([]); }
 
-    setLoading(false);
+    return setLoading(false);
   };
 
   /**
@@ -54,26 +74,66 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   /**
    * The function `setSelectedValue` updates the selected key and sets a temporary object with affiliation information.
    */
-  const setSelectedValue = (el) => {
-    setSelectedData(selectedData === el.id ? null : el.id);
+  const setSelectedValue = async (el) => {
+    const selectedDataById = selectedData === el?.attributes?.doi ? null : el?.attributes?.doi;
+    setSelectedData(selectedDataById);
 
-    const matchData = data.find(({ id }) => id.toLowerCase() === el.id.toLowerCase());
+    let obj = {
+      title: el?.attributes?.titles?.at(0)?.title,
+      description: el?.attributes?.descriptions?.at(0)?.description,
+      versionNumber: el?.attributes?.version,
+      license: {
+        licenseName: el?.attributes?.rightsList?.at(0)?.rights,
+        licenseUrl: el?.attributes?.rightsList?.at(0)?.rightsUri,
+      },
+      idType: 'DOI',
+      datasetId: el?.attributes?.doi,
+    };
+    const matchData = data?.find(({ attributes }) => attributes?.doi.toLowerCase() === el?.attributes?.doi.toLowerCase());
 
     if (matchData) {
       const flattenedMapping = flattenObject(mapping);
 
       for (const [key, value] of Object.entries(flattenedMapping)) {
-        set(fragment, key, get(matchData, value));
+        set(obj, key, get(matchData, value));
       }
     }
 
-    setFragment({ ...fragment });
+    if (obj?.datasetId) {
+      set(obj, 'datasetId', `https://doi.org/${el?.attributes?.doi}`);
+    }
+
+    if (obj?.license?.licenseName) {
+      if (registry) {
+        const res = registry?.find(({ licenseName }) => licenseName?.toLowerCase() === obj?.license?.licenseName.toLowerCase());
+        if (res) {
+          const { licenseName, licenseUrl } = res;
+          set(obj, 'license', {
+            ...fragment?.license,
+            licenseName,
+            licenseUrl,
+            action: fragment?.license?.id ? 'update' : 'create'
+          });
+        }
+      }
+    }
+
+    if (!obj?.license?.licenseName && !obj?.license?.licenseUrl) {
+      set(obj, 'license', fragment?.license?.id ? { id: fragment?.license?.id, action: 'delete' } : null);
+    }
+
+    setFragment({ ...fragment, ...obj });
   };
 
   /**
    * The handleSearchTerm function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleSearchTerm = () => getData(text);
+  const handleSearchTerm = () => getData(text, researchDataType);
+
+  const handleTypeFilter = (el) => {
+    setResearchDataType(el?.value);
+    return getData(text, el?.value);
+  };
 
   /**
    * The handleKeyDown function fetch the data when the user uses the Enter button in the search field.
@@ -96,11 +156,22 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {error && <CustomError />}
+      {error && <CustomError error={error} />}
       {!error && (
         <>
           <div className="row" style={{ margin: '10px' }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="<0>DataCite</0> is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata)."
+                      components={[<a href="https://datacite.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>DataCite</a>]}
+                    />
+                  </i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">
@@ -110,7 +181,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('Search by <DOI> or <Title>')}
+                      placeholder={t('Enter <Title> or <DOI (e.g. 10.57745/2WH9AL)>')}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
@@ -139,19 +210,44 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
             </div>
           </div>
 
+          <div className="row" style={{ margin: '10px' }}>
+            <div className="">
+              <div className="row">
+                <div>
+                  <Select
+                    menuPortalTarget={document.body}
+                    isClearable
+                    isSearchable
+                    styles={{
+                      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                      singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+                      control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
+                    }}
+                    onChange={handleTypeFilter}
+                    placeholder={t('Type selection')}
+                    options={researchDataTypes}
+                    isDisabled={text.length === 0 || !text}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <table className="table table-bordered table-hover">
             <thead className="thead-dark">
               <tr>
                 <th scope="col"></th>
                 <th scope="col">{t('DOI')}</th>
                 <th scope="col">{t('Title')}</th>
+                <th scope="col">{t('Publication date')}</th>
+                <th scope="col">{t('Type')}</th>
               </tr>
             </thead>
             <tbody>
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
                   <td>
-                    {selectedData === el.id ?
+                    {selectedData === el?.attributes?.doi ?
                       <FaCheckCircle
                         className="text-center"
                         style={{ color: 'green' }}
@@ -162,13 +258,15 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                         onClick={() => setSelectedValue(el)} />
                     }
                   </td>
-                  <td>{el.id}</td>
+                  <td>{el.attributes.doi}</td>
                   <td>{el.attributes.titles.at(0).title}</td>
+                  <td>{el.attributes.publicationYear}</td>
+                  <td>{el.attributes.types.resourceTypeGeneral || '-'}</td>
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
-                    { loading ? <CustomSpinner /> : t('No data available') }
+                  <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
+                    {loading ? <CustomSpinner /> : t('No data available')}
                   </td>
                 </tr>
               )}

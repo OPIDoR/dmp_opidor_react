@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useFormContext, useController } from 'react-hook-form';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -24,12 +24,12 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateName,
-  defaultValue = null,
+  defaultRole = null,
   readonly = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
-  const { field } = useController({ control, name: propName });
+  const { fields, append, update } = useFieldArray({ control, name: propName, keyName: '_id' });
   const [show, setShow] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState(null);
@@ -42,16 +42,9 @@ function SelectContributorMultiple({
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
-  const [defaultRole] = useState(defaultValue?.[0]?.role || null);
-  const [contributorList, setContributorList] = useState([]);
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
-
-  useEffect(() => {
-    setContributorList(field.value || [])
-  }, [field.value]);
-
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -125,11 +118,7 @@ function SelectContributorMultiple({
    * @param e - the event object
    */
   const handleSelectContributor = (e) => {
-    const { object } = e;
-    const addedContributor = { person: { ...object, action: "update" }, role: defaultRole, action: "create" };
-    const newContributorList = [...contributorList, addedContributor];
-    setContributorList(newContributorList);
-    field.onChange(newContributorList)
+    append({ person: { ...e.object, action: "update" }, role: defaultRole, action: "create" })
     setError(null);
   };
 
@@ -137,14 +126,12 @@ function SelectContributorMultiple({
    * The handleSelectRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e, index) => {
-    const updatedContributorList = contributorList;
-    updatedContributorList[index] = {
-      ...updatedContributorList[index],
+    const updatedContributor = {
+      ...fields[index],
       role: e.value,
-      action: updatedContributorList[index].action || 'update'
+      action: fields[index].action || 'update'
     };
-    field.onChange(updatedContributorList)
-
+    update(index, updatedContributor)
   };
 
   /**
@@ -159,18 +146,16 @@ function SelectContributorMultiple({
     } else {
       if (index !== null) {
         service.saveFragment(editedPerson.id, data).then((res) => {
-          const newContributorList = [...contributorList];
           const updatedPersons = [...persons];
           const savedFragment = res.data.fragment;
           savedFragment.action = 'update';
-          newContributorList[index] = {
-            ...newContributorList[index],
+          const updatedContributor = {
+            ...fields[index],
             person: savedFragment,
-            action: newContributorList[index].action || 'update'
+            action: fields[index].action || 'update'
           };
-          field.onChange(newContributorList);
+          update(index, updatedContributor);
 
-          setContributorList([...contributorList, data]);
           updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
             ...savedFragment,
             to_string: parsePattern(data, template?.schema?.to_string)
@@ -197,10 +182,8 @@ function SelectContributorMultiple({
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
       const newContributor = { person: savedFragment, role: defaultRole, action: 'create' };
-
-      field.onChange([...(contributorList || []), newContributor]);
+      append({ person: savedFragment, role: defaultRole, action: 'create' });
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
-      setContributorList([...contributorList, newContributor]);
     }).catch(error => setError(error));
 
     handleClose();
@@ -215,9 +198,7 @@ function SelectContributorMultiple({
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        const updatedList = [...contributorList];
-        updatedList[idx]['action'] = 'delete';
-        field.onChange(updatedList)
+        update(idx, {...fields[idx], action: 'delete'})
       }
     });
   };
@@ -230,7 +211,7 @@ function SelectContributorMultiple({
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
-    setEditedPerson(contributorList[idx]['person']);
+    setEditedPerson(fields[idx]['person']);
     setShow(true);
   };
 
@@ -279,9 +260,9 @@ function SelectContributorMultiple({
           )}
         </div>
         <span className={styles.errorMessage}>{error}</span>
-        {template && contributorList.length > 0 && (
+        {template && fields.length > 0 && (
           <PersonsList
-            personsList={contributorList}
+            personsList={fields}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             roleOptions={roleOptions}
