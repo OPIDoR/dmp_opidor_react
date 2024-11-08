@@ -2,6 +2,9 @@
   "name": "dmp_opidor_react",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "@directus/sdk": "^18.0.0",
     "@tinymce/tinymce-react": "^5.0.0",
@@ -56,11 +59,13 @@
     ]
   },
   "devDependencies": {
-    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
-    "@testing-library/jest-dom": "^6.1.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
-    "enzyme": "^3.11.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "react-test-renderer": "^18.2.0"
   }
 }
