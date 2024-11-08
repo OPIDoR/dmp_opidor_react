@@ -1,20 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm, FormProvider } from "react-hook-form";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import FormBuilder from './FormBuilder';
 import { useTranslation } from 'react-i18next';
+
+import { GlobalContext } from '../context/Global.jsx';
+import FormBuilder from './FormBuilder';
 import { ExternalImport } from '../ExternalImport';
+import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
+  const {
+    locale,
+  } = useContext(GlobalContext);
   const methods = useForm({ defaultValues: data });
 
   const externalImports = template?.schema?.externalImports || {};
 
   useEffect(() => {
-    methods.reset(methods.formState.dirtyFields);
+    if(Object.keys(methods.formState.dirtyFields).length > 0) {
+      methods.reset(methods.formState.dirtyFields);
+    }
   }, [data]);
+
+  useEffect(() => {
+    if(!data?.id && template) {
+      methods.reset(formatDefaultValues(template.schema.default?.[locale]));
+    }
+  }, [template, data])
 
   const onValid = (formData, event) => {
     handleSave(formData);

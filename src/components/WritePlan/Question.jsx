@@ -163,7 +163,7 @@ function Question({
     <>
       {
         <Card
-          id={`question-panel-${question.id}`}
+          id={`question-card-${question.id}`}
           className={styles.card}
           style={{
             borderRadius: "10px",
@@ -223,62 +223,47 @@ function Question({
                           data-tooltip-id="guidanceTip"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            handleIconClick(e, "guidance");
+                            setModalOpened(e, "guidance", true);
                           }}
                           style={{ marginLeft: "5px" }}
                         >
                           {isQuestionOpened() && (
                             <TbBulbFilled
                               size={32}
-                              fill={
-                                isQuestionOpened()
-                                  ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
-                              }
-                              style={{
-                                color: isQuestionOpened()
-                                  ? fillGuidanceIconColor
-                                  : "var(--dark-blue)"
-                              }}
+                              fill={getFillColor(showModals.guidance)}
+                              style={{ color: getFillColor(showModals.guidance) }}
                             />
                           )}
                         </div>
                       </div>
                     )}
 
-                    {answer && (
-                      <div>
-                        <ReactTooltip
-                          id="commentTip"
-                          place="bottom"
-                          effect="solid"
-                          variant="info"
-                          content={t("Comments")}
-                        />
-                        <div
-                          data-tooltip-id="commentTip"
-                          className={styles.card_icon}
-                          onClick={(e) => {
-                            handleQuestionCollapse(true);
-                            handleIconClick(e, "comment");
-                          }}
-                          style={{ marginLeft: "5px" }}
-                        >
-                          {isQuestionOpened() && (
-                            <CommentSVG
-                              size={32}
-                              fill={
-                                isQuestionOpened()
-                                  ? fillCommentIconColor
-                                  : "var(--dark-blue)"
-                              }
-                            />
-                          )}
-                        </div>
+                    <div>
+                      <ReactTooltip
+                        id="commentTip"
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={t("Comments")}
+                      />
+                      <div
+                        data-tooltip-id="commentTip"
+                        className={styles.card_icon}
+                        onClick={(e) => {
+                          setModalOpened(e, "comment", true);
+                        }}
+                        style={{ marginLeft: "5px" }}
+                      >
+                        {isQuestionOpened() && (
+                          <CommentSVG
+                            size={32}
+                            fill={getFillColor(showModals.comment)}
+                          />
+                        )}
                       </div>
-                    )}
+                    </div>
 
-                    {isQuestionOpened() && answer && formSelectors[answer.fragment_id] && (
+                    {isQuestionOpened() && !answer && formSelectors[question?.madmp_schema?.classname] && (
                       <div>
                         <ReactTooltip
                           id="form-changer-show-button"
@@ -291,29 +276,21 @@ function Question({
                           data-tooltip-id="form-changer-show-button"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            handleIconClick(e, "formSelector");
+                            setModalOpened(e, "formSelector", true);
                           }}
                           style={{ marginLeft: "5px" }}
                         >
                           <IoShuffleOutline
                             data-tooltip-id="form-change-show-button"
                             size={32}
-                            fill={
-                              isQuestionOpened()
-                                ? fillFormSelectorIconColor
-                                : "var(--dark-blue)"
-                            }
-                            style={{
-                              color: isQuestionOpened()
-                                ? fillFormSelectorIconColor
-                                : "var(--dark-blue)"
-                            }}
+                            fill={getFillColor(showModals.formSelector)}
+                            style={{ color: getFillColor(showModals.formSelector) }}
                           />
                         </div>
                       </div>
                     )}
 
-                    {scriptsData.scripts.length > 0 && (
+                    {scriptsData.scripts.length > 0 && answer && (
                       <div>
                         <ReactTooltip
                           id="scriptTip"
@@ -326,7 +303,7 @@ function Question({
                           data-tooltip-id="scriptTip"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            handleIconClick(e, "runs");
+                            setModalOpened(e, "runs", true);
                           }}
                           style={{ marginLeft: "5px" }}
                         >
@@ -334,11 +311,7 @@ function Question({
                             <BsGear
                               size={32}
                               style={{ marginTop: "6px" }}
-                              fill={
-                                isQuestionOpened()
-                                  ? fillRunsIconColor
-                                  : "var(--dark-blue)"
-                              }
+                              fill={getFillColor(showModals.runs)}
                             />
                           )}
                         </div>
@@ -349,13 +322,11 @@ function Question({
                       <TfiAngleUp
                         style={{ marginLeft: "5px" }}
                         size={32}
-                        className={styles.down_icon}
                       />
                     ) : (
                       <TfiAngleDown
                         style={{ marginLeft: "5px" }}
                         size={32}
-                        className={styles.down_icon}
                       />
                     )}
                   </div>
@@ -365,62 +336,59 @@ function Question({
           </Card.Header>
           <Collapse in={isQuestionOpened()}>
             <div id={`card-collapse-${question.id}`}>
-              <Card.Body id={`panel-body-${question.id}`} style={{ position: 'relative' }}>
+              <Card.Body id={`card-body-${question.id}`} style={{ position: 'relative' }}>
                 {isQuestionOpened() && (
                   <div>
                     {answer && (
                       <>
                         {!readonly && scriptsData.scripts.length > 0 && (
                           <RunsModal
-                            show={showRunsModal}
-                            setshowModalRuns={setShowRunsModal}
-                            setFillColorIconRuns={setFillRunsIconColor}
+                            shown={showModals.runs === true}
+                            hide={(e) => setModalOpened(e, 'runs', false)}
                             scriptsData={scriptsData}
-                            fragmentId={answer.fragment_id}
+                            fragmentId={answer?.fragment_id}
                           />
                         )}
-                        <CommentModal
-                          show={showCommentModal}
-                          setshowModalComment={setShowCommentModal}
-                          setFillColorIconComment={setFillCommentIconColor}
-                          answerId={answer.id}
-                          researchOutputId={displayedResearchOutput.id}
-                          planId={planId}
-                          questionId={question.id}
-                          readonly={readonly}
-                        />
-                        {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
-                          show={showGuidanceModal}
-                          setShowGuidanceModal={setShowGuidanceModal}
-                          setFillColorGuidanceIcon={setFillGuidanceIconColor}
-                          questionId={questionId}
-                          planId={planId}
-                        />)}
                       </>
                     )}
-                    {isQuestionOpened() ? (
-                      <>
-                        {readonly && !answer.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
-                          (<DynamicForm
-                            fragmentId={answer?.fragment_id}
-                            className={question?.madmp_schema?.classname}
-                            setScriptsData={setScriptsData}
-                            questionId={question.id}
-                            madmpSchemaId={question.madmp_schema?.id}
-                            setAnswer={setAnswer}
-                            readonly={readonly}
-                            formSelector={{
-                              show: showFormSelectorModal,
-                              setShowFormSelectorModal,
-                              setFillFormSelectorIconColor,
-                            }}
-                          />)
-                        }
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    <CommentModal
+                      shown={showModals.comment === true}
+                      hide={(e) => setModalOpened(e, 'comment', false)}
+                      answerId={answer?.id}
+                      setAnswer={setAnswer}
+                      researchOutputId={displayedResearchOutput.id}
+                      planId={planId}
+                      questionId={question.id}
+                      readonly={readonly}
+                    />
+                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                      shown={showModals.guidance === true}
+                      hide={(e) => setModalOpened(e, 'guidance', false)}
+                      questionId={questionId}
+                      planId={planId}
+                    />)}
                   </div>
+                )}
+                {isQuestionOpened() ? (
+                  <>
+                    {readonly && !answer?.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
+                      (<DynamicForm
+                        fragmentId={answer?.fragment_id}
+                        className={question?.madmp_schema?.classname}
+                        setScriptsData={setScriptsData}
+                        questionId={question.id}
+                        madmpSchemaId={question.madmp_schema?.id}
+                        setAnswer={setAnswer}
+                        readonly={readonly}
+                        formSelector={{
+                          shown: showModals.formSelector === true,
+                          hide: (e) => setModalOpened(e, 'formSelector', false)
+                        }}
+                      />)
+                    }
+                  </>
+                ) : (
+                  <></>
                 )}
               </Card.Body>
             </div>

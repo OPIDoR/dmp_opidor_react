@@ -43,7 +43,7 @@ function ImportExternal({ fragment, setFragment, externalImports = {} }) {
     const buttons = {
       ror: t('Retrieve ROR identifier'),
       orcid: t('Retrieve ORCID identifier'),
-      metadore: t('Retrieve data by using Datacite'),
+      metadore: t('Retrieve data related to DOI (DataCite)'),
     };
 
     return (

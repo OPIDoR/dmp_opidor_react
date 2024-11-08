@@ -31,7 +31,6 @@ function TinyArea({
   propName,
   tooltip,
   placeholder,
-  defaultValue = null,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -64,7 +63,6 @@ function TinyArea({
             <Editor
               {...newField}
               onEditorChange={(newText) => onChange(newText)}
-              initialValue={defaultValue}
               licenseKey='gpl'
               init={{
                 placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,

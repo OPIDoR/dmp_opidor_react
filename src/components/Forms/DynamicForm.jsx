@@ -14,6 +14,7 @@ import CustomButton from '../Styled/CustomButton.jsx';
 import FormSelector from './FormSelector';
 import { ExternalImport } from '../ExternalImport';
 import { getErrorMessage } from '../../utils/utils.js';
+import { formatDefaultValues, generateEmptyDefaults } from '../../utils/GeneratorUtils.js';
 
 function DynamicForm({
   fragmentId,
@@ -29,6 +30,7 @@ function DynamicForm({
   const {
     formData, setFormData,
     dmpId,
+    locale,
     displayedResearchOutput,
     researchOutputs, setResearchOutputs,
     loadedTemplates, setLoadedTemplates,
@@ -37,6 +39,7 @@ function DynamicForm({
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [templateId, setTemplateId] = useState(madmpSchemaId);
   const [externalImports, setExternalImports] = useState({});
 
   useEffect(() => {
@@ -49,7 +52,7 @@ function DynamicForm({
           service.getSchema(formData[fragmentId].schema_id).then((res) => {
             setTemplate(res.data);
             setExternalImports(template?.schema?.externalImports || {});
-            setLoadedTemplates({ ...loadedTemplates, [formData[fragmentId].template_name]: res.data });
+            setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
           }).catch(console.error);
         }
         methods.reset(formData[fragmentId]);
@@ -57,16 +60,16 @@ function DynamicForm({
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
           setLoadedTemplates({ ...loadedTemplates, [res.data.template.name]: res.data.template });
-          setFormData({ [fragmentId]: res.data.fragment });
-          if(res.data.answer_id) setAnswer({id: res.data.answer_id, fragment_id: res.data.fragment.id });
-          methods.reset(res.data.fragment);
+          handleFragmentData(res.data);
         }).catch(console.error);
       }
     } else {
-      service.getSchema(madmpSchemaId).then((res) => {
-        setTemplate(res.data);
-        setExternalImports(template?.schema?.externalImports || {});
-        setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
+      service.getNewForm(questionId, displayedResearchOutput.id).then((res) => {
+        const tplt = res.data.template;
+        setTemplate(tplt);
+        setExternalImports(tplt.schema.externalImports || {});
+        setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
+        if(res.data.fragment) handleFragmentData(res.data);
       }).catch(console.error);
     }
     setLoading(false);
@@ -86,8 +89,15 @@ function DynamicForm({
       setScriptsData({ scripts: [] });
     }
     setExternalImports(template?.schema?.externalImports || {});
+
   }, [template])
 
+  useEffect(() => {
+    if(!fragmentId && template) {
+      const defaults = formatDefaultValues(template.schema.default?.[locale]);
+      Object.keys(defaults).length > 0 ? methods.reset(defaults) : methods.reset(generateEmptyDefaults(template.schema.properties));
+    }
+  }, [template, fragmentId])
   /**
    * It checks if the form is filled in correctly.
    * @param e - the event object
@@ -102,27 +112,27 @@ function DynamicForm({
         toast.error(getErrorMessage(error));
         return setLoading(false);
       }
-      if (response.data.plan_title) {
-        document.getElementById('plan-title').innerHTML = response.data.plan_title;
+      if (response?.data?.meta_fragment) {
+        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.title;
+        setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
       }
       setFormData({ [fragmentId]: response.data.fragment });
+      setLoading(false);
     } else {
       handleSaveNew(data);
     }
-
-    setLoading(false);
   };
 
   const handleSaveNew = (data) => {
-    service.createFragment(data, madmpSchemaId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
+    service.createFragment(data, templateId, dmpId, questionId, displayedResearchOutput.id).then((res) => {
       const updatedResearchOutput = { ...displayedResearchOutput };
       const fragment = res.data.fragment;
-      const template = res.data.template;
-      const answerId = res.data.answer_id
-      setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
-      setTemplate(template);
+      const tplt = res.data.template;
+      const answerId = res.data.answer_id;
+      setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
+      setTemplate(tplt);
       setFormData({ [fragment.id]: fragment });
-      setAnswer({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: madmpSchemaId });
+      setAnswer({ id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId });
       updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
       setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
     }).catch(console.error);
@@ -131,6 +141,21 @@ function DynamicForm({
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
+  const handleFragmentData = (data) => {
+    setFormData({ [fragmentId]: data.fragment });
+    if(data.answer_id) {
+      const {
+        answer_id,
+        fragment: {
+          id: fragment_id,
+          schema_id: madmp_schema_id,
+        },
+      } = data;
+      setAnswer({ id: answer_id, question_id: questionId, fragment_id, madmp_schema_id });
+    }
+    methods.reset(data.fragment);
+  }
+
   return (
     <>
       {loading && (<CustomSpinner isOverlay={true} />)}
@@ -138,11 +163,10 @@ function DynamicForm({
       {!error && template && (
         <>
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
-          {!readonly && <FormSelector
-            className={className}
+          {!readonly && !fragmentId && <FormSelector
+            classname={className}
             displayedTemplate={template}
-            fragmentId={fragmentId}
-            setFragment={methods.reset}
+            setTemplateId={setTemplateId}
             setTemplate={setTemplate}
             formSelector={formSelector}
           />}

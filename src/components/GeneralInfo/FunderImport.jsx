@@ -35,10 +35,10 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
-    generalInfo.getFunders().then(({ data }) => {
+    service.getRegistryByName('FundersWithImport').then(({ data }) => {
       const options = data.map((funder) => ({
         value: funder.id,
-        label: funder.label[locale.substring(0, 2)],
+        label: funder.label[locale],
         scriptName: funder.scriptName,
         registry: funder.registry,
       }));
@@ -82,7 +82,6 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
-      console.log(errorMessage)
       return toast.error(errorMessage);
     }
 
@@ -91,8 +90,9 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       [metaFragmentId]: response.data.fragment.meta
     });
     setPersons(response.data.persons);
-    if (response.data.plan_title) {
-      document.getElementById('plan-title').innerHTML = response.data.plan_title;
+    if (response?.data?.meta_fragment) {
+      document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.title;
+      setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
     }
     toast.success(t(
       '\'{{projectTitle}}\' project data has successfully been imported',

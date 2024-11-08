@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useState, useContext, useEffect} from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
 import get from 'lodash.get';
 import set from 'lodash.set';
@@ -9,8 +9,10 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
 
+import { GlobalContext } from "../context/Global";
+
 function OrcidList({ fragment, setFragment, mapping = {} }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,11 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   const [currentData, setCurrentData] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [text, setText] = useState("");
+  const { locale } = useContext(GlobalContext);
+
+  useEffect(() => {
+    i18n.changeLanguage(locale.substring(0, 2));
+  }, [locale]);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -25,6 +32,15 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
    */
   const getData = async (search) => {
     setLoading(true);
+
+    const urlRegex = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i;
+
+    if (urlRegex.test(search)) {
+      const { orcid } = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i.exec(search)?.groups;
+      if (orcid) {
+        search = orcid;
+      }
+    }
 
     let response;
     try {
@@ -54,7 +70,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
    */
   const setSelectedValue = (el) => {
     setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
-    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, nameType: t("Personne"), idType: "ORCID iD" };
+    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, idType: "ORCID iD" };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
       const matchData = data.find(({ orcid }) => orcid.toLowerCase().includes(el.orcid.toLowerCase()));
@@ -68,7 +84,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
       }
     }
 
-    setFragment({ ...fragment, ...obj });
+    setFragment({ ...fragment, ...obj,nameType: t("Personal") });
   };
 
   /**
@@ -103,6 +119,17 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
         <>
           <div className="row" style={{ margin: "10px" }}>
             <div>
+              <div className="row" style={{ marginBottom: '10px' }}>
+                <div>
+                  <i>
+                    <Trans
+                      t={t}
+                      defaults="ORCID iD is a unique, permanent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below."
+                      components={[<a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ORCID</a>]}
+                    />
+                  </i>
+                </div>
+              </div>
               <div className="row">
                 <div>
                   <div className="input-group">

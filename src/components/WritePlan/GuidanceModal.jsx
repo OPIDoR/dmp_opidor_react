@@ -10,12 +10,7 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
 
-const locales = {
-  fr: 'fr-FR',
-  en: 'en-GB',
-};
-
-function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, questionId, planId }) {
+function GuidanceModal({ shown, hide, questionId, planId }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
@@ -25,9 +20,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   const modalRef = useRef(null);
 
   const {
-    planInformations,
     questionsWithGuidance,
-    locale,
   } = useContext(GlobalContext);
 
   const navStyles = (tab) => ({
@@ -58,37 +51,37 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
     setLoading(true);
 
     guidances.getGuidances(planId, questionId)
-    .then(({ data }) => {
-      const guidancesData = data?.guidances.map((guidance) => {
-        const groups = guidance.groups.reduce((acc, group) => {
-          const [groupInfo, guidanceInfo] = group;
-          const groupName = groupInfo.name;
+      .then(({ data }) => {
+        const guidancesData = data?.guidances.map((guidance) => {
+          const groups = guidance.groups.reduce((acc, group) => {
+            const [groupInfo, guidanceInfo] = group;
+            const groupName = groupInfo.name;
 
-          const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
+            const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
 
-          acc[groupName] = {
-            title: descriptionKey,
-            guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+            acc[groupName] = {
+              title: descriptionKey,
+              guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+            };
+
+            return acc;
+          }, {});
+
+          const title = Object.values(groups)?.at(0)?.title || '';
+
+          return {
+            name: guidance.name,
+            title,
+            groups,
+            annotations: guidance.annotations || [],
           };
+        });
 
-          return acc;
-        }, {});
-
-        const title = Object.values(groups).at(0).title;
-
-        return {
-          name: guidance.name,
-          title,
-          groups,
-          annotations: guidance.annotations || [],
-        };
-      });
-
-      setData(guidancesData);
-      setActiveTab(guidancesData?.at(0)?.name || '');
-    })
-    .catch((error) => setError(error))
-    .finally(() => setLoading(false));
+        setData(guidancesData);
+        setActiveTab(guidancesData?.at(0)?.name || '');
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }, [planId, questionId]);
 
   /**
@@ -118,7 +111,7 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
               <div key={`guidance-${dId}`}>
                 <Theme alt={title}>{title}</Theme>
                 {Object.keys(groups)?.map((groupName) => (
-                  <div>
+                  <div key={`guidance-div-${dId}`}>
                     <SubTitle key={`guidance-subtitle-${dId}`}>{groupName}</SubTitle>
                     {groups[groupName].guidances.map((guidance, id) => (
                       <div
@@ -139,14 +132,13 @@ function GuidanceModal({ show, setShowGuidanceModal, setFillColorGuidanceIcon, q
   };
 
   return (
-    <InnerModal show={show} ref={modalRef}>
+    <InnerModal show={shown} ref={modalRef}>
       <InnerModal.Header
         closeButton
         expandButton
         ref={modalRef}
         onClose={() => {
-          setShowGuidanceModal(false);
-          setFillColorGuidanceIcon("var(--dark-blue)");
+          hide();
         }}
       >
         <InnerModal.Title>

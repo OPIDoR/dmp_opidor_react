@@ -7,7 +7,6 @@ import { BiDuplicate } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
-import * as styles from "../assets/css/write_plan.module.css";
 
 import { GlobalContext } from "../context/Global";
 
@@ -20,7 +19,6 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
 
   return (
     <Card
-      className={styles.card}
       style={{
         borderRadius: "10px",
         borderWidth: "2px",

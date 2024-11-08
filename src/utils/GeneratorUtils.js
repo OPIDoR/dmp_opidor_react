@@ -33,7 +33,7 @@ export function parsePattern(data, keys = []) {
  *                   The first option is an empty option with empty value and label.
  */
 export function createOptions(registryValues, locale) {
-  return [{ value: '', label: '' }, ...registryValues.map((option) => {
+  return [...registryValues.map((option) => {
     let { label, value, ...optionValue } = option;
     label = label ? label[locale] : optionValue[locale];
     if(!value) {
@@ -99,6 +99,33 @@ export function filterOptions(options, value) {
       resolve(options.filter(o => stringIncludes(o.label, value)));
     }, 500);
   });
+}
+
+/**
+ * This function is used to add the 'create' action to data in default values
+ */
+export function formatDefaultValues(defaults) {
+  if(defaults === undefined) return {};
+  const formatedDefaults = {...defaults};
+
+  Object.keys(defaults).forEach((prop) => {
+    if(Array.isArray(defaults[prop])) {
+      formatedDefaults[prop] = defaults[prop].map((d) => { return {...d, action: 'create'}});
+    } else if (typeof defaults[prop] === 'object') {
+      formatedDefaults[prop] = {...defaults[prop], action: 'create'};
+    }
+  });
+  return formatedDefaults;
+}
+
+export function generateEmptyDefaults(properties = {}) {
+  const emtpyDefaults = {};
+  for (const [key, prop] of Object.entries(properties)) {
+    if(prop.type === 'array' && prop.items?.type === 'object') {
+      emtpyDefaults[key] = []
+    }
+  };
+  return emtpyDefaults;
 }
 
 export function researchOutputTypeToDataType(type) {

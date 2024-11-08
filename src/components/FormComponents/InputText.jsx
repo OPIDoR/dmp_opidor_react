@@ -18,7 +18,6 @@ function InputText({
   propName,
   tooltip,
   hidden = false,
-  defaultValue = null,
   readonly = false,
   min,
 }) {
@@ -48,9 +47,9 @@ function InputText({
       )}
       <input
         {...register(propName, {
-          valueAsNumber: type === 'number'
+          valueAsNumber: type === 'number',
+          value: ''
         })}
-        defaultValue={defaultValue}
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder ? `${t('e.g.')} ${placeholder}` : null}
