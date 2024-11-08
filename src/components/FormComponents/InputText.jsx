@@ -24,13 +24,14 @@ function InputText({
   const { t } = useTranslation();
   const { register } = useFormContext();
   const [isRequired] = useState(false);
+  const inputId = uniqueId('input_text_id_');
   const tooltipedLabelId = uniqueId('input_text_tooltip_id_');
 
   return (
     <div className="form-group">
       {hidden === false && (
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipedLabelId}>{label}</label>
+          <label htmlFor={inputId} aria-labelledby={inputId} data-testid="input-text-label" data-tooltip-id={tooltipedLabelId}>{label}</label>
           {
             tooltip && (
               <ReactTooltip
@@ -46,6 +47,8 @@ function InputText({
         </div>
       )}
       <input
+        id={inputId}
+        data-testid="input-text"
         {...register(propName, {
           valueAsNumber: type === 'number',
           value: ''
