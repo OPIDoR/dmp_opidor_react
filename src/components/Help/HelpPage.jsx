@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
@@ -24,7 +24,7 @@ export default function HelpPage({ locale, directusUrl }) {
   const { t } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
-  const { isLoading, error, data } = useQuery('help', () =>
+  const { isLoading, error, data } = useQuery(['help'], () =>
     directus.getHelp(directusUrl).then(res => res)
   );
 

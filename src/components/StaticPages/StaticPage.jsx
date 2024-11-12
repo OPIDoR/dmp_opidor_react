@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
@@ -15,7 +15,7 @@ const languagesCode = {
 export default function StaticPage({ locale, page, directusUrl }) {
   const { t } = useTranslation();
 
-  const { isLoading, error, data } = useQuery('statiPage', () =>
+  const { isLoading, error, data } = useQuery(['staticPage'], () =>
     directus.getStaticPage(directusUrl, page).then(res => res)
   );
 
