@@ -24,9 +24,10 @@ export default function HelpPage({ locale, directusUrl }) {
   const { t } = useTranslation();
   const [activeFaq, setActiveFaq] = useState(0);
 
-  const { isLoading, error, data } = useQuery(['help'], () =>
-    directus.getHelp(directusUrl).then(res => res)
-  );
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['help'], 
+    queryFn: () => directus.getHelp(directusUrl).then(res => res)
+  });
 
   if (isLoading) return <CustomSpinner />;
 

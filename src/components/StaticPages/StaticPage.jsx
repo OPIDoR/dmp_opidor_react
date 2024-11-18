@@ -15,9 +15,10 @@ const languagesCode = {
 export default function StaticPage({ locale, page, directusUrl }) {
   const { t } = useTranslation();
 
-  const { isLoading, error, data } = useQuery(['staticPage'], () =>
-    directus.getStaticPage(directusUrl, page).then(res => res)
-  );
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['staticPage'],
+    queryFn: () => directus.getStaticPage(directusUrl, page).then(res => res)
+  });
 
   if (isLoading) return <CustomSpinner />;
 

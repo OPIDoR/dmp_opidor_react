@@ -49,9 +49,10 @@ export default function HelpPage({ locale, directusUrl }) {
     Z: {},
   };
 
-  const { isLoading, error, data } = useQuery(['glossary'], () =>
-    directus.getGlossary(directusUrl).then(res => res)
-  );
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['glossary'],
+    queryFn: () => directus.getGlossary(directusUrl).then(res => res)
+  });
 
   if (isLoading) return <CustomSpinner />;
 
