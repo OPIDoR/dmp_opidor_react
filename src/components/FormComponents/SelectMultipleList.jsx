@@ -162,7 +162,7 @@ function SelectMultipleList({
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, overridable, 'simple', t)}
+                    placeholder={createRegistryPlaceholder(registries.length, true, overridable, 'simple', t)}
                     overridable={overridable}
                   />
                 )}
