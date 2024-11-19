@@ -181,7 +181,6 @@ function SelectContributorMultiple({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      const newContributor = { person: savedFragment, role: defaultRole, action: 'create' };
       append({ person: savedFragment, role: defaultRole, action: 'create' });
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
     }).catch(error => setError(error));

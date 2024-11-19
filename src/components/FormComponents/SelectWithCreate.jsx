@@ -118,7 +118,7 @@ function SelectWithCreate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...updatedFragmentList[idx], action: 'delete'});
+        update(idx, {...fields[idx], action: 'delete'});
       }
     });
   };
