@@ -13,7 +13,7 @@ export const StyledUl = styled.ul`
   position: -webkit-sticky;
   position: sticky;
   top: 60px;
-  z-index: 1000;
+  z-index: 9;
   width: 100%;
   height: 40px;
   background-color: var(--white);
@@ -81,13 +81,13 @@ export const GlossaryContent = styled.div`
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
-    list-style-type: none;
     margin-top: 20px;
+    list-style-type: disc;
     scroll-margin-top: 110px;
 
     li {
       margin: 10px 0 10px 20px;
-
+      
       .term {
         font-weigth: 900;
         font-size: 22px;
