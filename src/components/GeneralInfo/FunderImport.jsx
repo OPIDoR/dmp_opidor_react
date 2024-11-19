@@ -156,7 +156,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
             {fundedProjects.length > 0 && (
               <div className="form-group">
                 <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Then Select project acronym, title or ID")}</label>
+                  <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
                 </div>
                 <CustomSelect
                   options={fundedProjects}

@@ -67,7 +67,7 @@
   "Choose a DMP template": "Choisissez un modèle de plan de gestion",
   "Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all DMP OPIDoR functionalities.<br>They are identified by the icon : <structuredIcon />": "Les modèles à privilégier sont ceux qui facilitent la saisie, la réutilisation d’informations et permettent de bénéficier de toutes les fonctionnalités de DMP OPIDoR.<br>Ils sont identifiés par l'icône: <structuredIcon />",
   "Please select a funder": "Veuillez sélectionner un financeur",
-  "Then Select project acronym, title or ID": "Puis sélectionnez l’acronyme, le titre ou l’identifiant du projet",
+  "Then Select project acronym, title or grant ID": "Puis sélectionnez l’acronyme, le titre ou l’identifiant du financement",
   "Project Details": "Renseignements sur le projet",
   "Plan Information": "Renseignements sur le plan",
   "Research Entity Details": "Renseignements sur l'entité de recherche",
@@ -241,6 +241,6 @@
   "<0>DataCite</0> is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata).": "<0>DataCite</0> est une agence d'enregistrement de DOI attribués principalement aux données de recherche. Si vous réutilisez des données identifiées par un DOI enregistré auprès de cette agence, vous pouvez récupérer les éléments descriptifs (métadonnées) associés.",
   "The file is too large (1mo max.)')": "Le fichier est trop volumineux (1mo max.)",
   "Personal": "Personne",
-  "ORCID iD is a unique, permanent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
-  "ROR ID is a unique, permanent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liés à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous."
+  "ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
+  "ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liées à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous."
 }
