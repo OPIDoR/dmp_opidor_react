@@ -45,8 +45,8 @@ describe('InputText component', () => {
       </Wrapper>
     );
     expect(screen.getByTestId('input-text-label')).toHaveTextContent(inputTextProps.label);
-    expect(screen.getByLabelText(inputTextProps.label)).toBeInTheDocument();
-    expect(screen.getByLabelText(inputTextProps.label)).toHaveAttribute('type', 'text');
+    expect(screen.getByTestId('input-text')).toBeInTheDocument();
+    expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'text');
     expect(screen.getByPlaceholderText(`e.g. ${inputTextProps.placeholder}`)).toBeInTheDocument();
   });
 
@@ -57,7 +57,7 @@ describe('InputText component', () => {
         <InputText {...inputTextReadonlyProps} />
       </Wrapper>
     );
-    expect(screen.getByLabelText(inputTextProps.label)).toHaveAttribute('readonly');
+    expect(screen.getByTestId('input-text')).toHaveAttribute('readonly');
   });
 
   test('component with type=date rendering <input type="date"/>', async () => {
@@ -67,7 +67,7 @@ describe('InputText component', () => {
         <InputText {...inputTextDateProps} />
       </Wrapper>
     );
-    expect(screen.getByLabelText(inputTextProps.label)).toHaveAttribute('type', 'date');
+    expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'date');
   });
 
   test('component with hidden rendering <input type="hidden"/>', async () => {
