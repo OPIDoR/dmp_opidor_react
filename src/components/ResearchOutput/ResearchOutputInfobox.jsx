@@ -8,8 +8,6 @@ import { useTranslation } from "react-i18next";
 
 import { GlobalContext } from "../context/Global";
 
-import { GlobalContext } from "../context/Global";
-
 function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, readonly }) {
   const { t } = useTranslation();
   const {
