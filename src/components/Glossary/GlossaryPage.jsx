@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import { Alert } from 'react-bootstrap';
@@ -49,9 +49,10 @@ export default function HelpPage({ locale, directusUrl }) {
     Z: {},
   };
 
-  const { isLoading, error, data } = useQuery('glossary', () =>
-    directus.getGlossary(directusUrl).then(res => res)
-  );
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['glossary'],
+    queryFn: () => directus.getGlossary(directusUrl).then(res => res)
+  });
 
   if (isLoading) return <CustomSpinner />;
 

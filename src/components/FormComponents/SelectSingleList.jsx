@@ -215,7 +215,7 @@ function SelectSingleList({
                     selectedOption={selectedOption}
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries, overridable, registryType, t)}
+                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, registryType, t)}
                     overridable={registryType === 'complex' ? false : overridable}
                   />
                 )}

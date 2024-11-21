@@ -89,11 +89,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
     });
+    document.getElementById('plan-title').innerHTML = response.data.fragment.meta.title;
     setPersons(response.data.persons);
-    if (response?.data?.meta_fragment) {
-      document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.title;
-      setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
-    }
     toast.success(t(
       '\'{{projectTitle}}\' project data has successfully been imported',
       { projectTitle: selectedProject.title }
@@ -153,9 +150,9 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                   </div>
                 )}
                 {fundedProjects.length > 0 && (
-                  <div style={{ paddingBottom: '10px' }}>
+                  <div className="form-group">
                     <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("Then Select project acronym, title or ID")}</label>
+                      <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
                     </div>
                     <CustomSelect
                       options={fundedProjects}
@@ -167,7 +164,9 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                   </div>
                 )}
                 {selectedProject && (
-                  <Button variant="light" onClick={handleSaveFunding}>{t("Save")}</Button>
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                    {t("Save")}
+                  </ButtonSave>
                 )}
               </div>
             )}

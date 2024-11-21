@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
@@ -21,9 +21,10 @@ const locales = {
 export default function NewsPage({ locale, size }) {
   const { t, i18n } = useTranslation();
 
-  const { isLoading, error, data } = useQuery('news', () =>
-    news.get(size).then(res => res.data)
-  );
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['news'],
+    queryFn: () => news.get(size).then(res => res.data)
+  });
 
   if (isLoading) return <CustomSpinner />;
 

@@ -51,30 +51,20 @@ export function createOptions(registryValues, locale) {
 /**
  * Creates a placeholder message for a registry based on certain conditions.
  *
- * @param {Array} registries - The array of registries.
+ * @param {number} registriesLength - Registries array length.
+ * @param {boolean} multipleRegistry - Can the user select multiple values ?
  * @param {boolean} overridable - Whether the registry is overridable.
  * @param {string} registryType - The type of the registry.
- * @param {function} t - A translation function used to retrieve localized messages.
  * @returns {string} - The placeholder message for the registry.
  */
-export function createRegistryPlaceholder(registries, overridable, registryType, t) {
-  if(registries.length > 1) {
-    if (overridable) {
-      return registryType === 'complex' ?
-      t("Then select a value from the list or create a new one by clicking on +") :
-      t("Then select a value from the list or type a new one") ;
-    } else {
-      return t("Then select a value from the list");
-    }
-  } else {
-    if (overridable) {
-      return registryType === 'complex' ?
-      t("Select a value from the list or create a new one by clicking on +") :
-      t("Select a value from the list or type a new one") ;
-    } else {
-      return t("Select a value from the list");
-    }
+export function createRegistryPlaceholder(registriesLength, multipleRegistry, overridable, registryType, t) {
+  let placeholder = '';
+  placeholder += registriesLength > 1 ? t('Then select ') : t('Select ')
+  placeholder += multipleRegistry ? t('one or multiple values from the list') :  t('a value from the list')
+  if (overridable) {
+    placeholder += registryType === 'complex' ? t(' or create a new one by clicking on +') :  t(' or type a new one');
   }
+  return placeholder;
 }
 
 /**
