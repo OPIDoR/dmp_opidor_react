@@ -21,6 +21,12 @@ import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
 
+const closedModalState = {
+  guidance: false,
+  comment: false,
+  runs: false,
+  formSelector: false,
+};
 function Question({
   planId,
   question,
@@ -37,17 +43,13 @@ function Question({
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
   const [answer, setAnswer] = useState(null);
-  const [scriptsData, setScriptsData] = useState({ scripts: [] }); // {classname: "class", id: 1}
-
-  const [showGuidanceModal, setShowGuidanceModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
-  const [showRunsModal, setShowRunsModal] = useState(false);
-  const [showFormSelectorModal, setShowFormSelectorModal] = useState(false);
-
-  const [fillRunsIconColor, setFillRunsIconColor] = useState("var(--dark-blue)");
-  const [fillCommentIconColor, setFillCommentIconColor] = useState("var(--dark-blue)");
-  const [fillGuidanceIconColor, setFillGuidanceIconColor] = useState("var(--dark-blue)");
-  const [fillFormSelectorIconColor, setFillFormSelectorIconColor] = useState("var(--dark-blue)");
+  const [scriptsData, setScriptsData] = useState({ scripts: [] });
+  const [showModals, setShowModals] = useState({
+    guidance: false,
+    comment: false,
+    runs: false,
+    formSelector: true,
+  });
 
   const { formSelectors } = useContext(GlobalContext);
 
@@ -58,8 +60,6 @@ function Question({
       (a) => question?.id === a?.question_id
     );
     setAnswer(ans);
-
-    handleIconClick(null, 'formSelector');
   }, [displayedResearchOutput, question.id]);
 
   /**
@@ -68,8 +68,6 @@ function Question({
    * It updates the state of opened questions based on the changes.
    */
   const handleQuestionCollapse = (expanded) => {
-    closeAllModals();
-
     const updatedState = { ...openedQuestions[displayedResearchOutput.id] };
 
     if (!updatedState[sectionId]) {
@@ -87,69 +85,23 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
-
-    handleIconClick(null, 'formSelector');
   };
 
-  const closeAllModals = () => {
-    setShowCommentModal(false);
-    setFillCommentIconColor('var(--dark-blue)');
-
-    setShowGuidanceModal(false);
-    setFillGuidanceIconColor('var(--dark-blue)');
-
-    setShowFormSelectorModal(false);
-    setFillFormSelectorIconColor('var(--dark-blue)');
-
-    setShowRunsModal(false);
-    setFillRunsIconColor('var(--dark-blue)');
-  };
+  const getFillColor = (isOpened) => {
+    return isOpened ? 'var(--rust)' : 'var(--dark-blue)'
+  }
 
   /**
-   * Handles the click event for showing modals and updating icon colors based on the modal type.
-   *
-   * @param {Event} e - The click event object.handleIconClick
-   * @param {string} modalType - The type of modal to show ('comment', 'guidance', or 'runs').
+   * Handles a given modal state according to the modalType & the state 
    */
-  const handleIconClick = (e, modalType) => {
+  const setModalOpened = (e, modalType, isOpened) => {
     if (e) {
       e.stopPropagation();
       e.preventDefault();
     }
+    setShowModals({ ...closedModalState, [modalType]: isOpened });
+  }
 
-    // Check if the current modal type is the same as the one that is about to be opened
-    const isModalOpen =
-      (modalType === 'comment' && showCommentModal) ||
-      (modalType === 'guidance' && showGuidanceModal) ||
-      (modalType === 'runs' && showRunsModal) ||
-      (modalType === 'formSelector' && showFormSelectorModal)
-
-    // If the current modal is the same as the one about to be opened, close it
-    if (isModalOpen) {
-      return closeAllModals();
-    }
-
-    // Open the specified modal and update icon colors
-    setShowCommentModal(modalType === 'comment');
-    setFillCommentIconColor(
-      modalType === 'comment' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowGuidanceModal(modalType === 'guidance');
-    setFillGuidanceIconColor(
-      modalType === 'guidance' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowRunsModal(modalType === 'runs');
-    setFillRunsIconColor(
-      modalType === 'runs' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-
-    setShowFormSelectorModal(modalType === 'formSelector');
-    setFillFormSelectorIconColor(
-      modalType === 'formSelector' ? 'var(--rust)' : 'var(--dark-blue)',
-    );
-  };
 
   /**
    * Checks if a specific question is opened based on its identifiers within the nested object structure.
@@ -371,7 +323,7 @@ function Question({
                 )}
                 {isQuestionOpened() ? (
                   <>
-                    {readonly && !answer?.id ? (<Label bsStyle="primary">{t('Question not answered.')}</Label>) :
+                    {readonly && !answer?.id ? (<Label variant="primary">{t('Question not answered.')}</Label>) :
                       (<DynamicForm
                         fragmentId={answer?.fragment_id}
                         className={question?.madmp_schema?.classname}
