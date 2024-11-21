@@ -95,11 +95,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
     });
+    document.getElementById('plan-title').innerHTML = response.data.fragment.meta.title;
     setPersons(response.data.persons);
-    if (response?.data?.meta_fragment) {
-      document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.title;
-      setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
-    }
     toast.success(t(
       '\'{{projectTitle}}\' project data has successfully been imported',
       { projectTitle: selectedProject.title }
