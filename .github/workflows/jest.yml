@@ -1,4 +1,4 @@
-name: Run linter on pull request
+name: Run jest tests on pull request
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
       - '*'
 
 jobs:
-  run-linter:
+  run-jest:
     runs-on: ubuntu-latest
 
     environment: development
