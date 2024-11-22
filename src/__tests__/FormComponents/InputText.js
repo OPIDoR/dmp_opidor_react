@@ -1,6 +1,6 @@
 import React from 'react';
-import { useForm, FormProvider } from "react-hook-form";
-import { render, screen } from "@testing-library/react"
+import { useForm, FormProvider } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import InputText from '../../components/FormComponents/InputText';
 
@@ -50,6 +50,21 @@ describe('InputText component', () => {
     expect(screen.getByPlaceholderText(`e.g. ${inputTextProps.placeholder}`)).toBeInTheDocument();
   });
 
+  test('tooltip is showing when hovering label', async () => {
+    render(
+      <Wrapper>
+        <InputText {...inputTextProps} />
+      </Wrapper>
+    );
+    const label = screen.getByTestId('input-text-label');
+    expect(screen.queryByText(inputTextProps.tooltip)).not.toBeInTheDocument();
+    fireEvent.mouseOver(label);
+    await waitFor(() => screen.getByRole('tooltip'))
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent(inputTextProps.tooltip);
+    expect(label.getAttribute('data-tooltip-id')).toBe(tooltip.getAttribute('id'));
+  });
   test('component rendering as readonly', async () => {
     const inputTextReadonlyProps = { ...inputTextProps, readonly: true }
     render(
@@ -68,6 +83,18 @@ describe('InputText component', () => {
       </Wrapper>
     );
     expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'date');
+  });
+
+  test('component with type=number rendering <input type="number"/>', async () => {
+    const inputTextNumberProps = { ...inputTextProps, type: "number", min: 42 }
+    render(
+      <Wrapper>
+        <InputText {...inputTextNumberProps} />
+      </Wrapper>
+    );
+    const input = screen.getByTestId('input-text')
+    expect(input).toHaveAttribute('type', 'number');
+    expect(input).toHaveAttribute('min', inputTextNumberProps.min.toString());
   });
 
   test('component with hidden rendering <input type="hidden"/>', async () => {

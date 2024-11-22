@@ -32,17 +32,15 @@ function InputText({
       {hidden === false && (
         <div className={styles.label_form}>
           <label htmlFor={inputId} aria-labelledby={inputId} data-testid="input-text-label" data-tooltip-id={tooltipedLabelId}>{label}</label>
-          {
-            tooltip && (
-              <ReactTooltip
-                id={tooltipedLabelId}
-                place="bottom"
-                effect="solid"
-                variant="info"
-                style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
-            )
+          {tooltip && (
+            <ReactTooltip
+              id={tooltipedLabelId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              style={{ width: '300px', textAlign: 'center' }}
+              content={tooltip}
+            />)
           }
         </div>
       )}
