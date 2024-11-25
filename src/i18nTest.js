@@ -1,15 +1,17 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+const Languages = ["en", "fr"];
+
 i18n
   .use(initReactI18next) // pass the i18n instance to react-i18next.
   .init({
-    resources: {}, // resources would be your translations. This can be an empty object for testing if you don't want to use actual translations.
-    lng: "fr", // language to use
-    fallbackLng: "fr",
-
+    load: 'languageOnly',
+    fallbackLng: "en",
+    debug: true,
+    whitelist: Languages,
     interpolation: {
-      escapeValue: false, // not needed for React
+      escapeValue: false, // not needed for react as it escapes by default
     },
   });
 

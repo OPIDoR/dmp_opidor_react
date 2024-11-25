@@ -1,0 +1,110 @@
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import InputText from '../../components/FormComponents/InputText';
+
+const Wrapper = (props) => {
+  const formMethods = useForm();
+
+  return (
+    <FormProvider {...formMethods}>
+      {props.children}
+    </FormProvider>
+  );
+};
+jest.mock('react-i18next', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => { }),
+      },
+    };
+  },
+  initReactI18next: {
+    type: '3rdParty',
+    init: () => { },
+  }
+}));
+
+const inputTextProps = {
+  label: 'Input Text Label',
+  type: 'text',
+  propName: 'myInput',
+  tooltip: 'my tooltip',
+  placeholder: 'my placeholder'
+}
+
+describe('InputText component', () => {
+  test('component rendering', async () => {
+    render(
+      <Wrapper>
+        <InputText {...inputTextProps} />
+      </Wrapper>
+    );
+    expect(screen.getByTestId('input-text-label')).toHaveTextContent(inputTextProps.label);
+    expect(screen.getByTestId('input-text')).toBeInTheDocument();
+    expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'text');
+    expect(screen.getByPlaceholderText(`e.g. ${inputTextProps.placeholder}`)).toBeInTheDocument();
+  });
+
+  test('tooltip is showing when hovering label', async () => {
+    render(
+      <Wrapper>
+        <InputText {...inputTextProps} />
+      </Wrapper>
+    );
+    const label = screen.getByTestId('input-text-label');
+    expect(screen.queryByText(inputTextProps.tooltip)).not.toBeInTheDocument();
+    fireEvent.mouseOver(label);
+    await waitFor(() => screen.getByRole('tooltip'))
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent(inputTextProps.tooltip);
+    expect(label.getAttribute('data-tooltip-id')).toBe(tooltip.getAttribute('id'));
+  });
+  test('component rendering as readonly', async () => {
+    const inputTextReadonlyProps = { ...inputTextProps, readonly: true }
+    render(
+      <Wrapper>
+        <InputText {...inputTextReadonlyProps} />
+      </Wrapper>
+    );
+    expect(screen.getByTestId('input-text')).toHaveAttribute('readonly');
+  });
+
+  test('component with type=date rendering <input type="date"/>', async () => {
+    const inputTextDateProps = { ...inputTextProps, type: "date" }
+    render(
+      <Wrapper>
+        <InputText {...inputTextDateProps} />
+      </Wrapper>
+    );
+    expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'date');
+  });
+
+  test('component with type=number rendering <input type="number"/>', async () => {
+    const inputTextNumberProps = { ...inputTextProps, type: "number", min: 42 }
+    render(
+      <Wrapper>
+        <InputText {...inputTextNumberProps} />
+      </Wrapper>
+    );
+    const input = screen.getByTestId('input-text')
+    expect(input).toHaveAttribute('type', 'number');
+    expect(input).toHaveAttribute('min', inputTextNumberProps.min.toString());
+  });
+
+  test('component with hidden rendering <input type="hidden"/>', async () => {
+    const inputTextHiddenProps = { ...inputTextProps, hidden: true }
+    render(
+      <Wrapper>
+        <InputText {...inputTextHiddenProps} />
+      </Wrapper>
+    );
+    expect(screen.queryByText(inputTextProps.label)).not.toBeInTheDocument();
+    expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'hidden');
+  });
+});
