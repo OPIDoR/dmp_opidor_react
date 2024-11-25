@@ -30,6 +30,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const {
+    displayedResearchOutput,
     setQuestionsWithGuidance,
     setCurrentOrg,
     currentOrg,
@@ -137,7 +138,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     let response;
     try {
-      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, planId, locale);
+      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput.id }, planId, locale);
     } catch (error) {
       return toast.error(t("An error occurred while saving the recommendations"));
     }
