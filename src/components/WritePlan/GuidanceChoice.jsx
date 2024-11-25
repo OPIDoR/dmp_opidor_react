@@ -62,7 +62,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [planId]);
+  }, [planId, locale]);
 
   const sortGuidances = (guidances) => guidances.sort((a, b) => a.name.localeCompare(b.name));
 
