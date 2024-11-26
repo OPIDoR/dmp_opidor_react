@@ -82,12 +82,12 @@ export const GlossaryContent = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 20px;
-    list-style-type: disc;
+    list-style-type: none;
     scroll-margin-top: 110px;
 
     li {
       margin: 10px 0 10px 20px;
-      
+
       .term {
         font-weigth: 900;
         font-size: 22px;
@@ -95,6 +95,10 @@ export const GlossaryContent = styled.div`
 
       .description {
         color: var(--blue);
+
+        ul {
+          list-style-type: disc;
+        }
       }
     }
   }
