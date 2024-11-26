@@ -31,7 +31,7 @@ export const GlobalContext = createContext();
  * @returns The GlobalContext.Provider is being returned.
  */
 function Global({ children }) {
-  const [locale, setLocale] = useState('en');
+  const [locale, setLocale] = useState('fr_FR');
   const [dmpId, setDmpId] = useState(null);
   const [persons, setPersons] = useState([]);
   // Plan Creation

@@ -148,7 +148,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {error && <CustomError />}
+      {error && <CustomError error={error} />}
       {!error && (
         <>
           <div className="row" style={{ margin: '10px' }}>
