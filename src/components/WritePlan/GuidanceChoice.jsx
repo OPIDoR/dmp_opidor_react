@@ -138,9 +138,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     let response;
     try {
-      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput.id }, planId, locale);
+      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput?.id }, planId, locale);
     } catch (error) {
-      return toast.error(t("An error occurred while saving the recommendations"));
+      console.log(error);
+      return toast.error(t("An error occurred while saving the selected guidances"));
     }
 
     const { guidance_groups } = response.data;
