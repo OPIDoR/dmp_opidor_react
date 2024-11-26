@@ -194,7 +194,12 @@ function SelectContributorSingle({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      field.onChange({ 
+        ...contributor,
+        person: savedFragment,
+        role: defaultRole,
+        action: contributor ? 'update' : 'create'
+      })
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
     }).catch(error => setError(error));
     handleClose();
