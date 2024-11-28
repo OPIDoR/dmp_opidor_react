@@ -46,7 +46,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     const orgName = currentOrgName || currentOrg.name;
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId, locale)
+    guidances.getGuidanceGroups(planId)
       .then((res) => {
         let guidance_groups = [];
         const { data } = res.data;
@@ -63,7 +63,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [planId, locale]);
+  }, [planId]);
 
   const sortGuidances = (guidances) => guidances.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -138,7 +138,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     let response;
     try {
-      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput?.id }, planId, locale);
+      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput?.id }, planId);
     } catch (error) {
       console.log(error);
       return toast.error(t("An error occurred while saving the selected guidances"));
