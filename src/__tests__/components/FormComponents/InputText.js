@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import InputText from '../../components/FormComponents/InputText';
+import InputText from '../../../components/FormComponents/InputText';
 
 const Wrapper = (props) => {
   const formMethods = useForm();
