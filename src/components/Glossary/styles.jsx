@@ -13,7 +13,7 @@ export const StyledUl = styled.ul`
   position: -webkit-sticky;
   position: sticky;
   top: 60px;
-  z-index: 1000;
+  z-index: 9;
   width: 100%;
   height: 40px;
   background-color: var(--white);
@@ -81,8 +81,8 @@ export const GlossaryContent = styled.div`
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
-    list-style-type: none;
     margin-top: 20px;
+    list-style-type: none;
     scroll-margin-top: 110px;
 
     li {
@@ -95,6 +95,10 @@ export const GlossaryContent = styled.div`
 
       .description {
         color: var(--blue);
+
+        ul {
+          list-style-type: disc;
+        }
       }
     }
   }

@@ -148,7 +148,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
 
   return (
     <div style={{ position: 'relative' }}>
-      {error && <CustomError />}
+      {error && <CustomError error={error} />}
       {!error && (
         <>
           <div className="row" style={{ margin: '10px' }}>
@@ -158,7 +158,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                   <i>
                     <Trans
                       t={t}
-                      defaults="ROR ID is a unique, permanent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below."
+                      defaults="ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below."
                       components={[<a href="https://ror.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ROR</a>]}
                     />
                   </i>

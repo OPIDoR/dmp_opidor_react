@@ -114,7 +114,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
 
   return (
     <div style={{ position: "relative" }}>
-      {error && <CustomError />}
+      {error && <CustomError error={error} />}
       {!error && (
         <>
           <div className="row" style={{ margin: "10px" }}>
@@ -124,7 +124,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                   <i>
                     <Trans
                       t={t}
-                      defaults="ORCID iD is a unique, permanent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below."
+                      defaults="ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below."
                       components={[<a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ORCID</a>]}
                     />
                   </i>
