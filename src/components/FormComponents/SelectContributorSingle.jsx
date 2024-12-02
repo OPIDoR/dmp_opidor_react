@@ -7,7 +7,7 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { createOptions, parsePattern } from '../../utils/GeneratorUtils.js';
+import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils.js';
 import { checkFragmentExists, createPersonsOptions } from '../../utils/JsonFragmentsUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { service } from '../../services';
@@ -194,7 +194,12 @@ function SelectContributorSingle({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      field.onChange({ 
+        ...contributor,
+        person: savedFragment,
+        role: defaultRole,
+        action: contributor ? 'update' : 'create'
+      })
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
     }).catch(error => setError(error));
     handleClose();
@@ -238,7 +243,7 @@ function SelectContributorSingle({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={t("Select a value from the list or create a new one by clicking on +")}
+              placeholder={createRegistryPlaceholder(1, false, true, "complex", t)}
             />
           </div>
           {!readonly && (

@@ -42,6 +42,8 @@ function DynamicForm({
   const [templateId, setTemplateId] = useState(madmpSchemaId);
   const [externalImports, setExternalImports] = useState({});
 
+  const emptyDefaults = template ? generateEmptyDefaults(template.schema.properties) : {};
+
   useEffect(() => {
     setLoading(true);
     if (fragmentId) {
@@ -55,7 +57,7 @@ function DynamicForm({
             setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
           }).catch(console.error);
         }
-        methods.reset(formData[fragmentId]);
+        methods.reset({ ...emptyDefaults, ...formData[fragmentId]});
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
@@ -76,7 +78,7 @@ function DynamicForm({
   }, [fragmentId]);
 
   useEffect(() => {
-    methods.reset(formData[fragmentId]);
+    methods.reset({ ...emptyDefaults, ...formData[fragmentId]});
   }, [formData[fragmentId]]);
 
   useEffect(() => {
@@ -113,8 +115,8 @@ function DynamicForm({
         return setLoading(false);
       }
       if (response?.data?.meta_fragment) {
-        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.data?.title;
-        setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment.data });
+        document.getElementById('plan-title').innerHTML = response?.data?.meta_fragment?.title;
+        setFormData({ [response?.data?.meta_fragment?.id]: response.data.meta_fragment });
       }
       setFormData({ [fragmentId]: response.data.fragment });
       setLoading(false);
