@@ -53,10 +53,10 @@ function SelectSingleList({
   useEffect(() => {
     if (registryType === 'complex') {
       setSelectedValue(
-        except(field.value, ['template_name', 'id', 'schema_id']) ||  null
+        except(field.value, ['template_name', 'id', 'schema_id']) || null
       );
     } else {
-      setSelectedValue(field.value ||  null);
+      setSelectedValue(field.value || null);
     }
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
@@ -70,16 +70,16 @@ function SelectSingleList({
     if (!options) return;
     if (registryType === 'complex') return setSelectedOption(null);
 
-      if (field.value) {
-        const selectedOpt = options.find(o => o.value === field.value) || null;
-        if (selectedOpt === null && overridable === true) {
-          setSelectedOption({ value: field.value, label: field.value });
-        } else {
-          setSelectedOption(selectedOpt)
-        }
+    if (field.value) {
+      const selectedOpt = options.find(o => o.value === field.value) || null;
+      if (selectedOpt === null && overridable === true) {
+        setSelectedOption({ value: field.value, label: field.value });
       } else {
-        setSelectedOption(null);
+        setSelectedOption(selectedOpt)
       }
+    } else {
+      setSelectedOption(null);
+    }
   }, [field.value, options]);
 
   /*
@@ -220,6 +220,14 @@ function SelectSingleList({
                   />
                 )}
               </div>
+              {!readonly && registryType === 'simple' && selectedOption && (
+                <div className="col-md-1">
+                  <FaXmark
+                    onClick={() => field.onChange(null)}
+                    className={styles.icon}
+                  />
+                </div>
+              )}
               {!readonly && overridable && registryType === 'complex' && !showNestedForm && (
                 <div className="col-md-1">
                   <ReactTooltip
@@ -233,7 +241,7 @@ function SelectSingleList({
                     data-tooltip-id="select-single-list-add-button"
                     onClick={() => {
                       setShowNestedForm(true);
-                      setEditedFragment({ action: field.value?.id ?  'update' : 'create' });
+                      setEditedFragment({ action: field.value?.id ? 'update' : 'create' });
                     }}
                     className={styles.icon}
                   />
@@ -281,7 +289,7 @@ function SelectSingleList({
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
-                        setEditedFragment({...field.value, action: 'update'});
+                        setEditedFragment({ ...field.value, action: 'update' });
                       }}
                       className={styles.icon}
                     />
