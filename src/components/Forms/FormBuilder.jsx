@@ -6,9 +6,10 @@ import InputTextArray from '../FormComponents/InputTextArray.jsx';
 import ModalTemplate from '../FormComponents/ModalTemplate';
 import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
-import SelectMultipleList from '../FormComponents/SelectMultipleList';
-import SelectSingleList from '../FormComponents/SelectSingleList';
-import SelectWithCreate from '../FormComponents/SelectWithCreate';
+import SelectMultipleList from '../FormComponents/registries/SelectMultipleString.jsx';
+import SelectSingleString from '../FormComponents/registries/SelectSingleString.jsx';
+import SelectSingleObject from '../FormComponents/registries/SelectSingleObject.jsx';
+import SelectMultipleObject from '../FormComponents/registries/SelectMultipleObject.jsx';
 import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
@@ -37,24 +38,23 @@ function FormBuilder({ template, readonly }) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
         if (prop.template_name && prop.type === 'object') {
           formFields.push(
-            <SelectSingleList
+            <SelectSingleObject
               key={key}
               label={formLabel}
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
-              registryType="complex"
               templateName={prop.template_name}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
-            ></SelectSingleList>,
+            ></SelectSingleObject>,
           );
           continue;
         }
         // COMPLEX REGISTRY, MULTIPLE VALUES SELECTABLE
         if (prop.items?.template_name && prop.type === 'array') {
           formFields.push(
-            <SelectWithCreate
+            <SelectMultipleObject
               key={key}
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
@@ -65,23 +65,22 @@ function FormBuilder({ template, readonly }) {
               overridable={prop["overridable"]}
               readonly={readonly}
               isConst={isConst}
-            ></SelectWithCreate>,
+            ></SelectMultipleObject>,
           );
           continue;
         }
         // SIMPLE REGISTRY, ONE VALUE SELECTABLE
         if (prop.type === 'string') {
           formFields.push(
-            <SelectSingleList
+            <SelectSingleString
               key={key}
               label={formLabel}
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
-              registryType="simple"
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
-            ></SelectSingleList>,
+            ></SelectSingleString>,
           );
           continue;
         }

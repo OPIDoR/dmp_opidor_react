@@ -7,22 +7,22 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
+import { GlobalContext } from '../../context/Global.jsx';
 import {
   createOptions,
   createRegistryPlaceholder,
-} from '../../utils/GeneratorUtils';
-import { service } from '../../services';
-import * as styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import FragmentList from './FragmentList.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import ModalForm from '../Forms/ModalForm.jsx';
-import swalUtils from '../../utils/swalUtils.js';
-import { getErrorMessage } from '../../utils/utils.js';
-import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
+} from '../../../utils/GeneratorUtils.js';
+import { service } from '../../../services/index.js';
+import * as styles from '../../assets/css/form.module.css';
+import CustomSelect from '../../Shared/CustomSelect.jsx';
+import FragmentList from '../FragmentList.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
+import ModalForm from '../../Forms/ModalForm.jsx';
+import swalUtils from '../../../utils/swalUtils.js';
+import { getErrorMessage } from '../../../utils/utils.js';
+import { checkFragmentExists } from '../../../utils/JsonFragmentsUtils.js';
 
-function SelectWithCreate({
+function SelectMultipleObject({
   label,
   formLabel,
   propName,
@@ -283,4 +283,4 @@ function SelectWithCreate({
   );
 }
 
-export default SelectWithCreate;
+export default SelectMultipleObject;
