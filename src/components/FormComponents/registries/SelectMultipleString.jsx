@@ -6,13 +6,13 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaXmark } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
-import { service } from '../../services';
-import { createOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
-import * as styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import swalUtils from '../../utils/swalUtils.js';
+import { GlobalContext } from '../../context/Global.jsx';
+import { service } from '../../../services/index.js';
+import { createOptions, createRegistryPlaceholder } from '../../../utils/GeneratorUtils.js';
+import * as styles from '../../assets/css/form.module.css';
+import CustomSelect from '../../Shared/CustomSelect.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
+import swalUtils from '../../../utils/swalUtils.js';
 
 function SelectMultipleList({
   label,
