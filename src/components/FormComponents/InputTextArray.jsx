@@ -21,20 +21,20 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
   return (
     <div>
       <div className={styles.label_form}>
-        <label data-tooltip-id={inputTextTooltipId}>{label}</label>
+        <label data-tooltip-id={inputTextTooltipId}>
+          {label}
+          {tooltip && (<TooltipInfoIcon />)}
+        </label>
         {
           tooltip && (
-            <>
-              <TooltipInfoIcon tooltipId={inputTextTooltipId} />
-              <ReactTooltip
-                id={inputTextTooltipId}
-                place="bottom"
-                effect="solid"
-                variant="info"
-                style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-                />
-            </>
+            <ReactTooltip
+              id={inputTextTooltipId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              style={{ width: '300px', textAlign: 'center' }}
+              content={tooltip}
+            />
           )
         }
       </div>

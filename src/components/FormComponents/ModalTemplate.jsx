@@ -133,19 +133,19 @@ function ModalTemplate({
     <>
       <div className={`p-2 mb-2`}>
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{formLabel}</label>
+          <label data-tooltip-id={tooltipId}>
+            {formLabel}
+            {tooltip && (<TooltipInfoIcon tooltipId={tooltipId} />)}
+          </label>
           {
             tooltip && (
-              <>
-                <TooltipInfoIcon tooltipId={tooltipId} />
-                <ReactTooltip
-                  id={tooltipId}
-                  place="bottom"
-                  effect="solid"
-                  variant="info" style={{ width: '300px', textAlign: 'center' }}
-                  content={tooltip}
-                />
-              </>
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
             )
           }
         </div>
