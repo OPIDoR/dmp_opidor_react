@@ -15,6 +15,7 @@ import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 /**
  * It takes a template name as an argument, loads the template file, and then
@@ -135,13 +136,16 @@ function ModalTemplate({
           <label data-tooltip-id={tooltipId}>{formLabel}</label>
           {
             tooltip && (
-              <ReactTooltip
-                id={tooltipId}
-                place="bottom"
-                effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
+              <>
+                <TooltipInfoIcon tooltipId={tooltipId} />
+                <ReactTooltip
+                  id={tooltipId}
+                  place="bottom"
+                  effect="solid"
+                  variant="info" style={{ width: '300px', textAlign: 'center' }}
+                  content={tooltip}
+                />
+              </>
             )
           }
         </div>

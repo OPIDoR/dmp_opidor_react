@@ -14,6 +14,7 @@ import { parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import swalUtils from '../../utils/swalUtils.js';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 function SubForm({
   label,
@@ -85,14 +86,17 @@ function SubForm({
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
-              <ReactTooltip
-                id={tooltipId}
-                place="bottom"
-                effect="solid"
-                variant="info"
-                style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
+              <>
+                <TooltipInfoIcon tooltipId={tooltipId} />
+                <ReactTooltip
+                  id={tooltipId}
+                  place="bottom"
+                  effect="solid"
+                  variant="info"
+                  style={{ width: '300px', textAlign: 'center' }}
+                  content={tooltip}
+                />
+              </>
             )
           }
         </div>
