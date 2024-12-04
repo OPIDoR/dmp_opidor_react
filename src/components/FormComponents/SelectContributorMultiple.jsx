@@ -219,19 +219,19 @@ function SelectContributorMultiple({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
-              <>
-                <TooltipInfoIcon tooltipId={tooltipId} />
-                <ReactTooltip
-                  id={tooltipId}
-                  place="bottom"
-                  effect="solid"
-                  variant="info" style={{ width: '300px', textAlign: 'center' }}
-                  content={tooltip}
-                />
-              </>
+              <ReactTooltip
+                id={tooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
             )
           }
         </div>

@@ -45,19 +45,19 @@ function TinyArea({
     <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
       <div className="row">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
+          <label data-tooltip-id={tinyAreaLabelId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
-              <>
-                <TooltipInfoIcon tooltipId={tinyAreaLabelId} />
-                <ReactTooltip
-                  id={tinyAreaLabelId}
-                  place="bottom"
-                  effect="solid"
-                  variant="info" style={{ width: '300px', textAlign: 'center' }}
-                  content={tooltip}
-                />
-              </>
+              <ReactTooltip
+                id={tinyAreaLabelId}
+                place="bottom"
+                effect="solid"
+                variant="info" style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
             )
           }
         </div>
