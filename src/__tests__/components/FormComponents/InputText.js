@@ -48,6 +48,7 @@ describe('InputText component', () => {
     expect(screen.getByTestId('input-text')).toBeInTheDocument();
     expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'text');
     expect(screen.getByPlaceholderText(`e.g. ${inputTextProps.placeholder}`)).toBeInTheDocument();
+    expect(screen.getByTestId(/tooltip_info_icon_[0-9]+/i)).toBeInTheDocument();
   });
 
   test('tooltip is showing when hovering label', async () => {
@@ -65,6 +66,24 @@ describe('InputText component', () => {
     expect(tooltip).toHaveTextContent(inputTextProps.tooltip);
     expect(label.getAttribute('data-tooltip-id')).toBe(tooltip.getAttribute('id'));
   });
+
+  test('tooltip is showing when hovering info incon', async () => {
+    render(
+      <Wrapper>
+        <InputText {...inputTextProps} />
+      </Wrapper>
+    );
+    const icon = screen.getByTestId(/tooltip_info_icon_[0-9]+/i);
+    expect(icon).toBeInTheDocument();
+    expect(screen.queryByText(inputTextProps.tooltip)).not.toBeInTheDocument();
+    fireEvent.mouseOver(icon);
+    await waitFor(() => screen.getByRole('tooltip'))
+    const tooltip = screen.getByRole('tooltip');
+    expect(tooltip).toBeInTheDocument();
+    expect(tooltip).toHaveTextContent(inputTextProps.tooltip);
+    expect(icon.getAttribute('data-tooltip-id')).toBe(tooltip.getAttribute('id'));
+  });
+
   test('component rendering as readonly', async () => {
     const inputTextReadonlyProps = { ...inputTextProps, readonly: true }
     render(
