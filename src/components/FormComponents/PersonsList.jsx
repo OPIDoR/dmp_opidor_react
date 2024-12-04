@@ -7,7 +7,6 @@ import { parsePattern } from '../../utils/GeneratorUtils';
 import * as styles from '../assets/css/form.module.css';
 import CustomSelect from '../Shared/CustomSelect';
 
-
 function PersonsList({
   personsList,
   handleEdit,

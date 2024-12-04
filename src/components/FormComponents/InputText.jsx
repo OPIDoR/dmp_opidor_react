@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import uniqueId from 'lodash.uniqueid';
 
 import * as styles from '../assets/css/form.module.css';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 /**
  * It's a function that takes in a bunch of props and returns
@@ -33,15 +34,18 @@ function InputText({
         <div className={styles.label_form}>
           <label htmlFor={inputId} aria-labelledby={inputId} data-testid="input-text-label" data-tooltip-id={tooltipedLabelId}>{label}</label>
           {tooltip && (
-            <ReactTooltip
-              id={tooltipedLabelId}
-              place="bottom"
-              effect="solid"
-              variant="info"
-              style={{ width: '300px', textAlign: 'center' }}
-              content={tooltip}
-            />)
-          }
+            <>
+              <TooltipInfoIcon tooltipId={tooltipedLabelId} />
+              <ReactTooltip
+                id={tooltipedLabelId}
+                place="bottom"
+                effect="solid"
+                variant="info"
+                style={{ width: '300px', textAlign: 'center' }}
+                content={tooltip}
+              />
+            </>
+          )}
         </div>
       )}
       <input

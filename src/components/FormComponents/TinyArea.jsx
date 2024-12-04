@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import uniqueId from 'lodash.uniqueid';
 import DOMPurify from 'dompurify';
 import styled from 'styled-components';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 import * as styles from '../assets/css/form.module.css';
 
@@ -47,13 +48,16 @@ function TinyArea({
           <label data-tooltip-id={tinyAreaLabelId}>{label}</label>
           {
             tooltip && (
-              <ReactTooltip
-                id={tinyAreaLabelId}
-                place="bottom"
-                effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
+              <>
+                <TooltipInfoIcon tooltipId={tinyAreaLabelId} />
+                <ReactTooltip
+                  id={tinyAreaLabelId}
+                  place="bottom"
+                  effect="solid"
+                  variant="info" style={{ width: '300px', textAlign: 'center' }}
+                  content={tooltip}
+                />
+              </>
             )
           }
         </div>

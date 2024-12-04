@@ -17,6 +17,7 @@ import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 function SelectContributorSingle({
   propName,
@@ -224,13 +225,16 @@ function SelectContributorSingle({
           <label data-tooltip-id={tooltipId}>{label}</label>
           {
             tooltip && (
-              <ReactTooltip
-                id={tooltipId}
-                place="bottom"
-                effect="solid"
-                variant="info" style={{ width: '300px', textAlign: 'center' }}
-                content={tooltip}
-              />
+              <>
+                <TooltipInfoIcon tooltipId={tooltipId} />
+                <ReactTooltip
+                  id={tooltipId}
+                  place="bottom"
+                  effect="solid"
+                  variant="info" style={{ width: '300px', textAlign: 'center' }}
+                  content={tooltip}
+                />
+              </>
             )
           }
         </div>
