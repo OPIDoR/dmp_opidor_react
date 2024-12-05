@@ -17,6 +17,7 @@ import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 function SelectContributorMultiple({
   label,
@@ -218,7 +219,10 @@ function SelectContributorMultiple({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip
