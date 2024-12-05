@@ -21,6 +21,7 @@ import ModalForm from '../../Forms/ModalForm.jsx';
 import swalUtils from '../../../utils/swalUtils.js';
 import { getErrorMessage } from '../../../utils/utils.js';
 import { checkFragmentExists } from '../../../utils/JsonFragmentsUtils.js';
+import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
 function SelectMultipleObject({
   label,
@@ -105,7 +106,7 @@ function SelectMultipleObject({
    */
   const handleSelectRegistryValue = (e) => {
     const pattern = template?.schema?.to_string || [];
-    if(pattern.length > 0 ) {
+    if (pattern.length > 0) {
       append({ ...e.object, action: 'create' })
     }
   };
@@ -118,7 +119,7 @@ function SelectMultipleObject({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...fields[idx], action: 'delete'});
+        update(idx, { ...fields[idx], action: 'delete' });
       }
     });
   };
@@ -179,7 +180,10 @@ function SelectMultipleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{formLabel}</label>
+          <label data-tooltip-id={tooltipId}>
+            {formLabel}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip
