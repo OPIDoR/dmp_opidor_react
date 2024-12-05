@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaXmark } from 'react-icons/fa6';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 import * as styles from '../assets/css/form.module.css';
 import CustomButton from '../Styled/CustomButton';
@@ -20,7 +21,10 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
   return (
     <div>
       <div className={styles.label_form}>
-        <label data-tooltip-id={inputTextTooltipId}>{label}</label>
+        <label data-tooltip-id={inputTextTooltipId}>
+          {label}
+          {tooltip && (<TooltipInfoIcon />)}
+        </label>
         {
           tooltip && (
             <ReactTooltip
