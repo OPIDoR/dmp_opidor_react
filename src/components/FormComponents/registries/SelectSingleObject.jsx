@@ -15,6 +15,7 @@ import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import NestedForm from '../../Forms/NestedForm.jsx';
 import { except, fragmentEmpty, getErrorMessage } from '../../../utils/utils.js';
 import swalUtils from '../../../utils/swalUtils.js';
+import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -146,7 +147,10 @@ function SelectSingleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip

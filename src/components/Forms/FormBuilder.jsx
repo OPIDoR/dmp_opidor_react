@@ -6,7 +6,7 @@ import InputTextArray from '../FormComponents/InputTextArray.jsx';
 import ModalTemplate from '../FormComponents/ModalTemplate';
 import SelectContributorMultiple from '../FormComponents/SelectContributorMultiple.jsx';
 import SelectContributorSingle from '../FormComponents/SelectContributorSingle.jsx';
-import SelectMultipleList from '../FormComponents/registries/SelectMultipleString.jsx';
+import SelectMultipleString from '../FormComponents/registries/SelectMultipleString.jsx';
 import SelectSingleString from '../FormComponents/registries/SelectSingleString.jsx';
 import SelectSingleObject from '../FormComponents/registries/SelectSingleObject.jsx';
 import SelectMultipleObject from '../FormComponents/registries/SelectMultipleObject.jsx';
@@ -59,6 +59,7 @@ function FormBuilder({ template, readonly }) {
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
               propName={key}
+              tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
               registries={prop["registries"] || [prop["registry_name"]]}
@@ -87,7 +88,7 @@ function FormBuilder({ template, readonly }) {
         // MULTIPLE VALUES SELECTABLE
         if (prop.type === 'array') {
           formFields.push(
-            <SelectMultipleList
+            <SelectMultipleString
               key={key}
               label={formLabel}
               propName={key}
@@ -95,7 +96,7 @@ function FormBuilder({ template, readonly }) {
               registries={prop["registries"] || [prop["registry_name"]]}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
-            ></SelectMultipleList>
+            ></SelectMultipleString>
           );
           continue;
         }
