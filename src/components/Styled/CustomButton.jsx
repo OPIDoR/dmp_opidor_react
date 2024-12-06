@@ -1,3 +1,4 @@
+import uniqueId from "lodash.uniqueid";
 import React from "react";
 import styled from "styled-components";
 
@@ -55,13 +56,15 @@ const Button = (props) => {
  * onClick event listener that triggers the handleClick function passed as a prop.
  */
 function CustomButton({ handleClick, title, buttonType = 'button', buttonColor, position, disabled }) {
+  const id = uniqueId('custom_button_');
+
   const handleButtonAction = (e) => {
     handleClick?.(e);
   };
 
   return (
     <DivButton $position={position}>
-      <Button type={buttonType} className="btn btn-primary" $buttonType={buttonColor} onClick={handleButtonAction} disabled={disabled}>
+      <Button data-testid={id} type={buttonType} className="btn btn-primary" $buttonType={buttonColor} onClick={handleButtonAction} disabled={disabled}>
         {title}
       </Button>
     </DivButton>

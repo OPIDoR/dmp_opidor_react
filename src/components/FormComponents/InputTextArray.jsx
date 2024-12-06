@@ -17,11 +17,10 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
   const { control, register } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: propName, keyName: '_id' });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
-
   return (
     <div>
       <div className={styles.label_form}>
-        <label data-tooltip-id={inputTextTooltipId}>
+        <label data-testid="input-text-array-label" data-tooltip-id={inputTextTooltipId}>
           {label}
           {tooltip && (<TooltipInfoIcon />)}
         </label>
@@ -40,31 +39,33 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
       </div>
 
       {fields.map((item, index) => (
-        <div className="row" style={{ marginBottom: '10px' }} key={`row-${index}`}>
+        <div data-testid={`input-text-array-div-${index}`} className="row" style={{ marginBottom: '10px' }} key={`row-${index}`}>
           <div className="col-md-11">
             <div style={{ display: 'flex', alignItems: 'space-between' }}>
               <input
                 key={item.id}
+                data-testid={`input-text-array-${index}`}
                 {...register(`${propName}.${index}`, { value: '' })}
                 type="text"
                 className="form-control"
                 style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
                 placeholder={placeholder ? `${t('e.g.')} ${placeholder}` : null}
-                disabled={readonly}
+                readOnly={readonly === true}
               />
             </div>
           </div>
           {!readonly && (
-            <div className="col-md-1" key={`col-md-1-input-text-dynamically-${index}`}>
+            <div className="col-md-1" key={`col-md-1-input-text-array-${index}`}>
               <ReactTooltip
-                id={`input-text-dynamically-del-button-${index}`}
+                id={`input-text-array-del-button-${index}`}
                 place="bottom"
                 effect="solid"
                 variant="info"
                 content={t('Delete')}
               />
               <FaXmark
-                data-tooltip-id={`input-text-dynamically-del-button-${index}`}
+                data-tooltip-id={`input-text-array-del-button-${index}`}
+                data-testid={`input-text-array-delete-icon-${index}`}
                 onClick={() => remove(index)}
                 variant="info"
                 size={24}
