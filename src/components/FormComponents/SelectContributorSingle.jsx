@@ -17,6 +17,7 @@ import PersonsList from './PersonsList.jsx';
 import ModalForm from '../Forms/ModalForm.jsx';
 import swalUtils from '../../utils/swalUtils.js';
 import { getErrorMessage } from '../../utils/utils.js';
+import TooltipInfoIcon from './TooltipInfoIcon.jsx';
 
 function SelectContributorSingle({
   propName,
@@ -194,7 +195,12 @@ function SelectContributorSingle({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ ...contributor, person: savedFragment, role: defaultRole, action: 'update' })
+      field.onChange({ 
+        ...contributor,
+        person: savedFragment,
+        role: defaultRole,
+        action: contributor ? 'update' : 'create'
+      })
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
     }).catch(error => setError(error));
     handleClose();
@@ -216,10 +222,13 @@ function SelectContributorSingle({
     <>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
-              <ReactTooltip
+             <ReactTooltip
                 id={tooltipId}
                 place="bottom"
                 effect="solid"

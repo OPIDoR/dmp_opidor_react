@@ -109,13 +109,13 @@ export function formatDefaultValues(defaults) {
 }
 
 export function generateEmptyDefaults(properties = {}) {
-  const emtpyDefaults = {};
+  const emptyDefaults = {};
   for (const [key, prop] of Object.entries(properties)) {
     if(prop.type === 'array' && prop.items?.type === 'object') {
-      emtpyDefaults[key] = []
+      emptyDefaults[key] = []
     }
   };
-  return emtpyDefaults;
+  return emptyDefaults;
 }
 
 export function researchOutputTypeToDataType(type) {

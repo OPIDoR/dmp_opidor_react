@@ -242,5 +242,6 @@
   "The file is too large (1mo max.)')": "Le fichier est trop volumineux (1mo max.)",
   "Personal": "Personne",
   "ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
-  "ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liées à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous."
+  "ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liées à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
+  "An error occurred while saving the selected guidances": "Une erreur s'est produite lors de l'enregistrement les recommandations sélectionnées"
 }

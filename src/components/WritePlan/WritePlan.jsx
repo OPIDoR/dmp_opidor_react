@@ -67,7 +67,7 @@ function WritePlan({
       .then((res) => {
         setDmpId(res.data.dmp_id);
 
-        const { research_outputs, questions_with_guidance } = res.data;
+        const { research_outputs } = res.data;
 
         if (research_outputs.length > 0) {
           let currentResearchOutput = research_outputs[0];
@@ -80,10 +80,10 @@ function WritePlan({
           }
 
           setDisplayedResearchOutput(currentResearchOutput);
-          setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
+          setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
+          setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
           researchOutputs.length === 0 && setResearchOutputs(research_outputs);
         }
-        setQuestionsWithGuidance(questions_with_guidance || []);
         setFormData(null);
       })
       .catch((error) => setError(error))
@@ -147,9 +147,9 @@ function WritePlan({
                   <Tab eventKey={"create"} title={t("Create")}>
                     <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} inEdition={false} />
                   </Tab>
-                  <Tab eventKey="import" title={t("Import")}>
-                    <ImportResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} />
-                  </Tab>
+                  {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
+                    <ImportResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} />
+                  </Tab>)}
                 </Tabs>
               </div>
             </Card.Body>
