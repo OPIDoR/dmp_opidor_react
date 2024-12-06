@@ -1,18 +1,9 @@
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import InputText from '../../../components/FormComponents/InputText';
+import { Wrapper } from '../../__utils__/reactHookFormHelpers';
 
-const Wrapper = (props) => {
-  const formMethods = useForm();
-
-  return (
-    <FormProvider {...formMethods}>
-      {props.children}
-    </FormProvider>
-  );
-};
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
