@@ -42,6 +42,16 @@ describe('InputText component', () => {
     expect(screen.getByTestId(/tooltip_info_icon_[0-9]+/i)).toBeInTheDocument();
   });
 
+  test('component rendering with value', async () => {
+    render(
+      <Wrapper propName={inputTextProps.propName} data="myText">
+        <InputText {...inputTextProps} />
+      </Wrapper>
+    );
+    expect(screen.getByTestId('input-text')).toBeInTheDocument();
+    expect(screen.getByTestId('input-text').value).toBe("myText");
+  });
+
   test('tooltip is showing when hovering label', async () => {
     render(
       <Wrapper propName={inputTextProps.propName}>
@@ -51,7 +61,7 @@ describe('InputText component', () => {
     const label = screen.getByTestId('input-text-label');
     expect(screen.queryByText(inputTextProps.tooltip)).not.toBeInTheDocument();
     fireEvent.mouseOver(label);
-    await waitFor(() => screen.getByRole('tooltip'))
+    await waitFor(() => screen.getByRole('tooltip'));
     const tooltip = screen.getByRole('tooltip');
     expect(tooltip).toBeInTheDocument();
     expect(tooltip).toHaveTextContent(inputTextProps.tooltip);
