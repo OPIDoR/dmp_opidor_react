@@ -31,7 +31,7 @@ const inputTextProps = {
 describe('InputText component', () => {
   test('component rendering', async () => {
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextProps} />
       </Wrapper>
     );
@@ -44,7 +44,7 @@ describe('InputText component', () => {
 
   test('tooltip is showing when hovering label', async () => {
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextProps} />
       </Wrapper>
     );
@@ -61,7 +61,7 @@ describe('InputText component', () => {
   test('component rendering as readonly', async () => {
     const inputTextReadonlyProps = { ...inputTextProps, readonly: true }
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextReadonlyProps} />
       </Wrapper>
     );
@@ -71,7 +71,7 @@ describe('InputText component', () => {
   test('component with type=date rendering <input type="date"/>', async () => {
     const inputTextDateProps = { ...inputTextProps, type: "date" }
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextDateProps} />
       </Wrapper>
     );
@@ -81,7 +81,7 @@ describe('InputText component', () => {
   test('component with type=number rendering <input type="number"/>', async () => {
     const inputTextNumberProps = { ...inputTextProps, type: "number", min: 42 }
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextNumberProps} />
       </Wrapper>
     );
@@ -93,7 +93,7 @@ describe('InputText component', () => {
   test('component with hidden rendering <input type="hidden"/>', async () => {
     const inputTextHiddenProps = { ...inputTextProps, hidden: true }
     render(
-      <Wrapper>
+      <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextHiddenProps} />
       </Wrapper>
     );
