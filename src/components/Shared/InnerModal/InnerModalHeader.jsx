@@ -26,7 +26,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
   } = props;
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const parentRef = ReactDOM.findDOMNode(ref?.current) || null;
+  const parentRef = ref?.current || null;
 
   const expand = (value) => {
     if (!parentRef) { return; }
