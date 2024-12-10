@@ -177,6 +177,7 @@ function DynamicForm({
               <div className="m-4">
                 <FormBuilder
                   template={template.schema}
+                  dataType={template.dataType}
                   readonly={readonly}
                 />
               </div>

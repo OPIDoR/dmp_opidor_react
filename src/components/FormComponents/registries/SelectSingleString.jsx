@@ -22,6 +22,7 @@ function SelectSingleString({
   propName,
   tooltip,
   registries,
+  dataType,
   overridable = false,
   readonly = false,
 }) {

@@ -31,6 +31,7 @@ function SelectMultipleObject({
   header,
   templateName,
   registries,
+  dataType,
   overridable = false,
   readonly = false,
   isConst = false,
@@ -276,6 +277,7 @@ function SelectMultipleObject({
         <ModalForm
           data={editedFragment}
           template={template}
+          mainFormDataType={dataType}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}

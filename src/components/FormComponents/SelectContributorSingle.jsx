@@ -24,6 +24,7 @@ function SelectContributorSingle({
   label,
   tooltip,
   templateName,
+  dataType,
   defaultRole = null,
   readonly = false,
 }) {
@@ -288,6 +289,7 @@ function SelectContributorSingle({
           <ModalForm
             data={editedPerson}
             template={template}
+            mainFormDataType={dataType}
             label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
             readonly={readonly}
             show={show}

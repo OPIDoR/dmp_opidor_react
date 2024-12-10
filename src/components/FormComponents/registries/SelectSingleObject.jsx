@@ -26,6 +26,7 @@ function SelectSingleObject({
   propName,
   tooltip,
   registries,
+  dataType,
   templateName,
   overridable = false,
   readonly = false,
@@ -236,6 +237,7 @@ function SelectSingleObject({
             propName={propName}
             data={editedFragment}
             template={template}
+            mainFormDataType={dataType}
             readonly={readonly}
             handleSave={handleSaveNestedForm}
             handleClose={() => {

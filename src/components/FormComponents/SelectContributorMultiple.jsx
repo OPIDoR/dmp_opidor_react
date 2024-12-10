@@ -25,6 +25,7 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateName,
+  dataType,
   defaultRole = null,
   readonly = false,
 }) {
@@ -283,6 +284,7 @@ function SelectContributorMultiple({
           <ModalForm
             data={editedPerson}
             template={template}
+            mainFormDataType={dataType}
             label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
             readonly={readonly}
             show={show}
