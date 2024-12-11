@@ -25,6 +25,7 @@ function SelectContributorMultiple({
   tooltip,
   header,
   templateName,
+  category,
   dataType,
   defaultRole = null,
   readonly = false,

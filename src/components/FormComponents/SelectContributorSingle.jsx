@@ -24,6 +24,7 @@ function SelectContributorSingle({
   label,
   tooltip,
   templateName,
+  category,
   dataType,
   defaultRole = null,
   readonly = false,

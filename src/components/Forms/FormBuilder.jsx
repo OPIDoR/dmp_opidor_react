@@ -44,6 +44,7 @@ function FormBuilder({ template, dataType, readonly }) {
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
               dataType={dataType}
               templateName={prop.template_name}
               overridable={prop["overridable"]}
@@ -64,6 +65,7 @@ function FormBuilder({ template, dataType, readonly }) {
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
               registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly}
@@ -81,6 +83,7 @@ function FormBuilder({ template, dataType, readonly }) {
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -97,6 +100,7 @@ function FormBuilder({ template, dataType, readonly }) {
               propName={key}
               tooltip={tooltip}
               registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -119,6 +123,7 @@ function FormBuilder({ template, dataType, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateName={prop.template_name}
+            category={prop["registryCategory"]}
             dataType={dataType}
             defaultRole={defaultRole}
             readonly={readonly || isConst}
@@ -154,6 +159,7 @@ function FormBuilder({ template, dataType, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateName={prop.items.template_name}
+              category={prop["registryCategory"]}
               dataType={dataType}
               defaultRole={defaultRole}
               readonly={readonly || isConst}

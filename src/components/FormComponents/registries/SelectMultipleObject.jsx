@@ -31,6 +31,7 @@ function SelectMultipleObject({
   header,
   templateName,
   registries,
+  category,
   dataType,
   overridable = false,
   readonly = false,

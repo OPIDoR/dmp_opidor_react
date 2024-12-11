@@ -26,6 +26,7 @@ function SelectSingleObject({
   propName,
   tooltip,
   registries,
+  category,
   dataType,
   templateName,
   overridable = false,

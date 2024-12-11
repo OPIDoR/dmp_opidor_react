@@ -21,6 +21,7 @@ function SelectMultipleList({
   tooltip,
   header,
   registries,
+  category,
   dataType,
   overridable = false,
   readonly = false,
