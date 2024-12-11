@@ -22,6 +22,7 @@ function SelectSingleString({
   propName,
   tooltip,
   registries,
+  category,
   dataType,
   overridable = false,
   readonly = false,
@@ -36,17 +37,30 @@ function SelectSingleString({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  /** TODO: rename variable `registries` when prop is no longer necessary */
+  const [availableRegistries, setAvailableRegistries] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
 
 
   useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
+    let registriesData = [];
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setAvailableRegistries(registriesData);
+          if(registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    } else {
+      registriesData = Array?.isArray(registries) ? registries : [registries];
+      setAvailableRegistries(registriesData);
+      if(registriesData.length === 1) setSelectedRegistry(registriesData[0])
     }
-  }, [field.value, registries])
+  }, [category, dataType, registries])
 
   useEffect(() => {
     if (!options) return;
@@ -124,13 +138,13 @@ function SelectSingleString({
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
-          {registries && registries.length > 1 && (
+          {availableRegistries && availableRegistries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
+                    options={availableRegistries.map((registry) => ({
                       value: registry,
                       label: registry,
                     }))}
@@ -146,7 +160,7 @@ function SelectSingleString({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -156,7 +170,7 @@ function SelectSingleString({
                     selectedOption={selectedOption}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, "simple", t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, "simple", t)}
                     overridable={overridable}
                   />
                 )}

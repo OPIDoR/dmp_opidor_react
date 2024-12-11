@@ -49,6 +49,8 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
 
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
+const getRegistriesByCategory = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
+
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -65,4 +67,5 @@ export default {
   destroyContributor,
   getSchemasByClass,
   runScript,
+  getRegistriesByCategory,
 };
