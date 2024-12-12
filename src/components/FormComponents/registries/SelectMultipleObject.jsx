@@ -7,22 +7,23 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaPlus } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
+import { GlobalContext } from '../../context/Global.jsx';
 import {
   createOptions,
   createRegistryPlaceholder,
-} from '../../utils/GeneratorUtils';
-import { service } from '../../services';
-import * as styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import FragmentList from './FragmentList.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import ModalForm from '../Forms/ModalForm.jsx';
-import swalUtils from '../../utils/swalUtils.js';
-import { getErrorMessage } from '../../utils/utils.js';
-import { checkFragmentExists } from '../../utils/JsonFragmentsUtils.js';
+} from '../../../utils/GeneratorUtils.js';
+import { service } from '../../../services/index.js';
+import * as styles from '../../assets/css/form.module.css';
+import CustomSelect from '../../Shared/CustomSelect.jsx';
+import FragmentList from '../FragmentList.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
+import ModalForm from '../../Forms/ModalForm.jsx';
+import swalUtils from '../../../utils/swalUtils.js';
+import { getErrorMessage } from '../../../utils/utils.js';
+import { checkFragmentExists } from '../../../utils/JsonFragmentsUtils.js';
+import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
-function SelectWithCreate({
+function SelectMultipleObject({
   label,
   formLabel,
   propName,
@@ -105,7 +106,7 @@ function SelectWithCreate({
    */
   const handleSelectRegistryValue = (e) => {
     const pattern = template?.schema?.to_string || [];
-    if(pattern.length > 0 ) {
+    if (pattern.length > 0) {
       append({ ...e.object, action: 'create' })
     }
   };
@@ -118,7 +119,7 @@ function SelectWithCreate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...fields[idx], action: 'delete'});
+        update(idx, { ...fields[idx], action: 'delete' });
       }
     });
   };
@@ -179,7 +180,10 @@ function SelectWithCreate({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{formLabel}</label>
+          <label data-tooltip-id={tooltipId}>
+            {formLabel}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip
@@ -283,4 +287,4 @@ function SelectWithCreate({
   );
 }
 
-export default SelectWithCreate;
+export default SelectMultipleObject;

@@ -145,9 +145,9 @@ function WritePlan({
                   <Tab eventKey={"create"} title={t("Create")}>
                     <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} inEdition={false} />
                   </Tab>
-                  <Tab eventKey="import" title={t("Import")}>
-                    <ImportResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} />
-                  </Tab>
+                  {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
+                    <ImportResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} />
+                  </Tab>)}
                 </Tabs>
               </div>
             </Panel.Body>
