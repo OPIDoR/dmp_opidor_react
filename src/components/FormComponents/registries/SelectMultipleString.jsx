@@ -6,13 +6,14 @@ import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 import { FaXmark } from 'react-icons/fa6';
 
-import { GlobalContext } from '../context/Global.jsx';
-import { service } from '../../services';
-import { createOptions, createRegistryPlaceholder } from '../../utils/GeneratorUtils';
-import * as styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect.jsx';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config.js';
-import swalUtils from '../../utils/swalUtils.js';
+import { GlobalContext } from '../../context/Global.jsx';
+import { service } from '../../../services/index.js';
+import { createOptions, createRegistryPlaceholder } from '../../../utils/GeneratorUtils.js';
+import * as styles from '../../assets/css/form.module.css';
+import CustomSelect from '../../Shared/CustomSelect.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
+import swalUtils from '../../../utils/swalUtils.js';
+import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
 function SelectMultipleList({
   label,
@@ -55,7 +56,7 @@ function SelectMultipleList({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
-    if(field.value) {
+    if (field.value) {
       const value = Array.isArray(field.value) ? field.value : [field.value]
       setSelectedValues(value);
     } else {
@@ -114,7 +115,10 @@ function SelectMultipleList({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip

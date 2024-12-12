@@ -6,26 +6,26 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPenToSquare, FaPlus, FaEye, FaXmark } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
-import { service } from '../../services';
-import { createOptions, createRegistryPlaceholder, parsePattern } from '../../utils/GeneratorUtils';
-import { GlobalContext } from '../context/Global.jsx';
-import * as styles from '../assets/css/form.module.css';
-import CustomSelect from '../Shared/CustomSelect';
-import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../config';
-import NestedForm from '../Forms/NestedForm.jsx';
-import { except, fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
-import swalUtils from '../../utils/swalUtils.js';
+import { service } from '../../../services/index.js';
+import { createOptions, createRegistryPlaceholder, parsePattern } from '../../../utils/GeneratorUtils.js';
+import { GlobalContext } from '../../context/Global.jsx';
+import * as styles from '../../assets/css/form.module.css';
+import CustomSelect from '../../Shared/CustomSelect.jsx';
+import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
+import NestedForm from '../../Forms/NestedForm.jsx';
+import { except, fragmentEmpty, getErrorMessage } from '../../../utils/utils.js';
+import swalUtils from '../../../utils/swalUtils.js';
+import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
 the options from the registry when the component mounts. It also defines a handleChangeList function that is called when an option is selected from
 the list, and it updates the value of the input field accordingly. Finally, it returns the JSX code that renders the select list with the options. */
-function SelectSingleList({
+function SelectSingleObject({
   label,
   propName,
   tooltip,
   registries,
-  registryType,
   templateName,
   overridable = false,
   readonly = false,
@@ -51,13 +51,9 @@ function SelectSingleList({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
-    if (registryType === 'complex') {
-      setSelectedValue(
-        except(field.value, ['template_name', 'id', 'schema_id']) ||  null
-      );
-    } else {
-      setSelectedValue(field.value ||  null);
-    }
+    setSelectedValue(
+      except(field.value, ['template_name', 'id', 'schema_id']) || null
+    );
 
     const registriesData = Array?.isArray(registries) ? registries : [registries];
 
@@ -68,19 +64,8 @@ function SelectSingleList({
 
   useEffect(() => {
     if (!options) return;
-    if (registryType === 'complex') return setSelectedOption(null);
-
-      if (field.value) {
-        const selectedOpt = options.find(o => o.value === field.value) || null;
-        if (selectedOpt === null && overridable === true) {
-          setSelectedOption({ value: field.value, label: field.value });
-        } else {
-          setSelectedOption(selectedOpt)
-        }
-      } else {
-        setSelectedOption(null);
-      }
-  }, [field.value, options]);
+    setSelectedOption(null)
+  }, [options]);
 
   /*
   A hook that is called when the component is mounted.
@@ -102,7 +87,6 @@ function SelectSingleList({
   }, [selectedRegistry]);
 
   useEffect(() => {
-    if (registryType !== 'complex') { return; }
     if (!loadedTemplates[templateName]) {
       service.getSchemaByName(templateName).then((res) => {
         setTemplate(res.data)
@@ -113,7 +97,8 @@ function SelectSingleList({
     } else {
       setTemplate(loadedTemplates[templateName]);
     }
-  }, [registryType, templateName])
+  }, [templateName])
+
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -122,13 +107,9 @@ function SelectSingleList({
   const handleSelectRegistryValue = (e) => {
     if (!e) return { target: { name: propName, value: '' } }
 
-    if (registryType === 'complex') {
-      const action = field.value?.id ? 'update' : 'create';
-      const value = { ...field.value, ...e.object, action };
-      field.onChange(value);
-    } else {
-      return field.onChange(e.value);
-    }
+    const action = field.value?.id ? 'update' : 'create';
+    const value = { ...field.value, ...e.object, action };
+    field.onChange(value);
   };
 
   /**
@@ -166,7 +147,10 @@ function SelectSingleList({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>{label}</label>
+          <label data-tooltip-id={tooltipId}>
+            {label}
+            {tooltip && (<TooltipInfoIcon />)}
+          </label>
           {
             tooltip && (
               <ReactTooltip
@@ -215,12 +199,12 @@ function SelectSingleList({
                     selectedOption={selectedOption}
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, registryType, t)}
-                    overridable={registryType === 'complex' ? false : overridable}
+                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, "complex", t)}
+                    overridable={false}
                   />
                 )}
               </div>
-              {!readonly && overridable && registryType === 'complex' && !showNestedForm && (
+              {!readonly && overridable && !showNestedForm && (
                 <div className="col-md-1">
                   <ReactTooltip
                     id="select-single-list-add-button"
@@ -233,7 +217,7 @@ function SelectSingleList({
                     data-tooltip-id="select-single-list-add-button"
                     onClick={() => {
                       setShowNestedForm(true);
-                      setEditedFragment({ action: field.value?.id ?  'update' : 'create' });
+                      setEditedFragment({ action: field.value?.id ? 'update' : 'create' });
                     }}
                     className={styles.icon}
                   />
@@ -242,13 +226,11 @@ function SelectSingleList({
             </div>
           </div>
         </div>
-        {registryType === 'complex' && (
-          <div
-            id={`nested-form-${propName}`}
-            className={styles.nestedForm}
-            style={{ display: showNestedForm ? 'block' : 'none' }}
-          ></div>
-        )}
+        <div
+          id={`nested-form-${propName}`}
+          className={styles.nestedForm}
+          style={{ display: showNestedForm ? 'block' : 'none' }}
+        ></div>
         {showNestedForm && (
           <NestedForm
             propName={propName}
@@ -263,7 +245,7 @@ function SelectSingleList({
           />
         )}
 
-        {registryType === 'complex' && !fragmentEmpty(selectedValue) && !showNestedForm && (
+        {!fragmentEmpty(selectedValue) && !showNestedForm && (
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               <tr>
@@ -281,7 +263,7 @@ function SelectSingleList({
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
-                        setEditedFragment({...field.value, action: 'update'});
+                        setEditedFragment({ ...field.value, action: 'update' });
                       }}
                       className={styles.icon}
                     />
@@ -301,4 +283,4 @@ function SelectSingleList({
   );
 }
 
-export default SelectSingleList;
+export default SelectSingleObject;
