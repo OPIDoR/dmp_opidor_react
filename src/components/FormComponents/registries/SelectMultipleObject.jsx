@@ -52,9 +52,32 @@ function SelectMultipleObject({
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  /** TODO: rename variable `registries` when prop is no longer necessary */
+  const [availableRegistries, setAvailableRegistries] = useState([]);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
 
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
+
+
+
+  useEffect(() => {
+    let registriesData = [];
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setAvailableRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    } else {
+      registriesData = Array?.isArray(registries) ? registries : [registries];
+      setAvailableRegistries(registriesData);
+      if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+    }
+  }, [category, dataType, registries])
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -87,14 +110,6 @@ function SelectMultipleObject({
         });
     }
   }, [selectedRegistry, locale]);
-
-  useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [registries]);
 
   const handleClose = () => {
     setShow(false);
@@ -201,13 +216,13 @@ function SelectMultipleObject({
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
         <div className="row">
-          {registries && registries.length > 1 && (
+          {availableRegistries && availableRegistries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
+                    options={availableRegistries.map((registry) => ({
                       value: registry,
                       label: registry,
                     }))}
@@ -223,7 +238,7 @@ function SelectMultipleObject({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -233,7 +248,7 @@ function SelectMultipleObject({
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, true, overridable, 'complex', t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, true, overridable, 'complex', t)}
                     overridable={false}
                   />
                 )}

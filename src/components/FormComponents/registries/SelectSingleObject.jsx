@@ -45,6 +45,8 @@ function SelectSingleObject({
   const [editedFragment, setEditedFragment] = useState({})
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  /** TODO: rename variable `registries` when prop is no longer necessary */
+  const [availableRegistries, setAvailableRegistries] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
@@ -53,16 +55,30 @@ function SelectSingleObject({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
+    let registriesData = [];
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setAvailableRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    } else {
+      registriesData = Array?.isArray(registries) ? registries : [registries];
+      setAvailableRegistries(registriesData);
+      if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+    }
+  }, [category, dataType, registries])
+
+  useEffect(() => {
     setSelectedValue(
       except(field.value, ['template_name', 'id', 'schema_id']) || null
     );
+  }, [field.value])
 
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [field.value, registries])
 
   useEffect(() => {
     if (!options) return;
@@ -169,13 +185,13 @@ function SelectSingleObject({
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
-          {registries && registries.length > 1 && (
+          {availableRegistries && availableRegistries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
+                    options={availableRegistries.map((registry) => ({
                       value: registry,
                       label: registry,
                     }))}
@@ -191,7 +207,7 @@ function SelectSingleObject({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -201,7 +217,7 @@ function SelectSingleObject({
                     selectedOption={selectedOption}
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, "complex", t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, "complex", t)}
                     overridable={false}
                   />
                 )}

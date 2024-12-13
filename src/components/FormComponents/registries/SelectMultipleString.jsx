@@ -32,10 +32,31 @@ function SelectMultipleList({
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  /** TODO: rename variable `registries` when prop is no longer necessary */
+  const [availableRegistries, setAvailableRegistries] = useState([]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const {
     locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
+
+  useEffect(() => {
+    let registriesData = [];
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setAvailableRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    } else {
+      registriesData = Array?.isArray(registries) ? registries : [registries];
+      setAvailableRegistries(registriesData);
+      if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+    }
+  }, [category, dataType, registries])
 
 
   /* A hook that is called when the component is mounted.
@@ -65,16 +86,6 @@ function SelectMultipleList({
       setSelectedValues([]);
     }
   }, [field.value]);
-
-  /* A hook that is called when the component is mounted.
-  It is used to set the options of the select list. */
-  useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [registries]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -136,13 +147,13 @@ function SelectMultipleList({
 
         {/* ************Select registry************** */}
         <div className="row">
-          {registries && registries.length > 1 && (
+          {availableRegistries && availableRegistries.length > 1 && (
             <div className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
+                    options={availableRegistries.map((registry) => ({
                       value: registry,
                       label: registry,
                     }))}
@@ -158,7 +169,7 @@ function SelectMultipleList({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"}>
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -168,7 +179,7 @@ function SelectMultipleList({
                     name={propName}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, true, overridable, 'simple', t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, true, overridable, 'simple', t)}
                     overridable={overridable}
                   />
                 )}
