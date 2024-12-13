@@ -123,7 +123,6 @@ function FormBuilder({ template, dataType, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateName={prop.template_name}
-            category={prop["registryCategory"]}
             dataType={dataType}
             defaultRole={defaultRole}
             readonly={readonly || isConst}
@@ -159,7 +158,6 @@ function FormBuilder({ template, dataType, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateName={prop.items.template_name}
-              category={prop["registryCategory"]}
               dataType={dataType}
               defaultRole={defaultRole}
               readonly={readonly || isConst}

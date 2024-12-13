@@ -27,6 +27,10 @@ const getSchemaByName = async (name) => axios.get(`/madmp_schemas/by_name/${name
 
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
+const getRegistriesByCategory = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
+
+const suggestRegistry = async (category, dataType) => axios.get(`/registries/suggest?category=${category}&data_type=${dataType}`);
+
 const getPersons = async (dmpId) => axios.get(`/madmp_fragments/load_fragments?dmp_id=${dmpId}&classname=person`);
 
 const getContributors = async (planId) => axios.get(`/plans/${planId}/contributors_data`);
@@ -49,7 +53,6 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
 
 const getSchemasByClass = async (className) => axios.get(`/madmp_schemas?by_classname=${className}`)
 
-const getRegistriesByCategory = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -61,11 +64,12 @@ export default {
   getSchema,
   getSchemaByName,
   getRegistryByName,
+  getRegistriesByCategory,
+  suggestRegistry,
   getPersons,
   saveFragment,
   getContributors,
   destroyContributor,
   getSchemasByClass,
   runScript,
-  getRegistriesByCategory,
 };

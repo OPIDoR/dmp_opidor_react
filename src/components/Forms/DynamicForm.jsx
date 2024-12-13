@@ -177,7 +177,7 @@ function DynamicForm({
               <div className="m-4">
                 <FormBuilder
                   template={template.schema}
-                  dataType={template.dataType}
+                  dataType={displayedResearchOutput?.configuration?.dataType || 'none'}
                   readonly={readonly}
                 />
               </div>
