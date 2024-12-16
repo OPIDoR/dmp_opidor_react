@@ -10,7 +10,7 @@ import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
-function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
+function NestedForm({ propName, data, template, mainFormDataType, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -59,6 +59,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
           <form name="nested-form" id="nested-form" style={{ margin: '15px' }} onSubmit={(e) => handleNestedFormSubmit(e)}>
             <FormBuilder
               template={template.schema}
+              dataType={mainFormDataType}
               readonly={readonly}
             />
           </form>

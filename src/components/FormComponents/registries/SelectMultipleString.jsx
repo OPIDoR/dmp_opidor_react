@@ -20,7 +20,8 @@ function SelectMultipleList({
   propName,
   tooltip,
   header,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
 }) {
@@ -30,10 +31,25 @@ function SelectMultipleList({
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
   const {
     locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    }
+  }, [category, dataType])
 
 
   /* A hook that is called when the component is mounted.
@@ -63,16 +79,6 @@ function SelectMultipleList({
       setSelectedValues([]);
     }
   }, [field.value]);
-
-  /* A hook that is called when the component is mounted.
-  It is used to set the options of the select list. */
-  useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [registries]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
