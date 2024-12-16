@@ -43,7 +43,6 @@ function FormBuilder({ template, dataType, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
               category={prop["registryCategory"]}
               dataType={dataType}
               templateName={prop.template_name}
@@ -64,7 +63,6 @@ function FormBuilder({ template, dataType, readonly }) {
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
-              registries={prop["registries"] || [prop["registry_name"]]}
               category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
@@ -82,7 +80,6 @@ function FormBuilder({ template, dataType, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
               category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
@@ -99,7 +96,6 @@ function FormBuilder({ template, dataType, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
               category={prop["registryCategory"]}
               dataType={dataType}
               overridable={prop["overridable"]}
