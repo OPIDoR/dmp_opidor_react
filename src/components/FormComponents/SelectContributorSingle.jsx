@@ -24,6 +24,7 @@ function SelectContributorSingle({
   label,
   tooltip,
   templateName,
+  dataType,
   defaultRole = null,
   readonly = false,
 }) {
@@ -42,6 +43,7 @@ function SelectContributorSingle({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [roleCategory, setRoleCategory] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
@@ -55,17 +57,17 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (persons.length === 0) {
-      fetchPersons();
+    if(roleCategory) {
+      fetchRoles();
     }
-    fetchRoles();
-  }, []);
+  }, [roleCategory]);
 
   useEffect(() => {
     if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
-      setOptions(null)
+      fetchPersons();
+      setOptions(null);
     }
   }, [persons])
 
@@ -76,9 +78,9 @@ function SelectContributorSingle({
   }
 
   const fetchRoles = () => {
-    service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
-      const options = createOptions(res.data, locale)
+    service.suggestRegistry(roleCategory, dataType).then((res) => {
+      setLoadedRegistries({ ...loadedRegistries, [res.data.name]: res.data.values });
+      const options = createOptions(res.data.values, locale)
       setRoleOptions(options);
     });
   }
@@ -92,6 +94,7 @@ function SelectContributorSingle({
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
+        setRoleCategory(contributorProps.role.registryCategory || null);
         service.getSchemaByName(personTemplateName).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: res.data });
@@ -288,6 +291,7 @@ function SelectContributorSingle({
           <ModalForm
             data={editedPerson}
             template={template}
+            mainFormDataType={dataType}
             label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
             readonly={readonly}
             show={show}
