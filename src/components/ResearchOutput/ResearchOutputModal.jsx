@@ -1,11 +1,6 @@
 import React, { useContext } from "react";
-import { Modal, Tab } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { Tabs } from "react-bootstrap";
-import DOMPurify from "dompurify";
-import AddResearchOutput from "./AddResearchOutput";
-import ImportResearchOutput from "./ImportResearchOutput";
-import * as styles from "../assets/css/modal.module.css";
 import { GlobalContext } from "../context/Global";
 import ResearchOutputForm from "./ResearchOutputForm";
 
@@ -23,21 +18,6 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
         <Modal.Title>{t(edit ? 'Edit research output' : `Create${configuration.enableImportResearchOutput ? ' or import' : ''} a research output`)}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
-        <div className={`col-md-12 ${styles.info_box}`}>
-          <fieldset>
-            <legend className={styles.legend}>
-              Info
-            </legend>
-            <div
-              className="col-md-12"
-              style={{ margin: 0, wordWrap: 'break-word' }}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize([t('Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.')]),
-              }}
-            >
-            </div>
-          </fieldset>
-        </div>
         <ResearchOutputForm planId={planId} handleClose={handleClose} edit={edit}/>
       </Modal.Body>
     </Modal>

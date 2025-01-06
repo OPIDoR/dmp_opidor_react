@@ -138,7 +138,7 @@ function WritePlan({
       )}
       {!loading && !error && researchOutputs.length === 0 && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Panel style={{ width: '700px' }}>
+          <Panel style={{ width: '1024px' }}>
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
