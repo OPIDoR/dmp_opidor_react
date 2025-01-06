@@ -115,11 +115,11 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
+      <div style={{ margin: '10px 30px 10px 30px' }}>
+        <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
+      </div>
       {!error && researchOutputs.length > 0 && (
         <>
-          <div style={{ margin: '10px 30px 10px 30px' }}>
-            <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
-          </div>
           <PlanInformations />
           <div className={styles.section}>
             <ResearchOutputsTabs planId={planId} readonly={readonly} />
@@ -143,7 +143,7 @@ function WritePlan({
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                 <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
                   <Tab eventKey={"create"} title={t("Create")}>
-                    <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} inEdition={false} />
+                    <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} inEdition={false} />
                   </Tab>
                   {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
                     <ImportResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} />
