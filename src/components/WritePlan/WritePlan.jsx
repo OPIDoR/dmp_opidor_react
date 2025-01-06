@@ -14,6 +14,7 @@ import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
 import ImportResearchOutput from "../ResearchOutput/ImportResearchOutput";
 import PlanInformations from "./PlanInformations";
 import * as modalStyles from "../assets/css/modal.module.css";
+import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 
 function WritePlan({
   locale = 'en_GB',
@@ -141,14 +142,7 @@ function WritePlan({
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
               <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
-                  <Tab eventKey={"create"} title={t("Create")}>
-                    <AddResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} inEdition={false} />
-                  </Tab>
-                  {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
-                    <ImportResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} />
-                  </Tab>)}
-                </Tabs>
+                <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
               </div>
             </Panel.Body>
           </Panel>

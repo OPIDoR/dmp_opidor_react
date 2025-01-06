@@ -7,6 +7,7 @@ import AddResearchOutput from "./AddResearchOutput";
 import ImportResearchOutput from "./ImportResearchOutput";
 import * as styles from "../assets/css/modal.module.css";
 import { GlobalContext } from "../context/Global";
+import ResearchOutputForm from "./ResearchOutputForm";
 
 /* This is a functional component in JavaScript React that renders a modal window with two tabs: "Créer" and "Importer". The component takes in three
 props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to translate the text displayed in the modal. The `Tabs` component from
@@ -37,18 +38,7 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
             </div>
           </fieldset>
         </div>
-        {edit ? (
-          <AddResearchOutput planId={planId} handleClose={handleClose} show={show} inEdition={edit} />
-        ) : (
-          <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
-            <Tab eventKey={"create"} title={t("Create")}>
-              <AddResearchOutput planId={planId} handleClose={handleClose} show={show} inEdition={edit} />
-            </Tab>
-            {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
-              <ImportResearchOutput planId={planId} handleClose={handleClose} show={show} />
-            </Tab>)}
-          </Tabs>
-        )}
+        <ResearchOutputForm planId={planId} handleClose={handleClose} edit={edit}/>
       </Modal.Body>
     </Modal>
   );
