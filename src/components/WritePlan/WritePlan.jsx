@@ -117,7 +117,7 @@ function WritePlan({
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
       <div style={{ margin: '10px 30px 10px 30px' }}>
-        <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
+        <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
       </div>
       {!error && researchOutputs.length > 0 && (
         <>
