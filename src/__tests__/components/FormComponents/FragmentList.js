@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import FragmentList from '../../../components/FormComponents/FragmentList';
 
 
@@ -12,6 +12,8 @@ const fragmentListProps = {
   handleDelete: mockHandleDelete,
   tableHeader: "My Header"
 }
+
+afterEach(cleanup);
 
 describe('FragmentList component', () => {
   test('component rendering without lines', async () => {

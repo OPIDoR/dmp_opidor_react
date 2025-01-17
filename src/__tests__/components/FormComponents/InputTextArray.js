@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import InputTextArray from '../../../components/FormComponents/InputTextArray';
 import { Wrapper } from '../../__utils__/reactHookFormHelpers';
@@ -26,6 +26,8 @@ const inputTextArrayProps = {
   tooltip: 'my tooltip',
   placeholder: 'my placeholder'
 }
+
+afterEach(cleanup);
 
 describe('InputTextArray component', () => {
   test('component rendering', async () => {
