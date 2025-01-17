@@ -147,7 +147,7 @@ function SelectSingleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>
+          <label data-testid="select-single-object-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -168,7 +168,7 @@ function SelectSingleObject({
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
-            <div className="col-md-6">
+            <div data-testid="select-single-object-registry-selector" className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
@@ -189,7 +189,7 @@ function SelectSingleObject({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-object-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
