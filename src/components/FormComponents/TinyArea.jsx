@@ -19,8 +19,8 @@ const ReadDiv = styled.div`
   color: var(--dark-blue);
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   background: #f2f2f2;
 `;
 
