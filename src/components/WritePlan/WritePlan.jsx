@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Panel, Tabs, Tab } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -10,10 +10,7 @@ import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
-import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
-import ImportResearchOutput from "../ResearchOutput/ImportResearchOutput";
 import PlanInformations from "./PlanInformations";
-import * as modalStyles from "../assets/css/modal.module.css";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 
 function WritePlan({
@@ -116,9 +113,11 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
-      <div style={{ margin: '10px 30px 10px 30px' }}>
-        <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
-      </div>
+      {!readonly &&
+        <div style={{ margin: '10px 30px 10px 30px' }}>
+          <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
+        </div>
+      }
       {!error && researchOutputs.length > 0 && (
         <>
           <PlanInformations />
@@ -141,9 +140,11 @@ function WritePlan({
           <Panel style={{ width: '1024px' }}>
             <Panel.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
-              <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
-              </div>
+              {!readonly &&
+                <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
+                  <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
+                </div>
+              }
             </Panel.Body>
           </Panel>
         </div>
