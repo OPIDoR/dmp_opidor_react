@@ -31,6 +31,8 @@ function SelectMultipleString({
   const [options, setOptions] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
+  const inputId = uniqueId('select_multiple_list_id_');
+
   const {
     locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
@@ -114,7 +116,7 @@ function SelectMultipleString({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-multiple-string-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-multiple-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -160,6 +162,7 @@ function SelectMultipleString({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}

@@ -37,6 +37,7 @@ function SelectSingleString({
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
+  const inputId = uniqueId('select_single_list_id_');
 
 
   useEffect(() => {
@@ -103,7 +104,7 @@ function SelectSingleString({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-single-string-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-single-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -150,6 +151,7 @@ function SelectSingleString({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId} 
                     propName={propName}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}

@@ -46,7 +46,8 @@ function SelectSingleObject({
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
-  const tooltipId = uniqueId('select_single_list_tooltip_id_');
+  const tooltipId = uniqueId('select_single_object_tooltip_id_');
+  const inputId = uniqueId('select_single_object_id_');
 
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
@@ -147,7 +148,7 @@ function SelectSingleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-single-object-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-single-object-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -194,6 +195,7 @@ function SelectSingleObject({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId} 
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}

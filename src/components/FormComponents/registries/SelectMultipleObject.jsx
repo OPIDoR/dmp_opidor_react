@@ -51,6 +51,7 @@ function SelectMultipleObject({
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
+  const inputId = uniqueId('select_multiple_object_id_');
 
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
 
@@ -180,7 +181,7 @@ function SelectMultipleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-multiple-object-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-multiple-object-label" data-tooltip-id={tooltipId}>
             {formLabel}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -226,6 +227,7 @@ function SelectMultipleObject({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
