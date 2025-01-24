@@ -18,9 +18,9 @@ function FragmentList({
   return (
     <>
       {fragmentsList && (
-        <table style={{ marginTop: '20px' }} className="table table-hover">
+        <table style={{ marginTop: '20px' }} className="table table-hover" data-testid="fragment-list-table">
           {tableHeader && (
-            <thead>
+            <thead data-testid="fragment-list-table-header">
               {fragmentsList.length > 0 &&
                 fragmentsList.some((el) => el.action !== "delete") && (
                   <tr>
@@ -30,11 +30,12 @@ function FragmentList({
                 )}
             </thead>
           )}
-          <tbody>
+          <tbody data-testid="fragment-list-table-body">
             {fragmentsList
               .map((el, idx) => (el.action !== 'delete' ?
-                <tr key={idx}>
+                <tr key={idx} data-testid={`fragment-list-row-${idx}`}>
                   <td
+                    data-testid={`fragment-list-row-value-${idx}`}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
                     }}
@@ -43,6 +44,7 @@ function FragmentList({
                     <div className={styles.table_container}>
                       {parent === 'form' && edit && !isConst && (
                         <FaPenToSquare
+                          data-testid={`fragment-list-row-edit-btn-${idx}`}
                           size={18}
                           onClick={() => handleEdit(idx)}
                           className={styles.icon}
@@ -50,6 +52,7 @@ function FragmentList({
                       )}
                       {(isConst || readonly) && parent === 'form' && (
                         <FaEye
+                          data-testid={`fragment-list-row-show-btn-${idx}`}
                           size={18}
                           onClick={() => handleEdit(idx)}
                           className={styles.icon}
@@ -57,6 +60,7 @@ function FragmentList({
                       )}
                       {(edit || (edit && isConst)) && (
                         <FaXmark
+                          data-testid={`fragment-list-row-delete-btn-${idx}`}
                           onClick={(e) => handleDelete(idx)}
                           size={18}
                           className={styles.icon}

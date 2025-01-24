@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import Card from 'react-bootstrap/Card';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -11,11 +9,8 @@ import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
-import * as styles from "../assets/css/sidebar.module.css";
-import AddResearchOutput from "../ResearchOutput/AddResearchOutput";
-import ImportResearchOutput from "../ResearchOutput/ImportResearchOutput";
 import PlanInformations from "./PlanInformations";
-import * as modalStyles from "../assets/css/modal.module.css";
+import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 
 function WritePlan({
   locale = 'en_GB',
@@ -117,11 +112,13 @@ function WritePlan({
     <div style={{ position: 'relative' }}>
       {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
+      {!readonly &&
+        <div style={{ margin: '10px 30px 10px 30px' }}>
+          <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
+        </div>
+      }
       {!error && researchOutputs.length > 0 && (
         <>
-          <div style={{ margin: '10px 30px 10px 30px' }}>
-            <GuidanceChoice planId={planId} style={{ flexGrow: 1 }} />
-          </div>
           <PlanInformations />
           <div style={{ margin: '10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
             <ResearchOutputsSidebar planId={planId} readonly={readonly} />
@@ -142,16 +139,11 @@ function WritePlan({
           <Card style={{ width: '700px' }}>
             <Card.Body>
               <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
-              <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                <Tabs className={`mb-3 ${modalStyles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
-                  <Tab eventKey={"create"} title={t("Create")}>
-                    <AddResearchOutput planId={planId} handleClose={() => {}} close={false} show={true} inEdition={false} />
-                  </Tab>
-                  {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")}>
-                    <ImportResearchOutput planId={planId} handleClose={() => { }} close={false} show={true} />
-                  </Tab>)}
-                </Tabs>
-              </div>
+              {!readonly &&
+                <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
+                  <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
+                </div>
+              }
             </Card.Body>
           </Card>
         </div>
