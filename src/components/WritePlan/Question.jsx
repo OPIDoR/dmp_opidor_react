@@ -116,7 +116,6 @@ function Question({
       {
         <Card
           id={`question-card-${question.id}`}
-          className={styles.card}
           style={{
             borderRadius: "10px",
             borderWidth: "2px",
