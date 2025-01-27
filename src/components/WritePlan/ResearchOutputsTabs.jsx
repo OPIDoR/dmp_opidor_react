@@ -15,7 +15,6 @@ import { except } from "../../utils/utils";
 function ResearchOutputsTabs({ planId, readonly }) {
   const { t } = useTranslation();
   const {
-    loadedSectionsData, setLoadedSectionsData,
     displayedResearchOutput, setDisplayedResearchOutput,
     researchOutputs,
     openedQuestions,
