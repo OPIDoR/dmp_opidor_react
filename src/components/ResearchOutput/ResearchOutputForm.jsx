@@ -28,7 +28,7 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
             className="col-md-12"
             style={{ margin: 0, wordWrap: 'break-word' }}
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize([t('Research product: dataset, software, workflow, sample, protocol, etc.<br />The creation of a research product allows you to describe the specific management of this product according to its nature or discipline.<br />You can create as many research products as you need.')]),
+              __html: DOMPurify.sanitize([t('A research output can be created or imported from another plan.<br />The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br />It is no longer possible to change the type of a research output once it has been added.')]),
             }}
           >
           </div>
