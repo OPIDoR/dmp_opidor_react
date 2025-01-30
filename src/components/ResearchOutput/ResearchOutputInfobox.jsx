@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import * as styles from "../assets/css/write_plan.module.css";
 import { Panel } from "react-bootstrap";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -9,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import PanelBody from "react-bootstrap/lib/PanelBody";
 
 import { GlobalContext } from "../context/Global";
+import { displayPersonalData } from "../../utils/GeneratorUtils";
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, readonly }) {
   const { t } = useTranslation();
@@ -99,9 +99,11 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
           <li>
             {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
-          <li>
-            {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
-          </li>
+          {displayPersonalData(displayedResearchOutput.type) && (
+            <li>
+              {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
+            </li>
+          )}
         </ul>
       </PanelBody>
     </Panel>

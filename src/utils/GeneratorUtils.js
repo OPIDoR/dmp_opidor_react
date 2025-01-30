@@ -127,3 +127,9 @@ export function researchOutputTypeToDataType(type) {
       return 'none';
   }
 }
+
+export function displayPersonalData(researchOutputType) {
+  const typesWithoutPersonalData = ['sofware', 'logiciel'];
+
+  return !typesWithoutPersonalData.includes(researchOutputType.toLowerCase())
+}

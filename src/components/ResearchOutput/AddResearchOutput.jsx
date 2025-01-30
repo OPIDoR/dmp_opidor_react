@@ -4,17 +4,17 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import styled from "styled-components";
+import uniqueId from "lodash.uniqueid";
+import DOMPurify from "dompurify";
 
 import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
-import { createOptions, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
+import { createOptions, displayPersonalData, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
 import { getErrorMessage } from "../../utils/utils";
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
-import uniqueId from "lodash.uniqueid";
-import DOMPurify from "dompurify";
 
 const EndButton = styled.div`
   display: flex;
@@ -51,6 +51,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         setTitle(displayedResearchOutput.title);
         setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
         setType(displayedResearchOutput.type);
+        handlePersonalData(displayedResearchOutput.type);
         setSelectedOption(opts.find(({ value }) => value === displayedResearchOutput.type));
       }
 
@@ -72,6 +73,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const handleSelect = (e) => {
     setSelectedOption(options.find(({ value }) => value === e.value));
     setType(e.value);
+    handlePersonalData(e.value);
   };
 
   /**
@@ -133,6 +135,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     return handleClose();
   };
 
+  const handlePersonalData = (researchOutputType) => {
+    if (displayPersonalData(researchOutputType)) {
+      setHasPersonalData(true);
+    } else {
+      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+    }
+  }
+
   return (
     <div style={{ margin: "25px" }}>
       <div className="form-group">
@@ -185,9 +195,9 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             marginBottom: '10px',
             color: 'var(--rust)'
           }}
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
-          }}/>
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
+            }} />
         )}
         {options && (
           <CustomSelect
@@ -200,27 +210,29 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
           />
         )}
       </div>
-      <div className="form-group">
-        <div className={stylesForm.label_form}>
-          <label>{t("Does your research output contain personal data?")}</label>
+      {type && displayPersonalData(type) && (
+        <div className="form-group">
+          <div className={stylesForm.label_form}>
+            <label>{t("Does your research output contain personal data?")}</label>
+          </div>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            marginBottom: '10px'
+          }}>
+            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed. Does not apply to the Software type.")}</i>
+          </div>
+          <div className="form-check">
+            <label className={stylesForm.switch}>
+              <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }} />
+              <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
+                <span className={stylesForm.switchOn}>{t('Yes')}</span>
+                <span className={stylesForm.switchOff}>{t('No')}</span>
+              </div>
+            </label>
+          </div>
         </div>
-        <div style={{
-          fontSize: '14px',
-          fontWeight: 400,
-          marginBottom: '10px'
-        }}>
-          <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed. Does not apply to the Software type.")}</i>
-        </div>
-        <div className="form-check">
-          <label className={stylesForm.switch}>
-            <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }} />
-            <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
-              <span className={stylesForm.switchOn}>{t('Yes')}</span>
-              <span className={stylesForm.switchOff}>{t('No')}</span>
-            </div>
-          </label>
-        </div>
-      </div>
+      )}
       <EndButton>
         {close && (
           <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
