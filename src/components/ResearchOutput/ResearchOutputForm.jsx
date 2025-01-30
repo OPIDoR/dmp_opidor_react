@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Tab } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "react-bootstrap";
-import DOMPurify from "dompurify";
 
 import AddResearchOutput from "./AddResearchOutput";
 import ImportResearchOutput from "./ImportResearchOutput";
@@ -31,10 +30,10 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
         <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
       ) : (
         <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
-          <Tab eventKey={"create"} title={t("Create")} tabClassName="toto">
+          <Tab eventKey={"create"} title={t("Create")} tabClassName="toto" style={{ width: '100%' }}>
             <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
           </Tab>
-          {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")} tabClassName="toto">
+          {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")} tabClassName="toto" style={{ width: '100%' }}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} />
           </Tab>)}
         </Tabs>
