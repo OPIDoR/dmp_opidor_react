@@ -20,24 +20,17 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
   return (
     <div className="dmpopidor-branding">
       <div className={`col-md-12 ${styles.info_box}`}>
-        <fieldset>
-          <legend className={styles.legend}>
-            Info
-          </legend>
-          <div
-            className="col-md-12"
-            style={{ margin: 0, wordWrap: 'break-word' }}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize([t('A research output can be created or imported from another plan.<br />The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br />It is no longer possible to change the type of a research output once it has been added.')]),
-            }}
-          >
-          </div>
+        <fieldset
+          className="col-md-12"
+          style={{ margin: 0, wordWrap: 'break-word', fontSize: "large" }}
+        >
+          {t('A research output can be created or imported from another plan.')}
         </fieldset>
       </div>
       {edit ? (
         <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
       ) : (
-        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"}  id="create-edit-research-output-tabs">
+        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
           <Tab eventKey={"create"} title={t("Create")} tabClassName="toto">
             <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
           </Tab>

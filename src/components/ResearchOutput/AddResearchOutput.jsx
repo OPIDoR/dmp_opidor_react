@@ -14,6 +14,7 @@ import { service } from "../../services";
 import { getErrorMessage } from "../../utils/utils";
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
 import uniqueId from "lodash.uniqueid";
+import DOMPurify from "dompurify";
 
 const EndButton = styled.div`
   display: flex;
@@ -177,13 +178,17 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             />
           </label>
         </div>
-        <div style={{
-          fontSize: '14px',
-          fontWeight: 400,
-          marginBottom: '10px'
-        }}>
-          <i>{t('Select a research output type from the list provided.')}</i>
-        </div>
+        {type && !inEdition && (
+          <div style={{
+            fontSize: '14px',
+            fontWeight: 400,
+            marginBottom: '10px',
+            color: 'var(--rust)'
+          }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
+          }}/>
+        )}
         {options && (
           <CustomSelect
             onSelectChange={handleSelect}
