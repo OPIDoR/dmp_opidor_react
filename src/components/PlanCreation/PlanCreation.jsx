@@ -223,7 +223,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
           </div>
         </div>
       </div>
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </div>
   );
 }
