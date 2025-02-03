@@ -15,7 +15,7 @@ import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import swalUtils from '../../../utils/swalUtils.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
 
-function SelectMultipleList({
+function SelectMultipleString({
   label,
   propName,
   tooltip,
@@ -33,6 +33,8 @@ function SelectMultipleList({
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [registries, setRegistries] = useState([]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
+  const inputId = uniqueId('select_multiple_list_id_');
+
   const {
     locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
@@ -121,7 +123,7 @@ function SelectMultipleList({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-multiple-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -141,7 +143,7 @@ function SelectMultipleList({
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
-            <div className="col-md-6">
+            <div data-testid="select-multiple-string-registry-selector" className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
@@ -162,11 +164,12 @@ function SelectMultipleList({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-multiple-string-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
@@ -185,7 +188,7 @@ function SelectMultipleList({
         <div style={{ margin: "20px 2px 20px 2px" }}>
           {selectedValues && (
             <table style={{ marginTop: "0px" }} className="table">
-              {header && <thead>{header}</thead>}
+              {header && <thead><tr><th scope="col">{header}</th></tr></thead>}
               <tbody>
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
@@ -214,4 +217,4 @@ function SelectMultipleList({
   );
 }
 
-export default SelectMultipleList;
+export default SelectMultipleString;

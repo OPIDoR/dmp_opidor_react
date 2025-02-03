@@ -7,14 +7,15 @@ import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
 
 function CustomSelect({
-    propName = null,
-    options,
-    selectedOption = null,
-    onSelectChange,
-    async = false,
-    isDisabled = false,
-    placeholder = null,
-    overridable = false,
+  inputId = null,
+  propName = null,
+  options,
+  selectedOption = null,
+  onSelectChange,
+  async = false,
+  isDisabled = false,
+  placeholder = null,
+  overridable = false,
 }) {
   const { t } = useTranslation();
   const SelectComponent = getSelectComponent();
@@ -45,8 +46,10 @@ function CustomSelect({
     </Option>
   );
 
-  return(
+  return (
     <SelectComponent
+      inputId={inputId}
+      data-testid={`select-component-${propName}`}
       menuPortalTarget={document.body}
       styles={{
         menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),

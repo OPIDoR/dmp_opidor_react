@@ -10,7 +10,7 @@ function Tooltip() {
     id={id}
     data-testid={id}
     size={12}
-    style={{ marginLeft: '4px', verticalAlign: 'middle' }}
+    style={{ marginLeft: '4px', verticalAlign: 'middle', color: 'var(--blue)' }}
   />
 }
 

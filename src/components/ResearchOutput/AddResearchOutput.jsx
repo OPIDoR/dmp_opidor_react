@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import styled from "styled-components";
+import uniqueId from "lodash.uniqueid";
+import DOMPurify from "dompurify";
 
 import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
-import { createOptions, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
+import { createOptions, displayPersonalData, researchOutputTypeToDataType } from "../../utils/GeneratorUtils";
 import CustomSelect from "../Shared/CustomSelect";
 import { service } from "../../services";
 import { getErrorMessage } from "../../utils/utils";
+import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
 
 const EndButton = styled.div`
   display: flex;
@@ -28,13 +32,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     configuration,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
-  const [options, setOptions] = useState([{value: '', label: ''}]);
+  const [options, setOptions] = useState([{ value: '', label: '' }]);
   const [abbreviation, setAbbreviation] = useState(undefined);
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options?.at(0));
+  const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [disableTypeChange, setDisableTypeChange] = useState(false);
+  const tooltipedLabelId = uniqueId('type_tooltip_id_');
 
   useEffect(() => {
     service.getRegistryByName('ResearchDataType').then((res) => {
@@ -46,6 +51,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         setTitle(displayedResearchOutput.title);
         setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
         setType(displayedResearchOutput.type);
+        handlePersonalData(displayedResearchOutput.type);
         setSelectedOption(opts.find(({ value }) => value === displayedResearchOutput.type));
       }
 
@@ -54,8 +60,6 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
         setTitle(`${t('Research output')} ${maxOrder + 1}`);
         setHasPersonalData(configuration.enableHasPersonalData);
-        setSelectedOption(opts?.at(0));
-        setType(opts?.at(0).value);
       }
     });
 
@@ -69,6 +73,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const handleSelect = (e) => {
     setSelectedOption(options.find(({ value }) => value === e.value));
     setType(e.value);
+    handlePersonalData(e.value);
   };
 
   /**
@@ -78,10 +83,10 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     e.stopPropagation();
 
     if (!type || type.length === 0) {
-      return toast.error(t('A ‘type’ is required to create a search product.'));
+      return toast.error(t("A 'type' is required to create a research output."));
     }
 
-    const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none' ;
+    const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none';
     const researchOutputInfo = {
       plan_id: planId,
       abbreviation,
@@ -130,6 +135,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     return handleClose();
   };
 
+  const handlePersonalData = (researchOutputType) => {
+    if (displayPersonalData(researchOutputType)) {
+      setHasPersonalData(true);
+    } else {
+      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+    }
+  }
+
   return (
     <div style={{ margin: "25px" }}>
       <div className="form-group">
@@ -159,15 +172,33 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t('Type')}</label>
+          <label data-tooltip-id={tooltipedLabelId}>
+            {t('Type')}
+            <TooltipInfoIcon />
+            <ReactTooltip
+              id={tooltipedLabelId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              content={<Trans
+                t={t}
+                defaults="You can find the different <0>types of research outputs</0> in the LEARN MORE menu."
+                components={[<strong>types of research outputs</strong>]}
+              />}
+            />
+          </label>
         </div>
-        <div style={{
+        {type && !inEdition && (
+          <div style={{
             fontSize: '14px',
             fontWeight: 400,
-            marginBottom: '10px'
-          }}>
-            <i>{t('Select a search product type from the list provided. By default the value “Dataset” is saved.')}</i>
-          </div>
+            marginBottom: '10px',
+            color: 'var(--rust)'
+          }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
+            }} />
+        )}
         {options && (
           <CustomSelect
             onSelectChange={handleSelect}
@@ -179,34 +210,36 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
           />
         )}
       </div>
-      <div className="form-group">
-        <div className={stylesForm.label_form}>
-          <label>{t("Does your research output contain personal data?")}</label>
-        </div>
+      {type && displayPersonalData(type) && (
+        <div className="form-group">
+          <div className={stylesForm.label_form}>
+            <label>{t("Does your research output contain personal data?")}</label>
+          </div>
           <div style={{
             fontSize: '14px',
             fontWeight: 400,
             marginBottom: '10px'
           }}>
-            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.")}</i>
+            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed. Does not apply to the Software type.")}</i>
           </div>
           <div className="form-check">
-          <label className={stylesForm.switch}>
-            <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }}/>
-            <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
-              <span className={stylesForm.switchOn}>{t('Yes')}</span>
-              <span className={stylesForm.switchOff}>{t('No')}</span>
-            </div>
-          </label>
+            <label className={stylesForm.switch}>
+              <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }} />
+              <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
+                <span className={stylesForm.switchOn}>{t('Yes')}</span>
+                <span className={stylesForm.switchOff}>{t('No')}</span>
+              </div>
+            </label>
+          </div>
         </div>
-      </div>
+      )}
       <EndButton>
         {close && (
           <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
             {t("Close")}
           </Button>
         )}
-        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px'  }}>
+        <Button bsStyle="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px' }}>
           {t(inEdition ? "Save" : "Add")}
         </Button>
       </EndButton>

@@ -55,7 +55,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
         const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
-        guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
+        guidance_groups = [...orgGuidances, ...selectedGuidances, ...unselectedGuidances];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
@@ -70,7 +70,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const handleGuidanceGroups = (data) => {
     const states = {};
     for (let i = 0; i < data.length; i += 1) {
-      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected} ), {});
+      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected }), {});
       const isSelected = Object.keys(guidance_groups).filter((id) => guidance_groups[id] === true).length > 0;
       states[data[i].id] = {
         checked: isSelected,
@@ -151,7 +151,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
     const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
-    setData([ ...selectedGuidances, ...unselectedGuidances ]);
+    setData([...selectedGuidances, ...unselectedGuidances]);
 
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
@@ -221,15 +221,15 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         <Panel.Body collapsible>
           <div style={description}>
             <div style={{ textAlign: 'justify' }}>
-               <Trans
+              <Trans
                 defaults="You will find below a list of organizations offering recommendations and advice to guide you in writing your plan while respecting their data management policies. <bold>You can select up to 6 organizations</bold>. Then click to save your selection."
                 components={{ br: <br />, bold: <strong /> }}
-                />
+              />
             </div>
-            <div style={{ marginTop: '20px' }}>
+            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', maxHeight: '500px', position: 'relative' }}>
               {loading && <CustomSpinner />}
               {!loading && error && <CustomError error={error} />}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
                 {!loading && !error && data && data.map((group, index) => (
                   <div key={`guidances-section-${index}`}>
                     <div
@@ -352,7 +352,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                 ))}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '0' }}>
                 {!loading && !error && data && (
                   <CustomButton
                     title={
