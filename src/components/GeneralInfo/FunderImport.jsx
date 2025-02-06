@@ -96,7 +96,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         showCancelButton: true,
         confirmButtonColor: '#2c7dad',
         cancelButtonColor: '#c6503d',
-        cancelButtonText: t('Cancel'),
+        cancelButtonText: t('No'),
         confirmButtonText: t('Yes'),
       }).then((result) => {
         if (result.isConfirmed) {
