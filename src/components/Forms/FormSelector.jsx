@@ -21,7 +21,7 @@ const headerStyle = {
   alignItems: 'center',
 };
 
-function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
+function FormSelector({ classname, dataType, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
@@ -32,7 +32,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    service.getSchemasByClass(classname).then(({ data }) => {
+    service.getSchemasByClass(classname, dataType).then(({ data }) => {
       setAvailableTemplates(data);
       setFormSelector((prev) => ({ ...prev, [classname]: data?.length > 1 }));
       data.forEach((template) => {
@@ -42,7 +42,7 @@ function FormSelector({ classname, displayedTemplate, setTemplate, setTemplateId
     })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [classname, displayedTemplate])
+  }, [classname, dataType, displayedTemplate])
 
   const handleSelectTemplate = (e) => {
     setSelectedTemplate(e.object);
