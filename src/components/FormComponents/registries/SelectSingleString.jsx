@@ -21,7 +21,8 @@ function SelectSingleString({
   label,
   propName,
   tooltip,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
 }) {
@@ -35,18 +36,25 @@ function SelectSingleString({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
   const inputId = uniqueId('select_single_list_id_');
 
 
   useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
     }
-  }, [field.value, registries])
+  }, [category, dataType])
 
   useEffect(() => {
     if (!options) return;

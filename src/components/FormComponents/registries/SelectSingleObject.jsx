@@ -25,7 +25,8 @@ function SelectSingleObject({
   label,
   propName,
   tooltip,
-  registries,
+  category,
+  dataType,
   templateName,
   overridable = false,
   readonly = false,
@@ -43,6 +44,7 @@ function SelectSingleObject({
   const [editedFragment, setEditedFragment] = useState({})
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
@@ -52,16 +54,25 @@ function SelectSingleObject({
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
   useEffect(() => {
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(error)
+        });
+    }
+  }, [category, dataType])
+
+  useEffect(() => {
     setSelectedValue(
       except(field.value, ['template_name', 'id', 'schema_id']) || null
     );
+  }, [field.value])
 
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [field.value, registries])
 
   useEffect(() => {
     if (!options) return;
@@ -238,6 +249,7 @@ function SelectSingleObject({
             propName={propName}
             data={editedFragment}
             template={template}
+            mainFormDataType={dataType}
             readonly={readonly}
             handleSave={handleSaveNestedForm}
             handleClose={() => {
