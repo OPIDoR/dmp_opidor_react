@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Panel } from "react-bootstrap";
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from "react-i18next";
+import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
+import DOMPurify from "dompurify";
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -42,11 +44,12 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
     service.getRegistryByName('FundersWithImport').then(({ data }) => {
-      const options = data.map((funder) => ({
-        value: funder.id,
+      const options = data.map((funder, index) => ({
+        value: funder.id || index,
         label: funder.label[locale],
         scriptName: funder.scriptName,
         registry: funder.registry,
+        apiClient: funder.apiClient,
       }));
       setFunders(options);
     });
@@ -83,10 +86,35 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   const handleSaveFunding = async () => {
     setLoading(true);
 
+
+    if (selectedFunder?.apiClient) {
+      return Swal.fire({
+        html: t('<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
+        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,
+        icon: 'warning',
+        width: '500px',
+        showCancelButton: true,
+        confirmButtonColor: '#2c7dad',
+        cancelButtonColor: '#c6503d',
+        cancelButtonText: t('Cancel'),
+        confirmButtonText: t('Yes'),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return saveFunding(selectedFunder?.apiClient);
+        }
+        return saveFunding();
+      });
+    }
+
+    return saveFunding();
+  };
+
+  const saveFunding = async (apiClient) => {
     let response;
     try {
-      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
+      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName, apiClient);
     } catch (error) {
+      setLoading(false);
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
       return toast.error(errorMessage);
     }
@@ -103,7 +131,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     ), { style: { maxWidth: 500 } });
 
     setLoading(false);
-  };
+  }
 
   return (
 
