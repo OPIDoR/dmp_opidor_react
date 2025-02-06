@@ -43,6 +43,7 @@ function DynamicForm({
   const [externalImports, setExternalImports] = useState({});
 
   const emptyDefaults = template ? generateEmptyDefaults(template.schema.properties) : {};
+  const dataType = displayedResearchOutput?.configuration?.dataType || 'none';
 
   useEffect(() => {
     setLoading(true);
@@ -167,6 +168,7 @@ function DynamicForm({
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
           {!readonly && !fragmentId && <FormSelector
             classname={className}
+            dataType={dataType}
             displayedTemplate={template}
             setTemplateId={setTemplateId}
             setTemplate={setTemplate}
@@ -177,6 +179,7 @@ function DynamicForm({
               <div className="m-4">
                 <FormBuilder
                   template={template.schema}
+                  dataType={dataType}
                   readonly={readonly}
                 />
               </div>
