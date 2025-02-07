@@ -57,12 +57,12 @@ function SelectSingleObject({
     if (category) {
       service.getRegistriesByCategory(category, dataType)
         .then((res) => {
-          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
           setRegistries(registriesData);
           if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [category, dataType])
@@ -206,7 +206,7 @@ function SelectSingleObject({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
-                    inputId={inputId} 
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}
