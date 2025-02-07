@@ -12,6 +12,7 @@ import * as styles from '../../assets/css/form.module.css';
 import CustomSelect from '../../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
+import { getErrorMessage } from '../../../utils/utils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
