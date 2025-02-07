@@ -14,6 +14,7 @@ import CustomSelect from '../../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import swalUtils from '../../../utils/swalUtils.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
+import { getErrorMessage } from '../../../utils/utils.js';
 
 function SelectMultipleString({
   label,
@@ -30,6 +31,7 @@ function SelectMultipleString({
   const { field } = useController({ control, name: propName });
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [registries, setRegistries] = useState([]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
@@ -43,12 +45,12 @@ function SelectMultipleString({
     if (category) {
       service.getRegistriesByCategory(category, dataType)
         .then((res) => {
-          registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
           setRegistries(registriesData);
           if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [category, dataType])
@@ -66,7 +68,7 @@ function SelectMultipleString({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          // handle errors
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry]);
@@ -140,6 +142,7 @@ function SelectMultipleString({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (

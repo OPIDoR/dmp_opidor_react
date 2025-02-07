@@ -46,12 +46,12 @@ function SelectSingleString({
     if (category) {
       service.getRegistriesByCategory(category, dataType)
         .then((res) => {
-          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
           setRegistries(registriesData);
           if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [category, dataType])
@@ -85,7 +85,7 @@ function SelectSingleString({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry]);
@@ -159,7 +159,7 @@ function SelectSingleString({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
-                    inputId={inputId} 
+                    inputId={inputId}
                     propName={propName}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}

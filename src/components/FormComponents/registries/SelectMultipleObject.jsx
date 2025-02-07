@@ -68,7 +68,7 @@ function SelectMultipleObject({
           if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [category, dataType, registries])
@@ -100,7 +100,7 @@ function SelectMultipleObject({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          // handle errors
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry, locale]);
