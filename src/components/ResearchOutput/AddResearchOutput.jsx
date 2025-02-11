@@ -220,7 +220,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             fontWeight: 400,
             marginBottom: '10px'
           }}>
-            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed. Does not apply to the Software type.")}</i>
+            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.")}</i>
           </div>
           <div className="form-check">
             <label className={stylesForm.switch}>
