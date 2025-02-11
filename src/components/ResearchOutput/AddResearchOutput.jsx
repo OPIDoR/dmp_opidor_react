@@ -139,7 +139,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     if (displayPersonalData(researchOutputType)) {
       setHasPersonalData(true);
     } else {
-      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+      setHasPersonalData(displayedResearchOutput?.configuration?.hasPersonalData || false);
     }
   }
 
