@@ -12,6 +12,7 @@ import * as styles from '../../assets/css/form.module.css';
 import CustomSelect from '../../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
+import { getErrorMessage } from '../../../utils/utils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -21,7 +22,8 @@ function SelectSingleString({
   label,
   propName,
   tooltip,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
 }) {
@@ -35,17 +37,25 @@ function SelectSingleString({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
+  const inputId = uniqueId('select_single_list_id_');
 
 
   useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(getErrorMessage(error));
+        });
     }
-  }, [field.value, registries])
+  }, [category, dataType])
 
   useEffect(() => {
     if (!options) return;
@@ -76,7 +86,7 @@ function SelectSingleString({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          setError(error)
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry]);
@@ -103,7 +113,7 @@ function SelectSingleString({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-single-string-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-single-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -150,6 +160,7 @@ function SelectSingleString({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     propName={propName}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}

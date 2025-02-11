@@ -14,13 +14,15 @@ import CustomSelect from '../../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import swalUtils from '../../../utils/swalUtils.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
+import { getErrorMessage } from '../../../utils/utils.js';
 
 function SelectMultipleString({
   label,
   propName,
   tooltip,
   header,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
 }) {
@@ -29,11 +31,30 @@ function SelectMultipleString({
   const { field } = useController({ control, name: propName });
   const [selectedValues, setSelectedValues] = useState([]);
   const [options, setOptions] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const tooltipId = uniqueId('select_multiple_list_tooltip_id_');
+  const inputId = uniqueId('select_multiple_list_id_');
+
   const {
     locale, loadedRegistries, setLoadedRegistries
   } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(getErrorMessage(error));
+        });
+    }
+  }, [category, dataType])
+
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -47,7 +68,7 @@ function SelectMultipleString({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          // handle errors
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry]);
@@ -62,16 +83,6 @@ function SelectMultipleString({
       setSelectedValues([]);
     }
   }, [field.value]);
-
-  /* A hook that is called when the component is mounted.
-  It is used to set the options of the select list. */
-  useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [registries]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
@@ -114,7 +125,7 @@ function SelectMultipleString({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-multiple-string-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-multiple-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -131,6 +142,7 @@ function SelectMultipleString({
           }
         </div>
 
+        <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
@@ -160,6 +172,7 @@ function SelectMultipleString({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}

@@ -41,7 +41,7 @@ function WritePlanLayout({
           className="research-outputs-tabs"
         />
       </Joyride>
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

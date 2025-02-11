@@ -63,6 +63,11 @@
   color: white;
 }
 
+.anr_sharing {
+  color: var(--rust);
+  font-weight: bold;
+}
+
 .label_anr {
   color: white;
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import Card from 'react-bootstrap/Card';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import uniqueId from 'lodash.uniqueid';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
@@ -11,6 +13,7 @@ import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
 import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
+import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
 
 function WritePlan({
   locale = 'en_GB',
@@ -37,6 +40,7 @@ function WritePlan({
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const tooltipedLabelId = uniqueId('create_research_output_tooltip_id_');
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
@@ -138,7 +142,28 @@ function WritePlan({
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Card style={{ width: '700px' }}>
             <Card.Body>
-              <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
+              {readonly ?
+                <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
+                : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
+                  <Trans
+                    t={t}
+                    defaults="Add a <0>research output</0> to display plan questions."
+                    components={[<strong>research output</strong>]}
+                  />
+                  <TooltipInfoIcon />
+                  <ReactTooltip
+                    id={tooltipedLabelId}
+                    place="bottom"
+                    effect="solid"
+                    variant="info"
+                    content={<Trans
+                      t={t}
+                      defaults="<0>Research output</0> covers any type of research data produced in the course of a scientific research project or activity: dataset, software and code, workflow, protocol, physical object..."
+                      components={[<strong>Research output</strong>]}
+                    />}
+                  />
+                </h2>
+              }
               {!readonly &&
                 <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                   <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />

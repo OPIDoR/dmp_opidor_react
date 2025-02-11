@@ -30,7 +30,8 @@ function SelectMultipleObject({
   tooltip,
   header,
   templateName,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
   isConst = false,
@@ -50,9 +51,27 @@ function SelectMultipleObject({
   const [template, setTemplate] = useState(null);
   const [editedFragment, setEditedFragment] = useState({})
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
+  const inputId = uniqueId('select_multiple_object_id_');
 
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
+
+
+
+  useEffect(() => {
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]
+          setRegistries(registriesData);
+          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+        })
+        .catch((error) => {
+          setError(getErrorMessage(error));
+        });
+    }
+  }, [category, dataType])
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -81,18 +100,10 @@ function SelectMultipleObject({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          // handle errors
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry, locale]);
-
-  useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [registries]);
 
   const handleClose = () => {
     setShow(false);
@@ -180,7 +191,7 @@ function SelectMultipleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-testid="select-multiple-object-label" data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-multiple-object-label" data-tooltip-id={tooltipId}>
             {formLabel}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -226,6 +237,7 @@ function SelectMultipleObject({
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     name={propName}
@@ -276,6 +288,7 @@ function SelectMultipleObject({
         <ModalForm
           data={editedFragment}
           template={template}
+          mainFormDataType={dataType}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}

@@ -9,7 +9,7 @@ import FormBuilder from './FormBuilder';
 import { ExternalImport } from '../ExternalImport';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
-function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({ data, template, mainFormDataType, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -63,6 +63,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder
               template={template.schema}
+              dataType={mainFormDataType}
               readonly={readonly}
             />
           </form>

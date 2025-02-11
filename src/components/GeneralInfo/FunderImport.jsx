@@ -5,8 +5,11 @@ import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 
 import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from "react-i18next";
+import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
+import DOMPurify from "dompurify";
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -19,7 +22,16 @@ import { filterOptions } from "../../utils/GeneratorUtils";
 import { getErrorMessage } from "../../utils/utils";
 
 
-function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale }) {
+export const ButtonSave = styled.button`+
+  margin: 10px 2px 2px 0px;
+  color: #000;
+  font-size: 18px;
+  color: var(--dark-blue) !important;
+  font-family: "Helvetica Neue", sans-serif !important;
+  border-radius: 8px !important;
+`;
+
+function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
@@ -36,11 +48,12 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
     service.getRegistryByName('FundersWithImport').then(({ data }) => {
-      const options = data.map((funder) => ({
-        value: funder.id,
+      const options = data.map((funder, index) => ({
+        value: funder.id || index,
         label: funder.label[locale],
         scriptName: funder.scriptName,
         registry: funder.registry,
+        apiClient: funder.apiClient,
       }));
       setFunders(options);
     });
@@ -77,10 +90,34 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   const handleSaveFunding = async () => {
     setLoading(true);
 
+    if (selectedFunder?.apiClient && !isClassic) {
+      return Swal.fire({
+        html: t('<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
+        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,
+        icon: 'warning',
+        width: '500px',
+        showCancelButton: true,
+        confirmButtonColor: '#2c7dad',
+        cancelButtonColor: '#c6503d',
+        cancelButtonText: t('No'),
+        confirmButtonText: t('Yes'),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return saveFunding(selectedFunder?.apiClient);
+        }
+        return saveFunding();
+      });
+    }
+
+    return saveFunding();
+  };
+
+  const saveFunding = async (apiClient) => {
     let response;
     try {
-      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
+      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName, apiClient);
     } catch (error) {
+      setLoading(false);
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
       return toast.error(errorMessage);
     }
@@ -97,7 +134,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     ), { style: { maxWidth: 500 } });
 
     setLoading(false);
-  };
+  }
 
   return (
     <Card
@@ -137,6 +174,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
             {!error && funders && (
               <div className={styles.container_anr}>
                 <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+                <p className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</p>
                 {funders.length > 1 && (
                   <div>
                     <div className={styles.label_form_anr}>

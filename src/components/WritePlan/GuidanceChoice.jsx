@@ -231,10 +231,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                   components={{ br: <br />, bold: <strong /> }}
                 />
               </div>
-              <div style={{ marginTop: '20px' }}>
+              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', maxHeight: '500px', position: 'relative' }}>
                 {loading && <CustomSpinner />}
                 {!loading && error && <CustomError error={error} />}
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
                   {!loading && !error && data && data.map((group, index) => (
                     <div key={`guidances-section-${index}`}>
                       <div
@@ -242,122 +242,127 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                         key={`guidances-container-${index}`}
                       >
                         <div
-                          style={{ marginRight: '10px' }}
-                          className={guidanceChoiceStyles.checkboxes}
-                          key={`guidance-group-${index}`}
+                          style={{ display: 'flex', alignItems: 'center', }}
+                          key={`guidances-container-${index}`}
                         >
-                          {limitHasBeenReached() && !checkboxStates[group.id].checked ? (
-                            <MdOutlineCheckBoxOutlineBlank
-                              fill="grey"
-                              size={18}
-                              key={`icon-${index}-checkbox-outline-blank-disabled`}
-                              style={{ cursor: 'not-allowed' }}
-                            />
-                          ) : !checkboxStates[group.id].checked ? (
-                            <MdOutlineCheckBoxOutlineBlank
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              key={`icon-${index}-checkbox-outline-blank`}
-                              onClick={() => handleCheckboxChange(group.id, true)}
-                            />
-                          ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidance_groups).length > 1 ? (
-                            <MdIndeterminateCheckBox
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              key={`icon-${index}-indeterminate-checkbox`}
-                              onClick={() => handleCheckboxChange(group.id, true)}
-                            />
-                          ) : (
-                            <MdCheckBox
-                              style={{ cursor: 'pointer' }}
-                              size={18}
-                              key={`icon-${index}-checkbox`}
-                              onClick={() => handleCheckboxChange(group.id, false)}
-                            />
-                          )}
-                        </div>
+                          <div
+                            style={{ marginRight: '10px' }}
+                            className={guidanceChoiceStyles.checkboxes}
+                            key={`guidance-group-${index}`}
+                          >
+                            {limitHasBeenReached() && !checkboxStates[group.id].checked ? (
+                              <MdOutlineCheckBoxOutlineBlank
+                                fill="grey"
+                                size={18}
+                                key={`icon-${index}-checkbox-outline-blank-disabled`}
+                                style={{ cursor: 'not-allowed' }}
+                              />
+                            ) : !checkboxStates[group.id].checked ? (
+                              <MdOutlineCheckBoxOutlineBlank
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-checkbox-outline-blank`}
+                                onClick={() => handleCheckboxChange(group.id, true)}
+                              />
+                            ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidance_groups).length > 1 ? (
+                              <MdIndeterminateCheckBox
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-indeterminate-checkbox`}
+                                onClick={() => handleCheckboxChange(group.id, true)}
+                              />
+                            ) : (
+                              <MdCheckBox
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-checkbox`}
+                                onClick={() => handleCheckboxChange(group.id, false)}
+                              />
+                            )}
+                          </div>
 
-                        <label
-                          className={`${guidanceChoiceStyles.label_checkbox}`}
-                          style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
-                          onClick={() => {
-                            if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {
-                              handleCheckboxChange(group.id, !checkboxStates[group.id].checked);
-                            }
-                          }}
-                          key={`label-${index}-guidance-group`}
+                          <label
+                            className={`${guidanceChoiceStyles.label_checkbox}`}
+                            style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
+                            onClick={() => {
+                              if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {
+                                handleCheckboxChange(group.id, !checkboxStates[group.id].checked);
+                              }
+                            }}
+                            key={`label-${index}-guidance-group`}
+                          >
+                            {group.name}
+                          </label>
+                        </div>
+                        <div
+                          style={{ display: 'flex', flexDirection: 'column', marginLeft: '26px' }}
+                          key={`guidance-group-${index}-childs`}
                         >
-                          {group.name}
-                        </label>
-                      </div>
-                      <div
-                        style={{ display: 'flex', flexDirection: 'column', marginLeft: '26px' }}
-                        key={`guidance-group-${index}-childs`}
-                      >
-                        {
-                          group.guidance_groups.map((guidance, key) => (
-                            <div key={`guidance-group-${index}-childs-${key}-parent`}>
-                              <div
-                                style={{ display: 'flex', alignItems: 'center', }}
-                                key={`guidance-group-${index}-childs-${key}-section`}
-                                id={`guidance-group-${index}-childs-${key}-section`}
-                              >
+                          {
+                            group.guidance_groups.map((guidance, key) => (
+                              <div key={`guidance-group-${index}-childs-${key}-parent`}>
                                 <div
-                                  style={{ marginRight: '10px' }}
-                                  className={guidanceChoiceStyles.checkboxes}
-                                  key={`guidance-group-${index}-childs-${key}-container`}
+                                  style={{ display: 'flex', alignItems: 'center', }}
+                                  key={`guidance-group-${index}-childs-${key}-section`}
+                                  id={`guidance-group-${index}-childs-${key}-section`}
                                 >
-                                  {
-                                    limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? (
-                                      <MdOutlineCheckBoxOutlineBlank
-                                        fill="grey"
-                                        size={18}
-                                        key={`icon-${index}-${key}-checkbox-outline-blank-disabled`}
-                                        style={{ cursor: 'not-allowed' }}
-                                      />
-                                    ) : !checkboxStates[group.id].guidance_groups[guidance.id] ? (
-                                      <MdOutlineCheckBoxOutlineBlank
-                                        style={{ cursor: 'pointer' }}
-                                        size={18}
-                                        key={`icon-${index}-${key}-checkbox-outline-blank`}
-                                        onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                                      />
-                                    ) : (
-                                      <MdCheckBox
-                                        style={{ cursor: 'pointer' }}
-                                        size={18}
-                                        key={`icon-${index}-${key}-checkbox`}
-                                        onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                                      />
-                                    )
-                                  }
+                                  <div
+                                    style={{ marginRight: '10px' }}
+                                    className={guidanceChoiceStyles.checkboxes}
+                                    key={`guidance-group-${index}-childs-${key}-container`}
+                                  >
+                                    {
+                                      limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? (
+                                        <MdOutlineCheckBoxOutlineBlank
+                                          fill="grey"
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox-outline-blank-disabled`}
+                                          style={{ cursor: 'not-allowed' }}
+                                        />
+                                      ) : !checkboxStates[group.id].guidance_groups[guidance.id] ? (
+                                        <MdOutlineCheckBoxOutlineBlank
+                                          style={{ cursor: 'pointer' }}
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox-outline-blank`}
+                                          onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                        />
+                                      ) : (
+                                        <MdCheckBox
+                                          style={{ cursor: 'pointer' }}
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox`}
+                                          onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                        />
+                                      )
+                                    }
+                                  </div>
+                                  <ReactTooltip
+                                    id={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    key={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    place="bottom"
+                                    effect="solid"
+                                    variant="info"
+                                    content={guidance.description}
+                                  />
+                                  <label
+                                    data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
+                                    style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
+                                    onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                  >
+                                    {guidance.name}
+                                  </label>
                                 </div>
-                                <ReactTooltip
-                                  id={`guidance-group-${index}-childs-${key}-tooltip`}
-                                  key={`guidance-group-${index}-childs-${key}-tooltip`}
-                                  place="bottom"
-                                  effect="solid"
-                                  variant="info"
-                                  content={guidance.description}
-                                />
-                                <label
-                                  data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
-                                  className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
-                                  style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
-                                  onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                                >
-                                  {guidance.name}
-                                </label>
                               </div>
-                            </div>
-                          ))
-                        }
+                            ))
+                          }
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '0' }}>
                   {!loading && !error && data && (
                     <CustomButton
                       title={
@@ -374,12 +379,12 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                     />
                   )}
                 </div>
-              </div>
-            </div>
-          </Card.Body>
-        </div>
-      </Collapse>
-    </Card>
+              </div >
+            </div >
+          </Card.Body >
+        </div >
+      </Collapse >
+    </Card >
   );
 }
 

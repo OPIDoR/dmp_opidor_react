@@ -7,6 +7,7 @@ import { filterOptions } from "../../utils/GeneratorUtils";
 import { useTranslation } from 'react-i18next';
 
 function CustomSelect({
+  inputId = null,
   propName = null,
   options,
   selectedOption = null,
@@ -47,6 +48,7 @@ function CustomSelect({
 
   return (
     <SelectComponent
+      inputId={inputId}
       data-testid={`select-component-${propName}`}
       menuPortalTarget={document.body}
       styles={{
