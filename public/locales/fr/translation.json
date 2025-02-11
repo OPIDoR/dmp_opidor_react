@@ -233,7 +233,7 @@
   "Do you want to duplicate the search output?": "Voulez vous dupliquer le produit de recherche ?",
   "Remember to rename your search output after duplication.": "Pensez à renommer votre produit de recherche après duplication.",
   "Yes, duplicate!": "Oui, dupliquer !",
-  "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed. Does not apply to the Software type.": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas. Ne s’applique pas au type Logiciel",
+  "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas.",
   "No plans comply with the import rules (at least one research output or type of research output).": "Aucuns plans ne respectent les règles d'imports (posséder au moins un produit de recherche ou un type de produit de recherche)",
   "Cookie preferences": "Préférences des cookies",
   "Back to top": "Retour en haut de page",
