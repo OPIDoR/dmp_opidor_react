@@ -27,7 +27,7 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale }) {
+function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
@@ -86,8 +86,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   const handleSaveFunding = async () => {
     setLoading(true);
 
-
-    if (selectedFunder?.apiClient) {
+    if (selectedFunder?.apiClient && !isClassic) {
       return Swal.fire({
         html: t('<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
         footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,

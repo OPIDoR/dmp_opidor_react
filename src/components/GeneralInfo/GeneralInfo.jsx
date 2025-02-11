@@ -20,6 +20,7 @@ function GeneralInfo({
   researchContext = 'research_project',
   isTest = true,
   readonly,
+  isClassic = false,
 }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
@@ -56,7 +57,7 @@ function GeneralInfo({
   return (
     <>
       {!readonly && researchContext === 'research_project' && (
-        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale}/>
+        <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale} isClassic={isClassic} />
       )}
       <Panel
         expanded={isOpenProjectForm}
