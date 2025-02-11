@@ -93,7 +93,7 @@ function SelectSingleObject({
           setOptions(createOptions(res.data, locale));
         })
         .catch((error) => {
-          // handle errors
+          setError(getErrorMessage(error));
         });
     }
   }, [selectedRegistry]);
