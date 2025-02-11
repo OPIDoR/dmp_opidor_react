@@ -96,7 +96,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         showCancelButton: true,
         confirmButtonColor: '#2c7dad',
         cancelButtonColor: '#c6503d',
-        cancelButtonText: t('Cancel'),
+        cancelButtonText: t('No'),
         confirmButtonText: t('Yes'),
       }).then((result) => {
         if (result.isConfirmed) {
@@ -166,6 +166,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         {!error && funders && (
           <div className={styles.container_anr}>
             <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+            <p className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</p>
             {funders.length > 1 && (
               <div className="form-group">
                 <div className={styles.label_form_anr}>
