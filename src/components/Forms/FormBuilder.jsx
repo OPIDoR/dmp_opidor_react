@@ -165,6 +165,7 @@ function FormBuilder({ template, dataType, readonly }) {
             <ModalTemplate
               key={key}
               propName={key}
+              dataType={dataType}
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
               tooltip={tooltip}
