@@ -71,7 +71,7 @@ function SelectMultipleObject({
           setError(getErrorMessage(error));
         });
     }
-  }, [category, dataType, registries])
+  }, [category, dataType])
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
