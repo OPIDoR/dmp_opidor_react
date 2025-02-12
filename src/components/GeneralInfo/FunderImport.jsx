@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
-import DOMPurify from "dompurify";
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -30,7 +29,7 @@ export const ButtonSave = styled.button`+
 function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
-  const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
+  const [isOpenFunderImport, setIsOpenFunderImport] = useState(true);
   const [funders, setFunders] = useState([]);
   const [selectedFunder, setSelectedFunder] = useState(null);
   const [fundedProjects, setFundedProjects] = useState([]);
@@ -118,6 +117,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       return toast.error(errorMessage);
     }
 
+    triggerRefresh({ clients: response?.data?.clients || [] });
+
     setFormData({
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
@@ -131,6 +132,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
     setLoading(false);
   }
+
+  const triggerRefresh = (message) => {
+    const event = new CustomEvent('trigger-refresh-shared-label', {
+      detail: { message },
+    });
+    window.dispatchEvent(event);
+  };
 
   return (
 
@@ -149,11 +157,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         <Panel.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
           <div className={styles.question_title}>
             <div className={styles.question_text}>
-              <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+              <div className={styles.title_anr}>
+                {t("Importer les données ....")}
+              </div>
             </div>
             <span className={styles.question_icons}>
               {isOpenFunderImport ? (
-                <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                <TfiAngleDown style={{minWidth: "35px"}} size={35} className={styles.down_icon_anr}/>
               ) : (
                 <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
               )}
@@ -165,7 +175,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         {!error && funders && (
           <div className={styles.container_anr}>
             <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-            <p className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</p>
+            <div className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</div>
             {funders.length > 1 && (
               <div className="form-group">
                 <div className={styles.label_form_anr}>
