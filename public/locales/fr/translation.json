@@ -251,5 +251,7 @@
   "<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>": "<p>Les données du projet <strong>{{title}}</strong> vont être importées dans le plan.</p><p><strong>Souhaitez-vous partager votre plan avec {{label}}</strong></p>",
   "If not, consider doing it later in the <strong>\"Share\"</strong> tab": "Si non, pensez à le faire ultérieurement dans l'onglet <strong>\"Partager\"</strong>",
   "If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.": "Si votre projet est financé par l'ANR, vous êtes invité à partager votre plan lors de l'import automatique des informations du projet ou ultérieurement dans l'onglet Partager.",
-  "Plan shared with {{names}}": "Plan partagé avec {{names}}"
+  "Plan shared with {{names}}": "Plan partagé avec {{names}}",
+  "Import project information": "Importer les renseignements sur le projet",
+  "For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>": "Pour les projets financés par l'ANR, vous êtes invité à partager votre plan avec l’ANR. Comment faire : <anchor>{{link}}</anchor>"
 }

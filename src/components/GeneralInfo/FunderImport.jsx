@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Panel } from "react-bootstrap";
-import { useTranslation, Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import styled from "styled-components";
@@ -158,7 +158,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <div className={styles.question_title}>
             <div className={styles.question_text}>
               <div className={styles.title_anr}>
-                {t("Importer les données ....")}
+                {t("Import project information")}
               </div>
             </div>
             <span className={styles.question_icons}>
@@ -175,7 +175,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         {!error && funders && (
           <div className={styles.container_anr}>
             <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-            <div className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</div>
+            <div className={styles.anr_sharing}>
+              <Trans 
+                i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
+                values={{ link: 'waiting for the link' }}
+                components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
+              />
+            </div>
             {funders.length > 1 && (
               <div className="form-group">
                 <div className={styles.label_form_anr}>
