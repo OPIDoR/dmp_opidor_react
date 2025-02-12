@@ -63,34 +63,47 @@ function WritePlan({
     setUserId(userId);
     setLocale(locale);
 
-    writePlan.getPlanData(planId)
-      .then((res) => {
-        setDmpId(res.data.dmp_id);
+    loadData(planId, researchOutputId);
 
-        const { research_outputs } = res.data;
+    const handleRefresh = (e) => {
+      loadData(e?.detail?.message?.planId || planId, e?.detail?.message?.roId || researchOutputId);
+    };
 
-        if (research_outputs.length > 0) {
-          let currentResearchOutput = research_outputs[0];
-          if (researchOutputId) {
-            const researchOutput = research_outputs
-              .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
-            if (researchOutput) {
-              currentResearchOutput = researchOutput;
-            }
-          }
-
-          setDisplayedResearchOutput(currentResearchOutput);
-          setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
-          setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
-          researchOutputs.length === 0 && setResearchOutputs(research_outputs);
-        }
-        setFormData(null);
-      })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-
+    window.addEventListener('trigger-refresh-ro-data', handleRefresh);
     window.addEventListener("scroll", (e) => handleScroll(e));
+
+    return () => {
+      window.removeEventListener('trigger-refresh-ro-data', handleRefresh);
+    };
   }, [planId]);
+
+  const loadData = (planId, researchOutputId) => {
+    writePlan.getPlanData(planId)
+    .then((res) => {
+      setDmpId(res.data.dmp_id);
+
+      const { research_outputs } = res.data;
+
+      if (research_outputs.length > 0) {
+        let currentResearchOutput = research_outputs[0];
+        if (researchOutputId) {
+          const researchOutput = research_outputs
+            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+          if (researchOutput) {
+            currentResearchOutput = researchOutput;
+          }
+        }
+
+        setDisplayedResearchOutput(currentResearchOutput);
+        setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
+        setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
+        researchOutputs.length === 0 && setResearchOutputs(research_outputs);
+      }
+      setFormData(null);
+    })
+    .catch((error) => setError(error))
+    .finally(() => setLoading(false));
+  }
 
   const handleScroll = () => {
     const roNavBar = document.querySelector('#ro-nav-bar');

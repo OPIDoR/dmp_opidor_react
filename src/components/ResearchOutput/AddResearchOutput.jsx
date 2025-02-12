@@ -132,6 +132,12 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     setUrlParams({ research_output: res?.data?.created_ro_id });
 
     toast.success(t("Research output successfully added."));
+
+    const event = new CustomEvent('trigger-refresh-ro-data', {
+      detail: { message: { roId: res?.data?.created_ro_id, planId: planId} },
+    });
+    window.dispatchEvent(event);
+
     return handleClose();
   };
 
