@@ -64,8 +64,12 @@
 }
 
 .anr_sharing {
-  color: var(--rust);
+  color: var(--white);
   font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--rust);
+  margin: 5px 0 5px 0;
 }
 
 .label_anr {
