@@ -26,7 +26,7 @@ function ImportResearchOutput({ planId, handleClose }) {
 
   useEffect(() => {
     researchOutput.getPlans().then(({ data }) => {
-      const plans = data?.plans?.map((plan) => ({
+      const plans = data?.plans?.filter(({ isStructured }) => isStructured)?.map((plan) => ({
         value: plan.id,
         label: plan.title,
         ...plan,
