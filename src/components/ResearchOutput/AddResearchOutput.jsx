@@ -141,10 +141,11 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   };
 
   const handlePersonalData = (researchOutputType) => {
+    if(inEdition) return;
     if (displayPersonalData(researchOutputType)) {
       setHasPersonalData(true);
     } else {
-      setHasPersonalData(displayedResearchOutput?.configuration?.hasPersonalData || false);
+      setHasPersonalData(false);
     }
   }
 
