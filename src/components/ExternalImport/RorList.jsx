@@ -77,9 +77,9 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
     let obj = {
       affiliationId: el.ror,
-      affiliationName: el.name[Object.keys(el.name)[0]],
+      affiliationName: el.name[el?.country?.code.toLowerCase()],
       affiliationIdType: el?.type,
-      acronyms: Array.isArray(el.acronyms) ? el.acronyms?.[0] : el.acronyms,
+      acronyms: Array.isArray(el.acronyms) ? el.acronyms?.at(0) : el.acronyms,
     };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
@@ -90,7 +90,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
 
         for (const [key, value] of Object.entries(flattenedMapping)) {
           if (key === 'name') {
-            set(obj, value, Object.values(get(matchData, key))?.at(0) || '');
+            set(obj, value, el.name[el?.country?.code.toLowerCase()]) || '';
           } else {
             set(obj, value, get(matchData, key) || '');
           }
