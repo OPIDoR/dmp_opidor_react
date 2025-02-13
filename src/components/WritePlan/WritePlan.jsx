@@ -65,17 +65,12 @@ function WritePlan({
 
     loadData(planId, researchOutputId);
 
-    const handleRefresh = (e) => {
-      loadData(e?.detail?.message?.planId || planId, e?.detail?.message?.roId || researchOutputId);
-    };
-
-    window.addEventListener('trigger-refresh-ro-data', handleRefresh);
     window.addEventListener("scroll", (e) => handleScroll(e));
 
     return () => {
-      window.removeEventListener('trigger-refresh-ro-data', handleRefresh);
+      window.removeEventListener("scroll", (e) => handleScroll(e));
     };
-  }, [planId]);
+  }, [planId, researchOutputs]);
 
   const loadData = (planId, researchOutputId) => {
     writePlan.getPlanData(planId)

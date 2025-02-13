@@ -9,8 +9,7 @@ export default function SharedLabelLayout({ planId, clients }) {
 
   useEffect(() => {
     const handleRefresh = (e) => {
-      setClientsData(e.detail.message.clients)
-      setRefresh((prev) => !prev);
+      setClientsData(e.detail.message.clients);
     };
 
     window.addEventListener('trigger-refresh-shared-label', handleRefresh);
