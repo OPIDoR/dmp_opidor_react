@@ -174,14 +174,14 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
         {!error && funders && (
           <div className={styles.container_anr}>
-            <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
             <div className={styles.anr_sharing}>
-              <Trans 
+              <Trans
                 i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
                 values={{ link: 'waiting for the link' }}
                 components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
               />
             </div>
+            <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
             {funders.length > 1 && (
               <div className="form-group">
                 <div className={styles.label_form_anr}>

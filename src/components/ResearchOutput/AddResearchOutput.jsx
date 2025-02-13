@@ -128,7 +128,6 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     setDisplayedResearchOutput(createdResearchOutput);
     setLoadedSectionsData({ [createdResearchOutput.template.id]: createdResearchOutput.template })
     setResearchOutputs(res?.data?.research_outputs);
-
     setUrlParams({ research_output: res?.data?.created_ro_id });
 
     toast.success(t("Research output successfully added."));
