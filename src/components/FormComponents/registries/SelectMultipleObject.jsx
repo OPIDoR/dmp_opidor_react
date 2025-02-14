@@ -220,6 +220,7 @@ function SelectMultipleObject({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
+                    inputId={`${propName}-registry-selector`}
                     onSelectChange={handleSelectRegistry}
                     options={registries.map((registry) => ({
                       value: registry,
