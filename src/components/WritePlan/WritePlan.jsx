@@ -70,7 +70,7 @@ function WritePlan({
     return () => {
       window.removeEventListener("scroll", (e) => handleScroll(e));
     };
-  }, [planId, researchOutputs]);
+  }, [planId]);
 
   const loadData = (planId, researchOutputId) => {
     writePlan.getPlanData(planId)
