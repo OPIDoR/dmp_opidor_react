@@ -235,6 +235,7 @@
   "Yes, duplicate!": "Oui, dupliquer !",
   "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas.",
   "No plans comply with the import rules (at least one research output or type of research output).": "Aucun plan ne respecte les règles d'imports (posséder au moins un produit de recherche ou un type de produit de recherche)",
+  "You can import a research output from plans you own or you are coowner (test plans excluded).": "Vous pouvez importer un produit de recherche depuis un plan dont vous êtes le propriétaire ou le copropriétaire (plans tests exclus).",
   "Cookie preferences": "Préférences des cookies",
   "Back to top": "Retour en haut de page",
   "e.g.": "ex :",
