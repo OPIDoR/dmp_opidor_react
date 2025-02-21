@@ -98,7 +98,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
       }
     }
 
-    setFragment({ ...fragment, ...obj });
+    setFragment({ ...fragment.getValues(), ...obj });
   };
 
   /**
