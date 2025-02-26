@@ -59,17 +59,21 @@
   padding: 10px 0;
 }
 
-.description_anr {
-  color: white;
+.funding_description {
+  color: var(--white);
 }
 
 .anr_sharing {
-  color: var(--rust);
-  font-weight: bold;
+  color: var(--white);
+  border-radius: 5px;
+  background-color: var(--rust);
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 8px;
 }
 
 .label_anr {
-  color: white;
+  color: var(--white);
 }
 
 .label_form_anr {

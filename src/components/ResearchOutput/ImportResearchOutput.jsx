@@ -87,7 +87,11 @@ function ImportResearchOutput({ planId, handleClose }) {
           <div className={stylesForm.label_form}>
             <label>{t("Choose plan")}</label>
           </div>
-
+          <div className="form-group">
+            <Alert bsStyle="info">
+              {t('You can import a research output from plans you own or you are coowner (test plans excluded).')}
+            </Alert>
+          </div>
           <CustomSelect
             onSelectChange={(e) => handleSelectPlan(e)}
             options={plans}

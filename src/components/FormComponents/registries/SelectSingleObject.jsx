@@ -57,9 +57,13 @@ function SelectSingleObject({
     if (category) {
       service.getRegistriesByCategory(category, dataType)
         .then((res) => {
-          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name];
-          setRegistries(registriesData);
-          if (registriesData.length === 1) setSelectedRegistry(registriesData[0])
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setRegistries(registriesData);
+          if (registriesData.length === 1) {
+            const registry = res.data[0];
+            setSelectedRegistry(registry.name);
+            setLoadedRegistries({ ...loadedRegistries, [registry.name]: registry.values });
+            setOptions(createOptions(registry.values, locale));
+          }
         })
         .catch((error) => {
           setError(getErrorMessage(error));
@@ -84,6 +88,7 @@ function SelectSingleObject({
   It is used to set the options of the select list.
   */
   useEffect(() => {
+    if(registries.length === 1) return;
     if (loadedRegistries[selectedRegistry]) {
       setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
     } else if (selectedRegistry) {
@@ -184,6 +189,7 @@ function SelectSingleObject({
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
+                    inputId={`${propName}-registry-selector`}
                     onSelectChange={handleSelectRegistry}
                     options={registries.map((registry) => ({
                       value: registry,

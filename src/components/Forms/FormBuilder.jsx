@@ -134,6 +134,7 @@ function FormBuilder({ template, dataType, readonly }) {
             propName={key}
             tooltip={tooltip}
             templateName={prop.template_name}
+            dataType={dataType}
             readonly={readonly || isConst}
           />
         )

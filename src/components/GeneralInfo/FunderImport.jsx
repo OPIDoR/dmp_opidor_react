@@ -9,7 +9,6 @@ import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
-import DOMPurify from "dompurify";
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -34,7 +33,7 @@ export const ButtonSave = styled.button`+
 function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
-  const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
+  const [isOpenFunderImport, setIsOpenFunderImport] = useState(true);
   const [funders, setFunders] = useState([]);
   const [selectedFunder, setSelectedFunder] = useState(null);
   const [fundedProjects, setFundedProjects] = useState([]);
@@ -122,6 +121,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       return toast.error(errorMessage);
     }
 
+    triggerRefresh({ clients: response?.data?.clients || [] });
+
     setFormData({
       [projectFragmentId]: response.data.fragment.project,
       [metaFragmentId]: response.data.fragment.meta
@@ -135,6 +136,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
     setLoading(false);
   }
+
+  const triggerRefresh = (message) => {
+    const event = new CustomEvent('trigger-refresh-shared-label', {
+      detail: { message },
+    });
+    window.dispatchEvent(event);
+  };
 
   return (
     <Card
@@ -173,9 +181,15 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
             {!error && funders && (
               <div className={styles.container_anr}>
-                <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-                <p className={styles.anr_sharing}>{t('If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.')}</p>
-                {funders.length > 1 && (
+              {!isClassic && <div className={styles.anr_sharing}>
+                <Trans
+                  i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
+                  values={{ link: 'waiting for the link' }}
+                  components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
+                />
+              </div>}
+              <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+              {funders.length > 1 && (
                   <div>
                     <div className={styles.label_form_anr}>
                       <label className={styles.label_anr}>{t("Please select a funder")}</label>
