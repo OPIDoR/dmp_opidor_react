@@ -12,18 +12,16 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
 import consumer from "../../cable";
-import swalUtils from "../../utils/swalUtils";
 
 function SectionsContent({ planId, templateId, readonly }) {
   const { t } = useTranslation();
   const {
     setFormData,
-    loadedSectionsData, setLoadedSectionsData,
+    loadedSectionsData,
     openedQuestions,
     setOpenedQuestions,
     setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
-    setPlanInformations,
     setUrlParams,
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
@@ -61,18 +59,6 @@ function SectionsContent({ planId, templateId, readonly }) {
       setModuleId(displayedResearchOutput?.configuration?.moduleId || templateId);
     }
   }, [displayedResearchOutput])
-
-  useEffect(() => {
-    if (moduleId && loadedSectionsData[moduleId]) {
-      setPlanInformations({
-        locale: loadedSectionsData[moduleId].locale.split('-')?.at(0) || 'fr',
-        title: loadedSectionsData[moduleId].title,
-        version: loadedSectionsData[moduleId].version,
-        org: loadedSectionsData[moduleId].org,
-        publishedDate: loadedSectionsData[moduleId].publishedDate,
-      });
-    }
-  }, [moduleId, loadedSectionsData[moduleId]])
 
   useEffect(() => {
     if (!displayedResearchOutput) return;
