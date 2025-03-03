@@ -123,11 +123,12 @@ function Question({
             <Panel.Title toggle>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
-                  <div className={styles.question_number}>
+                  <div className={styles.question_number} data-testid="question-number">
                     {sectionNumber}.{questionIdx}
                   </div>
                   <div
                     className={styles.panel_title}
+                    data-testid="question-text"
                     style={{
                       fontSize: '18px',
                       fontWeight: 'bold',
