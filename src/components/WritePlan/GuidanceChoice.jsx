@@ -236,9 +236,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                 {!loading && error && <CustomError error={error} />}
                 <div style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
                   {!loading && !error && data && data.map((group, index) => (
-                    <div key={`guidances-section-${index}`}>
+                    <div key={`guidances-section-${index}`} style={{ paddingBottom: '5px' }}>
                       <div
-                        style={{ display: 'flex', alignItems: 'center', }}
+                        style={{ display: 'flex', flexDirection: 'column' }}
                         key={`guidances-container-${index}`}
                       >
                         <div

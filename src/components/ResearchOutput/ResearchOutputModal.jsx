@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Modal } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import ResearchOutputForm from "./ResearchOutputForm";

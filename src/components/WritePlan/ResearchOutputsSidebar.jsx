@@ -26,11 +26,10 @@ const ResearchOutputsNavBar = styled.div`
 
   /* ###################NAVS#################### */
   .nav {
-    margin: 0px 0px 0px 0px;
+    margin: 4px 4px 0 0;
     display: flex;
     flex-direction: column;
     background-color: white;
-    width: 95%;
     float: right;
   }
 

@@ -68,7 +68,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
           <IoClose
             id="inner-modal-header-actions-close"
             size={24}
-            style={{ margin: '8px 5px 0 5px', cursor: 'pointer' }}
+            style={{ margin: '0 5px 0 5px', cursor: 'pointer' }}
             onClick={() => onClose()}
           />
         )}

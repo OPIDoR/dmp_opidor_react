@@ -10,10 +10,11 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
-import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
+import * as styles from "../assets/css/sidebar.module.css";
 import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
+import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
 
 function WritePlan({
   locale = 'en_GB',
@@ -141,7 +142,7 @@ function WritePlan({
         <>
           <PlanInformations template={template}/>
           <div className={styles.section}>
-            <ResearchOutputsTabs planId={planId} readonly={readonly} />
+            <ResearchOutputsSidebar planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && (
                 <SectionsContent

@@ -35,7 +35,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
           color: "#fff",
         }}>
           <strong>{displayedResearchOutput?.title}</strong>
-          <span id="actions" style={{ display: "flex" }}>
+          <span id="actions" style={{ display: "flex", width: '100px', justifyContent: 'space-between' }}>
             {!readonly && (
               <>
                 <Tooltip anchorSelect="#editBtn" place="bottom">
