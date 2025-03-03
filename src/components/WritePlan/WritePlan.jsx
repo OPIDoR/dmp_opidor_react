@@ -40,6 +40,7 @@ function WritePlan({
   } = useContext(GlobalContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [template, setTemplate] = useState(null);
   const tooltipedLabelId = uniqueId('create_research_output_tooltip_id_');
 
   useEffect(() => {
@@ -81,6 +82,7 @@ function WritePlan({
     writePlan.getPlanData(planId)
     .then((res) => {
       setDmpId(res.data.dmp_id);
+      setTemplate(res.data.template);
 
       const { research_outputs } = res.data;
 
@@ -137,10 +139,10 @@ function WritePlan({
       }
       {!error && researchOutputs.length > 0 && (
         <>
-          <PlanInformations />
-          <div style={{ margin: '10px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
-            <ResearchOutputsSidebar planId={planId} readonly={readonly} />
-            <div style={{ width: '100%', height: '100%' }}>
+          <PlanInformations template={template}/>
+          <div className={styles.section}>
+            <ResearchOutputsTabs planId={planId} readonly={readonly} />
+            <div className={styles.main}>
               {planId && (
                 <SectionsContent
                   planId={planId}

@@ -133,11 +133,12 @@ function Question({
               <Card.Title>
                 <div className={styles.question_title}>
                   <div className={styles.question_text}>
-                    <div className={styles.question_number}>
+                    <div className={styles.question_number} data-testid="question-number">
                       {sectionNumber}.{questionIdx}
                     </div>
                     <div
                       className={styles.card_title}
+                      data-testid="question-text"
                       style={{
                         fontSize: '18px',
                         fontWeight: 'bold',
