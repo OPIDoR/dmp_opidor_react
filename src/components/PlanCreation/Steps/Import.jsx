@@ -69,7 +69,6 @@ function Import({ prevStep, params, set, setUrlParams }) {
 
       const templates = [
         ...templatesData.default,
-        ...templatesData.myOrg,
         ...templatesData.others.map(({ templates }) => templates).flat(),
       ].map(({ id, title }) => ({
         value: id,
