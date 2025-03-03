@@ -3,7 +3,6 @@ import { planCreation } from "../../../services";
 export default async function getTemplates(opts, onlyStructured = false) {
   const templates = {
     default: {},
-    myOrg: {},
     others: [],
   };
 
@@ -21,18 +20,6 @@ export default async function getTemplates(opts, onlyStructured = false) {
     ? currentTemplatesRes?.data
     : [currentTemplatesRes?.data]
     .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase());
-
-  let myOrgTemplatesRes;
-  try {
-    myOrgTemplatesRes = await planCreation.getTemplatesByOrgId(opts.currentOrg, opts.researchContext);
-  } catch (error) {
-    setLoading(false);
-    return handleError(error);
-  }
-
-  templates.myOrg = myOrgTemplatesRes?.data
-    .filter(({ id }) => id !== defaultTemplateID)
-    .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase()) || [];
 
   let fundersRes;
   try {
@@ -75,8 +62,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
     return handleError(error);
   }
 
-  orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }))
-    .filter((option) => option.name.toLowerCase() !== opts.currentOrg.name.toLowerCase());
+  orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }));
 
   for await (const org of orgsRes) {
     let orgTemplatesRes;
@@ -103,7 +89,6 @@ export default async function getTemplates(opts, onlyStructured = false) {
 
   if (onlyStructured) {
     templates.default = templates.default.filter(({ structured }) => structured);
-    templates.myOrg = templates.myOrg.filter(({ structured }) => structured);
     templates.others = templates.others.map((other) => ({
       ...other,
       templates: other.templates.filter(({ structured }) => structured),
