@@ -42,7 +42,7 @@ function TinyArea({
   const editorRef = useRef(null);
 
   return (
-    <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
+    <div className={`form-group ticket-summernote mr-4 ml-4`}>
       <div className="row">
         <div className={styles.label_form}>
           <label data-tooltip-id={tinyAreaLabelId}>
