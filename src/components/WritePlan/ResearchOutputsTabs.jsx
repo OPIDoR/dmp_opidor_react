@@ -42,7 +42,7 @@ function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
   return (
     <>
       {researchOutputs && (
-        <Nav activeKey={`ro-${displayedResearchOutput.id}`}>
+        <Nav style={{width: '100%'}} activeKey={`ro-${displayedResearchOutput.id}`}>
           {researchOutputs.map((ro, idx) => (
             <Nav.Item
               key={idx}

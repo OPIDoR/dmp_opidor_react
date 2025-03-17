@@ -18,6 +18,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
 
   return (
     <Card
+      className="card-default"
       style={{
         borderRadius: "10px",
         borderWidth: "2px",
