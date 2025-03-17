@@ -205,7 +205,7 @@ function PlanCreation({ locale = 'en_GB' }) {
                 ))
               }
             </Stepper>
-            <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
+            <div style={{ padding: '20px', boxSizing: 'border-box' }}>
               {
                 steps.filter(({ actions }) => actions.includes(currentAction)).map(({ component, set }, index) => {
                   return currentStep === index && React.cloneElement(component, {

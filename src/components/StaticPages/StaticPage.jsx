@@ -25,7 +25,7 @@ export default function StaticPage({ locale, page, directusUrl }) {
   if (error) return <CustomError error={error} />;
 
   if (data?.static_pages.length === 0) {
-    return (<Alert bsStyle="warning">{t('No static page found !')}</Alert>)
+    return (<Alert variant="warning">{t('No static page found !')}</Alert>)
   }
 
   const reduceTranslations = (translations, field) => translations

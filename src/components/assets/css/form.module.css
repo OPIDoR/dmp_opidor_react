@@ -10,11 +10,6 @@
   align-items: center;
 }
 
-.form_margin {
-  padding: 10px 80px 3px 17px;
-  margin: 0px 0px 20px 0px;
-}
-
 .funder {
   border: solid;
   padding: 15px;
@@ -58,8 +53,7 @@ a {
   font-family:  "Helvetica Neue", sans-serif;
   color: var(--dark-blue);
   border-radius: 8px;
-  border-width: 1px;
-  border-color: var(--dark-blue);
+  border: 1px solid var(--dark-blue);
 }
 .input_label {
   margin: 10px 0px 10px 0px;
@@ -113,7 +107,7 @@ a {
   cursor: pointer;
 }
 
-.panel_title p {
+.card_title p {
   margin: 0 !important;
 }
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm, FormProvider } from "react-hook-form";
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { ExternalImport } from '../ExternalImport';
@@ -68,7 +68,7 @@ function NestedForm({ propName, data, template, mainFormDataType, readonly, hand
               {t("Cancel")}
             </Button>
             {!readonly && (
-              <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
+              <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
                 {t('Save')}
               </Button>
             )}

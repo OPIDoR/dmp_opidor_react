@@ -19,7 +19,7 @@
   font-family:  "Helvetica Neue", sans-serif;
 }
 
-.sous_title {
+.sub_title {
   font-weight: bold;
   font-size: 16px;
   color: var(--blue);
@@ -39,7 +39,7 @@
   justify-content: center;
 }
 
-.panel_icon {
+.card_icon {
   color: var(--dark-blue);
   margin: 0px 5px 0px 0px;
 }
@@ -61,6 +61,6 @@
   width: 55px !important;
 }
 
-.panel_title p {
+.card_title p {
   margin: 0 !important;
 }

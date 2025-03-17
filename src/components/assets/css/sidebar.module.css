@@ -1,3 +1,6 @@
+/*
+* RESEARCH OUTPUTS TABS
+*/
 .section {
   margin: 10px;
   display: flex;
@@ -9,40 +12,6 @@
 .main {
   width: 100%;
   height: 100%;
-}
-
-.research_outputs_accordion {
-  display: flex;
-  flex-direction: column;
-
-  align-self: flex-start;
-  overflow: hidden;
-  border-radius: 20px 0 0 20px;
-  position: relative;
-  width: 100%;
-
-  background-color: white;
-}
-
-.research_outputs_tabs {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  width: 95%;
-  float: right;
-}
-
-.research_outputs_tab {
-  flex: 1 1 15%;
-  text-align: center;
-  border: none;
-  margin: 0;
-}
-
-.research_outputs_tab a {
-  padding: 20px;
-  font-weight: bold;
-  background-color: var(--blue);
 }
 
 .add_research_output_button {
@@ -58,15 +27,11 @@
   color: white;
 }
 
-.nav_header {
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px 0px 0px 0px;
-}
 .nav_icon {
   display: flex;
   justify-content: center;
 }
+
 .nav_icon .space_right {
   margin-right: 10px;
 }
@@ -74,64 +39,11 @@
 .nav_title {
   display: flex;
   justify-content: center;
+  text-align: center;
   color: white;
   margin: 10px;
   font-size: 18px;
   font-weight: bold;
-  font-family:  "Helvetica Neue", sans-serif;
   letter-spacing: 2px;
-}
-/*adds border top to first nav box */
-.sidebar .navbar-nav > li:first-child {
-  border-top: 0px #e5e5e5 solid;
-}
-
-/*adds border to bottom nav boxes*/
-.sidebar .navbar-nav > li {
-  border-bottom: 3px var(--white) solid;
-}
-
-/* ************************************************** */
-.sidebar .navbar-nav > .active:first-child > a {
-  background-color: #1c5170 !important;
-  border-radius: 0px 0px 0px 0px;
-}
-
-.sidebar .navbar-nav > .active:not(:first-child):not(:last-child) > a {
-  background-color: #1c5170 !important;
-  border-radius: 0px 0px 0px 0px;
-}
-
-.sidebar .navbar-nav > .active:not(:first-child) > a {
-  background-color: #1c5170 !important;
-  border-radius: 0px 0px 0px 20px;
-}
-/* ************************************************** */
-
-/* ************************************************** */
-.sidebar .navbar-nav > li:first-child:hover {
-  background-color: #1c5170;
-  border-radius: 0px 0px 0px 0px;
-}
-.sidebar .navbar-nav > li:not(:first-child):not(:last-child):hover {
-  background-color: #1c5170;
-  border-radius: 0px 0px 0px 0px;
-}
-
-.sidebar .navbar-nav > li:last-child:hover {
-  background-color: #1c5170;
-  border-radius: 0px 0px 0px 20px;
-}
-/* ************************************************** */
-.sidebar .navbar-nav > .active > a:hover {
-  background-color: #1c5170 !important;
-}
-.sidebar .navbar-nav > li > a {
-  color: white;
-}
-
-/*allows nav box to use 100% width*/
-.sidebar .navbar-collapse,
-nav.sidebar .container-fluid {
-  padding: 0 0px 0 0px;
+  align-items: center;
 }
