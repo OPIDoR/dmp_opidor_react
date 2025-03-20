@@ -88,7 +88,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             <label>{t("Choose plan")}</label>
           </div>
           <div className="form-group">
-            <Alert bsStyle="info">
+            <Alert variant="info">
               {t('You can import a research output from plans you own or you are coowner (test plans excluded).')}
             </Alert>
           </div>
@@ -101,7 +101,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         </div>
       ) : (
         <div className="form-group">
-          <Alert variant="warning">
+          <Alert bsStyle="warning">
             {t('No plans comply with the import rules (at least one research output or type of research output).')}
           </Alert>
         </div>
