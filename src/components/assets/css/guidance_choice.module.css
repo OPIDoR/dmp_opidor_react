@@ -1,3 +1,8 @@
+.card {
+  margin: 20px;
+  position: relative;
+}
+
 .label_checkbox {
   border-radius: 8px;
   padding: 5px 10px 5px 10px;

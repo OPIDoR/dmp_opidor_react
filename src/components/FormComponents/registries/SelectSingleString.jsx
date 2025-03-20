@@ -82,17 +82,20 @@ function SelectSingleString({
   */
   useEffect(() => {
     if (registries.length === 1) return;
-    if (loadedRegistries[selectedRegistry]) {
-      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else if (selectedRegistry) {
-      service.getRegistryByName(selectedRegistry)
-        .then((res) => {
-          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
-          setOptions(createOptions(res.data, locale));
-        })
-        .catch((error) => {
-          setError(getErrorMessage(error));
-        });
+
+    if (selectedRegistry) {
+      if (loadedRegistries[selectedRegistry]) {
+        setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
+      } else {
+        service.getRegistryByName(selectedRegistry)
+          .then((res) => {
+            setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
+            setOptions(createOptions(res.data, locale));
+          })
+          .catch((error) => {
+            setError(getErrorMessage(error));
+          });
+      }
     }
   }, [selectedRegistry]);
 
