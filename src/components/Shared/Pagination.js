@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { t } from "i18next";
 
-const propTypes = {
-  items: PropTypes.array.isRequired,
-  onChangePage: PropTypes.func.isRequired,
-  initialPage: PropTypes.number,
-  pageSize: PropTypes.number,
-};
 
 const Pagination = ({ items, onChangePage, initialPage = 1, pageSize = 9 }) => {
   const [pager, setPager] = useState({});
@@ -106,5 +99,4 @@ const Pagination = ({ items, onChangePage, initialPage = 1, pageSize = 9 }) => {
   );
 };
 
-Pagination.propTypes = propTypes;
 export default Pagination;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import Card from 'react-bootstrap/Card';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { Panel } from 'react-bootstrap';
 import uniqueId from 'lodash.uniqueid';
 
 import SectionsContent from "./SectionsContent";
@@ -10,11 +10,11 @@ import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
-import ResearchOutputsTabs from "./ResearchOutputsTabs";
 import * as styles from "../assets/css/sidebar.module.css";
 import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
+import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
 
 function WritePlan({
   locale = 'en_GB',
@@ -142,7 +142,7 @@ function WritePlan({
         <>
           <PlanInformations template={template}/>
           <div className={styles.section}>
-            <ResearchOutputsTabs planId={planId} readonly={readonly} />
+            <ResearchOutputsSidebar planId={planId} readonly={readonly} />
             <div className={styles.main}>
               {planId && (
                 <SectionsContent
@@ -157,8 +157,8 @@ function WritePlan({
       )}
       {!loading && !error && researchOutputs.length === 0 && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Panel style={{ width: '1024px' }}>
-            <Panel.Body>
+          <Card style={{ width: '700px' }}>
+            <Card.Body>
               {readonly ?
                 <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
                 : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
@@ -181,14 +181,13 @@ function WritePlan({
                   />
                 </h2>
               }
-
               {!readonly &&
                 <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                   <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
                 </div>
               }
-            </Panel.Body>
-          </Panel>
+            </Card.Body>
+          </Card>
         </div>
       )}
     </div>

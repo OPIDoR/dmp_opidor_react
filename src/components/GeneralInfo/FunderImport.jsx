@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Panel } from "react-bootstrap";
-import { Trans, useTranslation } from "react-i18next";
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
+
+import { useTranslation, Trans } from "react-i18next";
 import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
-import styled from "styled-components";
 import { toast } from "react-hot-toast";
+import styled from 'styled-components';
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -141,82 +145,87 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   };
 
   return (
-
-    <Panel
-      expanded={isOpenFunderImport}
-      className={styles.panel}
+    <Card
+      className={styles.card}
       style={{
         border: "2px solid var(--dark-blue)",
         borderRadius: "10px",
-      }}
-      onToggle={(expanded) => setIsOpenFunderImport(expanded)}
-    >
+      }}>
       {loading && <CustomSpinner isOverlay={true} />}
       {error && <CustomError error={error} />}
-      <Panel.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
-        <Panel.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
-          <div className={styles.question_title}>
-            <div className={styles.question_text}>
-              <div className={styles.title_anr}>
-                {t("Import project information")}
+      <Card.Header className="funder-import" style={{ background: "var(--dark-blue)", borderBottom: "none" }}>
+        <Button
+          style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none' }}
+          onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
+          aria-controls="funder-import-collapse"
+          aria-expanded={isOpenFunderImport}
+        >
+          <Card.Title>
+            <div className={styles.question_title}>
+              <div className={styles.question_text}>
+                <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
               </div>
+              <span className={styles.question_icons}>
+                {isOpenFunderImport ? (
+                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                ) : (
+                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                )}
+              </span>
             </div>
-            <span className={styles.question_icons}>
-              {isOpenFunderImport ? (
-                <TfiAngleDown style={{minWidth: "35px"}} size={35} className={styles.down_icon_anr}/>
-              ) : (
-                <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-              )}
-            </span>
-          </div>
-        </Panel.Title>
-      </Panel.Heading>
-      <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
-        {!error && funders && (
-          <div className={styles.container_anr}>
-            {!isClassic && <div className={styles.anr_sharing}>
-              <Trans
-                i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
-                values={{ link: 'waiting for the link' }}
-                components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
-              />
-            </div>}
-            <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-            {funders.length > 1 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Please select a funder")}</label>
-                </div>
-                <CustomSelect
-                  options={funders}
-                  selectedOption={selectedFunder || null}
-                  onSelectChange={(e) => handleSelectFunder(e)}
+          </Card.Title>
+        </Button>
+      </Card.Header>
+      <Collapse in={isOpenFunderImport}>
+        <div id="funder-import-collapse">
+          <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+            {!error && funders && (
+              <div className={styles.container_anr}>
+              {!isClassic && <div className={styles.anr_sharing}>
+                <Trans
+                  i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
+                  values={{ link: 'waiting for the link' }}
+                  components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
                 />
+              </div>}
+              <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+              {funders.length > 1 && (
+                  <div>
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Please select a funder")}</label>
+                    </div>
+                    <CustomSelect
+                      options={funders}
+                      selectedOption={selectedFunder || null}
+                      onSelectChange={(e) => handleSelectFunder(e)}
+                    />
+                  </div>
+                )}
+                {fundedProjects.length > 0 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
+                    </div>
+                    <CustomSelect
+                      options={fundedProjects}
+                      selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
+                      onSelectChange={(e) => setSelectedProject(e.object)}
+                      async={true}
+                      asyncCallback={(value) => filterOptions(fundedProjects, value)}
+                    />
+                  </div>
+                )}
+                {selectedProject && (
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                    {t("Save")}
+                  </ButtonSave>
+                )}
               </div>
             )}
-            {fundedProjects.length > 0 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
-                </div>
-                <CustomSelect
-                  options={fundedProjects}
-                  selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                  onSelectChange={(e) => setSelectedProject(e.object)}
-                  async={true}
-                  asyncCallback={(value) => filterOptions(fundedProjects, value)}
-                />
-              </div>
-            )}
-            {selectedProject && (
-              <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                {t("Save")}
-              </ButtonSave>
-            )}
-          </div>
-        )}
-      </Panel.Body>
-    </Panel>
+          </Card.Body>
+        </div>
+      </Collapse>
+    </Card>
   )
 
 }

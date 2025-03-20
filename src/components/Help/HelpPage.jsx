@@ -50,7 +50,7 @@ export default function HelpPage({ locale, directusUrl }) {
   }));
 
   if (categories.length === 0) {
-    return (<Alert bsStyle="warning">{t('Oh, it seems that this help page is still under development and does not yet contain any content.')}</Alert>)
+    return (<Alert variant="warning">{t('Oh, it seems that this help page is still under development and does not yet contain any content.')}</Alert>)
   }
 
   return (
