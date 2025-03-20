@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Modal } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
 import { GlobalContext } from "../context/Global";
 import ResearchOutputForm from "./ResearchOutputForm";
@@ -13,7 +13,7 @@ function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
   const { configuration } = useContext(GlobalContext);
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal size="xl" show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{t(edit ? 'Edit research output' : `Create${configuration.enableImportResearchOutput ? ' or import' : ''} a research output`)}</Modal.Title>
       </Modal.Header>

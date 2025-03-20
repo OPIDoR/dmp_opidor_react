@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useForm, FormProvider } from "react-hook-form";
-import { Modal, Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 
 import { GlobalContext } from '../context/Global.jsx';
@@ -52,7 +53,7 @@ function ModalForm({ data, template, mainFormDataType, label, readonly, show, ha
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   return (
-    <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
+    <Modal size="xl" className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
@@ -73,7 +74,7 @@ function ModalForm({ data, template, mainFormDataType, label, readonly, show, ha
           {t("Close")}
         </Button>
         {!readonly && (
-          <Button bsStyle="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
+          <Button variant="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
             {t('Save')}
           </Button>
         )}
