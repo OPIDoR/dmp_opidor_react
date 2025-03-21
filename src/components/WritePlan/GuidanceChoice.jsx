@@ -188,6 +188,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
   return (
     <Card
+      id="accordion-guidance-choice"
       className={guidanceChoiceStyles.card}
       style={{
         border: "2px solid var(--dark-blue)",
