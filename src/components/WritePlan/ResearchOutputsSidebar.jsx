@@ -170,7 +170,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
   return (
     <>
       {researchOutputs && (
-        <ResearchOutputsNavBar>
+        <ResearchOutputsNavBar id="ro-nav-bar">
           {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
             <Accordion defaultActiveKey="chunk-1-5">
               {researchOutputsChunks.map((roChunk, i) => {
