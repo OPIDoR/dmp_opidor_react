@@ -101,7 +101,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         </div>
       ) : (
         <div className="form-group">
-          <Alert bsStyle="warning">
+          <Alert variant="warning">
             {t('No plans comply with the import rules (at least one research output or type of research output).')}
           </Alert>
         </div>
