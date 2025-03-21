@@ -74,13 +74,9 @@ const ResearchOutputsNavBar = styled.div`
   /* ************************************************** */
 
   /* *********************** hover *************************** */
-  .nav > .nav-item:first-child:hover > .nav-link {
-    border-radius: 0px;
-  }
 
   .nav > .nav-item:hover > .nav-link {
     background-color: #1c5170;
-    border-radius: 0px;
   }
   /* ************************************************** */
   .nav > .nav-item > .nav-link.active:hover {
