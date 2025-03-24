@@ -6,7 +6,6 @@ import uniqueId from 'lodash.uniqueid';
 
 import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
-import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import GuidanceChoice from "./GuidanceChoice";
@@ -15,6 +14,7 @@ import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
 import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
+import WritePlanPlaceholder from "./Placeholders/WritePlanPlaceholder";
 
 function WritePlan({
   locale = 'en_GB',
@@ -39,7 +39,7 @@ function WritePlan({
     setQuestionsWithGuidance,
     setConfiguration,
   } = useContext(GlobalContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
   const tooltipedLabelId = uniqueId('create_research_output_tooltip_id_');
@@ -81,31 +81,31 @@ function WritePlan({
 
   const loadData = (planId, researchOutputId) => {
     writePlan.getPlanData(planId)
-    .then((res) => {
-      setDmpId(res.data.dmp_id);
-      setTemplate(res.data.template);
+      .then((res) => {
+        setDmpId(res.data.dmp_id);
+        setTemplate(res.data.template);
 
-      const { research_outputs } = res.data;
+        const { research_outputs } = res.data;
 
-      if (research_outputs.length > 0) {
-        let currentResearchOutput = research_outputs[0];
-        if (researchOutputId) {
-          const researchOutput = research_outputs
-            .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
-          if (researchOutput) {
-            currentResearchOutput = researchOutput;
+        if (research_outputs.length > 0) {
+          let currentResearchOutput = research_outputs[0];
+          if (researchOutputId) {
+            const researchOutput = research_outputs
+              .find(({ id }) => id === Number.parseInt(researchOutputId, 10));
+            if (researchOutput) {
+              currentResearchOutput = researchOutput;
+            }
           }
-        }
 
-        setDisplayedResearchOutput(currentResearchOutput);
-        setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
-        setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
-        researchOutputs.length === 0 && setResearchOutputs(research_outputs);
-      }
-      setFormData(null);
-    })
-    .catch((error) => setError(error))
-    .finally(() => setLoading(false));
+          setDisplayedResearchOutput(currentResearchOutput);
+          setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
+          setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
+          researchOutputs.length === 0 && setResearchOutputs(research_outputs);
+        }
+        setFormData(null);
+      })
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
   }
 
   const handleScroll = () => {
@@ -131,65 +131,70 @@ function WritePlan({
 
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
+      {loading && <WritePlanPlaceholder />}
       {error && <CustomError error={error}></CustomError>}
-      {!readonly &&
-        <div style={{ margin: '10px 30px 10px 30px' }}>
-          <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
-        </div>
-      }
-      {!error && researchOutputs.length > 0 && (
+      {!loading && !error &&
         <>
-          <PlanInformations template={template}/>
-          <div className={styles.section}>
-            <ResearchOutputsSidebar planId={planId} readonly={readonly} />
-            <div className={styles.main}>
-              {planId && (
-                <SectionsContent
-                  planId={planId}
-                  templateId={templateId}
-                  readonly={readonly}
-                />
-              )}
+          {!readonly &&
+            <div style={{ margin: '10px 30px 10px 30px' }}>
+              <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
             </div>
-          </div>
-        </>
-      )}
-      {!loading && !error && researchOutputs.length === 0 && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Card style={{ width: '700px' }}>
-            <Card.Body>
-              {readonly ?
-                <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
-                : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
-                  <Trans
-                    t={t}
-                    defaults="Add a <0>research output</0> to display plan questions."
-                    components={[<strong>research output</strong>]}
-                  />
-                  <TooltipInfoIcon />
-                  <ReactTooltip
-                    id={tooltipedLabelId}
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={<Trans
-                      t={t}
-                      defaults="<0>Research output</0> covers any type of research data produced in the course of a scientific research project or activity: dataset, software and code, workflow, protocol, physical object..."
-                      components={[<strong>Research output</strong>]}
-                    />}
-                  />
-                </h2>
-              }
-              {!readonly &&
-                <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
-                  <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
+          }
+          {researchOutputs.length > 0 && (
+            <>
+              <PlanInformations template={template} />
+              <div className={styles.section}>
+                <ResearchOutputsSidebar planId={planId} readonly={readonly} />
+                <div className={styles.main}>
+                  {planId && (
+                    <SectionsContent
+                      planId={planId}
+                      templateId={templateId}
+                      readonly={readonly}
+                    />
+                  )}
                 </div>
-              }
-            </Card.Body>
-          </Card>
-        </div>
-      )}
+              </div>
+            </>
+          )}
+          {researchOutputs.length === 0 && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Card style={{ width: '700px' }}>
+                <Card.Body>
+                  {readonly ?
+                    <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
+                    : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
+                      <Trans
+                        t={t}
+                        defaults="Add a <0>research output</0> to display plan questions."
+                        components={[<strong>research output</strong>]}
+                      />
+                      <TooltipInfoIcon />
+                      <ReactTooltip
+                        id={tooltipedLabelId}
+                        place="bottom"
+                        effect="solid"
+                        variant="info"
+                        content={<Trans
+                          t={t}
+                          defaults="<0>Research output</0> covers any type of research data produced in the course of a scientific research project or activity: dataset, software and code, workflow, protocol, physical object..."
+                          components={[<strong>Research output</strong>]}
+                        />}
+                      />
+                    </h2>
+                  }
+                  {!readonly &&
+                    <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
+                      <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
+                    </div>
+                  }
+                </Card.Body>
+              </Card>
+            </div>
+          )
+          }
+        </>
+      }
     </div>
   );
 }
