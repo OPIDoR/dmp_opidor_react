@@ -47,6 +47,7 @@ function SelectContributorMultiple({
   const [editedPerson, setEditedPerson] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);
+  const [isRoleConst, setIsRoleConst] = useState(false);
   const tooltipId = uniqueId('select_contributor_multiple_tooltip_id_');
 
   /* A hook that is called when the component is mounted. */
@@ -88,6 +89,7 @@ function SelectContributorMultiple({
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
+        setIsRoleConst(contributorProps.role.isConst || false);
         setRoleCategory(contributorProps.role.registryCategory || null);
         service.getSchemaByName(personTemplateName).then((resSchema) => {
           const personTemplate = resSchema.data;
@@ -278,6 +280,7 @@ function SelectContributorMultiple({
             tableHeader={header}
             overridable={overridableRole}
             readonly={readonly}
+            isRoleConst={isRoleConst}
           ></PersonsList>
         )}
       </div>

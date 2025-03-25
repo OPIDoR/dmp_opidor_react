@@ -48,6 +48,7 @@ function SelectContributorSingle({
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);
+  const [isRoleConst, setIsRoleConst] = useState(false);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
@@ -94,6 +95,7 @@ function SelectContributorSingle({
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
+        setIsRoleConst(contributorProps.role.isConst || false);
         setRoleCategory(contributorProps.role.registryCategory || null);
         service.getSchemaByName(personTemplateName).then((resSchema) => {
           setTemplate(resSchema.data);
@@ -283,6 +285,7 @@ function SelectContributorSingle({
             tableHeader={t('Selected value')}
             overridable={overridableRole}
             readonly={readonly}
+            isRoleConst={isRoleConst}
           ></PersonsList>
         )}
       </div>
