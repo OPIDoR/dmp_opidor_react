@@ -18,7 +18,8 @@ function PersonsList({
   templateToString = [],
   tableHeader = null,
   overridable = false,
-  readonly = false
+  readonly = false,
+  isRoleConst = false,
 }) {
   const { t } = useTranslation();
   return (
@@ -82,7 +83,7 @@ function PersonsList({
                       options={roleOptions}
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"
-                      isDisabled={readonly}
+                      isDisabled={readonly || isRoleConst}
                       overridable={overridable}
                     />
                   )}
