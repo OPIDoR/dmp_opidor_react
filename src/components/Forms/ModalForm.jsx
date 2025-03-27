@@ -53,7 +53,7 @@ function ModalForm({ data, template, mainFormDataType, label, readonly, show, ha
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   return (
-    <Modal size="xl" className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
+    <Modal enforceFocus={false} size="xl" className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
