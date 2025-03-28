@@ -123,9 +123,9 @@ function Question({
             marginBottom: '20px',
           }}
         >
-          <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none' }}>
+          <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none', paddingBottom: '0' }}>
             <Button
-              style={{ backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0' }}
+              style={{ backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0', borderBottom: '1px solid #ddd', borderRadius: '0' }}
               onClick={() => handleQuestionCollapse(!isQuestionOpened())}
               aria-controls={`card-collapse-${question.id}`}
               aria-expanded={isQuestionOpened()}
@@ -288,7 +288,7 @@ function Question({
           </Card.Header>
           <Collapse in={isQuestionOpened()}>
             <div id={`card-collapse-${question.id}`}>
-              <Card.Body id={`card-body-${question.id}`} style={{ position: 'relative' }}>
+              <Card.Body id={`card-body-${question.id}`} style={{ position: 'relative', paddingTop: '0' }}>
                 {isQuestionOpened() && (
                   <div>
                     {answer && (
