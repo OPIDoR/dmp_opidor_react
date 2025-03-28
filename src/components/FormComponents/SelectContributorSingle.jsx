@@ -58,10 +58,10 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(roleCategory) {
+    if (roleCategory && !isRoleConst) {
       fetchRoles();
     }
-  }, [roleCategory]);
+  }, [roleCategory, isRoleConst]);
 
   useEffect(() => {
     if (persons.length > 0) {
@@ -200,7 +200,7 @@ function SelectContributorSingle({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ 
+      field.onChange({
         ...contributor,
         person: savedFragment,
         role: defaultRole,
@@ -233,7 +233,7 @@ function SelectContributorSingle({
           </label>
           {
             tooltip && (
-             <ReactTooltip
+              <ReactTooltip
                 id={tooltipId}
                 place="bottom"
                 effect="solid"

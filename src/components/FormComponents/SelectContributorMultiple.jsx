@@ -52,10 +52,10 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(roleCategory) {
+    if(roleCategory && !isRoleConst) {
       fetchRoles();
     }
-  }, [roleCategory]);
+  }, [roleCategory, isRoleConst]);
 
   useEffect(() => {
     if (persons.length > 0) {
