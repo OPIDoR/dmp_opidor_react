@@ -77,13 +77,16 @@ function PersonsList({
                   </div>
                 </td>
                 <td>
-                  {roleOptions && (
+                  {isRoleConst && (
+                    defaultRole
+                  )}
+                  {roleOptions && !isRoleConst && (
                     <CustomSelect
                       onSelectChange={(e) => handleSelectRole(e, idx)}
                       options={roleOptions}
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"
-                      isDisabled={readonly || isRoleConst}
+                      isDisabled={readonly}
                       overridable={overridable}
                     />
                   )}
