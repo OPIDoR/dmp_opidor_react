@@ -4,12 +4,10 @@ import Nav from "react-bootstrap/Nav";
 
 import { GlobalContext } from "../context/Global";
 import { useTranslation } from "react-i18next";
-import * as styles from "../assets/css/sidebar.module.css";
 import { researchOutput } from "../../services";
 import { except } from "../../utils/utils";
 
 function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
-  const { t } = useTranslation();
   const {
     displayedResearchOutput, setDisplayedResearchOutput,
     setUrlParams,
@@ -48,7 +46,7 @@ function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
               key={idx}
               onClick={(e) => handleShowResearchOutputClick(e, ro, idx)}
             >
-              <Nav.Link eventKey={`ro-${ro.id}`}>{ro.abbreviation}</Nav.Link>
+              <Nav.Link eventKey={`ro-${ro.id}`} style={{ padding: '20px 0'}}>{ro.abbreviation}</Nav.Link>
             </Nav.Item>
           ))}
           {!readonly && (
