@@ -76,7 +76,7 @@ function PersonsList({
                     )}
                   </div>
                 </td>
-                <td>
+                <td style={{ verticalAlign: "middle" }}>
                   {isRoleConst && (
                     defaultRole
                   )}
