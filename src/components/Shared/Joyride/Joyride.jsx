@@ -92,10 +92,12 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
           {skipProps && <JoyrideTooltip.Button { ...skipProps } type="link" style={{ width: '90px' }} />}
           <JoyrideTooltip.Spacer />
           <div>
-            {backProps && index > 0 && (
+            {backProps && (index > 0 && index < (steps.length - 1)) && (
               <JoyrideTooltip.Button { ...backProps } style={{ marginRight: '10px' }} />
             )}
-            {primaryProps && <JoyrideTooltip.Button { ...primaryProps } title={continuous ? t('Next') : skipProps.title} />}
+            {index === (steps.length - 1) ? (
+              <JoyrideTooltip.Button { ...primaryProps } title={t('Finish')} />
+            ) : primaryProps && <JoyrideTooltip.Button { ...primaryProps } title={continuous ? t('Next') : skipProps.title} />}
           </div>
         </JoyrideTooltip.Footer>
       </JoyrideTooltip>
