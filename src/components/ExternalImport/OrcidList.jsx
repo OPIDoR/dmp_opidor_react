@@ -84,7 +84,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
       }
     }
 
-    setFragment({ ...fragment.getValues(), ...obj,nameType: t("Personal") });
+    setFragment({ ...fragment.getValues(), ...obj,nameType: 'Personal' });
   };
 
   /**
