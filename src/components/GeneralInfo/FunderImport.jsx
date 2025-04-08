@@ -181,13 +181,6 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
             {!error && funders && (
               <div className={styles.container_anr}>
-              {!isClassic && <div className={styles.anr_sharing}>
-                <Trans
-                  i18nKey="For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>"
-                  values={{ link: 'waiting for the link' }}
-                  components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
-                />
-              </div>}
               <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
               {funders.length > 1 && (
                   <div>
@@ -201,6 +194,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                     />
                   </div>
                 )}
+                {!isClassic && selectedFunder?.apiClient === 'anr' && <div className={styles.anr_sharing}>
+                  <Trans
+                    i18nKey="If your project is funded by the ANR, we invite you to share your PGD by choosing the ANR from the list of organizations below. Find out how here : <anchor>{{link}}</anchor>"
+                    values={{ link: 'link' }}
+                    components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
+                  />
+                </div>}
                 {fundedProjects.length > 0 && (
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
