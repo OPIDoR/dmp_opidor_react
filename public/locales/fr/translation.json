@@ -252,5 +252,5 @@
   "If your project is funded by the ANR, you are invited to share your plan during the automatic import of project information or later in the Share tab.": "Si votre projet est financé par l'ANR, vous êtes invité à partager votre plan lors de l'import automatique des informations du projet ou ultérieurement dans l'onglet Partager.",
   "Plan shared with {{names}}": "Plan partagé avec {{names}}",
   "Import project information": "Importer les renseignements sur le projet",
-  "For projects funded by the ANR, you are invited to share your plan with the ANR. How to do it : <anchor>{{link}}</anchor>": "Pour les projets financés par l'ANR, vous êtes invité à partager votre plan avec l’ANR. Comment faire : <anchor>{{link}}</anchor>"
+  "If your project is funded by the ANR, we invite you to share your PGD by choosing the ANR from the list of organizations below. Find out how here : <anchor>{{link}}</anchor>": "Si votre projet est financé par l’ANR, nous vous invitons à partager votre PGD en choisissant l’ANR dans la liste des organismes ci-dessous. Découvrez comment procéder ici : <anchor>{{link}}</anchor>"
 }
