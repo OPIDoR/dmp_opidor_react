@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -39,6 +39,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     currentOrg,
     locale,
   } = useContext(GlobalContext);
+  const guidancesRef = useRef(null);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -58,7 +59,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
         const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
-        guidance_groups = [...orgGuidances, ...selectedGuidances, ...unselectedGuidances];
+        guidance_groups = [...selectedGuidances, ...orgGuidances, ...unselectedGuidances];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
@@ -160,7 +161,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
 
-    document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    guidancesRef.current.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
 
     toast.success(t("Registration was successful !"));
   };
@@ -235,7 +239,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
               <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', maxHeight: '500px', position: 'relative' }}>
                 {loading && <CustomSpinner />}
                 {!loading && error && <CustomError error={error} />}
-                <div style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
+                <div ref={guidancesRef} style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
                   {!loading && !error && data && data.map((group, index) => (
                     <div key={`guidances-section-${index}`} style={{ paddingBottom: '5px' }}>
                       <div
