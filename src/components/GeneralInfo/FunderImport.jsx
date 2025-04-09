@@ -209,9 +209,11 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                     <CustomSelect
                       options={fundedProjects}
                       selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                      onSelectChange={(e) => setSelectedProject(e.object)}
+                      onSelectChange={(e) => setSelectedProject(e ? e.object : null)}
                       async={true}
                       asyncCallback={(value) => filterOptions(fundedProjects, value)}
+                      isClearable={true}
+                      isSearchable={true}
                     />
                   </div>
                 )}

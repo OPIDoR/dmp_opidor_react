@@ -14,6 +14,8 @@ function CustomSelect({
   onSelectChange,
   async = false,
   isDisabled = false,
+  isClearable = false,
+  isSearchable = false,
   placeholder = null,
   overridable = false,
 }) {
@@ -66,6 +68,8 @@ function CustomSelect({
       defaultOptions={async ? options.slice(0, 100) : undefined}
       cacheOptions
       isDisabled={isDisabled}
+      isClearable={isClearable}
+      isSearchable={isSearchable}
       noOptionsMessage={() => t('No results found.')}
     />
   );
