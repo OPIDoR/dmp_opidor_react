@@ -15,7 +15,7 @@ function CustomSelect({
   async = false,
   isDisabled = false,
   isClearable = false,
-  isSearchable = false,
+  isSearchable = true,
   placeholder = null,
   overridable = false,
 }) {
