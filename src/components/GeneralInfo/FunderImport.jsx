@@ -194,7 +194,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                     />
                   </div>
                 )}
-                {!isClassic && selectedFunder?.apiClient === 'anr' && <div className={styles.anr_sharing}>
+                {!isClassic && selectedFunder?.apiClient?.toLowerCase() === 'anr' && <div className={styles.anr_sharing}>
                   <Trans
                     i18nKey="If your project is funded by the ANR, we invite you to share your PGD by choosing the ANR from the list of organizations below. Find out how here : <anchor>{{link}}</anchor>"
                     values={{ link: 'link' }}
