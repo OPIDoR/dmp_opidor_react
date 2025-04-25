@@ -3,6 +3,21 @@ import { cleanup, render, screen } from '@testing-library/react';
 import PersonsList from '../../../components/FormComponents/PersonsList';
 
 
+jest.mock('react-i18next', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => { }),
+      },
+    };
+  },
+  initReactI18next: {
+    type: '3rdParty',
+    init: () => { },
+  }
+}));
 
 const mockHandleEdit = jest.fn();
 const mockHandleDelete = jest.fn();
@@ -42,8 +57,15 @@ describe('PersonsList component', () => {
     expect(screen.queryAllByTestId(/persons-list-row-show-btn-[0-9]+/i)).toHaveLength(0);
   });
   test('component not rendering edit button if parent is not form', async () => {
-    const personsListInModalProps = {...personsListProps, parent: 'modal'};
+    const personsListInModalProps = { ...personsListProps, parent: 'modal' };
     render(<PersonsList {...personsListInModalProps} />);
-    expect(screen.queryAllByTestId(/persons-list-row-edit-btn-[0-9]+/i)).not.toBeInTheDocument();
+    expect(screen.queryAllByTestId(/persons-list-row-edit-btn-[0-9]+/i)).toHaveLength(0);
+  });
+  test('component rendering default role as a string when role is constant', async () => {
+    const personsListWithConstantRoleProps = { ...personsListProps, defaultRole: 'Default Role', isRoleConst: true };
+    render(<PersonsList {...personsListWithConstantRoleProps} />);
+    expect(screen.queryAllByTestId('select-component-role')).toHaveLength(0);
+    expect(screen.getByTestId('persons-list-role-0')).toBeInTheDocument();
+    expect(screen.getByTestId('persons-list-role-0')).toHaveTextContent(personsListWithConstantRoleProps.defaultRole);
   });
 });

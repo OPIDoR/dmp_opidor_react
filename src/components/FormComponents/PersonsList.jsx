@@ -76,7 +76,7 @@ function PersonsList({
                     )}
                   </div>
                 </td>
-                <td style={{ verticalAlign: "middle" }}>
+                <td style={{ verticalAlign: "middle" }} data-testid={`persons-list-role-${idx}`}>
                   {isRoleConst && (
                     defaultRole
                   )}
