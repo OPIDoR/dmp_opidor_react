@@ -23,7 +23,7 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
           className="col-md-12"
           style={{ margin: 0, wordWrap: 'break-word', fontSize: "large" }}
         >
-          {t('A research output can be created or imported from another plan.')}
+          {t('Choice of mode')}
         </fieldset>
       </div>
       {edit ? (
