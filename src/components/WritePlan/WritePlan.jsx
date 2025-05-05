@@ -166,7 +166,7 @@ function WritePlan({
                     : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
                       <Trans
                         t={t}
-                        defaults="Add a <0>research output</0> to display plan questions."
+                        defaults="Add a research output"
                         components={[<strong>research output</strong>]}
                       />
                       <TooltipInfoIcon />

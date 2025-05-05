@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -133,7 +133,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     toast.success(t("Research output successfully added."));
 
     const event = new CustomEvent('trigger-refresh-ro-data', {
-      detail: { message: { roId: res?.data?.created_ro_id, planId: planId} },
+      detail: { message: { roId: res?.data?.created_ro_id, planId: planId } },
     });
     window.dispatchEvent(event);
 
@@ -141,7 +141,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   };
 
   const handlePersonalData = (researchOutputType) => {
-    if(inEdition) return;
+    if (inEdition) return;
     if (displayPersonalData(researchOutputType)) {
       setHasPersonalData(true);
     } else {
@@ -151,6 +151,11 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
 
   return (
     <div style={{ margin: "25px" }}>
+      <div className="form-group">
+        <Alert variant="info">
+          {t('You can create a new research output and display questions by selecting the type.')}
+        </Alert>
+      </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label>{t('Short name')}</label>
