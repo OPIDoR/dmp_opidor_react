@@ -21,7 +21,7 @@
     "lodash.set": "^4.3.2",
     "lodash.unionby": "^4.8.0",
     "lodash.uniqueid": "^4.0.1",
-    "pretty-bytes": "^6.1.1",
+    "pretty-bytes": "^7.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.2.0",
