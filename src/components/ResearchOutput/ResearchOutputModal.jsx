@@ -10,12 +10,11 @@ props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to
 `planId`, `handleClose`, and `show` props are passed down to these child components. */
 function ResearchOutputModal({ planId, handleClose, show, edit = false }) {
   const { t } = useTranslation();
-  const { configuration } = useContext(GlobalContext);
 
   return (
     <Modal size="xl" show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t(edit ? 'Edit research output' : `Create${configuration.enableImportResearchOutput ? ' or import' : ''} a research output`)}</Modal.Title>
+        <Modal.Title>{t(edit ? 'Edit research output' : 'Add a research output')}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
         <ResearchOutputForm planId={planId} handleClose={handleClose} edit={edit}/>
