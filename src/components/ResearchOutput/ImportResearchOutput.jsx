@@ -81,7 +81,7 @@ function ImportResearchOutput({ planId, handleClose }) {
   };
 
   return (
-    <div style={{ margin: "25px", width: "600px" }}>
+    <div style={{ margin: "25px" }}>
       {plans.length > 0 ? (
         <div className="form-group">
           <div className={stylesForm.label_form}>
