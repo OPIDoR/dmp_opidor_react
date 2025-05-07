@@ -14,7 +14,6 @@ props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to
 `planId`, `handleClose`, and `show` props are passed down to these child components. */
 function ResearchOutputForm({ planId, handleClose, edit = false }) {
   const { t } = useTranslation();
-  const { configuration } = useContext(GlobalContext);
 
   return (
     <div className="dmpopidor-branding">
@@ -25,9 +24,9 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
           <Tab eventKey={"create"} title={t("Create")} tabClassName="toto" style={{ width: '100%' }}>
             <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
           </Tab>
-          {configuration.enableImportResearchOutput && (<Tab eventKey="import" title={t("Import")} tabClassName="toto" style={{ width: '100%' }}>
+          <Tab eventKey="import" title={t("Import")} tabClassName="toto" style={{ width: '100%' }}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} />
-          </Tab>)}
+          </Tab>
         </Tabs>
       )}
     </div>

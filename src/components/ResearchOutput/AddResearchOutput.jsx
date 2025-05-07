@@ -29,7 +29,6 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     setResearchOutputs,
     setUrlParams,
     researchOutputs,
-    configuration,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [options, setOptions] = useState([{ value: '', label: '' }]);
@@ -59,11 +58,11 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
         setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
         setTitle(`${t('Research output')} ${maxOrder + 1}`);
-        setHasPersonalData(configuration.enableHasPersonalData);
+        setHasPersonalData(true);
       }
     });
 
-    setDisableTypeChange(inEdition && !configuration.enableResearchOutputTypeChange);
+    setDisableTypeChange(inEdition);
 
   }, [locale]);
 
@@ -86,7 +85,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       return toast.error(t("A 'type' is required to create a research output."));
     }
 
-    const dataType = configuration?.enableSoftwareResearchOutput ? researchOutputTypeToDataType(type) : 'none';
+    const dataType = researchOutputTypeToDataType(type);
     const researchOutputInfo = {
       plan_id: planId,
       abbreviation,
