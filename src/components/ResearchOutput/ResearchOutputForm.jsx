@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Tab } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Tabs } from "react-bootstrap";
@@ -6,7 +6,6 @@ import { Tabs } from "react-bootstrap";
 import AddResearchOutput from "./AddResearchOutput";
 import ImportResearchOutput from "./ImportResearchOutput";
 import * as styles from "../assets/css/modal.module.css";
-import { GlobalContext } from "../context/Global";
 
 /* This is a functional component in JavaScript React that renders a modal window with two tabs: "Créer" and "Importer". The component takes in three
 props: `planId`, `handleClose`, and `show`. The `useTranslation` hook is used to translate the text displayed in the modal. The `Tabs` component from
@@ -20,11 +19,11 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
       {edit ? (
         <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
       ) : (
-        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs">
-          <Tab eventKey={"create"} title={t("Create")} tabClassName="toto" style={{ width: '100%' }}>
+        <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs" fill>
+          <Tab eventKey={"create"} title={t("Create")} tabClassName={styles.modal_tab} style={{ flex: 1 }}>
             <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
           </Tab>
-          <Tab eventKey="import" title={t("Import")} tabClassName="toto" style={{ width: '100%' }}>
+          <Tab eventKey="import" title={t("Import")} tabClassName={styles.modal_tab} style={{ flex: 1 }}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} />
           </Tab>
         </Tabs>
