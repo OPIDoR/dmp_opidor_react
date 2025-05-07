@@ -18,14 +18,6 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
 
   return (
     <div className="dmpopidor-branding">
-      <div className={`col-md-12 ${styles.info_box}`}>
-        <fieldset
-          className="col-md-12"
-          style={{ margin: 0, wordWrap: 'break-word', fontSize: "large" }}
-        >
-          {t('Choice of mode')}
-        </fieldset>
-      </div>
       {edit ? (
         <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
       ) : (
