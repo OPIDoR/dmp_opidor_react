@@ -153,7 +153,7 @@ function WritePlan({
           )}
           {researchOutputs.length === 0 && (
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Card style={{ width: '700px' }}>
+              <Card style={{ width: '800px' }}>
                 <Card.Body>
                   {readonly ?
                     <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
