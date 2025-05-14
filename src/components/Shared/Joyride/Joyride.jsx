@@ -116,6 +116,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
           showSkipButton
           run={guidedTourSteps.run}
           steps={guidedTourSteps.steps}
+          disableScrollParentFix={true}
           styles={{
             options: {
               zIndex: 10000,
