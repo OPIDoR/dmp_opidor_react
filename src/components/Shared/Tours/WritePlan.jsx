@@ -45,7 +45,7 @@ export default (t) => [
         <p>{t('You can create as many search outputs as you need.')}</p>
       </>
     ),
-    placement: 'right',
+    placement: 'right-start',
     target: '#ro-nav-bar',
   },
   {
@@ -111,7 +111,7 @@ export default (t) => [
         </div>
       </>
     ),
-    placement: 'left',
+    placement: 'left-start',
     target: '.contact-icons',
   },
 ];

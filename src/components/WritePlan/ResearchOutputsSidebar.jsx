@@ -13,7 +13,6 @@ import { RESEARCH_OUTPUTS_PER_PAGE } from "../../config";
 import * as styles from "../assets/css/sidebar.module.css";
 
 const ResearchOutputsNavBar = styled.div`
-  background-color: white;
   width: 220px;
   height: 100%;
   float: left;
@@ -164,7 +163,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
   const handleShow = () => setShow(true);
 
   return (
-    <>
+    <div>
       {researchOutputs && (
         <ResearchOutputsNavBar id="ro-nav-bar">
           {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
@@ -225,7 +224,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
         </ResearchOutputsNavBar>
       )}
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
-    </>
+    </div>
   );
 }
 
