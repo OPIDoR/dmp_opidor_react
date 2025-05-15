@@ -168,6 +168,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
                   type="file"
                   placeholder="DMP File"
                   aria-describedby="upload-dmp"
+                  accept="application/JSON"
                   onChange={handleFileUpload}
                   disabled={!selectedTemplate}
                 />
