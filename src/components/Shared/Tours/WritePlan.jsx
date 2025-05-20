@@ -12,9 +12,10 @@ export default (t) => [
     content: (
       <p>{t('Explore the new features and discover the interface with our guided tour!')}</p>
     ),
-    placement: 'right',
+    placement: 'bottom',
     target: '#guided-tour-compass',
     disableBeacon: true,
+    scroll: false,
   },
   {
     title: t('Select guidances'),
@@ -35,6 +36,7 @@ export default (t) => [
     ),
     placement: 'top',
     target: '#accordion-guidance-choice',
+    scroll: true,
   },
   {
     title: t('Create and manage research outputs'),
@@ -46,7 +48,8 @@ export default (t) => [
       </>
     ),
     placement: 'right-start',
-    target: '#ro-nav-bar',
+    target: '#ro-nav-bar .nav',
+    scroll: true,
   },
   {
     title: t('View the suggested aids for each question'),
@@ -86,8 +89,9 @@ export default (t) => [
         </div>
       </>
     ),
-    placement: 'left',
+    placement: 'left-start',
     target: '#icons-container',
+    scroll: true,
   },
   {
     title: t('Do you have a question?'),
@@ -111,7 +115,8 @@ export default (t) => [
         </div>
       </>
     ),
-    placement: 'left-start',
+    placement: 'top',
     target: '.contact-icons',
+    scroll: false,
   },
 ];
