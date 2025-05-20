@@ -52,6 +52,25 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
   const handleJoyrideCallback = (data) => {
     const { status, type } = data;
 
+    const NAVBAR_HEIGHT = document.querySelector('.main-nav').getBoundingClientRect().height || 60;
+
+    const currentStep = steps[data.index];
+
+    if (![STATUS.FINISHED, STATUS.SKIPPED].includes(status) && ['step:before', 'step:after'].includes(data.type) && currentStep.scroll) {
+      setTimeout(() => {
+        const target = document.querySelector(data.step?.target);
+        if (target) {
+          const rect = target.getBoundingClientRect();
+          const scrollTop = window.scrollY + rect.top - NAVBAR_HEIGHT - 20;
+
+          window.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 100);
+    }
+
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
       setGuidedTourSteps((prevState) => ({ ...prevState, run: false }));
       setIsOpen && setIsOpen(false);
@@ -117,6 +136,7 @@ function Joyride({ locale = 'fr_FR', tourName, children, steps }) {
           run={guidedTourSteps.run}
           steps={guidedTourSteps.steps}
           disableScrollParentFix={true}
+          disableScrolling={true}
           styles={{
             options: {
               zIndex: 10000,
