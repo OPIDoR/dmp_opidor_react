@@ -18,14 +18,15 @@ function PersonsList({
   templateToString = [],
   tableHeader = null,
   overridable = false,
-  readonly = false
+  readonly = false,
+  isRoleConst = false,
 }) {
   const { t } = useTranslation();
   return (
     <>
       {personsList && (
-        <table style={{ marginTop: "20px" }} className="table">
-          <thead>
+        <table style={{ marginTop: "20px" }} className="table" data-testid="persons-list-table">
+          <thead data-testid="persons-list-table-header">
             {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== "delete") && (
               <tr>
                 <th scope="col">{tableHeader}</th>
@@ -33,10 +34,10 @@ function PersonsList({
               </tr>
             )}
           </thead>
-          <tbody>
+          <tbody data-testid="persons-list-table-body">
             {personsList.map((el, idx) => (el.action !== "delete" ?
-              <tr key={idx}>
-                <td style={{ width: "50%" }}>
+              <tr key={idx} data-testid={`persons-list-row-${idx}`}>
+                <td style={{ width: "50%" }} data-testid={`persons-list-row-value-${idx}`}>
                   <div className={styles.cell_content}>
                     <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
@@ -51,6 +52,7 @@ function PersonsList({
                               content={t('Edit')}
                             />
                             <FaPenToSquare
+                              data-testid={`persons-list-row-edit-btn-${idx}`}
                               data-tooltip-id="contributor-edit-button"
                               onClick={(e) => handleEdit(e, idx)}
                               className={styles.icon}
@@ -65,6 +67,7 @@ function PersonsList({
                           content={t('Delete')}
                         />
                         <FaXmark
+                          data-testid={`persons-list-row-delete-btn-${idx}`}
                           data-tooltip-id="contributor-delete-button"
                           onClick={(e) => handleDelete(e, idx)}
                           className={styles.icon}
@@ -73,8 +76,11 @@ function PersonsList({
                     )}
                   </div>
                 </td>
-                <td>
-                  {roleOptions && (
+                <td style={{ verticalAlign: "middle" }} data-testid={`persons-list-role-${idx}`}>
+                  {isRoleConst && (
+                    defaultRole
+                  )}
+                  {roleOptions && !isRoleConst && (
                     <CustomSelect
                       onSelectChange={(e) => handleSelectRole(e, idx)}
                       options={roleOptions}

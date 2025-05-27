@@ -67,14 +67,16 @@ function Import({ prevStep, params, set, setUrlParams }) {
         return setLoading(false);
       }
 
-      setTemplates([
+      const templates = [
         ...templatesData.default,
-        ...templatesData.myOrg,
         ...templatesData.others.map(({ templates }) => templates).flat(),
       ].map(({ id, title }) => ({
         value: id,
         label: title,
-      })));
+      }));
+
+      setTemplates(templates);
+      handleSelectedTemplate(templates.find(({ label }) => label.toLowerCase().startsWith('Science Europe'.toLowerCase())));
 
       setLoading(false);
     };
@@ -140,7 +142,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
       )}
       {!loading && templates.length >= 0 && (
         <>
-          <h2>{t('Select the model into which the plan will be imported')}</h2>
+          {/* <h2>{t('Select the model into which the plan will be imported')}</h2>
 
           <CustomSelect
             key={`select-target-template`}
@@ -148,7 +150,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
             placeholder={t('Select a template')}
             selectedOption={selectedTemplate}
             onSelectChange={(e) => handleSelectedTemplate(e)}
-          />
+          /> */}
 
           {selectedTemplate && (
             <>
@@ -166,6 +168,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
                   type="file"
                   placeholder="DMP File"
                   aria-describedby="upload-dmp"
+                  accept="application/JSON"
                   onChange={handleFileUpload}
                   disabled={!selectedTemplate}
                 />

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useForm, FormProvider } from "react-hook-form";
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 
 import { GlobalContext } from '../context/Global.jsx';
 import { ExternalImport } from '../ExternalImport';
@@ -10,7 +10,7 @@ import * as styles from '../assets/css/form.module.css';
 import FormBuilder from './FormBuilder';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
-function NestedForm({ propName, data, template, readonly, handleSave, handleClose }) {
+function NestedForm({ propName, data, template, mainFormDataType, readonly, handleSave, handleClose }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -52,13 +52,14 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
       <>
         {Object.keys(externalImports)?.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />
+            <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} />
           </div>
         )}
         <FormProvider {...methods}>
           <form name="nested-form" id="nested-form" style={{ margin: '15px' }} onSubmit={(e) => handleNestedFormSubmit(e)}>
             <FormBuilder
               template={template.schema}
+              dataType={mainFormDataType}
               readonly={readonly}
             />
           </form>
@@ -67,7 +68,7 @@ function NestedForm({ propName, data, template, readonly, handleSave, handleClos
               {t("Cancel")}
             </Button>
             {!readonly && (
-              <Button bsStyle="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
+              <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
                 {t('Save')}
               </Button>
             )}

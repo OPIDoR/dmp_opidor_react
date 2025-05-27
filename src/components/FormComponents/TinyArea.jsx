@@ -19,8 +19,8 @@ const ReadDiv = styled.div`
   color: var(--dark-blue);
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   background: #f2f2f2;
 `;
 
@@ -42,7 +42,7 @@ function TinyArea({
   const editorRef = useRef(null);
 
   return (
-    <div className={`form-group ticket-summernote mr-4 ml-4 ${styles.form_margin}`}>
+    <div className={`form-group ticket-summernote mr-4 ml-4`}>
       <div className="row">
         <div className={styles.label_form}>
           <label data-tooltip-id={tinyAreaLabelId}>

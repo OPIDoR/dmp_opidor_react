@@ -49,7 +49,7 @@ function Section({ planId, section, readonly }) {
         <div className={styles.collapse_title}>
           <button
             type="button"
-            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+            className={`btn btn-link btn-sm m-0 p-0 ${styles.sub_title}`}
             style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
             onClick={(e) => {
               e.preventDefault();
@@ -59,10 +59,10 @@ function Section({ planId, section, readonly }) {
           >
             {t("Expand all")}
           </button>
-          <span className={styles.sous_title}> | </span>
+          <span className={styles.sub_title}> | </span>
           <button
             type="button"
-            className={`btn btn-link btn-sm m-0 p-0 ${styles.sous_title}`}
+            className={`btn btn-link btn-sm m-0 p-0 ${styles.sub_title}`}
             style={{ outline: "none", fontSize: "14px", padding: 0, color: "#1c5170" }}
             onClick={(e) => {
               e.preventDefault();

@@ -35,8 +35,9 @@ function GeneralInfoLayout({
         researchContext={researchContext}
         isTest={isTest}
         readonly={readonly}
+        isClassic={isClassic}
       />
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

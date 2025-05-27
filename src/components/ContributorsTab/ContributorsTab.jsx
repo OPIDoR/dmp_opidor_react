@@ -122,6 +122,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           fragmentId={fragmentId}
           data={editedPerson}
           template={template}
+          mainFormDataType={'none'}
           label={t('Edit: person or organisation')}
           readonly={readonly}
           show={show}

@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Panel, PanelGroup } from "react-bootstrap";
+import React, { useContext, useEffect, useState, useRef } from "react";
+
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import Collapse from 'react-bootstrap/Collapse';
+
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { TbBulbFilled } from "react-icons/tb";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import DOMPurify from "dompurify";
 
 import { GlobalContext } from '../context/Global.jsx';
 import * as guidanceChoiceStyles from "../../../src/components/assets/css/guidance_choice.module.css";
@@ -36,6 +39,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     currentOrg,
     locale,
   } = useContext(GlobalContext);
+  const guidancesRef = useRef(null);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -55,7 +59,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
         const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
         const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
 
-        guidance_groups = [ ...orgGuidances, ...selectedGuidances, ...unselectedGuidances ];
+        guidance_groups = [...selectedGuidances, ...orgGuidances, ...unselectedGuidances];
 
         setData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
@@ -70,7 +74,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const handleGuidanceGroups = (data) => {
     const states = {};
     for (let i = 0; i < data.length; i += 1) {
-      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected} ), {});
+      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected }), {});
       const isSelected = Object.keys(guidance_groups).filter((id) => guidance_groups[id] === true).length > 0;
       states[data[i].id] = {
         checked: isSelected,
@@ -151,13 +155,16 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
     const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
-    setData([ ...selectedGuidances, ...unselectedGuidances ]);
+    setData([...selectedGuidances, ...unselectedGuidances]);
 
     setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
 
-    document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    guidancesRef.current.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
 
     toast.success(t("Registration was successful !"));
   };
@@ -184,29 +191,29 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   }
 
   return (
-    <PanelGroup accordion id="accordion-guidance-choice">
-      <Panel eventKey="1" className="funder-import">
-        <Panel.Heading style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
-          <Panel.Title
-            toggle
-            onClick={(e) => setIsOpen(!isOpen)}
-            style={{
-              background: 'var(--dark-blue)',
-              fontWeight: 900,
-            }}
-          >
+    <Card
+      id="accordion-guidance-choice"
+      className={guidanceChoiceStyles.card}
+      style={{
+        border: "2px solid var(--dark-blue)",
+        borderRadius: "10px",
+      }}>
+      <Card.Header style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
+        <Button
+          style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none', margin: '0' }}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-controls="guidance-choice-collapse"
+          aria-expanded={isOpen}
+        >
+          <Card.Title style={{ margin: '0' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ flexGrow: 3, alignItems: 'center', textAlign: 'center' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <div style={{ fontSize: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TbBulbFilled
-                      fill={'var(--rust)'}
-                      size={38}
-                      style={{ marginRight: '10px', color: 'var(--rust)' }}
-                    />
-                    <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Click here to select the guidance of your plan")}</span>
-                  </div>
-                </div>
+              <div style={{ flexGrow: 3, fontSize: '24px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <TbBulbFilled
+                  fill={'var(--rust)'}
+                  size={38}
+                  style={{ marginRight: '10px', color: 'var(--rust)' }}
+                />
+                <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Click here to select the guidance of your plan")}</span>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (
@@ -216,164 +223,173 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                 )}
               </div>
             </div>
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body collapsible>
-          <div style={description}>
-            <div style={{ textAlign: 'justify' }}>
-               <Trans
-                defaults="You will find below a list of organizations offering recommendations and advice to guide you in writing your plan while respecting their data management policies. <bold>You can select up to 6 organizations</bold>. Then click to save your selection."
-                components={{ br: <br />, bold: <strong /> }}
+          </Card.Title>
+        </Button>
+      </Card.Header>
+      <Collapse in={isOpen}>
+        <div id="guidance-choice-collapse">
+          <Card.Body>
+            <div style={description}>
+              <div style={{ textAlign: 'justify' }}>
+                <Trans
+                  defaults="You will find below a list of organizations offering recommendations and advice to guide you in writing your plan while respecting their data management policies. <bold>You can select up to 6 organizations</bold>. Then click to save your selection."
+                  components={{ br: <br />, bold: <strong /> }}
                 />
-            </div>
-            <div style={{ marginTop: '20px' }}>
-              {loading && <CustomSpinner />}
-              {!loading && error && <CustomError error={error} />}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {!loading && !error && data && data.map((group, index) => (
-                  <div key={`guidances-section-${index}`}>
-                    <div
-                      style={{ display: 'flex', alignItems: 'center', }}
-                      key={`guidances-container-${index}`}
-                    >
+              </div>
+              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', maxHeight: '500px', position: 'relative' }}>
+                {loading && <CustomSpinner />}
+                {!loading && error && <CustomError error={error} />}
+                <div ref={guidancesRef} style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
+                  {!loading && !error && data && data.map((group, index) => (
+                    <div key={`guidances-section-${index}`} style={{ paddingBottom: '5px' }}>
                       <div
-                        style={{ marginRight: '10px' }}
-                        className={guidanceChoiceStyles.checkboxes}
-                        key={`guidance-group-${index}`}
+                        style={{ display: 'flex', flexDirection: 'column' }}
+                        key={`guidances-container-${index}`}
                       >
-                        {limitHasBeenReached() && !checkboxStates[group.id].checked ? (
-                          <MdOutlineCheckBoxOutlineBlank
-                            fill="grey"
-                            size={18}
-                            key={`icon-${index}-checkbox-outline-blank-disabled`}
-                            style={{ cursor: 'not-allowed' }}
-                          />
-                        ) : !checkboxStates[group.id].checked ? (
-                          <MdOutlineCheckBoxOutlineBlank
-                            style={{ cursor: 'pointer' }}
-                            size={18}
-                            key={`icon-${index}-checkbox-outline-blank`}
-                            onClick={() => handleCheckboxChange(group.id, true)}
-                          />
-                        ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidance_groups).length > 1 ? (
-                          <MdIndeterminateCheckBox
-                            style={{ cursor: 'pointer' }}
-                            size={18}
-                            key={`icon-${index}-indeterminate-checkbox`}
-                            onClick={() => handleCheckboxChange(group.id, true)}
-                          />
-                        ) : (
-                          <MdCheckBox
-                            style={{ cursor: 'pointer' }}
-                            size={18}
-                            key={`icon-${index}-checkbox`}
-                            onClick={() => handleCheckboxChange(group.id, false)}
-                          />
-                        )}
-                      </div>
-
-                      <label
-                        className={`${guidanceChoiceStyles.label_checkbox}`}
-                        style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
-                        onClick={() => {
-                          if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {
-                            handleCheckboxChange(group.id, !checkboxStates[group.id].checked);
-                          }
-                        }}
-                        key={`label-${index}-guidance-group`}
-                      >
-                        {group.name}
-                      </label>
-                    </div>
-                    <div
-                      style={{ display: 'flex', flexDirection: 'column', marginLeft: '26px' }}
-                      key={`guidance-group-${index}-childs`}
-                    >
-                      {
-                        group.guidance_groups.map((guidance, key) => (
-                          <div key={`guidance-group-${index}-childs-${key}-parent`}>
-                            <div
-                              style={{ display: 'flex', alignItems: 'center', }}
-                              key={`guidance-group-${index}-childs-${key}-section`}
-                              id={`guidance-group-${index}-childs-${key}-section`}
-                            >
-                              <div
-                                style={{ marginRight: '10px' }}
-                                className={guidanceChoiceStyles.checkboxes}
-                                key={`guidance-group-${index}-childs-${key}-container`}
-                              >
-                                {
-                                  limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? (
-                                    <MdOutlineCheckBoxOutlineBlank
-                                      fill="grey"
-                                      size={18}
-                                      key={`icon-${index}-${key}-checkbox-outline-blank-disabled`}
-                                      style={{ cursor: 'not-allowed' }}
-                                    />
-                                  ) : !checkboxStates[group.id].guidance_groups[guidance.id] ? (
-                                    <MdOutlineCheckBoxOutlineBlank
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      key={`icon-${index}-${key}-checkbox-outline-blank`}
-                                      onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                                    />
-                                  ) : (
-                                    <MdCheckBox
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      key={`icon-${index}-${key}-checkbox`}
-                                      onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                                    />
-                                  )
-                                }
-                              </div>
-                              <ReactTooltip
-                                id={`guidance-group-${index}-childs-${key}-tooltip`}
-                                key={`guidance-group-${index}-childs-${key}-tooltip`}
-                                place="bottom"
-                                effect="solid"
-                                variant="info"
-                                content={guidance.description}
+                        <div
+                          style={{ display: 'flex', alignItems: 'center', }}
+                          key={`guidances-container-${index}`}
+                        >
+                          <div
+                            style={{ marginRight: '10px' }}
+                            className={guidanceChoiceStyles.checkboxes}
+                            key={`guidance-group-${index}`}
+                          >
+                            {limitHasBeenReached() && !checkboxStates[group.id].checked ? (
+                              <MdOutlineCheckBoxOutlineBlank
+                                fill="grey"
+                                size={18}
+                                key={`icon-${index}-checkbox-outline-blank-disabled`}
+                                style={{ cursor: 'not-allowed' }}
                               />
-                              <label
-                                data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
-                                className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
-                                style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
-                                onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
-                              >
-                                {guidance.name}
-                              </label>
-                            </div>
+                            ) : !checkboxStates[group.id].checked ? (
+                              <MdOutlineCheckBoxOutlineBlank
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-checkbox-outline-blank`}
+                                onClick={() => handleCheckboxChange(group.id, true)}
+                              />
+                            ) : countSelectedChild(group.id) === 1 && Object.keys(checkboxStates[group.id].guidance_groups).length > 1 ? (
+                              <MdIndeterminateCheckBox
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-indeterminate-checkbox`}
+                                onClick={() => handleCheckboxChange(group.id, true)}
+                              />
+                            ) : (
+                              <MdCheckBox
+                                style={{ cursor: 'pointer' }}
+                                size={18}
+                                key={`icon-${index}-checkbox`}
+                                onClick={() => handleCheckboxChange(group.id, false)}
+                              />
+                            )}
                           </div>
-                        ))
-                      }
-                    </div>
-                  </div>
-                ))}
-              </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {!loading && !error && data && (
-                  <CustomButton
-                    title={
-                      limitHasBeenReached() ? (
-                        <Trans>
-                          The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
-                        </Trans>
-                      ) : t('Save')
-                    }
-                    buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
-                    position="start"
-                    handleClick={limitHasBeenReached() ? null : handleSaveChoice}
-                    disabled={limitHasBeenReached()}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </Panel.Body>
-      </Panel>
-    </PanelGroup>
+                          <label
+                            className={`${guidanceChoiceStyles.label_checkbox}`}
+                            style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].checked ? 'not-allowed' : 'pointer' }}
+                            onClick={() => {
+                              if (!(limitHasBeenReached() && !checkboxStates[group.id].checked)) {
+                                handleCheckboxChange(group.id, !checkboxStates[group.id].checked);
+                              }
+                            }}
+                            key={`label-${index}-guidance-group`}
+                          >
+                            {group.name}
+                          </label>
+                        </div>
+                        <div
+                          style={{ display: 'flex', flexDirection: 'column', marginLeft: '26px' }}
+                          key={`guidance-group-${index}-childs`}
+                        >
+                          {
+                            group.guidance_groups.map((guidance, key) => (
+                              <div key={`guidance-group-${index}-childs-${key}-parent`}>
+                                <div
+                                  style={{ display: 'flex', alignItems: 'center', }}
+                                  key={`guidance-group-${index}-childs-${key}-section`}
+                                  id={`guidance-group-${index}-childs-${key}-section`}
+                                >
+                                  <div
+                                    style={{ marginRight: '10px' }}
+                                    className={guidanceChoiceStyles.checkboxes}
+                                    key={`guidance-group-${index}-childs-${key}-container`}
+                                  >
+                                    {
+                                      limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? (
+                                        <MdOutlineCheckBoxOutlineBlank
+                                          fill="grey"
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox-outline-blank-disabled`}
+                                          style={{ cursor: 'not-allowed' }}
+                                        />
+                                      ) : !checkboxStates[group.id].guidance_groups[guidance.id] ? (
+                                        <MdOutlineCheckBoxOutlineBlank
+                                          style={{ cursor: 'pointer' }}
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox-outline-blank`}
+                                          onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                        />
+                                      ) : (
+                                        <MdCheckBox
+                                          style={{ cursor: 'pointer' }}
+                                          size={18}
+                                          key={`icon-${index}-${key}-checkbox`}
+                                          onClick={() => handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                        />
+                                      )
+                                    }
+                                  </div>
+                                  <ReactTooltip
+                                    id={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    key={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    place="bottom"
+                                    effect="solid"
+                                    variant="info"
+                                    content={guidance.description}
+                                  />
+                                  <label
+                                    data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
+                                    style={{ cursor: limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? 'not-allowed' : 'pointer' }}
+                                    onClick={() => limitHasBeenReached() && !checkboxStates[group.id].guidance_groups[guidance.id] ? null : handleNestedCheckboxChange(group.id, guidance.id, !checkboxStates[group.id].guidance_groups[guidance.id])}
+                                  >
+                                    {guidance.name}
+                                  </label>
+                                </div>
+                              </div>
+                            ))
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '0' }}>
+                  {!loading && !error && data && (
+                    <CustomButton
+                      title={
+                        limitHasBeenReached() ? (
+                          <Trans>
+                            The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
+                          </Trans>
+                        ) : t('Save')
+                      }
+                      buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
+                      position="start"
+                      handleClick={limitHasBeenReached() ? null : handleSaveChoice}
+                      disabled={limitHasBeenReached()}
+                    />
+                  )}
+                </div>
+              </div >
+            </div >
+          </Card.Body >
+        </div >
+      </Collapse >
+    </Card >
   );
 }
 
