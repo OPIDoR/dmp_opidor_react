@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Panel } from "react-bootstrap";
-import { useTranslation } from 'react-i18next';
+
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
+
+import { useTranslation, Trans } from "react-i18next";
+import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
-import styled from "styled-components";
 import { toast } from "react-hot-toast";
+import styled from 'styled-components';
 
 import * as styles from "../assets/css/general_info.module.css";
 import { GlobalContext } from '../context/Global';
@@ -25,10 +30,10 @@ export const ButtonSave = styled.button`+
   border-radius: 8px !important;
 `;
 
-function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale }) {
+function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
-  const [isOpenFunderImport, setIsOpenFunderImport] = useState(false);
+  const [isOpenFunderImport, setIsOpenFunderImport] = useState(true);
   const [funders, setFunders] = useState([]);
   const [selectedFunder, setSelectedFunder] = useState(null);
   const [fundedProjects, setFundedProjects] = useState([]);
@@ -42,11 +47,12 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   component mounts, as the dependency array `[]` is empty. */
   useEffect(() => {
     service.getRegistryByName('FundersWithImport').then(({ data }) => {
-      const options = data.map((funder) => ({
-        value: funder.id,
+      const options = data.map((funder, index) => ({
+        value: funder.id || index,
         label: funder.label[locale],
         scriptName: funder.scriptName,
         registry: funder.registry,
+        apiClient: funder.apiClient,
       }));
       setFunders(options);
     });
@@ -83,13 +89,39 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   const handleSaveFunding = async () => {
     setLoading(true);
 
+    if (selectedFunder?.apiClient && !isClassic) {
+      return Swal.fire({
+        html: t('<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
+        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,
+        icon: 'warning',
+        width: '500px',
+        showCancelButton: true,
+        confirmButtonColor: '#2c7dad',
+        cancelButtonColor: '#c6503d',
+        cancelButtonText: t('No'),
+        confirmButtonText: t('Yes'),
+      }).then((result) => {
+        if (result.isConfirmed) {
+          return saveFunding(selectedFunder?.apiClient);
+        }
+        return saveFunding();
+      });
+    }
+
+    return saveFunding();
+  };
+
+  const saveFunding = async (apiClient) => {
     let response;
     try {
-      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
+      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName, apiClient);
     } catch (error) {
+      setLoading(false);
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
       return toast.error(errorMessage);
     }
+
+    triggerRefresh({ clients: response?.data?.clients || [] });
 
     setFormData({
       [projectFragmentId]: response.data.fragment.project,
@@ -103,76 +135,99 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     ), { style: { maxWidth: 500 } });
 
     setLoading(false);
+  }
+
+  const triggerRefresh = (message) => {
+    const event = new CustomEvent('trigger-refresh-shared-label', {
+      detail: { message },
+    });
+    window.dispatchEvent(event);
   };
 
   return (
-
-    <Panel
-      expanded={isOpenFunderImport}
-      className={styles.panel}
+    <Card
+      className={styles.card}
       style={{
         border: "2px solid var(--dark-blue)",
         borderRadius: "10px",
-      }}
-      onToggle={(expanded) => setIsOpenFunderImport(expanded)}
-    >
+      }}>
       {loading && <CustomSpinner isOverlay={true} />}
       {error && <CustomError error={error} />}
-      <Panel.Heading className="funder-import" style={{ background: "var(--dark-blue)", borderRadius: "10px 10px 0px 0px", borderBottom: "none" }}>
-        <Panel.Title toggle style={{ borderBottom: "1px solid var(--white)" }}>
-          <div className={styles.question_title}>
-            <div className={styles.question_text}>
-              <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+      <Card.Header className="funder-import" style={{ background: "var(--dark-blue)", borderBottom: "none" }}>
+        <Button
+          style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none' }}
+          onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
+          aria-controls="funder-import-collapse"
+          aria-expanded={isOpenFunderImport}
+        >
+          <Card.Title>
+            <div className={styles.question_title}>
+              <div className={styles.question_text}>
+                <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+              </div>
+              <span className={styles.question_icons}>
+                {isOpenFunderImport ? (
+                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                ) : (
+                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                )}
+              </span>
             </div>
-            <span className={styles.question_icons}>
-              {isOpenFunderImport ? (
-                <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-              ) : (
-                <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
-              )}
-            </span>
-          </div>
-        </Panel.Title>
-      </Panel.Heading>
-      <Panel.Body collapsible className={styles.panel_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
-        {!error && funders && (
-          <div className={styles.container_anr}>
-            <p className={styles.description_anr}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-            {funders.length > 1 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Please select a funder")}</label>
-                </div>
-                <CustomSelect
-                  options={funders}
-                  selectedOption={selectedFunder || null}
-                  onSelectChange={(e) => handleSelectFunder(e)}
-                />
+          </Card.Title>
+        </Button>
+      </Card.Header>
+      <Collapse in={isOpenFunderImport}>
+        <div id="funder-import-collapse">
+          <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+            {!error && funders && (
+              <div className={styles.container_anr}>
+              <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+              {funders.length > 1 && (
+                  <div>
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Please select a funder")}</label>
+                    </div>
+                    <CustomSelect
+                      options={funders}
+                      selectedOption={selectedFunder || null}
+                      onSelectChange={(e) => handleSelectFunder(e)}
+                    />
+                  </div>
+                )}
+                {!isClassic && selectedFunder?.apiClient?.toLowerCase() === 'anr' && <div className={styles.anr_sharing}>
+                  <Trans
+                    i18nKey="For ANR funded project, You are invited to share your plan with the ANR. Find out how here : <anchor>{{link}}</anchor>"
+                    values={{ link: 'link' }}
+                    components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
+                  />
+                </div>}
+                {fundedProjects.length > 0 && (
+                  <div className="form-group">
+                    <div className={styles.label_form_anr}>
+                      <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
+                    </div>
+                    <CustomSelect
+                      options={fundedProjects}
+                      selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
+                      onSelectChange={(e) => setSelectedProject(e ? e.object : null)}
+                      async={true}
+                      asyncCallback={(value) => filterOptions(fundedProjects, value)}
+                      isClearable={true}
+                      isSearchable={true}
+                    />
+                  </div>
+                )}
+                {selectedProject && (
+                  <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
+                    {t("Save")}
+                  </ButtonSave>
+                )}
               </div>
             )}
-            {fundedProjects.length > 0 && (
-              <div className="form-group">
-                <div className={styles.label_form_anr}>
-                  <label className={styles.label_anr}>{t("Then Select project acronym, title or grant ID")}</label>
-                </div>
-                <CustomSelect
-                  options={fundedProjects}
-                  selectedOption={selectedProject ? { value: selectedProject.grantId, label: selectedProject.title } : null}
-                  onSelectChange={(e) => setSelectedProject(e.object)}
-                  async={true}
-                  asyncCallback={(value) => filterOptions(fundedProjects, value)}
-                />
-              </div>
-            )}
-            {selectedProject && (
-              <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                {t("Save")}
-              </ButtonSave>
-            )}
-          </div>
-        )}
-      </Panel.Body>
-    </Panel>
+          </Card.Body>
+        </div>
+      </Collapse>
+    </Card>
   )
 
 }

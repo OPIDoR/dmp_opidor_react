@@ -27,6 +27,7 @@ function ModalTemplate({
   label,
   formLabel,
   propName,
+  dataType,
   tooltip,
   header,
   templateName,
@@ -131,7 +132,7 @@ function ModalTemplate({
 
   return (
     <>
-      <div className={`p-2 mb-2`}>
+      <div className="form-group">
         <div className={styles.label_form}>
           <label data-tooltip-id={tooltipId}>
             {formLabel}
@@ -178,6 +179,7 @@ function ModalTemplate({
         <ModalForm
           data={editedFragment}
           template={template}
+          mainFormDataType={dataType}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}

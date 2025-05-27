@@ -49,7 +49,6 @@ function Global({ children }) {
   const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
   const [userId, setUserId] = useState(-1);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [planInformations, setPlanInformations] = useState(null);
   const [formSelectors, setFormSelector] = useState({});
   const [configuration, setConfiguration] = useState({});
 
@@ -109,8 +108,6 @@ function Global({ children }) {
         setUrlParams,
         selectedTemplate,
         setSelectedTemplate,
-        planInformations,
-        setPlanInformations,
         formSelectors,
         setFormSelector,
         configuration,

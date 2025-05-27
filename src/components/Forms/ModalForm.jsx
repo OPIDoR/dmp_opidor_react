@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useForm, FormProvider } from "react-hook-form";
-import { Modal, Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 
 import { GlobalContext } from '../context/Global.jsx';
@@ -8,7 +9,7 @@ import FormBuilder from './FormBuilder';
 import { ExternalImport } from '../ExternalImport';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
-function ModalForm({ data, template, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({ data, template, mainFormDataType, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -52,16 +53,17 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   return (
-    <Modal className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
+    <Modal enforceFocus={false} size="xl" className="dmpopidor-branding" show={show} backdrop={ 'static' } onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title style={{ color: "var(--rust)", fontWeight: "bold" }}>{label}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: "20px !important" }}>
-        {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods.getValues()} setFragment={setValues} externalImports={externalImports} />}
+        {Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} />}
         <FormProvider {...methods}>
           <form name="modal-form" id="modal-form" style={{ margin: '15px' }} onSubmit={(e) => handleModalSubmit(e)}>
             <FormBuilder
               template={template.schema}
+              dataType={mainFormDataType}
               readonly={readonly}
             />
           </form>
@@ -72,7 +74,7 @@ function ModalForm({ data, template, label, readonly, show, handleSave, handleCl
           {t("Close")}
         </Button>
         {!readonly && (
-          <Button bsStyle="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
+          <Button variant="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
             {t('Save')}
           </Button>
         )}

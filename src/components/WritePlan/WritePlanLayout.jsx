@@ -21,7 +21,6 @@ function WritePlanLayout({
   currentOrgId,
   currentOrgName,
   readonly,
-  configuration,
 }) {
   const { t } = useTranslation();
 
@@ -37,11 +36,10 @@ function WritePlanLayout({
           currentOrgId={currentOrgId}
           currentOrgName={currentOrgName}
           readonly={readonly}
-          configuration={configuration}
           className="research-outputs-tabs"
         />
       </Joyride>
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

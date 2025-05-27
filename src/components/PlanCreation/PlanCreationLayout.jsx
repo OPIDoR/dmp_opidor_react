@@ -7,14 +7,12 @@ import '../../i18n';
 
 const queryClient = new QueryClient();
 
-function PlanCreationLayout({ locale, currentOrgId, currentOrgName }) {
+function PlanCreationLayout({ locale }) {
   return (
     <Global>
       <QueryClientProvider client={queryClient}>
         <PlanCreation
           locale={locale}
-          currentOrgId={currentOrgId}
-          currentOrgName={currentOrgName}
         />
       </QueryClientProvider>
     </Global>

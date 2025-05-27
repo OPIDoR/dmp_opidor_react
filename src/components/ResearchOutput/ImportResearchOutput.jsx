@@ -81,13 +81,17 @@ function ImportResearchOutput({ planId, handleClose }) {
   };
 
   return (
-    <div style={{ margin: "25px", width: "600px" }}>
+    <div style={{ margin: "25px" }}>
       {plans.length > 0 ? (
         <div className="form-group">
           <div className={stylesForm.label_form}>
             <label>{t("Choose plan")}</label>
           </div>
-
+          <div className="form-group">
+            <Alert variant="info">
+              {t('You can reuse a research output\'s information from plans you own or you are coowner (test plans excluded).')}
+            </Alert>
+          </div>
           <CustomSelect
             onSelectChange={(e) => handleSelectPlan(e)}
             options={plans}
@@ -97,7 +101,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         </div>
       ) : (
         <div className="form-group">
-          <Alert bsStyle="warning">
+          <Alert variant="warning">
             {t('No plans comply with the import rules (at least one research output or type of research output).')}
           </Alert>
         </div>

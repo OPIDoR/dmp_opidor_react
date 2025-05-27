@@ -25,7 +25,8 @@ function SelectSingleObject({
   label,
   propName,
   tooltip,
-  registries,
+  category,
+  dataType,
   templateName,
   overridable = false,
   readonly = false,
@@ -43,24 +44,39 @@ function SelectSingleObject({
   const [editedFragment, setEditedFragment] = useState({})
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const [showNestedForm, setShowNestedForm] = useState(false);
-  const tooltipId = uniqueId('select_single_list_tooltip_id_');
+  const tooltipId = uniqueId('select_single_object_tooltip_id_');
+  const inputId = uniqueId('select_single_object_id_');
 
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
+
+  useEffect(() => {
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setRegistries(registriesData);
+          if (registriesData.length === 1) {
+            const registry = res.data[0];
+            setSelectedRegistry(registry.name);
+            setLoadedRegistries({ ...loadedRegistries, [registry.name]: registry.values });
+            setOptions(createOptions(registry.values, locale));
+          }
+        })
+        .catch((error) => {
+          setError(getErrorMessage(error));
+        });
+    }
+  }, [category, dataType])
 
   useEffect(() => {
     setSelectedValue(
       except(field.value, ['template_name', 'id', 'schema_id']) || null
     );
+  }, [field.value])
 
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
-    }
-  }, [field.value, registries])
 
   useEffect(() => {
     if (!options) return;
@@ -72,17 +88,21 @@ function SelectSingleObject({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    if (loadedRegistries[selectedRegistry]) {
-      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else if (selectedRegistry) {
-      service.getRegistryByName(selectedRegistry)
-        .then((res) => {
-          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
-          setOptions(createOptions(res.data, locale));
-        })
-        .catch((error) => {
-          // handle errors
-        });
+    if (registries.length === 1) return;
+
+    if (selectedRegistry) {
+      if (loadedRegistries[selectedRegistry]) {
+        setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
+      } else if (selectedRegistry) {
+        service.getRegistryByName(selectedRegistry)
+          .then((res) => {
+            setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
+            setOptions(createOptions(res.data, locale));
+          })
+          .catch((error) => {
+            setError(getErrorMessage(error));
+          });
+      }
     }
   }, [selectedRegistry]);
 
@@ -147,7 +167,7 @@ function SelectSingleObject({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-single-object-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -168,10 +188,11 @@ function SelectSingleObject({
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
-            <div className="col-md-6">
+            <div data-testid="select-single-object-registry-selector" className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
+                    inputId={`${propName}-registry-selector`}
                     onSelectChange={handleSelectRegistry}
                     options={registries.map((registry) => ({
                       value: registry,
@@ -189,11 +210,12 @@ function SelectSingleObject({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-object-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}
@@ -236,6 +258,7 @@ function SelectSingleObject({
             propName={propName}
             data={editedFragment}
             template={template}
+            mainFormDataType={dataType}
             readonly={readonly}
             handleSave={handleSaveNestedForm}
             handleClose={() => {

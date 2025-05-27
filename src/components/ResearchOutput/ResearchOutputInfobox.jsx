@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
-import * as styles from "../assets/css/write_plan.module.css";
-import { Panel } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
 import { Tooltip } from "react-tooltip";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 import { BiDuplicate } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import PanelBody from "react-bootstrap/lib/PanelBody";
 
 import { GlobalContext } from "../context/Global";
+import { displayPersonalData } from "../../utils/GeneratorUtils";
 
 function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, readonly }) {
   const { t } = useTranslation();
@@ -18,25 +17,26 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
   } = useContext(GlobalContext);
 
   return (
-    <Panel
+    <Card
+      className="card-default"
       style={{
         borderRadius: "10px",
         borderWidth: "2px",
         borderColor: "var(--dark-blue)",
       }}
     >
-      <Panel.Heading style={{
-        backgroundColor: "rgb(28, 81, 112)",
+      <Card.Header style={{
+        backgroundColor: "var(--dark-blue)",
         borderRadius: "5px 5px 0 0",
-        color: "#fff",
       }}>
-        <Panel.Title style={{
+        <Card.Title style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          color: "#fff",
         }}>
           <strong>{displayedResearchOutput?.title}</strong>
-          <span id="actions" style={{ display: "flex" }}>
+          <span id="actions" style={{ display: "flex", width: '100px', justifyContent: 'space-between' }}>
             {!readonly && (
               <>
                 <Tooltip anchorSelect="#editBtn" place="bottom">
@@ -86,9 +86,9 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
               </>
             )}
           </span>
-        </Panel.Title>
-      </Panel.Heading>
-      <PanelBody>
+        </Card.Title>
+      </Card.Header>
+      <Card.Body>
         <ul>
           <li>
             {t('Short name')} : <strong>{displayedResearchOutput.abbreviation}</strong>
@@ -99,12 +99,14 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
           <li>
             {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
-          <li>
-            {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
-          </li>
+          {displayPersonalData(displayedResearchOutput.type) && (
+            <li>
+              {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
+            </li>
+          )}
         </ul>
-      </PanelBody>
-    </Panel>
+      </Card.Body>
+    </Card>
   );
 }
 

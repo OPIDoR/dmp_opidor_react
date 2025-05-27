@@ -24,6 +24,7 @@ function SelectContributorSingle({
   label,
   tooltip,
   templateName,
+  dataType,
   defaultRole = null,
   readonly = false,
 }) {
@@ -42,10 +43,12 @@ function SelectContributorSingle({
   } = useContext(GlobalContext);
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
+  const [roleCategory, setRoleCategory] = useState(null);
   const [editedPerson, setEditedPerson] = useState({});
   const [contributor, setContributor] = useState({});
   const [roleOptions, setRoleOptions] = useState(null);
   const [overridableRole, setOverridableRole] = useState(false);
+  const [isRoleConst, setIsRoleConst] = useState(false);
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
@@ -55,17 +58,17 @@ function SelectContributorSingle({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if (persons.length === 0) {
-      fetchPersons();
+    if (roleCategory && !isRoleConst) {
+      fetchRoles();
     }
-    fetchRoles();
-  }, []);
+  }, [roleCategory, isRoleConst]);
 
   useEffect(() => {
     if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
-      setOptions(null)
+      fetchPersons();
+      setOptions(null);
     }
   }, [persons])
 
@@ -76,9 +79,9 @@ function SelectContributorSingle({
   }
 
   const fetchRoles = () => {
-    service.getRegistryByName('Role').then((res) => {
-      setLoadedRegistries({ ...loadedRegistries, 'Role': res.data });
-      const options = createOptions(res.data, locale)
+    service.suggestRegistry(roleCategory, dataType).then((res) => {
+      setLoadedRegistries({ ...loadedRegistries, [res.data.name]: res.data.values });
+      const options = createOptions(res.data.values, locale)
       setRoleOptions(options);
     });
   }
@@ -92,6 +95,8 @@ function SelectContributorSingle({
         const contributorProps = contributorTemplate?.schema?.properties || {}
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
+        setIsRoleConst(contributorProps.role.isConst || false);
+        setRoleCategory(contributorProps.role.registryCategory || null);
         service.getSchemaByName(personTemplateName).then((resSchema) => {
           setTemplate(resSchema.data);
           setLoadedTemplates({ ...loadedTemplates, [personTemplateName]: res.data });
@@ -195,7 +200,7 @@ function SelectContributorSingle({
     service.createFragment(data, template.id, dmpId).then(res => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
-      field.onChange({ 
+      field.onChange({
         ...contributor,
         person: savedFragment,
         role: defaultRole,
@@ -228,7 +233,7 @@ function SelectContributorSingle({
           </label>
           {
             tooltip && (
-             <ReactTooltip
+              <ReactTooltip
                 id={tooltipId}
                 place="bottom"
                 effect="solid"
@@ -280,6 +285,7 @@ function SelectContributorSingle({
             tableHeader={t('Selected value')}
             overridable={overridableRole}
             readonly={readonly}
+            isRoleConst={isRoleConst}
           ></PersonsList>
         )}
       </div>
@@ -288,6 +294,7 @@ function SelectContributorSingle({
           <ModalForm
             data={editedPerson}
             template={template}
+            mainFormDataType={dataType}
             label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
             readonly={readonly}
             show={show}

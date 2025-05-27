@@ -13,7 +13,7 @@ function ContributorsTabLayout({ planId, locale, readonly }) {
   return (
     <Global>
       <ContributorsTab planId={planId} locale={locale} readonly={readonly} />
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </Global>
   )
 }

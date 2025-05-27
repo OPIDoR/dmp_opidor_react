@@ -10,11 +10,12 @@ export default (t) => [
   {
     title: t('Discover the editing features'),
     content: (
-      <p>{t('Explore our new features and discover our improved interface with our interactive guided tour!')}</p>
+      <p>{t('Explore the new features and discover the interface with our guided tour!')}</p>
     ),
-    placement: 'right',
+    placement: 'bottom',
     target: '#guided-tour-compass',
     disableBeacon: true,
+    scroll: false,
   },
   {
     title: t('Select guidances'),
@@ -35,19 +36,20 @@ export default (t) => [
     ),
     placement: 'top',
     target: '#accordion-guidance-choice',
+    scroll: true,
   },
   {
     title: t('Create and manage research outputs'),
     content: (
       <>
-        <p>{t('The creation of a research output enables its management to be specifically described according to its nature or discipline.')}</p>
-        <p>{t('Research output 1 "RO 1" is created by default.')}</p>
-        <p>{t('Click on "Create" to add another research output.')}</p>
-        <p>{t('You can create as many research outputs as you need, or delete them as required.')}</p>
+        <p>{t('The creation of a research product allows you to display an adapted questionnaire (software or, dataset and others) to describe its management according to its nature or discipline.')}</p>
+        <p>{t('Click on the "Create" tab to add another research output.')}</p>
+        <p>{t('You can create as many search outputs as you need.')}</p>
       </>
     ),
-    placement: 'right',
-    target: '#ro-nav-bar',
+    placement: 'right-start',
+    target: '#ro-nav-bar .nav',
+    scroll: true,
   },
   {
     title: t('View the suggested aids for each question'),
@@ -87,8 +89,9 @@ export default (t) => [
         </div>
       </>
     ),
-    placement: 'left',
+    placement: 'left-start',
     target: '#icons-container',
+    scroll: true,
   },
   {
     title: t('Do you have a question?'),
@@ -112,7 +115,8 @@ export default (t) => [
         </div>
       </>
     ),
-    placement: 'left',
+    placement: 'top',
     target: '.contact-icons',
+    scroll: false,
   },
 ];

@@ -14,7 +14,7 @@ import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
-function FormBuilder({ template, readonly }) {
+function FormBuilder({ template, dataType, readonly }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
@@ -43,7 +43,8 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
+              dataType={dataType}
               templateName={prop.template_name}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -62,7 +63,8 @@ function FormBuilder({ template, readonly }) {
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
+              dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly}
               isConst={isConst}
@@ -78,7 +80,8 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
+              dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleString>,
@@ -93,7 +96,8 @@ function FormBuilder({ template, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              registries={prop["registries"] || [prop["registry_name"]]}
+              category={prop["registryCategory"]}
+              dataType={dataType}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectMultipleString>
@@ -115,6 +119,7 @@ function FormBuilder({ template, readonly }) {
             label={formLabel}
             tooltip={tooltip}
             templateName={prop.template_name}
+            dataType={dataType}
             defaultRole={defaultRole}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
@@ -129,6 +134,7 @@ function FormBuilder({ template, readonly }) {
             propName={key}
             tooltip={tooltip}
             templateName={prop.template_name}
+            dataType={dataType}
             readonly={readonly || isConst}
           />
         )
@@ -149,6 +155,7 @@ function FormBuilder({ template, readonly }) {
               header={prop[`table_header@${locale}`]}
               tooltip={tooltip}
               templateName={prop.items.template_name}
+              dataType={dataType}
               defaultRole={defaultRole}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
@@ -159,6 +166,7 @@ function FormBuilder({ template, readonly }) {
             <ModalTemplate
               key={key}
               propName={key}
+              dataType={dataType}
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
               tooltip={tooltip}

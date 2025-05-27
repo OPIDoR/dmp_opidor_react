@@ -12,6 +12,7 @@ import * as styles from '../../assets/css/form.module.css';
 import CustomSelect from '../../Shared/CustomSelect.jsx';
 import { ASYNC_SELECT_OPTION_THRESHOLD } from '../../../config.js';
 import TooltipInfoIcon from '../TooltipInfoIcon.jsx';
+import { getErrorMessage } from '../../../utils/utils.js';
 
 /* This is a functional component in JavaScript React that renders a select list with options fetched from a registry. It takes in several props such as
 label, name, changeValue, tooltip, registry, and schemaId. It uses the useState and useEffect hooks to manage the state of the options and to fetch
@@ -21,7 +22,8 @@ function SelectSingleString({
   label,
   propName,
   tooltip,
-  registries,
+  category,
+  dataType,
   overridable = false,
   readonly = false,
 }) {
@@ -35,17 +37,29 @@ function SelectSingleString({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
+  const [registries, setRegistries] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
+  const inputId = uniqueId('select_single_list_id_');
 
 
   useEffect(() => {
-    const registriesData = Array?.isArray(registries) ? registries : [registries];
-
-    if (registriesData.length === 1) {
-      setSelectedRegistry(registriesData[0]);
+    if (category) {
+      service.getRegistriesByCategory(category, dataType)
+        .then((res) => {
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setRegistries(registriesData);
+          if (registriesData.length === 1) {
+            const registry = res.data[0];
+            setSelectedRegistry(registry.name);
+            setLoadedRegistries({ ...loadedRegistries, [registry.name]: registry.values });
+            setOptions(createOptions(registry.values, locale));
+          }
+        })
+        .catch((error) => {
+          setError(getErrorMessage(error));
+        });
     }
-  }, [field.value, registries])
+  }, [category, dataType])
 
   useEffect(() => {
     if (!options) return;
@@ -67,17 +81,21 @@ function SelectSingleString({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    if (loadedRegistries[selectedRegistry]) {
-      setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
-    } else if (selectedRegistry) {
-      service.getRegistryByName(selectedRegistry)
-        .then((res) => {
-          setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
-          setOptions(createOptions(res.data, locale));
-        })
-        .catch((error) => {
-          setError(error)
-        });
+    if (registries.length === 1) return;
+
+    if (selectedRegistry) {
+      if (loadedRegistries[selectedRegistry]) {
+        setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
+      } else {
+        service.getRegistryByName(selectedRegistry)
+          .then((res) => {
+            setLoadedRegistries({ ...loadedRegistries, [selectedRegistry]: res.data });
+            setOptions(createOptions(res.data, locale));
+          })
+          .catch((error) => {
+            setError(getErrorMessage(error));
+          });
+      }
     }
   }, [selectedRegistry]);
 
@@ -103,7 +121,7 @@ function SelectSingleString({
     <div>
       <div className="form-group">
         <div className={styles.label_form}>
-          <label data-tooltip-id={tooltipId}>
+          <label htmlFor={inputId} data-testid="select-single-string-label" data-tooltip-id={tooltipId}>
             {label}
             {tooltip && (<TooltipInfoIcon />)}
           </label>
@@ -124,10 +142,11 @@ function SelectSingleString({
         {/* ************Select registry************** */}
         <div className="row">
           {registries && registries.length > 1 && (
-            <div className="col-md-6">
+            <div data-testid="select-single-string-registry-selector" className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
+                    inputId={`${propName}-registry-selector`}
                     onSelectChange={handleSelectRegistry}
                     options={registries.map((registry) => ({
                       value: registry,
@@ -145,11 +164,13 @@ function SelectSingleString({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"}>
+          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-string-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
                   <CustomSelect
+                    inputId={inputId}
+                    propName={propName}
                     onSelectChange={handleSelectRegistryValue}
                     options={options}
                     selectedOption={selectedOption}

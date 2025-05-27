@@ -29,7 +29,6 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   useEffect(() => {
     const tmpls = {
       default: { title: t('Common template proposed by DMP OPIDoR'), templates: [] },
-      myOrg: { title: t('Template proposed by your organization ({{orgName}})', { orgName: params.currentOrg.name }), templates: [] },
       others: {
         id: 'others',
         title: (<Trans
@@ -57,7 +56,6 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       }
 
       tmpls.default.templates = templatesData.default;
-      tmpls.myOrg.templates = templatesData.myOrg;
       tmpls.others.data = templatesData.others;
 
       setPlanTemplates(tmpls);
@@ -65,7 +63,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     };
 
     fetchTemplates(params);
-  }, [params.currentOrg, params.researchContext, params.templateLanguage, setPlanTemplates, t]);
+  }, [params.researchContext, params.templateLanguage, setPlanTemplates, t]);
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.

@@ -20,7 +20,7 @@ const toastOptions = {
   duration: 5000,
 };
 
-function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
+function PlanCreation({ locale = 'en_GB' }) {
   const { t, i18n } = useTranslation();
   const { setLocale, setUrlParams } = useContext(GlobalContext);
 
@@ -32,7 +32,6 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
     format: null,
     templateName: null,
     isStructured: false,
-    currentOrg: { id: currentOrgId, name: currentOrgName },
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -159,7 +158,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
 
     setCurrentStep(step);
     setUrlParams({ step: `${step || 0}` });
-  }, [locale, currentOrgId, currentOrgName, currentStep, currentAction, params.templateName]);
+  }, [locale, currentStep, currentAction, params.templateName]);
 
   const prevStep = (<CustomButton
     handleClick={() => {
@@ -206,7 +205,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
                 ))
               }
             </Stepper>
-            <div style={{ padding: '0 20px', boxSizing: 'border-box' }}>
+            <div style={{ padding: '20px', boxSizing: 'border-box' }}>
               {
                 steps.filter(({ actions }) => actions.includes(currentAction)).map(({ component, set }, index) => {
                   return currentStep === index && React.cloneElement(component, {
@@ -223,7 +222,7 @@ function PlanCreation({ locale = 'en_GB', currentOrgId, currentOrgName }) {
           </div>
         </div>
       </div>
-      <Toaster position="top-center" toastOptions={toastOptions} reverseOrder={false} />
+      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
     </div>
   );
 }

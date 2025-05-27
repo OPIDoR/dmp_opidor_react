@@ -17,3 +17,7 @@
 .modal_tabs {
   background-color: white;
 }
+
+.modal_tab {
+  font-size: 20px;
+}
