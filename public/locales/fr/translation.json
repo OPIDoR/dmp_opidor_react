@@ -121,7 +121,7 @@
   "Create or import a research output": "Créer ou importer un produit de recherche",
   "Choice of mode": "Choix de la modalité",
   "The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>": "Le choix du <strong>type</strong> pour un produit de recherche conditionne l'affichage des questions spécifiques à sa gestion.<br /><strong>Il n'est plus possible de changer le type d'un produit de recherche après l'avoir ajouté.</strong>",
-  "You can find the different <0>types of research outputs</0> in the LEARN MORE menu.": "Vous pouvez retrouver les différents <0>types de produits de recherche</0> dans le menu EN SAVOIR PLUS",
+  "You can find the different types of research outputs in the LEARN MORE menu.": "Vous pouvez retrouver les différents types de produits de recherche dans le menu EN SAVOIR PLUS",
   "Research output": "Produit de recherche",
   "Roles": "Rôles",
   "The limit of {{ limit }} groups of recommendations has been reached": "La limite de {{ limit }} groupes de recommandations est atteinte",
