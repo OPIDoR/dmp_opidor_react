@@ -192,8 +192,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
               variant="info"
               content={<Trans
                 t={t}
-                defaults="You can find the different <0>types of research outputs</0> in the LEARN MORE menu."
-                components={[<strong>types of research outputs</strong>]}
+                defaults="You can find the different types of research outputs in the LEARN MORE menu."
               />}
             />
           </label>
