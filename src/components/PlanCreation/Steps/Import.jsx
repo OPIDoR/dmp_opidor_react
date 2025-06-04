@@ -100,9 +100,13 @@ function Import({ prevStep, params, set, setUrlParams }) {
   const handleImport = async () => {
     setLoading(true);
 
+    console.log(params)
+
     const formData = new FormData();
     formData.append('import[template_id]', selectedTemplate.value);
     formData.append('import[format]', params.format);
+    formData.append('import[context]', params.researchContext);
+    formData.append('import[locale]', params.templateLanguage);
     formData.append('import[json_file]', file);
     formData.append('commit', 'Importer');
 
