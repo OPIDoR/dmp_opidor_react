@@ -252,5 +252,5 @@
   "If not, consider doing it later in the <strong>\"Share\"</strong> tab": "Si non, pensez à le faire ultérieurement dans l'onglet <strong>\"Partager\"</strong>",
   "Plan shared with {{names}}": "Plan partagé avec {{names}}",
   "Import project information": "Importer les renseignements sur le projet",
-  "For ANR funded project, You are invited to share your plan with the ANR. Find out how here : <anchor>{{link}}</anchor>": "Pour les projets financés par l’ANR, vous êtes invité à partager votre plan avec l’ANR. Comment faire : <anchor>{{link}}</anchor>"
+  "For ANR funded project, You are invited to share your plan with the ANR.": "Pour les projets financés par l’ANR, vous êtes invité à partager votre plan avec l’ANR."
 }
