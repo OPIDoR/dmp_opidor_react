@@ -195,11 +195,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                   </div>
                 )}
                 {!isClassic && selectedFunder?.apiClient?.toLowerCase() === 'anr' && <div className={styles.anr_sharing}>
-                  <Trans
-                    i18nKey="For ANR funded project, You are invited to share your plan with the ANR. Find out how here : <anchor>{{link}}</anchor>"
-                    values={{ link: 'link' }}
-                    components={{ anchor: <a href="/" style={{ color: 'var(--white)', textDecoration: 'underline' }}></a> }}
-                  />
+                  {t('For ANR funded project, You are invited to share your plan with the ANR.')}
                 </div>}
                 {fundedProjects.length > 0 && (
                   <div className="form-group">
