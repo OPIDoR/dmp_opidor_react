@@ -14,11 +14,15 @@ const saveIsTestPlan = async (planId, isTestPlan) =>
  * @param scriptName Script name
  * @returns An object with a "data" property that contains an empty array.
  */
-const importProject = async(grantId, projectFragmentId, scriptName, apiClient) =>
-  axios.get(`/codebase/project_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_name=${scriptName}${apiClient ? `&api_client=${apiClient}` : ''}`);
+const importProject = async(grantId, projectFragmentId, scriptName) =>
+  axios.get(`/codebase/project_search?project_id=${grantId}&fragment_id=${projectFragmentId}&script_name=${scriptName}`);
+
+const share = async (grantId, projectFragmentId, apiClient) =>
+  axios.get(`/codebase/share?project_id=${grantId}&fragment_id=${projectFragmentId}&api_client=${apiClient}`);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   saveIsTestPlan,
   importProject,
+  share,
 };
