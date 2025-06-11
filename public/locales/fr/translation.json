@@ -72,7 +72,7 @@
   "Plan Information": "Renseignements sur le plan",
   "Research Entity Details": "Renseignements sur l'entité de recherche",
   "Test Plan (e.g. as part of a training course)": "Plan test (par ex, dans le cadre d'une formation)",
-  "Click here if you have a funded project": "Cliquez ici si vous avez un projet financé",
+  "Import information for a funded project: "Importer les renseignements d’un projet financé",
   "Click here to select the guidance of your plan":"Cliquez ici pour sélectionner les recommandations appliquées à votre plan",
   "If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.": "Si votre projet est financé par l’un des financeurs de la liste, vous pouvez récupérer automatiquement les informations administratives que vous avez déjà saisies lors de la demande de subvention.",
   "'{{projectTitle}}' project data has successfully been imported": "Données du projet '{{projectTitle}}' ont été importées avec succès.",
@@ -248,9 +248,11 @@
   "ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
   "ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liées à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
   "An error occurred while saving the selected guidances": "Une erreur s'est produite lors de l'enregistrement les recommandations sélectionnées",
-  "<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>": "<p>Les données du projet <strong>{{title}}</strong> vont être importées dans le plan.</p><p><strong>Souhaitez-vous partager votre plan avec {{label}}</strong></p>",
+  "<p>The data from the <strong>{{title}}</strong> project have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>": "<p>Les données du projet <strong>{{title}}</strong> ont été importées dans les plans.</p><p><strong>Souhaitez-vous partager votre plan avec {{label}}</strong></p>",
   "If not, consider doing it later in the <strong>\"Share\"</strong> tab": "Si non, pensez à le faire ultérieurement dans l'onglet <strong>\"Partager\"</strong>",
   "Plan shared with {{names}}": "Plan partagé avec {{names}}",
   "Import project information": "Importer les renseignements sur le projet",
-  "For ANR funded project, You are invited to share your plan with the ANR.": "Pour les projets financés par l’ANR, vous êtes invité à partager votre plan avec l’ANR."
+  "For ANR funded project, You are invited to share your plan with the ANR.": "Pour les projets financés par l’ANR, vous êtes invité à partager votre plan avec l’ANR.",
+  "Plan shared with": "Plan partagé avec",
+  "An error occurred while sending the notification": "Une erreur s'est produite lors de l'envoie de la notification"
 }

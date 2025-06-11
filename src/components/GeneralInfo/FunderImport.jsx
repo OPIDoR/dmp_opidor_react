@@ -22,7 +22,7 @@ import { getErrorMessage } from "../../utils/utils";
 
 
 export const ButtonSave = styled.button`+
-  margin: 10px 2px 2px 0px;
+margin: 10px 2px 2px 0px;
   color: #000;
   font-size: 18px;
   color: var(--dark-blue) !important;
@@ -89,11 +89,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
   const handleSaveFunding = async () => {
     setLoading(true);
 
+    await saveFunding();
+
     if (selectedFunder?.apiClient && !isClassic) {
       return Swal.fire({
-        html: t('<p>The data from the <strong>{{title}}</strong> project will be imported into the plans.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
+        html: t('<p>The data from the <strong>{{title}}</strong> have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
         footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,
-        icon: 'warning',
+        icon: 'info',
         width: '500px',
         showCancelButton: true,
         confirmButtonColor: '#2c7dad',
@@ -102,19 +104,29 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         confirmButtonText: t('Yes'),
       }).then((result) => {
         if (result.isConfirmed) {
-          return saveFunding(selectedFunder?.apiClient);
+          return share(selectedFunder?.apiClient);
         }
-        return saveFunding();
       });
     }
-
-    return saveFunding();
   };
+
+  const share = async (apiClient) => {
+    let response;
+    try {
+      response = await generalInfo.share(selectedProject.grantId, projectFragmentId, apiClient);
+    } catch (error) {
+      setLoading(false);
+      let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
+      return toast.error(errorMessage);
+    }
+
+    toast.success(`${t('Plan shared with')} ${selectedFunder?.apiClient}`, { style: { maxWidth: 500 } });
+  }
 
   const saveFunding = async (apiClient) => {
     let response;
     try {
-      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName, apiClient);
+      response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       setLoading(false);
       let errorMessage = getErrorMessage(error) || t('An error occurred during the import of the project information');
@@ -163,7 +175,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <Card.Title>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
-                <div className={styles.title_anr}>{t("Click here if you have a funded project")}</div>
+                <div className={styles.title_anr}>{t("Import information for a funded project")}</div>
               </div>
               <span className={styles.question_icons}>
                 {isOpenFunderImport ? (
@@ -181,8 +193,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
             {!error && funders && (
               <div className={styles.container_anr}>
-              <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
-              {funders.length > 1 && (
+                <p className={styles.funding_description}>{t('If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.')}</p>
+                {funders.length > 1 && (
                   <div>
                     <div className={styles.label_form_anr}>
                       <label className={styles.label_anr}>{t("Please select a funder")}</label>
