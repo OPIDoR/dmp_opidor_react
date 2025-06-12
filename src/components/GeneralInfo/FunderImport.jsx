@@ -120,6 +120,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       return toast.error(errorMessage);
     }
 
+    triggerRefresh({ clients: response?.data?.clients || [] });
+
     toast.success(`${t('Plan shared with')} ${selectedFunder?.apiClient}`, { style: { maxWidth: 500 } });
   }
 
