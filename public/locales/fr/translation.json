@@ -248,7 +248,7 @@
   "ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below.": "ORCID iD est un identifiant numérique unique et pérenne pour les chercheurs (<0>ORCID</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
   "ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below.": "ROR ID est un identifiant numérique unique et pérenne pour les organisations et entités liées à la recherche (<0>ROR</0>). Vous pouvez le récupérer via la zone de recherche ci-dessous.",
   "An error occurred while saving the selected guidances": "Une erreur s'est produite lors de l'enregistrement les recommandations sélectionnées",
-  "<p>The data from the <strong>{{title}}</strong> project have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>": "<p>Les données du projet <strong>{{title}}</strong> ont été importées dans les plans.</p><p><strong>Souhaitez-vous partager votre plan avec {{label}}</strong></p>",
+  "<p>The data from the <strong>{{title}}</strong> have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>": "<p>Les données du projet <strong>{{title}}</strong> ont été importées dans les plans.</p><p><strong>Souhaitez-vous partager votre plan avec {{label}}</strong></p>",
   "If not, consider doing it later in the <strong>\"Share\"</strong> tab": "Si non, pensez à le faire ultérieurement dans l'onglet <strong>\"Partager\"</strong>",
   "Plan shared with {{names}}": "Plan partagé avec {{names}}",
   "Import project information": "Importer les renseignements sur le projet",
