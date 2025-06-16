@@ -34,7 +34,7 @@ function FragmentList({
             {fragmentsList
               .map((el, idx) => (el.action !== 'delete' ?
                 <tr key={idx} data-testid={`fragment-list-row-${idx}`}>
-                  <td
+                  <td style={{ wordBreak: "break-word" }}
                     data-testid={`fragment-list-row-value-${idx}`}
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(parsePattern(el, templateToString)),
