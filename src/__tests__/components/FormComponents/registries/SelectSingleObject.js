@@ -2,7 +2,7 @@ import React from 'react';
 import SelectSingleObject from '../../../../components/FormComponents/registries/SelectSingleObject';
 
 import { Wrapper } from '../../../__utils__/reactHookFormHelpers';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Global from '../../../../components/context/Global';
 import { service } from '../../../../services/index';
 import selectEvent from 'react-select-event';
@@ -98,20 +98,22 @@ describe('SelectSingleObject component', () => {
   });
   test('component with multiple registry should call getRegistryByName when choosing a registry', async () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
-    spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData })); 
-   const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));
+    const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
+    const { findByText } = render(
       <Global>
         <Wrapper propName={props.propName}>
           <SelectSingleObject {...props} />
         </Wrapper>
       </Global>
-    ));
-    const registrySelector = screen.getByText('Select a registry');
+    )
+    const registrySelector = await findByText('Select a registry');
     expect(registrySelector).toBeInTheDocument();
     selectEvent.openMenu(registrySelector);
-    expect(screen.getByText("SingleRegistry1")).toBeInTheDocument();
-    await fireEvent.click(screen.getByText("SingleRegistry1"))
-    expect(spyGetRegistryByName).toHaveBeenCalledWith('SingleRegistry1');
+
+    const registry = await findByText("SingleRegistry1")
+    await waitFor(() => expect(registry).toBeInTheDocument());
+    fireEvent.click(registry);
+    await waitFor(() => expect(spyGetRegistryByName).toHaveBeenCalledWith('SingleRegistry1'));
   });
 });
