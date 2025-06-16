@@ -63,7 +63,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     };
 
     fetchTemplates(params);
-  }, [params.researchContext, params.templateLanguage, setPlanTemplates, t]);
+  }, [params.templateLanguage, setPlanTemplates, t]);
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
@@ -79,7 +79,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
     let response;
     try {
-      response = await planCreation.createPlan(params.selectedTemplate);
+      response = await planCreation.createPlan(params.selectedTemplate, params.researchContext);
     } catch (error) {
       let errorMessage = getErrorMessage(error);
 
