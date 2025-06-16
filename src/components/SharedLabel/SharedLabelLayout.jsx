@@ -25,8 +25,7 @@ export default function SharedLabelLayout({ planId, clients }) {
         <a href={`/plans/${planId}/share`}>
           <button className="btn btn-primary">{
             t('Plan shared with {{names}}', {
-              // names: clientsData.map(({ name }) => name).join(', ')
-              names: clientsData.find(({ name }) => name.toLowerCase() === 'anr')?.name
+              names: clientsData.join(', ')
             })
           }</button>
         </a>
