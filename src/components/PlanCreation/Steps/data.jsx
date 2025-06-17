@@ -8,7 +8,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
 
   let currentTemplatesRes;
   try {
-    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.researchContext, opts.templateLanguage);
+    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.templateLanguage);
   } catch (error) {
     setLoading(false);
     return handleError(error);
@@ -21,42 +21,9 @@ export default async function getTemplates(opts, onlyStructured = false) {
     : [currentTemplatesRes?.data]
     .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase());
 
-  let fundersRes;
-  try {
-    fundersRes = await planCreation.getFunders(opts.researchContext, opts.templateLanguage);
-  } catch (error) {
-    setLoading(false);
-    return handleError(error);
-  }
-
-  fundersRes = fundersRes?.data?.map((funder) => ({ ...funder, templates: [] }));
-
-  for await (const funder of fundersRes) {
-    let fundersTemplatesRes;
-
-    try {
-      fundersTemplatesRes = await planCreation.getTemplatesByFunderId(funder, opts.researchContext);
-    } catch (error) {
-      setLoading(false);
-      handleError(error);
-      break;
-    }
-
-    templates.others.push({
-      ...funder,
-      type: 'funder',
-      templates: fundersTemplatesRes?.data
-        .map((obj) => ({ ...obj, type: 'funder' }))
-        .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
-        .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase()) || [],
-      selected: false,
-    });
-  }
-
   let orgsRes;
   try {
-    orgsRes = await planCreation.getOrgs(opts.researchContext, opts.templateLanguage);
+    orgsRes = await planCreation.getOrgs(opts.templateLanguage);
   } catch (error) {
     setLoading(false);
     return handleError(error);
@@ -68,7 +35,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
     let orgTemplatesRes;
 
     try {
-      orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, opts.researchContext);
+      orgTemplatesRes = await planCreation.getTemplatesByOrgId(org);
     } catch (error) {
       setLoading(false);
       handleError(error);

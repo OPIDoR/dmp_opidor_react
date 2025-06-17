@@ -6,17 +6,15 @@ import createHeaders from "../utils/HeaderBuilder";
  * @param token - The `token` parameter is not used in the `getDefaultModel` function. It is not necessary for the function to work properly.
  * @returns an object with a `data` property that contains the `dataDefaultModel` value.
  */
-const getRecommendedTemplate = async (researchContext, locale) => axios.get(`/template_options/recommend?context=${researchContext}&locale=${locale}`);
+const getRecommendedTemplate = async (locale) => axios.get(`/template_options/recommend?locale=${locale}`);
 
 /**
  * This is an asynchronous function that retrieves data for an other organism by ID and name using a token and context.
  * @param orgData - An object containing the id and name of the research organization.
- * @param researchContext - The context parameter is a string that specifies the context in which the function is being called. It is used to determine the
- * appropriate data to return.
  * @returns An object with a "data" property, which contains the data for the "dataOtherOrganismeById" variable.
  */
 
-const getTemplatesByOrgId = async (orgData, researchContext) => {
+const getTemplatesByOrgId = async (orgData) => {
   const { id, name } = orgData;
 
   return axios.get('/template_options', {
@@ -25,7 +23,6 @@ const getTemplatesByOrgId = async (orgData, researchContext) => {
       'plan[research_org_id][name]': name,
       'plan[research_org_id][sort_name]': name,
       'plan[funder_id]': 'none',
-      'plan[context]': researchContext,
     },
   });
 }
@@ -56,14 +53,7 @@ export async function getTemplatesByFunderId(funderData, researchContext) {
  * @param token - The `token` parameter is not used in the `getOrganisme` function. It is not necessary for the function to work properly.
  * @returns an object with a "data" property that contains the dataOrganisme variable.
  */
-const getOrgs = async (researchContext, templateLanguage) => axios.get(`/orgs/list?context=${researchContext}&locale=${templateLanguage}&type=org`);
-
-/**
- * The function "getFunder" returns data from a hardcoded source or an API endpoint using a provided token.
- * @param token - The `token` parameter is not used in the `getFunder` function. It is not necessary for the function to work properly.
- * @returns an object with a "data" property that contains the value of the "dataFunder" variable.
- */
-const getFunders = async (researchContext, templateLanguage) => axios.get(`/orgs/list?context=${researchContext}&locale=${templateLanguage}&type=funder`);
+const getOrgs = async (templateLanguage) => axios.get(`/orgs/list?locale=${templateLanguage}`);
 
 /**
  * Send choosen templateId to the back for the plan creation,
@@ -71,7 +61,7 @@ const getFunders = async (researchContext, templateLanguage) => axios.get(`/orgs
  * @param templateId identifier of the choosen template
  * @returns 
  */
-const createPlan = async (template_id) => axios.post(`/plans`, { template_id }, { headers: createHeaders({}, true) });
+const createPlan = async (template_id, context) => axios.post(`/plans`, { template_id, context }, { headers: createHeaders({}, true) });
 
 const importPlan = async (formData) => axios.post('/plans/import', formData, {
   headers: {
@@ -88,7 +78,6 @@ export default {
   getTemplatesByOrgId,
   getTemplatesByFunderId,
   getOrgs,
-  getFunders,
   createPlan,
   importPlan,
 };
