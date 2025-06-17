@@ -2,7 +2,7 @@ import React from 'react';
 import SelectMultipleString from '../../../../components/FormComponents/registries/SelectMultipleString';
 
 import { Wrapper } from '../../../__utils__/reactHookFormHelpers';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Global from '../../../../components/context/Global';
 import { service } from '../../../../services/index';
 import selectEvent from 'react-select-event';
@@ -63,13 +63,13 @@ describe('SelectMultipleString component', () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
     spy.mockImplementation((category, dataType) => Promise.resolve({ data: [mockedRegistriesData[0]] }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    render(
       <Global>
         <Wrapper propName={props.propName} data={[]}>
           <SelectMultipleString {...props} />
         </Wrapper>
       </Global>
-    ));
+    )
     expect(screen.getByTestId('select-multiple-string-label')).toHaveTextContent(props.label);
     expect(screen.queryByTestId('select-multiple-string-registry-selector')).not.toBeInTheDocument();
     expect(screen.getByTestId(/tooltip_info_icon_[0-9]+/i)).toBeInTheDocument();
@@ -102,18 +102,20 @@ describe('SelectMultipleString component', () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
     spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    const { findByText } = render(
       <Global>
         <Wrapper propName={props.propName} data={[]}>
           <SelectMultipleString {...props} />
         </Wrapper>
       </Global>
-    ));
-    const registrySelector = screen.getByText('Select a registry');
+    )
+    const registrySelector = await findByText('Select a registry');
     expect(registrySelector).toBeInTheDocument();
     selectEvent.openMenu(registrySelector);
-    expect(screen.getByText("MultipleRegistry1")).toBeInTheDocument();
-    await fireEvent.click(screen.getByText("MultipleRegistry1"))
-    expect(spyGetRegistryByName).toHaveBeenCalledWith('MultipleRegistry1');
+
+    const registry = await findByText("MultipleRegistry1")
+    await waitFor(() => expect(registry).toBeInTheDocument());
+    fireEvent.click(screen.getByText("MultipleRegistry1"))
+    await waitFor(() => expect(spyGetRegistryByName).toHaveBeenCalledWith('MultipleRegistry1'));
   });
 });
