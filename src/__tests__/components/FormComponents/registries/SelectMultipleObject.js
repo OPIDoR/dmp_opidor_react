@@ -2,7 +2,7 @@ import React from 'react';
 import SelectMultipleObject from '../../../../components/FormComponents/registries/SelectMultipleObject';
 
 import { Wrapper } from '../../../__utils__/reactHookFormHelpers';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Global from '../../../../components/context/Global';
 import { service } from '../../../../services/index';
 import selectEvent from 'react-select-event';
@@ -65,13 +65,13 @@ describe('SelectMultipleObject component', () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
     spy.mockImplementation((category, dataType) => Promise.resolve({ data: [mockedRegistriesData[0]] }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    render(
       <Global>
         <Wrapper propName={props.propName}>
           <SelectMultipleObject {...props} />
         </Wrapper>
       </Global>
-    ));
+    )
     expect(screen.getByTestId('select-multiple-object-label')).toHaveTextContent(props.formLabel);
     expect(screen.queryByTestId('select-multiple-object-registry-selector')).not.toBeInTheDocument();
     expect(screen.getByTestId(/tooltip_info_icon_[0-9]+/i)).toBeInTheDocument();
@@ -84,13 +84,13 @@ describe('SelectMultipleObject component', () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
     spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));  // replace implementation
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    render(
       <Global>
         <Wrapper propName={props.propName}>
           <SelectMultipleObject {...props} />
         </Wrapper>
       </Global>
-    ));
+    )
     expect(screen.getByTestId('select-multiple-object-label')).toHaveTextContent(props.formLabel);
     expect(screen.queryByTestId('select-multiple-object-registry-selector')).toBeInTheDocument();
     expect(screen.getByText('Select a registry')).toBeInTheDocument();
@@ -104,18 +104,20 @@ describe('SelectMultipleObject component', () => {
     const spy = jest.spyOn(service, 'getRegistriesByCategory');
     spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
-    await act(async () => render(
+    render(
       <Global>
         <Wrapper propName={props.propName} data={[]}>
           <SelectMultipleObject {...props} />
         </Wrapper>
       </Global>
-    ));
-    const registrySelector = screen.getByText('Select a registry');
+    )
+    const registrySelector = await screen.getByText('Select a registry');
     expect(registrySelector).toBeInTheDocument();
     selectEvent.openMenu(registrySelector);
-    expect(screen.getByText("MultipleRegistry1")).toBeInTheDocument();
-    await fireEvent.click(screen.getByText("MultipleRegistry1"))
-    expect(spyGetRegistryByName).toHaveBeenCalledWith('MultipleRegistry1');
+
+    const registry = await findByText("MultipleRegistry1")
+    await waitFor(() => expect(registry).toBeInTheDocument());
+    fireEvent.click(screen.getByText("MultipleRegistry1"))
+    await waitFor(() => expect(spyGetRegistryByName).toHaveBeenCalledWith('MultipleRegistry1'));
   });
 });

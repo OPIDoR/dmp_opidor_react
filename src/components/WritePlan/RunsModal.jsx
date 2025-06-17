@@ -12,7 +12,7 @@ import { service } from "../../services";
 import swalUtils from "../../utils/swalUtils";
 import { getErrorMessage } from "../../utils/utils";
 
-function ModalRuns({ shown, hide, scriptsData, fragmentId }) {
+function RunsModal({ shown, hide, scriptsData, fragmentId }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -58,6 +58,7 @@ function ModalRuns({ shown, hide, scriptsData, fragmentId }) {
       } else {
         setSuccess(res.data.message);
       }
+      triggerRefresh({ clients: res?.data?.clients || [] });
     }).catch((error) => {
       let errorMessage = getErrorMessage(error);
       setError({
@@ -70,6 +71,12 @@ function ModalRuns({ shown, hide, scriptsData, fragmentId }) {
     });
   }
 
+  const triggerRefresh = (message) => {
+    const event = new CustomEvent('trigger-refresh-shared-label', {
+      detail: { message },
+    });
+    window.dispatchEvent(event);
+  };
   return (
     <InnerModal show={shown} ref={modalRef}>
       <InnerModal.Header
@@ -107,4 +114,4 @@ function ModalRuns({ shown, hide, scriptsData, fragmentId }) {
   );
 }
 
-export default ModalRuns;
+export default RunsModal;
