@@ -32,6 +32,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
 
     if (value) {
       setIsExpanded(true);
+      // eslint-disable-next-line react-compiler/react-compiler
       return parentRef.style.width = 'calc(100% - 30px)';
     }
 
