@@ -2,10 +2,9 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Placeholder from "react-bootstrap/Placeholder";
 
-import * as styles from "../../assets/css/sidebar.module.css";
 import SidebarPlaceholder from "./SidebarPlaceholder";
 
-function WritePlanPlaceholder({ }) {
+function WritePlanPlaceholder() {
   const questionsPlaceholders = [];
 
   [...Array(4).keys()].forEach((i) => {

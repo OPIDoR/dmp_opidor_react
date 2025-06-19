@@ -31,7 +31,7 @@ function NestedForm({ propName, data, template, mainFormDataType, readonly, hand
     }
   }, [template, data])
 
-  const onValid = (formData, event) => {
+  const onValid = (formData) => {
     handleSave(formData);
   };
 
