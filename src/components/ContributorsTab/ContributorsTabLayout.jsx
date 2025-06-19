@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 
 import Global from '../context/Global.jsx';
 import ContributorsTab from './ContributorsTab.jsx';
@@ -11,10 +11,12 @@ const toastOptions = {
 
 function ContributorsTabLayout({ planId, locale, readonly }) {
   return (
-    <Global>
-      <ContributorsTab planId={planId} locale={locale} readonly={readonly} />
-      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
-    </Global>
+    <StrictMode>
+      <Global>
+        <ContributorsTab planId={planId} locale={locale} readonly={readonly} />
+        <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
+      </Global>
+    </StrictMode>
   )
 }
 
