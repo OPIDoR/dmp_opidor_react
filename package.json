@@ -22,9 +22,9 @@
     "lodash.unionby": "^4.8.0",
     "lodash.uniqueid": "^4.0.1",
     "pretty-bytes": "^7.0.0",
-    "react": "^18.2.0",
+    "react": "^19.1.0",
     "react-bootstrap": "^2.10.4",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.1.0",
     "react-form-stepper": "^2.0.3",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.0",
@@ -71,7 +71,17 @@
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "react-select-event": "^5.5.1",
-    "react-test-renderer": "^18.2.0",
+    "react-test-renderer": "^19.1.0",
     "resize-observer-polyfill": "^1.5.1"
+  },
+  "overrides": {
+    "react-joyride": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    },
+    "react-loader-spinner": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    }
   }
 }
