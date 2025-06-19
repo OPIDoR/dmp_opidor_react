@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from "react";
-import ReactDOM from "react-dom";
 import { IoClose } from "react-icons/io5";
 import { TbMinimize, TbMaximize } from "react-icons/tb";
 

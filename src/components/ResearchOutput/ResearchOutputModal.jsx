@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
-import { GlobalContext } from "../context/Global";
 import ResearchOutputForm from "./ResearchOutputForm";
 
 /* This is a functional component in JavaScript React that renders a modal window with two tabs: "Créer" and "Importer". The component takes in three

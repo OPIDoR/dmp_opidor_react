@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
 import { toast } from "react-hot-toast";
@@ -79,7 +79,10 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         }));
         setFundedProjects(options);
       })
-      .catch((error) => toast.error(t('An error occurred')))
+      .catch((error) => {
+        setError(error);
+        toast.error(t('An error occurred'));
+      })
       .finally(() => setLoading(false));
   };
 
@@ -94,7 +97,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     if (selectedFunder?.apiClient && !isClassic) {
       return Swal.fire({
         html: t('<p>The data from the <strong>{{title}}</strong> have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
-        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>\"Share\"</strong> tab')}</div>`,
+        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>"Share"</strong> tab')}</div>`,
         icon: 'info',
         width: '500px',
         showCancelButton: true,
@@ -125,7 +128,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     toast.success(`${t('Plan shared with')} ${selectedFunder?.apiClient}`, { style: { maxWidth: 500 } });
   }
 
-  const saveFunding = async (apiClient) => {
+  const saveFunding = async () => {
     let response;
     try {
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);

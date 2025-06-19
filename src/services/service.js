@@ -5,7 +5,7 @@ const getFragment = async (id) => axios.get(`/madmp_fragments/${id}`);
 
 const getNewForm = async (questionId, researchOutputId) => axios.get(`/answers/new_form?question_id=${questionId}&research_output_id=${researchOutputId}`);
 
-const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null, propertyName = null) => axios.post(
+const createFragment = async (data = {}, madmpSchemaId, dmpId, questionId = null, researchOutputId = null) => axios.post(
   '/madmp_fragments', {
     data,
     schema_id: madmpSchemaId,
@@ -55,7 +55,7 @@ const getSchemasByClass = async (className, dataType) => axios.get(`/madmp_schem
 
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
-// eslint-disable-next-line import/no-anonymous-default-export
+
 export default {
   getFragment,
   getNewForm,

@@ -58,26 +58,20 @@ function ImportResearchOutput({ planId, handleClose }) {
   const handleImportResearchOutput = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    researchOutput.importResearchOutput({ planId, uuid: selectedResearchOutput.uuid }).then((res) => {
+      const { research_outputs, created_ro_id } = res.data;
 
-    let res;
-    try {
-      res = await researchOutput.importResearchOutput(  {
-        planId,
-        uuid: selectedResearchOutput.uuid,
-      });
-    } catch (err) {
+      setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
+      setResearchOutputs(research_outputs);
+      // setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
+      setUrlParams({ research_output: created_ro_id });
+
+      toast.success(t("Research output successfully imported."));
+      return handleClose();
+    }).catch(() => {
+
       return toast.error(t('An error occured during import !'));
-    }
-
-    const { research_outputs, created_ro_id } = res?.data;
-
-    setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
-    setResearchOutputs(research_outputs);
-    // setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
-    setUrlParams({ research_output: created_ro_id });
-
-    toast.success(t("Research output successfully imported."));
-    return handleClose();
+    })
   };
 
   return (
@@ -108,7 +102,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       )}
 
       {selectedPlan?.researchOutputs?.length > 0 && (
-      < div className="form-group">
+        < div className="form-group">
           <div className={stylesForm.label_form}>
             <label>{t("Choose research output")}</label>
           </div>

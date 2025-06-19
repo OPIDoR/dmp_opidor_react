@@ -121,7 +121,7 @@ function CommentList({
         ...commentData,
         text: commentText,
       });
-    } catch (error) {
+    } catch {
       return toast.error(t('An error has occurred while sending the comment.'));
     }
 
@@ -163,7 +163,7 @@ function CommentList({
     let response;
     try {
       response = await commentsService.create({ note });
-    } catch (error) {
+    } catch {
       return toast.error(t('An error has occurred while sending the comment.'));
     }
 
