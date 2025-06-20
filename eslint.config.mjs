@@ -28,10 +28,11 @@ export default defineConfig([
       // ... any rules you want
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
+      "react/no-deprecated": "warn", // Warn about deprecated lifecycle methods
+      "react/no-direct-mutation-state": "error" // Prevent direct state mutation
     },
     settings:
-    { react: { version: "detect" } }
-    // ... others are omitted for brevity
+      { react: { version: "detect" } }
   },
   reactCompiler.configs.recommended,
 ]);
