@@ -16,7 +16,7 @@ const tooltipStyles = {
   boxSizing: 'border-box',
 };
 
-const JoyrideTooltip = forwardRef((props) => {
+const JoyrideTooltip = forwardRef((props, ref) => {
   const {
     className,
     style,
@@ -30,6 +30,7 @@ const JoyrideTooltip = forwardRef((props) => {
   return (
     <div
       {...tooltipProps}
+      ref={ref}
       style={{ ...tooltipStyles, ...style }}
       className={className}
       aria-label={ariaLabel}
