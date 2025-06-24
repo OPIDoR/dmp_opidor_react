@@ -36,6 +36,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
     const urlRegex = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i;
 
     if (urlRegex.test(search)) {
+      // eslint-disable-next-line no-unsafe-optional-chaining
       const { orcid } = /^https:\/\/orcid.org\/(?<orcid>[0-9-]+)$/i.exec(search)?.groups;
       if (orcid) {
         search = orcid;
@@ -60,7 +61,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   /**
    * The onChangePage function updates the state with a new page of items.
    */
-  const onChangePage = (pageOfItems, page) => {
+  const onChangePage = (pageOfItems) => {
     // update state with new page of items
     setCurrentData(pageOfItems);
   };
@@ -90,7 +91,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
   /**
    * The handleChangeText function filters data based on a text input value and updates the state with the filtered results.
    */
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = () => {
     getData(text);
   };
 

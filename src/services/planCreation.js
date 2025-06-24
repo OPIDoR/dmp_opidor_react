@@ -72,7 +72,6 @@ const importPlan = async (formData) => axios.post('/plans/import', formData, {
   maxRedirects: 0,
 });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getRecommendedTemplate,
   getTemplatesByOrgId,

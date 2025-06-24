@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { StrictMode, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Global from '../context/Global.jsx';
@@ -14,13 +14,15 @@ function PlanCreationLayout({ locale }) {
   }, []);
 
   return (
-    <Global>
-      <QueryClientProvider client={queryClient}>
-        <PlanCreation
-          locale={locale}
-        />
-      </QueryClientProvider>
-    </Global>
+    <StrictMode>
+      <Global>
+        <QueryClientProvider client={queryClient}>
+          <PlanCreation
+            locale={locale}
+          />
+        </QueryClientProvider>
+      </Global>
+    </StrictMode>
   );
 }
 

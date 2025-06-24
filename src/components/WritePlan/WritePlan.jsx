@@ -19,7 +19,6 @@ import WritePlanPlaceholder from "./Placeholders/WritePlanPlaceholder";
 function WritePlan({
   locale = 'en_GB',
   planId,
-  templateId,
   userId,
   readonly,
   currentOrgId,
@@ -143,7 +142,6 @@ function WritePlan({
                   {planId && (
                     <SectionsContent
                       planId={planId}
-                      templateId={templateId}
                       readonly={readonly}
                     />
                   )}

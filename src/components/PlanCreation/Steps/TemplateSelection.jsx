@@ -52,6 +52,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       try {
         templatesData = await getTemplates(opts);
       } catch (error) {
+        setError(error);
         return setLoading(false);
       }
 
@@ -202,7 +203,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t('No model available')}</i></p>);
 
     if (!planTemplates[index].type) {
-      const { templates } = planTemplates?.[index];
+      const { templates } = planTemplates[index];
 
       if (templates.length <= 0) {
         return noModelAvailable;
@@ -211,7 +212,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       return createList({ index, templates });
     }
 
-    let { data } = planTemplates?.[index];
+    let { data } = planTemplates[index];
 
     if (data.length <= 0) {
       return noModelAvailable;

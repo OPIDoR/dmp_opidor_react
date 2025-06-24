@@ -4,10 +4,9 @@ import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import prettyBytes from 'pretty-bytes';
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { FaTrash } from "react-icons/fa6";
 
 import { CustomButton } from "../../Styled";
-import { CustomSpinner, CustomSelect } from "../../Shared";
+import { CustomSpinner } from "../../Shared";
 import { clearLocalStorage } from '../../../utils/utils';
 import getTemplates from "./data";
 import { planCreation } from "../../../services";
@@ -63,7 +62,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
       let templatesData;
       try {
         templatesData = await getTemplates(opts, true);
-      } catch (error) {
+      } catch {
         return setLoading(false);
       }
 

@@ -20,7 +20,6 @@ const importProject = async(grantId, projectFragmentId, scriptName) =>
 const share = async (grantId, projectFragmentId, apiClient) =>
   axios.get(`/codebase/share?project_id=${grantId}&fragment_id=${projectFragmentId}&api_client=${apiClient}`);
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   saveIsTestPlan,
   importProject,

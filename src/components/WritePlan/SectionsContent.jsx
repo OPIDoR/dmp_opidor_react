@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 import { researchOutput } from "../../services";
-import CustomSpinner from "../Shared/CustomSpinner";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import Section from "./Section";
@@ -13,11 +12,10 @@ import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
 import consumer from "../../cable";
 
-function SectionsContent({ planId, templateId, readonly }) {
+function SectionsContent({ planId, readonly }) {
   const { t } = useTranslation();
   const {
     setFormData,
-    loadedSectionsData,
     openedQuestions,
     setOpenedQuestions,
     setResearchOutputs,
@@ -25,11 +23,9 @@ function SectionsContent({ planId, templateId, readonly }) {
     setUrlParams,
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
-  const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
-  const [moduleId, setModuleId] = useState(null);
 
 
   const handleWebsocketData = useCallback((data) => {
@@ -53,12 +49,6 @@ function SectionsContent({ planId, templateId, readonly }) {
       consumer.disconnect();
     }
   }, [planId, handleWebsocketData])
-
-  useEffect(() => {
-    if(displayedResearchOutput) {
-      setModuleId(displayedResearchOutput?.configuration?.moduleId || templateId);
-    }
-  }, [displayedResearchOutput])
 
   useEffect(() => {
     if (!displayedResearchOutput) return;
@@ -129,29 +119,22 @@ function SectionsContent({ planId, templateId, readonly }) {
       confirmButtonText: t("Yes, duplicate!"),
     }).then(async (result) => {
       if (result.isConfirmed) {
-        let res;
-        try {
-          res = await researchOutput.importResearchOutput({
-            planId,
-            uuid: displayedResearchOutput.uuid,
-          });
-        } catch (err) {
+        researchOutput.importResearchOutput({ planId, uuid: displayedResearchOutput.uuid }).then((res) => {
+          const { research_outputs, created_ro_id } = res.data;
+          setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
+          setResearchOutputs(research_outputs);
+          setUrlParams({ research_output: created_ro_id });
+
+          toast.success(t("Research output successfully imported."));
+        }).catch(() => {
           return toast.error(t('An error occured during import !'));
-        }
-
-        const { research_outputs, created_ro_id } = res?.data;
-
-        setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
-        setResearchOutputs(research_outputs);
-        setUrlParams({ research_output: created_ro_id });
-
-        toast.success(t("Research output successfully imported."));
+        });
       }
     });
 
   }
 
-  const handleClose = (e) => {
+  const handleClose = () => {
     setShow(false);
     setEdit(false);
   }
@@ -159,7 +142,6 @@ function SectionsContent({ planId, templateId, readonly }) {
   return (
     <div style={{ position: 'relative' }}>
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={edit} />}
-      {loading && <CustomSpinner isOverlay={true}></CustomSpinner>}
       {error && <CustomError error={error}></CustomError>}
       {!error && displayedResearchOutput?.template?.sections && (
         <>

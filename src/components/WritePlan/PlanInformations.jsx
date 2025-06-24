@@ -10,7 +10,7 @@ import { useTour } from "../Shared/Joyride/JoyrideContext";
 const locales = { fr, en: enGB };
 
 function PlanInformations({ template }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { setIsOpen } = useTour();
 

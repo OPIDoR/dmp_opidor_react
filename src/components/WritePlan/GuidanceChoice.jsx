@@ -37,7 +37,6 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
     setQuestionsWithGuidance,
     setCurrentOrg,
     currentOrg,
-    locale,
   } = useContext(GlobalContext);
   const guidancesRef = useRef(null);
 

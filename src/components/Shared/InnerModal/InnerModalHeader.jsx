@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from "react";
-import ReactDOM from "react-dom";
 import { IoClose } from "react-icons/io5";
 import { TbMinimize, TbMaximize } from "react-icons/tb";
 
@@ -33,6 +32,7 @@ const InnerModalHeader = forwardRef((props, ref) => {
 
     if (value) {
       setIsExpanded(true);
+      // eslint-disable-next-line react-compiler/react-compiler
       return parentRef.style.width = 'calc(100% - 30px)';
     }
 

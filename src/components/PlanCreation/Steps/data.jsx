@@ -10,8 +10,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
   try {
     currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.templateLanguage);
   } catch (error) {
-    setLoading(false);
-    return handleError(error);
+    throw new Error(error)
   }
 
   const defaultTemplateID = currentTemplatesRes?.data?.id
@@ -19,14 +18,13 @@ export default async function getTemplates(opts, onlyStructured = false) {
   templates.default = Array.isArray(currentTemplatesRes?.data)
     ? currentTemplatesRes?.data
     : [currentTemplatesRes?.data]
-    .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase());
+      .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase());
 
   let orgsRes;
   try {
     orgsRes = await planCreation.getOrgs(opts.templateLanguage);
   } catch (error) {
-    setLoading(false);
-    return handleError(error);
+    throw new Error(error)
   }
 
   orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }));
@@ -37,9 +35,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
     try {
       orgTemplatesRes = await planCreation.getTemplatesByOrgId(org);
     } catch (error) {
-      setLoading(false);
-      handleError(error);
-      break;
+      throw new Error(error)
     }
 
     templates.others.push({
