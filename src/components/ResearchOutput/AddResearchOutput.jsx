@@ -31,7 +31,8 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     researchOutputs,
   } = useContext(GlobalContext);
   const { t } = useTranslation();
-  const [options, setOptions] = useState([{ value: '', label: '' }]);
+  const [typeOptions, setTypeOptions] = useState([{ value: '', label: '' }]);
+  // const [topicOptions, setTopicOptions] = useState([{ value: '', label: '' }]);
   const [abbreviation, setAbbreviation] = useState(undefined);
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
@@ -41,28 +42,32 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const tooltipedLabelId = uniqueId('type_tooltip_id_');
 
   useEffect(() => {
-    service.getRegistryByName('ResearchDataType').then((res) => {
-      const opts = createOptions(res.data, locale);
-      setOptions(opts);
-
-      if (inEdition) {
-        setAbbreviation(displayedResearchOutput.abbreviation);
-        setTitle(displayedResearchOutput.title);
-        setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
-        setType(displayedResearchOutput.type);
-        handlePersonalData(displayedResearchOutput.type);
-        setSelectedOption(opts.find(({ value }) => value === displayedResearchOutput.type));
-      }
-
-      if (!inEdition) {
-        const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
-        setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
-        setTitle(`${t('Research output')} ${maxOrder + 1}`);
-        setHasPersonalData(true);
-      }
-    });
+    if (displayedResearchOutput && inEdition)  {
+      setAbbreviation(displayedResearchOutput.abbreviation);
+      setTitle(displayedResearchOutput.title);
+      setHasPersonalData(displayedResearchOutput.configuration.hasPersonalData);
+      setType(displayedResearchOutput.type);
+      handlePersonalData(displayedResearchOutput.type);
+    } 
+    
+    if (!displayedResearchOutput && !inEdition) ; {
+      const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
+      setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
+      setTitle(`${t('Research output')} ${maxOrder + 1}`);
+      setHasPersonalData(true);
+    }
 
     setDisableTypeChange(inEdition);
+  }, [displayedResearchOutput, inEdition])
+
+  useEffect(() => {
+    service.getRegistryByName('ResearchDataType').then((res) => {
+      const typeOpts = createOptions(res.data, locale);
+      setTypeOptions(typeOpts);
+      if (inEdition) {
+        setSelectedOption(typeOpts.find(({ value }) => value === displayedResearchOutput.type));
+      }
+    });
 
   }, [locale]);
 
@@ -70,7 +75,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
    * This is a function that handles the selection of a value and sets it as the type.
    */
   const handleSelect = (e) => {
-    setSelectedOption(options.find(({ value }) => value === e.value));
+    setSelectedOption(typeOptions.find(({ value }) => value === e.value));
     setType(e.value);
     handlePersonalData(e.value);
   };
@@ -208,10 +213,10 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
               __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
             }} />
         )}
-        {options && (
+        {typeOptions && (
           <CustomSelect
             onSelectChange={handleSelect}
-            options={options}
+            options={typeOptions}
             selectedOption={selectedOption}
             placeholder={t("Select a value from the list")}
             overridable={false}
