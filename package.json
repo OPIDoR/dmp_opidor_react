@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "eslint . --ignore-pattern '**/__tests__/**'",
     "test": "jest"
   },
   "dependencies": {
@@ -22,9 +23,9 @@
     "lodash.unionby": "^4.8.0",
     "lodash.uniqueid": "^4.0.1",
     "pretty-bytes": "^7.0.0",
-    "react": "^18.2.0",
+    "react": "^19.1.0",
     "react-bootstrap": "^2.10.4",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.1.0",
     "react-form-stepper": "^2.0.3",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.0",
@@ -62,16 +63,32 @@
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
+    "@eslint/js": "^9.29.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "react-select-event": "^5.5.1",
-    "react-test-renderer": "^18.2.0",
+    "react-test-renderer": "^19.1.0",
     "resize-observer-polyfill": "^1.5.1"
+  },
+  "overrides": {
+    "react-joyride": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    },
+    "react-loader-spinner": {
+      "react": "^18 || ^19",
+      "react-dom": "^18 || ^19"
+    }
   }
 }

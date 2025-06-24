@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 
 import { GlobalContext } from "../context/Global";
-import { useTranslation } from "react-i18next";
 import { researchOutput } from "../../services";
 import { except } from "../../utils/utils";
 
@@ -31,7 +30,7 @@ function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
    * tab that was clicked.
    */
-  const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
+  const handleShowResearchOutputClick = (e, selectedResearchOutput) => {
     e.preventDefault();
     setSelectedResearchOutputId(selectedResearchOutput.id);
     setUrlParams({ research_output: selectedResearchOutput.id });

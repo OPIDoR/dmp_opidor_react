@@ -5,7 +5,6 @@ import { FaEnvelope, FaWrench } from "react-icons/fa";
 
 import { CommentSVG } from '../../Styled/svg';
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default (t) => [
   {
     title: t('Discover the editing features'),
