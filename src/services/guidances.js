@@ -8,7 +8,6 @@ const getGuidanceGroups = async (planId) => axios.get(`/plans/${planId}/guidance
 
 const postGuidanceGroups = async (jsonObject, planId) => axios.post(`/plans/${planId}/guidance_groups`, jsonObject, { headers: createHeaders({}, true) });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getGuidances,
   getGuidanceGroups,

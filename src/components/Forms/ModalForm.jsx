@@ -30,7 +30,7 @@ function ModalForm({ data, template, mainFormDataType, label, readonly, show, ha
     }
   }, [template, data])
 
-  const onValid = (formData, event) => {
+  const onValid = (formData) => {
     handleSave(formData);
     methods.reset();
   };

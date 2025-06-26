@@ -13,8 +13,6 @@ const footerStyle = {
 };
 
 function InnerModalFooter({
-  closeButton = false,
-  expandButton = false,
   className,
   style,
   children,

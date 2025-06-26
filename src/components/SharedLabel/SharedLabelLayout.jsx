@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { StrictMode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import '../../i18n.js';
@@ -20,17 +20,19 @@ export default function SharedLabelLayout({ planId, clients }) {
   }, []);
 
   return (
-    <span>
-      {clientsData?.length > 0 && (
-        <a href={`/plans/${planId}/share`}>
-          <button className="btn btn-primary">{
-            t('Plan shared with {{names}}', {
-              names: clientsData.join(', ')
-            })
-          }</button>
-        </a>
-      )}
-    </span>
+    <StrictMode>
+      <span>
+        {clientsData?.length > 0 && (
+          <a href={`/plans/${planId}/share`}>
+            <button className="btn btn-primary">{
+              t('Plan shared with {{names}}', {
+                names: clientsData.join(', ')
+              })
+            }</button>
+          </a>
+        )}
+      </span>
+    </StrictMode>
   );
 }
 
