@@ -28,7 +28,11 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   /* A hook that is called when the component is mounted. It is used to fetch data from an API. */
   useEffect(() => {
     const tmpls = {
-      default: { title: t('Common template proposed by DMP OPIDoR'), templates: [] },
+      default: {
+        title: t('Structured common template'),
+        description: t('Recommended by the Open Science network of the French funding agencies : ADEME, ANR, ANRS-MIE, Anses, FRM, INCa and by research organisations.'),
+        templates: [],
+      },
       others: {
         id: 'others',
         title: (<Trans
@@ -282,6 +286,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
                   <label key={`category-label-${index}`} className={`${styles.title}`}>
                     {planTemplates?.[index]?.title}
                   </label>
+                  {planTemplates?.[index]?.description && (<p>{planTemplates?.[index]?.description}</p>)}
                   {displayTemplatesByCategory(index)}
                 </div>
               ))
