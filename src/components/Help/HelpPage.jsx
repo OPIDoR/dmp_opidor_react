@@ -80,7 +80,10 @@ export default function HelpPage({ locale, directusUrl }) {
             <div
               key={`faq-answer-${index}`}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(answer[languagesCode[locale]]),
+                __html: DOMPurify.sanitize(answer[languagesCode[locale]], {
+                  ADD_TAGS: ['iframe'],
+                  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+                }),
               }}
             />
           </div>
