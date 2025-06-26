@@ -59,12 +59,6 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       setPlanTemplates(tmpls);
       setLoading(false);
-
-      const defaultTemplate = templatesData.default.at(0);
-
-      localStorage.setItem('templateId', defaultTemplate.id);
-      localStorage.setItem('templateName', defaultTemplate.title);
-      return set(defaultTemplate.id, defaultTemplate.title);
     };
 
     fetchTemplates(params);
