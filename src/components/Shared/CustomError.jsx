@@ -68,7 +68,7 @@ function CustomError({ error, showWarning = true, handleClose }) {
   const defaultMessage = t("It seems that a problem has appeared");
   const errorMessage = error?.message || t("Internal Server Error");
   const errorDescription = error?.error || defaultMessage;
-  const home = error.hasOwnProperty('home') ? error?.home : true;
+  const home = Object.prototype.hasOwnProperty.call(error, 'home') ? error?.home : true;
 
   return (
     <ErrorContainer>

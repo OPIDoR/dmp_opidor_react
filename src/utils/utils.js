@@ -42,7 +42,7 @@ export function isValidHttpUrl(string) {
   let url;
   try {
     url = new URL(string);
-  } catch (_) {
+  } catch {
     return false;
   }
   return url.protocol === "http:" || url.protocol === "https:";
@@ -82,7 +82,7 @@ export function clearLocalStorage() {
 
 export function flattenObject(obj, prefix = '', result = {}) {
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const newKey = prefix ? `${prefix}.${key}` : key;
       if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
         flattenObject(obj[key], newKey, result);

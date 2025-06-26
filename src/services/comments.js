@@ -47,7 +47,6 @@ const update = async (comment) => {
 const archive = async (id, comment) =>
   axios.patch(`/notes/${id}/archive`, comment, { headers: commonHeaders });
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   get,
   create,

@@ -61,7 +61,7 @@ function FragmentList({
                       {(edit || (edit && isConst)) && (
                         <FaXmark
                           data-testid={`fragment-list-row-delete-btn-${idx}`}
-                          onClick={(e) => handleDelete(idx)}
+                          onClick={() => handleDelete(idx)}
                           size={18}
                           className={styles.icon}
                         />

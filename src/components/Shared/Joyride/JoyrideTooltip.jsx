@@ -30,6 +30,7 @@ const JoyrideTooltip = forwardRef((props, ref) => {
   return (
     <div
       {...tooltipProps}
+      ref={ref}
       style={{ ...tooltipStyles, ...style }}
       className={className}
       aria-label={ariaLabel}

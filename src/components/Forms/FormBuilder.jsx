@@ -33,7 +33,7 @@ function FormBuilder({ template, dataType, readonly }) {
        * REGISTRIES
        */
       if (prop.inputType === "dropdown" &&
-        (prop.hasOwnProperty("registry_name") || prop.hasOwnProperty("registries"))
+        (Object.prototype.hasOwnProperty.call(prop, "registry_name") || Object.prototype.hasOwnProperty.call(prop, "registries"))
       ) {
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
         if (prop.template_name && prop.type === 'object') {

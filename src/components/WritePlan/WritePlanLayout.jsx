@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import Global from '../context/Global.jsx';
@@ -15,7 +15,6 @@ const toastOptions = {
 
 function WritePlanLayout({
   planId,
-  templateId,
   locale = 'en_GB',
   userId,
   currentOrgId,
@@ -26,21 +25,22 @@ function WritePlanLayout({
 
 
   return (
-    <Global>
-      <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
-        <WritePlan
-          planId={planId}
-          templateId={templateId}
-          locale={locale}
-          userId={userId}
-          currentOrgId={currentOrgId}
-          currentOrgName={currentOrgName}
-          readonly={readonly}
-          className="research-outputs-tabs"
-        />
-      </Joyride>
-      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
-    </Global>
+    <StrictMode>
+      <Global>
+        <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
+          <WritePlan
+            planId={planId}
+            locale={locale}
+            userId={userId}
+            currentOrgId={currentOrgId}
+            currentOrgName={currentOrgName}
+            readonly={readonly}
+            className="research-outputs-tabs"
+          />
+        </Joyride>
+        <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
+      </Global>
+    </StrictMode>
   )
 }
 

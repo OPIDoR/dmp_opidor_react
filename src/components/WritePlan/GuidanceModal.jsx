@@ -113,7 +113,7 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
                 {Object.keys(groups)?.map((groupName) => (
                   <div key={`guidance-div-${dId}`}>
                     <SubTitle key={`guidance-subtitle-${dId}`}>{groupName}</SubTitle>
-                    {groups[groupName].guidances.map((guidance, id) => (
+                    {groups[groupName].guidances.map((guidance) => (
                       <div
                         key={`guidance-value-${dId}`}
                         dangerouslySetInnerHTML={{

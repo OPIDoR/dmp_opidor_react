@@ -1,5 +1,5 @@
 import React, {
-  createContext, useEffect, useReducer, useState,
+  createContext, useReducer, useState,
 } from 'react';
 
 /**

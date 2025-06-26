@@ -4,7 +4,7 @@ import Placeholder from "react-bootstrap/Placeholder";
 
 
 
-function SidebarPlaceholder({ }) {
+function SidebarPlaceholder() {
 
   const roPlaceholders = [];
 

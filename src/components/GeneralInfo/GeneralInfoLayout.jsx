@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 
 import Global from '../context/Global.jsx';
 import GeneralInfo from './GeneralInfo.jsx';
@@ -24,21 +24,23 @@ function GeneralInfoLayout({
   readonly = false,
 }) {
   return(
-    <Global>
-      {isClassic && !readonly && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
-      <GeneralInfo
-        locale={locale}
-        planId={planId}
-        dmpId={dmpId}
-        projectFragmentId={projectFragmentId}
-        metaFragmentId={metaFragmentId}
-        researchContext={researchContext}
-        isTest={isTest}
-        readonly={readonly}
-        isClassic={isClassic}
-      />
-      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
-    </Global>
+    <StrictMode>
+      <Global>
+        {isClassic && !readonly && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
+        <GeneralInfo
+          locale={locale}
+          planId={planId}
+          dmpId={dmpId}
+          projectFragmentId={projectFragmentId}
+          metaFragmentId={metaFragmentId}
+          researchContext={researchContext}
+          isTest={isTest}
+          readonly={readonly}
+          isClassic={isClassic}
+        />
+        <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
+      </Global>
+    </StrictMode>
   )
 }
 

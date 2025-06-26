@@ -128,7 +128,7 @@ function SelectContributorSingle({
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
-  const handleDelete = (e, idx) => {
+  const handleDelete = (e) => {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
