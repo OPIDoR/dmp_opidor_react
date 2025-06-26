@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
 import { FaInfoCircle } from "react-icons/fa";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { TbBulbFilled } from "react-icons/tb";
 
 import * as styles from "../../assets/css/steps.module.css";
 import { CustomButton } from "../../Styled";
@@ -30,18 +31,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const tmpls = {
       default: {
         title: t('Structured common template'),
-        description: t('Recommended by the Open Science network of the French funding agencies : ADEME, ANR, ANRS-MIE, Anses, FRM, INCa and by research organisations.'),
+        description: t('Recommended by the Open Science network of the French funding agencies : ADEME, ANR, ANRS-MIE, Anses, FRM, INCa and by many research organisations.'),
         templates: [],
       },
       others: {
         id: 'others',
-        title: (<Trans
-          defaults="Templates from others organizations (<organizationsIcon />) or funders (<fundersIcon />)"
-          components={{
-            organizationsIcon: <HiOutlineBuildingOffice2 style={{ verticalAlign: 'middle' }} />,
-            fundersIcon: <PiBank style={{ verticalAlign: 'middle' }} />,
-          }}
-        />),
+        title: t('Others templates'),
         type: 'select',
         data: [],
       },
@@ -64,6 +59,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
       setPlanTemplates(tmpls);
       setLoading(false);
+
+      const defaultTemplate = templatesData.default.at(0);
+
+      localStorage.setItem('templateId', defaultTemplate.id);
+      localStorage.setItem('templateName', defaultTemplate.title);
+      return set(defaultTemplate.id, defaultTemplate.title);
     };
 
     fetchTemplates(params);
@@ -272,13 +273,6 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && (
         <>
-          <Trans
-              defaults="Preferred templates are those that facilitate data entry and re-use, and enable you to benefit from all DMP OPIDoR functionalities.<br>They are identified by the icon : <structuredIcon />"
-              components={{
-                br: <br />,
-                structuredIcon: <PiTreeStructureDuotone style={{ verticalAlign: 'middle' }} />,
-              }}
-          />
           <div className="column">
             {
               Object.keys(planTemplates).map((index) => (
@@ -286,18 +280,37 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
                   <label key={`category-label-${index}`} className={`${styles.title}`}>
                     {planTemplates?.[index]?.title}
                   </label>
-                  {planTemplates?.[index]?.description && (<p>{planTemplates?.[index]?.description}</p>)}
+                  {planTemplates?.[index]?.description && (
+                    <div className={'alert alert-info'} style={{
+                      borderRadius: '8px',
+                      margin: '-8px 0 8px 0',
+                      fontSize: '15px'
+                    }}>
+                      <TbBulbFilled
+                        fill={'var(--rust)'}
+                        size={24}
+                        style={{
+                          margin: '-8px 8px 0 0',
+                          color: 'var(--rust)'
+                        }}
+                      />
+                      {planTemplates?.[index]?.description}
+                    </div>
+                  )}
                   {displayTemplatesByCategory(index)}
                 </div>
               ))
             }
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}>
             {prevStep}
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleSendTemplateId}
-                title={t("Confirm my choice")}
+                title={t('Confirm my choice')}
                 position="end"
                 disabled={!params.selectedTemplate}
               />
