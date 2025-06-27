@@ -6,6 +6,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { TbBulbFilled } from "react-icons/tb";
+import { Trans } from 'react-i18next';
 
 import * as styles from "../../assets/css/steps.module.css";
 import { CustomButton } from "../../Styled";
@@ -31,7 +32,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const tmpls = {
       default: {
         title: t('Structured common template'),
-        description: t('Recommended by the Open Science network of the French funding agencies : ADEME, ANR, ANRS-MIE, Anses, FRM, INCa and by many research organisations.'),
+        description: (<Trans defaults={'Recommended by the Open Science network of the French funding agencies (<strong>ADEME, ANR, ANRS-MIE, Anses, FRM, INCa</strong>) and by many research organisations'} components={{ strong: <strong /> }} />),
         templates: [],
       },
       others: {
