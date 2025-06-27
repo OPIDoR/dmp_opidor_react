@@ -32,12 +32,13 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   } = useContext(GlobalContext);
   const { t } = useTranslation();
   const [typeOptions, setTypeOptions] = useState([{ value: '', label: '' }]);
-  // const [topicOptions, setTopicOptions] = useState([{ value: '', label: '' }]);
+  const [topicOptions, setTopicOptions] = useState([{ value: '', label: '' }]);
   const [abbreviation, setAbbreviation] = useState(undefined);
   const [title, setTitle] = useState(undefined);
   const [type, setType] = useState(null);
   const [hasPersonalData, setHasPersonalData] = useState(false);
-  const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
+  const [selectedType, setSelectedType] = useState({ value: '', label: '' });
+  const [selectedTopic, setSelectedTopic] = useState({ value: '', label: '' });
   const [disableTypeChange, setDisableTypeChange] = useState(false);
   const tooltipedLabelId = uniqueId('type_tooltip_id_');
 
@@ -65,17 +66,26 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       const typeOpts = createOptions(res.data, locale);
       setTypeOptions(typeOpts);
       if (inEdition) {
-        setSelectedOption(typeOpts.find(({ value }) => value === displayedResearchOutput.type));
+        setSelectedType(typeOpts.find(({ value }) => value === displayedResearchOutput.type));
       }
     });
+  }, []);
 
-  }, [locale]);
+  useEffect(() => {
+    service.getRegistryByName('Topics').then((res) => {
+      const topicsOpts = createOptions(res.data, locale);
+      setTopicOptions(topicsOpts);
+      if (inEdition) {
+        setSelectedTopic(topicsOpts.find(({ value }) => value === displayedResearchOutput.topic));
+      }
+    });
+  }, []);
 
   /**
    * This is a function that handles the selection of a value and sets it as the type.
    */
-  const handleSelect = (e) => {
-    setSelectedOption(typeOptions.find(({ value }) => value === e.value));
+  const handleSelectType = (e) => {
+    setSelectedType(typeOptions.find(({ value }) => value === e.value));
     setType(e.value);
     handlePersonalData(e.value);
   };
@@ -96,6 +106,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       abbreviation,
       title,
       type,
+      topic: selectedTopic.value,
       configuration: {
         hasPersonalData,
         dataType,
@@ -215,12 +226,39 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         )}
         {typeOptions && (
           <CustomSelect
-            onSelectChange={handleSelect}
+            onSelectChange={handleSelectType}
             options={typeOptions}
-            selectedOption={selectedOption}
+            selectedOption={selectedType}
             placeholder={t("Select a value from the list")}
             overridable={false}
             isDisabled={disableTypeChange}
+          />
+        )}
+      </div>
+      <div className="form-group">
+        <div className={stylesForm.label_form}>
+          <label data-tooltip-id={tooltipedLabelId}>
+            {t('Topic')}
+            <TooltipInfoIcon />
+            <ReactTooltip
+              id={tooltipedLabelId}
+              place="bottom"
+              effect="solid"
+              variant="info"
+              content={<Trans
+                t={t}
+                defaults="Topic tooltip PLACEHOLDER"
+              />}
+            />
+          </label>
+        </div>
+        {topicOptions && (
+          <CustomSelect
+            onSelectChange={(e) => setSelectedTopic(topicOptions.find(({ value }) => value === e.value))}
+            options={topicOptions}
+            selectedOption={selectedTopic}
+            placeholder={t("Select a value from the list")}
+            overridable={false}
           />
         )}
       </div>
