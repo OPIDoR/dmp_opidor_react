@@ -23,6 +23,8 @@ function SelectMultipleString({
   header,
   category,
   dataType,
+  // eslint-disable-next-line no-unused-vars
+  topic,
   overridable = false,
   readonly = false,
 }) {
