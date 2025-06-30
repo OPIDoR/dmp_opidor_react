@@ -170,6 +170,7 @@ function DynamicForm({
           {!readonly && !fragmentId && <FormSelector
             classname={className}
             dataType={dataType}
+            topic={topic}
             displayedTemplate={template}
             setTemplateId={setTemplateId}
             setTemplate={setTemplate}

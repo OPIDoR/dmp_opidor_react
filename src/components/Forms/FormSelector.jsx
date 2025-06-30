@@ -21,7 +21,7 @@ const headerStyle = {
   alignItems: 'center',
 };
 
-function FormSelector({ classname, dataType, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
+function FormSelector({ classname, dataType, topic, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
@@ -32,7 +32,7 @@ function FormSelector({ classname, dataType, displayedTemplate, setTemplate, set
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    service.getAvailableForms(classname, dataType).then(({ data }) => {
+    service.getAvailableForms(classname, dataType, topic).then(({ data }) => {
       setAvailableTemplates(data);
       setFormSelector((prev) => ({ ...prev, [classname]: data?.length > 1 }));
       data.forEach((template) => {
