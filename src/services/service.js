@@ -51,7 +51,7 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
   headers: createHeaders({}, true),
 });
 
-const getAvailableForms = async (className, dataType) => axios.get(`/madmp_schemas?classname=${className}&data_type=${dataType}`)
+const getAvailableForms = async (className, dataType, topic) => axios.get(`/madmp_schemas?classname=${className}&data_type=${dataType}&data_type=${topic}`)
 
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
