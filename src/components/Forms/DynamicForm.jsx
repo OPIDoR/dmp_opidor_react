@@ -44,6 +44,7 @@ function DynamicForm({
 
   const emptyDefaults = template ? generateEmptyDefaults(template.schema.properties) : {};
   const dataType = displayedResearchOutput?.configuration?.dataType || 'none';
+  const topic = displayedResearchOutput?.topic || 'standard';
 
   useEffect(() => {
     setLoading(true);
@@ -180,6 +181,7 @@ function DynamicForm({
                 <FormBuilder
                   template={template.schema}
                   dataType={dataType}
+                  topic={topic}
                   readonly={readonly}
                 />
               </div>

@@ -9,7 +9,7 @@ import FormBuilder from './FormBuilder';
 import { ExternalImport } from '../ExternalImport';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
-function ModalForm({ data, template, mainFormDataType, label, readonly, show, handleSave, handleClose }) {
+function ModalForm({ data, template, mainFormDataType, mainFormTopic, label, readonly, show, handleSave, handleClose }) {
   const { t } = useTranslation();
   const {
     locale,
@@ -64,6 +64,7 @@ function ModalForm({ data, template, mainFormDataType, label, readonly, show, ha
             <FormBuilder
               template={template.schema}
               dataType={mainFormDataType}
+              topic={mainFormTopic}
               readonly={readonly}
             />
           </form>

@@ -24,6 +24,8 @@ function SelectSingleString({
   tooltip,
   category,
   dataType,
+  // eslint-disable-next-line no-unused-vars
+  topic,
   overridable = false,
   readonly = false,
 }) {

@@ -14,7 +14,7 @@ import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
-function FormBuilder({ template, dataType, readonly }) {
+function FormBuilder({ template, dataType, topic, readonly }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
@@ -45,6 +45,7 @@ function FormBuilder({ template, dataType, readonly }) {
               tooltip={tooltip}
               category={prop["registryCategory"]}
               dataType={dataType}
+              topic={topic}
               templateName={prop.template_name}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
@@ -65,6 +66,7 @@ function FormBuilder({ template, dataType, readonly }) {
               templateName={prop.items.template_name}
               category={prop["registryCategory"]}
               dataType={dataType}
+              topic={topic}
               overridable={prop["overridable"]}
               readonly={readonly}
               isConst={isConst}
@@ -82,6 +84,7 @@ function FormBuilder({ template, dataType, readonly }) {
               tooltip={tooltip}
               category={prop["registryCategory"]}
               dataType={dataType}
+              topic={topic}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectSingleString>,
@@ -98,6 +101,7 @@ function FormBuilder({ template, dataType, readonly }) {
               tooltip={tooltip}
               category={prop["registryCategory"]}
               dataType={dataType}
+              topic={topic}
               overridable={prop["overridable"]}
               readonly={readonly || isConst}
             ></SelectMultipleString>
@@ -135,6 +139,7 @@ function FormBuilder({ template, dataType, readonly }) {
             tooltip={tooltip}
             templateName={prop.template_name}
             dataType={dataType}
+            topic={topic}
             readonly={readonly || isConst}
           />
         )

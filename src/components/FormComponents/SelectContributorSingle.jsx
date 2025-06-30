@@ -25,6 +25,7 @@ function SelectContributorSingle({
   tooltip,
   templateName,
   dataType,
+  topic,
   defaultRole = null,
   readonly = false,
 }) {
@@ -295,6 +296,7 @@ function SelectContributorSingle({
             data={editedPerson}
             template={template}
             mainFormDataType={dataType}
+            mainFormTopic={topic}
             label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
             readonly={readonly}
             show={show}

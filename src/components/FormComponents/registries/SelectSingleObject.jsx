@@ -27,6 +27,7 @@ function SelectSingleObject({
   tooltip,
   category,
   dataType,
+  topic,
   templateName,
   overridable = false,
   readonly = false,
@@ -259,6 +260,7 @@ function SelectSingleObject({
             data={editedFragment}
             template={template}
             mainFormDataType={dataType}
+            mainFormTopic={topic}
             readonly={readonly}
             handleSave={handleSaveNestedForm}
             handleClose={() => {

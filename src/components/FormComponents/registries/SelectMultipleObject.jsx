@@ -32,6 +32,7 @@ function SelectMultipleObject({
   templateName,
   category,
   dataType,
+  topic,
   overridable = false,
   readonly = false,
   isConst = false,
@@ -299,6 +300,7 @@ function SelectMultipleObject({
           data={editedFragment}
           template={template}
           mainFormDataType={dataType}
+          mainFormTopic={topic}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
