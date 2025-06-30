@@ -99,6 +99,9 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
           <li>
             {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
+          <li>
+            {t('Topic')} : <strong>{t(displayedResearchOutput.topic)}</strong>
+          </li>
           {displayedResearchOutput?.type && displayPersonalData(displayedResearchOutput.type) && (
             <li>
               {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
