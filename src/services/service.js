@@ -27,7 +27,7 @@ const getSchemaByName = async (name) => axios.get(`/madmp_schemas/by_name/${name
 
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
-const getRegistriesByCategory = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
+const getAvailableRegistries = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
 
 const suggestRegistry = async (category, dataType) => axios.get(`/registries/suggest?category=${category}&data_type=${dataType}`);
 
@@ -64,7 +64,7 @@ export default {
   getSchema,
   getSchemaByName,
   getRegistryByName,
-  getRegistriesByCategory,
+  getAvailableRegistries,
   suggestRegistry,
   getPersons,
   saveFragment,
