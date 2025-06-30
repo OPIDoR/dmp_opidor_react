@@ -4,7 +4,7 @@ import createHeaders from "../utils/HeaderBuilder";
 const commonHeaders = createHeaders({}, true);
 
 const saveIsTestPlan = async (planId, isTestPlan) =>
-  axios.post(`/plans/${planId}/set_test`, { is_test: isTestPlan }, { headers: commonHeaders });
+  axios.post(`/plans/${planId}/set_test`, { checked: isTestPlan }, { headers: commonHeaders });
 
 /**
  * The function `saveFunder` returns an empty array and catches any errors that occur during execution.
