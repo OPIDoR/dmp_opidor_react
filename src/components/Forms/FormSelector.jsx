@@ -32,7 +32,7 @@ function FormSelector({ classname, dataType, displayedTemplate, setTemplate, set
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    service.getSchemasByClass(classname, dataType).then(({ data }) => {
+    service.getAvailableForms(classname, dataType).then(({ data }) => {
       setAvailableTemplates(data);
       setFormSelector((prev) => ({ ...prev, [classname]: data?.length > 1 }));
       data.forEach((template) => {
