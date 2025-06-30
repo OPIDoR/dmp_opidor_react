@@ -259,6 +259,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             selectedOption={selectedTopic}
             placeholder={t("Select a value from the list")}
             overridable={false}
+            isDisabled={disableTypeChange}
           />
         )}
       </div>
