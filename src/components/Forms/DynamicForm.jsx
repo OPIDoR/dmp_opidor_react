@@ -71,6 +71,7 @@ function DynamicForm({
       service.getNewForm(questionId, displayedResearchOutput.id).then((res) => {
         const tplt = res.data.template;
         setTemplate(tplt);
+        setTemplateId(tplt.id);
         setExternalImports(tplt.schema.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
         if(res.data.fragment) handleFragmentData(res.data);
