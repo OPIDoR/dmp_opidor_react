@@ -32,7 +32,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     const tmpls = {
       default: {
         title: t('Structured common template'),
-        description: (<Trans defaults={'Recommended by the Open Science network of the French funding agencies (<strong>ADEME, ANR, ANRS-MIE, Anses, FRM, INCa</strong>) and by many research organisations'} components={{ strong: <strong /> }} />),
+        description: params.researchContext === 'research_project'
+          ? (<Trans defaults={'Recommended by the Open Science network of the French funding agencies (<strong>ADEME, ANR, ANRS-MIE, Anses, FRM, INCa</strong>) and by many research organisations'} components={{ strong: <strong /> }} />)
+          : null,
         templates: [],
       },
       others: {
