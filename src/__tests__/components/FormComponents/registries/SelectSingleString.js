@@ -31,7 +31,8 @@ const props = {
   label: 'Select Single String Label',
   propName: 'mySelectSingleString',
   category: ['SingleRegistryCategory'],
-  dataType: 'none'
+  dataType: 'none',
+  topic: 'standard',
 }
 
 const mockedRegistriesData = [
@@ -60,7 +61,7 @@ afterEach(() => {
 describe('SelectSingleString component', () => {
   test('component rendering', async () => {
     const spy = jest.spyOn(service, 'getAvailableRegistries');
-    spy.mockImplementation((category, dataType) => Promise.resolve({ data: [mockedRegistriesData[0]] }));
+    spy.mockImplementation((category, dataType, topic) => Promise.resolve({ data: [mockedRegistriesData[0]] }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
     render(
       <Global>
@@ -78,7 +79,7 @@ describe('SelectSingleString component', () => {
   });
   test('component rendering with multiple registries', async () => {
     const spy = jest.spyOn(service, 'getAvailableRegistries');
-    spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));  // replace implementation
+    spy.mockImplementation((category, dataType, topic) => Promise.resolve({ data: mockedRegistriesData }));  // replace implementation
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
     render(
       <Global>
@@ -98,7 +99,7 @@ describe('SelectSingleString component', () => {
   });
   test('component with multiple registry should call getRegistryByName when choosing a registry', async () => {
     const spy = jest.spyOn(service, 'getAvailableRegistries');
-    spy.mockImplementation((category, dataType) => Promise.resolve({ data: mockedRegistriesData }));
+    spy.mockImplementation((category, dataType, topic) => Promise.resolve({ data: mockedRegistriesData }));
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
     const { findByText } = render(
       <Global>
