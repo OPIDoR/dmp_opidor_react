@@ -140,7 +140,7 @@ const ResearchOutputsNavBar = styled.div`
 `;
 
 
-function ResearchOutputsSidebar({ planId, readonly }) {
+function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
   const { t } = useTranslation();
   const {
     researchOutputs,
@@ -173,7 +173,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
                   <Accordion.Item key={`chunk-${start}-${end}`} eventKey={`chunk-${start}-${end}`}>
                     <Accordion.Header>{start} - {end}</Accordion.Header>
                     <Accordion.Body>
-                      <ResearchOutputsTabs researchOutputs={roChunk} readonly={readonly} />
+                      <ResearchOutputsTabs researchOutputs={roChunk} readonly={readonly} setLoading={setLoading} />
                     </Accordion.Body>
                   </Accordion.Item>
                 )
@@ -200,7 +200,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
               )}
             </Accordion>
           ) : (
-            <ResearchOutputsTabs researchOutputs={researchOutputs} readonly={readonly}>
+            <ResearchOutputsTabs researchOutputs={researchOutputs} readonly={readonly} setLoading={setLoading} >
               <button
                 className={styles.add_research_output_button}
                 onClick={(e) => {
