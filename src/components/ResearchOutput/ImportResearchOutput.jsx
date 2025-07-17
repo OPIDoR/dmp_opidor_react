@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from 'react-bootstrap';
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import * as stylesForm from "../assets/css/form.module.css";
@@ -23,6 +23,7 @@ function ImportResearchOutput({ planId, handleClose }) {
   const [plans, setPlans] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState({});
   const [selectedResearchOutput, setSelectedResearchOutput] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     researchOutput.getPlans().then(({ data }) => {
@@ -58,6 +59,7 @@ function ImportResearchOutput({ planId, handleClose }) {
   const handleImportResearchOutput = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setLoading(true);
     researchOutput.importResearchOutput({ planId, uuid: selectedResearchOutput.uuid }).then((res) => {
       const { research_outputs, created_ro_id } = res.data;
 
@@ -69,7 +71,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       toast.success(t("Research output successfully imported."));
       return handleClose();
     }).catch(() => {
-
+      setLoading(false);
       return toast.error(t('An error occured during import !'));
     })
   };
@@ -90,6 +92,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             onSelectChange={(e) => handleSelectPlan(e)}
             options={plans}
             selectedOption={selectedPlan}
+            isDisabled={loading}
             placeholder={t("Select a value from the list")}
           />
         </div>
@@ -110,15 +113,23 @@ function ImportResearchOutput({ planId, handleClose }) {
             onSelectChange={(e) => handleSelectResearchOutput(e)}
             options={selectedPlan.researchOutputs}
             selectedOption={selectedResearchOutput}
+            isDisabled={loading}
             placeholder={t("Select a value from the list")}
           />
         </div>
       )}
       <EndButton>
-        <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose}>
+        <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose} disabled={loading}>
           {t("Close")}
         </Button>
-        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput}>
+        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
+          {loading && (<Spinner
+            as="span"
+            animation="grow"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />)}
           {t("Import")}
         </Button>
       </EndButton>

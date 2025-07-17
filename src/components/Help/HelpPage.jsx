@@ -12,7 +12,7 @@ import {
   FaqCategories,
   StyledUl,
   StyledLi,
-  FaqContent,
+  FaqContent, FaqContentBottom,
 } from './styles.jsx';
 
 const languagesCode = {
@@ -25,7 +25,7 @@ export default function HelpPage({ locale, directusUrl }) {
   const [activeFaq, setActiveFaq] = useState(0);
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ['help'], 
+    queryKey: ['help'],
     queryFn: () => directus.getHelp(directusUrl).then(res => res)
   });
 
@@ -70,7 +70,7 @@ export default function HelpPage({ locale, directusUrl }) {
         )}
         </StyledUl>
       </FaqCategories>
-      <FaqContent $bgImage={categories[activeFaq].icon}>
+      <FaqContent>
         {categories[activeFaq].questions.length === 0 ? (
           <div>{t('There seems to be no question for this category.')}</div>
         ) :
@@ -80,11 +80,17 @@ export default function HelpPage({ locale, directusUrl }) {
             <div
               key={`faq-answer-${index}`}
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(answer[languagesCode[locale]]),
+                __html: DOMPurify.sanitize(answer[languagesCode[locale]], {
+                  ADD_TAGS: ['iframe'],
+                  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+                }),
               }}
             />
           </div>
         ))}
+        {categories?.[activeFaq]?.icon && (<FaqContentBottom>
+          <img src={`/directus/assets/${categories?.[activeFaq]?.icon?.id}/${categories?.[activeFaq]?.icon?.filename_download}`} />
+        </FaqContentBottom>)}
       </FaqContent>
     </FaqContainer>
   )

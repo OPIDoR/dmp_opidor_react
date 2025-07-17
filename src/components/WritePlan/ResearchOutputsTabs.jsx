@@ -6,7 +6,7 @@ import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
 import { except } from "../../utils/utils";
 
-function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
+function ResearchOutputsTabs({  researchOutputs, readonly = false, setLoading, children }) {
   const {
     displayedResearchOutput, setDisplayedResearchOutput,
     setUrlParams,
@@ -17,11 +17,12 @@ function ResearchOutputsTabs({  researchOutputs, readonly = false, children }) {
 
   useEffect(() => {
     if (selectedResearchOutputId) {
+      setLoading(true);
       researchOutput.get(selectedResearchOutputId).then((res) => {
         // setLoadedSectionsData({ ...loadedSectionsData, [res.data.template.id]: res.data.template});
         setDisplayedResearchOutput(except(res.data, ['questions_with_guidance']));
         setQuestionsWithGuidance(res.data.questions_with_guidance);
-      })
+      }).finally(() => setLoading(false))
     }
   }, [selectedResearchOutputId])
 
