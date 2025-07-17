@@ -15,11 +15,9 @@ import * as styles from "../assets/css/sidebar.module.css";
 const ResearchOutputsNavBar = styled.div`
   width: 220px;
   height: 100%;
-  float: left;
-  z-index: 0;
+  z-index: 10;
   margin-bottom: 0px;
   border-radius: 0px 0px 0px 0px;
-  float: left;
   position: sticky;
   top: 100px;
 
@@ -163,7 +161,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
   const handleShow = () => setShow(true);
 
   return (
-    <div>
+    <>
       {researchOutputs && (
         <ResearchOutputsNavBar id="ro-nav-bar">
           {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
@@ -224,7 +222,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
         </ResearchOutputsNavBar>
       )}
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
-    </div>
+    </>
   );
 }
 
