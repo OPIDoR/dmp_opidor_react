@@ -56,26 +56,14 @@ export const StyledLi = styled.li`
 export const FaqContent = styled.div`
   max-width: 100%;
   padding: 20px;
-  border-box: box-sizing;
+  box-sizing: border-box;
   flex: 1;
   border: 1px solid var(--dark-blue);
   color: var(--dark-blue);
   min-height: 300px;
   border-radius: 0 10px 10px 10px;
   position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 200px;
-    height: 200px;
-    background-image: ${({ $bgImage }) => ($bgImage ? `url('/directus/assets/${$bgImage.id}/${$bgImage.filename_download}')` : 'none')};
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.4;
-  }
+  z-index: 1;
 
   p:has(img) {
     text-align: center;
@@ -93,5 +81,22 @@ export const FaqContent = styled.div`
     object-fit: cover;
     border: 1px solid var(--dark-blue);
     border-radius: 8px;
+  }
+`;
+
+export const FaqContentBottom = styled.div`
+  position: relative;
+  display: block;
+  float: right;
+  border: none;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  opacity: 0.4;
+
+  img {
+    border: none;
   }
 `;
