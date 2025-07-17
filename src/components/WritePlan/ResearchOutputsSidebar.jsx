@@ -15,11 +15,9 @@ import * as styles from "../assets/css/sidebar.module.css";
 const ResearchOutputsNavBar = styled.div`
   width: 220px;
   height: 100%;
-  float: left;
-  z-index: 0;
+  z-index: 10;
   margin-bottom: 0px;
   border-radius: 0px 0px 0px 0px;
-  float: left;
   position: sticky;
   top: 100px;
 
@@ -142,7 +140,7 @@ const ResearchOutputsNavBar = styled.div`
 `;
 
 
-function ResearchOutputsSidebar({ planId, readonly }) {
+function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
   const { t } = useTranslation();
   const {
     researchOutputs,
@@ -163,7 +161,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
   const handleShow = () => setShow(true);
 
   return (
-    <div>
+    <>
       {researchOutputs && (
         <ResearchOutputsNavBar id="ro-nav-bar">
           {researchOutputs.length > RESEARCH_OUTPUTS_PER_PAGE && openedQuestions ? (
@@ -175,7 +173,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
                   <Accordion.Item key={`chunk-${start}-${end}`} eventKey={`chunk-${start}-${end}`}>
                     <Accordion.Header>{start} - {end}</Accordion.Header>
                     <Accordion.Body>
-                      <ResearchOutputsTabs researchOutputs={roChunk} readonly={readonly} />
+                      <ResearchOutputsTabs researchOutputs={roChunk} readonly={readonly} setLoading={setLoading} />
                     </Accordion.Body>
                   </Accordion.Item>
                 )
@@ -202,7 +200,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
               )}
             </Accordion>
           ) : (
-            <ResearchOutputsTabs researchOutputs={researchOutputs} readonly={readonly}>
+            <ResearchOutputsTabs researchOutputs={researchOutputs} readonly={readonly} setLoading={setLoading} >
               <button
                 className={styles.add_research_output_button}
                 onClick={(e) => {
@@ -224,7 +222,7 @@ function ResearchOutputsSidebar({ planId, readonly }) {
         </ResearchOutputsNavBar>
       )}
       {show && <ResearchOutputModal planId={planId} handleClose={handleClose} show={show} edit={false} />}
-    </div>
+    </>
   );
 }
 

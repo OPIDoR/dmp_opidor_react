@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from 'react-bootstrap';
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
@@ -41,6 +41,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const [selectedTopic, setSelectedTopic] = useState({ value: '', label: '' });
   const [disableTypeChange, setDisableTypeChange] = useState(false);
   const tooltipedLabelId = uniqueId('type_tooltip_id_');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (displayedResearchOutput && inEdition)  {
@@ -96,7 +97,10 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const handleSave = async (e) => {
     e.stopPropagation();
 
+    setLoading(true);
+
     if (!type || type.length === 0) {
+      setLoading(false);
       return toast.error(t("A 'type' is required to create a research output."));
     }
 
@@ -118,6 +122,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       try {
         res = await researchOutput.update(displayedResearchOutput.id, researchOutputInfo);
       } catch (error) {
+        setLoading(false);
         toast.error(getErrorMessage(error));
         return;
       }
@@ -135,6 +140,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     try {
       res = await researchOutput.create(researchOutputInfo);
     } catch (error) {
+      setLoading(false);
       toast.error(getErrorMessage(error));
       return;
     }
@@ -151,6 +157,8 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       detail: { message: { roId: res?.data?.created_ro_id, planId: planId } },
     });
     window.dispatchEvent(event);
+
+    setLoading(false);
 
     return handleClose();
   };
@@ -177,6 +185,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         </div>
         <input
           value={abbreviation || ''}
+          disabled={loading}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add abbreviation")}
           type="text"
@@ -191,6 +200,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
         </div>
         <input
           value={title || ''}
+          disabled={loading}
           className={`form-control ${stylesForm.input_text}`}
           placeholder={t("add title")}
           onChange={(e) => setTitle(e.target.value)}
@@ -259,7 +269,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             selectedOption={selectedTopic}
             placeholder={t("Select a value from the list")}
             overridable={false}
-            isDisabled={disableTypeChange}
+            isDisabled={disableTypeChange || loading}
           />
         )}
       </div>
@@ -288,11 +298,18 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       )}
       <EndButton>
         {close && (
-          <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
+          <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }} disabled={loading}>
             {t("Close")}
           </Button>
         )}
-        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px' }}>
+        <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px' }} disabled={loading}>
+          {loading && (<Spinner
+            as="span"
+            animation="grow"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />)}
           {t(inEdition ? "Save" : "Add")}
         </Button>
       </EndButton>
