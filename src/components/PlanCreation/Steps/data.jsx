@@ -49,7 +49,8 @@ export default async function getTemplates(opts, onlyStructured = false) {
         .map((obj) => ({ ...obj, type: 'funder' }))
         .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
         .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase()) || [],
+        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+        .sort((a, b) => b?.structured - a?.structured) || [],
       selected: false,
     });
   }
@@ -82,7 +83,8 @@ export default async function getTemplates(opts, onlyStructured = false) {
         .map((obj) => ({ ...obj, type: 'org' }))
         .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
         .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase()) || [],
+        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+        .sort((a, b) => b?.structured - a?.structured) || [],
       selected: false,
     });
   }
