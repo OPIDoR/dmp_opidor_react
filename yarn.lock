@@ -1022,10 +1022,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/css-tokenizer/-/css-tokenizer-3.0.4.tgz#333fedabc3fd1a8e5d0100013731cf19e6a8c5d3"
   integrity sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==
 
-"@directus/sdk@^19.0.0":
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/@directus/sdk/-/sdk-19.1.0.tgz#aea42c191b40be8806c97ef0420d71b700f1a076"
-  integrity sha512-Nqem9BsvvGyVtAa69mGPtoMoMVkZxdIREdsWvvTzNF4/1XqaFfEiFL7PhtUNfc46/Nufus2+QUKYQbNiAWe3ZA==
+"@directus/sdk@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.yarnpkg.com/@directus/sdk/-/sdk-20.0.0.tgz#2404967759465c1e8d690164d03a34b9d9799738"
+  integrity sha512-DoKggMNaVWiKC2bU5BY+Nf6ia2Yz7hrKte0ZtSPXQVkl2mxwDtM0gLfOI6xxVY1CfnvyxJDu+d+21VjI4GYdyw==
 
 "@emnapi/core@^1.4.3":
   version "1.4.5"
