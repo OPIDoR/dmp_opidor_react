@@ -13,6 +13,7 @@ const EditorComment = ({ initialValue, updateParentText }) => {
     <Editor
       onEditorChange={handleEditorChange}
       initialValue={initialValue}
+      licenseKey='gpl'
       init={{
         branding: false,
         height: 200,
