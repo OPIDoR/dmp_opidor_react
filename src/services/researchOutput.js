@@ -66,6 +66,19 @@ const getPlans = async () => {
   return res;
 }
 
+const sort = async (planId, updatedOrder) => {
+  let res;
+  try {
+    res = await axios.post('/classic_research_outputs/sort', {
+      plan_id: planId,
+      updated_order: updatedOrder,
+    }, { headers: createHeaders({}, true)});
+  } catch (error) {
+    return error;
+  }
+  return res;
+}
+
 export default {
   create,
   update,
@@ -73,4 +86,5 @@ export default {
   importResearchOutput,
   deleteResearchOutput,
   getPlans,
+  sort,
 };
