@@ -341,7 +341,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                                       )
                                     }
                                   </div>
-                                  <ReactTooltip
+                                  {guidance.description && <ReactTooltip
                                     id={`guidance-group-${index}-childs-${key}-tooltip`}
                                     key={`guidance-group-${index}-childs-${key}-tooltip`}
                                     place="bottom"
@@ -349,7 +349,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                                     variant="info"
                                   >
                                     <div dangerouslySetInnerHTML={{ __html: guidance.description }}></div>
-                                  </ReactTooltip>
+                                  </ReactTooltip>}
                                   <label
                                     data-tooltip-id={`guidance-group-${index}-childs-${key}-tooltip`}
                                     className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
