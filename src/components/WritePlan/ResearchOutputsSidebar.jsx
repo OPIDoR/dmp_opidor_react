@@ -72,6 +72,7 @@ const AccordionItem = styled.div`
 
   &.active, &:hover {
     background-color: #2c4473;
+    transition: background-color 0.5s linear;
   }
 
   div {
