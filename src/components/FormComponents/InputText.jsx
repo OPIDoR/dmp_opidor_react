@@ -59,6 +59,7 @@ function InputText({
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder ? `${t('e.g.')} ${placeholder}` : null}
         readOnly={readonly === true}
+        disabled={readonly === true}
         min={min}
       />
     </div>

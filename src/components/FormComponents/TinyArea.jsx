@@ -72,8 +72,8 @@ function TinyArea({
                 placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,
                 statusbar: true,
                 menubar: false,
-                toolbar: 'bold italic underline | fontsizeselect forecolor | bullist numlist | link | table',
-                plugins: 'table autoresize link advlist lists autolink',
+                toolbar: 'bold italic underline | fontfamily fontsize | fontsizeselect forecolor | alignleft aligncenter alignright alignjustify | subscript superscript | bullist numlist indent outdent | link | table | charmap',
+                plugins: 'table autoresize link advlist lists autolink charmap',
                 browser_spellcheck: true,
                 advlist_bullet_styles: 'circle,disc,square', // Only disc bullets display on htmltoword
                 target_list: false,
@@ -84,6 +84,7 @@ function TinyArea({
                 autoresize_bottom_margin: 10,
                 branding: false,
                 extended_valid_elements: 'iframe[tooltip] , a[href|target=_blank]',
+                invalid_elements: 'pre',
                 paste_as_text: false,
                 paste_block_drop: true,
                 paste_merge_formats: true,
