@@ -27,8 +27,7 @@ const AccordionContainer = styled.div`
 `;
 
 const AccordionGroupWrapper = styled.div`
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: hidden;
   border-radius: 8px 0 0 8px;
 `;
 
