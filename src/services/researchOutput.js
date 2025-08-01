@@ -66,7 +66,19 @@ const getPlans = async () => {
   return res;
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
+const sort = async (planId, updatedOrder) => {
+  let res;
+  try {
+    res = await axios.post('/research_outputs/sort', {
+      plan_id: planId,
+      updated_order: updatedOrder,
+    }, { headers: createHeaders({}, true)});
+  } catch (error) {
+    return error;
+  }
+  return res;
+}
+
 export default {
   create,
   update,
@@ -74,4 +86,5 @@ export default {
   importResearchOutput,
   deleteResearchOutput,
   getPlans,
+  sort,
 };
