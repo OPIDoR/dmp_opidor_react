@@ -64,11 +64,15 @@ function Global({ children }) {
   // }, [researchOutputs]);
 
   const setUrlParams = (data = {}) => {
-    const params = Object.fromEntries(new URLSearchParams(window.location.search));
-    const urlSearchParams = { ...params, ...data }
-    Object.keys(urlSearchParams).forEach(key => (!urlSearchParams[key] || urlSearchParams[key] === '') && delete urlSearchParams[key]);
-    const urlParams = new URLSearchParams(urlSearchParams);
-    return window.history.replaceState(null, null, `${window.location.pathname}?${urlParams.toString()}`);
+    const currentParams = Object.fromEntries(new URLSearchParams(window.location.search));
+    const mergedParams = { ...currentParams, ...data };
+    Object.keys(mergedParams).forEach(key => {
+      if (!mergedParams[key] || mergedParams[key] === '') {
+        delete mergedParams[key];
+      }
+    });
+    const newSearchParams = new URLSearchParams(mergedParams);
+    window.history.replaceState(null, '', `${window.location.pathname}?${newSearchParams.toString()}`);
   };
 
   return (
