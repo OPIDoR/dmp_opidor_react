@@ -19,7 +19,7 @@ import ResearchOutputsSidebarItem from "./ResearchOutputsSidebarItem";
 const AccordionContainer = styled.div`
   position: sticky;
   top: 65px;
-  height: calc(100vh - 65px);
+  height: calc(100% - 65px);
   display: flex;
   flex-direction: column;
   width: 220px;
@@ -27,7 +27,8 @@ const AccordionContainer = styled.div`
 `;
 
 const AccordionGroupWrapper = styled.div`
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   border-radius: 8px 0 0 8px;
 `;
 
@@ -261,7 +262,10 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
             {groups.length > 1 ? (
               <SortableContext items={orderedResearchOutputs.map(item => item.id)}>
                 {groups.map((group, i) => (
-                  <AccordionGroup key={i}>
+                  <AccordionGroup
+                    onMouseEnter={() => isDragging && !openGroups.has(i) && toggleGroup(i)}
+                    key={i}
+                  >
                     <AccordionHeader onClick={() => toggleGroup(i)}>
                       {i * RESEARCH_OUTPUTS_PER_PAGE + 1} -{' '}
                       {(i * RESEARCH_OUTPUTS_PER_PAGE + RESEARCH_OUTPUTS_PER_PAGE)}
