@@ -117,7 +117,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
     if (activeGroupIndex !== -1) {
       setOpenGroups(new Set([activeGroupIndex]));
     }
-  }, [activeGroupIndex]);
+  }, []);
 
   /**
    * The function handleClose sets the state of setShow to false.
