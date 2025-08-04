@@ -18,7 +18,8 @@ export default async function getTemplates(opts, onlyStructured = false) {
   templates.default = Array.isArray(currentTemplatesRes?.data)
     ? currentTemplatesRes?.data
     : [currentTemplatesRes?.data]
-      .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase());
+      .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+      .sort((a, b) => b?.structured - a?.structured);
 
   let orgsRes;
   try {
@@ -45,7 +46,8 @@ export default async function getTemplates(opts, onlyStructured = false) {
         .map((obj) => ({ ...obj, type: 'org' }))
         .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
         .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase()) || [],
+        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+        .sort((a, b) => b?.structured - a?.structured) || [],
       selected: false,
     });
   }

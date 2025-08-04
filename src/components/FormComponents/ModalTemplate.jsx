@@ -183,7 +183,7 @@ function ModalTemplate({
           mainFormDataType={dataType}
           mainFormTopic={topic}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
-          readonly={readonly}
+          readonly={isConst ? true : readonly}
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
