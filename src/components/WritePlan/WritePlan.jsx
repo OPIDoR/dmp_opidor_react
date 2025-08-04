@@ -65,11 +65,9 @@ function WritePlan({
     };
 
     window.addEventListener('trigger-refresh-ro-data', handleRefresh);
-    window.addEventListener("scroll", (e) => handleScroll(e));
 
     return () => {
       window.removeEventListener('trigger-refresh-ro-data', handleRefresh);
-      window.removeEventListener("scroll", (e) => handleScroll(e));
     };
   }, [planId]);
 
@@ -100,27 +98,6 @@ function WritePlan({
       })
       .catch((error) => setError(error))
       .finally(() => changeLoading(false));
-  }
-
-  const handleScroll = () => {
-    const roNavBar = document.querySelector('#ro-nav-bar');
-    const { bottom: bottomRoNavBar, top: topRoNavBar } = roNavBar?.getBoundingClientRect() || 0;
-
-    const sectionContent = document.querySelector('#sections-content');
-    const { bottom: bottomSectionContent, top: topSectionContent } = sectionContent?.getBoundingClientRect() || 0;
-    if (!sectionContent) return;
-
-    if (bottomRoNavBar >= bottomSectionContent) {
-      sectionContent.style.borderBottomLeftRadius = '0';
-    } else {
-      sectionContent.style.borderBottomLeftRadius = '8px';
-    }
-
-    if (topRoNavBar <= topSectionContent) {
-      sectionContent.style.borderTopLeftRadius = '0';
-    } else {
-      sectionContent.style.borderTopLeftRadius = '8px';
-    }
   }
 
   return (
