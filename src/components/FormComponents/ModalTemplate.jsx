@@ -28,6 +28,7 @@ function ModalTemplate({
   formLabel,
   propName,
   dataType,
+  topic,
   tooltip,
   header,
   templateName,
@@ -180,6 +181,7 @@ function ModalTemplate({
           data={editedFragment}
           template={template}
           mainFormDataType={dataType}
+          mainFormTopic={topic}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={isConst ? true : readonly}
           show={show}

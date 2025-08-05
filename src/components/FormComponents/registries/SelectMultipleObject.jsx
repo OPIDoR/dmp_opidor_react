@@ -32,6 +32,7 @@ function SelectMultipleObject({
   templateName,
   category,
   dataType,
+  topic,
   overridable = false,
   readonly = false,
   isConst = false,
@@ -61,7 +62,7 @@ function SelectMultipleObject({
 
   useEffect(() => {
     if (category) {
-      service.getRegistriesByCategory(category, dataType)
+      service.getAvailableRegistries(category, dataType, topic)
         .then((res) => {
           const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setRegistries(registriesData);
           if (registriesData.length === 1) {
@@ -299,6 +300,7 @@ function SelectMultipleObject({
           data={editedFragment}
           template={template}
           mainFormDataType={dataType}
+          mainFormTopic={topic}
           label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
           readonly={readonly}
           show={show}
