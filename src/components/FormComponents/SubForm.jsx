@@ -22,6 +22,7 @@ function SubForm({
   tooltip,
   templateName,
   dataType,
+  topic,
   readonly = false,
 }) {
   const { t } = useTranslation();
@@ -113,6 +114,7 @@ function SubForm({
             template={template}
             readonly={readonly}
             mainFormDataType={dataType}
+            mainFormTopic={topic}
             handleSave={handleSaveNestedForm}
             handleClose={() => {
               setShowNestedForm(false);

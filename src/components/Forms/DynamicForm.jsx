@@ -44,6 +44,7 @@ function DynamicForm({
 
   const emptyDefaults = template ? generateEmptyDefaults(template.schema.properties) : {};
   const dataType = displayedResearchOutput?.configuration?.dataType || 'none';
+  const topic = displayedResearchOutput?.topic || 'standard';
 
   useEffect(() => {
     setLoading(true);
@@ -70,6 +71,7 @@ function DynamicForm({
       service.getNewForm(questionId, displayedResearchOutput.id).then((res) => {
         const tplt = res.data.template;
         setTemplate(tplt);
+        setTemplateId(tplt.id);
         setExternalImports(tplt.schema.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
         if(res.data.fragment) handleFragmentData(res.data);
@@ -169,6 +171,7 @@ function DynamicForm({
           {!readonly && !fragmentId && <FormSelector
             classname={className}
             dataType={dataType}
+            topic={topic}
             displayedTemplate={template}
             setTemplateId={setTemplateId}
             setTemplate={setTemplate}
@@ -180,6 +183,7 @@ function DynamicForm({
                 <FormBuilder
                   template={template.schema}
                   dataType={dataType}
+                  topic={topic}
                   readonly={readonly}
                 />
               </div>

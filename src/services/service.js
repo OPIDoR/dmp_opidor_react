@@ -27,7 +27,7 @@ const getSchemaByName = async (name) => axios.get(`/madmp_schemas/by_name/${name
 
 const getRegistryByName = async (name, page = null) => axios.get(`/registries/by_name/${name}`, { params: { page }});
 
-const getRegistriesByCategory = async (category, dataType) => axios.get(`/registries?category=${category}&data_type=${dataType}`)
+const getAvailableRegistries = async (category, dataType, topic) => axios.get(`/registries?category=${category}&data_type=${dataType}&topic=${topic}`)
 
 const suggestRegistry = async (category, dataType) => axios.get(`/registries/suggest?category=${category}&data_type=${dataType}`);
 
@@ -51,7 +51,7 @@ const saveFragment = async (id, jsonObject) => axios.put(`/madmp_fragments/${id}
   headers: createHeaders({}, true),
 });
 
-const getSchemasByClass = async (className, dataType) => axios.get(`/madmp_schemas?classname=${className}&data_type=${dataType}`)
+const getAvailableForms = async (className, dataType, topic) => axios.get(`/madmp_schemas?classname=${className}&data_type=${dataType}&data_type=${topic}`)
 
 
 const runScript = async(fragmentId, scriptName) => axios.get(`/codebase/run?fragment_id=${fragmentId}&script_name=${scriptName}`)
@@ -64,12 +64,12 @@ export default {
   getSchema,
   getSchemaByName,
   getRegistryByName,
-  getRegistriesByCategory,
+  getAvailableRegistries,
   suggestRegistry,
   getPersons,
   saveFragment,
   getContributors,
   destroyContributor,
-  getSchemasByClass,
+  getAvailableForms,
   runScript,
 };
