@@ -59,7 +59,7 @@ const AccordionItem = styled.div`
   width: 100%;
   height: 50px;
   background-color: var(--blue);
-  margin: 1px 0;
+  margin: 1px 0 1px 0;
   padding: 0 10px;
   line-height: 50px;
   color: var(--white);
@@ -67,7 +67,7 @@ const AccordionItem = styled.div`
   font-weight: bold;
 
   &:last-child {
-    margin: 0;
+    margin: 0 0 1px 0;
   }
 
   &.active, &:hover {
