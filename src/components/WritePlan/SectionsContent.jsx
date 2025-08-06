@@ -134,6 +134,7 @@ function SectionsContent({ planId, templateId, readonly }) {
           res = await researchOutput.importResearchOutput({
             planId,
             uuid: displayedResearchOutput.uuid,
+            duplicate: true,
           });
         } catch (err) {
           return toast.error(t('An error occured during import !'));
