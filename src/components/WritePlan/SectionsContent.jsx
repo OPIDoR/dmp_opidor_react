@@ -7,6 +7,7 @@ import { researchOutput } from "../../services";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import Section from "./Section";
+import GuidanceChoice from "./GuidanceChoice";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
@@ -146,6 +147,9 @@ function SectionsContent({ planId, readonly }) {
       {!error && displayedResearchOutput?.template?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
+            {!readonly &&
+              <GuidanceChoice planId={planId} researchOutputId={displayedResearchOutput?.id} currentOrgId={null} currentOrgName={null} style={{ flexGrow: 1 }} />
+            }
             <ResearchOutputInfobox
               handleEdit={handleEdit}
               handleDelete={handleDelete}

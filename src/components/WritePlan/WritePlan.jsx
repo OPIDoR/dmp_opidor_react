@@ -8,7 +8,6 @@ import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import GuidanceChoice from "./GuidanceChoice";
 import * as styles from "../assets/css/sidebar.module.css";
 import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
@@ -106,11 +105,6 @@ function WritePlan({
       {error && <CustomError error={error}></CustomError>}
       {!loading && !error &&
         <>
-          {!readonly &&
-            <div style={{ margin: '10px 30px 10px 30px' }}>
-              <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
-            </div>
-          }
           {researchOutputs.length > 0 && (
             <>
               <PlanInformations template={template} />
