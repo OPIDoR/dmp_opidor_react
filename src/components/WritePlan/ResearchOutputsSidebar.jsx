@@ -195,7 +195,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
         ].filter(Boolean).join(' ')}
       >
         {item.abbreviation.length > 20 ? `${item.abbreviation.slice(0, 17)}...` : item.abbreviation}
-        {!readonly && (
+        {!readonly && researchOutputs.length > 1 && (
           <div {...attributes} {...listeners}>
             <MdDragIndicator size='18' />
           </div>
