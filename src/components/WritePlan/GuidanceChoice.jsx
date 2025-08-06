@@ -25,7 +25,7 @@ const description = {
   margin: "10px 150px 0px 150px",
 };
 
-function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
+function GuidanceChoice({ planId, researchOutputId, currentOrgId, currentOrgName, context = 'research_output' }) {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,6 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const {
-    displayedResearchOutput,
     setQuestionsWithGuidance,
     setCurrentOrg,
     currentOrg,
@@ -44,12 +43,12 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
-    isClassic && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
-
+    context === 'plan' && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
+    const fetchGuidanceGroups = context === 'plan' ? guidances.getPlanGuidanceGroups(planId) : guidances.getResearchOutputGuidanceGroups(researchOutputId)
     const orgName = currentOrgName || currentOrg.name;
 
     setLoading(true);
-    guidances.getGuidanceGroups(planId)
+    fetchGuidanceGroups
       .then((res) => {
         let guidance_groups = [];
         const { data } = res.data;
@@ -141,7 +140,10 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
 
     let response;
     try {
-      response = await guidances.postGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: displayedResearchOutput?.id }, planId);
+      const postGuidanceGroups = context === 'plan' ? 
+                                 guidances.postPlanGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: researchOutputId }, planId) :
+                                 guidances.postResearchOutputGuidanceGroups({ guidance_group_ids: selectedGuidancesIds}, researchOutputId)
+      response = await postGuidanceGroups;
     } catch (error) {
       console.log(error);
       return toast.error(t("An error occurred while saving the selected guidances"));
@@ -212,7 +214,9 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                   size={38}
                   style={{ marginRight: '10px', color: 'var(--rust)' }}
                 />
-                <span style={{ color: 'var(--white)', marginTop: '3px' }}>{t("Click here to select the guidance of your plan")}</span>
+                <span style={{ color: 'var(--white)', marginTop: '3px' }}>{
+                  context === 'plan' ? t("Click here to select the guidance of your plan") : t("Click here to select the guidance of your research output")
+                }</span>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (

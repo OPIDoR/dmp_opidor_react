@@ -74,6 +74,7 @@
   "Test Plan (e.g. as part of a training course)": "Plan test (par ex, dans le cadre d'une formation)",
   "Import information for a funded project": "Importer les renseignements d’un projet financé",
   "Click here to select the guidance of your plan":"Cliquez ici pour sélectionner les recommandations appliquées à votre plan",
+  "Click here to select the guidance of your research output":"Cliquez ici pour sélectionner les recommandations appliquées à votre produit de recherche",
   "If your project is financed by one of the funders on the list, you can automatically retrieve the administrative information you entered when applying for a grant.": "Si votre projet est financé par l’un des financeurs de la liste, vous pouvez récupérer automatiquement les informations administratives que vous avez déjà saisies lors de la demande de subvention.",
   "'{{projectTitle}}' project data has successfully been imported": "Données du projet '{{projectTitle}}' ont été importées avec succès.",
   "An error occurred during the import of the project information": "Une erreur s'est produite lors de l'import des données projet",
