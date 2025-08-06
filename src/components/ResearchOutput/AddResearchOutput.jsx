@@ -56,9 +56,9 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       }
 
       if (!inEdition) {
-        const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
-        setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
-        setTitle(`${t('Research output')} ${maxOrder + 1}`);
+        const nextOrder = researchOutputs.length + 1;
+        setAbbreviation(`${t('RO')} ${nextOrder}`);
+        setTitle(`${t('Research output')} ${nextOrder}`);
         setHasPersonalData(true);
       }
     });
