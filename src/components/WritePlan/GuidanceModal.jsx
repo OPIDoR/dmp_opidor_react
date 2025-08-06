@@ -112,7 +112,7 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
                 <Theme alt={title}>{title}</Theme>
                 {Object.keys(groups)?.map((groupName) => (
                   <div key={`guidance-div-${dId}`}>
-                    <SubTitle key={`guidance-subtitle-${dId}`}>{groupName}</SubTitle>
+                    <SubTitle key={`guidance-subtitle-${dId}`} style={{ marginBottom: '10px' }}>{groupName}</SubTitle>
                     {groups[groupName].guidances.map((guidance, id) => (
                       <div
                         key={`guidance-value-${dId}`}
