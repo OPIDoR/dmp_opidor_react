@@ -59,6 +59,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(true);
     }
+    if (!inEdition) {
+      const pos = Math.max(...researchOutputs.map(({ order }) => order));
+      const nextOrder = pos < researchOutputs.length ? researchOutputs.length + 1 : pos + 1;
+      setAbbreviation(`${t('RO')} ${nextOrder}`);
+      setTitle(`${t('Research output')} ${nextOrder}`);
+      setHasPersonalData(true);
+    }
+
 
     setDisableTypeChange(inEdition);
   }, [displayedResearchOutput, inEdition])

@@ -120,7 +120,7 @@ function SectionsContent({ planId, readonly }) {
       confirmButtonText: t("Yes, duplicate!"),
     }).then(async (result) => {
       if (result.isConfirmed) {
-        researchOutput.importResearchOutput({ planId, uuid: displayedResearchOutput.uuid }).then((res) => {
+        researchOutput.importResearchOutput({ planId, uuid: displayedResearchOutput.uuid, duplicate: true }).then((res) => {
           const { research_outputs, created_ro_id } = res.data;
           setDisplayedResearchOutput(research_outputs.find(({ id }) => id === created_ro_id));
           setResearchOutputs(research_outputs);
