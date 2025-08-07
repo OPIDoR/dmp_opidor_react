@@ -33,7 +33,7 @@ const AccordionGroupWrapper = styled.div`
 
 const AccordionGroup = styled.div`
   width: 220px;
-  margin: 1px 0 1px 0;
+  border-top: 1px solid var(--white);
 `;
 
 const AccordionHeader = styled.div`
@@ -48,7 +48,6 @@ const AccordionHeader = styled.div`
 
 const AccordionBody = styled.div`
   width: inherit;
-  margin: 1px 0 0 0;
 `;
 
 const AccordionItem = styled.div`
@@ -59,16 +58,12 @@ const AccordionItem = styled.div`
   width: 100%;
   height: 50px;
   background-color: var(--blue);
-  margin: 1px 0;
+  border-top: 1px solid var(--white);
   padding: 0 10px;
   line-height: 50px;
   color: var(--white);
   cursor: pointer;
   font-weight: bold;
-
-  &:last-child {
-    margin: 0;
-  }
 
   &.active, &:hover {
     background-color: #2c4473;
@@ -195,7 +190,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
         ].filter(Boolean).join(' ')}
       >
         {item.abbreviation.length > 20 ? `${item.abbreviation.slice(0, 17)}...` : item.abbreviation}
-        {!readonly && (
+        {!readonly && researchOutputs.length > 1 && (
           <div {...attributes} {...listeners}>
             <MdDragIndicator size='18' />
           </div>
