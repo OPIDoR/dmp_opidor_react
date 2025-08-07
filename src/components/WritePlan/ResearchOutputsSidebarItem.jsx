@@ -2,13 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
-import { except } from "../../utils/utils";
 
 function ResearchOutputsSidebarItem({ item, setLoading, children }) {
   const {
     setDisplayedResearchOutput,
     setUrlParams,
-    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const [selectedResearchOutputId, setSelectedResearchOutputId] = useState(null);
 
@@ -16,9 +14,7 @@ function ResearchOutputsSidebarItem({ item, setLoading, children }) {
     if (selectedResearchOutputId) {
       setLoading(true);
       researchOutput.get(selectedResearchOutputId).then((res) => {
-        // setLoadedSectionsData({ ...loadedSectionsData, [res.data.template.id]: res.data.template});
-        setDisplayedResearchOutput(except(res.data, ['questions_with_guidance']));
-        setQuestionsWithGuidance(res.data.questions_with_guidance);
+        setDisplayedResearchOutput(res.data);
       }).finally(() => setLoading(false))
     }
   }, [selectedResearchOutputId])

@@ -20,6 +20,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
+import { guidances } from "../../services";
 
 const closedModalState = {
   guidance: false,
@@ -39,9 +40,9 @@ function Question({
     openedQuestions,
     setOpenedQuestions,
     displayedResearchOutput,
-    questionsWithGuidance,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
+  const [hasGuidances, setHasGuidances] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [scriptsData, setScriptsData] = useState({ scripts: [] });
   const [showModals, setShowModals] = useState({
@@ -85,6 +86,10 @@ function Question({
       ...openedQuestions,
       [displayedResearchOutput.id]: updatedState,
     });
+    guidances.hasQuestionGuidances(questionId, displayedResearchOutput?.id)
+    .then((res) => {
+      setHasGuidances(res.data?.has_guidances || false)
+    })
   };
 
   const getFillColor = (isOpened) => {
@@ -162,7 +167,7 @@ function Question({
                       maxWidth: '200px',
                     }}
                   >
-                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+                    {hasGuidances && (
                       <div>
                         <ReactTooltip
                           id="guidanceTip"
@@ -313,7 +318,7 @@ function Question({
                       questionId={question.id}
                       readonly={readonly}
                     />
-                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                    {hasGuidances && (<GuidanceModal
                       shown={showModals.guidance === true}
                       hide={(e) => setModalOpened(e, 'guidance', false)}
                       questionId={questionId}

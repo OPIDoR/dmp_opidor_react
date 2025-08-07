@@ -34,7 +34,6 @@ function WritePlan({
     setDisplayedResearchOutput,
     setLoadedSectionsData,
     researchOutputs, setResearchOutputs,
-    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const { loading, changeLoading } = useLoading();
   const [error, setError] = useState(null);
@@ -90,7 +89,6 @@ function WritePlan({
 
           setDisplayedResearchOutput(currentResearchOutput);
           setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
-          setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
           researchOutputs.length === 0 && setResearchOutputs(research_outputs);
         }
         setFormData(null);

@@ -33,7 +33,6 @@ function GuidanceChoice({ planId, researchOutputId, currentOrgId, currentOrgName
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const {
-    setQuestionsWithGuidance,
     setCurrentOrg,
     currentOrg,
   } = useContext(GlobalContext);
@@ -151,14 +150,11 @@ function GuidanceChoice({ planId, researchOutputId, currentOrgId, currentOrgName
 
     const { guidance_groups } = response.data;
 
-    let { questions_with_guidance } = response.data;
-
     const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
     const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
     setData([...selectedGuidances, ...unselectedGuidances]);
 
-    setQuestionsWithGuidance(questions_with_guidance);
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
 

@@ -1,6 +1,8 @@
 import axios from '../utils/AxiosClient';
 import createHeaders from '../utils/HeaderBuilder';
 
+const hasQuestionGuidances = async(questionId, researchOutputId) => axios.get(`/research_outputs/${researchOutputId}/has_guidances?question=${questionId}`);
+
 const getGuidances = async (planId, questionId)  => 
   axios.get(`/plans/${planId}/guidances?question=${questionId}`);
 
@@ -13,6 +15,7 @@ const getResearchOutputGuidanceGroups = async (researchOutputId) => axios.get(`/
 const postResearchOutputGuidanceGroups = async (jsonObject, researchOutputId) => axios.post(`/research_outputs/${researchOutputId}/guidance_groups`, jsonObject, { headers: createHeaders({}, true) });
 
 export default {
+  hasQuestionGuidances,
   getGuidances,
   getPlanGuidanceGroups,
   postPlanGuidanceGroups,
