@@ -19,10 +19,6 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
   const [indexTab, setIndexTab] = useState(0);
   const modalRef = useRef(null);
 
-  const {
-    questionsWithGuidance,
-  } = useContext(GlobalContext);
-
   const navStyles = (tab) => ({
     color: activeTab === tab ? 'var(--white)' : 'var(--dark-blue)',
     textDecoration: 'none',
@@ -46,7 +42,6 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     if (!questionId) { return; }
-    if (!questionsWithGuidance.includes(questionId)) { return; }
 
     setLoading(true);
 
