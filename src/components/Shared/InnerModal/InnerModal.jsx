@@ -20,7 +20,7 @@ const InnerModal = forwardRef((props, ref) => {
   const modalStyles = {
     display: show ? 'block' : 'none',
     position: 'absolute',
-    zIndex: 10,
+    zIndex: 15,
     background: 'var(--white)',
     borderRadius: '10px',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
