@@ -131,5 +131,5 @@ export function researchOutputTypeToDataType(type) {
 export function displayPersonalData(researchOutputType) {
   const typesWithoutPersonalData = ['software', 'logiciel'];
 
-  return !typesWithoutPersonalData.includes(researchOutputType.toLowerCase())
+  return !typesWithoutPersonalData.includes(researchOutputType?.toLowerCase())
 }

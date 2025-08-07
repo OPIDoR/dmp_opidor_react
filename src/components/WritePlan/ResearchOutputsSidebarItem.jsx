@@ -35,21 +35,6 @@ function ResearchOutputsSidebarItem({ item, setLoading, children }) {
 
   return (
     <div onClick={(e) => handleShowResearchOutputClick(e, item, item.id)}>
-      {/* {researchOutputs && (
-        <Nav style={{width: '100%'}} activeKey={`ro-${displayedResearchOutput.id}`}>
-          {researchOutputs.map((ro, idx) => (
-            <Nav.Item
-              key={idx}
-              onClick={(e) => handleShowResearchOutputClick(e, ro, idx)}
-            >
-              <Nav.Link eventKey={`ro-${ro.id}`} style={{ padding: '20px 0'}}>{ro.abbreviation}</Nav.Link>
-            </Nav.Item>
-          ))}
-          {!readonly && (
-            <>{ children }</>
-          )}
-        </Nav>
-      )} */}
       {children}
     </div>
   );
