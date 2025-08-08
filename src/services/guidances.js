@@ -3,8 +3,8 @@ import createHeaders from '../utils/HeaderBuilder';
 
 const hasQuestionGuidances = async(questionId, researchOutputId) => axios.get(`/research_outputs/${researchOutputId}/has_guidances?question=${questionId}`);
 
-const getGuidances = async (planId, questionId)  => 
-  axios.get(`/plans/${planId}/guidances?question=${questionId}`);
+const getGuidances = async (researchOutputId, questionId)  => 
+  axios.get(`/research_outputs/${researchOutputId}/guidances?question=${questionId}`);
 
 const getPlanGuidanceGroups = async (planId) => axios.get(`/plans/${planId}/guidance_groups`);
 

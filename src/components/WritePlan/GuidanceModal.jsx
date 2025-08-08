@@ -1,16 +1,15 @@
 import DOMPurify from "dompurify";
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import { GlobalContext } from "../context/Global";
 import { guidances } from "../../services";
 import CustomError from "../Shared/CustomError";
 import CustomSpinner from "../Shared/CustomSpinner";
 import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
 import InnerModal from "../Shared/InnerModal/InnerModal";
 
-function GuidanceModal({ shown, hide, questionId, planId }) {
+function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
@@ -45,7 +44,7 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
 
     setLoading(true);
 
-    guidances.getGuidances(planId, questionId)
+    guidances.getGuidances(researchOutputId, questionId)
       .then(({ data }) => {
         const guidancesData = data?.guidances.map((guidance) => {
           const groups = guidance.groups.reduce((acc, group) => {
@@ -77,7 +76,7 @@ function GuidanceModal({ shown, hide, questionId, planId }) {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [planId, questionId]);
+  }, [researchOutputId, questionId]);
 
   /**
   * getContent function returns JSX with a scrollable container (<ScrollNav>) containing a body (<NavBody>) and text (<NavBodyText>).
