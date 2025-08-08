@@ -23,7 +23,7 @@ function ResearchOutputsSidebarItem({ item, setLoading, children }) {
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the
    * tab that was clicked.
    */
-  const handleShowResearchOutputClick = (e, selectedResearchOutput, index) => {
+  const handleShowResearchOutputClick = (e, selectedResearchOutput) => {
     e.preventDefault();
     setSelectedResearchOutputId(selectedResearchOutput.id);
     setUrlParams({ research_output: selectedResearchOutput.id });

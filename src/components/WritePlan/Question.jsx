@@ -321,7 +321,7 @@ function Question({
                       shown={showModals.guidance === true}
                       hide={(e) => setModalOpened(e, 'guidance', false)}
                       questionId={questionId}
-                      planId={planId}
+                      researchOutputId={displayedResearchOutput.id}
                     />)}
                   </div>
                 )}
