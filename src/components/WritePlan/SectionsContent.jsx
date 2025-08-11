@@ -148,7 +148,7 @@ function SectionsContent({ planId, readonly }) {
         <>
           <div className={styles.write_plan_block} id="sections-content">
             {!readonly &&
-              <GuidanceChoice planId={planId} researchOutputId={displayedResearchOutput?.id} currentOrgId={null} currentOrgName={null} style={{ flexGrow: 1 }} />
+              <GuidanceChoice planId={planId} researchOutputId={displayedResearchOutput?.id} topic={displayedResearchOutput?.topic} style={{ flexGrow: 1 }} />
             }
             <ResearchOutputInfobox
               handleEdit={handleEdit}

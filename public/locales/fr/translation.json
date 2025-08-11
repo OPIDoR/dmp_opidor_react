@@ -256,5 +256,7 @@
   "Import project information": "Importer les renseignements sur le projet",
   "For ANR funded project, You are invited to share your plan with the ANR.": "Pour les projets financés par l’ANR, vous êtes invité à partager votre plan avec l’ANR.",
   "Plan shared with": "Plan partagé avec",
-  "An error occurred while sending the notification": "Une erreur s'est produite lors de l'envoie de la notification"
+  "An error occurred while sending the notification": "Une erreur s'est produite lors de l'envoie de la notification",
+  "Include topic": "Inclure thématique",
+  "Select an organisation": "Sélectionnez un organisme"
 }
