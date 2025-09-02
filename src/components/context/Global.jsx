@@ -46,7 +46,6 @@ function Global({ children }) {
   const [researchOutputs, setResearchOutputs] = useState([]);
   const [displayedResearchOutput, setDisplayedResearchOutput] = useState(null);
   const [openedQuestions, setOpenedQuestions] = useState(null);
-  const [questionsWithGuidance, setQuestionsWithGuidance] = useState([]);
   const [userId, setUserId] = useState(-1);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formSelectors, setFormSelector] = useState({});
@@ -105,8 +104,6 @@ function Global({ children }) {
         setDisplayedResearchOutput,
         openedQuestions,
         setOpenedQuestions,
-        questionsWithGuidance,
-        setQuestionsWithGuidance,
         userId,
         setUserId,
         setUrlParams,

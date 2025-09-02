@@ -40,7 +40,8 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
   const [selectedType, setSelectedType] = useState({ value: '', label: '' });
   const [selectedTopic, setSelectedTopic] = useState({ value: '', label: '' });
   const [disableTypeChange, setDisableTypeChange] = useState(false);
-  const tooltipedLabelId = uniqueId('type_tooltip_id_');
+  const typeTooltipId = uniqueId('type_tooltip_id_');
+  const topicTooltipId = uniqueId('topic_tooltip_id_');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -216,11 +217,11 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label data-tooltip-id={tooltipedLabelId}>
+          <label data-tooltip-id={typeTooltipId}>
             {t('Type')}
             <TooltipInfoIcon />
             <ReactTooltip
-              id={tooltipedLabelId}
+              id={typeTooltipId}
               place="bottom"
               effect="solid"
               variant="info"
@@ -255,11 +256,11 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label data-tooltip-id={tooltipedLabelId}>
+          <label data-tooltip-id={topicTooltipId}>
             {t('Topic')}
             <TooltipInfoIcon />
             <ReactTooltip
-              id={tooltipedLabelId}
+              id={topicTooltipId}
               place="bottom"
               effect="solid"
               variant="info"
