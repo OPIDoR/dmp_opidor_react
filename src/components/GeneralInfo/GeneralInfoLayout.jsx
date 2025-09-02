@@ -26,7 +26,7 @@ function GeneralInfoLayout({
   return(
     <StrictMode>
       <Global>
-        {isClassic && !readonly && <GuidanceChoice planId={planId} isClassic={isClassic} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
+        {isClassic && !readonly && <GuidanceChoice planId={planId} context={'plan'} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
         <GeneralInfo
           locale={locale}
           planId={planId}

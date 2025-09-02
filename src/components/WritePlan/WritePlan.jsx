@@ -8,7 +8,6 @@ import SectionsContent from "./SectionsContent";
 import { writePlan } from "../../services";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
-import GuidanceChoice from "./GuidanceChoice";
 import * as styles from "../assets/css/sidebar.module.css";
 import PlanInformations from "./PlanInformations";
 import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
@@ -35,7 +34,6 @@ function WritePlan({
     setDisplayedResearchOutput,
     setLoadedSectionsData,
     researchOutputs, setResearchOutputs,
-    setQuestionsWithGuidance,
   } = useContext(GlobalContext);
   const { loading, changeLoading } = useLoading();
   const [error, setError] = useState(null);
@@ -91,7 +89,6 @@ function WritePlan({
 
           setDisplayedResearchOutput(currentResearchOutput);
           setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template });
-          setQuestionsWithGuidance(currentResearchOutput.questions_with_guidance || []);
           researchOutputs.length === 0 && setResearchOutputs(research_outputs);
         }
         setFormData(null);
@@ -106,11 +103,6 @@ function WritePlan({
       {error && <CustomError error={error}></CustomError>}
       {!loading && !error &&
         <>
-          {!readonly &&
-            <div style={{ margin: '10px 30px 10px 30px' }}>
-              <GuidanceChoice planId={planId} currentOrgId={currentOrgId} currentOrgName={currentOrgName} style={{ flexGrow: 1 }} />
-            </div>
-          }
           {researchOutputs.length > 0 && (
             <>
               <PlanInformations template={template} />

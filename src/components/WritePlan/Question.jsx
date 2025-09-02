@@ -20,6 +20,7 @@ import GuidanceModal from "./GuidanceModal";
 import CommentModal from "./CommentModal";
 import RunsModal from "./RunsModal";
 import { CommentSVG } from "../Styled/svg";
+import { guidances } from "../../services";
 
 const closedModalState = {
   guidance: false,
@@ -39,9 +40,9 @@ function Question({
     openedQuestions,
     setOpenedQuestions,
     displayedResearchOutput,
-    questionsWithGuidance,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
+  const [hasGuidances, setHasGuidances] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [scriptsData, setScriptsData] = useState({ scripts: [] });
   const [showModals, setShowModals] = useState({
@@ -55,12 +56,23 @@ function Question({
 
   const { t } = useTranslation();
 
+  const isQuestionOpened = !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId];
+
   useEffect(() => {
     const ans = displayedResearchOutput?.answers?.find(
       (a) => question?.id === a?.question_id
     );
     setAnswer(ans);
   }, [displayedResearchOutput, question.id]);
+
+  useEffect(() => {
+    if (isQuestionOpened) {
+      guidances.hasQuestionGuidances(questionId, displayedResearchOutput?.id)
+        .then((res) => {
+          setHasGuidances(res.data?.has_guidances || false)
+        })
+    }
+  }, [isQuestionOpened, questionId])
 
   /**
    * Handles toggling the open/collapse state of a question.
@@ -103,14 +115,6 @@ function Question({
   }
 
 
-  /**
-   * Checks if a specific question is opened based on its identifiers within the nested object structure.
-   *
-   * @returns {boolean} True if the question is opened, false otherwise.
-   */
-  const isQuestionOpened = () =>
-    !!openedQuestions?.[displayedResearchOutput?.id]?.[sectionId]?.[questionId];
-
   return (
     <>
       {
@@ -126,9 +130,9 @@ function Question({
           <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none', paddingBottom: '0' }}>
             <Button
               style={{ backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0', borderBottom: '1px solid #ddd', borderRadius: '0' }}
-              onClick={() => handleQuestionCollapse(!isQuestionOpened())}
+              onClick={() => handleQuestionCollapse(!isQuestionOpened)}
               aria-controls={`card-collapse-${question.id}`}
-              aria-expanded={isQuestionOpened()}
+              aria-expanded={isQuestionOpened}
             >
               <Card.Title>
                 <div className={styles.question_title}>
@@ -162,7 +166,7 @@ function Question({
                       maxWidth: '200px',
                     }}
                   >
-                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (
+                    {hasGuidances && (
                       <div>
                         <ReactTooltip
                           id="guidanceTip"
@@ -179,7 +183,7 @@ function Question({
                           }}
                           style={{ marginLeft: "5px" }}
                         >
-                          {isQuestionOpened() && (
+                          {isQuestionOpened && (
                             <TbBulbFilled
                               size={32}
                               fill={getFillColor(showModals.guidance)}
@@ -206,7 +210,7 @@ function Question({
                         }}
                         style={{ marginLeft: "5px" }}
                       >
-                        {isQuestionOpened() && (
+                        {isQuestionOpened && (
                           <CommentSVG
                             size={32}
                             fill={getFillColor(showModals.comment)}
@@ -215,7 +219,7 @@ function Question({
                       </div>
                     </div>
 
-                    {isQuestionOpened() && !answer && formSelectors[question?.madmp_schema?.classname] && (
+                    {isQuestionOpened && !answer && formSelectors[question?.madmp_schema?.classname] && (
                       <div>
                         <ReactTooltip
                           id="form-changer-show-button"
@@ -259,7 +263,7 @@ function Question({
                           }}
                           style={{ marginLeft: "5px" }}
                         >
-                          {isQuestionOpened() && (
+                          {isQuestionOpened && (
                             <BsGear
                               size={32}
                               style={{ marginTop: "6px" }}
@@ -270,7 +274,7 @@ function Question({
                       </div>
                     )}
 
-                    {isQuestionOpened() ? (
+                    {isQuestionOpened ? (
                       <TfiAngleUp
                         style={{ marginLeft: "5px" }}
                         size={32}
@@ -286,10 +290,10 @@ function Question({
               </Card.Title>
             </Button>
           </Card.Header>
-          <Collapse in={isQuestionOpened()}>
+          <Collapse in={isQuestionOpened}>
             <div id={`card-collapse-${question.id}`}>
               <Card.Body id={`card-body-${question.id}`} style={{ position: 'relative', paddingTop: '0' }}>
-                {isQuestionOpened() && (
+                {isQuestionOpened && (
                   <div>
                     {answer && (
                       <>
@@ -313,15 +317,15 @@ function Question({
                       questionId={question.id}
                       readonly={readonly}
                     />
-                    {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
+                    {hasGuidances && (<GuidanceModal
                       shown={showModals.guidance === true}
                       hide={(e) => setModalOpened(e, 'guidance', false)}
                       questionId={questionId}
-                      planId={planId}
+                      researchOutputId={displayedResearchOutput.id}
                     />)}
                   </div>
                 )}
-                {isQuestionOpened() ? (
+                {isQuestionOpened ? (
                   <>
                     {readonly && !answer?.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
                       (<DynamicForm
