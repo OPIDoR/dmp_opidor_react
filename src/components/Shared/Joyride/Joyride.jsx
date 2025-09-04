@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReactJoyride, { STATUS, EVENTS } from 'react-joyride';
+import ReactJoyride, { STATUS, EVENTS } from 'react-joyride-react19-compat';
 import { useTranslation } from 'react-i18next';
 import JoyrideTooltip from './JoyrideTooltip.jsx';
 import { guidedTour } from '../../../services/index.js';
