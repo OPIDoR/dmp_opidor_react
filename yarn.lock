@@ -5105,10 +5105,10 @@ react-is@^19.1.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.1.tgz#038ebe313cf18e1fd1235d51c87360eb87f7c36a"
   integrity sha512-tr41fA15Vn8p4X9ntI+yCyeGSf1TlYaY5vlTZfQmeLBrFo3psOPX6HhTDnFNL9uj3EhP0KAQ80cugCl4b4BERA==
 
-react-joyride@^2.7.2:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/react-joyride/-/react-joyride-2.9.3.tgz#97633aa78dfe70b16b45fafa59ce2ee06b14c78f"
-  integrity sha512-1+Mg34XK5zaqJ63eeBhqdbk7dlGCFp36FXwsEvgpjqrtyywX2C6h9vr3jgxP0bGHCw8Ilsp/nRDzNVq6HJ3rNw==
+react-joyride-react19-compat@2.9.5-react19-compat:
+  version "2.9.5-react19-compat"
+  resolved "https://registry.yarnpkg.com/react-joyride-react19-compat/-/react-joyride-react19-compat-2.9.5-react19-compat.tgz#28fddec0845102a7c97f0da37c59851841395622"
+  integrity sha512-x32ZlLXQEspambGoEzsa2ZSq+X6+duJFFmixA1letI4D06FZGILFkM5960wLD95zCJuNq16CElSpqOiK8XiW6A==
   dependencies:
     "@gilbarbara/deep-equal" "^0.3.1"
     deep-diff "^1.0.2"
