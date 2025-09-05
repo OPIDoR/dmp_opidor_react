@@ -259,9 +259,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                   <td>{el.acronyms}</td>
                   <td>{el.country.code}</td>
                   <td>
-                    {Object.values(el.addresses[0])
-                      .filter((value) => value)
-                      .join(', ')}
+                    {el.addresses?.at(0)?.city}
                   </td>
                 </tr>
               )) : (
