@@ -22,7 +22,7 @@ const AccordionContainer = styled.div`
   height: calc(100% - 65px);
   display: flex;
   flex-direction: column;
-  width: 220px;
+  width: 250px;
   margin: -1px 2px 0 0;
 `;
 
@@ -32,7 +32,7 @@ const AccordionGroupWrapper = styled.div`
 `;
 
 const AccordionGroup = styled.div`
-  width: 220px;
+  width: 250px;
   border-top: 1px solid var(--white);
 `;
 
@@ -176,7 +176,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
       transition,
       zIndex: isDragging ? 9999 : 'auto',
       opacity: isDragging ? 0.8 : 1,
-      width: '220px',
+      width: '250px',
       pointerEvents: isDragging ? 'none' : 'auto',
     };
 
