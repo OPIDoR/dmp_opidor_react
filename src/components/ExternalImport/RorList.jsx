@@ -105,7 +105,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
    * The handleChangeCounty function filters an array of data based on the selected country code and updates the data state.
    */
   const handleChangeCountry = async (e) => {
-    setSelectedCountry(e?.value);
+    setSelectedCountry(e);
     setData([]);
     setFilteredData([]);
 
@@ -215,6 +215,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                         singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
                         control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
                       }}
+                      value={selectedCountry}
                       onChange={handleChangeCountry}
                       placeholder={t('Select a country')}
                       options={countries}
