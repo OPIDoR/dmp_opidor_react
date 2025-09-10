@@ -1,13 +1,13 @@
 import React, { StrictMode } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 import Global from '../context/Global.jsx';
 import WritePlan from './WritePlan.jsx'
 import '../../i18n.js';
 
-import Joyride from '../Shared/Joyride/index.jsx';
+import Driver from '../Shared/Driver/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
-import { useTranslation } from 'react-i18next';
 
 const toastOptions = {
   duration: 5000,
@@ -23,11 +23,10 @@ function WritePlanLayout({
 }) {
   const { t } = useTranslation();
 
-
   return (
     <StrictMode>
       <Global>
-        <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
+        <Driver tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
           <WritePlan
             planId={planId}
             locale={locale}
@@ -37,7 +36,7 @@ function WritePlanLayout({
             readonly={readonly}
             className="research-outputs-tabs"
           />
-        </Joyride>
+        </Driver>
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
       </Global>
     </StrictMode>
