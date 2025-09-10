@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 import Global from '../context/Global.jsx';
 import WritePlan from './WritePlan.jsx'
 import '../../i18n.js';
 
-import Joyride from '../Shared/Joyride/index.jsx';
+import Driver from '../Shared/Driver/index.jsx';
 import { writePlanSteps } from '../Shared/Tours';
-import { useTranslation } from 'react-i18next';
 
 const toastOptions = {
   duration: 5000,
@@ -15,7 +15,6 @@ const toastOptions = {
 
 function WritePlanLayout({
   planId,
-  templateId,
   locale = 'en_GB',
   userId,
   currentOrgId,
@@ -24,23 +23,23 @@ function WritePlanLayout({
 }) {
   const { t } = useTranslation();
 
-
   return (
-    <Global>
-      <Joyride tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
-        <WritePlan
-          planId={planId}
-          templateId={templateId}
-          locale={locale}
-          userId={userId}
-          currentOrgId={currentOrgId}
-          currentOrgName={currentOrgName}
-          readonly={readonly}
-          className="research-outputs-tabs"
-        />
-      </Joyride>
-      <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
-    </Global>
+    <StrictMode>
+      <Global>
+        <Driver tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
+          <WritePlan
+            planId={planId}
+            locale={locale}
+            userId={userId}
+            currentOrgId={currentOrgId}
+            currentOrgName={currentOrgName}
+            readonly={readonly}
+            className="research-outputs-tabs"
+          />
+        </Driver>
+        <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
+      </Global>
+    </StrictMode>
   )
 }
 

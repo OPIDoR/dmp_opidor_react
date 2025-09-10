@@ -4,8 +4,7 @@ import { fr, enGB } from "date-fns/locale";
 import { format } from "date-fns";
 import { FaRegCompass } from "react-icons/fa6";
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-
-import { useTour } from "../Shared/Joyride/JoyrideContext";
+import { useTour } from "../Shared/Driver/DriverContext";
 
 const locales = { fr, en: enGB };
 
