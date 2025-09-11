@@ -26,6 +26,7 @@ function GeneralInfo({
   readonly,
   isClassic = false,
 }) {
+
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
 
@@ -46,10 +47,11 @@ function GeneralInfo({
 
   const handleClickIsTestPlan = async (e) => {
     const checked = e.target.checked;
+    setIsTestPlan(checked);
 
     let response;
     try {
-      response = await generalInfo.saveIsTestPlan(planId, checked === true ? '1' : '0');
+      response = await generalInfo.saveIsTestPlan(planId, checked);
     } catch (error) {
       let errorMessage = getErrorMessage(error) || t("An error occurred during the change of status of the plan");
       return toast.error(errorMessage);
