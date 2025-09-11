@@ -90,7 +90,7 @@ function SectionsContent({ planId, readonly }) {
           setOpenedQuestions(updatedOpenedQuestions);
 
           setDisplayedResearchOutput(data.research_outputs.at(-1));
-          setUrlParams({ research_output: data.research_outputs[0].id });
+          setUrlParams({ research_output: data.research_outputs.at(-1).id });
           toast.success(t("Research output was successfully deleted."));
         })
           .catch((error) => setError(error));
