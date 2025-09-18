@@ -110,9 +110,9 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
 
   useEffect(() => {
     if (activeGroupIndex !== -1) {
-      setOpenGroups(new Set([activeGroupIndex]));
+      setOpenGroups(prev => new Set([...prev, activeGroupIndex]));
     }
-  }, [displayedResearchOutput]);
+  }, [activeGroupIndex]);
 
   /**
    * The function handleClose sets the state of setShow to false.
