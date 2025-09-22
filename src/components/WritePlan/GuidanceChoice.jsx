@@ -31,6 +31,7 @@ const description = {
 function GuidanceChoice({
   planId,
   researchOutputId,
+  setSelectedGuidances = null,
   topic = null,
   currentOrgId = null,
   currentOrgName = null,
@@ -70,6 +71,7 @@ function GuidanceChoice({
 
         guidance_groups = [...selectedGuidances, ...orgGuidances, ...unselectedGuidances];
 
+        setSelectedGuidances(formatSelectedGuidances(selectedGuidances));
         setGuidancesData(guidance_groups);
         const states = handleGuidanceGroups(guidance_groups);
         setCheckboxStates(states);
@@ -82,7 +84,6 @@ function GuidanceChoice({
     if (guidancesData.length === 0) return;
     let filtered = [...guidancesData]
     if (includeTopic) {
-      console.log(topic, filtered.filter((org) => org.guidance_groups.find((gg) => gg.topics.includes(topic))));
       filtered = filtered.filter((org) => org.guidance_groups.find((gg) => gg.topics.includes(topic)));
     }
     if (selectedOrg !== null) {
@@ -106,6 +107,17 @@ function GuidanceChoice({
     return states;
   }
 
+  const formatSelectedGuidances = (selectedGuidances) => {
+    return selectedGuidances.flatMap(org =>
+      org.guidance_groups
+        .filter(group => group.selected)
+        .map(group => ({
+          id: group.id,
+          title: group.name,
+          orgName: org.name
+        }))
+    );
+  }
   /**
    * This function handles changes to a checkbox and updates the state accordingly, including updating nested checkboxes and an array of recommendation
    * IDs.
@@ -178,6 +190,7 @@ function GuidanceChoice({
     const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
     const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
+    setSelectedGuidances(formatSelectedGuidances(selectedGuidances));
     setGuidancesData([...selectedGuidances, ...unselectedGuidances]);
 
     const states = handleGuidanceGroups(guidance_groups);
@@ -269,11 +282,11 @@ function GuidanceChoice({
                 />
               </div>
               {!loading && !error && guidancesData && context === 'research_output' && (
-                <div className="row" style={{padding: '10px'}}>
-                  <div className="col-md-12" style={{padding: '10px 0', color: 'var(--rust)'}}>
+                <div className="row" style={{ padding: '10px' }}>
+                  <div className="col-md-12" style={{ padding: '10px 0', color: 'var(--rust)' }}>
                     {t('Below you can filter available guidances with the topic linked to your research output or the org making them available.')}
                   </div>
-                  <div className={`col-md-7 ${formStyles.select_wrapper}`} style={{alignContent: 'center'}}>
+                  <div className={`col-md-7 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
                     <CustomSelect
                       onSelectChange={(o) => setSelectedOrg(o.value)}
                       options={guidancesData.map((group) => ({ label: group.name, value: group.name }))}
@@ -282,16 +295,16 @@ function GuidanceChoice({
                       placeholder={t("Select an organisation")}
                     />
                   </div>
-                  <div className="col-md-1" style={{alignContent: 'center'}}>
+                  <div className="col-md-1" style={{ alignContent: 'center' }}>
                     <FaXmark
                       onClick={() => setSelectedOrg(null)}
                       className={formStyles.icon}
                     />
                   </div>
-                  <div className="col-md-3" style={{alignContent: 'center'}}>
+                  <div className="col-md-3" style={{ alignContent: 'center' }}>
                     {t("Include topic")} ({topic})
                   </div>
-                  <div className="col-md-1" style={{alignContent: 'center'}}>
+                  <div className="col-md-1" style={{ alignContent: 'center' }}>
                     <input type="checkbox" onChange={() => setIncludeTopic(!includeTopic)} checked={includeTopic} />
                   </div>
                 </div>
@@ -367,7 +380,7 @@ function GuidanceChoice({
                             >
                               {
                                 group.guidance_groups.map((guidance, key) => (
-                                  <>
+                                  <React.Fragment key={`guidance-fragment-${index}-${key}`}>
                                     {shouldGuidanceGroupDisplay(guidance) &&
 
                                       <div key={`guidance-group-${index}-childs-${key}-parent`}>
@@ -426,7 +439,7 @@ function GuidanceChoice({
                                         </div>
                                       </div>
                                     }
-                                  </>
+                                  </React.Fragment>
                                 ))
                               }
                             </div>
