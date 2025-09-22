@@ -234,7 +234,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
 
     try {
       researchOutput.sort(planId, updatedItems.map(({ id }) => id));
-    } catch (e) {
+    } catch {
       return;
     }
 

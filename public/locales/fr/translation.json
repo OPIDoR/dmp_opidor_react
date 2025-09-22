@@ -258,5 +258,7 @@
   "Plan shared with": "Plan partagé avec",
   "An error occurred while sending the notification": "Une erreur s'est produite lors de l'envoie de la notification",
   "Include topic": "Inclure thématique",
-  "Select an organisation": "Sélectionnez un organisme"
+  "Select an organisation": "Sélectionnez un organisme",
+  "The following guidances apply to this research output:": "Les recommandations suivantes s'appliquent à ce produit de recherche :",
+  "provided by": "fourni par"
 }
