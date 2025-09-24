@@ -25,7 +25,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState(displayedTemplate);
   const {
     setFormSelector,
     loadedTemplates, setLoadedTemplates,
@@ -37,7 +37,6 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
       setFormSelector((prev) => ({ ...prev, [classname]: data?.length > 1 }));
       data.forEach((template) => {
         setLoadedTemplates({ ...loadedTemplates, [template.name]: template });
-        if (template.name === displayedTemplate.name) setSelectedTemplate(template);
       });
     })
       .catch(console.error)
@@ -58,7 +57,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
 
   return (
     <>
-      {availableTemplates.length > 1 && (
+      {availableTemplates.length > 0 && (
         <>
           {formSelector.shown && (
             <div className={styles.container} style={{ position: 'relative' }}>
