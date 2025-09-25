@@ -155,7 +155,7 @@ function SelectMultipleObject({
     if (!data) return handleClose();
 
     if (checkFragmentExists(fields, data, template.schema['unicity'])) {
-      setError(t('This record already exists.'));
+      setError(t("recordAlreadyExists"));
     } else {
       if (index !== null) {
         const updatedFragment = {
@@ -168,7 +168,7 @@ function SelectMultipleObject({
         //add in add
         handleSaveNew(data);
       }
-      toast.success(t("Save was successful !"));
+      toast.success(t("saveSuccess"));
     }
     handleClose();
   };
@@ -236,7 +236,7 @@ function SelectMultipleObject({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t("selectRegistry")}
                   />
                 </div>
               </div>
@@ -266,7 +266,7 @@ function SelectMultipleObject({
                     place="bottom"
                     effect="solid"
                     variant="info"
-                    content={t('Add')}
+                    content={t("add")}
                   />
                   <FaPlus
                     data-tooltip-id="select-with-create-add-button"
@@ -301,7 +301,7 @@ function SelectMultipleObject({
           template={template}
           mainFormDataType={dataType}
           mainFormTopic={topic}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
+          label={index !== null ? `${t("edit")} : ${label}` : `${t("add")} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

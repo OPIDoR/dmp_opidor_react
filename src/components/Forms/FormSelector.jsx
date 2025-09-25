@@ -67,14 +67,14 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
                   <div
                     style={{ ...headerStyle }}
                   >
-                    <label htmlFor={classname} style={{fontSize: 'large'}}>{t('Please select a form to answer the question (the Standard form is displayed by default)')}</label>
+                    <label htmlFor={classname} style={{fontSize: 'large'}}>{t("selectFormToAnswerQuestion")}</label>
                     <div id="header-actions">
                       <ReactTooltip
                         id={`${classname}-form-selector-close-button`}
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t('Close')}
+                        content={t("close")}
                       />
                       <FaXmark
                         data-tooltip-id={`${classname}-form-selector-close-button`}
@@ -86,7 +86,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
                     </div>
                   </div>
                   <p style={{ color: 'var(--white)', padding: '0 10px' }}>
-                    <i>{t('Select a form from the list to view it. Please note that it is no longer possible to change a form once it has been saved.')}</i>
+                    <i>{t("selectFormFromList")}</i>
                   </p>
                   <CustomSelect
                     propName={classname}

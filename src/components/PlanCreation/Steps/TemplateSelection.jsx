@@ -23,7 +23,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const [error, setError] = useState(null);
   const [toogleDescription, setToogleDescription] = useState({});
 
-  const placeHolder = t('Begin typing to see a list of suggestions');
+  const placeHolder = t("beginTyping");
 
   const params = useMemo(() => selectionData, [selectionData]);
 
@@ -31,15 +31,15 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   useEffect(() => {
     const tmpls = {
       default: {
-        title: t('Structured common template'),
+        title: t("structuredCommonTemplate"),
         description: params.researchContext === 'research_project'
-          ? (<Trans defaults={'Recommended by the Open Science network of the French funding agencies (<strong>ADEME, ANR, ANRS-MIE, Anses, FRM, INCa</strong>) and by many research organisations'} components={{ strong: <strong /> }} />)
+          ? (<Trans t={t} i18nKey="recommendedByOpenScienceNetwork" components={{ strong: <strong /> }} />)
           : null,
         templates: [],
       },
       others: {
         id: 'others',
-        title: t('Others templates'),
+        title: t("otherTemplates"),
         type: 'select',
         data: [],
       },
@@ -76,7 +76,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: t("You must choose a template"),
+        text: t("mustChooseTemplate"),
       });
     }
 
@@ -202,7 +202,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   };
 
   const displayTemplatesByCategory = (index) => {
-    const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t('No model available')}</i></p>);
+    const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t("noModelAvailable")}</i></p>);
 
     if (!planTemplates[index].type) {
       const { templates } = planTemplates[index];
@@ -266,7 +266,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
   return (
     <div>
-      <h2>{t('Choose a DMP template')}</h2>
+      <h2>{t("chooseTemplate")}</h2>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && (
@@ -308,7 +308,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleSendTemplateId}
-                title={t('Confirm my choice')}
+                title={t("confirmChoice")}
                 position="end"
                 disabled={!params.selectedTemplate}
               />

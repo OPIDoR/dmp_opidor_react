@@ -187,7 +187,7 @@ function DynamicForm({
                   readonly={readonly}
                 />
               </div>
-              {!readonly && <CustomButton handleClick={null} title={t("Save")} buttonType="submit" position="center" sticky={true} />}
+              {!readonly && <CustomButton handleClick={null} title={t("save")} buttonType="submit" position="center" sticky={true} />}
             </form>
           </FormProvider>
         </>

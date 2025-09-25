@@ -74,14 +74,14 @@ function SectionsContent({ planId, readonly }) {
     e.preventDefault();
     e.stopPropagation();
     Swal.fire({
-      title: t("Do you confirm the deletion?"),
-      text: t("By deleting this research output, the associated answers will also be deleted"),
+      title: t("deleteConfirm"),
+      text: t("deleteOutputWarning"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, delete!"),
+      cancelButtonText: t("close"),
+      confirmButtonText: t("yesDelete"),
     }).then((result) => {
       if (result.isConfirmed) {
         //delete
@@ -94,7 +94,7 @@ function SectionsContent({ planId, readonly }) {
 
           setDisplayedResearchOutput(data.research_outputs.at(-1));
           setUrlParams({ research_output: data.research_outputs.at(-1).id });
-          toast.success(t("Research output was successfully deleted."));
+          toast.success(t("deleteOutputSuccess"));
         })
           .catch((error) => setError(error));
       }
@@ -113,14 +113,14 @@ function SectionsContent({ planId, readonly }) {
     e.stopPropagation();
 
     Swal.fire({
-      title: t("Do you want to duplicate the search output?"),
-      text: t("Remember to rename your search output after duplication."),
+      title: t("doYouWantToDuplicateSearchOutput"),
+      text: t("rememberToRenameYourSearchOutputAfterDuplication"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: t("Close"),
-      confirmButtonText: t("Yes, duplicate!"),
+      cancelButtonText: t("close"),
+      confirmButtonText: t("yesDuplicate"),
     }).then(async (result) => {
       if (result.isConfirmed) {
         researchOutput.importResearchOutput({ planId, uuid: displayedResearchOutput.uuid, duplicate: true }).then((res) => {

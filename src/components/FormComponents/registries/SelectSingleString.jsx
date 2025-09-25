@@ -158,7 +158,7 @@ function SelectSingleString({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t("selectRegistry")}
                   />
                 </div>
               </div>

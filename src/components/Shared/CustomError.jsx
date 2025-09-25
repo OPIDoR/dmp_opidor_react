@@ -65,7 +65,7 @@ const Button = styled.button`
  */
 function CustomError({ error, showWarning = true, handleClose }) {
   const { t } = useTranslation();
-  const defaultMessage = t("It seems that a problem has appeared");
+  const defaultMessage = t("problemOccurred");
   const errorMessage = error?.message || t("Internal Server Error");
   const errorDescription = error?.error || defaultMessage;
   const home = Object.prototype.hasOwnProperty.call(error, 'home') ? error?.home : true;

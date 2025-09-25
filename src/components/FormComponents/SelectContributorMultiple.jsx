@@ -149,7 +149,7 @@ function SelectContributorMultiple({
    */
   const handleSave = (data) => {
     if (checkFragmentExists(persons, data, template.schema['unicity'])) {
-      setError(t('This record already exists.'));
+      setError(t("recordAlreadyExists"));
     } else {
       if (index !== null) {
         service.saveFragment(editedPerson.id, data).then((res) => {
@@ -258,7 +258,7 @@ function SelectContributorMultiple({
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t('Add')}
+                content={t("add")}
               />
               <FaPlus
                 data-tooltip-id="select-contributor-multiple-add-button"
@@ -292,7 +292,7 @@ function SelectContributorMultiple({
             template={template}
             mainFormDataType={dataType}
             mainFormTopic={topic}
-            label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
+            label={index !== null ? t("editPersonOrOrg") : t("addPersonOrOrg")}
             readonly={readonly}
             show={show}
             handleSave={handleSave}

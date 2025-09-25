@@ -29,7 +29,7 @@ function PlanInformations({ template }) {
           place="bottom"
           effect="solid"
           variant="info"
-          content={t('Run guided tour')}
+          content={t("runGuidedTour")}
         />
         <FaRegCompass
           data-tooltip-id="guided-tour"
@@ -47,7 +47,7 @@ function PlanInformations({ template }) {
       }}>
         <Trans
           t={t}
-          defaults={'This plan is based on the <0>"{{model}}"</0> model provided by <1>{{orgName}}</1> (version: {{version}}, published on: {{publishedDate}}).'}
+          i18nKey="thisPlanIsBasedOnModelProvidedBy"
           values={{
             model: template.title,
             orgName: template.org,

@@ -9,13 +9,13 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
   const formats = [
     {
       id: 'standard',
-      title: t('DMP OPIDoR Format'),
-      description: t('The json file is in the format proposed by DMP OPIDoR.'),
+      title: t("dmpOpidorFormat"),
+      description: t("jsonFileIsInDmpOpidorFormat"),
     },
     {
       id: 'rda',
-      title: t('RDA DMP Common Standard Format'),
-      description: t('The json file is in the RDA DMP Common Standard format.')
+      title: t("rdaDmpCommonStandardFormat"),
+      description: t("jsonFileIsInRdaDmpFormat")
     }
   ];
 
@@ -59,7 +59,7 @@ function FormatSelection({ prevStep, nextStep, set, params }) {
 
   return (
     <div>
-      <h2>{t('Select the plan format to be imported')}</h2>
+      <h2>{t("selectPlanFormatToBeImported")}</h2>
       {stepsList}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {prevStep}

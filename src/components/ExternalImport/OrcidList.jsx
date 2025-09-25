@@ -125,7 +125,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                   <i>
                     <Trans
                       t={t}
-                      defaults="ORCID iD is a unique, persistent numerical identifier for researchers (<0>ORCID</0>). You can retrieve it using the search box below."
+                      i18nKey="orcidIdExplanation"
                       components={[<a href="https://orcid.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ORCID</a>]}
                     />
                   </i>
@@ -138,7 +138,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                       type="text"
                       className="form-control"
                       value={text}
-                      placeholder={t("Search by <last name> <first name>")}
+                      placeholder={t("searchPerson")}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
                       style={{ borderRadius: "8px 0 0 8px", borderWidth: "1px", borderColor: "var(--dark-blue)", height: "43px" }}
@@ -173,8 +173,8 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
               <thead className="thead-dark">
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col">{t("Last / First name")}</th>
-                  <th scope="col">{t("ORCID Affiliations")}</th>
+                  <th scope="col">{t("fullName")}</th>
+                  <th scope="col">{t("orcidAffiliations")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,7 +200,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
                 )) : (
                   <tr>
                     <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
-                      { loading ? <CustomSpinner /> : t('No data available') }
+                      { loading ? <CustomSpinner /> : t("noData") }
                     </td>
                   </tr>
                 )}

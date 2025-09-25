@@ -57,7 +57,7 @@ function Section({ planId, section, readonly }) {
               toggleQuestionsInSection(true);
             }}
           >
-            {t("Expand all")}
+            {t("expandAll")}
           </button>
           <span className={styles.sub_title}> | </span>
           <button
@@ -70,7 +70,7 @@ function Section({ planId, section, readonly }) {
               toggleQuestionsInSection(false);
             }}
           >
-            {t("Collapse all")}
+            {t("collapseAll")}
           </button>
         </div>
       </div>
