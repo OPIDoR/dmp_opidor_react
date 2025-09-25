@@ -81,7 +81,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       {plans.length > 0 ? (
         <div className="form-group">
           <div className={stylesForm.label_form}>
-            <label>{t("Choose plan")}</label>
+            <label>{t("choosePlan")}</label>
           </div>
           <div className="form-group">
             <Alert variant="info">
@@ -99,7 +99,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       ) : (
         <div className="form-group">
           <Alert variant="warning">
-            {t('No plans comply with the import rules (at least one research output or type of research output).')}
+            {t("noPlansComplyWithImportRules")}
           </Alert>
         </div>
       )}
@@ -107,7 +107,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       {selectedPlan?.researchOutputs?.length > 0 && (
         < div className="form-group">
           <div className={stylesForm.label_form}>
-            <label>{t("Choose research output")}</label>
+            <label>{t("chooseOutput")}</label>
           </div>
           <CustomSelect
             onSelectChange={(e) => handleSelectResearchOutput(e)}
@@ -120,7 +120,7 @@ function ImportResearchOutput({ planId, handleClose }) {
       )}
       <EndButton>
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose} disabled={loading}>
-          {t("Close")}
+          {t("close")}
         </Button>
         <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
           {loading && (<Spinner
@@ -130,7 +130,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             role="status"
             aria-hidden="true"
           />)}
-          {t("Import")}
+          {t("import")}
         </Button>
       </EndButton>
     </div>

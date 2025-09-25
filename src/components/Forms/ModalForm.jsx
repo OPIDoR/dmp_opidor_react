@@ -72,11 +72,11 @@ function ModalForm({ data, template, mainFormDataType, mainFormTopic, label, rea
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleModalClose}>
-          {t("Close")}
+          {t("close")}
         </Button>
         {!readonly && (
           <Button variant="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
-            {t('Save')}
+            {t("save")}
           </Button>
         )}
       </Modal.Footer>

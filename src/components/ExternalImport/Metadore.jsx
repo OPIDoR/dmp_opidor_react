@@ -166,7 +166,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                   <i>
                     <Trans
                       t={t}
-                      defaults="<0>DataCite</0> is an agency that registers DOIs assigned primarily to research data. If you reuse data identified by a DOI registered with this agency, you can retrieve the associated descriptive elements (metadata)."
+                      i18nKey="dataCiteExplanation"
                       components={[<a href="https://datacite.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>DataCite</a>]}
                     />
                   </i>
@@ -181,7 +181,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('Enter <Title> or <DOI (e.g. 10.57745/2WH9AL)>')}
+                      placeholder={t("enterTitleOrDoi")}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
@@ -224,7 +224,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
                     }}
                     onChange={handleTypeFilter}
-                    placeholder={t('Type selection')}
+                    placeholder={t("typeSelection")}
                     options={researchDataTypes}
                     isDisabled={text.length === 0 || !text}
                   />
@@ -238,9 +238,9 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
               <tr>
                 <th scope="col"></th>
                 <th scope="col">{t('DOI')}</th>
-                <th scope="col">{t('Title')}</th>
-                <th scope="col">{t('Publication date')}</th>
-                <th scope="col">{t('Type')}</th>
+                <th scope="col">{t("title")}</th>
+                <th scope="col">{t("publicationDate")}</th>
+                <th scope="col">{t("type")}</th>
               </tr>
             </thead>
             <tbody>
@@ -266,7 +266,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
               )) : (
                 <tr>
                   <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
-                    {loading ? <CustomSpinner /> : t('No data available')}
+                    {loading ? <CustomSpinner /> : t("noData")}
                   </td>
                 </tr>
               )}

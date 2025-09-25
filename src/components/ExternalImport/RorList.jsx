@@ -158,7 +158,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                   <i>
                     <Trans
                       t={t}
-                      defaults="ROR ID is a unique, persistent numerical identifier for research-related organizations and entities (<0>ROR</0>). You can retrieve it using the search box below."
+                      i18nKey="rorIdExplanation"
                       components={[<a href="https://ror.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>ROR</a>]}
                     />
                   </i>
@@ -173,7 +173,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t('Search for <organization name> or <acronym>')}
+                      placeholder={t("searchOrg")}
                       style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
                     />
                     <span className="input-group-btn">
@@ -217,7 +217,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                       }}
                       value={ countries.find(c => c.value === selectedCountry) || null }
                       onChange={handleChangeCountry}
-                      placeholder={t('Select a country')}
+                      placeholder={t("selectCountry")}
                       options={countries}
                     />
                   </div>
@@ -230,10 +230,10 @@ function RorList({ fragment, setFragment, mapping = {} }) {
             <thead className="thead-dark">
               <tr>
                 <th scope="col"></th>
-                <th scope="col">{t('Organization name')}</th>
-                <th scope="col">{t('Acronym')}</th>
-                <th scope="col">{t('Country')}</th>
-                <th scope="col">{t('Location')}</th>
+                <th scope="col">{t("orgName")}</th>
+                <th scope="col">{t("acronym")}</th>
+                <th scope="col">{t("country")}</th>
+                <th scope="col">{t("location")}</th>
               </tr>
             </thead>
             <tbody>
@@ -266,7 +266,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
               )) : (
                 <tr>
                   <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
-                    { loading ? <CustomSpinner /> : t('No data available') }
+                    { loading ? <CustomSpinner /> : t("noData") }
                   </td>
                 </tr>
               )}

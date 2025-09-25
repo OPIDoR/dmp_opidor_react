@@ -83,7 +83,7 @@ function ModalTemplate({
 
 
     if (checkFragmentExists(fields, data, template.schema['unicity'])) {
-      setError(t('This record already exists.'));
+      setError(t("recordAlreadyExists"));
     } else {
       if (index !== null) {
         const updatedFragment = {
@@ -95,7 +95,7 @@ function ModalTemplate({
       } else {
         handleSaveNew(data);
       }
-      toast.success(t("Save was successful !"));
+      toast.success(t("saveSuccess"));
     }
     handleClose();
   };
@@ -170,7 +170,7 @@ function ModalTemplate({
               setShow(true);
               setIndex(null);
             }}
-            title={t("Add an element")}
+            title={t("addElement")}
             buttonColor="rust"
             position="start"
           ></CustomButton>
@@ -182,7 +182,7 @@ function ModalTemplate({
           template={template}
           mainFormDataType={dataType}
           mainFormTopic={topic}
-          label={index !== null ? `${t('Edit')} : ${label}` : `${t('Add')} : ${label}`}
+          label={index !== null ? `${t("edit")} : ${label}` : `${t("add")} : ${label}`}
           readonly={isConst ? true : readonly}
           show={show}
           handleSave={handleSave}

@@ -36,7 +36,7 @@ function GeneralInfo({
 
   const [isOpenMetaForm, setIsOpenMetaForm] = useState(true);
 
-  const projectFormLabel = researchContext === 'research_project' ? t("Project Details") : t("Research Entity Details");
+  const projectFormLabel = researchContext === 'research_project' ? t("projectDetails") : t("entityDetails");
 
   useEffect(() => {
     setLocale(locale);
@@ -115,7 +115,7 @@ function GeneralInfo({
             <Card.Title>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
-                  <div className={styles.title}>{t("Plan Information")}</div>
+                  <div className={styles.title}>{t("planInformation")}</div>
                 </div>
 
                 <span className={styles.question_icons}>
@@ -143,7 +143,7 @@ function GeneralInfo({
                   style={{ marginRight: '10px' }}
                 />
                 <label className="form-check-label" htmlFor="is_test">
-                  {t('Test Plan (e.g. as part of a training course)')}
+                  {t("testPlan")}
                 </label>
               </div>
               {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}

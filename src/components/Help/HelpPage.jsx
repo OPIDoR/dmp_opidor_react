@@ -50,7 +50,7 @@ export default function HelpPage({ locale, directusUrl }) {
   }));
 
   if (categories.length === 0) {
-    return (<Alert variant="warning">{t('Oh, it seems that this help page is still under development and does not yet contain any content.')}</Alert>)
+    return (<Alert variant="warning">{t("helpPageUnderDevelopment")}</Alert>)
   }
 
   return (
@@ -72,7 +72,7 @@ export default function HelpPage({ locale, directusUrl }) {
       </FaqCategories>
       <FaqContent>
         {categories[activeFaq].questions.length === 0 ? (
-          <div>{t('There seems to be no question for this category.')}</div>
+          <div>{t("noQuestionForCategory")}</div>
         ) :
         categories[activeFaq].questions.map(({ question, answer }, index) => (
           <div key={`faq-content-${index}`} style={{ marginBottom: '40px' }}>

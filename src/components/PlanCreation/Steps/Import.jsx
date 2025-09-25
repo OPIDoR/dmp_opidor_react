@@ -114,13 +114,13 @@ function Import({ prevStep, params, set, setUrlParams }) {
       res = await planCreation.importPlan(formData);
     } catch(error) {
       setLoading(false);
-      return toast.error(error?.response?.data?.message || t('An error has occurred while import plan.'));
+      return toast.error(error?.response?.data?.message || t("importPlanError"));
     }
 
     setUrlParams({ step: undefined });
 
     clearLocalStorage();
-    toast.success(t('Import was successful !'));
+    toast.success(t("importWasSuccessful"));
 
     setLoading(false);
 
@@ -145,19 +145,19 @@ function Import({ prevStep, params, set, setUrlParams }) {
       )}
       {!loading && templates.length >= 0 && (
         <>
-          {/* <h2>{t('Select the model into which the plan will be imported')}</h2>
+          {/* <h2>{t("selectModelIntoWhichPlanWillBeImported")}</h2>
 
           <CustomSelect
             key={`select-target-template`}
             options={templates}
-            placeholder={t('Select a template')}
+            placeholder={t("selectATemplate")}
             selectedOption={selectedTemplate}
             onSelectChange={(e) => handleSelectedTemplate(e)}
           /> */}
 
           {selectedTemplate && (
             <>
-              <h2>{t('File')}</h2>
+              <h2>{t("file")}</h2>
               <Dropzone
                 ref={dropZoneRef}
                 onDragOver={(e) => onDragHandler(e, 'over')}
@@ -165,7 +165,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
               >
                 <section>
                   <IoCloudUploadOutline size={64} />
-                  <h2>{t('Choose a file or drag it')}</h2>
+                  <h2>{t("chooseFileOrDragIt")}</h2>
                 </section>
                 <input
                   type="file"
@@ -188,7 +188,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleImport}
-                title={t("Import")}
+                title={t("import")}
                 position="end"
                 disabled={!(selectedTemplate !== null && file !== null)}
               />

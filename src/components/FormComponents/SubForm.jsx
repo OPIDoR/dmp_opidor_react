@@ -162,7 +162,7 @@ function SubForm({
               setEditedFragment(null);
               setShowNestedForm(true);
             }}
-            title={t("Add an element")}
+            title={t("addElement")}
             buttonColor="rust"
             position="start"
           ></CustomButton>

@@ -39,7 +39,7 @@ const BackToTop = () => {
         place="left"
         effect="solid"
         variant="info"
-        content={t('Back to top')}
+        content={t("backToTop")}
       />
       <BackToTopButton
         data-tooltip-id="back-to-top-button"

@@ -17,7 +17,7 @@ function CustomSpinner({ isOverlay = false }) {
         wrapperStyle={{}}
         wrapperClass="rotating-triangels-wrapper"
       />
-      {t('Loading...')}
+      {t("loading")}
     </div>
   );
 }

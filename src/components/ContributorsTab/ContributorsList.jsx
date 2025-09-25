@@ -28,10 +28,10 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
       <table className="table table-hover">
         <thead>
           <tr>
-            <th scope="col">{t("Name")}</th>
-            <th scope="col" className="sorter-false">{t("Affiliation")}</th>
-            <th scope="col" className="sorter-false">{t("Attributed roles (Associated research outputs)")}</th>
-            <th scope="col" className="sorter-false">{t("Actions")}</th>
+            <th scope="col">{t("name")}</th>
+            <th scope="col" className="sorter-false">{t("affiliation")}</th>
+            <th scope="col" className="sorter-false">{t("attributedRoles")}</th>
+            <th scope="col" className="sorter-false">{t("actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +66,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                       place="bottom"
                       effect="solid"
                       variant="info"
-                      content={t('Edit')}
+                      content={t("edit")}
                     />
                     <FaPenToSquare
                       data-tooltip-id="contributor-edit-button"
@@ -81,7 +81,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t('Delete')}
+                          content={t("delete")}
                         />
                         <FaXmark
                           data-tooltip-id="contributor-delete-button"
@@ -98,7 +98,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
           )) : (
             <tr>
               <td colSpan="5" style={{ textAlign: 'left' }}>
-                {t('No data available')}
+                {t("noData")}
               </td>
             </tr>
           )}

@@ -21,7 +21,7 @@ function CommentModal({ shown, hide, setAnswer, answerId, researchOutputId, plan
         }}
       >
         <InnerModal.Title id={`#notes-title-${questionId}-research-output-${researchOutputId}`}>
-          {t('Comments')} ({commentsNumber})
+          {t("comments")} ({commentsNumber})
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body style={{ borderRadius: '0 0 10px 10px' }}>

@@ -54,7 +54,7 @@ function RunsModal({ shown, hide, scriptsData, fragmentId }) {
     service.runScript(fragmentId, scriptName).then((res) => {
       if (res.data.needs_reload) {
         setFormData({ [fragmentId]: res.data.fragment });
-        setSuccess(t('New data is available in the form, you can close this window.'));
+        setSuccess(t("newDataAvailableInForm"));
       } else {
         setSuccess(res.data.message);
       }
@@ -90,7 +90,7 @@ function RunsModal({ shown, hide, scriptsData, fragmentId }) {
         }}
       >
         <InnerModal.Title>
-          {t('Tools')}
+          {t("tools")}
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body style={{ backgroundColor: "white" }}>

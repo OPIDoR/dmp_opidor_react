@@ -74,7 +74,7 @@ const Pagination = ({ items, onChangePage, initialPage = 1, pageSize = 9 }) => {
         </li>
         <li className={pager.currentPage === 1 ? "page-item" : ""}>
           <a className="page-link" onClick={() => setPage(pager.currentPage - 1)}>
-            {t("Previous")}...
+            {t("previous")}...
           </a>
         </li>
         {pager.pages.map((page, index) => (
@@ -86,7 +86,7 @@ const Pagination = ({ items, onChangePage, initialPage = 1, pageSize = 9 }) => {
         ))}
         <li className={pager.currentPage === pager.totalPages ? "page-item" : ""}>
           <a className="page-link" onClick={() => setPage(pager.currentPage + 1)}>
-            {t("Next")}...
+            {t("next")}...
           </a>
         </li>
         <li className={pager.currentPage === pager.totalPages ? "page-item" : ""}>
