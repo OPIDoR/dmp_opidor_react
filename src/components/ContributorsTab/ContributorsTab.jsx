@@ -47,7 +47,7 @@ function ContributorsTab({ planId, locale, readonly }) {
     const newContributorsList = [...contributors];
     setLoading(true);
     if (checkFragmentExists(contributors.map((c) => c.data), data, template.schema['unicity'])) {
-      setError(t('This record already exists.'));
+      setError(t("recordAlreadyExists"));
     } else {
       if (index !== null && fragmentId) {
         service.saveFragment(fragmentId, data)
@@ -124,7 +124,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           template={template}
           mainFormDataType={'none'}
           mainFormTopic={'standard'}
-          label={t('Edit: person or organisation')}
+          label={t("editPersonOrOrg")}
           readonly={readonly}
           show={show}
           handleSave={handleSave}
@@ -136,7 +136,7 @@ function ContributorsTab({ planId, locale, readonly }) {
             setShow(true);
             setIndex(null);
           }}
-          title={t("Add: person or organisation")}
+          title={t("addPersonOrOrg")}
           buttonColor="rust"
           position="start"
         ></CustomButton>
