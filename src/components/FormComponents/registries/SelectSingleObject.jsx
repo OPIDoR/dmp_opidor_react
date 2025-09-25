@@ -204,7 +204,7 @@ function SelectSingleObject({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("Select a registry")}
+                    placeholder={t("selectRegistry")}
                   />
                 </div>
               </div>
@@ -234,7 +234,7 @@ function SelectSingleObject({
                     place="bottom"
                     effect="solid"
                     variant="info"
-                    content={t('Add')}
+                    content={t("add")}
                   />
                   <FaPlus
                     data-tooltip-id="select-single-list-add-button"
@@ -274,7 +274,7 @@ function SelectSingleObject({
           <table style={{ marginTop: "20px" }} className="table">
             <thead>
               <tr>
-                <th scope="col">{t("Selected value")}</th>
+                <th scope="col">{t("selectedValue")}</th>
                 <th scope="col"></th>
               </tr>
             </thead>

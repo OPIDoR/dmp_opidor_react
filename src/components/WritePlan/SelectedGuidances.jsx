@@ -8,11 +8,11 @@ function SelectedGuidances({ selectedGuidances = [] }) {
     <>
       {selectedGuidances.length > 0 && (
         <div style={{ margin: '20px' }}>
-          <h3>{t("The following guidances apply to this research output:")}</h3>
+          <h3>{t("followingGuidancesApplyToThisResearchOutput")}</h3>
           <ul>
             {selectedGuidances.map((guidance) => (
               <li key={guidance.id}>
-                {guidance.title} ({t('provided by')} {guidance.orgName})
+                {guidance.title} ({t("providedBy")} {guidance.orgName})
                 <a href={`/guidance_group_export/${guidance.id}.pdf`} target="_blank" rel="noopener noreferrer">
                   <FaEye size={14} style={{ marginLeft: '5px' }} />
                 </a>

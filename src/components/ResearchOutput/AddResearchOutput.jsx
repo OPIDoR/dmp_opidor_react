@@ -55,14 +55,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     
     if (!displayedResearchOutput && !inEdition) {
       const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
-      setAbbreviation(`${t('RO')} ${maxOrder + 1}`);
+      setAbbreviation(`${t("ro")} ${maxOrder + 1}`);
       setTitle(`${t('Research output')} ${maxOrder + 1}`);
       setHasPersonalData(true);
     }
     if (!inEdition) {
       const pos = Math.max(...researchOutputs.map(({ order }) => order));
       const nextOrder = pos < researchOutputs.length ? researchOutputs.length + 1 : pos + 1;
-      setAbbreviation(`${t('RO')} ${nextOrder}`);
+      setAbbreviation(`${t("ro")} ${nextOrder}`);
       setTitle(`${t('Research output')} ${nextOrder}`);
       setHasPersonalData(true);
     }
@@ -141,7 +141,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
 
       setUrlParams({ research_output: displayedResearchOutput.id });
 
-      toast.success(t("Save was successful !"));
+      toast.success(t("saveSuccess"));
       return handleClose();
     }
 
@@ -160,7 +160,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     setResearchOutputs(res?.data?.research_outputs);
     setUrlParams({ research_output: res?.data?.created_ro_id });
 
-    toast.success(t("Research output successfully added."));
+    toast.success(t("addOutputSuccess"));
 
     const event = new CustomEvent('trigger-refresh-ro-data', {
       detail: { message: { roId: res?.data?.created_ro_id, planId: planId } },
@@ -185,40 +185,40 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     <div style={{ margin: "25px" }}>
       <div className="form-group">
         <Alert variant="info">
-          {t('You can create a new research output and display questions by selecting the type.')}
+          {t("canCreateNewResearchOutputAndDisplayQuestionsBySelectingType")}
         </Alert>
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t('Short name')}</label>
+          <label>{t("shortName")}</label>
         </div>
         <input
           value={abbreviation || ''}
           disabled={loading}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("add abbreviation")}
+          placeholder={t("addAbbreviation")}
           type="text"
           onChange={(e) => setAbbreviation(e.target.value)}
           maxLength="20"
         />
-        <small className="form-text text-muted">{t("Limited to 20 characters")}</small>
+        <small className="form-text text-muted">{t("limit20Chars")}</small>
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
-          <label>{t('Name')}</label>
+          <label>{t("name")}</label>
         </div>
         <input
           value={title || ''}
           disabled={loading}
           className={`form-control ${stylesForm.input_text}`}
-          placeholder={t("add title")}
+          placeholder={t("addTitle")}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label data-tooltip-id={typeTooltipId}>
-            {t('Type')}
+            {t("type")}
             <TooltipInfoIcon />
             <ReactTooltip
               id={typeTooltipId}
@@ -227,7 +227,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
               variant="info"
               content={<Trans
                 t={t}
-                defaults="You can find the different types of research outputs in the LEARN MORE menu."
+                i18nKey="learnMoreOutputTypes"
               />}
             />
           </label>
@@ -240,7 +240,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             color: 'var(--rust)'
           }}
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize([t('The choice of <strong>type</strong> for a research output conditions the display of questions specific to its management.<br /><strong>It is no longer possible to change the type of a research output once it has been added.</strong>')]),
+              __html: DOMPurify.sanitize([t("outputTypeWarning")]),
             }} />
         )}
         {typeOptions && (
@@ -257,7 +257,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       <div className="form-group">
         <div className={stylesForm.label_form}>
           <label data-tooltip-id={topicTooltipId}>
-            {t('Topic')}
+            {t("topic")}
             <TooltipInfoIcon />
             <ReactTooltip
               id={topicTooltipId}
@@ -285,21 +285,21 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       {type && displayPersonalData(type) && (
         <div className="form-group">
           <div className={stylesForm.label_form}>
-            <label>{t("Does your research output contain personal data?")}</label>
+            <label>{t("outputContainsPersonalData")}</label>
           </div>
           <div style={{
             fontSize: '14px',
             fontWeight: 400,
             marginBottom: '10px'
           }}>
-            <i>{t("If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.")}</i>
+            <i>{t("personalDataQuestionDisplayCondition")}</i>
           </div>
           <div className="form-check">
             <label className={stylesForm.switch}>
               <input type="checkbox" id="togBtn" checked={hasPersonalData} onChange={() => { setHasPersonalData(!hasPersonalData) }} />
               <div className={`${stylesForm.switchSlider} ${stylesForm.switchRound}`}>
-                <span className={stylesForm.switchOn}>{t('Yes')}</span>
-                <span className={stylesForm.switchOff}>{t('No')}</span>
+                <span className={stylesForm.switchOn}>{t("yes")}</span>
+                <span className={stylesForm.switchOff}>{t("no")}</span>
               </div>
             </label>
           </div>
@@ -308,7 +308,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
       <EndButton>
         {close && (
           <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }} disabled={loading}>
-            {t("Close")}
+            {t("close")}
           </Button>
         )}
         <Button variant="primary" onClick={handleSave} style={{ backgroundColor: "var(--rust)", color: "white", margin: '0 5px 0 5px' }} disabled={loading}>

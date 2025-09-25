@@ -26,14 +26,14 @@ function Driver({ locale = 'fr_FR', tourName, children, steps }) {
         allowKeyboardControl: true,
         stageRadius: 10,
         stagePadding: 10,
-        nextBtnText: t('Next'),
-        prevBtnText: t('Previous'),
-        doneBtnText: t('Finish'),
+        nextBtnText: t("next"),
+        prevBtnText: t("previous"),
+        doneBtnText: t("finish"),
         progressText: '{{current}} / {{total}}',
         steps,
         onPopoverRender: (popover) => {
           const ignoreBtn = document.createElement('button');
-          ignoreBtn.innerText = t('Ignore the guided tour');
+          ignoreBtn.innerText = t("ignoreGuidedTour");
           popover.footerButtons.prepend(ignoreBtn);
           ignoreBtn.addEventListener('click', () => driverRef?.current.destroy());
         },

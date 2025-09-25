@@ -9,19 +9,19 @@ function ActionSelection({ nextStep, set, params }) {
   const actions = [
     {
       id: 'create',
-      title: t('Create new plan'),
-      description: t('You create a new plan from a plan template proposed in DMP OPIDoR.'),
+      title: t("createNewPlan"),
+      description: t("createNewPlanFromTemplate"),
     },
     {
       id: 'import',
-      title: <>{t('Import an existing plan')} <span style={{ fontSize: '14px', fontWeight: 200 }}>({t('Only available for structured management plans')})</span></>,
-      description: t('You want to reuse information from an existing plan using a json file.')
+      title: <>{t("importAnExistingPlan")} <span style={{ fontSize: '14px', fontWeight: 200 }}>({t("onlyAvailableForStructuredManagementPlans")})</span></>,
+      description: t("reuseInfoFromExistingPlanUsingJson")
     }
   ];
 
   return (
     <div>
-      <h2>{t('Select the modality with which you wish to create your plan')}</h2>
+      <h2>{t("selectModalityToCreatePlan")}</h2>
       {
         actions.map(({ id, title, description }) => (
           <div

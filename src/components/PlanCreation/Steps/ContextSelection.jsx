@@ -15,19 +15,19 @@ function ContextSelection({ prevStep, nextStep, set, params }) {
   const categories = [
     {
       id: 'research_project',
-      title: t('For a research project'),
-      description: t('You are leading or participating in a research project, you are carrying out a research activity, you are preparing a doctorate.'),
+      title: t("forProject"),
+      description: t("youAreLeadingOrParticipating"),
     },
     {
       id: 'research_entity',
-      title: t('For a research entity'),
-      description: t('You administer a data analysis or processing platform, a bioinformatics platform, a research infrastructure, an observatory, a research unit, a laboratory.'),
+      title: t("forEntity"),
+      description: t("youAdministerPlatform"),
     }
   ];
 
   return (
     <div>
-      <h2>{t('Select the context in which you are developing your data management plan')}</h2>
+      <h2>{t("selectContext")}</h2>
       {
         categories.map(({ id, title, description }) => (
           <div

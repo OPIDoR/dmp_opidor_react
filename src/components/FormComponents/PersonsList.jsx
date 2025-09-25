@@ -30,7 +30,7 @@ function PersonsList({
             {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== "delete") && (
               <tr>
                 <th scope="col">{tableHeader}</th>
-                <th scope="col">{t("Roles")}</th>
+                <th scope="col">{t("roles")}</th>
               </tr>
             )}
           </thead>
@@ -49,7 +49,7 @@ function PersonsList({
                               place="bottom"
                               effect="solid"
                               variant="info"
-                              content={t('Edit')}
+                              content={t("edit")}
                             />
                             <FaPenToSquare
                               data-testid={`persons-list-row-edit-btn-${idx}`}
@@ -64,7 +64,7 @@ function PersonsList({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t('Delete')}
+                          content={t("delete")}
                         />
                         <FaXmark
                           data-testid={`persons-list-row-delete-btn-${idx}`}

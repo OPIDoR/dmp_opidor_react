@@ -37,18 +37,18 @@ function PlanCreation({ locale = 'en_GB' }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const actions = {
-    'import': t('Import an existing plan'),
-    'create': t('Create new plan'),
+    'import': t("importAnExistingPlan"),
+    'create': t("createNewPlan"),
   };
 
   const formats = {
-    'standard': t('DMP OPIDoR Format'),
-    'rda': t('RDA DMP Common Standard Format'),
+    'standard': t("dmpOpidorFormat"),
+    'rda': t("rdaDmpCommonStandardFormat"),
   };
 
   const context = {
-    'research_project': t('For a research project'),
-    'research_entity': t('For a research entity'),
+    'research_project': t("forProject"),
+    'research_entity': t("forEntity"),
   };
 
   const languages = {
@@ -61,7 +61,7 @@ function PlanCreation({ locale = 'en_GB' }) {
   const [steps, setSteps] = useState([]);
   const dataSteps = [
     {
-      label: t('Action selection'),
+      label: t("actionSelection"),
       component: <ActionSelection />,
       value: actions[params.action],
       set: (action) => setParams({
@@ -71,7 +71,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t('Context selection'),
+      label: t("contextSelection"),
       component: <ContextSelection />,
       value: context[params.researchContext],
       set: (researchContext) => setParams({
@@ -81,7 +81,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t('Language selection'),
+      label: t("languageSelection"),
       component: <LangSelection />,
       value: languages[params.templateLanguage],
       set: (templateLanguage) => setParams({
@@ -91,7 +91,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t('Template selection'),
+      label: t("templateSelection"),
       component: <TemplateSelection />,
       value: params.templateName,
       set: (selectedTemplate, templateName) => setParams({
@@ -102,7 +102,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create'],
     },
     {
-      label: t('Format selection'),
+      label: t("formatSelection"),
       component: <FormatSelection />,
       value: formats[params.format],
       set: (format) => setParams({
@@ -112,7 +112,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['import'],
     },
     {
-      label: t('Template selection'),
+      label: t("templateSelection"),
       component: <Import />,
       value: params.templateName,
       set: (selectedTemplate, templateName) => setParams({
@@ -164,7 +164,7 @@ function PlanCreation({ locale = 'en_GB' }) {
     handleClick={() => {
       return handleStep(currentStep - 1);
     }}
-    title={t("Go back to previous step")}
+    title={t("goBackToPreviousStep")}
     position="start"
   />);
 
@@ -183,7 +183,7 @@ function PlanCreation({ locale = 'en_GB' }) {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-12">
-          <h1>{t('Create a plan')}</h1>
+          <h1>{t("createPlan")}</h1>
           <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
             <Stepper
               activeStep={currentStep}

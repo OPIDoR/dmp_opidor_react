@@ -50,7 +50,7 @@ const CookieConsent = () => {
         place="right"
         effect="solid"
         variant="info"
-        content={t('Cookie preferences')}
+        content={t("cookiePreferences")}
       />
       <CookieButton
         data-tooltip-id="cookie-settings-button"

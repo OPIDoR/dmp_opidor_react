@@ -167,7 +167,7 @@ function GuidanceChoice({
    */
   const handleSaveChoice = async () => {
     if (countSelectedGuidances <= 0) {
-      return toast.error(t("Please select at least one recommendation"));
+      return toast.error(t("selectAtLeastOne"));
     }
 
     const selectedGuidancesIds = Object.keys(checkboxStates)
@@ -182,7 +182,7 @@ function GuidanceChoice({
       response = await postGuidanceGroups;
     } catch (error) {
       console.log(error);
-      return toast.error(t("An error occurred while saving the selected guidances"));
+      return toast.error(t("errorSavingSelectedGuidances"));
     }
 
     const { guidance_groups } = response.data;
@@ -201,7 +201,7 @@ function GuidanceChoice({
       behavior: 'smooth',
     });
 
-    toast.success(t("Registration was successful !"));
+    toast.success(t("registrationSuccess"));
   };
 
   const limitHasBeenReached = () => countSelectedGuidances() > GUIDANCES_GROUPS_LIMIT;
@@ -228,7 +228,7 @@ function GuidanceChoice({
         padding: '10px',
         cursor: 'not-allowed',
       }}>
-        {t('No guidances available')}
+        {t("noGuidancesAvailable")}
       </div>
     );
   }
@@ -257,7 +257,7 @@ function GuidanceChoice({
                   style={{ marginRight: '10px', color: 'var(--rust)' }}
                 />
                 <span style={{ color: 'var(--white)', marginTop: '3px' }}>{
-                  context === 'plan' ? t("Click here to select the guidance of your plan") : t("Click here to select the guidance of your research output")
+                  context === 'plan' ? t("selectGuidancePlan") : t("selectGuidanceOutput")
                 }</span>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
@@ -277,7 +277,7 @@ function GuidanceChoice({
             <div style={description}>
               <div style={{ textAlign: 'justify' }}>
                 <Trans
-                  defaults="You will find below a list of organizations offering recommendations and advice to guide you in writing your plan while respecting their data management policies. <bold>You can select up to 6 organizations</bold>. Then click to save your selection."
+                  i18nKey="guidanceListInfo"
                   components={{ br: <br />, bold: <strong /> }}
                 />
               </div>
@@ -292,7 +292,7 @@ function GuidanceChoice({
                       options={guidancesData.map((group) => ({ label: group.name, value: group.name }))}
                       selectedOption={selectedOrg ? { label: selectedOrg, value: selectedOrg } : null}
                       name="guidanceOrg"
-                      placeholder={t("Select an organisation")}
+                      placeholder={t("selectAnOrganisation")}
                     />
                   </div>
                   <div className="col-md-1" style={{ alignContent: 'center' }}>
@@ -302,7 +302,7 @@ function GuidanceChoice({
                     />
                   </div>
                   <div className="col-md-3" style={{ alignContent: 'center' }}>
-                    {t("Include topic")} ({topic})
+                    {t("includeTopic")} ({topic})
                   </div>
                   <div className="col-md-1" style={{ alignContent: 'center' }}>
                     <input type="checkbox" onChange={() => setIncludeTopic(!includeTopic)} checked={includeTopic} />
@@ -445,7 +445,7 @@ function GuidanceChoice({
                             </div>
                           </div>
                         </div>
-                      )) : t('No guidances available')
+                      )) : t("noGuidancesAvailable")
                   )}
                 </div>
 
@@ -453,11 +453,7 @@ function GuidanceChoice({
                   {!loading && !error && guidancesData && (
                     <CustomButton
                       title={
-                        limitHasBeenReached() ? (
-                          <Trans>
-                            The limit of {{ limit: GUIDANCES_GROUPS_LIMIT }} groups of recommendations has been reached
-                          </Trans>
-                        ) : t('Save')
+                        limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t("save")
                       }
                       buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
                       position="start"

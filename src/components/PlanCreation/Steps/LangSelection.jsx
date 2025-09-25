@@ -8,20 +8,20 @@ function LangSelection({ prevStep, nextStep, set, params }) {
 
   const languages = [
     {
-      label: t('Français'),
+      label: t("francais"),
       value: 'fr-FR',
-      description: t('The template will be in French'),
+      description: t("templateWillBeInFrench"),
     },
     {
-      label: t('English (GB)'),
+      label: t("englishGb"),
       value: 'en-GB',
-      description: t('The template will be in English'),
+      description: t("templateWillBeInEnglish"),
     },
   ];
 
   return (
     <div>
-      <h2>{t('Select plan language')}</h2>
+      <h2>{t("selectPlanLanguage")}</h2>
       {
         languages.map(({ label, value, description }, index) => (
           <div

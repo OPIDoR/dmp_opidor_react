@@ -135,7 +135,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
           }}
         >
           <div className={styles.nav_title}>
-            <MdAddCircleOutline size={18} style={{ marginRight: '5px' }} /> {t("Create")}
+            <MdAddCircleOutline size={18} style={{ marginRight: '5px' }} /> {t("create")}
           </div>
         </button>
       </AccordionBody>

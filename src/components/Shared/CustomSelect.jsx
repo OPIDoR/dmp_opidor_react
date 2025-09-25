@@ -70,7 +70,7 @@ function CustomSelect({
       isDisabled={isDisabled}
       isClearable={isClearable}
       isSearchable={isSearchable}
-      noOptionsMessage={() => t('No results found.')}
+      noOptionsMessage={() => t("noResultsFound")}
     />
   );
 }

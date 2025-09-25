@@ -20,10 +20,10 @@ function ResearchOutputForm({ planId, handleClose, edit = false }) {
         <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
       ) : (
         <Tabs className={`mb-3 ${styles.modal_tabs}`} defaultActiveKey={"create"} id="create-edit-research-output-tabs" fill>
-          <Tab eventKey={"create"} title={t("Create")} tabClassName={styles.modal_tab} style={{ flex: 1, width: '800px'}}>
+          <Tab eventKey={"create"} title={t("create")} tabClassName={styles.modal_tab} style={{ flex: 1, width: '800px'}}>
             <AddResearchOutput planId={planId} handleClose={handleClose} inEdition={edit} />
           </Tab>
-          <Tab eventKey="import" title={t("Import")} tabClassName={styles.modal_tab} style={{ flex: 1, width: '800px' }}>
+          <Tab eventKey="import" title={t("import")} tabClassName={styles.modal_tab} style={{ flex: 1, width: '800px' }}>
             <ImportResearchOutput planId={planId} handleClose={handleClose} />
           </Tab>
         </Tabs>
