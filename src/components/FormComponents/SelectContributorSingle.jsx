@@ -161,7 +161,7 @@ function SelectContributorSingle({
    */
   const handleSave = (data) => {
     if (checkFragmentExists(persons, data, template.schema['unicity'])) {
-      setError(t('This record already exists.'));
+      setError(t("recordAlreadyExists"));
     } else {
       if (index !== null) {
         service.saveFragment(editedPerson.id, data).then((res) => {
@@ -263,7 +263,7 @@ function SelectContributorSingle({
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t('Add')}
+                content={t("add")}
               />
               <FaPlus
                 data-tooltip-id="select-contributor-single-add-button"
@@ -283,7 +283,7 @@ function SelectContributorSingle({
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
             templateToString={template?.schema?.to_string}
-            tableHeader={t('Selected value')}
+            tableHeader={t("selectedValue")}
             overridable={overridableRole}
             readonly={readonly}
             isRoleConst={isRoleConst}
@@ -297,7 +297,7 @@ function SelectContributorSingle({
             template={template}
             mainFormDataType={dataType}
             mainFormTopic={topic}
-            label={index !== null ? t('Edit: person or organisation') : t('Add: person or organisation')}
+            label={index !== null ? t("editPersonOrOrg") : t("addPersonOrOrg")}
             readonly={readonly}
             show={show}
             handleSave={handleSave}

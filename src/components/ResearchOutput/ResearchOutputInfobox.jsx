@@ -40,7 +40,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
             {!readonly && (
               <>
                 <Tooltip anchorSelect="#editBtn" place="bottom">
-                  {t("Edit")}
+                  {t("edit")}
                 </Tooltip>
                 <button
                   type="button"
@@ -56,7 +56,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
             {!readonly && (
               <>
                 <Tooltip anchorSelect="#duplicateBtn" place="bottom">
-                  {t("Duplicate")}
+                  {t("duplicate")}
                 </Tooltip>
                 <button
                   type="button"
@@ -72,7 +72,7 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
             {!readonly && researchOutputs.length > 0 && (
               <>
                 <Tooltip anchorSelect="#deleteBtn" place="bottom">
-                  {t("Delete")}
+                  {t("delete")}
                 </Tooltip>
                 <button
                   type="button"
@@ -91,20 +91,20 @@ function ResearchOutputInfobox({ handleEdit, handleDelete, handleDuplicate, read
       <Card.Body>
         <ul>
           <li>
-            {t('Short name')} : <strong>{displayedResearchOutput.abbreviation}</strong>
+            {t("shortName")} : <strong>{displayedResearchOutput.abbreviation}</strong>
           </li>
           <li>
-            {t('Name')} : <strong>{displayedResearchOutput.title}</strong>
+            {t("name")} : <strong>{displayedResearchOutput.title}</strong>
           </li>
           <li>
-            {t('Type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
+            {t("type")} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
           <li>
-            {t('Topic')} : <strong>{t(displayedResearchOutput.topic)}</strong>
+            {t("topic")} : <strong>{t(displayedResearchOutput.topic)}</strong>
           </li>
           {displayedResearchOutput?.type && displayPersonalData(displayedResearchOutput.type) && (
             <li>
-              {t('Contains personal data')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('Yes') : t('No')}</strong>
+              {t("containsPersonalData")} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t("yes") : t("no")}</strong>
             </li>
           )}
         </ul>

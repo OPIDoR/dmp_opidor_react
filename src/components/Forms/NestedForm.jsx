@@ -66,11 +66,11 @@ function NestedForm({ propName, data, template, mainFormDataType, mainFormTopic,
           </form>
           <div className={styles.nestedFormFooter}>
             <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
-              {t("Cancel")}
+              {t("cancelLabel")}
             </Button>
             {!readonly && (
               <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
-                {t('Save')}
+                {t("save")}
               </Button>
             )}
           </div>

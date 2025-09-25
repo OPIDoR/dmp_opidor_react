@@ -62,7 +62,7 @@ export default function NewsPage({ locale, size }) {
                 variant="primary"
                 key={`read-button-${n.id}`}
                 className="float-end"
-              >{t('Read article')}</Button>
+              >{t("readArticle")}</Button>
             </Card.Footer>
           </Card>
         </Col>

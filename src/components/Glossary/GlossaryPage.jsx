@@ -70,7 +70,7 @@ export default function HelpPage({ locale, directusUrl }) {
   }));
 
   if (!terms || terms.length === 0) {
-    return (<Alert variant="warning">{t('Oh, it seems that this glossary page is still under development and does not yet contain any content.')}</Alert>)
+    return (<Alert variant="warning">{t("glossaryUnderDevelopment")}</Alert>)
   }
 
   terms.forEach(({ term, description }) => {
@@ -127,7 +127,7 @@ export default function HelpPage({ locale, directusUrl }) {
 
   return (
     <div>
-      <h1>{t('Glossary')}</h1>
+      <h1>{t("glossary")}</h1>
       {displayAlphabet()}
       <GlossaryContent>
         {Object.keys(letters).map((letter, index) => (

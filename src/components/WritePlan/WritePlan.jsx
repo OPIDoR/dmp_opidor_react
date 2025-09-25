@@ -124,11 +124,11 @@ function WritePlan({
               <Card style={{ width: '800px' }}>
                 <Card.Body>
                   {readonly ?
-                    <h2 style={{ textAlign: 'center' }}>{t('Your plan does not yet include any research output')}</h2>
+                    <h2 style={{ textAlign: 'center' }}>{t("planDoesNotYetIncludeAnyResearchOutput")}</h2>
                     : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
                       <Trans
                         t={t}
-                        defaults="Add a research output"
+                        i18nKey="addAResearchOutput"
                         components={[<strong>research output</strong>]}
                       />
                       <TooltipInfoIcon />
@@ -139,7 +139,7 @@ function WritePlan({
                         variant="info"
                         content={<Trans
                           t={t}
-                          defaults="<0>Research output</0> covers any type of research data produced in the course of a scientific research project or activity: dataset, software and code, workflow, protocol, physical object..."
+                          i18nKey="researchOutputDefinition"
                           components={[<strong>Research output</strong>]}
                         />}
                       />

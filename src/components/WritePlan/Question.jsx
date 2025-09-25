@@ -173,7 +173,7 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("Guidance")}
+                          content={t("guidance")}
                         />
                         <div
                           data-tooltip-id="guidanceTip"
@@ -200,7 +200,7 @@ function Question({
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("Comments")}
+                        content={t("comments")}
                       />
                       <div
                         data-tooltip-id="commentTip"
@@ -226,7 +226,7 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t('List of customized forms')}
+                          content={t("listOfCustomizedForms")}
                         />
                         <div
                           data-tooltip-id="form-changer-show-button"
@@ -253,7 +253,7 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("Tools")}
+                          content={t("tools")}
                         />
                         <div
                           data-tooltip-id="scriptTip"
@@ -327,7 +327,7 @@ function Question({
                 )}
                 {isQuestionOpened ? (
                   <>
-                    {readonly && !answer?.id ? (<Badge variant="primary">{t('Question not answered.')}</Badge>) :
+                    {readonly && !answer?.id ? (<Badge variant="primary">{t("questionNotAnswered")}</Badge>) :
                       (<DynamicForm
                         fragmentId={answer?.fragment_id}
                         className={question?.madmp_schema?.classname}

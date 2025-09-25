@@ -61,7 +61,7 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t('Delete')}
+                content={t("delete")}
               />
               <FaXmark
                 data-tooltip-id={`input-text-array-del-button-${index}`}
@@ -79,7 +79,7 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
       {!readonly && (
         <CustomButton
           handleClick={() => append('')}
-          title={t("Add an element")}
+          title={t("addElement")}
           buttonColor="rust"
           position="start"
         ></CustomButton>

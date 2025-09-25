@@ -136,7 +136,7 @@ function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
         }}
       >
         <InnerModal.Title>
-          {t('Guidance')}
+          {t("guidance")}
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body>
