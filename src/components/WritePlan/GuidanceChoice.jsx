@@ -78,7 +78,7 @@ function GuidanceChoice({
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [planId]);
+  }, [planId, researchOutputId]);
 
   useEffect(() => {
     if (guidancesData.length === 0) return;
