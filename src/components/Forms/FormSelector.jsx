@@ -41,7 +41,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
     })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [classname, dataType, displayedTemplate])
+  }, [classname, dataType])
 
   const handleSelectTemplate = (e) => {
     setSelectedTemplate(e.object);
