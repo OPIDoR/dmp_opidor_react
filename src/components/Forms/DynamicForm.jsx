@@ -168,7 +168,7 @@ function DynamicForm({
       {!error && template && (
         <>
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} />}
-          {!readonly && !fragmentId && <FormSelector
+          {!readonly && !fragmentId && template.topics.includes('standard') && <FormSelector
             classname={className}
             dataType={dataType}
             topic={topic}
