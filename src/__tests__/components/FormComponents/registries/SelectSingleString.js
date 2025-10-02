@@ -32,7 +32,7 @@ const props = {
   propName: 'mySelectSingleString',
   category: ['SingleRegistryCategory'],
   dataType: 'none',
-  topic: 'standard',
+  topic: 'generic',
 }
 
 const mockedRegistriesData = [

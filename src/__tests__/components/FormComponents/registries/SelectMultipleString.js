@@ -32,7 +32,7 @@ const props = {
   header: 'tableHeader',
   tooltip: 'my tooltip',
   category: ['MultipleRegistryCategory'],
-  topic: 'standard',
+  topic: 'generic',
 }
 
 const mockedRegistriesData = [

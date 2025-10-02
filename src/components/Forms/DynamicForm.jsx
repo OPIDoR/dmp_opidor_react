@@ -44,7 +44,7 @@ function DynamicForm({
 
   const emptyDefaults = template ? generateEmptyDefaults(template.schema.properties) : {};
   const dataType = displayedResearchOutput?.configuration?.dataType || 'none';
-  const topic = displayedResearchOutput?.topic || 'standard';
+  const topic = displayedResearchOutput?.topic || 'generic';
 
   useEffect(() => {
     setLoading(true);
@@ -168,7 +168,7 @@ function DynamicForm({
       {!error && template && (
         <>
           {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} />}
-          {!readonly && !fragmentId && template.topics.includes('standard') && <FormSelector
+          {!readonly && !fragmentId && template.topics.includes('generic') && <FormSelector
             classname={className}
             dataType={dataType}
             topic={topic}

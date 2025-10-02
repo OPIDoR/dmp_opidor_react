@@ -31,7 +31,7 @@ const props = {
   propName: 'mySelectSingleObject',
   tooltip: 'my tooltip',
   category: ['SingleRegistryCategory'],
-  topic: 'standard',
+  topic: 'generic',
 }
 
 const mockedRegistriesData = [

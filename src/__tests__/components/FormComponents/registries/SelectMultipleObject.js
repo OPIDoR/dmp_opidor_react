@@ -33,7 +33,7 @@ const props = {
   propName: 'mySelectMultipleObject',
   tooltip: 'my tooltip',
   category: ['MultipleRegistryCategory'],
-  topic: 'standard',
+  topic: 'generic',
 }
 
 const mockedRegistriesData = [
