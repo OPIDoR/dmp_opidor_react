@@ -66,7 +66,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     };
 
     fetchTemplates(params);
-  }, [params.templateLanguage, setPlanTemplates, t]);
+  }, [params.researchContext, params.templateLanguage, setPlanTemplates, t]);
 
   /**
    * The function checks if a template ID exists in a context object and logs it, or displays an error message if it doesn't exist.
