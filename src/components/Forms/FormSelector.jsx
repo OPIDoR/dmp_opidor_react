@@ -57,7 +57,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
 
   return (
     <>
-      {availableTemplates.length > 0 && (
+      {availableTemplates.length > 1 && (
         <>
           {formSelector.shown && (
             <div className={styles.container} style={{ position: 'relative' }}>
