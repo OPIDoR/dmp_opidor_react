@@ -8,7 +8,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
 
   let currentTemplatesRes;
   try {
-    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.templateLanguage);
+    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.researchContext, opts.templateLanguage);;
   } catch (error) {
     throw new Error(error)
   }
@@ -23,7 +23,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
 
   let orgsRes;
   try {
-    orgsRes = await planCreation.getOrgs(opts.templateLanguage);
+    orgsRes = await planCreation.getOrgs(opts.researchContext, opts.templateLanguage);
   } catch (error) {
     throw new Error(error)
   }
@@ -34,7 +34,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
     let orgTemplatesRes;
 
     try {
-      orgTemplatesRes = await planCreation.getTemplatesByOrgId(org);
+      orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, opts.researchContext);
     } catch (error) {
       throw new Error(error)
     }

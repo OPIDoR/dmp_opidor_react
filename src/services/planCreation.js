@@ -6,7 +6,7 @@ import createHeaders from "../utils/HeaderBuilder";
  * @param token - The `token` parameter is not used in the `getDefaultModel` function. It is not necessary for the function to work properly.
  * @returns an object with a `data` property that contains the `dataDefaultModel` value.
  */
-const getRecommendedTemplate = async (locale) => axios.get(`/template_options/recommend?locale=${locale}`);
+const getRecommendedTemplate = async (researchContext, locale) => axios.get(`/template_options/recommend?context=${researchContext}&locale=${locale}`);
 
 /**
  * This is an asynchronous function that retrieves data for an other organism by ID and name using a token and context.
@@ -14,7 +14,7 @@ const getRecommendedTemplate = async (locale) => axios.get(`/template_options/re
  * @returns An object with a "data" property, which contains the data for the "dataOtherOrganismeById" variable.
  */
 
-const getTemplatesByOrgId = async (orgData) => {
+const getTemplatesByOrgId = async (orgData, researchContext) => {
   const { id, name } = orgData;
 
   return axios.get('/template_options', {
@@ -23,37 +23,18 @@ const getTemplatesByOrgId = async (orgData) => {
       'plan[research_org_id][name]': name,
       'plan[research_org_id][sort_name]': name,
       'plan[funder_id]': 'none',
+      'plan[context]': researchContext,
     },
   });
 }
 
-/**
- * This function retrieves data for a funder by their ID and name.
- * @param obj - An object containing the id and name of the funder being requested.
- * @param context - The context parameter is a string that specifies the context in which the funder is being requested. It could be a project, a grant
- * application, or any other relevant context.
- * @returns An object with a "data" property that contains the dataFunderById variable.
- */
-export async function getTemplatesByFunderId(funderData, researchContext) {
-  const { id, name } = funderData;
-
-  return axios.get('/template_options', {
-    params: {
-      'plan[research_org_id]': 'none',
-      'plan[funder_id][id]': id,
-      'plan[funder_id][name]': name,
-      'plan[funder_id][sort_name]': name,
-      'plan[context]': researchContext,
-    }
-  });
-}
 
 /**
  * This function returns a mock data object for an organism.
  * @param token - The `token` parameter is not used in the `getOrganisme` function. It is not necessary for the function to work properly.
  * @returns an object with a "data" property that contains the dataOrganisme variable.
  */
-const getOrgs = async (templateLanguage) => axios.get(`/orgs/list?locale=${templateLanguage}`);
+const getOrgs = async (researchContext, templateLanguage) => axios.get(`/orgs/list?context=${researchContext}&locale=${templateLanguage}&type=org`);
 
 /**
  * Send choosen templateId to the back for the plan creation,
@@ -75,7 +56,6 @@ const importPlan = async (formData) => axios.post('/plans/import', formData, {
 export default {
   getRecommendedTemplate,
   getTemplatesByOrgId,
-  getTemplatesByFunderId,
   getOrgs,
   createPlan,
   importPlan,
