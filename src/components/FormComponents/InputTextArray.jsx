@@ -49,7 +49,7 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
                 type="text"
                 className="form-control"
                 style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
-                placeholder={placeholder ? `${t('e.g.')} ${placeholder}` : null}
+                placeholder={placeholder ? `${t('eg')} ${placeholder}` : null}
                 readOnly={readonly === true}
               />
             </div>

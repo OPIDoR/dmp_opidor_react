@@ -226,7 +226,7 @@ function CommentList({
         <div>
           {comments.length === 0 && (
             <NavBodyText>
-              <CommentsCard style={{ margin: 0 }}>{t('There don\'t seem to be any comments, so add your own!')}</CommentsCard>
+              <CommentsCard style={{ margin: 0 }}>{t('noCommentsAddYourOwn')}</CommentsCard>
             </NavBodyText>
           )}
           <ScrollNav>

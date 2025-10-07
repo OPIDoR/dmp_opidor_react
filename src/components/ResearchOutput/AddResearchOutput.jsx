@@ -56,14 +56,14 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
     if (!displayedResearchOutput && !inEdition) {
       const maxOrder = researchOutputs.length > 0 ? Math.max(...researchOutputs.map(ro => ro.order)) : 0;
       setAbbreviation(`${t("ro")} ${maxOrder + 1}`);
-      setTitle(`${t('Research output')} ${maxOrder + 1}`);
+      setTitle(`${t('researchOutput')} ${maxOrder + 1}`);
       setHasPersonalData(true);
     }
     if (!inEdition) {
       const pos = Math.max(...researchOutputs.map(({ order }) => order));
       const nextOrder = pos < researchOutputs.length ? researchOutputs.length + 1 : pos + 1;
       setAbbreviation(`${t("ro")} ${nextOrder}`);
-      setTitle(`${t('Research output')} ${nextOrder}`);
+      setTitle(`${t('researchOutput')} ${nextOrder}`);
       setHasPersonalData(true);
     }
 
@@ -110,7 +110,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
 
     if (!type || type.length === 0) {
       setLoading(false);
-      return toast.error(t("A 'type' is required to create a research output."));
+      return toast.error(t("typeRequiredToCreateResearchOutput"));
     }
 
     const dataType = researchOutputTypeToDataType(type);
@@ -319,7 +319,7 @@ function AddResearchOutput({ planId, handleClose, inEdition = false, close = tru
             role="status"
             aria-hidden="true"
           />)}
-          {t(inEdition ? "Save" : "Add")}
+          {inEdition ? t("save") : t("add")}
         </Button>
       </EndButton>
     </div>

@@ -53,7 +53,7 @@ function GeneralInfo({
     try {
       response = await generalInfo.saveIsTestPlan(planId, checked);
     } catch (error) {
-      let errorMessage = getErrorMessage(error) || t("An error occurred during the change of status of the plan");
+      let errorMessage = getErrorMessage(error) || t("planStatusChangeError");
       return toast.error(errorMessage);
     }
 

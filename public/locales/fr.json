@@ -258,5 +258,10 @@
   "includeTopic": "Inclure thématique",
   "selectAnOrganisation": "Sélectionnez un organisme",
   "followingGuidancesApplyToThisResearchOutput": "Les recommandations suivantes s'appliquent à ce produit de recherche :",
-  "providedBy": "fourni par"
+  "providedBy": "fourni par",
+  "importError": "Une erreur s'est produite lors de l'import !",
+  "selectValueFromList": "Sélectionnez une valeur dans la liste",
+  "noStaticPageFound": "Aucune page statique trouvée !",
+  "filterAvailableGuidances": "Vous pouvez filtrer les recommandations disponibles en fonction de la thématique liée à votre produit de recherche ou à l'organisme qui les met à disposition.",
+  "planStatusChangeError" : "Une erreur s'est produite lors du changement de statut du plan"
 }

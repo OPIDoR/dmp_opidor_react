@@ -129,9 +129,9 @@ function SectionsContent({ planId, readonly }) {
           setResearchOutputs(research_outputs);
           setUrlParams({ research_output: created_ro_id });
 
-          toast.success(t("Research output successfully imported."));
+          toast.success(t("importOutputSuccess"));
         }).catch(() => {
-          return toast.error(t('An error occured during import !'));
+          return toast.error(t('importError'));
         });
       }
     });

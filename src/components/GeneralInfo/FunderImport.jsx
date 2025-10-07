@@ -96,8 +96,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
     if (selectedFunder?.apiClient && !isClassic) {
       return Swal.fire({
-        html: t('<p>The data from the <strong>{{title}}</strong> have been imported into the plan.</p><p><strong>Would you like to share your plan with {{label}}</strong></p>', { title: selectedProject.title, label: selectedFunder.label }),
-        footer: `<div style="font-size: 16px">${t('If not, consider doing it later in the <strong>"Share"</strong> tab')}</div>`,
+        html: t('importedDataSharePlanPrompt', { title: selectedProject.title, label: selectedFunder.label }),
+        footer: `<div style="font-size: 16px">${t('considerDoingItLaterInShareTab')}</div>`,
         icon: 'info',
         width: '500px',
         showCancelButton: true,

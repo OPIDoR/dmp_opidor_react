@@ -284,7 +284,7 @@ function GuidanceChoice({
               {!loading && !error && guidancesData && context === 'research_output' && (
                 <div className="row" style={{ padding: '10px' }}>
                   <div className="col-md-12" style={{ padding: '10px 0', color: 'var(--rust)' }}>
-                    {t('Below you can filter available guidances with the topic linked to your research output or the org making them available.')}
+                    {t('filterAvailableGuidances')}
                   </div>
                   <div className={`col-md-7 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
                     <CustomSelect
