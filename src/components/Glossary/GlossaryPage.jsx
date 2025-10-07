@@ -134,7 +134,7 @@ export default function HelpPage({ locale, directusUrl }) {
           <ul id={`glossary-letter-${letter}`} key={letter}>
             <div className={`letter ${activeLetter === letter ? 'active' : null}`}>
               {letter}
-              <span>{Object.entries(letters[letter]).length === 0 && <>({t('There don\'t seem to be any terms for this letter.')})</>}</span>
+              <span>{Object.entries(letters[letter]).length === 0 && <>({t('noTermsForLetter')})</>}</span>
             </div>
             {
               Object.entries(letters[letter]).length > 0 && (

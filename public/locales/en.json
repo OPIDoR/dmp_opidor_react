@@ -91,6 +91,7 @@
   "commentSuccess": "Comment sent successfully.",
   "deleteOutputSuccess": "Research output was successfully deleted.",
   "addOutputSuccess": "Research output successfully added.",
+  "importOutputSuccess" : "Research output successfully imported.",
   "selectRegistry": "Select a registry",
   "selectedRegistry": "Selected registry",
   "selectRole": "Select a role from list",
@@ -260,5 +261,10 @@
   "includeTopic": "Include topic",
   "selectAnOrganisation": "Select an organisation",
   "followingGuidancesApplyToThisResearchOutput": "The following guidances apply to this research output:",
-  "providedBy": "provided by"
+  "providedBy": "provided by",
+  "importError": "An error occured during import !",
+  "selectValueFromList": "Select a value from the list",
+  "noStaticPageFound": "No static page found !",
+  "filterAvailableGuidances": "Below you can filter available guidances with the topic linked to your research output or the org making them available.",
+  "planStatusChangeError" : "An error occurred during the change of status of the plan"
 }

@@ -1,7 +1,7 @@
 
 const defaultConfirmConfig = (t) => ({
-  title: t("Are you sure ?"),
-  text: t("Are you sure you want to delete this item?"),
+  title: t("confirm"),
+  text: t("confirmDeleteItem"),
   icon: "warning",
   showCancelButton: true,
   confirmButtonColor: "#2c7dad",
@@ -11,8 +11,8 @@ const defaultConfirmConfig = (t) => ({
 });
 
 const defaultDeleteErrorConfig = (t, recordName) =>  ({
-  title: t("Error while deleting"),
-  message: t("A problem has occurred while deleting the {{record}}", { record: t(recordName) }),
+  title: t("deleteError"),
+  message: t("deleteRecordError", { record: t(recordName) }),
   icon: 'error',
 });
 

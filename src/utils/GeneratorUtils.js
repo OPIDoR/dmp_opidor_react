@@ -59,10 +59,10 @@ export function createOptions(registryValues, locale) {
  */
 export function createRegistryPlaceholder(registriesLength, multipleRegistry, overridable, registryType, t) {
   let placeholder = '';
-  placeholder += registriesLength > 1 ? t('Then select ') : t('Select ')
-  placeholder += multipleRegistry ? t('one or multiple values from the list') :  t('a value from the list')
+  placeholder += registriesLength > 1 ? t('thenSelect') : t('select')
+  placeholder += multipleRegistry ? t('selectMultiple') :  t('selectOne')
   if (overridable) {
-    placeholder += registryType === 'complex' ? t(' or create a new one by clicking on +') :  t(' or type a new one');
+    placeholder += registryType === 'complex' ? t('createNewPlus') :  t('createNew');
   }
   return placeholder;
 }

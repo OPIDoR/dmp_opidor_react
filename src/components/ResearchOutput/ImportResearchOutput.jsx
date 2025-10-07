@@ -68,11 +68,11 @@ function ImportResearchOutput({ planId, handleClose }) {
       // setLoadedSectionsData({ [currentResearchOutput.template.id]: currentResearchOutput.template })
       setUrlParams({ research_output: created_ro_id });
 
-      toast.success(t("Research output successfully imported."));
+      toast.success(t("importOutputSuccess"));
       return handleClose();
     }).catch(() => {
       setLoading(false);
-      return toast.error(t('An error occured during import !'));
+      return toast.error(t('importError'));
     })
   };
 
@@ -85,7 +85,7 @@ function ImportResearchOutput({ planId, handleClose }) {
           </div>
           <div className="form-group">
             <Alert variant="info">
-              {t('You can reuse a research output\'s information from plans you own or you are coowner (test plans excluded).')}
+              {t('canReuseResearchOutputInfoFromPlansYouOwnOrCoown')}
             </Alert>
           </div>
           <CustomSelect
@@ -93,7 +93,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             options={plans}
             selectedOption={selectedPlan}
             isDisabled={loading}
-            placeholder={t("Select a value from the list")}
+            placeholder={t("selectValueFromList")}
           />
         </div>
       ) : (
@@ -114,7 +114,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             options={selectedPlan.researchOutputs}
             selectedOption={selectedResearchOutput}
             isDisabled={loading}
-            placeholder={t("Select a value from the list")}
+            placeholder={t("selectValueFromList")}
           />
         </div>
       )}

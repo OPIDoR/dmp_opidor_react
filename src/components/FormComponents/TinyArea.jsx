@@ -69,7 +69,7 @@ function TinyArea({
               onEditorChange={(newText) => onChange(newText)}
               licenseKey='gpl'
               init={{
-                placeholder: placeholder ? `${t('e.g.')} ${placeholder}` : null,
+                placeholder: placeholder ? `${t('eg')} ${placeholder}` : null,
                 statusbar: true,
                 menubar: false,
                 toolbar: 'bold italic underline | fontfamily fontsize | fontsizeselect forecolor | alignleft aligncenter alignright alignjustify | subscript superscript | bullist numlist indent outdent | link | table | charmap',
