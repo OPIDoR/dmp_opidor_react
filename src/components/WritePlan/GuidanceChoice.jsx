@@ -47,7 +47,6 @@ function GuidanceChoice({
   const [isOpen, setIsOpen] = useState(false);
   const {
     setCurrentOrg,
-    currentOrg,
   } = useContext(GlobalContext);
   const guidancesRef = useRef(null);
 
@@ -57,37 +56,35 @@ function GuidanceChoice({
   useEffect(() => {
     context === 'plan' && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     const fetchGuidanceGroups = context === 'plan' ? guidances.getPlanGuidanceGroups(planId) : guidances.getResearchOutputGuidanceGroups(researchOutputId)
-    const orgName = currentOrgName || currentOrg.name;
 
     setLoading(true);
     fetchGuidanceGroups
       .then((res) => {
-        let guidance_groups = [];
         const { data } = res.data;
 
-        const orgGuidances = data.filter(({ name }) => name.toLowerCase() === orgName.toLowerCase());
-        const selectedGuidances = sortGuidances(data.filter(({ important, name }) => important === true && name.toLowerCase() !== orgName.toLowerCase()));
-        const unselectedGuidances = sortGuidances(data.filter(({ important, name }) => important === false && name.toLowerCase() !== orgName.toLowerCase()));
+        const orgsWithSelectedGuidances = sortGuidances(data.filter(({ important }) => important === true));
+        const orgsWithUnselectedGuidances = sortGuidances(data.filter(({ important }) => important === false));
 
-        guidance_groups = [...selectedGuidances, ...orgGuidances, ...unselectedGuidances];
+        if (setSelectedGuidances) setSelectedGuidances(formatSelectedGuidances(orgsWithSelectedGuidances));
+        setGuidancesData([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
 
-        setSelectedGuidances(formatSelectedGuidances(selectedGuidances));
-        setGuidancesData(guidance_groups);
-        const states = handleGuidanceGroups(guidance_groups);
+        const states = handleGuidanceGroups([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
         setCheckboxStates(states);
       })
-      .catch((error) => setError(error))
+      .catch((error) => {setError(error)})
       .finally(() => setLoading(false));
   }, [planId, researchOutputId]);
 
   useEffect(() => {
     if (guidancesData.length === 0) return;
-    let filtered = [...guidancesData]
-    if (includeTopic) {
-      filtered = filtered.filter((org) => org.guidance_groups.find((gg) => gg.topics.includes(topic)));
-    }
-    if (selectedOrg !== null) {
-      filtered = filtered.filter((group) => group.name === selectedOrg);
+    let filtered = [...guidancesData];
+    if(context === 'research_output'){
+      if (includeTopic) {
+        filtered = filtered.filter((org) => org.guidance_groups.find((gg) => gg.topics.includes(topic)));
+      }
+      if (selectedOrg !== null) {
+        filtered = filtered.filter((group) => group.name === selectedOrg);
+      }
     }
     setFilteredGuidancesData(filtered);
   }, [guidancesData, selectedOrg, includeTopic]);
@@ -187,11 +184,11 @@ function GuidanceChoice({
 
     const { guidance_groups } = response.data;
 
-    const selectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
-    const unselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
+    const orgsWithSelectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
+    const orgsWithUnselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
 
-    setSelectedGuidances(formatSelectedGuidances(selectedGuidances));
-    setGuidancesData([...selectedGuidances, ...unselectedGuidances]);
+    setSelectedGuidances(formatSelectedGuidances(orgsWithSelectedGuidances));
+    setGuidancesData([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
 
     const states = handleGuidanceGroups(guidance_groups);
     setCheckboxStates(states);
