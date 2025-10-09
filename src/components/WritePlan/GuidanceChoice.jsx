@@ -190,6 +190,8 @@ function GuidanceChoice({
       top: 0,
       behavior: 'smooth',
     });
+    setSelectedOrg(null);
+    setIncludeTopic(false);
 
     toast.success(t("registrationSuccess"));
   };
