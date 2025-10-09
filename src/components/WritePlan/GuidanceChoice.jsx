@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -9,7 +9,6 @@ import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { TbBulbFilled } from "react-icons/tb";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-import { GlobalContext } from '../context/Global.jsx';
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import * as formStyles from '../assets/css/form.module.css';
 
@@ -33,8 +32,6 @@ function GuidanceChoice({
   researchOutputId,
   setSelectedGuidances = null,
   topic = null,
-  currentOrgId = null,
-  currentOrgName = null,
   context = 'research_output' }) {
   const { t } = useTranslation();
   const [guidancesData, setGuidancesData] = useState([]);
@@ -45,16 +42,12 @@ function GuidanceChoice({
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    setCurrentOrg,
-  } = useContext(GlobalContext);
   const guidancesRef = useRef(null);
 
   /**
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
-    context === 'plan' && setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     const fetchGuidanceGroups = context === 'plan' ? guidances.getPlanGuidanceGroups(planId) : guidances.getResearchOutputGuidanceGroups(researchOutputId)
 
     setLoading(true);

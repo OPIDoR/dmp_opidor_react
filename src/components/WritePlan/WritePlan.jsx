@@ -21,14 +21,11 @@ function WritePlan({
   planId,
   userId,
   readonly,
-  currentOrgId,
-  currentOrgName,
 }) {
   const { t, i18n } = useTranslation();
   const {
     setFormData,
     setDmpId,
-    setCurrentOrg,
     setUserId,
     setLocale,
     setDisplayedResearchOutput,
@@ -52,7 +49,6 @@ function WritePlan({
     const queryParameters = new URLSearchParams(window.location.search);
     const researchOutputId = queryParameters.get('research_output');
 
-    setCurrentOrg({ id: currentOrgId, name: currentOrgName });
     setUserId(userId);
     setLocale(locale);
 
