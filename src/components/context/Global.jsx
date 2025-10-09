@@ -36,7 +36,6 @@ function Global({ children }) {
   const [persons, setPersons] = useState([]);
   // Plan Creation
   const [researchContext, setResearchContext] = useState(null);
-  const [currentOrg, setCurrentOrg] = useState({})
   // Dynamic form
   const [formData, setFormData] = useReducer(reducer, {});
   const [loadedRegistries, setLoadedRegistries] = useState({});
@@ -83,9 +82,6 @@ function Global({ children }) {
         setDmpId,
         persons,
         setPersons,
-        // Plan Creation
-        currentOrg,
-        setCurrentOrg,
         researchContext,
         setResearchContext,
         // Dynamic form

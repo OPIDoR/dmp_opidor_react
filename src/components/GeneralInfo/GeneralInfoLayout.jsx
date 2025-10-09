@@ -19,14 +19,12 @@ function GeneralInfoLayout({
   researchContext = 'research_project',
   isTest = false,
   isClassic = false,
-  currentOrgId,
-  currentOrgName,
   readonly = false,
 }) {
   return(
     <StrictMode>
       <Global>
-        {isClassic && !readonly && <GuidanceChoice planId={planId} context={'plan'} currentOrgId={currentOrgId} currentOrgName={currentOrgName} />}
+        {isClassic && !readonly && <GuidanceChoice planId={planId} context={'plan'} />}
         <GeneralInfo
           locale={locale}
           planId={planId}

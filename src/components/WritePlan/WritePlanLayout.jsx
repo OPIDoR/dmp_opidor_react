@@ -17,8 +17,6 @@ function WritePlanLayout({
   planId,
   locale = 'en_GB',
   userId,
-  currentOrgId,
-  currentOrgName,
   readonly,
 }) {
   const { t } = useTranslation();
@@ -31,8 +29,6 @@ function WritePlanLayout({
             planId={planId}
             locale={locale}
             userId={userId}
-            currentOrgId={currentOrgId}
-            currentOrgName={currentOrgName}
             readonly={readonly}
             className="research-outputs-tabs"
           />
