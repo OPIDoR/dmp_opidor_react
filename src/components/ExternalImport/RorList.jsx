@@ -106,8 +106,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
    */
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e?.value);
-    setData([]);
-    setFilteredData([]);
+    setLoading(true);
 
     let response;
     try {
@@ -115,6 +114,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     } catch (error) {
       setError(error);
       return setLoading(false);
+    } finally {
+      setLoading(false);
     }
 
     setFilteredData(response.data);
