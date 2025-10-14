@@ -52,7 +52,7 @@ function NestedForm({ propName, data, template, mainFormDataType, readonly, hand
       <>
         {Object.keys(externalImports)?.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} />
+            <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} locale={locale} />
           </div>
         )}
         <FormProvider {...methods}>
