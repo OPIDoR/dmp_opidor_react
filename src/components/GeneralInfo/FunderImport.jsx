@@ -125,7 +125,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
     triggerRefresh({ clients: response?.data?.clients || [] });
 
-    toast.success(`${t("planSharedWith")} ${selectedFunder?.apiClient}`, { style: { maxWidth: 500 } });
+    toast.success(t('planSharedWithNames', { names: selectedFunder?.apiClient }), { style: { maxWidth: 500 } });
   }
 
   const saveFunding = async () => {
