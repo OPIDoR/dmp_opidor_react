@@ -256,7 +256,6 @@
   "planSharedWithNames": "Plan shared with {{names}}",
   "importProjectInformation": "Import project information",
   "anrShareInvitation": "For ANR funded project, You are invited to share your plan with the ANR.",
-  "planSharedWith": "Plan shared with",
   "errorSendingNotification": "An error occurred while sending the notification",
   "includeTopic": "Include topic",
   "selectAnOrganisation": "Select an organisation",

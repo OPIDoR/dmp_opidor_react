@@ -11,7 +11,7 @@ import CustomError from "../Shared/CustomError";
 import Pagination from "../Shared/Pagination";
 import { flattenObject } from "../../utils/utils";
 
-function RorList({ fragment, setFragment, mapping = {} }) {
+function RorList({ fragment, setFragment, mapping = {}, locale }) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -23,6 +23,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [text, setText] = useState('');
   const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const localeCode = locale.split('_').at(0);
 
   /**
    * The function `getData` makes an API call to get data, sets the retrieved data in state variables, and creates an array of distinct countries from the
@@ -106,8 +108,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
    */
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e?.value);
-    setData([]);
-    setFilteredData([]);
+    setLoading(true);
 
     let response;
     try {
@@ -115,6 +116,8 @@ function RorList({ fragment, setFragment, mapping = {} }) {
     } catch (error) {
       setError(error);
       return setLoading(false);
+    } finally {
+      setLoading(false);
     }
 
     setFilteredData(response.data);
@@ -252,7 +255,7 @@ function RorList({ fragment, setFragment, mapping = {} }) {
                     }
                   </td>
                   <td>
-                    {el.name[Object.keys(el.name)[0]]}&nbsp;
+                    {el?.name?.[localeCode] || el?.name?.[Object.keys(el.name).at(0)]}&nbsp;
                     <a href={el.links[0]} target="_blank" rel="noopener noreferrer">
                       <FaLink></FaLink>
                     </a>
