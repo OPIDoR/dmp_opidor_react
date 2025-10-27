@@ -124,6 +124,7 @@ function FormBuilder({ template, dataType, topic, readonly }) {
             tooltip={tooltip}
             templateName={prop.template_name}
             dataType={dataType}
+            topic={topic}
             defaultRole={defaultRole}
             readonly={readonly || isConst}
           ></SelectContributorSingle>,
@@ -161,6 +162,7 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               tooltip={tooltip}
               templateName={prop.items.template_name}
               dataType={dataType}
+              topic={topic}
               defaultRole={defaultRole}
               readonly={readonly || isConst}
             ></SelectContributorMultiple>,
@@ -172,6 +174,7 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               key={key}
               propName={key}
               dataType={dataType}
+              topic={topic}
               label={prop[`label@${locale}`] || 'No label defined'}
               formLabel={formLabel}
               tooltip={tooltip}
