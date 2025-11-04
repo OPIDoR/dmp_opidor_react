@@ -36,7 +36,7 @@
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^16.0.0",
     "react-icons": "^5.0.0",
-    "react-loader-spinner": "^7.0.0",
+    "react-loader-spinner": "^8.0.0",
     "react-select": "^5.7.0",
     "react-tooltip": "^5.13.1",
     "styled-components": "^6.0.7",
@@ -84,11 +84,5 @@
     "react-select-event": "^5.5.1",
     "react-test-renderer": "^19.1.0",
     "resize-observer-polyfill": "^1.5.1"
-  },
-  "overrides": {
-    "react-loader-spinner": {
-      "react": "^18 || ^19",
-      "react-dom": "^18 || ^19"
-    }
   }
 }
