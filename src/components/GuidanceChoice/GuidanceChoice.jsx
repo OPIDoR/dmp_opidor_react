@@ -12,9 +12,9 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import * as formStyles from '../assets/css/form.module.css';
 
-import { guidances } from "../../services";
-import { CustomSpinner, CustomError, CustomSelect } from "../Shared";
-import CustomButton from "../Styled/CustomButton";
+import { guidances } from "../../services/index.js";
+import { CustomSpinner, CustomError, CustomSelect } from "../Shared/index.jsx";
+import CustomButton from "../Styled/CustomButton.jsx";
 import { useTranslation, Trans } from "react-i18next";
 import toast from "react-hot-toast";
 import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";

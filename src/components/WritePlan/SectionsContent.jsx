@@ -7,7 +7,7 @@ import { researchOutput } from "../../services";
 import { GlobalContext } from "../context/Global";
 import CustomError from "../Shared/CustomError";
 import Section from "./Section";
-import GuidanceChoice from "./GuidanceChoice";
+import GuidanceChoice from "../GuidanceChoice/GuidanceChoice";
 import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
