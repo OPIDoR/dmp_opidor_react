@@ -12,7 +12,7 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
 import consumer from "../../cable";
-import SelectedGuidances from "../GuidanceChoice/SelectedGuidances";
+import SelectedGuidances from "../GuidanceChoice/SavedGuidances";
 
 function SectionsContent({ planId, readonly }) {
   const { t } = useTranslation();

@@ -3,18 +3,18 @@ import { useTranslation } from "react-i18next";
 import { FaEye } from 'react-icons/fa6';
 import { GlobalContext } from "../context/Global";
 
-function SelectedGuidances() {
+function SavedGuidances() {
   const { t } = useTranslation();
   const {
-    selectedGuidances
+    savedGuidances
   } = useContext(GlobalContext);
   return (
     <>
-      {selectedGuidances.length > 0 && (
+      {savedGuidances.length > 0 && (
         <div style={{ margin: '20px' }}>
           <h3>{t("followingGuidancesApplyToThisResearchOutput")}</h3>
           <ul>
-            {selectedGuidances.map((guidance) => (
+            {savedGuidances.map((guidance) => (
               <li key={guidance.id}>
                 {guidance.title} ({t("providedBy")} {guidance.orgName})
                 <a href={`/guidance_group_export/${guidance.id}.pdf`} target="_blank" rel="noopener noreferrer">
@@ -29,4 +29,4 @@ function SelectedGuidances() {
   );
 }
 
-export default SelectedGuidances;
+export default SavedGuidances;
