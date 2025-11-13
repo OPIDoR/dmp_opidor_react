@@ -2,7 +2,7 @@ import React, { StrictMode } from 'react';
 
 import Global from '../context/Global.jsx';
 import GeneralInfo from './GeneralInfo.jsx';
-import GuidanceChoice from '../GuidanceChoice/GuidanceChoice.jsx';
+import GuidanceSelector from '../GuidanceChoice/GuidanceSelector.jsx';
 import '../../i18n.js';
 import { Toaster } from 'react-hot-toast';
 
@@ -24,7 +24,7 @@ function GeneralInfoLayout({
   return(
     <StrictMode>
       <Global>
-        {isClassic && !readonly && <GuidanceChoice planId={planId} context={'plan'} />}
+        {isClassic && !readonly && <GuidanceSelector planId={planId} context={'plan'} />}
         <GeneralInfo
           locale={locale}
           planId={planId}

@@ -28,7 +28,7 @@ const description = {
   margin: "10px 100px 0px 100px",
 };
 
-function GuidanceChoice({
+function GuidanceSelector({
   planId,
   researchOutputId,
   topic = null,
@@ -61,7 +61,7 @@ function GuidanceChoice({
         const orgsWithSelectedGuidances = sortGuidances(data.filter(({ important }) => important === true));
         const orgsWithUnselectedGuidances = sortGuidances(data.filter(({ important }) => important === false));
 
-        if (setSelectedGuidances) setSelectedGuidances(formatSelectedGuidances(orgsWithSelectedGuidances));
+        setSelectedGuidances(formatSelectedGuidances(orgsWithSelectedGuidances));
         setGuidancesData([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
 
         const states = handleGuidanceGroups([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
@@ -467,4 +467,4 @@ function GuidanceChoice({
   );
 }
 
-export default GuidanceChoice;
+export default GuidanceSelector;
