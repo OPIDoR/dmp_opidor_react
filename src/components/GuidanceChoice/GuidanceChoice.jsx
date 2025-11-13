@@ -1,4 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
+import { GlobalContext } from "../context/Global.jsx";
+import { guidances } from "../../services/index.js";
+import { CustomSpinner, CustomError, CustomSelect } from "../Shared/index.jsx";
+import CustomButton from "../Styled/CustomButton.jsx";
+
+import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
+import * as formStyles from '../assets/css/form.module.css';
 
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -9,16 +17,9 @@ import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
 import { TbBulbFilled } from "react-icons/tb";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
-import * as formStyles from '../assets/css/form.module.css';
-
-import { guidances } from "../../services/index.js";
-import { CustomSpinner, CustomError, CustomSelect } from "../Shared/index.jsx";
-import CustomButton from "../Styled/CustomButton.jsx";
 import { useTranslation, Trans } from "react-i18next";
 import toast from "react-hot-toast";
 import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";
-import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
@@ -30,10 +31,12 @@ const description = {
 function GuidanceChoice({
   planId,
   researchOutputId,
-  setSelectedGuidances = null,
   topic = null,
   context = 'research_output' }) {
   const { t } = useTranslation();
+  const {
+    setSelectedGuidances
+  } = useContext(GlobalContext);
   const [guidancesData, setGuidancesData] = useState([]);
   const [filteredGuidancesData, setFilteredGuidancesData] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState(null);

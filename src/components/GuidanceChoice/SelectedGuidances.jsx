@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { FaEye } from 'react-icons/fa6';
+import { GlobalContext } from "../context/Global";
 
-function SelectedGuidances({ selectedGuidances = [] }) {
+function SelectedGuidances() {
   const { t } = useTranslation();
+  const {
+    selectedGuidances
+  } = useContext(GlobalContext);
   return (
     <>
       {selectedGuidances.length > 0 && (

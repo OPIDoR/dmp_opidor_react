@@ -12,7 +12,7 @@ import ResearchOutputModal from "../ResearchOutput/ResearchOutputModal";
 import ResearchOutputInfobox from "../ResearchOutput/ResearchOutputInfobox";
 import * as styles from "../assets/css/write_plan.module.css";
 import consumer from "../../cable";
-import SelectedGuidances from "./SelectedGuidances";
+import SelectedGuidances from "../GuidanceChoice/SelectedGuidances";
 
 function SectionsContent({ planId, readonly }) {
   const { t } = useTranslation();
@@ -22,14 +22,12 @@ function SectionsContent({ planId, readonly }) {
     setOpenedQuestions,
     setResearchOutputs,
     displayedResearchOutput, setDisplayedResearchOutput,
-    setUrlParams,
+    setUrlParams
   } = useContext(GlobalContext);
   const subscriptionRef = useRef(null);
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
-
-  const [selectedGuidances, setSelectedGuidances] = useState([]);
 
 
   const handleWebsocketData = useCallback((data) => {
@@ -150,7 +148,7 @@ function SectionsContent({ planId, readonly }) {
       {!error && displayedResearchOutput?.template?.sections && (
         <>
           <div className={styles.write_plan_block} id="sections-content">
-            <SelectedGuidances selectedGuidances={selectedGuidances} />
+            <SelectedGuidances />
             <ResearchOutputInfobox
               handleEdit={handleEdit}
               handleDelete={handleDelete}
@@ -161,7 +159,6 @@ function SectionsContent({ planId, readonly }) {
               <GuidanceChoice planId={planId}
                 researchOutputId={displayedResearchOutput?.id}
                 topic={displayedResearchOutput?.topic}
-                setSelectedGuidances={setSelectedGuidances}
                 style={{ flexGrow: 1 }} />
             }
             {displayedResearchOutput?.template?.sections?.map((section) => (
