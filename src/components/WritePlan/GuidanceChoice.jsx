@@ -344,6 +344,7 @@ function GuidanceChoice({ planId, currentOrgId, currentOrgName, isClassic }) {
                                   {guidance.description && <ReactTooltip
                                     id={`guidance-group-${index}-childs-${key}-tooltip`}
                                     key={`guidance-group-${index}-childs-${key}-tooltip`}
+                                    style={{ width: '100%' }}
                                     place="bottom"
                                     effect="solid"
                                     variant="info"
