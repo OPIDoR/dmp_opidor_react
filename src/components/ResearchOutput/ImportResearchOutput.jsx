@@ -7,6 +7,8 @@ import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
 import CustomSelect from "../Shared/CustomSelect";
+import { FaVial } from "react-icons/fa6";
+import { FaUniversity } from "react-icons/fa";
 
 const EndButton = styled.div`
   display: flex;
@@ -29,6 +31,7 @@ function ImportResearchOutput({ planId, handleClose }) {
     researchOutput.getPlans().then(({ data }) => {
       const plans = data?.plans?.map((plan) => ({
         value: plan.id,
+        prependIcon: plan.context === 'research_entity' ? <FaUniversity style={{ marginRight: "8px" }}/> : <FaVial style={{ marginRight: "8px" }}/>,
         label: plan.title,
         ...plan,
         researchOutputs: plan.research_outputs.map((ro) => ({
@@ -87,7 +90,10 @@ function ImportResearchOutput({ planId, handleClose }) {
             <Alert variant="info">
               {t('canReuseResearchOutputInfoFromPlansYouOwnOrCoown')}
             </Alert>
-          </div>
+          </div> 
+          <div className="form-group">
+            <FaVial/> {t('researchProject')} <FaUniversity/> {t('researchEntity')}
+          </div> 
           <CustomSelect
             onSelectChange={(e) => handleSelectPlan(e)}
             options={plans}
@@ -122,7 +128,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose} disabled={loading}>
           {t("close")}
         </Button>
-        <Button variant="outline-primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
+        <Button variant="primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
           {loading && (<Spinner
             as="span"
             animation="grow"
