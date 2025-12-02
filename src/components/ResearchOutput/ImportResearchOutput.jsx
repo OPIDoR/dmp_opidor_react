@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { Button, Alert, Spinner } from 'react-bootstrap';
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { FaVial } from "react-icons/fa6";
+import { FaUniversity } from "react-icons/fa";
+
 import * as stylesForm from "../assets/css/form.module.css";
 import { GlobalContext } from "../context/Global";
 import { researchOutput } from "../../services";
 import CustomSelect from "../Shared/CustomSelect";
-import { FaVial } from "react-icons/fa6";
-import { FaUniversity } from "react-icons/fa";
+import ImportResearchOutputPlaceholder from "./Placeholders/ImportResearchOutputPlaceholder";
 
 const EndButton = styled.div`
   display: flex;
@@ -28,10 +30,11 @@ function ImportResearchOutput({ planId, handleClose }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     researchOutput.getPlans().then(({ data }) => {
       const plans = data?.plans?.map((plan) => ({
         value: plan.id,
-        prependIcon: plan.context === 'research_entity' ? <FaUniversity style={{ marginRight: "8px" }}/> : <FaVial style={{ marginRight: "8px" }}/>,
+        prependIcon: plan.context === 'research_entity' ? <FaUniversity style={{ marginRight: "8px" }} /> : <FaVial style={{ marginRight: "8px" }} />,
         label: plan.title,
         ...plan,
         researchOutputs: plan.research_outputs.map((ro) => ({
@@ -41,6 +44,7 @@ function ImportResearchOutput({ planId, handleClose }) {
         })),
       }));
       setPlans(plans || []);
+      setLoading(false);
     });
   }, []);
 
@@ -80,66 +84,70 @@ function ImportResearchOutput({ planId, handleClose }) {
   };
 
   return (
-    <div style={{ margin: "25px" }}>
-      {plans.length > 0 ? (
-        <div className="form-group">
-          <div className={stylesForm.label_form}>
-            <label>{t("choosePlan")}</label>
-          </div>
+    <>
+      {loading && <ImportResearchOutputPlaceholder />}
+      {!loading && <div style={{ margin: "25px" }}>
+        {plans.length > 0 ? (
           <div className="form-group">
-            <Alert variant="info">
-              {t('canReuseResearchOutputInfoFromPlansYouOwnOrCoown')}
+            <div className={stylesForm.label_form}>
+              <label>{t("choosePlan")}</label>
+            </div>
+            <div className="form-group">
+              <Alert variant="info">
+                {t('canReuseResearchOutputInfoFromPlansYouOwnOrCoown')}
+              </Alert>
+            </div>
+            <div className="form-group">
+              <FaVial /> {t('researchProject')} <FaUniversity /> {t('researchEntity')}
+            </div>
+            <CustomSelect
+              onSelectChange={(e) => handleSelectPlan(e)}
+              options={plans}
+              selectedOption={selectedPlan}
+              isDisabled={loading}
+              placeholder={t("selectValueFromList")}
+            />
+          </div>
+        ) : (
+          <div className="form-group">
+            <Alert variant="warning">
+              {t("noPlansComplyWithImportRules")}
             </Alert>
-          </div> 
-          <div className="form-group">
-            <FaVial/> {t('researchProject')} <FaUniversity/> {t('researchEntity')}
-          </div> 
-          <CustomSelect
-            onSelectChange={(e) => handleSelectPlan(e)}
-            options={plans}
-            selectedOption={selectedPlan}
-            isDisabled={loading}
-            placeholder={t("selectValueFromList")}
-          />
-        </div>
-      ) : (
-        <div className="form-group">
-          <Alert variant="warning">
-            {t("noPlansComplyWithImportRules")}
-          </Alert>
-        </div>
-      )}
-
-      {selectedPlan?.researchOutputs?.length > 0 && (
-        < div className="form-group">
-          <div className={stylesForm.label_form}>
-            <label>{t("chooseOutput")}</label>
           </div>
-          <CustomSelect
-            onSelectChange={(e) => handleSelectResearchOutput(e)}
-            options={selectedPlan.researchOutputs}
-            selectedOption={selectedResearchOutput}
-            isDisabled={loading}
-            placeholder={t("selectValueFromList")}
-          />
-        </div>
-      )}
-      <EndButton>
-        <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose} disabled={loading}>
-          {t("close")}
-        </Button>
-        <Button variant="primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
-          {loading && (<Spinner
-            as="span"
-            animation="grow"
-            size="sm"
-            role="status"
-            aria-hidden="true"
-          />)}
-          {t("import")}
-        </Button>
-      </EndButton>
-    </div>
+        )}
+
+        {selectedPlan?.researchOutputs?.length > 0 && (
+          < div className="form-group">
+            <div className={stylesForm.label_form}>
+              <label>{t("chooseOutput")}</label>
+            </div>
+            <CustomSelect
+              onSelectChange={(e) => handleSelectResearchOutput(e)}
+              options={selectedPlan.researchOutputs}
+              selectedOption={selectedResearchOutput}
+              isDisabled={loading}
+              placeholder={t("selectValueFromList")}
+            />
+          </div>
+        )}
+        <EndButton>
+          <Button variant="secondary" style={{ marginRight: "8px" }} onClick={handleClose} disabled={loading}>
+            {t("close")}
+          </Button>
+          <Button variant="primary" style={{ backgroundColor: "var(--rust)", color: "white" }} onClick={handleImportResearchOutput} disabled={loading}>
+            {loading && (<Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />)}
+            {t("import")}
+          </Button>
+        </EndButton>
+      </div>
+      }
+    </>
   );
 }
 
