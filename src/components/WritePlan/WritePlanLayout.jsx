@@ -15,6 +15,7 @@ const toastOptions = {
 
 function WritePlanLayout({
   planId,
+  templateId,
   locale = 'en_GB',
   userId,
   currentOrgId,
@@ -29,6 +30,7 @@ function WritePlanLayout({
         <Driver tourName="write_plan" steps={writePlanSteps(t)} locale={locale}>
           <WritePlan
             planId={planId}
+            templateId={templateId}
             locale={locale}
             userId={userId}
             currentOrgId={currentOrgId}
