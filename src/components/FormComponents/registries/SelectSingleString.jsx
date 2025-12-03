@@ -22,9 +22,10 @@ function SelectSingleString({
   label,
   propName,
   tooltip,
-  category,
+  category = null,
   dataType,
   topic,
+  registries = [],
   overridable = false,
   readonly = false,
 }) {
@@ -38,7 +39,7 @@ function SelectSingleString({
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
   const [selectedRegistry, setSelectedRegistry] = useState(null);
-  const [registries, setRegistries] = useState([]);
+  const [availableRegistries, setAvailableRegistries] = useState([]);
   const [selectedOption, setSelectedOption] = useState({ value: '', label: '' });
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
   const inputId = uniqueId('select_single_list_id_');
@@ -48,7 +49,7 @@ function SelectSingleString({
     if (category) {
       service.getAvailableRegistries(category, dataType, topic)
         .then((res) => {
-          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setRegistries(registriesData);
+          const registriesData = Array?.isArray(res.data) ? res.data.map((r) => r.name) : [res.data.name]; setAvailableRegistries(registriesData);
           if (registriesData.length === 1) {
             const registry = res.data[0];
             setSelectedRegistry(registry.name);
@@ -59,8 +60,13 @@ function SelectSingleString({
         .catch((error) => {
           setError(getErrorMessage(error));
         });
+    } else if (registries) {
+      setAvailableRegistries(registries);
+      if (registries.length === 1) {
+        setSelectedRegistry(registries[0]);
+      }
     }
-  }, [category, dataType])
+  }, [category, dataType, topic, registries]);
 
   useEffect(() => {
     if (!options) return;
@@ -82,8 +88,8 @@ function SelectSingleString({
   It is used to set the options of the select list.
   */
   useEffect(() => {
-    if (registries.length === 1) return;
-
+    if (registries.length === 0 && availableRegistries.length === 1) return;
+    
     if (selectedRegistry) {
       if (loadedRegistries[selectedRegistry]) {
         setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
@@ -142,14 +148,14 @@ function SelectSingleString({
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
         <div className="row">
-          {registries && registries.length > 1 && (
+          {availableRegistries && availableRegistries.length > 1 && (
             <div data-testid="select-single-string-registry-selector" className="col-md-6">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
                   <CustomSelect
                     inputId={`${propName}-registry-selector`}
                     onSelectChange={handleSelectRegistry}
-                    options={registries.map((registry) => ({
+                    options={availableRegistries.map((registry) => ({
                       value: registry,
                       label: registry,
                     }))}
@@ -165,7 +171,7 @@ function SelectSingleString({
             </div>
           )}
 
-          <div className={registries && registries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-string-div">
+          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-string-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -177,7 +183,7 @@ function SelectSingleString({
                     selectedOption={selectedOption}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(registries.length, false, overridable, "simple", t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, "simple", t)}
                     overridable={overridable}
                   />
                 )}
