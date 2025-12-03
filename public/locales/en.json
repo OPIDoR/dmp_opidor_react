@@ -237,7 +237,7 @@
   "yesDuplicate": "Yes, duplicate!",
   "personalDataQuestionDisplayCondition": "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.",
   "noPlansComplyWithImportRules": "No plans comply with the import rules (at least one research output or type of research output).",
-  "canReuseResearchOutputInfoFromPlansYouOwnOrCoown": "You can reuse a research output's information from plans you own or you are coowner (test plans excluded).",
+  "canReuseResearchOutputInfoFromPlans": "You can reuse a research output's information from plans you have access to and from public research entity plans.",
   "canCreateNewResearchOutputAndDisplayQuestionsBySelectingType": "You can create a new research output and display questions by selecting the type.",
   "cookiePreferences": "Cookie preferences",
   "backToTop": "Back to top",

@@ -235,7 +235,7 @@
   "yesDuplicate": "Oui, dupliquer !",
   "personalDataQuestionDisplayCondition": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas.",
   "noPlansComplyWithImportRules": "Aucun plan ne respecte les règles d'imports (posséder au moins un produit de recherche ou un type de produit de recherche)",
-  "canReuseResearchOutputInfoFromPlansYouOwnOrCoown": "Vous pouvez réutiliser les informations d'un produit de recherche depuis un plan dont vous êtes le propriétaire ou le copropriétaire (plans tests exclus).",
+  "canReuseResearchOutputInfoFromPlans": "Vous pouvez réutiliser les informations de produits de recherche provenant de plans auxquels vous collaborez et de plans entités publics.",
   "canCreateNewResearchOutputAndDisplayQuestionsBySelectingType": "Vous pouvez créer un nouveau produit de recherche et afficher le questionnaire adapté en sélectionnant le type.",
   "cookiePreferences": "Préférences des cookies",
   "backToTop": "Retour en haut de page",

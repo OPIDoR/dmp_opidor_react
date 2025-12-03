@@ -94,7 +94,7 @@ function ImportResearchOutput({ planId, handleClose }) {
             </div>
             <div className="form-group">
               <Alert variant="info">
-                {t('canReuseResearchOutputInfoFromPlansYouOwnOrCoown')}
+                {t('canReuseResearchOutputInfoFromPlans')}
               </Alert>
             </div>
             <div className="form-group">
