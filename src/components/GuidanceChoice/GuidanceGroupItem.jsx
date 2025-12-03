@@ -4,10 +4,11 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import { MdCheckBox, MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 
-function GuidanceGroupItem({ 
+function GuidanceGroupItem({
   guidance_group_id,
   guidance_group_name,
   guidance_group_description = null,
+  level = 1,
   org,
   index,
   isLimitReached,
@@ -17,7 +18,7 @@ function GuidanceGroupItem({
     <React.Fragment key={`guidance-fragment-${index}`}>
       <div key={`guidance-group-${index}-parent`}>
         <div
-          style={{ display: 'flex', alignItems: 'center', }}
+          style={{ display: 'flex', alignItems: 'center', paddingBottom: '5px' }}
           key={`guidance-group-${index}-section`}
           id={`guidance-group-${index}-section`}
         >
@@ -63,7 +64,7 @@ function GuidanceGroupItem({
           </ReactTooltip>}
           <label
             data-tooltip-id={`guidance-group-${index}-tooltip`}
-            className={`form-check-label ${guidanceChoiceStyles.guidance_group_title}`}
+            className={`form-check-label ${level === 1 ? guidanceChoiceStyles.label_checkbox : guidanceChoiceStyles.guidance_group_title}`}
             style={{ cursor: isLimitReached && !isSelected ? 'not-allowed' : 'pointer' }}
             onClick={() => isLimitReached && !isSelected ? null : onSelect(org.id, guidance_group_id, !isSelected)}
           >

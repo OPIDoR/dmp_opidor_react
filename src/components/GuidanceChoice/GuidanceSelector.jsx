@@ -45,7 +45,6 @@ function GuidanceSelector({
   const [error, setError] = useState(null);
   const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const {selectedGuidances, setSelectedGuidances} = useState([]);
   const guidancesRef = useRef(null);
 
   /**
@@ -383,6 +382,7 @@ function GuidanceSelector({
                                       guidance_group_id={guidance_group.id}
                                       guidance_group_name={guidance_group.name}
                                       guidance_group_description={guidance_group.description}
+                                      level={2}
                                       org={org}
                                       index={key}
                                       isLimitReached={limitHasBeenReached()}
@@ -400,6 +400,7 @@ function GuidanceSelector({
                             guidance_group_id={org.guidance_groups[0].id}
                             guidance_group_name={org.name}
                             guidance_group_description={org.guidance_groups[0].description}
+                            level={1}
                             org={org}
                             index={index}
                             isLimitReached={limitHasBeenReached()}
