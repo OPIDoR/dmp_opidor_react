@@ -94,7 +94,7 @@ function ImportResearchOutput({ planId, handleClose }) {
           </div>
           <div className="form-group">
             <Alert variant="info">
-              {t('You can reuse a research output\'s information from plans you own or you are coowner (test plans excluded).')}
+              {t('You can reuse a research output\'s information from plans you have access to and from public research entity plans.')}
             </Alert>
           </div>
           <CustomSelect

@@ -234,7 +234,7 @@
   "Yes, duplicate!": "Oui, dupliquer !",
   "If the answer is yes, a specific question on personal data protection is proposed. If the answer is no, this question is not displayed.": "Si la réponse est oui, une question spécifique à la protection des données personnelles est proposée. Si la réponse est non, cette question ne s'affiche pas.",
   "No plans comply with the import rules (at least one research output or type of research output).": "Aucun plan ne respecte les règles d'imports (posséder au moins un produit de recherche ou un type de produit de recherche)",
-  "You can reuse a research output's information from plans you own or you are coowner (test plans excluded).": "Vous pouvez réutiliser les informations d'un produit de recherche depuis un plan dont vous êtes le propriétaire ou le copropriétaire (plans tests exclus).",
+  "You can reuse a research output's information from plans you have access to and from public research entity plans.": "Vous pouvez réutiliser les informations d'un produit de recherche provenant de plans auxquels vous collaborez et de plans entités publics.",
   "You can create a new research output and display questions by selecting the type.": "Vous pouvez créer un nouveau produit de recherche et afficher le questionnaire adapté en sélectionnant le type.",
   "Cookie preferences": "Préférences des cookies",
   "Back to top": "Retour en haut de page",
