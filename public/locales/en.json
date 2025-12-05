@@ -267,5 +267,7 @@
   "filterAvailableGuidances": "Below you can filter available guidances with the topic linked to your research output or the org making them available.",
   "planStatusChangeError" : "An error occurred during the change of status of the plan",
   "researchEntity": "Research Entity",
-  "researchProject": "Research Project"
+  "researchProject": "Research Project",
+  "availableGuidances": "Available Guidances",
+  "selectedGuidances": "Selected Guidances"
 }

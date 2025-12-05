@@ -16,7 +16,7 @@ function SavedGuidances() {
           <ul>
             {savedGuidances.map((guidance) => (
               <li key={guidance.id}>
-                {guidance.title} ({t("providedBy")} {guidance.orgName})
+                {guidance.name} ({t("providedBy")} {guidance.orgName})
                 <a href={`/guidance_group_export/${guidance.id}.pdf`} target="_blank" rel="noopener noreferrer">
                   <FaEye size={14} style={{ marginLeft: '5px' }} />
                 </a>

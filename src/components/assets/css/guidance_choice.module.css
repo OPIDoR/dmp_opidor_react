@@ -1,8 +1,12 @@
 .card {
-  margin: 20px;
+  margin: 20px 0;
   position: relative;
 }
 
+.card_title {
+  text-align: center;
+  padding: 5px;
+}
 .label_checkbox {
   border-radius: 8px;
   padding: 5px 10px 5px 10px;
