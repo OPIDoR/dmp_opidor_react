@@ -3,7 +3,7 @@ import React from "react";
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import GuidanceGroupItem from "./GuidanceGroupItem";
 
-function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay, onSelect }) {
+function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay, getStatus = null,onSelect }) {
   const guidanceGroups = org.guidance_groups.filter((group) => shouldGuidanceGroupDisplay(group));
   if(guidanceGroups.length === 0) {
     return null;
@@ -20,7 +20,7 @@ function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay
           key={`guidances-container-${org.id}`}
         >
           <label
-            className={`${guidanceChoiceStyles.label_checkbox}`}
+            className={`${guidanceChoiceStyles.label}`}
             style={{ cursor: isLimitReached ? 'not-allowed' : 'pointer' }}
             onClick={() => { }}
             key={`label-${org.id}-guidance-group`}
@@ -42,6 +42,7 @@ function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay
                 level={2}
                 org={org}
                 isLimitReached={isLimitReached}
+                status={getStatus ? getStatus(guidance_group.id) : 'available'}
                 onSelect={onSelect}
               />
             )

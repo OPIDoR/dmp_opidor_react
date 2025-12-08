@@ -211,6 +211,7 @@
   "createAResearchOutput": "Create a research output",
   "typeRequiredToCreateResearchOutput": "A 'type' is required to create a research output.",
   "noGuidancesAvailable": "No guidances available",
+  "noGuidancesSelected": "No guidances selected",
   "importAnExistingPlan": "Import an existing plan",
   "createNewPlan": "Create new plan",
   "selectModalityToCreatePlan": "Select the modality with which you wish to create your plan",

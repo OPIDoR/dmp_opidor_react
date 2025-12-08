@@ -9,6 +9,7 @@ function GuidanceGroupItem({
   guidance_group_description,
   level = 1,
   isLimitReached,
+  status = 'saved',
   onSelect
 }) {
   return (
@@ -32,11 +33,11 @@ function GuidanceGroupItem({
           </ReactTooltip>}
           <label
             data-tooltip-id={`guidance-group-${guidance_group_id}-tooltip`}
-            className={`form-check-label ${level === 1 ? guidanceChoiceStyles.label_checkbox : guidanceChoiceStyles.guidance_group_title}`}
+            className={`form-check-label ${level === 1 ? guidanceChoiceStyles.label : guidanceChoiceStyles.guidance_group_title} ${status === 'new' ? guidanceChoiceStyles.new_guidance : ''}`}
             style={{ cursor: isLimitReached ? 'not-allowed' : 'pointer' }}
             onClick={() => isLimitReached ? null : onSelect(guidance_group_id)}
-          >
-            {guidance_group_name}
+            >
+              {guidance_group_name}
           </label>
         </div>
       </div>

@@ -36,7 +36,7 @@ function GuidanceSelector({
   context = 'research_output' }) {
   const { t } = useTranslation();
   const {
-    setSavedGuidances,
+    savedGuidances, setSavedGuidances,
   } = useContext(GlobalContext);
   const [guidancesData, setGuidancesData] = useState([]);
   const [filteredGuidancesData, setFilteredGuidancesData] = useState([]);
@@ -45,10 +45,10 @@ function GuidanceSelector({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedGuidances, setSelectedGuidances] = useState([]);
   const [selectedGuidancesIds, setSelectedGuidancesIds] = useState([]);
   const guidancesRef = useRef(null);
 
+  const savedGuidancesIds = savedGuidances.map(g => g.id);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -68,10 +68,6 @@ function GuidanceSelector({
       .catch((error) => { setError(error) })
       .finally(() => setLoading(false));
   }, [planId, researchOutputId]);
-
-  useEffect(() => {
-    setSelectedGuidances(formatSelectedGuidances(guidancesData, 'select'));
-  }, [selectedGuidancesIds]);
 
   useEffect(() => {
     if (guidancesData.length === 0) return;
@@ -289,39 +285,36 @@ function GuidanceSelector({
                       }
                     </Card.Body>
                   </Card>
-                  {/* <div className="actions" style={{ flex: '1' }}>
-                      <CustomButton
-                        title="<="
-                        buttonColor="blue"
-                        position="start"
-                        handleClick={null}
-                        disabled={false}
-                      />
-                      <CustomButton
-                        title="=>"
-                        buttonColor="blue"
-                        position="start"
-                        handleClick={null}
-                        disabled={false}
-                      />
-                    </div> */}
                   <Card className="selected-guidances" style={{ flex: '1', marginLeft: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('selectedGuidances')}</Card.Title>
                     <Card.Body>
-                      {selectedGuidances && selectedGuidances.length > 0 && (
-                        selectedGuidances.map((guidance_group, index) => (
-                          <GuidanceGroupItem
-                            key={index}
-                            guidance_group_id={guidance_group.id}
-                            guidance_group_name={guidance_group.name}
-                            guidance_group_description={guidance_group.description}
-                            org={guidance_group?.org}
-                            isLimitReached={limitHasBeenReached()}
-                            onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
-                          />
-                        ))
-                      )}
-
+                      {guidancesData.length > 0 ?
+                        guidancesData.map((org, index) => (
+                          org.guidance_groups.length > 1 ? (
+                            <OrgWithGuidanceGroups
+                              key={index}
+                              org={org}
+                              isLimitReached={limitHasBeenReached()}
+                              shouldGuidanceGroupDisplay={(guidance_group) => selectedGuidancesIds.includes(guidance_group.id)}
+                              getStatus={(guidance_group_id) => savedGuidancesIds.includes(guidance_group_id) ? 'saved' : 'new'}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
+                            />
+                          ) : (
+                            selectedGuidancesIds.includes(org.guidance_groups[0].id) &&
+                            <GuidanceGroupItem
+                              key={index}
+                              guidance_group_id={org.guidance_groups[0].id}
+                              guidance_group_name={org.name}
+                              guidance_group_description={org.guidance_groups[0].description}
+                              org={org}
+                              level={1}
+                              isLimitReached={limitHasBeenReached()}
+                              status={savedGuidancesIds.includes(org.guidance_groups[0].id) ? 'saved' : 'new'}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
+                            />
+                          )
+                        )) : t("noGuidancesSelected")
+                      }
                     </Card.Body>
                   </Card>
                 </Row>

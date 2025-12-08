@@ -209,6 +209,7 @@
   "createAResearchOutput": "Créer un produit de recherche",
   "typeRequiredToCreateResearchOutput": "Un 'type' est nécessaire pour créer un produit de recherche.",
   "noGuidancesAvailable": "Aucune recommandation disponible",
+  "noGuidancesSelected": "Aucune recommandation sélectionnée",
   "importAnExistingPlan": "Importer un plan existant",
   "createNewPlan": "Créer un nouveau plan",
   "selectModalityToCreatePlan": "Sélectionnez la modalité avec laquelle vous souhaitez créer votre plan",
