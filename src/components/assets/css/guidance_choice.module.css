@@ -46,6 +46,7 @@
   color: var(--dark-blue);
   font-size: 14px;
   transition: 0.3s;
+  text-decoration: underline;
 }
 
 .guidance_group_title:hover {
