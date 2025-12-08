@@ -101,11 +101,12 @@ function GuidanceSelector({
     );
   }
 
-  const handleSelectGuidances = (guidance_group_id, action) => {
+  const handleSelectGuidances = (guidance_group_ids, action) => {
+    guidance_group_ids = Array.isArray(guidance_group_ids) ? guidance_group_ids : [guidance_group_ids];
     if (action === 'add') {
-      setSelectedGuidancesIds([...new Set([...selectedGuidancesIds, guidance_group_id])]);
+      setSelectedGuidancesIds([...new Set([...selectedGuidancesIds, ...guidance_group_ids])]);
     } else if (action === 'remove') {
-      setSelectedGuidancesIds(selectedGuidancesIds.filter(gid => gid !== guidance_group_id));
+      setSelectedGuidancesIds(selectedGuidancesIds.filter(gid => !guidance_group_ids.includes(gid)));
     }
   }
 

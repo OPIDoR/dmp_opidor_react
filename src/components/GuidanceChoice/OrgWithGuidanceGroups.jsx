@@ -3,9 +3,9 @@ import React from "react";
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import GuidanceGroupItem from "./GuidanceGroupItem";
 
-function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay, getStatus = null,onSelect }) {
+function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay, getStatus = null, onSelect }) {
   const guidanceGroups = org.guidance_groups.filter((group) => shouldGuidanceGroupDisplay(group));
-  if(guidanceGroups.length === 0) {
+  if (guidanceGroups.length === 0) {
     return null;
   }
 
@@ -22,7 +22,7 @@ function OrgWithGuidanceGroups({ org, isLimitReached, shouldGuidanceGroupDisplay
           <label
             className={`${guidanceChoiceStyles.label}`}
             style={{ cursor: isLimitReached ? 'not-allowed' : 'pointer' }}
-            onClick={() => { }}
+            onClick={() => onSelect(guidanceGroups.map((group) => group.id))}
             key={`label-${org.id}-guidance-group`}
           >
             {org.name}
