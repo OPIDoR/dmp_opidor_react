@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { OrcidList, RorList, Metadore } from "./";
-import { useTranslation } from "react-i18next";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { OrcidList, RorList, Metadore } from '.';
 
-function ImportExternal({ fragment, setFragment, externalImports = {}, locale }) {
+function ImportExternal({
+  fragment, setFragment, externalImports = {}, locale,
+}) {
   const { t } = useTranslation();
 
   const [importsState, setImportsState] = useState(
@@ -10,21 +12,21 @@ function ImportExternal({ fragment, setFragment, externalImports = {}, locale })
       .reduce((acc, key) => {
         acc[key] = false;
         return acc;
-      }, {})
+      }, {}),
   );
 
-  const toggleImport = (type) => setImportsState(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+  const toggleImport = (type) => setImportsState((prevState) => Object.keys(prevState).reduce((updatedState, key) => {
     updatedState[key] = key === type ? !prevState[key] : false;
     return updatedState;
   }, {}));
 
-  const buttonColor = (buttonActive) => buttonActive ? 'var(--green)' : 'var(--dark-blue)';
+  const buttonColor = (buttonActive) => (buttonActive ? 'var(--green)' : 'var(--dark-blue)');
 
   const externalImportComponent = (type, fragment, setFragment) => {
     const importComponents = {
       ror: (fragment, setFragment, mapping) => <RorList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} locale={locale} />,
       orcid: (fragment, setFragment, mapping) => <OrcidList key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
-      metadore: (fragment, setFragment, mapping) => <Metadore key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />
+      metadore: (fragment, setFragment, mapping) => <Metadore key={`${type}-import-component`} fragment={fragment} setFragment={setFragment} mapping={mapping} />,
     };
 
     return (
@@ -32,7 +34,7 @@ function ImportExternal({ fragment, setFragment, externalImports = {}, locale })
         {importsState[type] && (
           <div key={`${type}-import-container`}>
             {importComponents[type](fragment, setFragment, externalImports[type])}
-            <div key={`${type}-import-spacer`} style={{ display: "flex", justifyContent: "center" }}></div>
+            <div key={`${type}-import-spacer`} style={{ display: 'flex', justifyContent: 'center' }}></div>
           </div>
         )}
       </div>
@@ -41,9 +43,9 @@ function ImportExternal({ fragment, setFragment, externalImports = {}, locale })
 
   const externalImportButton = (type) => {
     const buttons = {
-      ror: t("retrieveRor"),
-      orcid: t("retrieveOrcid"),
-      metadore: t("retrieveDataRelatedToDoi"),
+      ror: t('retrieveRor'),
+      orcid: t('retrieveOrcid'),
+      metadore: t('retrieveDataRelatedToDoi'),
     };
 
     return (
@@ -63,8 +65,8 @@ function ImportExternal({ fragment, setFragment, externalImports = {}, locale })
   const externalImportsKeys = Object.keys(externalImports);
 
   return (
-    <div style={{ margin: "0 15px" }}>
-      <div style={{ marginBottom: "25px" }}>
+    <div style={{ margin: '0 15px' }}>
+      <div style={{ marginBottom: '25px' }}>
         {externalImportsKeys.map((key) => externalImportButton(key))}
       </div>
 

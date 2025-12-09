@@ -42,7 +42,7 @@ function ModalTemplate({
   } = useContext(GlobalContext);
   const { control } = useFormContext();
   const { fields, append, update } = useFieldArray({ control, name: propName, keyName: '_id' });
-  const [editedFragment, setEditedFragment] = useState({})
+  const [editedFragment, setEditedFragment] = useState({});
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const tooltipId = uniqueId('modal_template_tooltip_id_');
@@ -50,7 +50,6 @@ function ModalTemplate({
   const [template, setTemplate] = useState(null);
 
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
-
 
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
@@ -81,21 +80,20 @@ function ModalTemplate({
   const handleSave = (data) => {
     if (!data) return handleClose();
 
-
-    if (checkFragmentExists(fields, data, template.schema['unicity'])) {
-      setError(t("recordAlreadyExists"));
+    if (checkFragmentExists(fields, data, template.schema.unicity)) {
+      setError(t('recordAlreadyExists'));
     } else {
       if (index !== null) {
         const updatedFragment = {
           ...fields[index],
           ...data,
-          action: fields[index].action || 'update'
+          action: fields[index].action || 'update',
         };
         update(index, updatedFragment);
       } else {
         handleSaveNew(data);
       }
-      toast.success(t("saveSuccess"));
+      toast.success(t('saveSuccess'));
     }
     handleClose();
   };
@@ -117,7 +115,7 @@ function ModalTemplate({
   const handleDelete = (idx) => {
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...fields[idx], action: 'delete' });
+        update(idx, { ...fields[idx], action: 'delete' });
       }
     });
   };
@@ -170,7 +168,7 @@ function ModalTemplate({
               setShow(true);
               setIndex(null);
             }}
-            title={t("addElement")}
+            title={t('addElement')}
             buttonColor="rust"
             position="start"
           ></CustomButton>
@@ -182,7 +180,7 @@ function ModalTemplate({
           template={template}
           mainFormDataType={dataType}
           mainFormTopic={topic}
-          label={index !== null ? `${t("edit")} : ${label}` : `${t("add")} : ${label}`}
+          label={index !== null ? `${t('edit')} : ${label}` : `${t('add')} : ${label}`}
           readonly={isConst ? true : readonly}
           show={show}
           handleSave={handleSave}

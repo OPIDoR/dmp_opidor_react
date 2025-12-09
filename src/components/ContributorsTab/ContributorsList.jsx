@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useTranslation } from "react-i18next";
-import { FaPenToSquare, FaXmark } from "react-icons/fa6";
+import { useTranslation } from 'react-i18next';
+import { FaPenToSquare, FaXmark } from 'react-icons/fa6';
 
-import { parsePattern } from "../../utils/GeneratorUtils";
-import Pagination from "../Shared/Pagination";
-import { isValidHttpUrl } from "../../utils/utils";
+import { parsePattern } from '../../utils/GeneratorUtils';
+import Pagination from '../Shared/Pagination';
+import { isValidHttpUrl } from '../../utils/utils';
 import * as styles from '../assets/css/form.module.css';
 
-function ContributorsList({ contributors, template, handleEdit, handleDelete, readonly = false }) {
+function ContributorsList({
+  contributors, template, handleEdit, handleDelete, readonly = false,
+}) {
   const { t } = useTranslation();
   const pageSize = 10;
   const [page, setPage] = useState(1);
@@ -28,10 +30,10 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
       <table className="table table-hover">
         <thead>
           <tr>
-            <th scope="col">{t("name")}</th>
-            <th scope="col" className="sorter-false">{t("affiliation")}</th>
-            <th scope="col" className="sorter-false">{t("attributedRoles")}</th>
-            <th scope="col" className="sorter-false">{t("actions")}</th>
+            <th scope="col">{t('name')}</th>
+            <th scope="col" className="sorter-false">{t('affiliation')}</th>
+            <th scope="col" className="sorter-false">{t('attributedRoles')}</th>
+            <th scope="col" className="sorter-false">{t('actions')}</th>
           </tr>
         </thead>
         <tbody>
@@ -40,17 +42,17 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
               <td>
                 {parsePattern(contributor.data, template?.schema?.to_string)}
                 {contributor.data?.personId && (
-                  isValidHttpUrl(contributor.data?.personId) ?
-                    [' - ', <a key={contributor.id} href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>] :
-                    ` - ${contributor.data?.personId}`
+                  isValidHttpUrl(contributor.data?.personId)
+                    ? [' - ', <a key={contributor.id} href={contributor.data?.personId} target="_blank" rel="noreferrer">{contributor.data?.personId}</a>]
+                    : ` - ${contributor.data?.personId}`
                 )}
               </td>
               <td>
                 {contributor.data?.affiliationName}
                 {contributor.data?.affiliationId && (
-                  isValidHttpUrl(contributor.data?.affiliationId) ?
-                    [' - ', <a key={contributor.id} href={contributor.data?.affiliationId} target="_blank" rel="noreferrer">{contributor.data?.affiliationId}</a>] :
-                    ` - ${contributor.data?.affiliationId}`
+                  isValidHttpUrl(contributor.data?.affiliationId)
+                    ? [' - ', <a key={contributor.id} href={contributor.data?.affiliationId} target="_blank" rel="noreferrer">{contributor.data?.affiliationId}</a>]
+                    : ` - ${contributor.data?.affiliationId}`
                 )}
               </td>
               <td>
@@ -66,7 +68,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                       place="bottom"
                       effect="solid"
                       variant="info"
-                      content={t("edit")}
+                      content={t('edit')}
                     />
                     <FaPenToSquare
                       data-tooltip-id="contributor-edit-button"
@@ -74,14 +76,14 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
                       onClick={() => handleEdit(pageSize * page + idx)}
                       className={styles.icon}
                     />
-                    {contributors.length > 1 &&
-                      <>
+                    {contributors.length > 1
+                      && <>
                         <ReactTooltip
                           id="contributor-delete-button"
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("delete")}
+                          content={t('delete')}
                         />
                         <FaXmark
                           data-tooltip-id="contributor-delete-button"
@@ -98,13 +100,12 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
           )) : (
             <tr>
               <td colSpan="5" style={{ textAlign: 'left' }}>
-                {t("noData")}
+                {t('noData')}
               </td>
             </tr>
           )}
         </tbody>
       </table>
-
 
       {contributors.length > 0 && (
         <div className="row text-right">
@@ -114,7 +115,7 @@ function ContributorsList({ contributors, template, handleEdit, handleDelete, re
         </div>
       )}
     </>
-  )
+  );
 }
 
 export default ContributorsList;

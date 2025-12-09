@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import prettyBytes from 'pretty-bytes';
-import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoCloudUploadOutline } from 'react-icons/io5';
 
-import { CustomButton } from "../../Styled";
-import { CustomSpinner } from "../../Shared";
+import { CustomButton } from '../../Styled';
+import { CustomSpinner } from '../../Shared';
 import { clearLocalStorage } from '../../../utils/utils';
-import getTemplates from "./data";
-import { planCreation } from "../../../services";
+import getTemplates from './data';
+import { planCreation } from '../../../services';
 
 const Dropzone = styled.div`
   display: flex;
@@ -47,7 +47,9 @@ const Dropzone = styled.div`
   }
 `;
 
-function Import({ prevStep, params, set, setUrlParams }) {
+function Import({
+  prevStep, params, set, setUrlParams,
+}) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [templates, setTemplates] = useState([]);
@@ -88,7 +90,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
     localStorage.setItem('templateId', tmpl.value);
     localStorage.setItem('templateName', tmpl.label);
     setSelectedTemplate(tmpl);
-  }
+  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -99,7 +101,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
   const handleImport = async () => {
     setLoading(true);
 
-    console.log(params)
+    console.log(params);
 
     const formData = new FormData();
     formData.append('import[template_id]', selectedTemplate.value);
@@ -112,20 +114,20 @@ function Import({ prevStep, params, set, setUrlParams }) {
     let res;
     try {
       res = await planCreation.importPlan(formData);
-    } catch(error) {
+    } catch (error) {
       setLoading(false);
-      return toast.error(error?.response?.data?.message || t("importPlanError"));
+      return toast.error(error?.response?.data?.message || t('importPlanError'));
     }
 
     setUrlParams({ step: undefined });
 
     clearLocalStorage();
-    toast.success(t("importWasSuccessful"));
+    toast.success(t('importWasSuccessful'));
 
     setLoading(false);
 
     return window.location = `/plans/${res?.data?.data?.planId}`;
-  }
+  };
 
   const onDragHandler = (e, action) => {
     e.preventDefault();
@@ -135,7 +137,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
     }
 
     return dropZoneRef.current.classList.remove('overlay');
-  }
+  };
 
   return (
     <div>
@@ -157,7 +159,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
 
           {selectedTemplate && (
             <>
-              <h2>{t("file")}</h2>
+              <h2>{t('file')}</h2>
               <Dropzone
                 ref={dropZoneRef}
                 onDragOver={(e) => onDragHandler(e, 'over')}
@@ -165,7 +167,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
               >
                 <section>
                   <IoCloudUploadOutline size={64} />
-                  <h2>{t("chooseFileOrDragIt")}</h2>
+                  <h2>{t('chooseFileOrDragIt')}</h2>
                 </section>
                 <input
                   type="file"
@@ -188,7 +190,7 @@ function Import({ prevStep, params, set, setUrlParams }) {
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleImport}
-                title={t("import")}
+                title={t('import')}
                 position="end"
                 disabled={!(selectedTemplate !== null && file !== null)}
               />

@@ -1,10 +1,10 @@
-import React from "react";
-import { useTranslation, Trans } from "react-i18next";
-import { fr, enGB } from "date-fns/locale";
-import { format } from "date-fns";
-import { FaRegCompass } from "react-icons/fa6";
+import React from 'react';
+import { useTranslation, Trans } from 'react-i18next';
+import { fr, enGB } from 'date-fns/locale';
+import { format } from 'date-fns';
+import { FaRegCompass } from 'react-icons/fa6';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useTour } from "../Shared/Driver/DriverContext";
+import { useTour } from '../Shared/Driver/DriverContext';
 
 const locales = { fr, en: enGB };
 
@@ -29,7 +29,7 @@ function PlanInformations({ template }) {
           place="bottom"
           effect="solid"
           variant="info"
-          content={t("runGuidedTour")}
+          content={t('runGuidedTour')}
         />
         <FaRegCompass
           data-tooltip-id="guided-tour"

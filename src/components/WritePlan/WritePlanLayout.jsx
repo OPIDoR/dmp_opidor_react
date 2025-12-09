@@ -3,7 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 import Global from '../context/Global.jsx';
-import WritePlan from './WritePlan.jsx'
+import WritePlan from './WritePlan.jsx';
 import '../../i18n.js';
 
 import Driver from '../Shared/Driver/index.jsx';
@@ -36,7 +36,7 @@ function WritePlanLayout({
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
       </Global>
     </StrictMode>
-  )
+  );
 }
 
 export default WritePlanLayout;

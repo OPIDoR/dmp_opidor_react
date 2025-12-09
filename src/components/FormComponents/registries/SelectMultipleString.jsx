@@ -40,7 +40,7 @@ function SelectMultipleString({
   const inputId = uniqueId('select_multiple_list_id_');
 
   const {
-    locale, loadedRegistries, setLoadedRegistries
+    locale, loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -65,7 +65,6 @@ function SelectMultipleString({
       }
     }
   }, [category, dataType, topic, registries]);
-
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -92,7 +91,7 @@ function SelectMultipleString({
   It is used to set the options of the select list. */
   useEffect(() => {
     if (field.value) {
-      const value = Array.isArray(field.value) ? field.value : [field.value]
+      const value = Array.isArray(field.value) ? field.value : [field.value];
       setSelectedValues(value);
     } else {
       setSelectedValues([]);
@@ -135,7 +134,6 @@ function SelectMultipleString({
     setSelectedRegistry(e.value);
   };
 
-
   return (
     <div>
       <div className="form-group">
@@ -176,14 +174,14 @@ function SelectMultipleString({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("selectRegistry")}
+                    placeholder={t('selectRegistry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-multiple-string-div">
+          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-multiple-string-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -204,14 +202,14 @@ function SelectMultipleString({
         </div>
         {/* *************Select registry************* */}
 
-        <div style={{ margin: "20px 2px 20px 2px" }}>
+        <div style={{ margin: '20px 2px 20px 2px' }}>
           {selectedValues && (
-            <table style={{ marginTop: "0px" }} className="table">
+            <table style={{ marginTop: '0px' }} className="table">
               {header && <thead><tr><th scope="col">{header}</th></tr></thead>}
               <tbody>
                 {selectedValues.map((el, idx) => (
                   <tr key={idx}>
-                    <td style={{ width: "100%" }}>
+                    <td style={{ width: '100%' }}>
                       <div className={styles.cell_content}>
                         <div>{el} </div>
                         <div className={styles.table_container}>

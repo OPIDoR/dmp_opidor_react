@@ -1,37 +1,34 @@
 export function pick(data, keys) {
   return keys
-    .filter(key => data[key])
+    .filter((key) => data[key])
     .reduce((acc, key) => {
       acc[key] = data[key];
       return acc;
     }, {});
 }
 
-
 export function exists(data, list, keys) {
-  return list.some(item =>
-    keys.every(key => item[key] === data[key])
-  )
+  return list.some((item) => keys.every((key) => item[key] === data[key]));
 }
 
 export function except(data, excludedKeys) {
-  const rest = {...data};
-  excludedKeys.forEach(key => {
+  const rest = { ...data };
+  excludedKeys.forEach((key) => {
     delete rest[key];
   });
   return rest;
 }
 
 export function fragmentEmpty(data) {
-  let rest = except(data, ['id', 'schema_id', 'template_name', 'action']);
-  return Object.keys(rest).length === 0
+  const rest = except(data, ['id', 'schema_id', 'template_name', 'action']);
+  return Object.keys(rest).length === 0;
 }
 
 export function normalizeString(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-export function stringIncludes(str = "", substr = "") {
+export function stringIncludes(str = '', substr = '') {
   if (!str || !substr) return false;
 
   return normalizeString(str.toUpperCase()).includes(normalizeString(substr.toUpperCase()));
@@ -45,15 +42,15 @@ export function isValidHttpUrl(string) {
   } catch {
     return false;
   }
-  return url.protocol === "http:" || url.protocol === "https:";
+  return url.protocol === 'http:' || url.protocol === 'https:';
 }
 
 export function getErrorMessage(error) {
   if (error.response && error.response.data) {
     return error.response.data.message || error.response.data.error;
-  } else if (error.request) {
+  } if (error.request) {
     return error.request;
-  } else if (error.message) {
+  } if (error.message) {
     return error.message;
   }
   return null;

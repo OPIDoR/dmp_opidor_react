@@ -1,10 +1,10 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef } from 'react';
 
-import InnerModalHeader from "./InnerModalHeader";
-import InnerModalTitle from "./InnerModalTitle";
-import InnerModalBody from "./InnerModalBody";
-import InnerModalFooter from "./InnerModalFooter";
-import InnerModalSpacer from "./InnerModalSpacer";
+import InnerModalHeader from './InnerModalHeader';
+import InnerModalTitle from './InnerModalTitle';
+import InnerModalBody from './InnerModalBody';
+import InnerModalFooter from './InnerModalFooter';
+import InnerModalSpacer from './InnerModalSpacer';
 
 const InnerModal = forwardRef((props, ref) => {
   const {
@@ -43,7 +43,7 @@ const InnerModal = forwardRef((props, ref) => {
     >
       {children}
     </div>
-  )
+  );
 });
 
 export default Object.assign(InnerModal, {

@@ -1,6 +1,6 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import styled from "styled-components";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 
 import CustomButton from '../Styled/CustomButton';
 
@@ -65,8 +65,8 @@ const Button = styled.button`
  */
 function CustomError({ error, showWarning = true, handleClose }) {
   const { t } = useTranslation();
-  const defaultMessage = t("problemOccurred");
-  const errorMessage = error?.message || t("Internal Server Error");
+  const defaultMessage = t('problemOccurred');
+  const errorMessage = error?.message || t('Internal Server Error');
   const errorDescription = error?.error || defaultMessage;
   const home = Object.prototype.hasOwnProperty.call(error, 'home') ? error?.home : true;
 
@@ -85,9 +85,9 @@ function CustomError({ error, showWarning = true, handleClose }) {
         }}
       >
         <p>{errorDescription}</p>
-        {home ?
-          (<Button><a href="/">{t("Home page")}</a></Button>) :
-          (<CustomButton handleClick={handleClose} title={'Close'} buttonColor={"white"} position="center" />)
+        {home
+          ? (<Button><a href="/">{t('Home page')}</a></Button>)
+          : (<CustomButton handleClick={handleClose} title={'Close'} buttonColor={'white'} position="center" />)
         }
       </div>
     </ErrorContainer>

@@ -16,8 +16,8 @@ import {
 } from './styles.jsx';
 
 const languagesCode = {
-  'fr_FR': 'fr',
-  'en_GB': 'en',
+  fr_FR: 'fr',
+  en_GB: 'en',
 };
 
 export default function HelpPage({ locale, directusUrl }) {
@@ -26,7 +26,7 @@ export default function HelpPage({ locale, directusUrl }) {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['help'],
-    queryFn: () => directus.getHelp(directusUrl).then(res => res)
+    queryFn: () => directus.getHelp(directusUrl).then((res) => res),
   });
 
   if (isLoading) return <CustomSpinner />;
@@ -36,7 +36,7 @@ export default function HelpPage({ locale, directusUrl }) {
   const reduceTranslations = (translations, field) => translations
     .reduce(
       (o, translation) => ({ ...o, [languagesCode[translation?.languages_code?.code.replace('-', '_') || 'fr_FR']]: translation[field] }),
-      {}
+      {},
     );
 
   const categories = data?.faq_categories.map(({ translations: categTranslations, ...category }) => ({
@@ -50,48 +50,47 @@ export default function HelpPage({ locale, directusUrl }) {
   }));
 
   if (categories.length === 0) {
-    return (<Alert variant="warning">{t("helpPageUnderDevelopment")}</Alert>)
+    return (<Alert variant="warning">{t('helpPageUnderDevelopment')}</Alert>);
   }
 
   return (
     <FaqContainer>
       <FaqCategories>
         <StyledUl>
-        {categories.map(({ title, icon }, index) => (
-          <StyledLi
-            $onlyChild={(categories.length === 1).toString()}
-            $active={(activeFaq === index).toString()}
-            key={`faq-category-${index}`}
-            onClick={() => setActiveFaq(index)}
-          >
-            {icon && (<img src={`/directus/assets/${icon.id}/${icon.filename_download}`} alt="" key={icon.id} />)}
-            <span className="text" key={`faq-category-title-${index}`}>{title[languagesCode[locale]]}</span>
-          </StyledLi>)
-        )}
+          {categories.map(({ title, icon }, index) => (
+            <StyledLi
+              $onlyChild={(categories.length === 1).toString()}
+              $active={(activeFaq === index).toString()}
+              key={`faq-category-${index}`}
+              onClick={() => setActiveFaq(index)}
+            >
+              {icon && (<img src={`/directus/assets/${icon.id}/${icon.filename_download}`} alt="" key={icon.id} />)}
+              <span className="text" key={`faq-category-title-${index}`}>{title[languagesCode[locale]]}</span>
+            </StyledLi>))}
         </StyledUl>
       </FaqCategories>
       <FaqContent>
         {categories[activeFaq].questions.length === 0 ? (
-          <div>{t("noQuestionForCategory")}</div>
-        ) :
-        categories[activeFaq].questions.map(({ question, answer }, index) => (
-          <div key={`faq-content-${index}`} style={{ marginBottom: '40px' }}>
-            <h2 key={`faq-question-${index}`} style={{ marginTop: 0 }}>{question[languagesCode[locale]]}</h2>
-            <div
-              key={`faq-answer-${index}`}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(answer[languagesCode[locale]], {
-                  ADD_TAGS: ['iframe'],
-                  ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
-                }),
-              }}
-            />
-          </div>
-        ))}
+          <div>{t('noQuestionForCategory')}</div>
+        )
+          : categories[activeFaq].questions.map(({ question, answer }, index) => (
+            <div key={`faq-content-${index}`} style={{ marginBottom: '40px' }}>
+              <h2 key={`faq-question-${index}`} style={{ marginTop: 0 }}>{question[languagesCode[locale]]}</h2>
+              <div
+                key={`faq-answer-${index}`}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(answer[languagesCode[locale]], {
+                    ADD_TAGS: ['iframe'],
+                    ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'],
+                  }),
+                }}
+              />
+            </div>
+          ))}
         {categories?.[activeFaq]?.icon && (<FaqContentBottom>
           <img src={`/directus/assets/${categories?.[activeFaq]?.icon?.id}/${categories?.[activeFaq]?.icon?.filename_download}`} />
         </FaqContentBottom>)}
       </FaqContent>
     </FaqContainer>
-  )
+  );
 }

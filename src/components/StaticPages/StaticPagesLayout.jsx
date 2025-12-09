@@ -13,5 +13,5 @@ export default function StaticPagesLayout({ locale = 'fr-FR', page, directusUrl 
         <StaticPage locale={locale} page={page} directusUrl={directusUrl} />
       </QueryClientProvider>
     </StrictMode>
-  )
+  );
 }

@@ -1,27 +1,29 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import * as styles from "../../assets/css/steps.module.css";
+import * as styles from '../../assets/css/steps.module.css';
 
-function LangSelection({ prevStep, nextStep, set, params }) {
+function LangSelection({
+  prevStep, nextStep, set, params,
+}) {
   const { t } = useTranslation();
 
   const languages = [
     {
-      label: t("francais"),
+      label: t('francais'),
       value: 'fr-FR',
-      description: t("templateWillBeInFrench"),
+      description: t('templateWillBeInFrench'),
     },
     {
-      label: t("englishGb"),
+      label: t('englishGb'),
       value: 'en-GB',
-      description: t("templateWillBeInEnglish"),
+      description: t('templateWillBeInEnglish'),
     },
   ];
 
   return (
     <div>
-      <h2>{t("selectPlanLanguage")}</h2>
+      <h2>{t('selectPlanLanguage')}</h2>
       {
         languages.map(({ label, value, description }, index) => (
           <div
@@ -45,7 +47,7 @@ function LangSelection({ prevStep, nextStep, set, params }) {
         ))
       }
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      {prevStep}
+        {prevStep}
       </div>
     </div>
   );

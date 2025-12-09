@@ -53,7 +53,7 @@ function SelectContributorMultiple({
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
-    if(roleCategory && !isRoleConst) {
+    if (roleCategory && !isRoleConst) {
       fetchRoles();
     }
   }, [roleCategory, isRoleConst]);
@@ -65,21 +65,21 @@ function SelectContributorMultiple({
       fetchPersons();
       setOptions(null);
     }
-  }, [persons])
+  }, [persons]);
 
   const fetchPersons = () => {
     service.getPersons(dmpId).then((res) => {
       setPersons(res.data.results);
     });
-  }
+  };
 
   const fetchRoles = () => {
     service.suggestRegistry(roleCategory, dataType).then((res) => {
       setLoadedRegistries({ ...loadedRegistries, [res.data.name]: res.data.values });
-      const options = createOptions(res.data.values, locale)
+      const options = createOptions(res.data.values, locale);
       setRoleOptions(options);
     });
-  }
+  };
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -87,7 +87,7 @@ function SelectContributorMultiple({
       service.getSchemaByName(templateName).then((res) => {
         const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateName]: contributorTemplate });
-        const contributorProps = contributorTemplate?.schema?.properties || {}
+        const contributorProps = contributorTemplate?.schema?.properties || {};
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
         setIsRoleConst(contributorProps.role.isConst || false);
@@ -104,7 +104,7 @@ function SelectContributorMultiple({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateName];
-      const contributorProps = contributorTemplate?.schema?.properties || {}
+      const contributorProps = contributorTemplate?.schema?.properties || {};
       const personTemplateName = contributorProps.person.template_name;
       setOverridableRole(contributorProps.role.overridable || false);
       setTemplate(loadedTemplates[personTemplateName]);
@@ -125,7 +125,7 @@ function SelectContributorMultiple({
    * @param e - the event object
    */
   const handleSelectContributor = (e) => {
-    append({ person: { ...e.object, action: "update" }, role: defaultRole, action: "create" })
+    append({ person: { ...e.object, action: 'update' }, role: defaultRole, action: 'create' });
     setError(null);
   };
 
@@ -136,9 +136,9 @@ function SelectContributorMultiple({
     const updatedContributor = {
       ...fields[index],
       role: e.value,
-      action: fields[index].action || 'update'
+      action: fields[index].action || 'update',
     };
-    update(index, updatedContributor)
+    update(index, updatedContributor);
   };
 
   /**
@@ -148,8 +148,8 @@ function SelectContributorMultiple({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
-      setError(t("recordAlreadyExists"));
+    if (checkFragmentExists(persons, data, template.schema.unicity)) {
+      setError(t('recordAlreadyExists'));
     } else {
       if (index !== null) {
         service.saveFragment(editedPerson.id, data).then((res) => {
@@ -159,16 +159,16 @@ function SelectContributorMultiple({
           const updatedContributor = {
             ...fields[index],
             person: savedFragment,
-            action: fields[index].action || 'update'
+            action: fields[index].action || 'update',
           };
           update(index, updatedContributor);
 
-          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+          updatedPersons[updatedPersons.findIndex((el) => el.id === savedFragment.id)] = {
             ...savedFragment,
-            to_string: parsePattern(data, template?.schema?.to_string)
+            to_string: parsePattern(data, template?.schema?.to_string),
           };
           setPersons(updatedPersons);
-        }).catch(error => setError(error));
+        }).catch((error) => setError(error));
       } else {
         handleSaveNew(data);
       }
@@ -185,12 +185,12 @@ function SelectContributorMultiple({
    * modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    service.createFragment(data, template.id, dmpId).then(res => {
+    service.createFragment(data, template.id, dmpId).then((res) => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
       append({ person: savedFragment, role: defaultRole, action: 'create' });
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
-    }).catch(error => setError(error));
+    }).catch((error) => setError(error));
 
     handleClose();
     setEditedPerson({});
@@ -204,7 +204,7 @@ function SelectContributorMultiple({
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        update(idx, {...fields[idx], action: 'delete'})
+        update(idx, { ...fields[idx], action: 'delete' });
       }
     });
   };
@@ -217,7 +217,7 @@ function SelectContributorMultiple({
     e.preventDefault();
     e.stopPropagation();
     setIndex(idx);
-    setEditedPerson(fields[idx]['person']);
+    setEditedPerson(fields[idx].person);
     setShow(true);
   };
 
@@ -248,7 +248,7 @@ function SelectContributorMultiple({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={createRegistryPlaceholder(1, false, true, "complex", t)}
+              placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
             />
           </div>
           {!readonly && (
@@ -258,7 +258,7 @@ function SelectContributorMultiple({
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t("add")}
+                content={t('add')}
               />
               <FaPlus
                 data-tooltip-id="select-contributor-multiple-add-button"
@@ -292,7 +292,7 @@ function SelectContributorMultiple({
             template={template}
             mainFormDataType={dataType}
             mainFormTopic={topic}
-            label={index !== null ? t("editPersonOrOrg") : t("addPersonOrOrg")}
+            label={index !== null ? t('editPersonOrOrg') : t('addPersonOrOrg')}
             readonly={readonly}
             show={show}
             handleSave={handleSave}

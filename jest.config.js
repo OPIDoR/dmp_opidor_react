@@ -6,5 +6,5 @@ module.exports = {
     '\\.(css|less)$': 'identity-obj-proxy',
   },
   setupFilesAfterEnv: ['<rootDir>/src/jest-setup.js'],
-  testPathIgnorePatterns: ["/__utils__/", "/__mocks__/"]
+  testPathIgnorePatterns: ['/__utils__/', '/__mocks__/'],
 };

@@ -14,5 +14,5 @@ export default function HelpLayout({ locale = 'fr-FR', directusUrl }) {
       </QueryClientProvider>
 
     </StrictMode>
-  )
+  );
 }

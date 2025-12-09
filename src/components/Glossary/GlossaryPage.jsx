@@ -13,8 +13,8 @@ import {
 } from './styles.jsx';
 
 const languagesCode = {
-  'fr_FR': 'fr',
-  'en_GB': 'en',
+  fr_FR: 'fr',
+  en_GB: 'en',
 };
 
 export default function HelpPage({ locale, directusUrl }) {
@@ -51,7 +51,7 @@ export default function HelpPage({ locale, directusUrl }) {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['glossary'],
-    queryFn: () => directus.getGlossary(directusUrl).then(res => res)
+    queryFn: () => directus.getGlossary(directusUrl).then((res) => res),
   });
 
   if (isLoading) return <CustomSpinner />;
@@ -61,7 +61,7 @@ export default function HelpPage({ locale, directusUrl }) {
   const reduceTranslations = (translations, field) => translations
     .reduce(
       (o, translation) => ({ ...o, [languagesCode[translation?.languages_code?.code.replace('-', '_') || 'fr_FR']]: translation[field] }),
-      {}
+      {},
     );
 
   const terms = data?.glossary.map(({ translations }) => ({
@@ -70,7 +70,7 @@ export default function HelpPage({ locale, directusUrl }) {
   }));
 
   if (!terms || terms.length === 0) {
-    return (<Alert variant="warning">{t("glossaryUnderDevelopment")}</Alert>)
+    return (<Alert variant="warning">{t('glossaryUnderDevelopment')}</Alert>);
   }
 
   terms.forEach(({ term, description }) => {
@@ -103,7 +103,7 @@ export default function HelpPage({ locale, directusUrl }) {
       {Object.keys(letters).map((key, index) => (
         <StyledLi
           key={`glossary-${key}-${index}`}
-          onClick={() => Object.entries(letters[key]).length === 0 ? null : scrollToId(key)}
+          onClick={() => (Object.entries(letters[key]).length === 0 ? null : scrollToId(key))}
           className={`${Object.entries(letters[key]).length === 0 ? 'disabled' : null} ${activeLetter === key ? 'active' : null}`}
         >
           {key}
@@ -127,7 +127,7 @@ export default function HelpPage({ locale, directusUrl }) {
 
   return (
     <div>
-      <h1>{t("glossary")}</h1>
+      <h1>{t('glossary')}</h1>
       {displayAlphabet()}
       <GlossaryContent>
         {Object.keys(letters).map((letter, index) => (
@@ -146,5 +146,5 @@ export default function HelpPage({ locale, directusUrl }) {
         ))}
       </GlossaryContent>
     </div>
-  )
+  );
 }

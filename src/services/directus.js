@@ -3,7 +3,7 @@ import { createDirectus, graphql } from '@directus/sdk';
 const createClient = (url) => {
   const client = createDirectus(url).with(graphql());
   return client;
-}
+};
 
 const getHelp = async (url) => {
   const client = createClient(url);
@@ -32,7 +32,7 @@ const getHelp = async (url) => {
       }
     }
   `);
-}
+};
 
 const getGlossary = async (url) => {
   const client = createClient(url);
@@ -49,7 +49,7 @@ const getGlossary = async (url) => {
       }
     }
   `);
-}
+};
 
 const getStaticPage = async (url, page) => {
   const client = createClient(url);
@@ -67,7 +67,7 @@ const getStaticPage = async (url, page) => {
       }
     }
   `);
-}
+};
 
 export default {
   getHelp,

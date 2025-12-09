@@ -11,7 +11,7 @@ function Tooltip() {
     data-testid={id}
     size={12}
     style={{ marginLeft: '4px', verticalAlign: 'middle', color: 'var(--blue)' }}
-  />
+  />;
 }
 
 export default Tooltip;

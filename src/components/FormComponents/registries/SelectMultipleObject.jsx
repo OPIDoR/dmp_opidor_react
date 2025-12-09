@@ -51,15 +51,13 @@ function SelectMultipleObject({
   const [index, setIndex] = useState(null);
   const [error, setError] = useState(null);
   const [template, setTemplate] = useState(null);
-  const [editedFragment, setEditedFragment] = useState({})
+  const [editedFragment, setEditedFragment] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [availableRegistries, setAvailableRegistries] = useState([]);
   const tooltipId = uniqueId('select_with_create_tooltip_id_');
   const inputId = uniqueId('select_multiple_object_id_');
 
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
-
-
 
   useEffect(() => {
     if (category) {
@@ -133,7 +131,7 @@ function SelectMultipleObject({
   const handleSelectRegistryValue = (e) => {
     const pattern = template?.schema?.to_string || [];
     if (pattern.length > 0) {
-      append({ ...e.object, action: 'create' })
+      append({ ...e.object, action: 'create' });
     }
   };
 
@@ -159,21 +157,21 @@ function SelectMultipleObject({
   const handleSave = (data) => {
     if (!data) return handleClose();
 
-    if (checkFragmentExists(fields, data, template.schema['unicity'])) {
-      setError(t("recordAlreadyExists"));
+    if (checkFragmentExists(fields, data, template.schema.unicity)) {
+      setError(t('recordAlreadyExists'));
     } else {
       if (index !== null) {
         const updatedFragment = {
           ...fields[index],
           ...data,
-          action: fields[index].action || 'update'
+          action: fields[index].action || 'update',
         };
         update(index, updatedFragment);
       } else {
-        //add in add
+        // add in add
         handleSaveNew(data);
       }
-      toast.success(t("saveSuccess"));
+      toast.success(t('saveSuccess'));
     }
     handleClose();
   };
@@ -241,14 +239,14 @@ function SelectMultipleObject({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("selectRegistry")}
+                    placeholder={t('selectRegistry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-multiple-object-div">
+          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-multiple-object-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -271,7 +269,7 @@ function SelectMultipleObject({
                     place="bottom"
                     effect="solid"
                     variant="info"
-                    content={t("add")}
+                    content={t('add')}
                   />
                   <FaPlus
                     data-tooltip-id="select-with-create-add-button"
@@ -306,7 +304,7 @@ function SelectMultipleObject({
           template={template}
           mainFormDataType={dataType}
           mainFormTopic={topic}
-          label={index !== null ? `${t("edit")} : ${label}` : `${t("add")} : ${label}`}
+          label={index !== null ? `${t('edit')} : ${label}` : `${t('add')} : ${label}`}
           readonly={readonly}
           show={show}
           handleSave={handleSave}

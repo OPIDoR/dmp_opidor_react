@@ -1,5 +1,5 @@
-import React from "react";
-import * as styles from "../../assets/css/write_plan.module.css";
+import React from 'react';
+import * as styles from '../../assets/css/write_plan.module.css';
 
 function InfoSVG() {
   return (

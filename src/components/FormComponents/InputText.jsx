@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import uniqueId from 'lodash.uniqueid';
 
 import * as styles from '../assets/css/form.module.css';
@@ -53,7 +53,7 @@ function InputText({
         data-testid="input-text"
         {...register(propName, {
           valueAsNumber: type === 'number',
-          value: ''
+          value: '',
         })}
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}

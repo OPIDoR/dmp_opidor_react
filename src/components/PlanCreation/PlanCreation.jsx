@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Step, Stepper } from 'react-form-stepper';
 import { Toaster } from 'react-hot-toast';
 
-import { CustomButton } from "../Styled";
+import { CustomButton } from '../Styled';
 import {
   ActionSelection,
   ContextSelection,
@@ -37,23 +37,23 @@ function PlanCreation({ locale = 'en_GB' }) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const actions = {
-    'import': t("importAnExistingPlan"),
-    'create': t("createNewPlan"),
+    import: t('importAnExistingPlan'),
+    create: t('createNewPlan'),
   };
 
   const formats = {
-    'standard': t("dmpOpidorFormat"),
-    'rda': t("rdaDmpCommonStandardFormat"),
+    standard: t('dmpOpidorFormat'),
+    rda: t('rdaDmpCommonStandardFormat'),
   };
 
   const context = {
-    'research_project': t("forProject"),
-    'research_entity': t("forEntity"),
+    research_project: t('forProject'),
+    research_entity: t('forEntity'),
   };
 
   const languages = {
     'fr-FR': 'Français',
-    'en-GB': 'English (UK)'
+    'en-GB': 'English (UK)',
   };
 
   const [currentAction, setCurrentAction] = useState('create');
@@ -61,7 +61,7 @@ function PlanCreation({ locale = 'en_GB' }) {
   const [steps, setSteps] = useState([]);
   const dataSteps = [
     {
-      label: t("actionSelection"),
+      label: t('actionSelection'),
       component: <ActionSelection />,
       value: actions[params.action],
       set: (action) => setParams({
@@ -71,7 +71,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t("contextSelection"),
+      label: t('contextSelection'),
       component: <ContextSelection />,
       value: context[params.researchContext],
       set: (researchContext) => setParams({
@@ -81,7 +81,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t("languageSelection"),
+      label: t('languageSelection'),
       component: <LangSelection />,
       value: languages[params.templateLanguage],
       set: (templateLanguage) => setParams({
@@ -91,7 +91,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create', 'import'],
     },
     {
-      label: t("templateSelection"),
+      label: t('templateSelection'),
       component: <TemplateSelection />,
       value: params.templateName,
       set: (selectedTemplate, templateName) => setParams({
@@ -102,7 +102,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['create'],
     },
     {
-      label: t("formatSelection"),
+      label: t('formatSelection'),
       component: <FormatSelection />,
       value: formats[params.format],
       set: (format) => setParams({
@@ -112,7 +112,7 @@ function PlanCreation({ locale = 'en_GB' }) {
       actions: ['import'],
     },
     {
-      label: t("templateSelection"),
+      label: t('templateSelection'),
       component: <Import />,
       value: params.templateName,
       set: (selectedTemplate, templateName) => setParams({
@@ -121,7 +121,7 @@ function PlanCreation({ locale = 'en_GB' }) {
         templateName,
       }),
       actions: ['import'],
-    }
+    },
   ];
 
   useEffect(() => {
@@ -161,10 +161,8 @@ function PlanCreation({ locale = 'en_GB' }) {
   }, [locale, currentStep, currentAction, params.templateName]);
 
   const prevStep = (<CustomButton
-    handleClick={() => {
-      return handleStep(currentStep - 1);
-    }}
-    title={t("goBackToPreviousStep")}
+    handleClick={() => handleStep(currentStep - 1)}
+    title={t('goBackToPreviousStep')}
     position="start"
   />);
 
@@ -183,7 +181,7 @@ function PlanCreation({ locale = 'en_GB' }) {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-12">
-          <h1>{t("createPlan")}</h1>
+          <h1>{t('createPlan')}</h1>
           <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
             <Stepper
               activeStep={currentStep}
@@ -191,7 +189,7 @@ function PlanCreation({ locale = 'en_GB' }) {
               styleConfig={{
                 activeBgColor: '#c6503d',
                 size: 55,
-                labelFontSize: 18
+                labelFontSize: 18,
               }}
               className={stepperStyles.stepper_steps}
             >
@@ -207,16 +205,14 @@ function PlanCreation({ locale = 'en_GB' }) {
             </Stepper>
             <div style={{ padding: '20px', boxSizing: 'border-box' }}>
               {
-                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ component, set }, index) => {
-                  return currentStep === index && React.cloneElement(component, {
-                    key: `step-${index}-component`,
-                    nextStep,
-                    prevStep: index > 0 ? prevStep : undefined,
-                    set,
-                    params,
-                    setUrlParams,
-                  });
-                })
+                steps.filter(({ actions }) => actions.includes(currentAction)).map(({ component, set }, index) => currentStep === index && React.cloneElement(component, {
+                  key: `step-${index}-component`,
+                  nextStep,
+                  prevStep: index > 0 ? prevStep : undefined,
+                  set,
+                  params,
+                  setUrlParams,
+                }))
               }
             </div>
           </div>

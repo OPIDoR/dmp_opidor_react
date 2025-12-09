@@ -42,7 +42,7 @@ function TinyArea({
   const editorRef = useRef(null);
 
   return (
-    <div className={`form-group ticket-summernote mr-4 ml-4`}>
+    <div className={'form-group ticket-summernote mr-4 ml-4'}>
       <div className="row">
         <div className={styles.label_form}>
           <label data-tooltip-id={tinyAreaLabelId}>
@@ -62,7 +62,7 @@ function TinyArea({
           }
         </div>
 
-        <div style={{ marginTop: "10px" }} key={field.id} ref={editorRef}>
+        <div style={{ marginTop: '10px' }} key={field.id} ref={editorRef}>
           {!readonly && (
             <Editor
               {...newField}

@@ -1,4 +1,4 @@
-import { stringIncludes } from "./utils";
+import { stringIncludes } from './utils';
 
 /**
  * It takes a JSON object and a list of keys, and returns a string that is the concatenation of the values of the keys in the JSON object
@@ -10,10 +10,10 @@ export function parsePattern(data, keys = []) {
   if (keys.length === 0) return JSON.stringify(data);
   const isArrayMatch = /^(.*)\[[0-9]+\]$/gi;
 
-  return keys.map(value => {
-    if (!value.startsWith("$.")) { return value; }
+  return keys.map((value) => {
+    if (!value.startsWith('$.')) { return value; }
 
-    return value.substr(2).trim().split(".").reduce((acc, cur) => {
+    return value.substr(2).trim().split('.').reduce((acc, cur) => {
       const match = cur.match(isArrayMatch);
       if (match) {
         const [, objeKey, arrIndex] = match;
@@ -36,7 +36,7 @@ export function createOptions(registryValues, locale) {
   return [...registryValues.map((option) => {
     let { label, value, ...optionValue } = option;
     label = label ? label[locale] : optionValue[locale];
-    if(!value) {
+    if (!value) {
       value = label;
     }
 
@@ -59,10 +59,10 @@ export function createOptions(registryValues, locale) {
  */
 export function createRegistryPlaceholder(registriesLength, multipleRegistry, overridable, registryType, t) {
   let placeholder = '';
-  placeholder += registriesLength > 1 ? t('thenSelect') : t('select')
-  placeholder += multipleRegistry ? t('selectMultiple') :  t('selectOne')
+  placeholder += registriesLength > 1 ? t('thenSelect') : t('select');
+  placeholder += multipleRegistry ? t('selectMultiple') : t('selectOne');
   if (overridable) {
-    placeholder += registryType === 'complex' ? t('createNewPlus') :  t('createNew');
+    placeholder += registryType === 'complex' ? t('createNewPlus') : t('createNew');
   }
   return placeholder;
 }
@@ -75,7 +75,7 @@ export function createRegistryPlaceholder(registriesLength, multipleRegistry, ov
  * @returns if it exists a label in the form language
  */
 export function createFormLabel(property, locale) {
-  return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined'
+  return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined';
 }
 
 /**
@@ -86,7 +86,7 @@ export function createFormLabel(property, locale) {
 export function filterOptions(options, value) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(options.filter(o => stringIncludes(o.label, value)));
+      resolve(options.filter((o) => stringIncludes(o.label, value)));
     }, 500);
   });
 }
@@ -95,14 +95,14 @@ export function filterOptions(options, value) {
  * This function is used to add the 'create' action to data in default values
  */
 export function formatDefaultValues(defaults) {
-  if(defaults === undefined) return {};
-  const formatedDefaults = {...defaults};
+  if (defaults === undefined) return {};
+  const formatedDefaults = { ...defaults };
 
   Object.keys(defaults).forEach((prop) => {
-    if(Array.isArray(defaults[prop])) {
-      formatedDefaults[prop] = defaults[prop].map((d) => { return {...d, action: 'create'}});
+    if (Array.isArray(defaults[prop])) {
+      formatedDefaults[prop] = defaults[prop].map((d) => ({ ...d, action: 'create' }));
     } else if (typeof defaults[prop] === 'object') {
-      formatedDefaults[prop] = {...defaults[prop], action: 'create'};
+      formatedDefaults[prop] = { ...defaults[prop], action: 'create' };
     }
   });
   return formatedDefaults;
@@ -111,25 +111,25 @@ export function formatDefaultValues(defaults) {
 export function generateEmptyDefaults(properties = {}) {
   const emptyDefaults = {};
   for (const [key, prop] of Object.entries(properties)) {
-    if(prop.type === 'array' && prop.items?.type === 'object') {
-      emptyDefaults[key] = []
+    if (prop.type === 'array' && prop.items?.type === 'object') {
+      emptyDefaults[key] = [];
     }
-  };
+  }
   return emptyDefaults;
 }
 
 export function researchOutputTypeToDataType(type) {
-  switch(type) {
-    case 'Logiciel':
-    case 'Software':
-      return 'software';
-    default:
-      return 'none';
+  switch (type) {
+  case 'Logiciel':
+  case 'Software':
+    return 'software';
+  default:
+    return 'none';
   }
 }
 
 export function displayPersonalData(researchOutputType) {
   const typesWithoutPersonalData = ['software', 'logiciel'];
 
-  return !typesWithoutPersonalData.includes(researchOutputType?.toLowerCase())
+  return !typesWithoutPersonalData.includes(researchOutputType?.toLowerCase());
 }

@@ -44,7 +44,6 @@ function SelectSingleString({
   const tooltipId = uniqueId('select_single_list_tooltip_id_');
   const inputId = uniqueId('select_single_list_id_');
 
-
   useEffect(() => {
     if (category) {
       service.getAvailableRegistries(category, dataType, topic)
@@ -72,11 +71,11 @@ function SelectSingleString({
     if (!options) return;
 
     if (field.value) {
-      const selectedOpt = options.find(o => o.value === field.value) || null;
+      const selectedOpt = options.find((o) => o.value === field.value) || null;
       if (selectedOpt === null && overridable === true) {
         setSelectedOption({ value: field.value, label: field.value });
       } else {
-        setSelectedOption(selectedOpt)
+        setSelectedOption(selectedOpt);
       }
     } else {
       setSelectedOption(null);
@@ -89,7 +88,7 @@ function SelectSingleString({
   */
   useEffect(() => {
     if (registries.length === 0 && availableRegistries.length === 1) return;
-    
+
     if (selectedRegistry) {
       if (loadedRegistries[selectedRegistry]) {
         setOptions(createOptions(loadedRegistries[selectedRegistry], locale));
@@ -111,7 +110,7 @@ function SelectSingleString({
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    if (!e) return { target: { name: propName, value: '' } }
+    if (!e) return { target: { name: propName, value: '' } };
 
     return field.onChange(e.value);
   };
@@ -122,7 +121,6 @@ function SelectSingleString({
   const handleSelectRegistry = (e) => {
     setSelectedRegistry(e.value);
   };
-
 
   return (
     <div>
@@ -164,14 +162,14 @@ function SelectSingleString({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("selectRegistry")}
+                    placeholder={t('selectRegistry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-string-div">
+          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-string-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -183,7 +181,7 @@ function SelectSingleString({
                     selectedOption={selectedOption}
                     isDisabled={readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, "simple", t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'simple', t)}
                     overridable={overridable}
                   />
                 )}

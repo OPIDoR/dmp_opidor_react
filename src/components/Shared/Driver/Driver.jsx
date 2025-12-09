@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
 
 import { useTour } from './DriverContext.jsx';
 import { guidedTour } from '../../../services/index.js';
-import "./driver.css";
+import './driver.css';
 
-function Driver({ locale = 'fr_FR', tourName, children, steps }) {
+function Driver({
+  locale = 'fr_FR', tourName, children, steps,
+}) {
   const { t, i18n } = useTranslation();
 
   const { isOpen, setIsOpen } = useTour();
@@ -26,14 +28,14 @@ function Driver({ locale = 'fr_FR', tourName, children, steps }) {
         allowKeyboardControl: true,
         stageRadius: 10,
         stagePadding: 10,
-        nextBtnText: t("next"),
-        prevBtnText: t("previous"),
-        doneBtnText: t("finish"),
+        nextBtnText: t('next'),
+        prevBtnText: t('previous'),
+        doneBtnText: t('finish'),
         progressText: '{{current}} / {{total}}',
         steps,
         onPopoverRender: (popover) => {
           const ignoreBtn = document.createElement('button');
-          ignoreBtn.innerText = t("ignoreGuidedTour");
+          ignoreBtn.innerText = t('ignoreGuidedTour');
           popover.footerButtons.prepend(ignoreBtn);
           ignoreBtn.addEventListener('click', () => driverRef?.current.destroy());
         },
@@ -63,9 +65,9 @@ function Driver({ locale = 'fr_FR', tourName, children, steps }) {
 
     return guidedTour.getTour(tourName)
       .then(({ data }) => {
-        const open = isOpen || !data?.tour?.ended
+        const open = isOpen || !data?.tour?.ended;
         setIsOpen(open);
-        setIsEnded(data?.tour?.ended)
+        setIsEnded(data?.tour?.ended);
         if (open) {
           driverRef?.current.drive();
         }

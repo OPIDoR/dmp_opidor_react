@@ -4,11 +4,11 @@ import uniqueId from 'lodash.uniqueid';
 import { FaPenToSquare, FaEye, FaXmark } from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
+import { useTranslation } from 'react-i18next';
+import { useController, useFormContext } from 'react-hook-form';
 import { service } from '../../services';
 import * as styles from '../assets/css/form.module.css';
 import NestedForm from '../Forms/NestedForm.jsx';
-import { useTranslation } from 'react-i18next';
-import { useController, useFormContext } from 'react-hook-form';
 import { fragmentEmpty, getErrorMessage } from '../../utils/utils.js';
 import { parsePattern } from '../../utils/GeneratorUtils.js';
 import { GlobalContext } from '../context/Global.jsx';
@@ -39,15 +39,14 @@ function SubForm({
   const tooltipId = uniqueId('sub_form_tooltip_id_');
   const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
 
-
   useEffect(() => {
     setEditedFragment(field.value || {});
-  }, [field.value])
+  }, [field.value]);
 
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
       service.getSchemaByName(templateName).then((res) => {
-        setTemplate(res.data)
+        setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       }).catch((error) => {
         setError(getErrorMessage(error));
@@ -55,8 +54,7 @@ function SubForm({
     } else {
       setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateName])
-
+  }, [templateName]);
 
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
@@ -65,7 +63,7 @@ function SubForm({
 
     setEditedFragment({});
     setShowNestedForm(false);
-  }
+  };
 
   const handleDeleteList = (e) => {
     e.preventDefault();
@@ -73,12 +71,12 @@ function SubForm({
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
         field.onChange({ id: field.value.id, action: 'delete' });
-    
+
         setEditedFragment({});
         setShowNestedForm(false);
       }
     });
-  }
+  };
 
   return (
     <div>
@@ -124,7 +122,7 @@ function SubForm({
         )}
 
         {!fragmentEmpty(editedFragment) && !showNestedForm && (
-          <table style={{ marginTop: "20px" }} className="table">
+          <table style={{ marginTop: '20px' }} className="table">
             <thead>
               <tr>
                 <th scope="col"></th>
@@ -134,14 +132,14 @@ function SubForm({
             <tbody>
               {[editedFragment].map((el, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "90%" }}>
+                  <td style={{ width: '90%' }}>
                     {parsePattern(el, template?.schema?.to_string)}
                   </td>
-                  <td style={{ width: "10%" }}>
+                  <td style={{ width: '10%' }}>
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);
-                        setEditedFragment({...field.value, action: 'update'});
+                        setEditedFragment({ ...field.value, action: 'update' });
                       }}
                       className={styles.icon}
                     />
@@ -162,15 +160,14 @@ function SubForm({
               setEditedFragment(null);
               setShowNestedForm(true);
             }}
-            title={t("addElement")}
+            title={t('addElement')}
             buttonColor="rust"
             position="start"
           ></CustomButton>
         )}
       </div>
     </div>
-  )
+  );
 }
-
 
 export default SubForm;

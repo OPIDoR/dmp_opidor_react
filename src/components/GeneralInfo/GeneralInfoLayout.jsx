@@ -8,7 +8,7 @@ import { Toaster } from 'react-hot-toast';
 
 const toastOptions = {
   duration: 5000,
-}
+};
 
 function GeneralInfoLayout({
   planId,
@@ -21,7 +21,7 @@ function GeneralInfoLayout({
   isClassic = false,
   readonly = false,
 }) {
-  return(
+  return (
     <StrictMode>
       <Global>
         {isClassic && !readonly && <GuidanceSelector planId={planId} context={'plan'} />}
@@ -39,7 +39,7 @@ function GeneralInfoLayout({
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
       </Global>
     </StrictMode>
-  )
+  );
 }
 
 export default GeneralInfoLayout;

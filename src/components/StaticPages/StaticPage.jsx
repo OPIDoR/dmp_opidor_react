@@ -8,8 +8,8 @@ import { directus } from '../../services';
 import { CustomError, CustomSpinner } from '../Shared';
 
 const languagesCode = {
-  'fr_FR': 'fr',
-  'en_GB': 'en',
+  fr_FR: 'fr',
+  en_GB: 'en',
 };
 
 export default function StaticPage({ locale, page, directusUrl }) {
@@ -17,7 +17,7 @@ export default function StaticPage({ locale, page, directusUrl }) {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['staticPage'],
-    queryFn: () => directus.getStaticPage(directusUrl, page).then(res => res)
+    queryFn: () => directus.getStaticPage(directusUrl, page).then((res) => res),
   });
 
   if (isLoading) return <CustomSpinner />;
@@ -25,13 +25,13 @@ export default function StaticPage({ locale, page, directusUrl }) {
   if (error) return <CustomError error={error} />;
 
   if (data?.static_pages.length === 0) {
-    return (<Alert variant="warning">{t('noStaticPageFound')}</Alert>)
+    return (<Alert variant="warning">{t('noStaticPageFound')}</Alert>);
   }
 
   const reduceTranslations = (translations, field) => translations
     .reduce(
       (o, translation) => ({ ...o, [languagesCode[translation?.languages_code?.code.replace('-', '_') || 'fr_FR']]: translation[field] }),
-      {}
+      {},
     );
 
   const pageContent = data?.static_pages.map(({ translations: pageTranslation, ...category }) => ({
@@ -47,5 +47,5 @@ export default function StaticPage({ locale, page, directusUrl }) {
         __html: DOMPurify.sanitize(pageContent.content[languagesCode[locale]]),
       }} />
     </>
-  )
+  );
 }

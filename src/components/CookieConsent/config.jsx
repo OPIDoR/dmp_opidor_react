@@ -10,7 +10,7 @@ export default {
     name: 'dmp_cc_cookie',
     domain: location.hostname,
     path: '/',
-    sameSite: "Lax",
+    sameSite: 'Lax',
     expiresAfterDays: 7,
   },
 
@@ -20,13 +20,13 @@ export default {
       layout: 'cloud',
       position: 'bottom center',
       flipButtons: false,
-      equalWeightButtons: false
+      equalWeightButtons: false,
     },
     preferencesModal: {
       layout: 'box',
       flipButtons: false,
-      equalWeightButtons: false
-    }
+      equalWeightButtons: false,
+    },
   },
 
   categories: {
@@ -87,7 +87,7 @@ export default {
 
       // https://cookieconsent.orestbida.com/reference/configuration-reference.html#category-services
       services: {},
-    }
+    },
   },
 
   language: {
@@ -133,7 +133,7 @@ export default {
                     name: '_dmp_opidor_session',
                     domain: location.hostname,
                     desc: 'Ce cookie est utilisé pour maintenir votre session ouverte lorsque vous naviguez sur le site.',
-                    duration: 'Fin de la session / 24 heures'
+                    duration: 'Fin de la session / 24 heures',
                   },
                 ],
               },
@@ -155,14 +155,14 @@ export default {
                     name: 'directus_session_token',
                     domain: location.hostname,
                     desc: 'Ce cookie est utilisé pour assurer la connexion avec le service "Directus" qui permet la gestion de certaines pages du site.',
-                    duration: 'Fin de la session / 15 minutes'
+                    duration: 'Fin de la session / 15 minutes',
                   },
                   {
                     name: 'dmp_cc_cookie',
                     domain: location.hostname,
                     desc: 'Ce cookie est utilisé pour enregistrer vos préférences en terme de cookies.',
-                    duration: '7 jours'
-                  }
+                    duration: '7 jours',
+                  },
                 ],
               },
             },
@@ -220,7 +220,7 @@ export default {
           sections: [
             {
               title: 'Cookies',
-              description: 'We use cookies to improve your experience and analyse our site. You can accept all cookies, reject them, or manage your preferences.'
+              description: 'We use cookies to improve your experience and analyse our site. You can accept all cookies, reject them, or manage your preferences.',
             },
             {
               title: 'Cookies Strictement Nécessaires <span class="pm__badge">Always enabled</span>',
@@ -261,14 +261,14 @@ export default {
                     name: 'directus_session_token',
                     domain: location.hostname,
                     desc: 'This cookie is used to connect to the ‘Directus’ service, which enables certain pages of the site to be managed.',
-                    duration: 'Session ends / 15 minutes'
+                    duration: 'Session ends / 15 minutes',
                   },
                   {
                     name: 'dmp_cc_cookie',
                     domain: location.hostname,
                     desc: 'This cookie is used to save your cookie preferences.',
-                    duration: '7 days'
-                  }
+                    duration: '7 days',
+                  },
                 ],
               },
             },
@@ -303,13 +303,10 @@ export default {
             {
               title: 'Your choices concerning cookies',
               description: 'You can choose to accept only necessary cookies or to accept all cookies, including analysis cookies. You can also personalise your cookie preferences at any time by accessing the cookie settings on our website..',
-            }
+            },
           ],
         },
       },
     },
   },
 };
-
-
-

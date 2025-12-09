@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import get from 'lodash.get';
 import set from 'lodash.set';
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
-import Select from "react-select";
+import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
+import Select from 'react-select';
 
-import { externalServices } from "../../services";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomError from "../Shared/CustomError";
-import Pagination from "../Shared/Pagination";
-import { flattenObject } from "../../utils/utils";
-import { service } from "../../services";
+import { externalServices, service } from '../../services';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomError from '../Shared/CustomError';
+import Pagination from '../Shared/Pagination';
+import { flattenObject } from '../../utils/utils';
 
 const locales = {
-  'en': 'en_GB',
-  'fr': 'fr_FR',
+  en: 'en_GB',
+  fr: 'fr_FR',
 };
 
 function Metadore({ fragment, setFragment, mapping = {} }) {
@@ -33,7 +32,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
   useEffect(() => {
     service.getRegistryByName('DataLicenses').then(({ data }) => setRegistry(data));
     service.getRegistryByName('ResearchDataType').then(({ data }) => setResearchDataTypes(data.map((type) => ({
-      value: type['en_GB'],
+      value: type.en_GB,
       label: type[locales[i18n.language] || locales.fr],
     }))));
   }, []);
@@ -78,7 +77,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
     const selectedDataById = selectedData === el?.attributes?.doi ? null : el?.attributes?.doi;
     setSelectedData(selectedDataById);
 
-    let obj = {
+    const obj = {
       title: el?.attributes?.titles?.at(0)?.title,
       description: el?.attributes?.descriptions?.at(0)?.description,
       versionNumber: el?.attributes?.version,
@@ -112,7 +111,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
             ...fragment?.license,
             licenseName,
             licenseUrl,
-            action: fragment?.license?.id ? 'update' : 'create'
+            action: fragment?.license?.id ? 'update' : 'create',
           });
         }
       }
@@ -143,7 +142,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       return getData(text);
     }
     return null;
-  }
+  };
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
@@ -181,17 +180,21 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t("enterTitleOrDoi")}
-                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
+                      placeholder={t('enterTitleOrDoi')}
+                      style={{
+                        borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                      }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: 'var(--dark-blue)' }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -199,7 +202,9 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                         className="btn btn-default"
                         type="button"
                         onClick={handleDeleteText}
-                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -221,10 +226,12 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
                     styles={{
                       menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                       singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
-                      control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
+                      control: (base) => ({
+                        ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                      }),
                     }}
                     onChange={handleTypeFilter}
-                    placeholder={t("typeSelection")}
+                    placeholder={t('typeSelection')}
                     options={researchDataTypes}
                     isDisabled={text.length === 0 || !text}
                   />
@@ -238,21 +245,21 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
               <tr>
                 <th scope="col"></th>
                 <th scope="col">{t('DOI')}</th>
-                <th scope="col">{t("title")}</th>
-                <th scope="col">{t("publicationDate")}</th>
-                <th scope="col">{t("type")}</th>
+                <th scope="col">{t('title')}</th>
+                <th scope="col">{t('publicationDate')}</th>
+                <th scope="col">{t('type')}</th>
               </tr>
             </thead>
             <tbody>
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
                   <td>
-                    {selectedData === el?.attributes?.doi ?
-                      <FaCheckCircle
+                    {selectedData === el?.attributes?.doi
+                      ? <FaCheckCircle
                         className="text-center"
                         style={{ color: 'green' }}
-                      /> :
-                      <FaPlusSquare
+                      />
+                      : <FaPlusSquare
                         className="text-center"
                         style={{ cursor: 'pointer' }}
                         onClick={() => setSelectedValue(el)} />
@@ -266,7 +273,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
               )) : (
                 <tr>
                   <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
-                    {loading ? <CustomSpinner /> : t("noData")}
+                    {loading ? <CustomSpinner /> : t('noData')}
                   </td>
                 </tr>
               )}

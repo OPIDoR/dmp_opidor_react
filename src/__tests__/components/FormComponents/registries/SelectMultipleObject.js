@@ -1,31 +1,30 @@
 import React from 'react';
+import {
+  cleanup, fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
+import selectEvent from 'react-select-event';
 import SelectMultipleObject from '../../../../components/FormComponents/registries/SelectMultipleObject';
 
 import { Wrapper } from '../../../__utils__/reactHookFormHelpers';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Global from '../../../../components/context/Global';
 import { service } from '../../../../services/index';
-import selectEvent from 'react-select-event';
 
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
-    return {
-      t: (str) => str,
-      i18n: {
-        changeLanguage: () => new Promise(() => { }),
-      },
-    };
-  },
+  useTranslation: () => ({
+    t: (str) => str,
+    i18n: {
+      changeLanguage: () => new Promise(() => { }),
+    },
+  }),
   initReactI18next: {
     type: '3rdParty',
     init: () => { },
-  }
+  },
 }));
 
 // Mock out all top level functions, such as get, put, delete and post:
-jest.mock("axios");
-
+jest.mock('axios');
 
 const props = {
   label: 'Select Multiple Object Label',
@@ -34,26 +33,24 @@ const props = {
   tooltip: 'my tooltip',
   category: ['MultipleRegistryCategory'],
   topic: 'generic',
-}
+};
 
 const mockedRegistriesData = [
   {
-    name: "MultipleRegistry1",
+    name: 'MultipleRegistry1',
     values: [{
-      "fr_FR": 'Bonjour',
-      "en_GB": 'Hello'
-    }]
+      fr_FR: 'Bonjour',
+      en_GB: 'Hello',
+    }],
   },
   {
-    name: "MultipleRegistry2",
+    name: 'MultipleRegistry2',
     values: [{
-      "fr_FR": 'Bonjour',
-      "en_GB": 'Hello'
-    }]
-  }
-]
-
-
+      fr_FR: 'Bonjour',
+      en_GB: 'Hello',
+    }],
+  },
+];
 
 afterEach(() => {
   cleanup();
@@ -71,8 +68,8 @@ describe('SelectMultipleObject component', () => {
         <Wrapper propName={props.propName}>
           <SelectMultipleObject {...props} />
         </Wrapper>
-      </Global>
-    )
+      </Global>,
+    );
     expect(screen.getByTestId('select-multiple-object-label')).toHaveTextContent(props.formLabel);
     expect(screen.queryByTestId('select-multiple-object-registry-selector')).not.toBeInTheDocument();
     expect(screen.getByTestId(/tooltip_info_icon_[0-9]+/i)).toBeInTheDocument();
@@ -83,15 +80,15 @@ describe('SelectMultipleObject component', () => {
   });
   test('component rendering with multiple registries', async () => {
     const spy = jest.spyOn(service, 'getAvailableRegistries');
-    spy.mockImplementation((category, dataType, topic) => Promise.resolve({ data: mockedRegistriesData }));  // replace implementation
+    spy.mockImplementation((category, dataType, topic) => Promise.resolve({ data: mockedRegistriesData })); // replace implementation
     const spyGetRegistryByName = jest.spyOn(service, 'getRegistryByName');
     render(
       <Global>
         <Wrapper propName={props.propName}>
           <SelectMultipleObject {...props} />
         </Wrapper>
-      </Global>
-    )
+      </Global>,
+    );
     expect(screen.getByTestId('select-multiple-object-label')).toHaveTextContent(props.formLabel);
     expect(screen.queryByTestId('select-multiple-object-registry-selector')).toBeInTheDocument();
     expect(screen.getByText('Select a registry')).toBeInTheDocument();
@@ -110,15 +107,15 @@ describe('SelectMultipleObject component', () => {
         <Wrapper propName={props.propName} data={[]}>
           <SelectMultipleObject {...props} />
         </Wrapper>
-      </Global>
-    )
+      </Global>,
+    );
     const registrySelector = await screen.getByText('Select a registry');
     expect(registrySelector).toBeInTheDocument();
     selectEvent.openMenu(registrySelector);
 
-    const registry = await findByText("MultipleRegistry1")
+    const registry = await findByText('MultipleRegistry1');
     await waitFor(() => expect(registry).toBeInTheDocument());
-    fireEvent.click(screen.getByText("MultipleRegistry1"))
+    fireEvent.click(screen.getByText('MultipleRegistry1'));
     await waitFor(() => expect(spyGetRegistryByName).toHaveBeenCalledWith('MultipleRegistry1'));
   });
 });

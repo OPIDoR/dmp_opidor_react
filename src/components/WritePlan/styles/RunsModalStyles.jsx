@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ButtonComment = styled.button`
   margin: 10px 2px 2px 0px;

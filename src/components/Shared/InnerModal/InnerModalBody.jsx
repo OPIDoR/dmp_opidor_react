@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const bodyStyle = {
   color: 'var(--dark-blue)',
@@ -23,7 +23,7 @@ function InnerModalBody({
     >
       {children}
     </div>
-  )
+  );
 }
 
 export default InnerModalBody;

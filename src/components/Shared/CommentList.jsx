@@ -96,7 +96,7 @@ function CommentList({
           updateTitle(updatedComments);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'comment'));
-        })
+        });
       }
     });
   };
@@ -122,11 +122,11 @@ function CommentList({
         text: commentText,
       });
     } catch {
-      return toast.error(t("errorSendComment"));
+      return toast.error(t('errorSendComment'));
     }
 
     if (!response) {
-      return toast.error(t("errorSendComment"));
+      return toast.error(t('errorSendComment'));
     }
 
     const { data } = response;
@@ -136,7 +136,7 @@ function CommentList({
       ...data?.note,
     };
 
-    const index = comments.findIndex(item => item.id === updatedComment.id);
+    const index = comments.findIndex((item) => item.id === updatedComment.id);
     if (index === -1) { return; }
 
     const updatedComments = [...comments];
@@ -147,8 +147,8 @@ function CommentList({
 
     updateTitle(updatedComments);
 
-    return toast.success(t("commentSuccess"));
-  }
+    return toast.success(t('commentSuccess'));
+  };
 
   const createComment = async (newText) => {
     const note = {
@@ -164,11 +164,11 @@ function CommentList({
     try {
       response = await commentsService.create({ note });
     } catch {
-      return toast.error(t("errorSendComment"));
+      return toast.error(t('errorSendComment'));
     }
 
     if (!response) {
-      return toast.error(t("errorSendComment"));
+      return toast.error(t('errorSendComment'));
     }
 
     const { data } = response;
@@ -184,21 +184,21 @@ function CommentList({
     updateTitle([newNote, ...comments]);
     setComments([newNote, ...comments]);
 
-    if(data.answer_created) {
+    if (data.answer_created) {
       setAnswer(data.answer);
     }
 
-    return toast.success(t("commentSuccess"));
-  }
+    return toast.success(t('commentSuccess'));
+  };
 
   const updateTitle = (data) => {
     if (!inModal) {
       const title = document.querySelector(`#notes-title-${questionId}-research-output-${researchOutputId}`);
       if (title) {
-        title.innerText = `${t("comments")} (${(data || comments).length || 0})`;
+        title.innerText = `${t('comments')} (${(data || comments).length || 0})`;
       }
     }
-  }
+  };
 
   /**
    * I'm trying to update the state of the component with the new data.
@@ -210,7 +210,7 @@ function CommentList({
     const newText = editorContentRef.current;
 
     if (!newText || newText.length <= 0) {
-      return toast.error(t("invalidComment"));
+      return toast.error(t('invalidComment'));
     }
 
     setText('');
@@ -218,7 +218,7 @@ function CommentList({
     return isUpdate ? update(newText, comment) : createComment(newText);
   };
 
-  return(
+  return (
     <Global>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
@@ -246,7 +246,7 @@ function CommentList({
                     <strong style={{ fontSize: '17px' }}>{comment.user.surname} {comment.user.firstname}</strong>
                     {' '}
                     {!inModal && (<br />)}
-                    <i>{t("on")} {format(new Date(comment.created_at), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || 'fr'] })} {t("at")} {format(new Date(comment.created_at), 'HH:mm:ss', { locale: locales[i18n.resolvedLanguage || 'fr'] })}</i>
+                    <i>{t('on')} {format(new Date(comment.created_at), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || 'fr'] })} {t('at')} {format(new Date(comment.created_at), 'HH:mm:ss', { locale: locales[i18n.resolvedLanguage || 'fr'] })}</i>
                   </div>
                   {!readonly && Number.parseInt(userId) === Number.parseInt(comment.user.id) && (
                     <div>
@@ -266,12 +266,12 @@ function CommentList({
               </NavBodyText>
             ))}
           </ScrollNav>
-          <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t("addComment")}</p>
+          <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('addComment')}</p>
           <EditorComment initialValue={text} updateParentText={updateParentText} />
           {!loading && !error && (
             <div style={{ display: 'flex', justifyContent: 'right', marginTop: '10px' }}>
               <Button variant="primary" onClick={(e) => handleSave(e)}>
-                {t("save")}
+                {t('save')}
               </Button>
             </div>
           )}

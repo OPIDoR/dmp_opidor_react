@@ -1,5 +1,5 @@
 import axios from '../utils/AxiosClient';
-import createHeaders from "../utils/HeaderBuilder";
+import createHeaders from '../utils/HeaderBuilder';
 
 const commonHeaders = createHeaders({}, true);
 
@@ -21,8 +21,7 @@ const get = async (answerId) => {
  * @param {Object} comment - The comment data to be sent in the request body.
  * @returns {Promise} A promise that resolves with the created comment response.
  */
-const create = async (comment) =>
-  axios.post("/notes", comment, { headers: commonHeaders });
+const create = async (comment) => axios.post('/notes', comment, { headers: commonHeaders });
 
 /**
  * Updates an existing comment with the provided data by sending a PUT request to the server.
@@ -44,8 +43,7 @@ const update = async (comment) => {
  * @param {Object} comment - The comment data, including the 'archive' action if needed.
  * @returns {Promise} A promise that resolves with the server response for the archive request.
  */
-const archive = async (id, comment) =>
-  axios.patch(`/notes/${id}/archive`, comment, { headers: commonHeaders });
+const archive = async (id, comment) => axios.patch(`/notes/${id}/archive`, comment, { headers: commonHeaders });
 
 export default {
   get,

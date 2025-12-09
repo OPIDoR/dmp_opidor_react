@@ -1,7 +1,7 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import * as styles from "../../assets/css/steps.module.css";
+import * as styles from '../../assets/css/steps.module.css';
 
 /**
  * This is a React component that renders a form with two radio buttons and a button to validate the user's choice of context for a DMP (Data Management
@@ -9,25 +9,27 @@ import * as styles from "../../assets/css/steps.module.css";
  * @returns A React component that renders a form with two radio buttons and a button to validate the user's choice. The component also uses context to
  * set the value of the selected radio button.
  */
-function ContextSelection({ prevStep, nextStep, set, params }) {
+function ContextSelection({
+  prevStep, nextStep, set, params,
+}) {
   const { t } = useTranslation();
 
   const categories = [
     {
       id: 'research_project',
-      title: t("forProject"),
-      description: t("youAreLeadingOrParticipating"),
+      title: t('forProject'),
+      description: t('youAreLeadingOrParticipating'),
     },
     {
       id: 'research_entity',
-      title: t("forEntity"),
-      description: t("youAdministerPlatform"),
-    }
+      title: t('forEntity'),
+      description: t('youAdministerPlatform'),
+    },
   ];
 
   return (
     <div>
-      <h2>{t("selectContext")}</h2>
+      <h2>{t('selectContext')}</h2>
       {
         categories.map(({ id, title, description }) => (
           <div

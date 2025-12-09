@@ -2,8 +2,8 @@ import React, {
   useContext, useEffect, useState,
 } from 'react';
 import toast from 'react-hot-toast';
-import { useTranslation } from "react-i18next";
-import { useForm, FormProvider } from "react-hook-form";
+import { useTranslation } from 'react-i18next';
+import { useForm, FormProvider } from 'react-hook-form';
 import unionBy from 'lodash.unionby';
 
 import FormBuilder from './FormBuilder.jsx';
@@ -59,7 +59,7 @@ function DynamicForm({
             setLoadedTemplates({ ...loadedTemplates, [res.data.name]: res.data });
           }).catch(console.error);
         }
-        methods.reset({ ...emptyDefaults, ...formData[fragmentId]});
+        methods.reset({ ...emptyDefaults, ...formData[fragmentId] });
       } else {
         service.getFragment(fragmentId).then((res) => {
           setTemplate(res.data.template);
@@ -74,35 +74,34 @@ function DynamicForm({
         setTemplateId(tplt.id);
         setExternalImports(tplt.schema.externalImports || {});
         setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
-        if(res.data.fragment) handleFragmentData(res.data);
+        if (res.data.fragment) handleFragmentData(res.data);
       }).catch(console.error);
     }
     setLoading(false);
   }, [fragmentId]);
 
   useEffect(() => {
-    methods.reset({ ...emptyDefaults, ...formData[fragmentId]});
+    methods.reset({ ...emptyDefaults, ...formData[fragmentId] });
   }, [formData[fragmentId]]);
 
   useEffect(() => {
     if (setScriptsData && template?.schema?.run && template.schema.run.length > 0) {
       setScriptsData({
         scripts: template.schema.run,
-        apiClient: template.api_client
+        apiClient: template.api_client,
       });
     } else if (setScriptsData) {
       setScriptsData({ scripts: [] });
     }
     setExternalImports(template?.schema?.externalImports || {});
-
-  }, [template])
+  }, [template]);
 
   useEffect(() => {
-    if(!fragmentId && template) {
+    if (!fragmentId && template) {
       const defaults = formatDefaultValues(template.schema.default?.[locale]);
       Object.keys(defaults).length > 0 ? methods.reset(defaults) : methods.reset(generateEmptyDefaults(template.schema.properties));
     }
-  }, [template, fragmentId])
+  }, [template, fragmentId]);
   /**
    * It checks if the form is filled in correctly.
    * @param e - the event object
@@ -137,18 +136,20 @@ function DynamicForm({
       setLoadedTemplates({ ...loadedTemplates, [tplt.name]: tplt });
       setTemplate(tplt);
       setFormData({ [fragment.id]: fragment });
-      setAnswer({ id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId });
-      updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id })
+      setAnswer({
+        id: answerId, question_id: questionId, fragment_id: fragment.id, madmp_schema_id: templateId,
+      });
+      updatedResearchOutput.answers.push({ answer_id: answerId, question_id: questionId, fragment_id: fragment.id });
       setResearchOutputs(unionBy(researchOutputs, [updatedResearchOutput], 'id'));
     }).catch(console.error);
-  }
+  };
 
   const setValues = (data) => Object.keys(data)
     .forEach((k) => methods.setValue(k, data[k], { shouldDirty: true }));
 
   const handleFragmentData = (data) => {
     setFormData({ [fragmentId]: data.fragment });
-    if(data.answer_id) {
+    if (data.answer_id) {
       const {
         answer_id,
         fragment: {
@@ -156,10 +157,12 @@ function DynamicForm({
           schema_id: madmp_schema_id,
         },
       } = data;
-      setAnswer({ id: answer_id, question_id: questionId, fragment_id, madmp_schema_id });
+      setAnswer({
+        id: answer_id, question_id: questionId, fragment_id, madmp_schema_id,
+      });
     }
     methods.reset(data.fragment);
-  }
+  };
 
   return (
     <>
@@ -187,7 +190,7 @@ function DynamicForm({
                   readonly={readonly}
                 />
               </div>
-              {!readonly && <CustomButton handleClick={null} title={t("save")} buttonType="submit" position="center" sticky={true} />}
+              {!readonly && <CustomButton handleClick={null} title={t('save')} buttonType="submit" position="center" sticky={true} />}
             </form>
           </FormProvider>
         </>

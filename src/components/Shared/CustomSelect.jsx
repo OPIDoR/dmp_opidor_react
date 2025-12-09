@@ -1,10 +1,10 @@
-import React from "react";
-import Select, { components } from "react-select";
-import AsyncSelect from "react-select/async";
-import AsyncCreatableSelect from "react-select/async-creatable";
-import CreatableSelect from "react-select/creatable";
-import { filterOptions } from "../../utils/GeneratorUtils";
+import React from 'react';
+import Select, { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
+import CreatableSelect from 'react-select/creatable';
 import { useTranslation } from 'react-i18next';
+import { filterOptions } from '../../utils/GeneratorUtils';
 
 function CustomSelect({
   inputId = null,
@@ -54,9 +54,11 @@ function CustomSelect({
       data-testid={`select-component-${propName}`}
       menuPortalTarget={document.body}
       styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999, color: "var(--dark-blue)" }),
-        singleValue: (base) => ({ ...base, color: "var(--dark-blue)" }),
-        control: (base) => ({ ...base, borderRadius: "8px", borderWidth: "1px", borderColor: "var(--dark-blue)", marginRight: "2px" }),
+        menuPortal: (base) => ({ ...base, zIndex: 9999, color: 'var(--dark-blue)' }),
+        singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
+        control: (base) => ({
+          ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', marginRight: '2px',
+        }),
       }}
       name={propName}
       components={{ Option: CustomOption }}
@@ -70,7 +72,7 @@ function CustomSelect({
       isDisabled={isDisabled}
       isClearable={isClearable}
       isSearchable={isSearchable}
-      noOptionsMessage={() => t("noResultsFound")}
+      noOptionsMessage={() => t('noResultsFound')}
     />
   );
 }

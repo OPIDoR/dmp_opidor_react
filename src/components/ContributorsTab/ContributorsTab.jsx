@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
+import React, { useEffect, useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
 
-import { service } from "../../services";
-import CustomButton from "../Styled/CustomButton";
-import ContributorsList from "./ContributorsList";
-import ModalForm from "../Forms/ModalForm";
-import { GlobalContext } from "../context/Global";
-import swalUtils from "../../utils/swalUtils";
-import CustomSpinner from "../Shared/CustomSpinner";
+import { service } from '../../services';
+import CustomButton from '../Styled/CustomButton';
+import ContributorsList from './ContributorsList';
+import ModalForm from '../Forms/ModalForm';
+import { GlobalContext } from '../context/Global';
+import swalUtils from '../../utils/swalUtils';
+import CustomSpinner from '../Shared/CustomSpinner';
 import * as styles from '../assets/css/form.module.css';
-import { checkFragmentExists } from "../../utils/JsonFragmentsUtils";
+import { checkFragmentExists } from '../../utils/JsonFragmentsUtils';
 
 function ContributorsTab({ planId, locale, readonly }) {
   const { t, i18n } = useTranslation();
@@ -22,8 +22,8 @@ function ContributorsTab({ planId, locale, readonly }) {
   const [index, setIndex] = useState(null);
   const [template, setTemplate] = useState(null);
   const [contributors, setContributors] = useState([]);
-  const [fragmentId, setFragmentId] = useState(null)
-  const [editedPerson, setEditedPerson] = useState({})
+  const [fragmentId, setFragmentId] = useState(null);
+  const [editedPerson, setEditedPerson] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -41,35 +41,33 @@ function ContributorsTab({ planId, locale, readonly }) {
   useEffect(() => {
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
-  }, [planId, locale])
+  }, [planId, locale]);
 
   const handleSave = async (data) => {
     const newContributorsList = [...contributors];
     setLoading(true);
-    if (checkFragmentExists(contributors.map((c) => c.data), data, template.schema['unicity'])) {
-      setError(t("recordAlreadyExists"));
+    if (checkFragmentExists(contributors.map((c) => c.data), data, template.schema.unicity)) {
+      setError(t('recordAlreadyExists'));
+    } else if (index !== null && fragmentId) {
+      service.saveFragment(fragmentId, data)
+        .then((res) => {
+          newContributorsList[index].data = res.data.fragment;
+          setContributors(newContributorsList);
+        }).catch((error) => {
+          setError(error);
+        });
     } else {
-      if (index !== null && fragmentId) {
-        service.saveFragment(fragmentId, data)
-          .then((res) => {
-            newContributorsList[index].data = res.data.fragment;
-            setContributors(newContributorsList);
-          }).catch((error) => {
-            setError(error);
+      service.createFragment(data, template.id, dmpId)
+        .then((res) => {
+          newContributorsList.unshift({
+            id: res.data.fragment.id,
+            data: res.data.fragment,
+            roles: [],
           });
-      } else {
-        service.createFragment(data, template.id, dmpId)
-          .then((res) => {
-            newContributorsList.unshift({
-              id: res.data.fragment.id,
-              data: res.data.fragment,
-              roles: []
-            })
-            setContributors(newContributorsList);
-          }).catch((error) => {
-            setError(error);
-          });
-      }
+          setContributors(newContributorsList);
+        }).catch((error) => {
+          setError(error);
+        });
     }
     document.querySelector('#plan-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
     handleClose();
@@ -79,8 +77,8 @@ function ContributorsTab({ planId, locale, readonly }) {
   const handleClose = () => {
     setShow(false);
     setIndex(null);
-    setEditedPerson({})
-    setFragmentId(null)
+    setEditedPerson({});
+    setFragmentId(null);
   };
 
   const handleEdit = (idx) => {
@@ -88,7 +86,7 @@ function ContributorsTab({ planId, locale, readonly }) {
     setEditedPerson(contributors[idx].data);
     setFragmentId(contributors[idx].id);
     setShow(true);
-  }
+  };
 
   const handleDelete = (idx) => {
     const fragmentId = contributors[idx].id;
@@ -101,10 +99,10 @@ function ContributorsTab({ planId, locale, readonly }) {
           setContributors(newContributorsList);
         }).catch(() => {
           Swal.fire(swalUtils.defaultDeleteErrorConfig(t, 'contributor'));
-        })
+        });
       }
     });
-  }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -124,7 +122,7 @@ function ContributorsTab({ planId, locale, readonly }) {
           template={template}
           mainFormDataType={'none'}
           mainFormTopic={'generic'}
-          label={t("editPersonOrOrg")}
+          label={t('editPersonOrOrg')}
           readonly={readonly}
           show={show}
           handleSave={handleSave}
@@ -136,13 +134,13 @@ function ContributorsTab({ planId, locale, readonly }) {
             setShow(true);
             setIndex(null);
           }}
-          title={t("addPersonOrOrg")}
+          title={t('addPersonOrOrg')}
           buttonColor="rust"
           position="start"
         ></CustomButton>
       )}
     </div>
-  )
+  );
 }
 
 export default ContributorsTab;

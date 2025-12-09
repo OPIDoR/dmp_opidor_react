@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from 'react';
 
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
 
-import { useTranslation } from "react-i18next";
-import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
-import { toast } from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
+import { TfiAngleDown, TfiAngleRight } from 'react-icons/tfi';
+import { toast } from 'react-hot-toast';
 
-import * as styles from "../assets/css/general_info.module.css";
-import { generalInfo } from "../../services";
-import { GlobalContext } from "../context/Global";
-import DynamicForm from "../Forms/DynamicForm";
-import FunderImport from "./FunderImport.jsx";
-import { getErrorMessage } from "../../utils/utils";
+import * as styles from '../assets/css/general_info.module.css';
+import { generalInfo } from '../../services';
+import { GlobalContext } from '../context/Global';
+import DynamicForm from '../Forms/DynamicForm';
+import FunderImport from './FunderImport.jsx';
+import { getErrorMessage } from '../../utils/utils';
 
 function GeneralInfo({
   planId,
@@ -26,7 +26,6 @@ function GeneralInfo({
   readonly,
   isClassic = false,
 }) {
-
   const { t, i18n } = useTranslation();
   const { setLocale, setDmpId } = useContext(GlobalContext);
 
@@ -36,14 +35,14 @@ function GeneralInfo({
 
   const [isOpenMetaForm, setIsOpenMetaForm] = useState(true);
 
-  const projectFormLabel = researchContext === 'research_project' ? t("projectDetails") : t("entityDetails");
+  const projectFormLabel = researchContext === 'research_project' ? t('projectDetails') : t('entityDetails');
 
   useEffect(() => {
     setLocale(locale);
     i18n.changeLanguage(locale.substring(0, 2));
 
     setDmpId(dmpId);
-  }, [dmpId, locale])
+  }, [dmpId, locale]);
 
   const handleClickIsTestPlan = async (e) => {
     const checked = e.target.checked;
@@ -53,7 +52,7 @@ function GeneralInfo({
     try {
       response = await generalInfo.saveIsTestPlan(planId, checked);
     } catch (error) {
-      let errorMessage = getErrorMessage(error) || t("planStatusChangeError");
+      const errorMessage = getErrorMessage(error) || t('planStatusChangeError');
       return toast.error(errorMessage);
     }
 
@@ -67,9 +66,9 @@ function GeneralInfo({
       )}
       <Card
         className={styles.card}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
+        style={{ borderRadius: '10px', borderWidth: '2px', borderColor: 'var(--dark-blue)' }}
       >
-        <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none'  }}>
+        <Card.Header style={{ background: 'white', borderRadius: '18px', borderBottom: 'none' }}>
           <Button
             style={{ backgroundColor: 'white', width: '100%', border: 'none' }}
             onClick={() => setIsOpenProjectForm(!isOpenProjectForm)}
@@ -84,9 +83,9 @@ function GeneralInfo({
 
                 <span className={styles.question_icons}>
                   {isOpenProjectForm ? (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleDown style={{ minWidth: '35px' }} size={35} className={styles.down_icon} />
                   ) : (
-                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleRight style={{ minWidth: '35px' }} size={35} className={styles.down_icon} />
                   )}
                 </span>
               </div>
@@ -103,9 +102,9 @@ function GeneralInfo({
       </Card>
       <Card
         className={styles.card}
-        style={{ borderRadius: "10px", borderWidth: "2px", borderColor: "var(--dark-blue)" }}
+        style={{ borderRadius: '10px', borderWidth: '2px', borderColor: 'var(--dark-blue)' }}
       >
-        <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none' }}>
+        <Card.Header style={{ background: 'white', borderRadius: '18px', borderBottom: 'none' }}>
           <Button
             style={{ backgroundColor: 'white', width: '100%', border: 'none' }}
             onClick={() => setIsOpenMetaForm(!isOpenMetaForm)}
@@ -115,14 +114,14 @@ function GeneralInfo({
             <Card.Title>
               <div className={styles.question_title}>
                 <div className={styles.question_text}>
-                  <div className={styles.title}>{t("planInformation")}</div>
+                  <div className={styles.title}>{t('planInformation')}</div>
                 </div>
 
                 <span className={styles.question_icons}>
                   {isOpenMetaForm ? (
-                    <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleDown style={{ minWidth: '35px' }} size={35} className={styles.down_icon} />
                   ) : (
-                    <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon} />
+                    <TfiAngleRight style={{ minWidth: '35px' }} size={35} className={styles.down_icon} />
                   )}
                 </span>
               </div>
@@ -143,7 +142,7 @@ function GeneralInfo({
                   style={{ marginRight: '10px' }}
                 />
                 <label className="form-check-label" htmlFor="is_test">
-                  {t("testPlan")}
+                  {t('testPlan')}
                 </label>
               </div>
               {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}

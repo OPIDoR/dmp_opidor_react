@@ -4,22 +4,20 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 
-import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
-import { TfiAngleDown, TfiAngleRight } from "react-icons/tfi";
-import { toast } from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
+import { TfiAngleDown, TfiAngleRight } from 'react-icons/tfi';
+import { toast } from 'react-hot-toast';
 import styled from 'styled-components';
 
-import * as styles from "../assets/css/general_info.module.css";
+import * as styles from '../assets/css/general_info.module.css';
 import { GlobalContext } from '../context/Global';
-import { generalInfo } from '../../services';
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomSelect from "../Shared/CustomSelect";
-import { service } from "../../services";
-import { filterOptions } from "../../utils/GeneratorUtils";
-import { getErrorMessage } from "../../utils/utils";
-
+import { generalInfo, service } from '../../services';
+import CustomError from '../Shared/CustomError';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomSelect from '../Shared/CustomSelect';
+import { filterOptions } from '../../utils/GeneratorUtils';
+import { getErrorMessage } from '../../utils/utils';
 
 export const ButtonSave = styled.button`+
 margin: 10px 2px 2px 0px;
@@ -30,7 +28,9 @@ margin: 10px 2px 2px 0px;
   border-radius: 8px !important;
 `;
 
-function FunderImport({ projectFragmentId, metaFragmentId, researchContext, locale, isClassic }) {
+function FunderImport({
+  projectFragmentId, metaFragmentId, researchContext, locale, isClassic,
+}) {
   const { t } = useTranslation();
   const { setFormData, setPersons } = useContext(GlobalContext);
   const [isOpenFunderImport, setIsOpenFunderImport] = useState(true);
@@ -41,7 +41,6 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
 
   /* This `useEffect` hook is fetching data for funding organizations and setting the options for a `Select` component. It runs only once when the
   component mounts, as the dependency array `[]` is empty. */
@@ -75,7 +74,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         const options = res.data.map((option) => ({
           value: option.value,
           label: option.label[locale],
-          object: { grantId: option.value, title: option.label[locale] }
+          object: { grantId: option.value, title: option.label[locale] },
         }));
         setFundedProjects(options);
       })
@@ -103,8 +102,8 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         showCancelButton: true,
         confirmButtonColor: '#2c7dad',
         cancelButtonColor: '#c6503d',
-        cancelButtonText: t("no"),
-        confirmButtonText: t("yes"),
+        cancelButtonText: t('no'),
+        confirmButtonText: t('yes'),
       }).then((result) => {
         if (result.isConfirmed) {
           return share(selectedFunder?.apiClient);
@@ -119,14 +118,14 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       response = await generalInfo.share(selectedProject.grantId, projectFragmentId, apiClient);
     } catch (error) {
       setLoading(false);
-      let errorMessage = getErrorMessage(error) || t("importErrorProject");
+      const errorMessage = getErrorMessage(error) || t('importErrorProject');
       return toast.error(errorMessage);
     }
 
     triggerRefresh({ clients: response?.data?.clients || [] });
 
     toast.success(t('planSharedWithNames', { names: selectedFunder?.apiClient }), { style: { maxWidth: 500 } });
-  }
+  };
 
   const saveFunding = async () => {
     let response;
@@ -134,7 +133,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       response = await generalInfo.importProject(selectedProject.grantId, projectFragmentId, selectedFunder.scriptName);
     } catch (error) {
       setLoading(false);
-      let errorMessage = getErrorMessage(error) || t("importErrorProject");
+      const errorMessage = getErrorMessage(error) || t('importErrorProject');
       return toast.error(errorMessage);
     }
 
@@ -142,17 +141,17 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
 
     setFormData({
       [projectFragmentId]: response.data.fragment.project,
-      [metaFragmentId]: response.data.fragment.meta
+      [metaFragmentId]: response.data.fragment.meta,
     });
     document.getElementById('plan-title').innerHTML = response.data.fragment.meta.title;
     setPersons(response.data.persons);
     toast.success(t(
       '\'{{projectTitle}}\' project data has successfully been imported',
-      { projectTitle: selectedProject.title }
+      { projectTitle: selectedProject.title },
     ), { style: { maxWidth: 500 } });
 
     setLoading(false);
-  }
+  };
 
   const triggerRefresh = (message) => {
     const event = new CustomEvent('trigger-refresh-shared-label', {
@@ -165,12 +164,12 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
     <Card
       className={styles.card}
       style={{
-        border: "2px solid var(--dark-blue)",
-        borderRadius: "10px",
+        border: '2px solid var(--dark-blue)',
+        borderRadius: '10px',
       }}>
       {loading && <CustomSpinner isOverlay={true} />}
       {error && <CustomError error={error} />}
-      <Card.Header className="funder-import" style={{ background: "var(--dark-blue)", borderBottom: "none" }}>
+      <Card.Header className="funder-import" style={{ background: 'var(--dark-blue)', borderBottom: 'none' }}>
         <Button
           style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none' }}
           onClick={() => setIsOpenFunderImport(!isOpenFunderImport)}
@@ -180,13 +179,13 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
           <Card.Title>
             <div className={styles.question_title}>
               <div className={styles.question_text}>
-                <div className={styles.title_anr}>{t("importFundedInfo")}</div>
+                <div className={styles.title_anr}>{t('importFundedInfo')}</div>
               </div>
               <span className={styles.question_icons}>
                 {isOpenFunderImport ? (
-                  <TfiAngleDown style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                  <TfiAngleDown style={{ minWidth: '35px' }} size={35} className={styles.down_icon_anr} />
                 ) : (
-                  <TfiAngleRight style={{ minWidth: "35px" }} size={35} className={styles.down_icon_anr} />
+                  <TfiAngleRight style={{ minWidth: '35px' }} size={35} className={styles.down_icon_anr} />
                 )}
               </span>
             </div>
@@ -195,14 +194,14 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
       </Card.Header>
       <Collapse in={isOpenFunderImport}>
         <div id="funder-import-collapse">
-          <Card.Body className={styles.card_body} style={{ background: "var(--dark-blue)", borderRadius: "0px 0px 10px 10px" }}>
+          <Card.Body className={styles.card_body} style={{ background: 'var(--dark-blue)', borderRadius: '0px 0px 10px 10px' }}>
             {!error && funders && (
               <div className={styles.container_anr}>
-                <p className={styles.funding_description}>{t("funderImportInfo")}</p>
+                <p className={styles.funding_description}>{t('funderImportInfo')}</p>
                 {funders.length > 1 && (
                   <div>
                     <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("selectFunder")}</label>
+                      <label className={styles.label_anr}>{t('selectFunder')}</label>
                     </div>
                     <CustomSelect
                       options={funders}
@@ -212,12 +211,12 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                   </div>
                 )}
                 {!isClassic && selectedFunder?.apiClient?.toLowerCase() === 'anr' && <div className={styles.anr_sharing}>
-                  {t("anrShareInvitation")}
+                  {t('anrShareInvitation')}
                 </div>}
                 {fundedProjects.length > 0 && (
                   <div className="form-group">
                     <div className={styles.label_form_anr}>
-                      <label className={styles.label_anr}>{t("selectProjectDetails")}</label>
+                      <label className={styles.label_anr}>{t('selectProjectDetails')}</label>
                     </div>
                     <CustomSelect
                       options={fundedProjects}
@@ -232,7 +231,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
                 )}
                 {selectedProject && (
                   <ButtonSave className="btn btn-light" onClick={handleSaveFunding}>
-                    {t("save")}
+                    {t('save')}
                   </ButtonSave>
                 )}
               </div>
@@ -241,8 +240,7 @@ function FunderImport({ projectFragmentId, metaFragmentId, researchContext, loca
         </div>
       </Collapse>
     </Card>
-  )
-
+  );
 }
 
 export default FunderImport;

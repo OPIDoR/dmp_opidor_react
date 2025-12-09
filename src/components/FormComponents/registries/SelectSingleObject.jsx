@@ -3,7 +3,9 @@ import { useFormContext, useController } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
-import { FaPenToSquare, FaPlus, FaEye, FaXmark } from 'react-icons/fa6';
+import {
+  FaPenToSquare, FaPlus, FaEye, FaXmark,
+} from 'react-icons/fa6';
 import Swal from 'sweetalert2';
 
 import { service } from '../../../services/index.js';
@@ -43,7 +45,7 @@ function SelectSingleObject({
     loadedRegistries, setLoadedRegistries,
   } = useContext(GlobalContext);
   const [error, setError] = useState(null);
-  const [editedFragment, setEditedFragment] = useState({})
+  const [editedFragment, setEditedFragment] = useState({});
   const [template, setTemplate] = useState({});
   const [selectedRegistry, setSelectedRegistry] = useState(null);
   const [availableRegistries, setAvailableRegistries] = useState([]);
@@ -80,14 +82,13 @@ function SelectSingleObject({
 
   useEffect(() => {
     setSelectedValue(
-      except(field.value, ['template_name', 'id', 'schema_id']) || null
+      except(field.value, ['template_name', 'id', 'schema_id']) || null,
     );
-  }, [field.value])
-
+  }, [field.value]);
 
   useEffect(() => {
     if (!options) return;
-    setSelectedOption(null)
+    setSelectedOption(null);
   }, [options]);
 
   /*
@@ -116,7 +117,7 @@ function SelectSingleObject({
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
       service.getSchemaByName(templateName).then((res) => {
-        setTemplate(res.data)
+        setTemplate(res.data);
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
       }).catch((error) => {
         setError(getErrorMessage(error));
@@ -124,15 +125,14 @@ function SelectSingleObject({
     } else {
       setTemplate(loadedTemplates[templateName]);
     }
-  }, [templateName])
-
+  }, [templateName]);
 
   /**
    * It takes the value of the input field and adds it to the list array.
    * @param e - the event object
    */
   const handleSelectRegistryValue = (e) => {
-    if (!e) return { target: { name: propName, value: '' } }
+    if (!e) return { target: { name: propName, value: '' } };
 
     const action = field.value?.id ? 'update' : 'create';
     const value = { ...field.value, ...e.object, action };
@@ -146,7 +146,6 @@ function SelectSingleObject({
     setSelectedRegistry(e.value);
   };
 
-
   const handleSaveNestedForm = (data) => {
     if (!data) return setShowNestedForm(false);
 
@@ -155,7 +154,7 @@ function SelectSingleObject({
 
     setEditedFragment({});
     setShowNestedForm(false);
-  }
+  };
 
   const handleDeleteList = (e) => {
     e.preventDefault();
@@ -168,7 +167,7 @@ function SelectSingleObject({
         setShowNestedForm(false);
       }
     });
-  }
+  };
 
   return (
     <div>
@@ -210,14 +209,14 @@ function SelectSingleObject({
                       selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
                     }
                     isDisabled={readonly}
-                    placeholder={t("selectRegistry")}
+                    placeholder={t('selectRegistry')}
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className={availableRegistries && availableRegistries.length > 1 ? "col-md-6" : "col-md-12"} data-testid="select-single-object-div">
+          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-object-div">
             <div className="row">
               <div className={`col-md-11 ${styles.select_wrapper}`}>
                 {options && (
@@ -228,7 +227,7 @@ function SelectSingleObject({
                     selectedOption={selectedOption}
                     isDisabled={showNestedForm || readonly || !selectedRegistry}
                     async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, "complex", t)}
+                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'complex', t)}
                     overridable={false}
                   />
                 )}
@@ -240,7 +239,7 @@ function SelectSingleObject({
                     place="bottom"
                     effect="solid"
                     variant="info"
-                    content={t("add")}
+                    content={t('add')}
                   />
                   <FaPlus
                     data-tooltip-id="select-single-list-add-button"
@@ -277,20 +276,20 @@ function SelectSingleObject({
         )}
 
         {!fragmentEmpty(selectedValue) && !showNestedForm && (
-          <table style={{ marginTop: "20px" }} className="table">
+          <table style={{ marginTop: '20px' }} className="table">
             <thead>
               <tr>
-                <th scope="col">{t("selectedValue")}</th>
+                <th scope="col">{t('selectedValue')}</th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               {[selectedValue].map((el, idx) => (
                 <tr key={idx}>
-                  <td style={{ width: "90%" }}>
+                  <td style={{ width: '90%' }}>
                     {parsePattern(el, template?.schema?.to_string)}
                   </td>
-                  <td style={{ width: "10%" }}>
+                  <td style={{ width: '10%' }}>
                     <ViewEditComponent
                       onClick={() => {
                         setShowNestedForm(true);

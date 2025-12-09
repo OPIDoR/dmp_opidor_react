@@ -7,5 +7,5 @@ const endTour = async (tourName) => axios.post(`/guided_tour/${tourName}`, {}, {
 
 export default {
   getTour,
-  endTour
+  endTour,
 };

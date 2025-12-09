@@ -13,5 +13,5 @@ export default function GlossaryLayout({ locale = 'fr-FR', directusUrl }) {
         <GlossaryPage locale={locale} directusUrl={directusUrl} />
       </QueryClientProvider>
     </StrictMode>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const footerStyle = {
   color: 'var(--dark-blue)',
@@ -24,7 +24,7 @@ function InnerModalFooter({
     >
       {children}
     </div>
-  )
+  );
 }
 
 export default InnerModalFooter;

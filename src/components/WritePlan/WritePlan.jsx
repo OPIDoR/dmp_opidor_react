@@ -1,20 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useEffect, useState, useContext } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import Card from 'react-bootstrap/Card';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import uniqueId from 'lodash.uniqueid';
 
-import SectionsContent from "./SectionsContent";
-import { writePlan } from "../../services";
-import { GlobalContext } from "../context/Global";
-import CustomError from "../Shared/CustomError";
-import * as styles from "../assets/css/sidebar.module.css";
-import PlanInformations from "./PlanInformations";
-import ResearchOutputForm from "../ResearchOutput/ResearchOutputForm";
+import SectionsContent from './SectionsContent';
+import { writePlan } from '../../services';
+import { GlobalContext } from '../context/Global';
+import CustomError from '../Shared/CustomError';
+import * as styles from '../assets/css/sidebar.module.css';
+import PlanInformations from './PlanInformations';
+import ResearchOutputForm from '../ResearchOutput/ResearchOutputForm';
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
-import ResearchOutputsSidebar from "./ResearchOutputsSidebar";
-import WritePlanPlaceholder from "./Placeholders/WritePlanPlaceholder";
-import { useLoading } from "../../hooks/useLoading";
+import ResearchOutputsSidebar from './ResearchOutputsSidebar';
+import WritePlanPlaceholder from './Placeholders/WritePlanPlaceholder';
+import { useLoading } from '../../hooks/useLoading';
 
 function WritePlan({
   locale = 'en_GB',
@@ -39,10 +39,10 @@ function WritePlan({
 
   useEffect(() => {
     i18n.changeLanguage(locale.substring(0, 2));
-  }, [locale])
+  }, [locale]);
 
   /* A hook that is called when the component is mounted. It is used to fetch data from the API. */
-  //TODO update this , it can make error
+  // TODO update this , it can make error
   useEffect(() => {
     changeLoading(true);
 
@@ -91,14 +91,14 @@ function WritePlan({
       })
       .catch((error) => setError(error))
       .finally(() => changeLoading(false));
-  }
+  };
 
   return (
     <div style={{ position: 'relative' }}>
       {loading && <WritePlanPlaceholder />}
       {error && <CustomError error={error}></CustomError>}
-      {!loading && !error &&
-        <>
+      {!loading && !error
+        && <>
           {researchOutputs.length > 0 && (
             <>
               <PlanInformations template={template} />
@@ -119,8 +119,8 @@ function WritePlan({
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Card style={{ width: '800px' }}>
                 <Card.Body>
-                  {readonly ?
-                    <h2 style={{ textAlign: 'center' }}>{t("planDoesNotYetIncludeAnyResearchOutput")}</h2>
+                  {readonly
+                    ? <h2 style={{ textAlign: 'center' }}>{t('planDoesNotYetIncludeAnyResearchOutput')}</h2>
                     : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
                       <Trans
                         t={t}
@@ -141,8 +141,8 @@ function WritePlan({
                       />
                     </h2>
                   }
-                  {!readonly &&
-                    <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
+                  {!readonly
+                    && <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                       <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
                     </div>
                   }

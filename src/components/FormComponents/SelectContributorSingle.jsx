@@ -53,9 +53,8 @@ function SelectContributorSingle({
   const tooltipId = uniqueId('select_contributor_single_tooltip_id_');
 
   useEffect(() => {
-    setContributor(field.value)
+    setContributor(field.value);
   }, [field.value]);
-
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
@@ -71,29 +70,29 @@ function SelectContributorSingle({
       fetchPersons();
       setOptions(null);
     }
-  }, [persons])
+  }, [persons]);
 
   const fetchPersons = () => {
     service.getPersons(dmpId).then((res) => {
       setPersons(res.data.results);
     });
-  }
+  };
 
   const fetchRoles = () => {
     service.suggestRegistry(roleCategory, dataType).then((res) => {
       setLoadedRegistries({ ...loadedRegistries, [res.data.name]: res.data.values });
-      const options = createOptions(res.data.values, locale)
+      const options = createOptions(res.data.values, locale);
       setRoleOptions(options);
     });
-  }
+  };
 
   /* A hook that is called when the component is mounted. */
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
       service.getSchemaByName(templateName).then((res) => {
-        const contributorTemplate = res.data
+        const contributorTemplate = res.data;
         setLoadedTemplates({ ...loadedTemplates, [templateName]: res.data });
-        const contributorProps = contributorTemplate?.schema?.properties || {}
+        const contributorProps = contributorTemplate?.schema?.properties || {};
         const personTemplateName = contributorProps.person.template_name;
         setOverridableRole(contributorProps.role.overridable || false);
         setIsRoleConst(contributorProps.role.isConst || false);
@@ -109,7 +108,7 @@ function SelectContributorSingle({
       });
     } else {
       const contributorTemplate = loadedTemplates[templateName];
-      const contributorProps = contributorTemplate?.schema?.properties || {}
+      const contributorProps = contributorTemplate?.schema?.properties || {};
       const personTemplateName = contributorProps.person.template_name;
       setOverridableRole(contributorProps.role.overridable || false);
       setTemplate(loadedTemplates[personTemplateName]);
@@ -125,7 +124,6 @@ function SelectContributorSingle({
     setIndex(null);
   };
 
-
   /**
    * This function handles the deletion of an element from a list and displays a confirmation message using the Swal library.
    */
@@ -134,7 +132,7 @@ function SelectContributorSingle({
     e.stopPropagation();
     Swal.fire(swalUtils.defaultConfirmConfig(t)).then((result) => {
       if (result.isConfirmed) {
-        field.onChange({ ...contributor, action: "delete" });
+        field.onChange({ ...contributor, action: 'delete' });
         setContributor({});
       }
     });
@@ -143,14 +141,16 @@ function SelectContributorSingle({
   const handleSelectContributor = (e) => {
     const { object } = e;
     const contributorAction = contributor?.id ? 'update' : 'create';
-    field.onChange({ ...contributor, person: { ...object, action: "update" }, role: defaultRole, action: contributorAction })
+    field.onChange({
+      ...contributor, person: { ...object, action: 'update' }, role: defaultRole, action: contributorAction,
+    });
   };
 
   /**
    * The handleChangeRole function updates the role property of an object in the form state based on the selected value from a dropdown menu.
    */
   const handleSelectRole = (e) => {
-    field.onChange({ ...field.value, role: e.value, action: 'update' })
+    field.onChange({ ...field.value, role: e.value, action: 'update' });
   };
 
   /**
@@ -160,8 +160,8 @@ function SelectContributorSingle({
    * If the index is null, then just save the item.
    */
   const handleSave = (data) => {
-    if (checkFragmentExists(persons, data, template.schema['unicity'])) {
-      setError(t("recordAlreadyExists"));
+    if (checkFragmentExists(persons, data, template.schema.unicity)) {
+      setError(t('recordAlreadyExists'));
     } else {
       if (index !== null) {
         service.saveFragment(editedPerson.id, data).then((res) => {
@@ -171,15 +171,14 @@ function SelectContributorSingle({
           field.onChange({
             ...contributor,
             person: savedFragment,
-            action: contributor.action || 'update'
+            action: contributor.action || 'update',
           });
-          updatedPersons[updatedPersons.findIndex(el => el.id === savedFragment.id)] = {
+          updatedPersons[updatedPersons.findIndex((el) => el.id === savedFragment.id)] = {
             ...savedFragment,
-            to_string: parsePattern(data, template?.schema?.to_string)
-          }
+            to_string: parsePattern(data, template?.schema?.to_string),
+          };
           setPersons(updatedPersons);
-
-        }).catch(error => setError(error))
+        }).catch((error) => setError(error));
       } else {
         // save new
         handleSaveNew(data);
@@ -198,17 +197,17 @@ function SelectContributorSingle({
    * the modal and set the temporary person object to null.
    */
   const handleSaveNew = (data) => {
-    service.createFragment(data, template.id, dmpId).then(res => {
+    service.createFragment(data, template.id, dmpId).then((res) => {
       const savedFragment = res.data.fragment;
       savedFragment.action = 'update';
       field.onChange({
         ...contributor,
         person: savedFragment,
         role: defaultRole,
-        action: contributor ? 'update' : 'create'
-      })
+        action: contributor ? 'update' : 'create',
+      });
       setPersons([...persons, { ...savedFragment, to_string: parsePattern(savedFragment, template?.schema?.to_string) }]);
-    }).catch(error => setError(error));
+    }).catch((error) => setError(error));
     handleClose();
     setEditedPerson({});
   };
@@ -253,7 +252,7 @@ function SelectContributorSingle({
               options={options}
               name={propName}
               isDisabled={readonly}
-              placeholder={createRegistryPlaceholder(1, false, true, "complex", t)}
+              placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
             />
           </div>
           {!readonly && (
@@ -263,7 +262,7 @@ function SelectContributorSingle({
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t("add")}
+                content={t('add')}
               />
               <FaPlus
                 data-tooltip-id="select-contributor-single-add-button"
@@ -283,7 +282,7 @@ function SelectContributorSingle({
             handleSelectRole={handleSelectRole}
             defaultRole={defaultRole}
             templateToString={template?.schema?.to_string}
-            tableHeader={t("selectedValue")}
+            tableHeader={t('selectedValue')}
             overridable={overridableRole}
             readonly={readonly}
             isRoleConst={isRoleConst}
@@ -297,7 +296,7 @@ function SelectContributorSingle({
             template={template}
             mainFormDataType={dataType}
             mainFormTopic={topic}
-            label={index !== null ? t("editPersonOrOrg") : t("addPersonOrOrg")}
+            label={index !== null ? t('editPersonOrOrg') : t('addPersonOrOrg')}
             readonly={readonly}
             show={show}
             handleSave={handleSave}

@@ -14,7 +14,9 @@ import TinyArea from '../FormComponents/TinyArea';
 import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
-function FormBuilder({ template, dataType, topic, readonly }) {
+function FormBuilder({
+  template, dataType, topic, readonly,
+}) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
   const properties = template.properties;
@@ -27,16 +29,16 @@ function FormBuilder({ template, dataType, topic, readonly }) {
     for (const [key, prop] of Object.entries(properties)) {
       const formLabel = createFormLabel(prop, locale);
       const tooltip = prop[`tooltip@${locale}`];
-      const isConst = prop['isConst'];
+      const isConst = prop.isConst;
       const example = prop[`example@${locale}`];
       /**
        * REGISTRIES
        */
-      if (prop.inputType === "dropdown" &&
-        (Object.prototype.hasOwnProperty.call(prop, "registryCategory") || Object.prototype.hasOwnProperty.call(prop, "registries"))
+      if (prop.inputType === 'dropdown'
+        && (Object.prototype.hasOwnProperty.call(prop, 'registryCategory') || Object.prototype.hasOwnProperty.call(prop, 'registries'))
       ) {
         const registries = useMemo(() => prop?.registries ?? [], [prop?.registries]);
-        
+
         // COMPLEX REGISTRY, ONE VALUE SELECTABLE
         if (prop.template_name && prop.type === 'object') {
           formFields.push(
@@ -45,12 +47,12 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              category={prop["registryCategory"]}
+              category={prop.registryCategory}
               dataType={dataType}
               topic={topic}
               registries={registries}
               templateName={prop.template_name}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
             ></SelectSingleObject>,
           );
@@ -67,11 +69,11 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
-              category={prop["registryCategory"]}
+              category={prop.registryCategory}
               dataType={dataType}
               topic={topic}
               registries={registries}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly}
               isConst={isConst}
             ></SelectMultipleObject>,
@@ -86,11 +88,11 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              category={prop["registryCategory"]}
+              category={prop.registryCategory}
               dataType={dataType}
               topic={topic}
               registries={registries}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
             ></SelectSingleString>,
           );
@@ -104,13 +106,13 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               label={formLabel}
               propName={key}
               tooltip={tooltip}
-              category={prop["registryCategory"]}
+              category={prop.registryCategory}
               dataType={dataType}
               topic={topic}
               registries={registries}
-              overridable={prop["overridable"]}
+              overridable={prop.overridable}
               readonly={readonly || isConst}
-            ></SelectMultipleString>
+            ></SelectMultipleString>,
           );
           continue;
         }
@@ -137,7 +139,7 @@ function FormBuilder({ template, dataType, topic, readonly }) {
         );
         continue;
       }
-      if(prop.template_name && prop.type === 'object') {
+      if (prop.template_name && prop.type === 'object') {
         formFields.push(
           <SubForm
             key={key}
@@ -148,8 +150,8 @@ function FormBuilder({ template, dataType, topic, readonly }) {
             dataType={dataType}
             topic={topic}
             readonly={readonly || isConst}
-          />
-        )
+          />,
+        );
         continue;
       }
 
@@ -242,7 +244,7 @@ function FormBuilder({ template, dataType, topic, readonly }) {
               hidden={prop.hidden}
               readonly={readonly || isConst}
               min={prop.type === 'number' ? 0 : undefined}
-            ></InputText>
+            ></InputText>,
           );
         }
         continue;

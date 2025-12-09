@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 
-import { GlobalContext } from "../context/Global";
-import { researchOutput } from "../../services";
+import { GlobalContext } from '../context/Global';
+import { researchOutput } from '../../services';
 
 function ResearchOutputsSidebarItem({ item, setLoading, children }) {
   const {
@@ -15,9 +15,9 @@ function ResearchOutputsSidebarItem({ item, setLoading, children }) {
       setLoading(true);
       researchOutput.get(selectedResearchOutputId).then((res) => {
         setDisplayedResearchOutput(res.data);
-      }).finally(() => setLoading(false))
+      }).finally(() => setLoading(false));
     }
-  }, [selectedResearchOutputId])
+  }, [selectedResearchOutputId]);
 
   /**
    * When the user clicks on a tab, the function sets the active index to the index of the tab that was clicked, and sets the research id to the id of the

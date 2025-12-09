@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 
 const toastOptions = {
   duration: 5000,
-}
+};
 
 function ContributorsTabLayout({ planId, locale, readonly }) {
   return (
@@ -17,7 +17,7 @@ function ContributorsTabLayout({ planId, locale, readonly }) {
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
       </Global>
     </StrictMode>
-  )
+  );
 }
 
 export default ContributorsTabLayout;

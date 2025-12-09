@@ -1,4 +1,4 @@
-import { exists, pick } from "./utils";
+import { exists, pick } from './utils';
 
 /**
  * This method builds a select options list from a contributor array
@@ -18,9 +18,9 @@ export function checkFragmentExists(fragmentList, newFragment, unicityCriteria) 
   // the filter method is here to remove the fragment from the list based on its id
   // this prevents the search to create false positives when updating a fragment.
   const list = fragmentList
-                .filter((o) => o.id === undefined || o.id !== newFragment.id) // remove check fragment from list
-                .map((f) => pick(f, unicityCriteria)) // pick properties listed in unicityCriteria array
-                .filter(v => Object.keys(v).length !== 0); // filter empty objects
+    .filter((o) => o.id === undefined || o.id !== newFragment.id) // remove check fragment from list
+    .map((f) => pick(f, unicityCriteria)) // pick properties listed in unicityCriteria array
+    .filter((v) => Object.keys(v).length !== 0); // filter empty objects
   const filteredFragment = pick(newFragment, unicityCriteria);
   return exists(filteredFragment, list, unicityCriteria);
 }

@@ -1,21 +1,22 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
-import { toast } from "react-hot-toast";
-import { FaInfoCircle } from "react-icons/fa";
-import { PiTreeStructureDuotone, PiBank } from "react-icons/pi";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { TbBulbFilled } from "react-icons/tb";
-import { Trans } from 'react-i18next';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
+import Swal from 'sweetalert2';
+import { toast } from 'react-hot-toast';
+import { FaInfoCircle } from 'react-icons/fa';
+import { PiTreeStructureDuotone, PiBank } from 'react-icons/pi';
+import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
+import { TbBulbFilled } from 'react-icons/tb';
 
-import * as styles from "../../assets/css/steps.module.css";
-import { CustomButton } from "../../Styled";
-import { CustomSpinner, CustomError, CustomSelect } from "../../Shared";
+import * as styles from '../../assets/css/steps.module.css';
+import { CustomButton } from '../../Styled';
+import { CustomSpinner, CustomError, CustomSelect } from '../../Shared';
 import { clearLocalStorage, getErrorMessage } from '../../../utils/utils';
-import getTemplates from "./data";
-import { planCreation } from "../../../services";
+import getTemplates from './data';
+import { planCreation } from '../../../services';
 
-function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams }) {
+function TemplateSelection({
+  prevStep, set, params: selectionData, setUrlParams,
+}) {
   const { t } = useTranslation();
 
   const [planTemplates, setPlanTemplates] = useState({});
@@ -23,7 +24,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const [error, setError] = useState(null);
   const [toogleDescription, setToogleDescription] = useState({});
 
-  const placeHolder = t("beginTyping");
+  const placeHolder = t('beginTyping');
 
   const params = useMemo(() => selectionData, [selectionData]);
 
@@ -31,7 +32,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   useEffect(() => {
     const tmpls = {
       default: {
-        title: t("structuredCommonTemplate"),
+        title: t('structuredCommonTemplate'),
         description: params.researchContext === 'research_project'
           ? (<Trans t={t} i18nKey="recommendedByOpenScienceNetwork" components={{ strong: <strong /> }} />)
           : null,
@@ -39,7 +40,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
       },
       others: {
         id: 'others',
-        title: t("otherTemplates"),
+        title: t('otherTemplates'),
         type: 'select',
         data: [],
       },
@@ -74,9 +75,9 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   const handleSendTemplateId = async () => {
     if (!params.selectedTemplate) {
       return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: t("mustChooseTemplate"),
+        icon: 'error',
+        title: 'Oops...',
+        text: t('mustChooseTemplate'),
       });
     }
 
@@ -84,7 +85,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
     try {
       response = await planCreation.createPlan(params.selectedTemplate, params.researchContext);
     } catch (error) {
-      let errorMessage = getErrorMessage(error);
+      const errorMessage = getErrorMessage(error);
 
       return toast.error(errorMessage);
     }
@@ -108,10 +109,10 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         data: data[selectedValue?.type].data.map((d) => ({
           ...d,
           selected: selectedValue.value === d.id,
-        }))
-      }
+        })),
+      },
     });
-  }
+  };
 
   const createList = ({ index, templates }) => {
     if (templates.length === 0) { return []; }
@@ -121,10 +122,10 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
         <div
           key={`template-row-${index}-${template.id}`}
           style={{
-          display: 'flex',
-          width: '100%',
-          alignItems: 'center',
-        }}>
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+          }}>
           <div
             className={`${styles.step_list} ${template.id === params.selectedTemplate ? styles.checked : ''}`}
             key={`template-${index}-${template.id}`}
@@ -163,12 +164,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
               size={18}
               onClick={() => {
                 if (!Object.prototype.hasOwnProperty.call(toogleDescription, template.id)) {
-                  setToogleDescription(prevState => ({
+                  setToogleDescription((prevState) => ({
                     ...Object.fromEntries(Object.entries(prevState).map(([key]) => [key, false])),
-                    [template.id]: true
+                    [template.id]: true,
                   }));
                 } else {
-                  setToogleDescription(prevState => Object.keys(prevState).reduce((updatedState, key) => {
+                  setToogleDescription((prevState) => Object.keys(prevState).reduce((updatedState, key) => {
                     updatedState[key] = Number.parseInt(key, 10) === template?.id ? !prevState[key] : false;
                     return updatedState;
                   }, {}));
@@ -202,7 +203,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
   };
 
   const displayTemplatesByCategory = (index) => {
-    const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t("noModelAvailable")}</i></p>);
+    const noModelAvailable = (<p style={{ margin: '-10px 0 0 0' }} className={styles.subtitle}><i>{t('noModelAvailable')}</i></p>);
 
     if (!planTemplates[index].type) {
       const { templates } = planTemplates[index];
@@ -222,10 +223,12 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
     const type = planTemplates?.[index].id;
 
-    data = data.map(({ name, id, templates, selected, type: dataType }) => {
+    data = data.map(({
+      name, id, templates, selected, type: dataType,
+    }) => {
       const types = {
         org: <HiOutlineBuildingOffice2 size="18" style={{ margin: '0 10px 0 0' }} />,
-        funder: <PiBank size="18" style={{ margin: '0 10px 0 0' }} />
+        funder: <PiBank size="18" style={{ margin: '0 10px 0 0' }} />,
       };
 
       const hasSelectedTemplate = templates.some(({ id }) => id === params.selectedTemplate);
@@ -266,7 +269,7 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
 
   return (
     <div>
-      <h2>{t("chooseTemplate")}</h2>
+      <h2>{t('chooseTemplate')}</h2>
       {loading && <CustomSpinner />}
       {!loading && error && <CustomError error={error} />}
       {!loading && !error && (
@@ -282,14 +285,14 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
                     <div className={'alert alert-info'} style={{
                       borderRadius: '8px',
                       margin: '-8px 0 8px 0',
-                      fontSize: '15px'
+                      fontSize: '15px',
                     }}>
                       <TbBulbFilled
                         fill={'var(--rust)'}
                         size={24}
                         style={{
                           margin: '-8px 8px 0 0',
-                          color: 'var(--rust)'
+                          color: 'var(--rust)',
                         }}
                       />
                       {planTemplates?.[index]?.description}
@@ -302,13 +305,13 @@ function TemplateSelection({ prevStep, set, params: selectionData, setUrlParams 
           </div>
           <div style={{
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
           }}>
             {prevStep}
             <div className="row" style={{ margin: '0 0 0 25px' }}>
               <CustomButton
                 handleClick={handleSendTemplateId}
-                title={t("confirmChoice")}
+                title={t('confirmChoice')}
                 position="end"
                 disabled={!params.selectedTemplate}
               />

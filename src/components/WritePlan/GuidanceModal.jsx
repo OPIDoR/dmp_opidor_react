@@ -1,15 +1,19 @@
-import DOMPurify from "dompurify";
-import React, { useEffect, useState, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import DOMPurify from 'dompurify';
+import React, { useEffect, useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import { guidances } from "../../services";
-import CustomError from "../Shared/CustomError";
-import CustomSpinner from "../Shared/CustomSpinner";
-import { NavBody, NavBodyText, ScrollNav, Theme, SubTitle } from "./styles/GuidanceModalStyles";
-import InnerModal from "../Shared/InnerModal/InnerModal";
+import { guidances } from '../../services';
+import CustomError from '../Shared/CustomError';
+import CustomSpinner from '../Shared/CustomSpinner';
+import {
+  NavBody, NavBodyText, ScrollNav, Theme, SubTitle,
+} from './styles/GuidanceModalStyles';
+import InnerModal from '../Shared/InnerModal/InnerModal';
 
-function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
+function GuidanceModal({
+  shown, hide, questionId, researchOutputId,
+}) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('Science Europe');
   const [data, setData] = useState(null);
@@ -51,11 +55,11 @@ function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
             const [groupInfo, guidanceInfo] = group;
             const groupName = groupInfo.name;
 
-            const descriptionKey = Object.keys(guidanceInfo).find(key => key !== 'id');
+            const descriptionKey = Object.keys(guidanceInfo).find((key) => key !== 'id');
 
             acc[groupName] = {
               title: descriptionKey,
-              guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : []
+              guidances: Array.isArray(guidanceInfo[descriptionKey]) ? guidanceInfo[descriptionKey] : [],
             };
 
             return acc;
@@ -84,46 +88,44 @@ function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
   * Otherwise, the function maps data[indexTab].groups to show each group's theme and guidances using dangerouslySetInnerHTML.
   * Horizontal lines (<hr>) separate each guidance.
   */
-  const getContent = () => {
-    return (
-      <NavBody>
-        <NavBodyText>
-          <ScrollNav>
-            {data?.[indexTab]?.annotations?.length > 0 && (
-              <>
-                {data?.[indexTab]?.annotations?.map((annotation, id) => (
-                  <div
-                    key={`guidance-${indexTab}-annotation-${id}`}
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(annotation.text),
-                    }}
-                  />
-                ))}
-              </>
-            )}
-            {data?.filter(({ name }) => name === activeTab).map(({ title, groups }, dId) => (
-              <div key={`guidance-${dId}`}>
-                <Theme alt={title}>{title}</Theme>
-                {Object.keys(groups)?.map((groupName) => (
-                  <div key={`guidance-div-${dId}`}>
-                    <SubTitle key={`guidance-subtitle-${dId}`} style={{ marginBottom: '10px' }}>{groupName}</SubTitle>
-                    {groups[groupName].guidances.map((guidance) => (
-                      <div
-                        key={`guidance-value-${dId}`}
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(guidance.text),
-                        }}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </ScrollNav>
-        </NavBodyText>
-      </NavBody>
-    );
-  };
+  const getContent = () => (
+    <NavBody>
+      <NavBodyText>
+        <ScrollNav>
+          {data?.[indexTab]?.annotations?.length > 0 && (
+            <>
+              {data?.[indexTab]?.annotations?.map((annotation, id) => (
+                <div
+                  key={`guidance-${indexTab}-annotation-${id}`}
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(annotation.text),
+                  }}
+                />
+              ))}
+            </>
+          )}
+          {data?.filter(({ name }) => name === activeTab).map(({ title, groups }, dId) => (
+            <div key={`guidance-${dId}`}>
+              <Theme alt={title}>{title}</Theme>
+              {Object.keys(groups)?.map((groupName) => (
+                <div key={`guidance-div-${dId}`}>
+                  <SubTitle key={`guidance-subtitle-${dId}`} style={{ marginBottom: '10px' }}>{groupName}</SubTitle>
+                  {groups[groupName].guidances.map((guidance) => (
+                    <div
+                      key={`guidance-value-${dId}`}
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(guidance.text),
+                      }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
+        </ScrollNav>
+      </NavBodyText>
+    </NavBody>
+  );
 
   return (
     <InnerModal show={shown} ref={modalRef}>
@@ -136,7 +138,7 @@ function GuidanceModal({ shown, hide, questionId, researchOutputId }) {
         }}
       >
         <InnerModal.Title>
-          {t("guidance")}
+          {t('guidance')}
         </InnerModal.Title>
       </InnerModal.Header>
       <InnerModal.Body>

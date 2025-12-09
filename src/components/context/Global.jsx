@@ -65,7 +65,7 @@ function Global({ children }) {
   const setUrlParams = (data = {}) => {
     const currentParams = Object.fromEntries(new URLSearchParams(window.location.search));
     const mergedParams = { ...currentParams, ...data };
-    Object.keys(mergedParams).forEach(key => {
+    Object.keys(mergedParams).forEach((key) => {
       if (!mergedParams[key] || mergedParams[key] === '') {
         delete mergedParams[key];
       }

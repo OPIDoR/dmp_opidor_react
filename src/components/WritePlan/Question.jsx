@@ -1,26 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import DOMPurify from "dompurify";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import DOMPurify from 'dompurify';
 
-import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Collapse from "react-bootstrap/Collapse";
+import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Collapse from 'react-bootstrap/Collapse';
 
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { BsGear } from "react-icons/bs";
-import { TbBulbFilled } from "react-icons/tb";
-import { IoShuffleOutline } from "react-icons/io5";
+import { Tooltip as ReactTooltip } from 'react-tooltip';
+import { TfiAngleDown, TfiAngleUp } from 'react-icons/tfi';
+import { BsGear } from 'react-icons/bs';
+import { TbBulbFilled } from 'react-icons/tb';
+import { IoShuffleOutline } from 'react-icons/io5';
 
-import { GlobalContext } from "../context/Global";
-import * as styles from "../assets/css/write_plan.module.css";
-import DynamicForm from "../Forms/DynamicForm";
-import GuidanceModal from "./GuidanceModal";
-import CommentModal from "./CommentModal";
-import RunsModal from "./RunsModal";
-import { CommentSVG } from "../Styled/svg";
-import { guidances } from "../../services";
+import { GlobalContext } from '../context/Global';
+import * as styles from '../assets/css/write_plan.module.css';
+import DynamicForm from '../Forms/DynamicForm';
+import GuidanceModal from './GuidanceModal';
+import CommentModal from './CommentModal';
+import RunsModal from './RunsModal';
+import { CommentSVG } from '../Styled/svg';
+import { guidances } from '../../services';
 
 const closedModalState = {
   guidance: false,
@@ -60,7 +60,7 @@ function Question({
 
   useEffect(() => {
     const ans = displayedResearchOutput?.answers?.find(
-      (a) => question?.id === a?.question_id
+      (a) => question?.id === a?.question_id,
     );
     setAnswer(ans);
   }, [displayedResearchOutput, question.id]);
@@ -69,10 +69,10 @@ function Question({
     if (isQuestionOpened) {
       guidances.hasQuestionGuidances(questionId, displayedResearchOutput?.id)
         .then((res) => {
-          setHasGuidances(res.data?.has_guidances || false)
-        })
+          setHasGuidances(res.data?.has_guidances || false);
+        });
     }
-  }, [isQuestionOpened, questionId])
+  }, [isQuestionOpened, questionId]);
 
   /**
    * Handles toggling the open/collapse state of a question.
@@ -99,12 +99,10 @@ function Question({
     });
   };
 
-  const getFillColor = (isOpened) => {
-    return isOpened ? 'var(--rust)' : 'var(--dark-blue)'
-  }
+  const getFillColor = (isOpened) => (isOpened ? 'var(--rust)' : 'var(--dark-blue)');
 
   /**
-   * Handles a given modal state according to the modalType & the state 
+   * Handles a given modal state according to the modalType & the state
    */
   const setModalOpened = (e, modalType, isOpened) => {
     if (e) {
@@ -112,8 +110,7 @@ function Question({
       e.preventDefault();
     }
     setShowModals({ ...closedModalState, [modalType]: isOpened });
-  }
-
+  };
 
   return (
     <>
@@ -121,15 +118,19 @@ function Question({
         <Card
           id={`question-card-${question.id}`}
           style={{
-            borderRadius: "10px",
-            borderWidth: "2px",
-            borderColor: "var(--dark-blue)",
+            borderRadius: '10px',
+            borderWidth: '2px',
+            borderColor: 'var(--dark-blue)',
             marginBottom: '20px',
           }}
         >
-          <Card.Header style={{ background: "white", borderRadius: "18px", borderBottom: 'none', paddingBottom: '0' }}>
+          <Card.Header style={{
+            background: 'white', borderRadius: '18px', borderBottom: 'none', paddingBottom: '0',
+          }}>
             <Button
-              style={{ backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0', borderBottom: '1px solid #ddd', borderRadius: '0' }}
+              style={{
+                backgroundColor: 'white', width: '100%', border: 'none', margin: '0', padding: '0', borderBottom: '1px solid #ddd', borderRadius: '0',
+              }}
               onClick={() => handleQuestionCollapse(!isQuestionOpened)}
               aria-controls={`card-collapse-${question.id}`}
               aria-expanded={isQuestionOpened}
@@ -173,15 +174,15 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("guidance")}
+                          content={t('guidance')}
                         />
                         <div
                           data-tooltip-id="guidanceTip"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            setModalOpened(e, "guidance", true);
+                            setModalOpened(e, 'guidance', true);
                           }}
-                          style={{ marginLeft: "5px" }}
+                          style={{ marginLeft: '5px' }}
                         >
                           {isQuestionOpened && (
                             <TbBulbFilled
@@ -200,15 +201,15 @@ function Question({
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("comments")}
+                        content={t('comments')}
                       />
                       <div
                         data-tooltip-id="commentTip"
                         className={styles.card_icon}
                         onClick={(e) => {
-                          setModalOpened(e, "comment", true);
+                          setModalOpened(e, 'comment', true);
                         }}
-                        style={{ marginLeft: "5px" }}
+                        style={{ marginLeft: '5px' }}
                       >
                         {isQuestionOpened && (
                           <CommentSVG
@@ -226,15 +227,15 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("listOfCustomizedForms")}
+                          content={t('listOfCustomizedForms')}
                         />
                         <div
                           data-tooltip-id="form-changer-show-button"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            setModalOpened(e, "formSelector", true);
+                            setModalOpened(e, 'formSelector', true);
                           }}
-                          style={{ marginLeft: "5px" }}
+                          style={{ marginLeft: '5px' }}
                         >
                           <IoShuffleOutline
                             data-tooltip-id="form-change-show-button"
@@ -253,20 +254,20 @@ function Question({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("tools")}
+                          content={t('tools')}
                         />
                         <div
                           data-tooltip-id="scriptTip"
                           className={styles.card_icon}
                           onClick={(e) => {
-                            setModalOpened(e, "runs", true);
+                            setModalOpened(e, 'runs', true);
                           }}
-                          style={{ marginLeft: "5px" }}
+                          style={{ marginLeft: '5px' }}
                         >
                           {isQuestionOpened && (
                             <BsGear
                               size={32}
-                              style={{ marginTop: "6px" }}
+                              style={{ marginTop: '6px' }}
                               fill={getFillColor(showModals.runs)}
                             />
                           )}
@@ -276,12 +277,12 @@ function Question({
 
                     {isQuestionOpened ? (
                       <TfiAngleUp
-                        style={{ marginLeft: "5px" }}
+                        style={{ marginLeft: '5px' }}
                         size={32}
                       />
                     ) : (
                       <TfiAngleDown
-                        style={{ marginLeft: "5px" }}
+                        style={{ marginLeft: '5px' }}
                         size={32}
                       />
                     )}
@@ -327,8 +328,8 @@ function Question({
                 )}
                 {isQuestionOpened ? (
                   <>
-                    {readonly && !answer?.id ? (<Badge variant="primary">{t("questionNotAnswered")}</Badge>) :
-                      (<DynamicForm
+                    {readonly && !answer?.id ? (<Badge variant="primary">{t('questionNotAnswered')}</Badge>)
+                      : (<DynamicForm
                         fragmentId={answer?.fragment_id}
                         className={question?.madmp_schema?.classname}
                         setScriptsData={setScriptsData}
@@ -338,7 +339,7 @@ function Question({
                         readonly={readonly}
                         formSelector={{
                           shown: showModals.formSelector === true,
-                          hide: (e) => setModalOpened(e, 'formSelector', false)
+                          hide: (e) => setModalOpened(e, 'formSelector', false),
                         }}
                       />)
                     }

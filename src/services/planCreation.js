@@ -1,5 +1,5 @@
 import axios from '../utils/AxiosClient';
-import createHeaders from "../utils/HeaderBuilder";
+import createHeaders from '../utils/HeaderBuilder';
 
 /**
  * This function returns a default template data object or an error if it fails to retrieve the data.
@@ -26,8 +26,7 @@ const getTemplatesByOrgId = async (orgData, researchContext) => {
       'plan[context]': researchContext,
     },
   });
-}
-
+};
 
 /**
  * This function returns a mock data object for an organism.
@@ -40,15 +39,15 @@ const getOrgs = async (researchContext, templateLanguage) => axios.get(`/orgs/li
  * Send choosen templateId to the back for the plan creation,
  * Redirect to the newly created plan if necessary
  * @param templateId identifier of the choosen template
- * @returns 
+ * @returns
  */
-const createPlan = async (template_id, context) => axios.post(`/plans`, { template_id, context }, { headers: createHeaders({}, true) });
+const createPlan = async (template_id, context) => axios.post('/plans', { template_id, context }, { headers: createHeaders({}, true) });
 
 const importPlan = async (formData) => axios.post('/plans/import', formData, {
   headers: {
     ...createHeaders({}, true),
     'Content-Type': 'multipart/form-data',
-    'Accept': 'application/json'
+    Accept: 'application/json',
   },
   maxRedirects: 0,
 });

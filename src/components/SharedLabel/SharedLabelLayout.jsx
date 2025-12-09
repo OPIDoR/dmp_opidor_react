@@ -26,7 +26,7 @@ export default function SharedLabelLayout({ planId, clients }) {
           <a href={`/plans/${planId}/share`}>
             <button className="btn btn-primary">{
               t('planSharedWithNames', {
-                names: clientsData.join(', ')
+                names: clientsData.join(', '),
               })
             }</button>
           </a>
@@ -35,4 +35,3 @@ export default function SharedLabelLayout({ planId, clients }) {
     </StrictMode>
   );
 }
-

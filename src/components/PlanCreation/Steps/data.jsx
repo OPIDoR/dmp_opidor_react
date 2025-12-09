@@ -1,4 +1,4 @@
-import { planCreation } from "../../../services";
+import { planCreation } from '../../../services';
 
 export default async function getTemplates(opts, onlyStructured = false) {
   const templates = {
@@ -8,12 +8,12 @@ export default async function getTemplates(opts, onlyStructured = false) {
 
   let currentTemplatesRes;
   try {
-    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.researchContext, opts.templateLanguage);;
+    currentTemplatesRes = await planCreation.getRecommendedTemplate(opts.researchContext, opts.templateLanguage);
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
 
-  const defaultTemplateID = currentTemplatesRes?.data?.id
+  const defaultTemplateID = currentTemplatesRes?.data?.id;
 
   templates.default = Array.isArray(currentTemplatesRes?.data)
     ? currentTemplatesRes?.data
@@ -25,7 +25,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
   try {
     orgsRes = await planCreation.getOrgs(opts.researchContext, opts.templateLanguage);
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
 
   orgsRes = orgsRes?.data?.map((org) => ({ ...org, templates: [] }));
@@ -36,7 +36,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
     try {
       orgTemplatesRes = await planCreation.getTemplatesByOrgId(org, opts.researchContext);
     } catch (error) {
-      throw new Error(error)
+      throw new Error(error);
     }
 
     templates.others.push({

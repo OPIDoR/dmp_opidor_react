@@ -1,23 +1,23 @@
 import React from 'react';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  cleanup, fireEvent, render, screen, waitFor,
+} from '@testing-library/react';
 
 import InputText from '../../../components/FormComponents/InputText';
 import { Wrapper } from '../../__utils__/reactHookFormHelpers';
 
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
-    return {
-      t: (str) => str,
-      i18n: {
-        changeLanguage: () => new Promise(() => { }),
-      },
-    };
-  },
+  useTranslation: () => ({
+    t: (str) => str,
+    i18n: {
+      changeLanguage: () => new Promise(() => { }),
+    },
+  }),
   initReactI18next: {
     type: '3rdParty',
     init: () => { },
-  }
+  },
 }));
 
 const inputTextProps = {
@@ -25,8 +25,8 @@ const inputTextProps = {
   type: 'text',
   propName: 'myInput',
   tooltip: 'my tooltip',
-  placeholder: 'my placeholder'
-}
+  placeholder: 'my placeholder',
+};
 
 afterEach(cleanup);
 
@@ -35,7 +35,7 @@ describe('InputText component', () => {
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     expect(screen.getByTestId('input-text-label')).toHaveTextContent(inputTextProps.label);
     expect(screen.getByTestId('input-text')).toBeInTheDocument();
@@ -48,17 +48,17 @@ describe('InputText component', () => {
     render(
       <Wrapper propName={inputTextProps.propName} data="myText">
         <InputText {...inputTextProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     expect(screen.getByTestId('input-text')).toBeInTheDocument();
-    expect(screen.getByTestId('input-text').value).toBe("myText");
+    expect(screen.getByTestId('input-text').value).toBe('myText');
   });
 
   test('tooltip is showing when hovering label', async () => {
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     const label = screen.getByTestId('input-text-label');
     expect(screen.queryByText(inputTextProps.tooltip)).not.toBeInTheDocument();
@@ -71,43 +71,43 @@ describe('InputText component', () => {
   });
 
   test('component rendering as readonly', async () => {
-    const inputTextReadonlyProps = { ...inputTextProps, readonly: true }
+    const inputTextReadonlyProps = { ...inputTextProps, readonly: true };
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextReadonlyProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     expect(screen.getByTestId('input-text')).toHaveAttribute('readonly');
   });
 
   test('component with type=date rendering <input type="date"/>', async () => {
-    const inputTextDateProps = { ...inputTextProps, type: "date" }
+    const inputTextDateProps = { ...inputTextProps, type: 'date' };
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextDateProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'date');
   });
 
   test('component with type=number rendering <input type="number"/>', async () => {
-    const inputTextNumberProps = { ...inputTextProps, type: "number", min: 42 }
+    const inputTextNumberProps = { ...inputTextProps, type: 'number', min: 42 };
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextNumberProps} />
-      </Wrapper>
+      </Wrapper>,
     );
-    const input = screen.getByTestId('input-text')
+    const input = screen.getByTestId('input-text');
     expect(input).toHaveAttribute('type', 'number');
     expect(input).toHaveAttribute('min', inputTextNumberProps.min.toString());
   });
 
   test('component with hidden rendering <input type="hidden"/>', async () => {
-    const inputTextHiddenProps = { ...inputTextProps, hidden: true }
+    const inputTextHiddenProps = { ...inputTextProps, hidden: true };
     render(
       <Wrapper propName={inputTextProps.propName}>
         <InputText {...inputTextHiddenProps} />
-      </Wrapper>
+      </Wrapper>,
     );
     expect(screen.queryByText(inputTextProps.label)).not.toBeInTheDocument();
     expect(screen.getByTestId('input-text')).toHaveAttribute('type', 'hidden');

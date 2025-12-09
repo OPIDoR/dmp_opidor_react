@@ -1,39 +1,39 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
-import { GlobalContext } from "../context/Global.jsx";
-import { guidances } from "../../services/index.js";
-import { CustomSpinner, CustomError, CustomSelect } from "../Shared/index.jsx";
-import CustomButton from "../Styled/CustomButton.jsx";
-import GuidanceGroupItem from "./GuidanceGroupItem.jsx";
-import OrgWithGuidanceGroups from "./OrgWithGuidanceGroups.jsx";
-
-import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
-import * as formStyles from '../assets/css/form.module.css';
-
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import React, {
+  useEffect, useState, useRef, useContext,
+} from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
-import Row from "react-bootstrap/Row";
+import Row from 'react-bootstrap/Row';
 import { FaXmark } from 'react-icons/fa6';
+import { TfiAngleDown, TfiAngleUp } from 'react-icons/tfi';
+import { TbBulbFilled } from 'react-icons/tb';
+import { useTranslation, Trans } from 'react-i18next';
+import toast from 'react-hot-toast';
+import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
+import { GlobalContext } from '../context/Global.jsx';
+import { guidances } from '../../services/index.js';
+import { CustomSpinner, CustomError, CustomSelect } from '../Shared/index.jsx';
+import CustomButton from '../Styled/CustomButton.jsx';
+import GuidanceGroupItem from './GuidanceGroupItem.jsx';
+import OrgWithGuidanceGroups from './OrgWithGuidanceGroups.jsx';
 
-import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
-import { TbBulbFilled } from "react-icons/tb";
-
-import { useTranslation, Trans } from "react-i18next";
-import toast from "react-hot-toast";
+import * as guidanceChoiceStyles from '../assets/css/guidance_choice.module.css';
+import * as formStyles from '../assets/css/form.module.css';
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
-  color: "var(--blue)",
-  fontSize: "16px",
-  margin: "10px",
+  color: 'var(--blue)',
+  fontSize: '16px',
+  margin: '10px',
 };
 
 function GuidanceSelector({
   planId,
   researchOutputId,
   topic = null,
-  context = 'research_output' }) {
+  context = 'research_output',
+}) {
   const { t } = useTranslation();
   const {
     savedGuidances, setSavedGuidances,
@@ -48,13 +48,13 @@ function GuidanceSelector({
   const [selectedGuidancesIds, setSelectedGuidancesIds] = useState([]);
   const guidancesRef = useRef(null);
 
-  const savedGuidancesIds = savedGuidances.map(g => g.id);
+  const savedGuidancesIds = savedGuidances.map((g) => g.id);
 
   /**
    * Fetches recommendations and updates state variables.
    */
   useEffect(() => {
-    const fetchGuidanceGroups = context === 'plan' ? guidances.getPlanGuidanceGroups(planId) : guidances.getResearchOutputGuidanceGroups(researchOutputId)
+    const fetchGuidanceGroups = context === 'plan' ? guidances.getPlanGuidanceGroups(planId) : guidances.getResearchOutputGuidanceGroups(researchOutputId);
 
     setLoading(true);
     fetchGuidanceGroups
@@ -62,10 +62,10 @@ function GuidanceSelector({
         const { data } = res.data;
         const savedGuidances = formatSelectedGuidances(data, 'init');
         setSavedGuidances(savedGuidances);
-        setSelectedGuidancesIds(data.flatMap(org => org.guidance_groups.filter(group => group.selected).map(group => group.id)));
+        setSelectedGuidancesIds(data.flatMap((org) => org.guidance_groups.filter((group) => group.selected).map((group) => group.id)));
         setGuidancesData(data);
       })
-      .catch((error) => { setError(error) })
+      .catch((error) => { setError(error); })
       .finally(() => setLoading(false));
   }, [planId, researchOutputId]);
 
@@ -83,57 +83,52 @@ function GuidanceSelector({
     setFilteredGuidancesData(filtered);
   }, [guidancesData, selectedOrg, includeTopic]);
 
-
-  const formatSelectedGuidances = (guidanceData, action) => {
-    return guidanceData.flatMap(org =>
-      org.guidance_groups
-        .filter(group => {
-          if(action==='init') return group.selected;
-          if(action==='select') return selectedGuidancesIds.includes(group.id);
-          return group;
-        })
-        .map(group => ({
-          id: group.id,
-          name: group.name,
-          description: group.description,
-          orgName: org.name
-        }))
-    );
-  }
+  const formatSelectedGuidances = (guidanceData, action) => guidanceData.flatMap((org) => org.guidance_groups
+    .filter((group) => {
+      if (action === 'init') return group.selected;
+      if (action === 'select') return selectedGuidancesIds.includes(group.id);
+      return group;
+    })
+    .map((group) => ({
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      orgName: org.name,
+    })));
 
   const handleSelectGuidances = (guidance_group_ids, action) => {
     guidance_group_ids = Array.isArray(guidance_group_ids) ? guidance_group_ids : [guidance_group_ids];
     if (action === 'add') {
       setSelectedGuidancesIds([...new Set([...selectedGuidancesIds, ...guidance_group_ids])]);
     } else if (action === 'remove') {
-      setSelectedGuidancesIds(selectedGuidancesIds.filter(gid => !guidance_group_ids.includes(gid)));
+      setSelectedGuidancesIds(selectedGuidancesIds.filter((gid) => !guidance_group_ids.includes(gid)));
     }
-  }
+  };
 
   /**
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
   const handleSaveChoice = async () => {
     if (selectedGuidancesIds.length <= 0) {
-      return toast.error(t("selectAtLeastOne"));
+      return toast.error(t('selectAtLeastOne'));
     }
 
     let response;
     try {
-      const postGuidanceGroups = context === 'plan' ?
-        guidances.postPlanGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: researchOutputId }, planId) :
-        guidances.postResearchOutputGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, researchOutputId)
+      const postGuidanceGroups = context === 'plan'
+        ? guidances.postPlanGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: researchOutputId }, planId)
+        : guidances.postResearchOutputGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, researchOutputId);
       response = await postGuidanceGroups;
     } catch (error) {
       console.log(error);
-      return toast.error(t("errorSavingSelectedGuidances"));
+      return toast.error(t('errorSavingSelectedGuidances'));
     }
 
     const { guidance_groups } = response.data;
 
     const savedGuidances = formatSelectedGuidances(guidance_groups, 'init');
     setSavedGuidances(savedGuidances);
-    setSelectedGuidancesIds(savedGuidances.map(sg => sg.id));
+    setSelectedGuidancesIds(savedGuidances.map((sg) => sg.id));
     setGuidancesData(guidance_groups);
     guidancesRef.current.scrollTo({
       top: 0,
@@ -142,7 +137,7 @@ function GuidanceSelector({
     setSelectedOrg(null);
     setIncludeTopic(false);
 
-    toast.success(t("registrationSuccess"));
+    toast.success(t('registrationSuccess'));
   };
 
   const limitHasBeenReached = () => selectedGuidancesIds.length > GUIDANCES_GROUPS_LIMIT;
@@ -152,10 +147,9 @@ function GuidanceSelector({
 
     if (includeTopic) {
       return guidanceGroup.topics.includes(topic);
-    } else {
-      return true;
     }
-  }
+    return true;
+  };
 
   if (guidancesData?.length === 0) {
     return (
@@ -171,7 +165,7 @@ function GuidanceSelector({
         padding: '10px',
         cursor: 'not-allowed',
       }}>
-        {t("noGuidancesAvailable")}
+        {t('noGuidancesAvailable')}
       </div>
     );
   }
@@ -181,33 +175,37 @@ function GuidanceSelector({
       id="accordion-guidance-choice"
       className={guidanceChoiceStyles.card}
       style={{
-        border: "2px solid var(--dark-blue)",
-        borderRadius: "10px",
+        border: '2px solid var(--dark-blue)',
+        borderRadius: '10px',
       }}>
-      <Card.Header style={{ background: "var(--dark-blue)", borderRadius: isOpen ? "5px 5px 0 0" : "5px" }}>
+      <Card.Header style={{ background: 'var(--dark-blue)', borderRadius: isOpen ? '5px 5px 0 0' : '5px' }}>
         <Button
-          style={{ backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none', margin: '0' }}
+          style={{
+            backgroundColor: 'var(--dark-blue)', width: '100%', border: 'none', margin: '0',
+          }}
           onClick={() => setIsOpen(!isOpen)}
           aria-controls="guidance-choice-collapse"
           aria-expanded={isOpen}
         >
           <Card.Title style={{ margin: '0' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ flexGrow: 3, fontSize: '24px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{
+                flexGrow: 3, fontSize: '24px', fontWeight: '900', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
                 <TbBulbFilled
                   fill={'var(--rust)'}
                   size={38}
                   style={{ marginRight: '10px', color: 'var(--rust)' }}
                 />
                 <span style={{ color: 'var(--white)', marginTop: '3px' }}>{
-                  context === 'plan' ? t("selectGuidancePlan") : t("selectGuidanceOutput")
+                  context === 'plan' ? t('selectGuidancePlan') : t('selectGuidanceOutput')
                 }</span>
               </div>
               <div style={{ width: '30px', marginTop: '8px' }}>
                 {isOpen ? (
-                  <TfiAngleUp size={24} fill={"var(--white)"} />
+                  <TfiAngleUp size={24} fill={'var(--white)'} />
                 ) : (
-                  <TfiAngleDown size={24} fill={"var(--white)"} />
+                  <TfiAngleDown size={24} fill={'var(--white)'} />
                 )}
               </div>
             </div>
@@ -235,7 +233,7 @@ function GuidanceSelector({
                       options={guidancesData.map((group) => ({ label: group.name, value: group.name }))}
                       selectedOption={selectedOrg ? { label: selectedOrg, value: selectedOrg } : null}
                       name="guidanceOrg"
-                      placeholder={t("selectAnOrganisation")}
+                      placeholder={t('selectAnOrganisation')}
                     />
                   </div>
                   <div className="col-md-1" style={{ alignContent: 'center' }}>
@@ -245,7 +243,7 @@ function GuidanceSelector({
                     />
                   </div>
                   <div className="col-md-3" style={{ alignContent: 'center' }}>
-                    {t("includeTopic")} ({topic})
+                    {t('includeTopic')} ({topic})
                   </div>
                   <div className="col-md-1" style={{ alignContent: 'center' }}>
                     <input type="checkbox" onChange={() => setIncludeTopic(!includeTopic)} checked={includeTopic} />
@@ -255,12 +253,14 @@ function GuidanceSelector({
               {loading && <CustomSpinner />}
               {!loading && error && <CustomError error={error} />}
               {!loading && !error && (
-                <Row ref={guidancesRef} style={{ marginTop: '20px', maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
+                <Row ref={guidancesRef} style={{
+                  marginTop: '20px', maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray',
+                }}>
                   <Card className="available-guidances" style={{ flex: '1', marginRight: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('availableGuidances')}</Card.Title>
                     <Card.Body>
-                      {filteredGuidancesData.length > 0 ?
-                        filteredGuidancesData.map((org, index) => (
+                      {filteredGuidancesData.length > 0
+                        ? filteredGuidancesData.map((org, index) => (
                           org.guidance_groups.length > 1 ? (
                             <OrgWithGuidanceGroups
                               key={index}
@@ -270,8 +270,8 @@ function GuidanceSelector({
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
                             />
                           ) : (
-                            shouldGuidanceGroupDisplay(org.guidance_groups[0]) &&
-                            <GuidanceGroupItem
+                            shouldGuidanceGroupDisplay(org.guidance_groups[0])
+                            && <GuidanceGroupItem
                               key={index}
                               guidance_group_id={org.guidance_groups[0].id}
                               guidance_group_name={org.name}
@@ -282,27 +282,27 @@ function GuidanceSelector({
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
                             />
                           )
-                        )) : t("noGuidancesAvailable")
+                        )) : t('noGuidancesAvailable')
                       }
                     </Card.Body>
                   </Card>
                   <Card className="selected-guidances" style={{ flex: '1', marginLeft: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('selectedGuidances')}</Card.Title>
                     <Card.Body>
-                      {guidancesData.length > 0 ?
-                        guidancesData.map((org, index) => (
+                      {guidancesData.length > 0
+                        ? guidancesData.map((org, index) => (
                           org.guidance_groups.length > 1 ? (
                             <OrgWithGuidanceGroups
                               key={index}
                               org={org}
                               isLimitReached={limitHasBeenReached()}
                               shouldGuidanceGroupDisplay={(guidance_group) => selectedGuidancesIds.includes(guidance_group.id)}
-                              getStatus={(guidance_group_id) => savedGuidancesIds.includes(guidance_group_id) ? 'saved' : 'new'}
+                              getStatus={(guidance_group_id) => (savedGuidancesIds.includes(guidance_group_id) ? 'saved' : 'new')}
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
                             />
                           ) : (
-                            selectedGuidancesIds.includes(org.guidance_groups[0].id) &&
-                            <GuidanceGroupItem
+                            selectedGuidancesIds.includes(org.guidance_groups[0].id)
+                            && <GuidanceGroupItem
                               key={index}
                               guidance_group_id={org.guidance_groups[0].id}
                               guidance_group_name={org.name}
@@ -314,7 +314,7 @@ function GuidanceSelector({
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
                             />
                           )
-                        )) : t("noGuidancesSelected")
+                        )) : t('noGuidancesSelected')
                       }
                     </Card.Body>
                   </Card>
@@ -325,9 +325,9 @@ function GuidanceSelector({
                 {!loading && !error && guidancesData && (
                   <CustomButton
                     title={
-                      limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t("save")
+                      limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t('save')
                     }
-                    buttonColor={selectedGuidancesIds.length > 0 ? "rust" : "blue"}
+                    buttonColor={selectedGuidancesIds.length > 0 ? 'rust' : 'blue'}
                     position="start"
                     handleClick={limitHasBeenReached() ? null : handleSaveChoice}
                     disabled={limitHasBeenReached()}

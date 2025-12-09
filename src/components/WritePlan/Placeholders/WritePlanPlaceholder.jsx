@@ -1,8 +1,8 @@
-import React from "react";
-import Card from "react-bootstrap/Card";
-import Placeholder from "react-bootstrap/Placeholder";
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Placeholder from 'react-bootstrap/Placeholder';
 
-import SidebarPlaceholder from "./SidebarPlaceholder";
+import SidebarPlaceholder from './SidebarPlaceholder';
 
 function WritePlanPlaceholder() {
   const questionsPlaceholders = [];
@@ -11,9 +11,9 @@ function WritePlanPlaceholder() {
     questionsPlaceholders.push(
       <Placeholder key={i} as={Card} xs={10} style={{ margin: '10px', height: '50px' }}>
         <Placeholder xs={12} style={{ height: '100%' }} />
-      </Placeholder>
-    )
-  })
+      </Placeholder>,
+    );
+  });
 
   return (
     <>
@@ -28,7 +28,7 @@ function WritePlanPlaceholder() {
         </Placeholder>
       </div>
     </>
-  )
+  );
 }
 
 export default WritePlanPlaceholder;

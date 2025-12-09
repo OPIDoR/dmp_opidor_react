@@ -12,7 +12,9 @@ import CustomButton from '../Styled/CustomButton';
 /* A React component that renders a form with a text input and a button.
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
-function InputTextArray({ label, propName, tooltip, placeholder, readonly = false }) {
+function InputTextArray({
+  label, propName, tooltip, placeholder, readonly = false,
+}) {
   const { t } = useTranslation();
   const { control, register } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: propName, keyName: '_id' });
@@ -61,7 +63,7 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
                 place="bottom"
                 effect="solid"
                 variant="info"
-                content={t("delete")}
+                content={t('delete')}
               />
               <FaXmark
                 data-tooltip-id={`input-text-array-del-button-${index}`}
@@ -79,7 +81,7 @@ function InputTextArray({ label, propName, tooltip, placeholder, readonly = fals
       {!readonly && (
         <CustomButton
           handleClick={() => append('')}
-          title={t("addElement")}
+          title={t('addElement')}
           buttonColor="rust"
           position="start"
         ></CustomButton>

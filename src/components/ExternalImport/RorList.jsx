@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import React, { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import get from 'lodash.get';
 import set from 'lodash.set';
-import { FaLink } from "react-icons/fa6";
-import { FaCheckCircle, FaPlusSquare } from "react-icons/fa";
-import { externalServices } from "../../services";
-import Select from "react-select";
-import CustomSpinner from "../Shared/CustomSpinner";
-import CustomError from "../Shared/CustomError";
-import Pagination from "../Shared/Pagination";
-import { flattenObject } from "../../utils/utils";
+import { FaLink } from 'react-icons/fa6';
+import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
+import Select from 'react-select';
+import { externalServices } from '../../services';
+import CustomSpinner from '../Shared/CustomSpinner';
+import CustomError from '../Shared/CustomError';
+import Pagination from '../Shared/Pagination';
+import { flattenObject } from '../../utils/utils';
 
-function RorList({ fragment, setFragment, mapping = {}, locale }) {
+function RorList({
+  fragment, setFragment, mapping = {}, locale,
+}) {
   const { t } = useTranslation();
   const pageSize = 8;
   const [data, setData] = useState([]);
@@ -53,11 +55,11 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
     }));
 
     // get distinct array of objects
-    let distinctCountries = Object.values(
+    const distinctCountries = Object.values(
       options.reduce((acc, cur) => {
         if (!acc[cur.value]) acc[cur.value] = cur;
         return acc;
-      }, {})
+      }, {}),
     );
     setCountries(distinctCountries);
 
@@ -77,7 +79,7 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
    */
   const setSelectedValue = (el) => {
     setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
-    let obj = {
+    const obj = {
       affiliationId: el.ror,
       affiliationName: el?.name?.[el?.country?.code.toLowerCase()] || el?.name[Object.keys(el?.name).at(0)],
       affiliationIdType: el?.type,
@@ -137,7 +139,7 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
       return getData(text, selectedCountry ? `country.country_code:${selectedCountry}` : null);
     }
     return null;
-  }
+  };
 
   /**
    * The function `handleDeleteText` clears the text and then retrieves data.
@@ -176,17 +178,21 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
                       value={text}
                       onChange={(e) => setText(e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e)}
-                      placeholder={t("searchOrg")}
-                      style={{ borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }}
+                      placeholder={t('searchOrg')}
+                      style={{
+                        borderRadius: '8px 0 0 8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                      }}
                     />
                     <span className="input-group-btn">
                       <button
                         className="btn btn-default"
                         type="button"
                         onClick={handleSearchTerm}
-                        style={{ borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
-                        <span className="fas fa-magnifying-glass" style={{ color: "var(--dark-blue)" }} />
+                        <span className="fas fa-magnifying-glass" style={{ color: 'var(--dark-blue)' }} />
                       </button>
                     </span>
                     <span className="input-group-btn">
@@ -194,7 +200,9 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
                         className="btn btn-default"
                         type="button"
                         onClick={handleDeleteText}
-                        style={{ borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0' }}
+                        style={{
+                          borderRadius: '0 8px 8px 0', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px', margin: '0',
+                        }}
                       >
                         <span className="fa fa-xmark" />
                       </button>
@@ -216,11 +224,13 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
                       styles={{
                         menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                         singleValue: (base) => ({ ...base, color: 'var(--dark-blue)' }),
-                        control: (base) => ({ ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px' }),
+                        control: (base) => ({
+                          ...base, borderRadius: '8px', borderWidth: '1px', borderColor: 'var(--dark-blue)', height: '43px',
+                        }),
                       }}
-                      value={ countries.find(c => c.value === selectedCountry) || null }
+                      value={ countries.find((c) => c.value === selectedCountry) || null }
                       onChange={handleChangeCountry}
-                      placeholder={t("selectCountry")}
+                      placeholder={t('selectCountry')}
                       options={countries}
                     />
                   </div>
@@ -233,22 +243,22 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
             <thead className="thead-dark">
               <tr>
                 <th scope="col"></th>
-                <th scope="col">{t("orgName")}</th>
-                <th scope="col">{t("acronym")}</th>
-                <th scope="col">{t("country")}</th>
-                <th scope="col">{t("location")}</th>
+                <th scope="col">{t('orgName')}</th>
+                <th scope="col">{t('acronym')}</th>
+                <th scope="col">{t('country')}</th>
+                <th scope="col">{t('location')}</th>
               </tr>
             </thead>
             <tbody>
               {currentData.length > 0 ? currentData.map((el, idx) => (
                 <tr key={idx}>
                   <td>
-                    {selectedOrg === el.ror ?
-                      <FaCheckCircle
+                    {selectedOrg === el.ror
+                      ? <FaCheckCircle
                         className="text-center"
                         style={{ color: 'green' }}
-                      /> :
-                      <FaPlusSquare
+                      />
+                      : <FaPlusSquare
                         className="text-center"
                         style={{ cursor: 'pointer' }}
                         onClick={() => setSelectedValue(el)} />
@@ -268,8 +278,8 @@ function RorList({ fragment, setFragment, mapping = {}, locale }) {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: loading ? 'center': 'left' }}>
-                    { loading ? <CustomSpinner /> : t("noData") }
+                  <td colSpan="5" style={{ textAlign: loading ? 'center' : 'left' }}>
+                    { loading ? <CustomSpinner /> : t('noData') }
                   </td>
                 </tr>
               )}

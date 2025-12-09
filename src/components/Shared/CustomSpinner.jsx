@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotatingTriangles } from 'react-loader-spinner';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 import * as styles from '../assets/css/overlay.module.css';
 
@@ -17,7 +17,7 @@ function CustomSpinner({ isOverlay = false }) {
         wrapperStyle={{}}
         wrapperClass="rotating-triangels-wrapper"
       />
-      {t("loading")}
+      {t('loading')}
     </div>
   );
 }

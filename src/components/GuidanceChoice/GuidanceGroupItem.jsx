@@ -1,7 +1,7 @@
-import React from "react";
-import { Tooltip as ReactTooltip } from "react-tooltip";
+import React from 'react';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 
-import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
+import * as guidanceChoiceStyles from '../assets/css/guidance_choice.module.css';
 
 function GuidanceGroupItem({
   guidance_group_id,
@@ -10,7 +10,7 @@ function GuidanceGroupItem({
   level = 1,
   isLimitReached,
   status = 'saved',
-  onSelect
+  onSelect,
 }) {
   return (
     <React.Fragment key={`guidance-fragment-${guidance_group_id}`}>
@@ -35,9 +35,9 @@ function GuidanceGroupItem({
             data-tooltip-id={`guidance-group-${guidance_group_id}-tooltip`}
             className={`form-check-label ${level === 1 ? guidanceChoiceStyles.label : guidanceChoiceStyles.guidance_group_title} ${status === 'new' ? guidanceChoiceStyles.new_guidance : ''}`}
             style={{ cursor: isLimitReached ? 'not-allowed' : 'pointer' }}
-            onClick={() => isLimitReached ? null : onSelect(guidance_group_id)}
-            >
-              {guidance_group_name}
+            onClick={() => (isLimitReached ? null : onSelect(guidance_group_id))}
+          >
+            {guidance_group_name}
           </label>
         </div>
       </div>

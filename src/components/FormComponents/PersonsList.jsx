@@ -25,19 +25,19 @@ function PersonsList({
   return (
     <>
       {personsList && (
-        <table style={{ marginTop: "20px" }} className="table" data-testid="persons-list-table">
+        <table style={{ marginTop: '20px' }} className="table" data-testid="persons-list-table">
           <thead data-testid="persons-list-table-header">
-            {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== "delete") && (
+            {personsList.length > 0 && tableHeader && personsList.some((el) => el.action !== 'delete') && (
               <tr>
                 <th scope="col">{tableHeader}</th>
-                <th scope="col">{t("roles")}</th>
+                <th scope="col">{t('roles')}</th>
               </tr>
             )}
           </thead>
           <tbody data-testid="persons-list-table-body">
-            {personsList.map((el, idx) => (el.action !== "delete" ?
-              <tr key={idx} data-testid={`persons-list-row-${idx}`}>
-                <td style={{ width: "50%" }} data-testid={`persons-list-row-value-${idx}`}>
+            {personsList.map((el, idx) => (el.action !== 'delete'
+              ? <tr key={idx} data-testid={`persons-list-row-${idx}`}>
+                <td style={{ width: '50%' }} data-testid={`persons-list-row-value-${idx}`}>
                   <div className={styles.cell_content}>
                     <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
                     {!readonly && (
@@ -49,7 +49,7 @@ function PersonsList({
                               place="bottom"
                               effect="solid"
                               variant="info"
-                              content={t("edit")}
+                              content={t('edit')}
                             />
                             <FaPenToSquare
                               data-testid={`persons-list-row-edit-btn-${idx}`}
@@ -64,7 +64,7 @@ function PersonsList({
                           place="bottom"
                           effect="solid"
                           variant="info"
-                          content={t("delete")}
+                          content={t('delete')}
                         />
                         <FaXmark
                           data-testid={`persons-list-row-delete-btn-${idx}`}
@@ -76,7 +76,7 @@ function PersonsList({
                     )}
                   </div>
                 </td>
-                <td style={{ verticalAlign: "middle" }} data-testid={`persons-list-role-${idx}`}>
+                <td style={{ verticalAlign: 'middle' }} data-testid={`persons-list-role-${idx}`}>
                   {isRoleConst && (
                     defaultRole
                   )}

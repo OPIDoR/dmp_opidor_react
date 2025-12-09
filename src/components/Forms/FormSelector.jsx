@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { FaXmark } from 'react-icons/fa6';
 
 import * as styles from '../assets/css/form_selector.module.css';
 import CustomSpinner from '../Shared/CustomSpinner';
-import service from "../../services/service";
-import { GlobalContext } from "../context/Global";
-import CustomSelect from "../Shared/CustomSelect";
+import service from '../../services/service';
+import { GlobalContext } from '../context/Global';
+import CustomSelect from '../Shared/CustomSelect';
 
 const headerStyle = {
   color: 'var(--white)',
@@ -21,7 +21,9 @@ const headerStyle = {
   alignItems: 'center',
 };
 
-function FormSelector({ classname, dataType, topic, displayedTemplate, setTemplate, setTemplateId, formSelector }) {
+function FormSelector({
+  classname, dataType, topic, displayedTemplate, setTemplate, setTemplateId, formSelector,
+}) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [availableTemplates, setAvailableTemplates] = useState([]);
@@ -41,11 +43,11 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
     })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [classname, dataType])
+  }, [classname, dataType]);
 
   const handleSelectTemplate = (e) => {
     setSelectedTemplate(e.object);
-    setLoading(true)
+    setLoading(true);
     service.getSchemaByName(e.object.name).then((res) => {
       setTemplate(res.data);
       setTemplateId(res.data.id);
@@ -53,7 +55,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
     })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }
+  };
 
   return (
     <>
@@ -67,14 +69,14 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
                   <div
                     style={{ ...headerStyle }}
                   >
-                    <label htmlFor={classname} style={{fontSize: 'large'}}>{t("selectFormToAnswerQuestion")}</label>
+                    <label htmlFor={classname} style={{ fontSize: 'large' }}>{t('selectFormToAnswerQuestion')}</label>
                     <div id="header-actions">
                       <ReactTooltip
                         id={`${classname}-form-selector-close-button`}
                         place="bottom"
                         effect="solid"
                         variant="info"
-                        content={t("close")}
+                        content={t('close')}
                       />
                       <FaXmark
                         data-tooltip-id={`${classname}-form-selector-close-button`}
@@ -86,7 +88,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
                     </div>
                   </div>
                   <p style={{ color: 'var(--white)', padding: '0 10px' }}>
-                    <i>{t("selectFormFromList")}</i>
+                    <i>{t('selectFormFromList')}</i>
                   </p>
                   <CustomSelect
                     propName={classname}
@@ -105,7 +107,7 @@ function FormSelector({ classname, dataType, topic, displayedTemplate, setTempla
         </>
       )}
     </>
-  )
+  );
 }
 
 export default FormSelector;

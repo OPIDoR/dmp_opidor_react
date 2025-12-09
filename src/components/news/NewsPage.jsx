@@ -23,7 +23,7 @@ export default function NewsPage({ locale, size }) {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ['news'],
-    queryFn: () => news.get(size).then(res => res.data)
+    queryFn: () => news.get(size).then((res) => res.data),
   });
 
   if (isLoading) return <CustomSpinner />;
@@ -38,11 +38,13 @@ export default function NewsPage({ locale, size }) {
         content: r.content.rendered,
         link: r.link,
         date: format(new Date(r.date), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || locale] }),
-        full: r?.["_embedded"]?.["wp:featuredmedia"]?.[0]?.["media_details"]?.["sizes"]?.["full"],
+        full: r?._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.full,
       })).map((n, idx) => (
         <Col key={idx}>
           <Card
-            style={{ padding: '5px', margin: '0 15px', borderColor: '#ddd', height: '100%' }}
+            style={{
+              padding: '5px', margin: '0 15px', borderColor: '#ddd', height: '100%',
+            }}
             key={`thumbnail-${n.id}`}>
             <Card.Img variant="top" src={n.full.source_url} />
             <Card.Body>
@@ -56,17 +58,17 @@ export default function NewsPage({ locale, size }) {
                 dangerouslySetInnerHTML={{ __html: `${n.content.substring(0, 120)}...` }}
                 key={`content-${n.id}`} />
             </Card.Body>
-            <Card.Footer className="text-muted" style={{ border: 'none', backgroundColor: 'white'}}>
+            <Card.Footer className="text-muted" style={{ border: 'none', backgroundColor: 'white' }}>
               <Button
                 href={n.link}
                 variant="primary"
                 key={`read-button-${n.id}`}
                 className="float-end"
-              >{t("readArticle")}</Button>
+              >{t('readArticle')}</Button>
             </Card.Footer>
           </Card>
         </Col>
       ))}
     </Row>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-import * as styles from "../../assets/css/steps.module.css";
+import * as styles from '../../assets/css/steps.module.css';
 
 function ActionSelection({ nextStep, set, params }) {
   const { t } = useTranslation();
@@ -9,19 +9,19 @@ function ActionSelection({ nextStep, set, params }) {
   const actions = [
     {
       id: 'create',
-      title: t("createNewPlan"),
-      description: t("createNewPlanFromTemplate"),
+      title: t('createNewPlan'),
+      description: t('createNewPlanFromTemplate'),
     },
     {
       id: 'import',
-      title: <>{t("importAnExistingPlan")} <span style={{ fontSize: '14px', fontWeight: 200 }}>({t("onlyAvailableForStructuredManagementPlans")})</span></>,
-      description: t("reuseInfoFromExistingPlanUsingJson")
-    }
+      title: <>{t('importAnExistingPlan')} <span style={{ fontSize: '14px', fontWeight: 200 }}>({t('onlyAvailableForStructuredManagementPlans')})</span></>,
+      description: t('reuseInfoFromExistingPlanUsingJson'),
+    },
   ];
 
   return (
     <div>
-      <h2>{t("selectModalityToCreatePlan")}</h2>
+      <h2>{t('selectModalityToCreatePlan')}</h2>
       {
         actions.map(({ id, title, description }) => (
           <div
