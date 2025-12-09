@@ -5,6 +5,7 @@ import { guidances } from "../../services/index.js";
 import { CustomSpinner, CustomError, CustomSelect } from "../Shared/index.jsx";
 import CustomButton from "../Styled/CustomButton.jsx";
 import GuidanceGroupItem from "./GuidanceGroupItem.jsx";
+import OrgWithGuidanceGroups from "./OrgWithGuidanceGroups.jsx";
 
 import * as guidanceChoiceStyles from "../assets/css/guidance_choice.module.css";
 import * as formStyles from '../assets/css/form.module.css';
@@ -12,6 +13,7 @@ import * as formStyles from '../assets/css/form.module.css';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Collapse from 'react-bootstrap/Collapse';
+import Row from "react-bootstrap/Row";
 import { FaXmark } from 'react-icons/fa6';
 
 import { TfiAngleDown, TfiAngleUp } from "react-icons/tfi";
@@ -19,13 +21,12 @@ import { TbBulbFilled } from "react-icons/tb";
 
 import { useTranslation, Trans } from "react-i18next";
 import toast from "react-hot-toast";
-import { MdOutlineCheckBoxOutlineBlank, MdIndeterminateCheckBox, MdCheckBox } from "react-icons/md";
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
   color: "var(--blue)",
   fontSize: "16px",
-  margin: "10px 100px 0px 100px",
+  margin: "10px",
 };
 
 function GuidanceSelector({
@@ -35,7 +36,7 @@ function GuidanceSelector({
   context = 'research_output' }) {
   const { t } = useTranslation();
   const {
-    setSavedGuidances,
+    savedGuidances, setSavedGuidances,
   } = useContext(GlobalContext);
   const [guidancesData, setGuidancesData] = useState([]);
   const [filteredGuidancesData, setFilteredGuidancesData] = useState([]);
@@ -43,9 +44,11 @@ function GuidanceSelector({
   const [includeTopic, setIncludeTopic] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [checkboxStates, setCheckboxStates] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedGuidancesIds, setSelectedGuidancesIds] = useState([]);
   const guidancesRef = useRef(null);
+
+  const savedGuidancesIds = savedGuidances.map(g => g.id);
 
   /**
    * Fetches recommendations and updates state variables.
@@ -57,15 +60,10 @@ function GuidanceSelector({
     fetchGuidanceGroups
       .then((res) => {
         const { data } = res.data;
-
-        const orgsWithSelectedGuidances = sortGuidances(data.filter(({ important }) => important === true));
-        const orgsWithUnselectedGuidances = sortGuidances(data.filter(({ important }) => important === false));
-
-        setSavedGuidances(formatSavedGuidances(orgsWithSelectedGuidances));
-        setGuidancesData([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
-
-        const states = handleGuidanceGroups([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
-        setCheckboxStates(states);
+        const savedGuidances = formatSelectedGuidances(data, 'init');
+        setSavedGuidances(savedGuidances);
+        setSelectedGuidancesIds(data.flatMap(org => org.guidance_groups.filter(group => group.selected).map(group => group.id)));
+        setGuidancesData(data);
       })
       .catch((error) => { setError(error) })
       .finally(() => setLoading(false));
@@ -85,87 +83,40 @@ function GuidanceSelector({
     setFilteredGuidancesData(filtered);
   }, [guidancesData, selectedOrg, includeTopic]);
 
-  const sortGuidances = (guidances) => guidances.sort((a, b) => a.name.localeCompare(b.name));
 
-  const handleGuidanceGroups = (data) => {
-    const states = {};
-    for (let i = 0; i < data.length; i += 1) {
-      const guidance_groups = data[i].guidance_groups.reduce((obj, item) => ({ ...obj, [item.id]: item.selected }), {});
-      const isSelected = Object.keys(guidance_groups).filter((id) => guidance_groups[id] === true).length > 0;
-      states[data[i].id] = {
-        checked: isSelected,
-        guidance_groups,
-      };
-    }
-    return states;
-  }
-
-  const formatSavedGuidances = (savedGuidances) => {
-    return savedGuidances.flatMap(org =>
+  const formatSelectedGuidances = (guidanceData, action) => {
+    return guidanceData.flatMap(org =>
       org.guidance_groups
-        .filter(group => group.selected)
+        .filter(group => {
+          if(action==='init') return group.selected;
+          if(action==='select') return selectedGuidancesIds.includes(group.id);
+          return group;
+        })
         .map(group => ({
           id: group.id,
-          title: group.name,
+          name: group.name,
+          description: group.description,
           orgName: org.name
         }))
     );
   }
-  /**
-   * This function handles changes to a checkbox and updates the state accordingly, including updating nested checkboxes and an array of recommendation
-   * IDs.
-   */
-  const handleCheckboxChange = (key, status) => {
-    const states = { ...checkboxStates };
 
-    states[key] = {
-      ...states[key],
-      checked: status,
-      guidance_groups: Object.keys(states[key].guidance_groups).reduce((acc, el) => ({ ...acc, [el]: status }), {}),
-    };
-
-    setCheckboxStates(states);
-  };
-
-  /**
-   * This function updates the state of nested checkboxes and also updates an array of recommended ids based on the checked checkboxes.
-   */
-  const handleNestedCheckboxChange = (parentKey, id, status) => {
-    const states = { ...checkboxStates };
-
-    states[parentKey] = {
-      ...states[parentKey],
-      guidance_groups: {
-        ...states[parentKey].guidance_groups,
-        [id]: status,
-      }
-    };
-
-    const childChecked = Object.keys(states[parentKey].guidance_groups).filter((id) => states[parentKey].guidance_groups[id] === true);
-    states[parentKey].checked = childChecked.length >= 1;
-
-    setCheckboxStates(states);
-  };
-
-  const countSelectedGuidances = () => {
-    return Object.values(checkboxStates).reduce((count, state) => {
-      return state.checked === true ? count + 1 : count;
-    }, 0);
-  };
-
-  const countSelectedChild = (parentId) => Object.keys(checkboxStates[parentId].guidance_groups).filter((id) => checkboxStates[parentId].guidance_groups[id] === true).length;
+  const handleSelectGuidances = (guidance_group_ids, action) => {
+    guidance_group_ids = Array.isArray(guidance_group_ids) ? guidance_group_ids : [guidance_group_ids];
+    if (action === 'add') {
+      setSelectedGuidancesIds([...new Set([...selectedGuidancesIds, ...guidance_group_ids])]);
+    } else if (action === 'remove') {
+      setSelectedGuidancesIds(selectedGuidancesIds.filter(gid => !guidance_group_ids.includes(gid)));
+    }
+  }
 
   /**
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
   const handleSaveChoice = async () => {
-    if (countSelectedGuidances <= 0) {
+    if (selectedGuidancesIds.length <= 0) {
       return toast.error(t("selectAtLeastOne"));
     }
-
-    const selectedGuidancesIds = Object.keys(checkboxStates)
-      .map((parentKey) => Object.keys(checkboxStates[parentKey].guidance_groups).filter((guidanceKey) => checkboxStates[parentKey].guidance_groups[guidanceKey] === true))
-      .flat();
 
     let response;
     try {
@@ -180,15 +131,10 @@ function GuidanceSelector({
 
     const { guidance_groups } = response.data;
 
-    const orgsWithSelectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === true));
-    const orgsWithUnselectedGuidances = sortGuidances(guidance_groups.filter(({ important }) => important === false));
-
-    setSavedGuidances(formatSavedGuidances(orgsWithSelectedGuidances));
-    setGuidancesData([...orgsWithSelectedGuidances, ...orgsWithUnselectedGuidances]);
-
-    const states = handleGuidanceGroups(guidance_groups);
-    setCheckboxStates(states);
-
+    const savedGuidances = formatSelectedGuidances(guidance_groups, 'init');
+    setSavedGuidances(savedGuidances);
+    setSelectedGuidancesIds(savedGuidances.map(sg => sg.id));
+    setGuidancesData(guidance_groups);
     guidancesRef.current.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -199,9 +145,11 @@ function GuidanceSelector({
     toast.success(t("registrationSuccess"));
   };
 
-  const limitHasBeenReached = () => countSelectedGuidances() > GUIDANCES_GROUPS_LIMIT;
+  const limitHasBeenReached = () => selectedGuidancesIds.length > GUIDANCES_GROUPS_LIMIT;
 
   const shouldGuidanceGroupDisplay = (guidanceGroup) => {
+    if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
+
     if (includeTopic) {
       return guidanceGroup.topics.includes(topic);
     } else {
@@ -304,128 +252,88 @@ function GuidanceSelector({
                   </div>
                 </div>
               )}
-              <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', maxHeight: '500px', position: 'relative' }}>
-                {loading && <CustomSpinner />}
-                {!loading && error && <CustomError error={error} />}
-                <div ref={guidancesRef} style={{ display: 'flex', flexDirection: 'column', overflow: 'auto', marginBottom: '70px', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
-                  {!loading && !error && (
-                    filteredGuidancesData.length > 0 ?
-                      filteredGuidancesData.map((org, index) => (
-                        org.guidance_groups.length > 1 ? (
-                          <div key={`guidances-section-${index}`} style={{ paddingBottom: '5px' }}>
-                            <div
-                              style={{ display: 'flex', flexDirection: 'column' }}
-                              key={`guidances-container-${index}`}
-                            >
-                              <div
-                                style={{ display: 'flex', alignItems: 'center', }}
-                                key={`guidances-container-${index}`}
-                              >
-                                <div
-                                  style={{ marginRight: '10px' }}
-                                  className={guidanceChoiceStyles.checkboxes}
-                                  key={`guidance-group-${index}`}
-                                >
-                                  {limitHasBeenReached() && !checkboxStates?.[org.id]?.checked ? (
-                                    <MdOutlineCheckBoxOutlineBlank
-                                      fill="grey"
-                                      size={18}
-                                      key={`icon-${index}-checkbox-outline-blank-disabled`}
-                                      style={{ cursor: 'not-allowed' }}
-                                    />
-                                  ) : !checkboxStates?.[org.id]?.checked ? (
-                                    <MdOutlineCheckBoxOutlineBlank
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      key={`icon-${index}-checkbox-outline-blank`}
-                                      onClick={() => handleCheckboxChange(org.id, true)}
-                                    />
-                                  ) : countSelectedChild(org.id) === 1 && Object.keys(checkboxStates?.[org.id]?.guidance_groups || {}).length > 1 ? (
-                                    <MdIndeterminateCheckBox
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      key={`icon-${index}-indeterminate-checkbox`}
-                                      onClick={() => handleCheckboxChange(org.id, true)}
-                                    />
-                                  ) : (
-                                    <MdCheckBox
-                                      style={{ cursor: 'pointer' }}
-                                      size={18}
-                                      key={`icon-${index}-checkbox`}
-                                      onClick={() => handleCheckboxChange(org.id, false)}
-                                    />
-                                  )}
-                                </div>
-
-                                <label
-                                  className={`${guidanceChoiceStyles.label_checkbox}`}
-                                  style={{ cursor: limitHasBeenReached() && !checkboxStates?.[org.id]?.checked ? 'not-allowed' : 'pointer' }}
-                                  onClick={() => {
-                                    if (!(limitHasBeenReached() && !checkboxStates?.[org.id]?.checked)) {
-                                      handleCheckboxChange(org.id, !checkboxStates?.[org.id]?.checked);
-                                    }
-                                  }}
-                                  key={`label-${index}-guidance-group`}
-                                >
-                                  {org.name}
-                                </label>
-                              </div>
-                              <div
-                                style={{ display: 'flex', flexDirection: 'column', marginLeft: '26px' }}
-                                key={`guidance-group-${index}-childs`}
-                              >
-                                {
-                                  org.guidance_groups.map((guidance_group, key) => (
-                                    shouldGuidanceGroupDisplay(guidance_group) &&
-                                    <GuidanceGroupItem
-                                      key={key}
-                                      guidance_group_id={guidance_group.id}
-                                      guidance_group_name={guidance_group.name}
-                                      guidance_group_description={guidance_group.description}
-                                      level={2}
-                                      org={org}
-                                      index={key}
-                                      isLimitReached={limitHasBeenReached()}
-                                      isSelected={checkboxStates?.[org.id]?.guidance_groups?.[guidance_group.id]}
-                                      onSelect={handleNestedCheckboxChange}
-                                    />
-                                  ))
-                                }
-                              </div>
-                            </div>
-                          </div>) : (
-                          shouldGuidanceGroupDisplay(org.guidance_groups[0]) &&
-                          <GuidanceGroupItem
-                            key={index}
-                            guidance_group_id={org.guidance_groups[0].id}
-                            guidance_group_name={org.name}
-                            guidance_group_description={org.guidance_groups[0].description}
-                            level={1}
-                            org={org}
-                            index={index}
-                            isLimitReached={limitHasBeenReached()}
-                            isSelected={checkboxStates?.[org.id]?.guidance_groups?.[org.guidance_groups[0].id]}
-                            onSelect={handleNestedCheckboxChange}
-                          />
-                        )
-                      )) : t("noGuidancesAvailable")
-                  )}
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'absolute', bottom: '0' }}>
-                  {!loading && !error && guidancesData && (
-                    <CustomButton
-                      title={
-                        limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t("save")
+              {loading && <CustomSpinner />}
+              {!loading && error && <CustomError error={error} />}
+              {!loading && !error && (
+                <Row ref={guidancesRef} style={{ marginTop: '20px', maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray' }}>
+                  <Card className="available-guidances" style={{ flex: '1', marginRight: '5px' }}>
+                    <Card.Title className={guidanceChoiceStyles.card_title}>{t('availableGuidances')}</Card.Title>
+                    <Card.Body>
+                      {filteredGuidancesData.length > 0 ?
+                        filteredGuidancesData.map((org, index) => (
+                          org.guidance_groups.length > 1 ? (
+                            <OrgWithGuidanceGroups
+                              key={index}
+                              org={org}
+                              isLimitReached={limitHasBeenReached()}
+                              shouldGuidanceGroupDisplay={shouldGuidanceGroupDisplay}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
+                            />
+                          ) : (
+                            shouldGuidanceGroupDisplay(org.guidance_groups[0]) &&
+                            <GuidanceGroupItem
+                              key={index}
+                              guidance_group_id={org.guidance_groups[0].id}
+                              guidance_group_name={org.name}
+                              guidance_group_description={org.guidance_groups[0].description}
+                              org={org}
+                              level={1}
+                              isLimitReached={limitHasBeenReached()}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
+                            />
+                          )
+                        )) : t("noGuidancesAvailable")
                       }
-                      buttonColor={countSelectedGuidances() > 0 ? "rust" : "blue"}
-                      position="start"
-                      handleClick={limitHasBeenReached() ? null : handleSaveChoice}
-                      disabled={limitHasBeenReached()}
-                    />
-                  )}
-                </div>
-              </div >
+                    </Card.Body>
+                  </Card>
+                  <Card className="selected-guidances" style={{ flex: '1', marginLeft: '5px' }}>
+                    <Card.Title className={guidanceChoiceStyles.card_title}>{t('selectedGuidances')}</Card.Title>
+                    <Card.Body>
+                      {guidancesData.length > 0 ?
+                        guidancesData.map((org, index) => (
+                          org.guidance_groups.length > 1 ? (
+                            <OrgWithGuidanceGroups
+                              key={index}
+                              org={org}
+                              isLimitReached={limitHasBeenReached()}
+                              shouldGuidanceGroupDisplay={(guidance_group) => selectedGuidancesIds.includes(guidance_group.id)}
+                              getStatus={(guidance_group_id) => savedGuidancesIds.includes(guidance_group_id) ? 'saved' : 'new'}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
+                            />
+                          ) : (
+                            selectedGuidancesIds.includes(org.guidance_groups[0].id) &&
+                            <GuidanceGroupItem
+                              key={index}
+                              guidance_group_id={org.guidance_groups[0].id}
+                              guidance_group_name={org.name}
+                              guidance_group_description={org.guidance_groups[0].description}
+                              org={org}
+                              level={1}
+                              isLimitReached={limitHasBeenReached()}
+                              status={savedGuidancesIds.includes(org.guidance_groups[0].id) ? 'saved' : 'new'}
+                              onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
+                            />
+                          )
+                        )) : t("noGuidancesSelected")
+                      }
+                    </Card.Body>
+                  </Card>
+                </Row>
+              )}
+
+              <Row>
+                {!loading && !error && guidancesData && (
+                  <CustomButton
+                    title={
+                      limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t("save")
+                    }
+                    buttonColor={selectedGuidancesIds.length > 0 ? "rust" : "blue"}
+                    position="start"
+                    handleClick={limitHasBeenReached() ? null : handleSaveChoice}
+                    disabled={limitHasBeenReached()}
+                  />
+                )}
+              </Row>
             </div >
           </Card.Body >
         </div >
