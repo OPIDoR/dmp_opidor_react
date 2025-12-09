@@ -295,7 +295,7 @@ function GuidanceSelector({
                             <OrgWithGuidanceGroups
                               key={index}
                               org={org}
-                              isLimitReached={limitHasBeenReached()}
+                              isLimitReached={false}
                               shouldGuidanceGroupDisplay={(guidance_group) => selectedGuidancesIds.includes(guidance_group.id)}
                               getStatus={(guidance_group_id) => (savedGuidancesIds.includes(guidance_group_id) ? 'saved' : 'new')}
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
@@ -309,7 +309,7 @@ function GuidanceSelector({
                               guidance_group_description={org.guidance_groups[0].description}
                               org={org}
                               level={1}
-                              isLimitReached={limitHasBeenReached()}
+                              isLimitReached={false}
                               status={savedGuidancesIds.includes(org.guidance_groups[0].id) ? 'saved' : 'new'}
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'remove')}
                             />
