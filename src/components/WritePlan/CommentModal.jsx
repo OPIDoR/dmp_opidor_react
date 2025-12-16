@@ -5,7 +5,7 @@ import InnerModal from '../Shared/InnerModal/InnerModal';
 import CommentList from '../Shared/CommentList';
 
 function CommentModal({
-  shown, hide, setAnswer, answerId, researchOutputId, planId, questionId, readonly,
+  shown, hide, setAnswer, answerId, researchOutputId, planId, questionId, commentable,
 }) {
   const { t } = useTranslation();
   const [commentsNumber, setCommentsNumber] = useState(0);
@@ -33,7 +33,7 @@ function CommentModal({
           planId={planId}
           questionId={questionId}
           userId={userId}
-          readonly={readonly}
+          commentable={commentable}
           inModal={true}
           setAnswer={setAnswer}
           setCommentsNumber={setCommentsNumber}

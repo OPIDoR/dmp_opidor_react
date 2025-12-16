@@ -25,7 +25,7 @@ function CommentList({
   planId,
   questionId,
   userId,
-  readonly,
+  commentable,
   inModal = false,
   setAnswer,
   setCommentsNumber,
@@ -248,7 +248,7 @@ function CommentList({
                     {!inModal && (<br />)}
                     <i>{t('on')} {format(new Date(comment.created_at), 'dd/MM/yyyy', { locale: locales[i18n.resolvedLanguage || 'fr'] })} {t('at')} {format(new Date(comment.created_at), 'HH:mm:ss', { locale: locales[i18n.resolvedLanguage || 'fr'] })}</i>
                   </div>
-                  {!readonly && Number.parseInt(userId) === Number.parseInt(comment.user.id) && (
+                  {commentable && Number.parseInt(userId) === Number.parseInt(comment.user.id) && (
                     <div>
                       <BiEdit
                         size={22}
@@ -266,14 +266,18 @@ function CommentList({
               </NavBodyText>
             ))}
           </ScrollNav>
-          <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('addComment')}</p>
-          <EditorComment initialValue={text} updateParentText={updateParentText} />
-          {!loading && !error && (
-            <div style={{ display: 'flex', justifyContent: 'right', marginTop: '10px' }}>
-              <Button variant="primary" onClick={(e) => handleSave(e)}>
-                {t('save')}
-              </Button>
-            </div>
+          {commentable && (
+            <>
+              <p style={{ color: inModal ? 'var(--dark-blue)' : '', fontWeight: 'bold', marginTop: '30px' }}>{t('addComment')}</p>
+              <EditorComment initialValue={text} updateParentText={updateParentText} />
+              {!loading && !error && (
+                <div style={{ display: 'flex', justifyContent: 'right', marginTop: '10px' }}>
+                  <Button variant="primary" onClick={(e) => handleSave(e)}>
+                    {t('save')}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
