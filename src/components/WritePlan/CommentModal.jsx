@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next';
 import InnerModal from '../Shared/InnerModal/InnerModal';
 import CommentList from '../Shared/CommentList';
 
-function CommentModal({ shown, hide, setAnswer, answerId, researchOutputId, planId, questionId, readonly }) {
+function CommentModal({
+  shown, hide, setAnswer, answerId, researchOutputId, planId, questionId, commentable,
+}) {
   const { t } = useTranslation();
   const [commentsNumber, setCommentsNumber] = useState(0);
   const modalRef = useRef(null);
@@ -26,16 +28,16 @@ function CommentModal({ shown, hide, setAnswer, answerId, researchOutputId, plan
       </InnerModal.Header>
       <InnerModal.Body style={{ borderRadius: '0 0 10px 10px' }}>
         <CommentList
-            answerId={answerId}
-            researchOutputId={researchOutputId}
-            planId={planId}
-            questionId={questionId}
-            userId={userId}
-            readonly={readonly}
-            inModal={true}
-            setAnswer={setAnswer}
-            setCommentsNumber={setCommentsNumber}
-          />
+          answerId={answerId}
+          researchOutputId={researchOutputId}
+          planId={planId}
+          questionId={questionId}
+          userId={userId}
+          commentable={commentable}
+          inModal={true}
+          setAnswer={setAnswer}
+          setCommentsNumber={setCommentsNumber}
+        />
       </InnerModal.Body>
     </InnerModal>
   );

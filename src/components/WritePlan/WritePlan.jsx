@@ -37,6 +37,7 @@ function WritePlan({
     setLoadedSectionsData,
     researchOutputs, setResearchOutputs,
     setQuestionsWithGuidance,
+    setCommentablePlan,
   } = useContext(GlobalContext);
   const { loading, changeLoading } = useLoading();
   const [error, setError] = useState(null);
@@ -77,6 +78,7 @@ function WritePlan({
       .then((res) => {
         setDmpId(res.data.dmp_id);
         setTemplate(res.data.template);
+        setCommentablePlan(res.data.commentable);
 
         const { research_outputs } = res.data;
 

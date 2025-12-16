@@ -40,6 +40,7 @@ function Question({
     setOpenedQuestions,
     displayedResearchOutput,
     questionsWithGuidance,
+    commentablePlan,
   } = useContext(GlobalContext);
   const [questionId] = useState(question.id);
   const [answer, setAnswer] = useState(null);
@@ -311,7 +312,7 @@ function Question({
                       researchOutputId={displayedResearchOutput.id}
                       planId={planId}
                       questionId={question.id}
-                      readonly={readonly}
+                      commentable={commentablePlan}
                     />
                     {questionsWithGuidance.length > 0 && questionsWithGuidance.includes(question.id) && (<GuidanceModal
                       shown={showModals.guidance === true}

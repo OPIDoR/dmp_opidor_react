@@ -51,6 +51,7 @@ function Global({ children }) {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formSelectors, setFormSelector] = useState({});
   const [configuration, setConfiguration] = useState({});
+  const [commentablePlan, setCommentablePlan] = useState(false);
 
   /* It's setting the formData in sessionStorage. */
   // useEffect(() => {
@@ -116,6 +117,8 @@ function Global({ children }) {
         setFormSelector,
         configuration,
         setConfiguration,
+        commentablePlan,
+        setCommentablePlan,
       }}
     >
       {children}
