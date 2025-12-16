@@ -10,7 +10,7 @@ import { ExternalImport } from '../ExternalImport';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function ModalForm({
-  data, template, mainFormDataType, mainFormTopic, label, readonly, show, handleSave, handleClose,
+  data, template, mainFormDataType, mainFormTopic, label, writeable, show, handleSave, handleClose,
 }) {
   const { t } = useTranslation();
   const {
@@ -67,7 +67,7 @@ function ModalForm({
               template={template.schema}
               dataType={mainFormDataType}
               topic={mainFormTopic}
-              readonly={readonly}
+              writeable={writeable}
             />
           </form>
         </FormProvider>
@@ -76,7 +76,7 @@ function ModalForm({
         <Button onClick={handleModalClose}>
           {t('close')}
         </Button>
-        {!readonly && (
+        {writeable && (
           <Button variant="primary" type="submit" form="modal-form" disabled={!methods.formState.isDirty}>
             {t('save')}
           </Button>

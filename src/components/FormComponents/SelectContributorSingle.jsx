@@ -27,7 +27,8 @@ function SelectContributorSingle({
   dataType,
   topic,
   defaultRole = null,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -251,11 +252,11 @@ function SelectContributorSingle({
               onSelectChange={(e) => handleSelectContributor(e)}
               options={options}
               name={propName}
-              isDisabled={readonly}
+              isDisabled={writeable === false || isConst}
               placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
             />
           </div>
-          {!readonly && (
+          {writeable && (
             <div className="col-md-1">
               <ReactTooltip
                 id="select-contributor-single-add-button"
@@ -284,7 +285,7 @@ function SelectContributorSingle({
             templateToString={template?.schema?.to_string}
             tableHeader={t('selectedValue')}
             overridable={overridableRole}
-            readonly={readonly}
+            writeable={writeable}
             isRoleConst={isRoleConst}
           ></PersonsList>
         )}
@@ -297,7 +298,7 @@ function SelectContributorSingle({
             mainFormDataType={dataType}
             mainFormTopic={topic}
             label={index !== null ? t('editPersonOrOrg') : t('addPersonOrOrg')}
-            readonly={readonly}
+            writeable={writeable}
             show={show}
             handleSave={handleSave}
             handleClose={handleClose}

@@ -19,12 +19,12 @@ function GeneralInfoLayout({
   researchContext = 'research_project',
   isTest = false,
   isClassic = false,
-  readonly = false,
+  writeable = false,
 }) {
   return (
     <StrictMode>
       <Global>
-        {isClassic && !readonly && <GuidanceSelector planId={planId} context={'plan'} />}
+        {isClassic && writeable && <GuidanceSelector planId={planId} context={'plan'} />}
         <GeneralInfo
           locale={locale}
           planId={planId}
@@ -33,7 +33,7 @@ function GeneralInfoLayout({
           metaFragmentId={metaFragmentId}
           researchContext={researchContext}
           isTest={isTest}
-          readonly={readonly}
+          writeable={writeable}
           isClassic={isClassic}
         />
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />

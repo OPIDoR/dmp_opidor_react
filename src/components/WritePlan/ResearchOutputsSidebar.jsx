@@ -86,7 +86,7 @@ const AccordionItem = styled.div`
   }
 `;
 
-function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
+function ResearchOutputsSidebar({ planId, writeable, setLoading }) {
   const { t } = useTranslation();
   const {
     researchOutputs,
@@ -161,14 +161,14 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
           <SortableItem
             key={item.id}
             item={item}
-            readonly={readonly}
+            writeable={writeable}
           />
         </ResearchOutputsSidebarItem>
       ))}
     </AccordionBody>
   );
 
-  function SortableItem({ item, readonly }) {
+  function SortableItem({ item, writeable }) {
     const {
       attributes, listeners, setNodeRef, transform, transition, isDragging,
     } = useSortable({ id: item.id });
@@ -192,7 +192,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
         ].filter(Boolean).join(' ')}
       >
         {item.abbreviation.length > 20 ? `${item.abbreviation.slice(0, 17)}...` : item.abbreviation}
-        {!readonly && researchOutputs.length > 1 && (
+        {writeable && researchOutputs.length > 1 && (
           <div {...attributes} {...listeners}>
             <MdDragIndicator size='18' />
           </div>
@@ -286,7 +286,7 @@ function ResearchOutputsSidebar({ planId, readonly, setLoading }) {
                 </AccordionGroup>
               </SortableContext>
             )}
-            {!readonly && createButton}
+            {writeable && createButton}
           </AccordionGroupWrapper>
         </AccordionContainer>
       </DndContext>

@@ -13,7 +13,7 @@ import CustomButton from '../Styled/CustomButton';
 When the button is clicked, a new text input is added to the form. When the text
 input is changed, the form is updated. */
 function InputTextArray({
-  label, propName, tooltip, placeholder, readonly = false,
+  label, propName, tooltip, placeholder, writeable = false, isConst = false,
 }) {
   const { t } = useTranslation();
   const { control, register } = useFormContext();
@@ -52,11 +52,11 @@ function InputTextArray({
                 className="form-control"
                 style={{ border: '1px solid var(--dark-blue)', borderRadius: '8px', flex: 1 }}
                 placeholder={placeholder ? `${t('eg')} ${placeholder}` : null}
-                readOnly={readonly === true}
+                readOnly={writeable === false || isConst}
               />
             </div>
           </div>
-          {!readonly && (
+          {writeable && (
             <div className="col-md-1" key={`col-md-1-input-text-array-${index}`}>
               <ReactTooltip
                 id={`input-text-array-del-button-${index}`}
@@ -78,7 +78,7 @@ function InputTextArray({
         </div>
       ))}
 
-      {!readonly && (
+      {writeable && (
         <CustomButton
           handleClick={() => append('')}
           title={t('addElement')}

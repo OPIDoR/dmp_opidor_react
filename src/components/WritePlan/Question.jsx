@@ -34,7 +34,7 @@ function Question({
   questionIdx,
   sectionId,
   sectionNumber,
-  readonly,
+  writeable,
 }) {
   const {
     openedQuestions,
@@ -299,7 +299,7 @@ function Question({
                   <div>
                     {answer && (
                       <>
-                        {!readonly && scriptsData.scripts.length > 0 && (
+                        {writeable && scriptsData.scripts.length > 0 && (
                           <RunsModal
                             shown={showModals.runs === true}
                             hide={(e) => setModalOpened(e, 'runs', false)}
@@ -329,7 +329,7 @@ function Question({
                 )}
                 {isQuestionOpened ? (
                   <>
-                    {readonly && !answer?.id ? (<Badge variant="primary">{t('questionNotAnswered')}</Badge>)
+                    {writeable === false && !answer?.id ? (<Badge variant="primary">{t('questionNotAnswered')}</Badge>)
                       : (<DynamicForm
                         fragmentId={answer?.fragment_id}
                         className={question?.madmp_schema?.classname}
@@ -337,7 +337,7 @@ function Question({
                         questionId={question.id}
                         madmpSchemaId={question.madmp_schema?.id}
                         setAnswer={setAnswer}
-                        readonly={readonly}
+                        writeable={writeable}
                         formSelector={{
                           shown: showModals.formSelector === true,
                           hide: (e) => setModalOpened(e, 'formSelector', false),

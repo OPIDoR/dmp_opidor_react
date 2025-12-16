@@ -11,7 +11,7 @@ import FormBuilder from './FormBuilder';
 import { formatDefaultValues } from '../../utils/GeneratorUtils';
 
 function NestedForm({
-  propName, data, template, mainFormDataType, mainFormTopic, readonly, handleSave, handleClose,
+  propName, data, template, mainFormDataType, mainFormTopic, writeable, handleSave, handleClose,
 }) {
   const { t } = useTranslation();
   const {
@@ -63,14 +63,14 @@ function NestedForm({
               template={template.schema}
               dataType={mainFormDataType}
               topic={mainFormTopic}
-              readonly={readonly}
+              writeable={writeable}
             />
           </form>
           <div className={styles.nestedFormFooter}>
             <Button onClick={handleClose} style={{ margin: '0 5px 0 5px' }}>
               {t('cancelLabel')}
             </Button>
-            {!readonly && (
+            {writeable && (
               <Button variant="primary" type="submit" form="nested-form" style={{ margin: '0 5px 0 5px' }} disabled={!methods.formState.isDirty}>
                 {t('save')}
               </Button>

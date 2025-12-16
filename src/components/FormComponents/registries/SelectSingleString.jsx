@@ -27,7 +27,8 @@ function SelectSingleString({
   topic,
   registries = [],
   overridable = false,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -45,6 +46,7 @@ function SelectSingleString({
   const inputId = uniqueId('select_single_list_id_');
 
   useEffect(() => {
+    if (writeable === false) return;
     if (category) {
       service.getAvailableRegistries(category, dataType, topic)
         .then((res) => {
@@ -65,10 +67,11 @@ function SelectSingleString({
         setSelectedRegistry(registries[0]);
       }
     }
-  }, [category, dataType, topic, registries]);
+  }, [category, dataType, topic, registries, writeable]);
 
   useEffect(() => {
     if (!options) return;
+    if (writeable === false) return;
 
     if (field.value) {
       const selectedOpt = options.find((o) => o.value === field.value) || null;
@@ -80,7 +83,7 @@ function SelectSingleString({
     } else {
       setSelectedOption(null);
     }
-  }, [field.value, options]);
+  }, [field.value, options, writeable]);
 
   /*
   A hook that is called when the component is mounted.
@@ -145,58 +148,63 @@ function SelectSingleString({
 
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
-        <div className="row">
-          {availableRegistries && availableRegistries.length > 1 && (
-            <div data-testid="select-single-string-registry-selector" className="col-md-6">
+        {writeable && (
+          <div className="row">
+            {availableRegistries && availableRegistries.length > 1 && (
+              <div data-testid="select-single-string-registry-selector" className="col-md-6">
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <CustomSelect
+                      inputId={`${propName}-registry-selector`}
+                      onSelectChange={handleSelectRegistry}
+                      options={availableRegistries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={propName}
+                      selectedOption={
+                        selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                      }
+                      isDisabled={writeable === false || isConst}
+                      placeholder={t('selectRegistry')}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-string-div">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
-                  <CustomSelect
-                    inputId={`${propName}-registry-selector`}
-                    onSelectChange={handleSelectRegistry}
-                    options={availableRegistries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
-                    name={propName}
-                    selectedOption={
-                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
-                    }
-                    isDisabled={readonly}
-                    placeholder={t('selectRegistry')}
-                  />
+                  {options && (
+                    <CustomSelect
+                      inputId={inputId}
+                      propName={propName}
+                      onSelectChange={handleSelectRegistryValue}
+                      options={options}
+                      selectedOption={selectedOption}
+                      isDisabled={writeable === false || isConst || !selectedRegistry}
+                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                      placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'simple', t)}
+                      overridable={overridable}
+                    />
+                  )}
                 </div>
-              </div>
-            </div>
-          )}
-
-          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-string-div">
-            <div className="row">
-              <div className={`col-md-11 ${styles.select_wrapper}`}>
-                {options && (
-                  <CustomSelect
-                    inputId={inputId}
-                    propName={propName}
-                    onSelectChange={handleSelectRegistryValue}
-                    options={options}
-                    selectedOption={selectedOption}
-                    isDisabled={readonly || !selectedRegistry}
-                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'simple', t)}
-                    overridable={overridable}
-                  />
+                {selectedOption && (
+                  <div className="col-md-1">
+                    <FaXmark
+                      onClick={() => field.onChange(null)}
+                      className={styles.icon}
+                    />
+                  </div>
                 )}
               </div>
-              {!readonly && selectedOption && (
-                <div className="col-md-1">
-                  <FaXmark
-                    onClick={() => field.onChange(null)}
-                    className={styles.icon}
-                  />
-                </div>
-              )}
             </div>
           </div>
-        </div>
+        )}
+        {!writeable && (
+          <p>{field.value || t('noValueSelected')}</p>
+        )}
         {/* *************Select registry************* */}
       </div>
     </div>

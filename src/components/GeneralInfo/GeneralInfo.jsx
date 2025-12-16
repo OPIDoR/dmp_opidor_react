@@ -23,7 +23,7 @@ function GeneralInfo({
   locale = 'en_GB',
   researchContext = 'research_project',
   isTest = true,
-  readonly,
+  writeable = false,
   isClassic = false,
 }) {
   const { t, i18n } = useTranslation();
@@ -61,7 +61,7 @@ function GeneralInfo({
 
   return (
     <>
-      {!readonly && researchContext === 'research_project' && (
+      {writeable && researchContext === 'research_project' && (
         <FunderImport projectFragmentId={projectFragmentId} metaFragmentId={metaFragmentId} researchContext={researchContext} locale={locale} isClassic={isClassic} />
       )}
       <Card
@@ -95,7 +95,7 @@ function GeneralInfo({
         <Collapse in={isOpenProjectForm}>
           <div id="project-form-collapse">
             <Card.Body className={styles.card_body}>
-              {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} readonly={readonly} />}
+              {projectFragmentId && <DynamicForm fragmentId={projectFragmentId} writeable={writeable} />}
             </Card.Body>
           </div>
         </Collapse>
@@ -138,14 +138,14 @@ function GeneralInfo({
                   checked={isTestPlan}
                   onClick={() => setIsTestPlan(!isTestPlan)}
                   onChange={(e) => handleClickIsTestPlan(e)}
-                  disabled={readonly}
+                  disabled={writeable === false}
                   style={{ marginRight: '10px' }}
                 />
                 <label className="form-check-label" htmlFor="is_test">
                   {t('testPlan')}
                 </label>
               </div>
-              {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} readonly={readonly} />}
+              {metaFragmentId && <DynamicForm fragmentId={metaFragmentId} writeable={writeable} />}
             </Card.Body>
           </div>
         </Collapse>

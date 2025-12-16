@@ -16,7 +16,7 @@ import * as styles from '../assets/css/write_plan.module.css';
 import consumer from '../../cable';
 import SelectedGuidances from '../GuidanceChoice/SavedGuidances';
 
-function SectionsContent({ planId, readonly }) {
+function SectionsContent({ planId, writeable = false }) {
   const { t } = useTranslation();
   const {
     setFormData,
@@ -152,9 +152,9 @@ function SectionsContent({ planId, readonly }) {
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               handleDuplicate={handleDuplicate}
-              readonly={readonly}
+              writeable={writeable}
             />
-            {!readonly
+            {writeable
               && <GuidanceSelector planId={planId}
                 researchOutputId={displayedResearchOutput?.id}
                 topic={displayedResearchOutput?.topic}
@@ -165,7 +165,7 @@ function SectionsContent({ planId, readonly }) {
                 key={section.id}
                 planId={planId}
                 section={section}
-                readonly={readonly}
+                writeable={writeable}
               />
             ))}
           </div>

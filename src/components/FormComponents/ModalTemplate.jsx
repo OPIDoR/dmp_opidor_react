@@ -32,7 +32,7 @@ function ModalTemplate({
   tooltip,
   header,
   templateName,
-  readonly = false,
+  writeable = false,
   isConst = false,
 }) {
   const { t } = useTranslation();
@@ -157,11 +157,11 @@ function ModalTemplate({
             handleDelete={handleDelete}
             templateToString={template?.schema?.to_string}
             tableHeader={header}
-            readonly={readonly}
+            writeable={writeable}
             isConst={isConst}
           ></FragmentList>
         )}
-        {!readonly && (
+        {writeable && (
           <CustomButton
             handleClick={() => {
               setEditedFragment(null);
@@ -181,7 +181,7 @@ function ModalTemplate({
           mainFormDataType={dataType}
           mainFormTopic={topic}
           label={index !== null ? `${t('edit')} : ${label}` : `${t('add')} : ${label}`}
-          readonly={isConst ? true : readonly}
+          writeable={writeable}
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}

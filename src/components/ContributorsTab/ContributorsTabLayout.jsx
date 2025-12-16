@@ -9,11 +9,11 @@ const toastOptions = {
   duration: 5000,
 };
 
-function ContributorsTabLayout({ planId, locale, readonly }) {
+function ContributorsTabLayout({ planId, locale, writeable = false }) {
   return (
     <StrictMode>
       <Global>
-        <ContributorsTab planId={planId} locale={locale} readonly={readonly} />
+        <ContributorsTab planId={planId} locale={locale} writeable={writeable} />
         <Toaster position="bottom-right" toastOptions={toastOptions} reverseOrder={false} />
       </Global>
     </StrictMode>

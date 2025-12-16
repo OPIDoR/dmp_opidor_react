@@ -11,10 +11,9 @@ function FragmentList({
   parent = 'form',
   templateToString = [],
   tableHeader = null,
-  readonly = false,
+  writeable = false,
   isConst = false,
 }) {
-  const edit = !readonly;
   return (
     <>
       {fragmentsList && (
@@ -42,7 +41,7 @@ function FragmentList({
                   ></td>
                   <td style={{ width: '200px' }}>
                     <div className={styles.table_container}>
-                      {parent === 'form' && edit && !isConst && (
+                      {parent === 'form' && writeable && !isConst && (
                         <FaPenToSquare
                           data-testid={`fragment-list-row-edit-btn-${idx}`}
                           size={18}
@@ -50,7 +49,7 @@ function FragmentList({
                           className={styles.icon}
                         />
                       )}
-                      {(isConst || readonly) && parent === 'form' && (
+                      {(isConst || writeable === false) && parent === 'form' && (
                         <FaEye
                           data-testid={`fragment-list-row-show-btn-${idx}`}
                           size={18}
@@ -58,7 +57,7 @@ function FragmentList({
                           className={styles.icon}
                         />
                       )}
-                      {(edit || (edit && isConst)) && (
+                      {(writeable || (writeable && isConst)) && (
                         <FaXmark
                           data-testid={`fragment-list-row-delete-btn-${idx}`}
                           onClick={() => handleDelete(idx)}

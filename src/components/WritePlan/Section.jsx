@@ -6,7 +6,7 @@ import { GlobalContext } from '../context/Global';
 import * as styles from '../assets/css/write_plan.module.css';
 import Question from './Question';
 
-function Section({ planId, section, readonly }) {
+function Section({ planId, section, writeable }) {
   const { t } = useTranslation();
   const { openedQuestions, setOpenedQuestions, displayedResearchOutput } = useContext(GlobalContext);
   const [sectionId, setSectionId] = useState(section.id);
@@ -91,7 +91,7 @@ function Section({ planId, section, readonly }) {
           questionIdx={(idx + 1)}
           sectionId={sectionId}
           sectionNumber={section.number}
-          readonly={readonly}
+          writeable={writeable}
         />
       ))}
     </>

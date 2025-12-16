@@ -33,7 +33,8 @@ function SelectSingleObject({
   registries = [],
   templateName,
   overridable = false,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -55,9 +56,10 @@ function SelectSingleObject({
   const tooltipId = uniqueId('select_single_object_tooltip_id_');
   const inputId = uniqueId('select_single_object_id_');
 
-  const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
+  const ViewEditComponent = writeable ? FaPenToSquare : FaEye;
 
   useEffect(() => {
+    if(writeable === false) return;
     if (category) {
       service.getAvailableRegistries(category, dataType, topic)
         .then((res) => {
@@ -78,7 +80,7 @@ function SelectSingleObject({
         setSelectedRegistry(registries[0]);
       }
     }
-  }, [category, dataType, topic, registries]);
+  }, [category, dataType, topic, registries, writeable]);
 
   useEffect(() => {
     setSelectedValue(
@@ -97,6 +99,7 @@ function SelectSingleObject({
   */
   useEffect(() => {
     if (registries.length === 0 && availableRegistries.length === 1) return;
+    if(writeable === false) return;
 
     if (selectedRegistry) {
       if (loadedRegistries[selectedRegistry]) {
@@ -112,7 +115,7 @@ function SelectSingleObject({
           });
       }
     }
-  }, [selectedRegistry]);
+  }, [selectedRegistry, writeable]);
 
   useEffect(() => {
     if (!loadedTemplates[templateName]) {
@@ -192,68 +195,70 @@ function SelectSingleObject({
 
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select registry************** */}
-        <div className="row">
-          {availableRegistries && availableRegistries.length > 1 && (
-            <div data-testid="select-single-object-registry-selector" className="col-md-6">
+        {writeable && (
+          <div className="row">
+            {availableRegistries && availableRegistries.length > 1 && (
+              <div data-testid="select-single-object-registry-selector" className="col-md-6">
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <CustomSelect
+                      inputId={`${propName}-registry-selector`}
+                      onSelectChange={handleSelectRegistry}
+                      options={availableRegistries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={propName}
+                      selectedOption={
+                        selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                      }
+                      isDisabled={writeable === false || isConst}
+                      placeholder={t('selectRegistry')}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-object-div">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
-                  <CustomSelect
-                    inputId={`${propName}-registry-selector`}
-                    onSelectChange={handleSelectRegistry}
-                    options={availableRegistries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
-                    name={propName}
-                    selectedOption={
-                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
-                    }
-                    isDisabled={readonly}
-                    placeholder={t('selectRegistry')}
-                  />
+                  {options && (
+                    <CustomSelect
+                      inputId={inputId}
+                      onSelectChange={handleSelectRegistryValue}
+                      options={options}
+                      selectedOption={selectedOption}
+                      isDisabled={showNestedForm || writeable === false || isConst || !selectedRegistry}
+                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                      placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'complex', t)}
+                      overridable={false}
+                    />
+                  )}
                 </div>
-              </div>
-            </div>
-          )}
-
-          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-single-object-div">
-            <div className="row">
-              <div className={`col-md-11 ${styles.select_wrapper}`}>
-                {options && (
-                  <CustomSelect
-                    inputId={inputId}
-                    onSelectChange={handleSelectRegistryValue}
-                    options={options}
-                    selectedOption={selectedOption}
-                    isDisabled={showNestedForm || readonly || !selectedRegistry}
-                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(availableRegistries.length, false, overridable, 'complex', t)}
-                    overridable={false}
-                  />
+                {overridable && !showNestedForm && (
+                  <div className="col-md-1">
+                    <ReactTooltip
+                      id="select-single-list-add-button"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t('add')}
+                    />
+                    <FaPlus
+                      data-tooltip-id="select-single-list-add-button"
+                      onClick={() => {
+                        setShowNestedForm(true);
+                        setEditedFragment({ action: field.value?.id ? 'update' : 'create' });
+                      }}
+                      className={styles.icon}
+                    />
+                  </div>
                 )}
               </div>
-              {!readonly && overridable && !showNestedForm && (
-                <div className="col-md-1">
-                  <ReactTooltip
-                    id="select-single-list-add-button"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t('add')}
-                  />
-                  <FaPlus
-                    data-tooltip-id="select-single-list-add-button"
-                    onClick={() => {
-                      setShowNestedForm(true);
-                      setEditedFragment({ action: field.value?.id ? 'update' : 'create' });
-                    }}
-                    className={styles.icon}
-                  />
-                </div>
-              )}
             </div>
           </div>
-        </div>
+        )}
         <div
           id={`nested-form-${propName}`}
           className={styles.nestedForm}
@@ -266,7 +271,7 @@ function SelectSingleObject({
             template={template}
             mainFormDataType={dataType}
             mainFormTopic={topic}
-            readonly={readonly}
+            writeable={writeable}
             handleSave={handleSaveNestedForm}
             handleClose={() => {
               setShowNestedForm(false);
@@ -297,10 +302,12 @@ function SelectSingleObject({
                       }}
                       className={styles.icon}
                     />
-                    <FaXmark
-                      onClick={(e) => handleDeleteList(e)}
-                      className={styles.icon}
-                    />
+                    {writeable && (
+                      <FaXmark
+                        onClick={(e) => handleDeleteList(e)}
+                        className={styles.icon}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

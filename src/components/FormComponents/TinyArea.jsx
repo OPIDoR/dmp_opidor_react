@@ -32,7 +32,8 @@ function TinyArea({
   propName,
   tooltip,
   placeholder,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -63,7 +64,7 @@ function TinyArea({
         </div>
 
         <div style={{ marginTop: '10px' }} key={field.id} ref={editorRef}>
-          {!readonly && (
+          {writeable && (
             <Editor
               {...newField}
               onEditorChange={(newText) => onChange(newText)}
@@ -103,7 +104,7 @@ function TinyArea({
               }}
             />
           )}
-          {readonly && (
+          {(writeable === false || isConst) && (
             <ReadDiv
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize([field.value]),

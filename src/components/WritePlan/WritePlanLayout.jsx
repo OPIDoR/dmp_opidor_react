@@ -17,7 +17,7 @@ function WritePlanLayout({
   planId,
   locale = 'en_GB',
   userId,
-  readonly,
+  writeable,
 }) {
   const { t } = useTranslation();
 
@@ -29,7 +29,7 @@ function WritePlanLayout({
             planId={planId}
             locale={locale}
             userId={userId}
-            readonly={readonly}
+            writeable={writeable}
             className="research-outputs-tabs"
           />
         </Driver>

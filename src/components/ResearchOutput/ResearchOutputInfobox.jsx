@@ -10,7 +10,7 @@ import { GlobalContext } from '../context/Global';
 import { displayPersonalData } from '../../utils/GeneratorUtils';
 
 function ResearchOutputInfobox({
-  handleEdit, handleDelete, handleDuplicate, readonly,
+  handleEdit, handleDelete, handleDuplicate, writeable,
 }) {
   const { t } = useTranslation();
   const {
@@ -39,7 +39,7 @@ function ResearchOutputInfobox({
         }}>
           <strong>{displayedResearchOutput?.title}</strong>
           <span id="actions" style={{ display: 'flex', width: '100px', justifyContent: 'space-between' }}>
-            {!readonly && (
+            {writeable && (
               <>
                 <Tooltip anchorSelect="#editBtn" place="bottom">
                   {t('edit')}
@@ -57,7 +57,7 @@ function ResearchOutputInfobox({
                 </button>
               </>
             )}
-            {!readonly && (
+            {writeable && (
               <>
                 <Tooltip anchorSelect="#duplicateBtn" place="bottom">
                   {t('duplicate')}
@@ -75,7 +75,7 @@ function ResearchOutputInfobox({
                 </button>
               </>
             )}
-            {!readonly && researchOutputs.length > 0 && (
+            {writeable && researchOutputs.length > 0 && (
               <>
                 <Tooltip anchorSelect="#deleteBtn" place="bottom">
                   {t('delete')}

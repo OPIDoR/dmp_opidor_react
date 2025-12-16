@@ -35,7 +35,7 @@ function SelectMultipleObject({
   topic,
   registries = [],
   overridable = false,
-  readonly = false,
+  writeable = false,
   isConst = false,
 }) {
   const { t } = useTranslation();
@@ -60,6 +60,7 @@ function SelectMultipleObject({
   const filteredFragmentList = fields.filter((el) => el.action !== 'delete');
 
   useEffect(() => {
+    if(writeable === false) return;
     if (category) {
       service.getAvailableRegistries(category, dataType, topic)
         .then((res) => {
@@ -80,7 +81,7 @@ function SelectMultipleObject({
         setSelectedRegistry(registries[0]);
       }
     }
-  }, [category, dataType, topic, registries]);
+  }, [category, dataType, topic, registries, writeable]);
 
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
@@ -100,6 +101,7 @@ function SelectMultipleObject({
   /* A hook that is called when the component is mounted.
   It is used to set the options of the select list. */
   useEffect(() => {
+    if(writeable === false) return;
     if (registries.length === 0 && availableRegistries.length === 1) return;
 
     if (selectedRegistry) {
@@ -116,7 +118,7 @@ function SelectMultipleObject({
           });
       }
     }
-  }, [selectedRegistry]);
+  }, [selectedRegistry, writeable]);
 
   const handleClose = () => {
     setShow(false);
@@ -222,68 +224,70 @@ function SelectMultipleObject({
         </div>
         <span className={styles.errorMessage}>{error}</span>
         {/* ************Select ref************** */}
-        <div className="row">
-          {availableRegistries && availableRegistries.length > 1 && (
-            <div data-testid="select-multiple-object-registry-selector" className="col-md-6">
+        {writeable && (
+          <div className="row">
+            {availableRegistries && availableRegistries.length > 1 && (
+              <div data-testid="select-multiple-object-registry-selector" className="col-md-6">
+                <div className="row">
+                  <div className={`col-md-11 ${styles.select_wrapper}`}>
+                    <CustomSelect
+                      inputId={`${propName}-registry-selector`}
+                      onSelectChange={handleSelectRegistry}
+                      options={availableRegistries.map((registry) => ({
+                        value: registry,
+                        label: registry,
+                      }))}
+                      name={propName}
+                      selectedOption={
+                        selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
+                      }
+                      isDisabled={writeable === false || isConst}
+                      placeholder={t('selectRegistry')}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-multiple-object-div">
               <div className="row">
                 <div className={`col-md-11 ${styles.select_wrapper}`}>
-                  <CustomSelect
-                    inputId={`${propName}-registry-selector`}
-                    onSelectChange={handleSelectRegistry}
-                    options={availableRegistries.map((registry) => ({
-                      value: registry,
-                      label: registry,
-                    }))}
-                    name={propName}
-                    selectedOption={
-                      selectedRegistry ? { value: selectedRegistry, label: selectedRegistry } : null
-                    }
-                    isDisabled={readonly}
-                    placeholder={t('selectRegistry')}
-                  />
+                  {options && (
+                    <CustomSelect
+                      inputId={inputId}
+                      onSelectChange={handleSelectRegistryValue}
+                      options={options}
+                      name={propName}
+                      isDisabled={writeable === false || isConst || !selectedRegistry}
+                      async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
+                      placeholder={createRegistryPlaceholder(availableRegistries.length, true, overridable, 'complex', t)}
+                      overridable={false}
+                    />
+                  )}
                 </div>
-              </div>
-            </div>
-          )}
-
-          <div className={availableRegistries && availableRegistries.length > 1 ? 'col-md-6' : 'col-md-12'} data-testid="select-multiple-object-div">
-            <div className="row">
-              <div className={`col-md-11 ${styles.select_wrapper}`}>
-                {options && (
-                  <CustomSelect
-                    inputId={inputId}
-                    onSelectChange={handleSelectRegistryValue}
-                    options={options}
-                    name={propName}
-                    isDisabled={readonly || !selectedRegistry}
-                    async={options.length > ASYNC_SELECT_OPTION_THRESHOLD}
-                    placeholder={createRegistryPlaceholder(availableRegistries.length, true, overridable, 'complex', t)}
-                    overridable={false}
-                  />
+                {overridable && (
+                  <div className="col-md-1">
+                    <ReactTooltip
+                      id="select-with-create-add-button"
+                      place="bottom"
+                      effect="solid"
+                      variant="info"
+                      content={t('add')}
+                    />
+                    <FaPlus
+                      data-tooltip-id="select-with-create-add-button"
+                      onClick={() => {
+                        setShow(true);
+                        setIndex(null);
+                      }}
+                      className={styles.icon}
+                    />
+                  </div>
                 )}
               </div>
-              {!readonly && overridable && (
-                <div className="col-md-1">
-                  <ReactTooltip
-                    id="select-with-create-add-button"
-                    place="bottom"
-                    effect="solid"
-                    variant="info"
-                    content={t('add')}
-                  />
-                  <FaPlus
-                    data-tooltip-id="select-with-create-add-button"
-                    onClick={() => {
-                      setShow(true);
-                      setIndex(null);
-                    }}
-                    className={styles.icon}
-                  />
-                </div>
-              )}
             </div>
           </div>
-        </div>
+        )}
         <span className={styles.errorMessage}>{error}</span>
         {template && filteredFragmentList.length > 0 && (
           <FragmentList
@@ -292,7 +296,7 @@ function SelectMultipleObject({
             handleDelete={handleDelete}
             templateToString={template?.schema?.to_string}
             tableHeader={header}
-            readonly={readonly}
+            writeable={writeable}
             isConst={isConst}
           />
         )}
@@ -305,7 +309,7 @@ function SelectMultipleObject({
           mainFormDataType={dataType}
           mainFormTopic={topic}
           label={index !== null ? `${t('edit')} : ${label}` : `${t('add')} : ${label}`}
-          readonly={readonly}
+          writeable={writeable}
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}

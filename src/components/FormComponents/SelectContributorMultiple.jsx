@@ -28,7 +28,8 @@ function SelectContributorMultiple({
   dataType,
   topic,
   defaultRole = null,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -247,11 +248,11 @@ function SelectContributorMultiple({
               onSelectChange={handleSelectContributor}
               options={options}
               name={propName}
-              isDisabled={readonly}
+              isDisabled={writeable === false || isConst}
               placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
             />
           </div>
-          {!readonly && (
+          {writeable && (
             <div className="col-md-1">
               <ReactTooltip
                 id="select-contributor-multiple-add-button"
@@ -280,7 +281,7 @@ function SelectContributorMultiple({
             templateToString={template?.schema?.to_string}
             tableHeader={header}
             overridable={overridableRole}
-            readonly={readonly}
+            writeable={writeable}
             isRoleConst={isRoleConst}
           ></PersonsList>
         )}
@@ -293,7 +294,7 @@ function SelectContributorMultiple({
             mainFormDataType={dataType}
             mainFormTopic={topic}
             label={index !== null ? t('editPersonOrOrg') : t('addPersonOrOrg')}
-            readonly={readonly}
+            writeable={writeable}
             show={show}
             handleSave={handleSave}
             handleClose={handleClose}

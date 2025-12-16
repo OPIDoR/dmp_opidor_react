@@ -267,5 +267,6 @@
   "researchEntity": "Entité de recherche",
   "researchProject": "Projet de recherche",
   "availableGuidances": "Recommandations disponibles",
-  "selectedGuidances": "Recommandations sélectionnées"
+  "selectedGuidances": "Recommandations sélectionnées",
+  "noValueSelected": "Aucune valeur sélectionnée"
 }

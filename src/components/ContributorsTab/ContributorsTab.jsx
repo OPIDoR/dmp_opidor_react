@@ -12,7 +12,7 @@ import CustomSpinner from '../Shared/CustomSpinner';
 import * as styles from '../assets/css/form.module.css';
 import { checkFragmentExists } from '../../utils/JsonFragmentsUtils';
 
-function ContributorsTab({ planId, locale, readonly }) {
+function ContributorsTab({ planId, locale, writeable }) {
   const { t, i18n } = useTranslation();
   const {
     setLocale,
@@ -113,7 +113,7 @@ function ContributorsTab({ planId, locale, readonly }) {
         template={template}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
-        readonly={readonly}
+        writeable={writeable}
       />
       {template && show && (
         <ModalForm
@@ -123,12 +123,12 @@ function ContributorsTab({ planId, locale, readonly }) {
           mainFormDataType={'none'}
           mainFormTopic={'generic'}
           label={t('editPersonOrOrg')}
-          readonly={readonly}
+          writeable={writeable}
           show={show}
           handleSave={handleSave}
           handleClose={handleClose}
         />)}
-      {!readonly && (
+      {writeable && (
         <CustomButton
           handleClick={() => {
             setShow(true);

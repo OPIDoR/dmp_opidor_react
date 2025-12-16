@@ -19,7 +19,8 @@ function InputText({
   propName,
   tooltip,
   hidden = false,
-  readonly = false,
+  writeable = false,
+  isConst = false,
   min,
 }) {
   const { t } = useTranslation();
@@ -58,8 +59,8 @@ function InputText({
         type={hidden ? 'hidden' : type}
         className={isRequired ? `form-control ${styles.input_text} ${styles.outline_red}` : `form-control ${styles.input_text}`}
         placeholder={placeholder ? `${t('eg')} ${placeholder}` : null}
-        readOnly={readonly === true}
-        disabled={readonly === true}
+        readOnly={writeable === false || isConst}
+        disabled={writeable === false || isConst}
         min={min}
       />
     </div>

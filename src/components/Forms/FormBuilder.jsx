@@ -15,7 +15,7 @@ import SubForm from '../FormComponents/SubForm.jsx';
 import { createFormLabel } from '../../utils/GeneratorUtils.js';
 
 function FormBuilder({
-  template, dataType, topic, readonly,
+  template, dataType, topic, writeable
 }) {
   const { locale } = useContext(GlobalContext);
   if (!template) return false;
@@ -53,7 +53,8 @@ function FormBuilder({
               registries={registries}
               templateName={prop.template_name}
               overridable={prop.overridable}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
             ></SelectSingleObject>,
           );
           continue;
@@ -74,7 +75,7 @@ function FormBuilder({
               topic={topic}
               registries={registries}
               overridable={prop.overridable}
-              readonly={readonly}
+              writeable={writeable}
               isConst={isConst}
             ></SelectMultipleObject>,
           );
@@ -93,7 +94,8 @@ function FormBuilder({
               topic={topic}
               registries={registries}
               overridable={prop.overridable}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
             ></SelectSingleString>,
           );
           continue;
@@ -111,7 +113,8 @@ function FormBuilder({
               topic={topic}
               registries={registries}
               overridable={prop.overridable}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
             ></SelectMultipleString>,
           );
           continue;
@@ -134,7 +137,8 @@ function FormBuilder({
             dataType={dataType}
             topic={topic}
             defaultRole={defaultRole}
-            readonly={readonly || isConst}
+            writeable={writeable}
+            isConst={isConst}
           ></SelectContributorSingle>,
         );
         continue;
@@ -149,7 +153,8 @@ function FormBuilder({
             templateName={prop.template_name}
             dataType={dataType}
             topic={topic}
-            readonly={readonly || isConst}
+            writeable={writeable}
+            isConst={isConst}
           />,
         );
         continue;
@@ -172,7 +177,8 @@ function FormBuilder({
               dataType={dataType}
               topic={topic}
               defaultRole={defaultRole}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
             ></SelectContributorMultiple>,
           );
         } else {
@@ -188,7 +194,7 @@ function FormBuilder({
               tooltip={tooltip}
               header={prop[`table_header@${locale}`]}
               templateName={prop.items.template_name}
-              readonly={readonly}
+              writeable={writeable}
               isConst={isConst}
             ></ModalTemplate>,
           );
@@ -207,7 +213,8 @@ function FormBuilder({
             propName={key}
             tooltip={tooltip}
             placeholder={example}
-            readonly={readonly || isConst}
+            writeable={writeable}
+            isConst={isConst}
           ></InputTextArray>,
         );
         continue;
@@ -227,7 +234,8 @@ function FormBuilder({
               propName={key}
               tooltip={tooltip}
               placeholder={example}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
             ></TinyArea>,
           );
           continue;
@@ -242,7 +250,8 @@ function FormBuilder({
               propName={key}
               tooltip={tooltip}
               hidden={prop.hidden}
-              readonly={readonly || isConst}
+              writeable={writeable}
+              isConst={isConst}
               min={prop.type === 'number' ? 0 : undefined}
             ></InputText>,
           );

@@ -20,7 +20,7 @@ function WritePlan({
   locale = 'en_GB',
   planId,
   userId,
-  readonly,
+  writeable = false,
 }) {
   const { t, i18n } = useTranslation();
   const {
@@ -105,12 +105,12 @@ function WritePlan({
             <>
               <PlanInformations template={template} />
               <div className={styles.section}>
-                <ResearchOutputsSidebar planId={planId} readonly={readonly} setLoading={changeLoading} />
+                <ResearchOutputsSidebar planId={planId} writeable={writeable} setLoading={changeLoading} />
                 <div className={styles.main}>
                   {planId && (
                     <SectionsContent
                       planId={planId}
-                      readonly={readonly}
+                      writeable={writeable}
                     />
                   )}
                 </div>
@@ -121,7 +121,7 @@ function WritePlan({
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Card style={{ width: '800px' }}>
                 <Card.Body>
-                  {readonly
+                  {writeable === false
                     ? <h2 style={{ textAlign: 'center' }}>{t('planDoesNotYetIncludeAnyResearchOutput')}</h2>
                     : <h2 style={{ textAlign: 'center' }} data-tooltip-id={tooltipedLabelId}>
                       <Trans
@@ -143,7 +143,7 @@ function WritePlan({
                       />
                     </h2>
                   }
-                  {!readonly
+                  {writeable
                     && <div style={{ justifyContent: 'center', alignItems: 'center', left: 0 }}>
                       <ResearchOutputForm planId={planId} handleClose={() => { }} edit={false} />
                     </div>

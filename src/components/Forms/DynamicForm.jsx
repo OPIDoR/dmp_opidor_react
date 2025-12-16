@@ -24,7 +24,7 @@ function DynamicForm({
   madmpSchemaId = null,
   setAnswer = null,
   formSelector = {},
-  readonly,
+  writeable,
 }) {
   const { t } = useTranslation();
   const {
@@ -170,8 +170,8 @@ function DynamicForm({
       {error && <p>error</p>}
       {!error && template && (
         <>
-          {!readonly && Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} locale={locale} />}
-          {!readonly && !fragmentId && template.topics.includes('generic') && <FormSelector
+          {writeable&& Object.keys(externalImports)?.length > 0 && <ExternalImport fragment={methods} setFragment={setValues} externalImports={externalImports} locale={locale} />}
+          {writeable && !fragmentId && template.topics.includes('generic') && <FormSelector
             classname={className}
             dataType={dataType}
             topic={topic}
@@ -187,10 +187,10 @@ function DynamicForm({
                   template={template.schema}
                   dataType={dataType}
                   topic={topic}
-                  readonly={readonly}
+                  writeable={writeable}
                 />
               </div>
-              {!readonly && <CustomButton handleClick={null} title={t('save')} buttonType="submit" position="center" sticky={true} />}
+              {writeable && <CustomButton handleClick={null} title={t('save')} buttonType="submit" position="center" sticky={true} />}
             </form>
           </FormProvider>
         </>

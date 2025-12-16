@@ -18,7 +18,7 @@ function PersonsList({
   templateToString = [],
   tableHeader = null,
   overridable = false,
-  readonly = false,
+  writeable = false,
   isRoleConst = false,
 }) {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ function PersonsList({
                 <td style={{ width: '50%' }} data-testid={`persons-list-row-value-${idx}`}>
                   <div className={styles.cell_content}>
                     <div>{parsePattern(el.person, templateToString.length > 0 ? templateToString : ['$.lastName', ' ', '$.firstName'])} </div>
-                    {!readonly && (
+                    {writeable && (
                       <div className={styles.table_container}>
                         {parent === 'form' && (
                           <>
@@ -86,7 +86,7 @@ function PersonsList({
                       options={roleOptions}
                       selectedOption={{ label: el.role || defaultRole, value: el.role || defaultRole }}
                       name="role"
-                      isDisabled={readonly}
+                      isDisabled={writeable === false}
                       overridable={overridable}
                     />
                   )}

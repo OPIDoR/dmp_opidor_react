@@ -23,7 +23,8 @@ function SubForm({
   templateName,
   dataType,
   topic,
-  readonly = false,
+  writeable = false,
+  isConst = false,
 }) {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -37,7 +38,7 @@ function SubForm({
   const [template, setTemplate] = useState({});
 
   const tooltipId = uniqueId('sub_form_tooltip_id_');
-  const ViewEditComponent = readonly ? FaEye : FaPenToSquare;
+  const ViewEditComponent = writeable ? FaPenToSquare : FaEye;
 
   useEffect(() => {
     setEditedFragment(field.value || {});
@@ -110,7 +111,7 @@ function SubForm({
             propName={propName}
             data={editedFragment}
             template={template}
-            readonly={readonly}
+            writeable={writeable}
             mainFormDataType={dataType}
             mainFormTopic={topic}
             handleSave={handleSaveNestedForm}
@@ -143,10 +144,12 @@ function SubForm({
                       }}
                       className={styles.icon}
                     />
-                    <FaXmark
-                      onClick={(e) => handleDeleteList(e)}
-                      className={styles.icon}
-                    />
+                    {writeable && (
+                      <FaXmark
+                        onClick={(e) => handleDeleteList(e)}
+                        className={styles.icon}
+                      />
+                    )}
                   </td>
                 </tr>
               ))}
@@ -154,7 +157,7 @@ function SubForm({
           </table>
         )}
 
-        {!readonly && fragmentEmpty(editedFragment) && (
+        {writeable && !isConst && fragmentEmpty(editedFragment) && (
           <CustomButton
             handleClick={() => {
               setEditedFragment(null);

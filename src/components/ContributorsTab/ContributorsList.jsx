@@ -9,7 +9,7 @@ import { isValidHttpUrl } from '../../utils/utils';
 import * as styles from '../assets/css/form.module.css';
 
 function ContributorsList({
-  contributors, template, handleEdit, handleDelete, readonly = false,
+  contributors, template, handleEdit, handleDelete, writeable
 }) {
   const { t } = useTranslation();
   const pageSize = 10;
@@ -61,7 +61,7 @@ function ContributorsList({
                 </ul>
               </td>
               <td>
-                {!readonly && (
+                {writeable && (
                   <>
                     <ReactTooltip
                       id="contributor-edit-button"
