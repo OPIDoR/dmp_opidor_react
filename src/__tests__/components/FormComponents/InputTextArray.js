@@ -87,7 +87,7 @@ describe('InputTextArray component', () => {
   });
 
   test('component rendering as readonly', async () => {
-    const inputTextArrayReadonlyProps = { ...inputTextArrayProps, readonly: true };
+    const inputTextArrayReadonlyProps = { ...inputTextArrayProps, writeable: false };
     render(
       <Wrapper propName={inputTextArrayReadonlyProps.propName} data={['myText1']}>
         <InputTextArray {...inputTextArrayReadonlyProps} />

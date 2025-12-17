@@ -73,7 +73,7 @@ describe('FragmentList component', () => {
   });
 
   test('component should render as readonly', async () => {
-    const readonlyFragmentListProps = { ...fragmentListProps, readonly: true };
+    const readonlyFragmentListProps = { ...fragmentListProps, writeable: false };
     render(<FragmentList {...readonlyFragmentListProps} />);
 
     expect(screen.queryByTestId(/fragment-list-row-delete-btn-[0-9]+/i)).not.toBeInTheDocument();

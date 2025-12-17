@@ -16,7 +16,7 @@ const props = {
   questionIdx: 0,
   sectionId: 1,
   sectionNumber: 1,
-  readonly: false,
+  writeable: false,
 };
 
 describe('Question component', () => {
