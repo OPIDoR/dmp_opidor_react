@@ -27,7 +27,7 @@ function FormBuilder({
   // retun est code html
   if (template.type === 'object') {
     for (const [key, prop] of Object.entries(properties)) {
-      const formLabel = createFormLabel(prop, locale);
+      const formLabel = createFormLabel(prop, locale, writeable);
       const tooltip = prop[`tooltip@${locale}`];
       const isConst = prop.isConst;
       const example = prop[`example@${locale}`];

@@ -20,7 +20,7 @@ function InputTextArray({
   const { fields, append, remove } = useFieldArray({ control, name: propName, keyName: '_id' });
   const inputTextTooltipId = uniqueId('input_text_dynamicaly_tooltip_id_');
   return (
-    <div>
+    <div className="form-group">
       <div className={styles.label_form}>
         <label data-testid="input-text-array-label" data-tooltip-id={inputTextTooltipId}>
           {label}

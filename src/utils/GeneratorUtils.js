@@ -74,8 +74,12 @@ export function createRegistryPlaceholder(registriesLength, multipleRegistry, ov
  * @param locale : the locale of the form
  * @returns if it exists a label in the form language
  */
-export function createFormLabel(property, locale) {
-  return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined';
+export function createFormLabel(property, locale, writeable) {
+  if (writeable) {
+    return property[`form_label@${locale}`] || property[`label@${locale}`] || 'No label defined';
+  } else {
+    return property[`label@${locale}`] || 'No label defined';
+  }
 }
 
 /**

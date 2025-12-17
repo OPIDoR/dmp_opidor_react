@@ -60,13 +60,14 @@ function SelectContributorMultiple({
   }, [roleCategory, isRoleConst]);
 
   useEffect(() => {
+    if (writeable === false) return;
     if (persons.length > 0) {
       setOptions(createPersonsOptions(persons));
     } else {
       fetchPersons();
       setOptions(null);
     }
-  }, [persons]);
+  }, [persons, writeable]);
 
   const fetchPersons = () => {
     service.getPersons(dmpId).then((res) => {
@@ -242,17 +243,17 @@ function SelectContributorMultiple({
             )
           }
         </div>
-        <div className="row">
-          <div className={`col-md-11 ${styles.select_wrapper}`}>
-            <CustomSelect
-              onSelectChange={handleSelectContributor}
-              options={options}
-              name={propName}
-              isDisabled={writeable === false || isConst}
-              placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
-            />
-          </div>
-          {writeable && (
+        {writeable && (
+          <div className="row">
+            <div className={`col-md-11 ${styles.select_wrapper}`}>
+              <CustomSelect
+                onSelectChange={handleSelectContributor}
+                options={options}
+                name={propName}
+                isDisabled={writeable === false || isConst}
+                placeholder={createRegistryPlaceholder(1, false, true, 'complex', t)}
+              />
+            </div>
             <div className="col-md-1">
               <ReactTooltip
                 id="select-contributor-multiple-add-button"
@@ -267,8 +268,8 @@ function SelectContributorMultiple({
                 className={styles.icon}
               />
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <span className={styles.errorMessage}>{error}</span>
         {template && fields.length > 0 && (
           <PersonsList

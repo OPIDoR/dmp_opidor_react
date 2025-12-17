@@ -288,7 +288,6 @@ function SelectMultipleObject({
             </div>
           </div>
         )}
-        <span className={styles.errorMessage}>{error}</span>
         {template && filteredFragmentList.length > 0 && (
           <FragmentList
             fragmentsList={fields}
