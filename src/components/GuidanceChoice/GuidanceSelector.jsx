@@ -41,7 +41,6 @@ function GuidanceSelector({
   const [guidancesData, setGuidancesData] = useState([]);
   const [filteredGuidancesData, setFilteredGuidancesData] = useState([]);
   const [selectedOrg, setSelectedOrg] = useState(null);
-  const [includeTopic, setIncludeTopic] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -73,15 +72,12 @@ function GuidanceSelector({
     if (guidancesData.length === 0) return;
     let filtered = [...guidancesData];
     if (context === 'research_output') {
-      if (includeTopic) {
-        filtered = filtered.filter((org) => org.guidance_groups.find((gg) => gg.topics.includes(topic)));
-      }
       if (selectedOrg !== null) {
         filtered = filtered.filter((group) => group.name === selectedOrg);
       }
     }
     setFilteredGuidancesData(filtered);
-  }, [guidancesData, selectedOrg, includeTopic]);
+  }, [guidancesData, selectedOrg]);
 
   const formatSelectedGuidances = (guidanceData, action) => guidanceData.flatMap((org) => org.guidance_groups
     .filter((group) => {
@@ -135,7 +131,6 @@ function GuidanceSelector({
       behavior: 'smooth',
     });
     setSelectedOrg(null);
-    setIncludeTopic(false);
 
     toast.success(t('registrationSuccess'));
   };
@@ -144,10 +139,6 @@ function GuidanceSelector({
 
   const shouldGuidanceGroupDisplay = (guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
-
-    if (includeTopic) {
-      return guidanceGroup.topics.includes(topic);
-    }
     return true;
   };
 
@@ -241,12 +232,6 @@ function GuidanceSelector({
                       onClick={() => setSelectedOrg(null)}
                       className={formStyles.icon}
                     />
-                  </div>
-                  <div className="col-md-3" style={{ alignContent: 'center' }}>
-                    {t('includeTopic')} ({topic})
-                  </div>
-                  <div className="col-md-1" style={{ alignContent: 'center' }}>
-                    <input type="checkbox" onChange={() => setIncludeTopic(!includeTopic)} checked={includeTopic} />
                   </div>
                 </div>
               )}
