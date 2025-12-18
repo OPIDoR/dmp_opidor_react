@@ -104,10 +104,6 @@ function GuidanceSelector({
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
   const handleSaveChoice = async () => {
-    if (selectedGuidancesIds.length <= 0) {
-      return toast.error(t('selectAtLeastOne'));
-    }
-
     let response;
     try {
       const postGuidanceGroups = context === 'plan'
@@ -310,7 +306,7 @@ function GuidanceSelector({
                       title={
                         limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t('save')
                       }
-                      buttonColor={selectedGuidancesIds.length > 0 ? 'rust' : 'blue'}
+                      buttonColor='rust'
                       position="start"
                       handleClick={limitHasBeenReached() ? null : handleSaveChoice}
                       disabled={limitHasBeenReached()}

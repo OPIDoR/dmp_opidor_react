@@ -83,7 +83,6 @@
   "selectedValue": "Valeur sélectionnée",
   "selectGuidance": "Cliquez ici pour sélectionner les recommandations",
   "saveSuccess": "L'enregistrement a été effectué avec succès !",
-  "selectAtLeastOne": "Veuillez sélectionner au moins une recommandation",
   "guidanceListInfo": "Vous trouverez ci-dessous la liste des organismes proposant des recommandations et des conseils pour vous guider dans la rédaction de votre plan tout en respectant leur politique de gestion de données.<br /><bold>Vous avez la possibilité de sélectionner 6 organismes au maximum</bold>. Puis cliquez pour enregistrer votre sélection.",
   "loading": "Chargement ...",
   "edit": "Modifier",
