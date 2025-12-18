@@ -70,10 +70,8 @@ function GuidanceSelector({
   useEffect(() => {
     if (guidancesData.length === 0) return;
     let filtered = [...guidancesData];
-    if (context === 'research_output') {
-      if (selectedOrg !== null) {
-        filtered = filtered.filter((group) => group.name === selectedOrg);
-      }
+    if (selectedOrg !== null) {
+      filtered = filtered.filter((group) => group.name === selectedOrg);
     }
     setFilteredGuidancesData(filtered);
   }, [guidancesData, selectedOrg]);
@@ -208,7 +206,7 @@ function GuidanceSelector({
                   components={{ br: <br />, bold: <strong /> }}
                 />
               </div>
-              {!loading && !error && guidancesData && context === 'research_output' && (
+              {!loading && !error && guidancesData && (
                 <div className="row" style={{ padding: '10px' }}>
                   <div className="col-md-12" style={{ padding: '10px 0', color: 'var(--rust)' }}>
                     {t('filterAvailableGuidances')}
