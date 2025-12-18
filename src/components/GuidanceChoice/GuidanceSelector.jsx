@@ -237,12 +237,10 @@ function GuidanceSelector({
               {loading && <CustomSpinner />}
               {!loading && error && <CustomError error={error} />}
               {!loading && !error && (
-                <Row ref={guidancesRef} style={{
-                  marginTop: '20px', maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray',
-                }}>
+                <Row ref={guidancesRef}>
                   <Card className="available-guidances" style={{ flex: '1', marginRight: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('availableGuidances')}</Card.Title>
-                    <Card.Body>
+                    <Card.Body style={{ maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray', borderTop: '1px solid lightgray' }}>
                       {filteredGuidancesData.length > 0
                         ? filteredGuidancesData.map((org, index) => (
                           org.guidance_groups.length > 1 ? (
@@ -272,7 +270,7 @@ function GuidanceSelector({
                   </Card>
                   <Card className="selected-guidances" style={{ flex: '1', marginLeft: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('selectedGuidances')}</Card.Title>
-                    <Card.Body>
+                    <Card.Body style={{ borderTop: '1px solid lightgray' }}>
                       {guidancesData.length > 0
                         ? guidancesData.map((org, index) => (
                           org.guidance_groups.length > 1 ? (
