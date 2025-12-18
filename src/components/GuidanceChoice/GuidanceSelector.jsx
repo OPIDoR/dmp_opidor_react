@@ -4,6 +4,7 @@ import React, {
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
+import FormControl from 'react-bootstrap/FormControl';
 import Row from 'react-bootstrap/Row';
 import { FaXmark } from 'react-icons/fa6';
 import { TfiAngleDown, TfiAngleUp } from 'react-icons/tfi';
@@ -13,13 +14,14 @@ import toast from 'react-hot-toast';
 import { GUIDANCES_GROUPS_LIMIT } from '../../config.js';
 import { GlobalContext } from '../context/Global.jsx';
 import { guidances } from '../../services/index.js';
-import { CustomSpinner, CustomError, CustomSelect } from '../Shared/index.jsx';
+import { CustomSpinner, CustomError } from '../Shared/index.jsx';
 import CustomButton from '../Styled/CustomButton.jsx';
 import GuidanceGroupItem from './GuidanceGroupItem.jsx';
 import OrgWithGuidanceGroups from './OrgWithGuidanceGroups.jsx';
 
 import * as guidanceChoiceStyles from '../assets/css/guidance_choice.module.css';
 import * as formStyles from '../assets/css/form.module.css';
+import debounce from 'lodash.debounce';
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
@@ -38,12 +40,12 @@ function GuidanceSelector({
     savedGuidances, setSavedGuidances,
   } = useContext(GlobalContext);
   const [guidancesData, setGuidancesData] = useState([]);
-  const [filteredGuidancesData, setFilteredGuidancesData] = useState([]);
-  const [selectedOrg, setSelectedOrg] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedGuidancesIds, setSelectedGuidancesIds] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState('');
+  const [debouncedCriteria, setDebouncedCriteria] = useState(''); // valeur filtrante (debounced)
   const guidancesRef = useRef(null);
 
   const savedGuidancesIds = savedGuidances.map((g) => g.id);
@@ -67,14 +69,21 @@ function GuidanceSelector({
       .finally(() => setLoading(false));
   }, [planId, researchOutputId]);
 
+  // Apply debounce whenever searchCriteria changes
   useEffect(() => {
-    if (guidancesData.length === 0) return;
-    let filtered = [...guidancesData];
-    if (selectedOrg !== null) {
-      filtered = filtered.filter((group) => group.name === selectedOrg);
-    }
-    setFilteredGuidancesData(filtered);
-  }, [guidancesData, selectedOrg]);
+    // Create a debounced function that updates debouncedCriteria
+    const handler = debounce(() => {
+      setDebouncedCriteria(searchCriteria.toLowerCase());
+    }, 500);
+
+    // Call the debounced function
+    handler();
+
+    // Cleanup: cancel pending debounce when component unmounts or searchCriteria changes
+    return () => {
+      handler.cancel();
+    };
+  }, [searchCriteria]);
 
   const formatSelectedGuidances = (guidanceData, action) => guidanceData.flatMap((org) => org.guidance_groups
     .filter((group) => {
@@ -123,7 +132,6 @@ function GuidanceSelector({
       top: 0,
       behavior: 'smooth',
     });
-    setSelectedOrg(null);
 
     toast.success(t('registrationSuccess'));
   };
@@ -132,8 +140,10 @@ function GuidanceSelector({
 
   const shouldGuidanceGroupDisplay = (guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
+    if (debouncedCriteria && !guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return false;
     return true;
   };
+
 
   if (guidancesData?.length === 0) {
     return (
@@ -212,17 +222,14 @@ function GuidanceSelector({
                     {t('filterAvailableGuidances')}
                   </div>
                   <div className={`col-md-7 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
-                    <CustomSelect
-                      onSelectChange={(o) => setSelectedOrg(o.value)}
-                      options={guidancesData.map((group) => ({ label: group.name, value: group.name }))}
-                      selectedOption={selectedOrg ? { label: selectedOrg, value: selectedOrg } : null}
-                      name="guidanceOrg"
-                      placeholder={t('selectAnOrganisation')}
-                    />
+                    <FormControl
+                      type="text" name="guidanceSearch" placeholder={t('selectAnOrganisation')}
+                      value={searchCriteria}
+                      onChange={(e) => setSearchCriteria(e.target.value)} />
                   </div>
                   <div className="col-md-1" style={{ alignContent: 'center' }}>
                     <FaXmark
-                      onClick={() => setSelectedOrg(null)}
+                      onClick={() => setSearchCriteria('')}
                       className={formStyles.icon}
                     />
                   </div>
@@ -235,8 +242,8 @@ function GuidanceSelector({
                   <Card className="available-guidances" style={{ flex: '1', marginRight: '5px' }}>
                     <Card.Title className={guidanceChoiceStyles.card_title}>{t('availableGuidances')}</Card.Title>
                     <Card.Body style={{ maxHeight: '500px', overflow: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'var(--rust) lightgray', borderTop: '1px solid lightgray' }}>
-                      {filteredGuidancesData.length > 0
-                        ? filteredGuidancesData.map((org, index) => (
+                      {guidancesData.length > 0
+                        ? guidancesData.map((org, index) => (
                           org.guidance_groups.length > 1 ? (
                             <OrgWithGuidanceGroups
                               key={index}
