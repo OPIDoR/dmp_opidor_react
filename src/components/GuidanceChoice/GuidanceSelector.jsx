@@ -303,19 +303,28 @@ function GuidanceSelector({
                 </Row>
               )}
 
-              <Row style={{ width: '50%', float: 'right', padding: '5px' }}>
+              <div style={{ width: '50%', float: 'right', padding: '5px', display: 'flex', justifyContent: 'space-between' }}>
                 {!loading && !error && guidancesData && (
-                  <CustomButton
-                    title={
-                      limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t('save')
-                    }
-                    buttonColor={selectedGuidancesIds.length > 0 ? 'rust' : 'blue'}
-                    position="start"
-                    handleClick={limitHasBeenReached() ? null : handleSaveChoice}
-                    disabled={limitHasBeenReached()}
-                  />
+                  <>
+                    <CustomButton
+                      title={
+                        limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t('save')
+                      }
+                      buttonColor={selectedGuidancesIds.length > 0 ? 'rust' : 'blue'}
+                      position="start"
+                      handleClick={limitHasBeenReached() ? null : handleSaveChoice}
+                      disabled={limitHasBeenReached()}
+                    />
+                    <CustomButton
+                      title={t('reinit')}
+                      buttonColor='blue'
+                      position="end"
+                      handleClick={() => setSelectedGuidancesIds(savedGuidancesIds)}
+                      disabled={JSON.stringify(savedGuidancesIds.sort()) === JSON.stringify(selectedGuidancesIds.sort())}
+                    />
+                  </>
                 )}
-              </Row>
+              </div>
             </div >
           </Card.Body >
         </div >
