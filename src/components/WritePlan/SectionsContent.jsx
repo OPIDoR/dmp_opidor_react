@@ -157,7 +157,6 @@ function SectionsContent({ planId, readonly }) {
             {!readonly
               && <GuidanceSelector planId={planId}
                 researchOutputId={displayedResearchOutput?.id}
-                topic={displayedResearchOutput?.topic}
                 style={{ flexGrow: 1 }} />
             }
             {displayedResearchOutput?.template?.sections?.map((section) => (

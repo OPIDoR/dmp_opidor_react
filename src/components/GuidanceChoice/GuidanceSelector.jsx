@@ -31,7 +31,6 @@ const description = {
 function GuidanceSelector({
   planId,
   researchOutputId,
-  topic = null,
   context = 'research_output',
 }) {
   const { t } = useTranslation();
