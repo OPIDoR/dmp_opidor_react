@@ -67,6 +67,7 @@ function GuidanceSelector({
       })
       .catch((error) => { setError(error); })
       .finally(() => setLoading(false));
+      setSearchCriteria('');
   }, [planId, researchOutputId]);
 
   // Apply debounce whenever searchCriteria changes
