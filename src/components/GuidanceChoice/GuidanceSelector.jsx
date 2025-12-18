@@ -303,7 +303,7 @@ function GuidanceSelector({
                 </Row>
               )}
 
-              <Row>
+              <Row style={{ width: '50%', float: 'right', padding: '5px' }}>
                 {!loading && !error && guidancesData && (
                   <CustomButton
                     title={
