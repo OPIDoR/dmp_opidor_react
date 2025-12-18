@@ -24,10 +24,10 @@ function GuidanceGroupItem({
           {guidance_group_description && <ReactTooltip
             id={`guidance-group-${guidance_group_id}-tooltip`}
             key={`guidance-group-${guidance_group_id}-tooltip`}
-            style={{ width: '100%' }}
+            style={{ width: '100%', backgroundColor: '#d4e5ee' }}
             place="bottom"
             effect="solid"
-            variant="info"
+            variant="light"
           >
             <div dangerouslySetInnerHTML={{ __html: guidance_group_description }}></div>
           </ReactTooltip>}
