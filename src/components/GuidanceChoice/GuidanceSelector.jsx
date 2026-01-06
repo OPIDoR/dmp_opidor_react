@@ -137,7 +137,7 @@ function GuidanceSelector({
     toast.success(t('registrationSuccess'));
   };
 
-  const limitHasBeenReached = () => selectedGuidancesIds.length > GUIDANCES_GROUPS_LIMIT;
+  const limitHasBeenReached = () => selectedGuidancesIds.length >= GUIDANCES_GROUPS_LIMIT;
 
   const shouldGuidanceGroupDisplay = (guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
@@ -305,17 +305,18 @@ function GuidanceSelector({
                 </Row>
               )}
 
-              <div style={{ width: '50%', float: 'right', padding: '5px', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', padding: '5px', marginTop: '10px' }}>
+              <div style={{ width: '50%', float: 'left', color: 'var(--rust)', fontWeight: '600', alignSelf: 'center' }}>
+                {limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : null}
+              </div>
+              <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'space-between' }}>
                 {!loading && !error && guidancesData && (
                   <>
                     <CustomButton
-                      title={
-                        limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : t('save')
-                      }
+                      title={t('save')}
                       buttonColor='rust'
                       position="start"
-                      handleClick={limitHasBeenReached() ? null : handleSaveChoice}
-                      disabled={limitHasBeenReached()}
+                      handleClick={handleSaveChoice}
                     />
                     <CustomButton
                       title={t('reinit')}
@@ -327,6 +328,7 @@ function GuidanceSelector({
                   </>
                 )}
               </div>
+            </div>
             </div >
           </Card.Body >
         </div >

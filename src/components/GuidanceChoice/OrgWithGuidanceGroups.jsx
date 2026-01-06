@@ -24,7 +24,7 @@ function OrgWithGuidanceGroups({
           <label
             className={`${guidanceChoiceStyles.label}`}
             style={{ cursor: isLimitReached ? 'not-allowed' : 'pointer' }}
-            onClick={() => onSelect(guidanceGroups.map((group) => group.id))}
+            onClick={() => isLimitReached ? null : onSelect(guidanceGroups.map((group) => group.id))}
             key={`label-${org.id}-guidance-group`}
           >
             {org.name}
