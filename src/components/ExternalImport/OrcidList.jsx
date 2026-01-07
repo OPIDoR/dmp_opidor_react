@@ -70,7 +70,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
    */
   const setSelectedValue = (el) => {
     setSelectedPerson(selectedPerson === el.orcid ? null : el.orcid);
-    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, idType: "ORCID iD" };
+    let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, idType: "ORCID" };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
       const matchData = data.find(({ orcid }) => orcid.toLowerCase().includes(el.orcid.toLowerCase()));
