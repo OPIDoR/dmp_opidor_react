@@ -67,7 +67,7 @@ function GuidanceSelector({
       })
       .catch((error) => { setError(error); })
       .finally(() => setLoading(false));
-      setSearchCriteria('');
+    setSearchCriteria('');
   }, [planId, researchOutputId]);
 
   // Apply debounce whenever searchCriteria changes
@@ -139,10 +139,12 @@ function GuidanceSelector({
 
   const limitHasBeenReached = () => selectedGuidancesIds.length >= GUIDANCES_GROUPS_LIMIT;
 
-  const shouldGuidanceGroupDisplay = (guidanceGroup) => {
+  const shouldGuidanceGroupDisplay = (org, guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
-    if (debouncedCriteria && !guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return false;
-    return true;
+    if(!debouncedCriteria) return true;
+    if (guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return true;
+    if (org.name.toLowerCase().includes(debouncedCriteria)) return false;
+    return false;
   };
 
 
@@ -218,23 +220,27 @@ function GuidanceSelector({
                 />
               </div>
               {!loading && !error && guidancesData && (
-                <div className="row" style={{ padding: '10px' }}>
-                  <div className="col-md-12" style={{ padding: '10px 0', color: 'var(--rust)' }}>
-                    {t('filterAvailableGuidances')}
+                <>
+                  <div className="row" style={{ padding: '10px' }}>
+                    <div className="col-md-12" style={{ padding: '10px 0', color: 'var(--rust)' }}>
+                      {t('filterAvailableGuidances')}
+                    </div>
                   </div>
-                  <div className={`col-md-7 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
-                    <FormControl
-                      type="text" name="guidanceSearch" placeholder={t('selectAnOrganisation')}
-                      value={searchCriteria}
-                      onChange={(e) => setSearchCriteria(e.target.value)} />
+                  <div className="row" style={{ padding: '10px 0', width: '50%'}}>
+                    <div className={`col-md-11 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
+                      <FormControl
+                        type="text" name="guidanceSearch" placeholder={t('selectAnOrganisation')}
+                        value={searchCriteria}
+                        onChange={(e) => setSearchCriteria(e.target.value)} />
+                    </div>
+                    <div className="col-md-1" style={{ alignContent: 'center' }}>
+                      <FaXmark
+                        onClick={() => setSearchCriteria('')}
+                        className={formStyles.icon}
+                      />
+                    </div>
                   </div>
-                  <div className="col-md-1" style={{ alignContent: 'center' }}>
-                    <FaXmark
-                      onClick={() => setSearchCriteria('')}
-                      className={formStyles.icon}
-                    />
-                  </div>
-                </div>
+                </>
               )}
               {loading && <CustomSpinner />}
               {!loading && error && <CustomError error={error} />}
@@ -254,7 +260,7 @@ function GuidanceSelector({
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
                             />
                           ) : (
-                            shouldGuidanceGroupDisplay(org.guidance_groups[0])
+                            shouldGuidanceGroupDisplay(org, org.guidance_groups[0])
                             && <GuidanceGroupItem
                               key={index}
                               guidance_group_id={org.guidance_groups[0].id}
@@ -305,30 +311,30 @@ function GuidanceSelector({
                 </Row>
               )}
 
-            <div style={{ display: 'flex', padding: '5px', marginTop: '10px' }}>
-              <div style={{ width: '50%', float: 'left', color: 'var(--rust)', fontWeight: '600', alignSelf: 'center' }}>
-                {limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : null}
+              <div style={{ display: 'flex', padding: '5px', marginTop: '10px' }}>
+                <div style={{ width: '50%', float: 'left', color: 'var(--rust)', fontWeight: '600', alignSelf: 'center' }}>
+                  {limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : null}
+                </div>
+                <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'space-between' }}>
+                  {!loading && !error && guidancesData && (
+                    <>
+                      <CustomButton
+                        title={t('save')}
+                        buttonColor='rust'
+                        position="start"
+                        handleClick={handleSaveChoice}
+                      />
+                      <CustomButton
+                        title={t('reinit')}
+                        buttonColor='blue'
+                        position="end"
+                        handleClick={() => setSelectedGuidancesIds(savedGuidancesIds)}
+                        disabled={JSON.stringify(savedGuidancesIds.sort()) === JSON.stringify(selectedGuidancesIds.sort())}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-              <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'space-between' }}>
-                {!loading && !error && guidancesData && (
-                  <>
-                    <CustomButton
-                      title={t('save')}
-                      buttonColor='rust'
-                      position="start"
-                      handleClick={handleSaveChoice}
-                    />
-                    <CustomButton
-                      title={t('reinit')}
-                      buttonColor='blue'
-                      position="end"
-                      handleClick={() => setSelectedGuidancesIds(savedGuidancesIds)}
-                      disabled={JSON.stringify(savedGuidancesIds.sort()) === JSON.stringify(selectedGuidancesIds.sort())}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
             </div >
           </Card.Body >
         </div >
