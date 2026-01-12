@@ -235,7 +235,7 @@ function GuidanceSelector({
                       {t('filterAvailableGuidances')}
                     </div>
                   </div>
-                  <div className="row" style={{ padding: '10px 0', width: '50%'}}>
+                  <div className="row" style={{ padding: '10px 0', width: '50%' }}>
                     <div className={`col-md-11 ${formStyles.select_wrapper}`} style={{ alignContent: 'center' }}>
                       <FormControl
                         type="text" name="guidanceSearch" placeholder={t('selectAnOrganisation')}
@@ -265,7 +265,7 @@ function GuidanceSelector({
                               key={index}
                               org={org}
                               isLimitReached={limitHasBeenReached()}
-                              shouldGuidanceGroupDisplay={shouldGuidanceGroupDisplay}
+                              shouldGuidanceGroupDisplay={(guidance_group) => shouldGuidanceGroupDisplay(org, guidance_group)}
                               onSelect={(guidance_group_id) => handleSelectGuidances(guidance_group_id, 'add')}
                             />
                           ) : (

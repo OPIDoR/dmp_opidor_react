@@ -6,7 +6,7 @@ import GuidanceGroupItem from './GuidanceGroupItem';
 function OrgWithGuidanceGroups({
   org, isLimitReached, shouldGuidanceGroupDisplay, getStatus = null, onSelect,
 }) {
-  const guidanceGroups = org.guidance_groups.filter((group) => shouldGuidanceGroupDisplay(org, group));
+  const guidanceGroups = org.guidance_groups.filter((group) => shouldGuidanceGroupDisplay(group));
   if (guidanceGroups.length === 0) {
     return null;
   }
