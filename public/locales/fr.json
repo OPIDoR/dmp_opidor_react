@@ -118,7 +118,7 @@
   "guidance": "Recommandations",
   "shortName": "Nom abrégé",
   "name": "Nom",
-  "editOutput": "Modifier le produit de recherche",
+  "editResearchOutput": "Modifier le produit de recherche",
   "createOrImportOutput": "Créer ou importer un produit de recherche",
   "choiceMode": "Choix de la modalité",
   "outputTypeWarning": "Le choix du <strong>type</strong> pour un produit de recherche conditionne l'affichage des questions spécifiques à sa gestion.<br /><strong>Il n'est plus possible de changer le type d'un produit de recherche après l'avoir ajouté.</strong>",

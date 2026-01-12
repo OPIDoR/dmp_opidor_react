@@ -15,7 +15,7 @@ function ResearchOutputModal({
   return (
     <Modal size="xl" show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{t(edit ? 'Edit research output' : 'Add a research output')}</Modal.Title>
+        <Modal.Title>{t(edit ? 'editResearchOutput' : 'addAResearchOutput')}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ padding: '20px !important' }}>
         <ResearchOutputForm planId={planId} handleClose={handleClose} edit={edit}/>

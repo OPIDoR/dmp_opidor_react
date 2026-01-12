@@ -145,10 +145,7 @@ function FunderImport({
     });
     document.getElementById('plan-title').innerHTML = response.data.fragment.meta.title;
     setPersons(response.data.persons);
-    toast.success(t(
-      '\'{{projectTitle}}\' project data has successfully been imported',
-      { projectTitle: selectedProject.title },
-    ), { style: { maxWidth: 500 } });
+    toast.success(t('importSuccessProject', { projectTitle: selectedProject.title }), { style: { maxWidth: 500 } });
 
     setLoading(false);
   };
