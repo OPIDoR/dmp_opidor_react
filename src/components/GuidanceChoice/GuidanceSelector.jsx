@@ -111,13 +111,22 @@ function GuidanceSelector({
   /**
    * The function handles saving a choice and reloading a component in a JavaScript React application.
    */
-  const handleSaveChoice = async () => {
+  const handleSaveChoice = async (saveContext = 'reinit') => {
     let response;
     try {
-      const postGuidanceGroups = context === 'plan'
-        ? guidances.postPlanGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: researchOutputId }, planId)
-        : guidances.postResearchOutputGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, researchOutputId);
-      response = await postGuidanceGroups;
+      let updateGuidanceGroups;
+      switch (saveContext) {
+        case 'plan':
+          updateGuidanceGroups = guidances.postPlanGuidanceGroups({ guidance_group_ids: selectedGuidancesIds, ro_id: researchOutputId }, planId);
+          break;
+        case 'research_output':
+          updateGuidanceGroups = guidances.postResearchOutputGuidanceGroups({ guidance_group_ids: selectedGuidancesIds }, researchOutputId);
+          break;
+        case 'reinit':
+          updateGuidanceGroups = guidances.reinitResearchOutputGuidanceGroups(researchOutputId);
+          break;
+      }
+      response = await updateGuidanceGroups;
     } catch (error) {
       console.log(error);
       return toast.error(t('errorSavingSelectedGuidances'));
@@ -141,7 +150,7 @@ function GuidanceSelector({
 
   const shouldGuidanceGroupDisplay = (org, guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
-    if(!debouncedCriteria) return true;
+    if (!debouncedCriteria) return true;
     if (guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return true;
     if (org.name.toLowerCase().includes(debouncedCriteria)) return false;
     return false;
@@ -322,15 +331,15 @@ function GuidanceSelector({
                         title={t('save')}
                         buttonColor='rust'
                         position="start"
-                        handleClick={handleSaveChoice}
+                        handleClick={() => handleSaveChoice(context)}
                       />
-                      <CustomButton
-                        title={t('reinit')}
-                        buttonColor='blue'
-                        position="end"
-                        handleClick={() => setSelectedGuidancesIds(savedGuidancesIds)}
-                        disabled={JSON.stringify(savedGuidancesIds.sort()) === JSON.stringify(selectedGuidancesIds.sort())}
-                      />
+                      {context === 'research_output' &&
+                        <CustomButton
+                          title={t('reinit')}
+                          buttonColor='blue'
+                          position="end"
+                          handleClick={() => handleSaveChoice('reinit')}
+                        />}
                     </>
                   )}
                 </div>

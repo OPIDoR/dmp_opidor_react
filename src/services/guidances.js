@@ -11,6 +11,8 @@ const postPlanGuidanceGroups = async (jsonObject, planId) => axios.post(`/plans/
 
 const getResearchOutputGuidanceGroups = async (researchOutputId) => axios.get(`/research_outputs/${researchOutputId}/guidance_groups`);
 
+const reinitResearchOutputGuidanceGroups = async (researchOutputId) => axios.get(`/research_outputs/${researchOutputId}/reinit_guidance_groups`);
+
 const postResearchOutputGuidanceGroups = async (jsonObject, researchOutputId) => axios.post(`/research_outputs/${researchOutputId}/guidance_groups`, jsonObject, { headers: createHeaders({}, true) });
 
 export default {
@@ -18,6 +20,7 @@ export default {
   getGuidances,
   getPlanGuidanceGroups,
   postPlanGuidanceGroups,
-  getResearchOutputGuidanceGroups,
+  getResearchOutputGuidanceGroups, 
+  reinitResearchOutputGuidanceGroups,
   postResearchOutputGuidanceGroups,
 };
