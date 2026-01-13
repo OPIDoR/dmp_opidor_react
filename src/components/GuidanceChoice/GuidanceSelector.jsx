@@ -152,7 +152,7 @@ function GuidanceSelector({
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
     if (!debouncedCriteria) return true;
     if (guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return true;
-    if (org.name.toLowerCase().includes(debouncedCriteria)) return false;
+    if (org.name.toLowerCase().includes(debouncedCriteria)) return true;
     return false;
   };
 
