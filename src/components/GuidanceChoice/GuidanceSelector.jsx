@@ -328,19 +328,19 @@ function GuidanceSelector({
                 <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'space-between' }}>
                   {!loading && !error && guidancesData && (
                     <>
-                      <CustomButton
-                        title={t('save')}
-                        buttonColor='rust'
-                        position="start"
-                        handleClick={() => handleSaveChoice(context)}
-                      />
                       {context === 'research_output' &&
                         <CustomButton
                           title={t('reinit')}
                           buttonColor='blue'
-                          position="end"
+                          position="start"
                           handleClick={() => handleSaveChoice('reinit')}
                         />}
+                      <CustomButton
+                        title={t('save')}
+                        buttonColor='rust'
+                        position="end"
+                        handleClick={() => handleSaveChoice(context)}
+                      />
                     </>
                   )}
                 </div>
