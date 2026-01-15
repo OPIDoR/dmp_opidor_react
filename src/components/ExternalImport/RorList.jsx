@@ -81,7 +81,7 @@ function RorList({
     setSelectedOrg(selectedOrg === el.ror ? null : el.ror);
     const obj = {
       affiliationId: el.ror,
-      affiliationName: el?.name?.[el?.country?.code.toLowerCase()] || el?.name[Object.keys(el?.name).at(0)],
+      affiliationName: el?.name?.[localeCode || el?.country?.code.toLowerCase()] || el?.name[Object.keys(el?.name).at(0)],
       affiliationIdType: el?.type,
       acronyms: Array.isArray(el.acronyms) ? el.acronyms?.at(0) : el.acronyms,
     };
