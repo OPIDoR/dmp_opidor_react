@@ -1,4 +1,5 @@
 import { planCreation } from '../../../services';
+import { normalize } from '../../../utils/utils';
 
 export default async function getTemplates(opts, onlyStructured = false) {
   const templates = {
@@ -18,7 +19,7 @@ export default async function getTemplates(opts, onlyStructured = false) {
   templates.default = Array.isArray(currentTemplatesRes?.data)
     ? currentTemplatesRes?.data
     : [currentTemplatesRes?.data]
-      .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+      .filter(({ locale }) => normalize(locale) === normalize(opts.templateLanguage))
       .sort((a, b) => b?.structured - a?.structured);
 
   let orgsRes;
@@ -44,9 +45,9 @@ export default async function getTemplates(opts, onlyStructured = false) {
       type: 'org',
       templates: orgTemplatesRes?.data
         .map((obj) => ({ ...obj, type: 'org' }))
-        .sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
+        .sort((a, b) => normalize(a.title).localeCompare(normalize(b.title)))
         .filter(({ id }) => id !== defaultTemplateID)
-        .filter(({ locale }) => locale?.toLowerCase() === opts.templateLanguage.toLowerCase())
+        .filter(({ locale }) => normalize(locale) === normalize(opts.templateLanguage))
         .sort((a, b) => b?.structured - a?.structured) || [],
       selected: false,
     });

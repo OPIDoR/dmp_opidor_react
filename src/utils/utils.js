@@ -90,3 +90,9 @@ export function flattenObject(obj, prefix = '', result = {}) {
   }
   return result;
 }
+
+export function normalize(str) {
+  return str?.normalize("NFD")              // décompose les caractères accentués
+    .replace(/[\u0300-\u036f]/g, "") // supprime les diacritiques
+    .toLowerCase();               // optionnel : ignore la casse
+}

@@ -9,7 +9,7 @@ import { externalServices, service } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner';
 import CustomError from '../Shared/CustomError';
 import Pagination from '../Shared/Pagination';
-import { flattenObject } from '../../utils/utils';
+import { flattenObject, normalize } from '../../utils/utils';
 
 const locales = {
   en: 'en_GB',
@@ -88,7 +88,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       idType: 'DOI',
       datasetId: el?.attributes?.doi,
     };
-    const matchData = data?.find(({ attributes }) => attributes?.doi.toLowerCase() === el?.attributes?.doi.toLowerCase());
+    const matchData = data?.find(({ attributes }) => normalize(attributes?.doi) === normalize(el?.attributes?.doi));
 
     if (matchData) {
       const flattenedMapping = flattenObject(mapping);
@@ -104,7 +104,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
 
     if (obj?.license?.licenseName) {
       if (registry) {
-        const res = registry?.find(({ licenseName }) => licenseName?.toLowerCase() === obj?.license?.licenseName.toLowerCase());
+        const res = registry?.find(({ licenseName }) => normalize(licenseName) === normalize(obj?.license?.licenseName));
         if (res) {
           const { licenseName, licenseUrl } = res;
           set(obj, 'license', {

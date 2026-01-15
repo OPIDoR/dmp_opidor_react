@@ -9,7 +9,7 @@ import { externalServices } from '../../services';
 import CustomSpinner from '../Shared/CustomSpinner';
 import CustomError from '../Shared/CustomError';
 import Pagination from '../Shared/Pagination';
-import { flattenObject } from '../../utils/utils';
+import { flattenObject, normalize } from '../../utils/utils';
 
 function RorList({
   fragment, setFragment, mapping = {}, locale,
@@ -87,7 +87,7 @@ function RorList({
     };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
-      const matchData = data.find(({ ror }) => ror.toLowerCase().includes(el.ror.toLowerCase()));
+      const matchData = data.find(({ ror }) => normalize(ror)?.includes(normalize(el.ror)));
 
       if (matchData) {
         const flattenedMapping = flattenObject(mapping);

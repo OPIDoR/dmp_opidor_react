@@ -7,7 +7,7 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 
 import { CustomButton } from '../../Styled';
 import { CustomSpinner } from '../../Shared';
-import { clearLocalStorage } from '../../../utils/utils';
+import { clearLocalStorage, normalize } from '../../../utils/utils';
 import getTemplates from './data';
 import { planCreation } from '../../../services';
 
@@ -77,7 +77,7 @@ function Import({
       }));
 
       setTemplates(templates);
-      handleSelectedTemplate(templates.find(({ label }) => label.toLowerCase().startsWith('Science Europe'.toLowerCase())));
+      handleSelectedTemplate(templates.find(({ label }) => normalize(label)?.startsWith('science europe')));
 
       setLoading(false);
     };

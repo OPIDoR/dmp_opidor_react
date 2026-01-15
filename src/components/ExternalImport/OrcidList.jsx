@@ -7,7 +7,7 @@ import { externalServices } from '../../services';
 import CustomError from '../Shared/CustomError';
 import CustomSpinner from '../Shared/CustomSpinner';
 import Pagination from '../Shared/Pagination';
-import { flattenObject } from '../../utils/utils';
+import { flattenObject, normalize } from '../../utils/utils';
 
 import { GlobalContext } from '../context/Global';
 
@@ -74,7 +74,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
     let obj = { firstName: el.givenNames, lastName: el?.familyNames, personId: el.orcid, idType: "ORCID" };
 
     if (mapping && Object.keys(mapping)?.length > 0) {
-      const matchData = data.find(({ orcid }) => orcid.toLowerCase().includes(el.orcid.toLowerCase()));
+      const matchData = data.find(({ orcid }) => normalize(orcid)?.includes(normalize(el.orcid)));
 
       if (matchData) {
         const flattenedMapping = flattenObject(mapping);

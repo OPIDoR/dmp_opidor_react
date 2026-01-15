@@ -17,7 +17,7 @@ import CustomError from '../Shared/CustomError';
 import CustomSpinner from '../Shared/CustomSpinner';
 import CustomSelect from '../Shared/CustomSelect';
 import { filterOptions } from '../../utils/GeneratorUtils';
-import { getErrorMessage } from '../../utils/utils';
+import { getErrorMessage, normalize } from '../../utils/utils';
 
 export const ButtonSave = styled.button`+
 margin: 10px 2px 2px 0px;
@@ -207,7 +207,7 @@ function FunderImport({
                     />
                   </div>
                 )}
-                {!isClassic && selectedFunder?.apiClient?.toLowerCase() === 'anr' && <div className={styles.anr_sharing}>
+                {!isClassic && normalize(selectedFunder?.apiClient) === 'anr' && <div className={styles.anr_sharing}>
                   {t('anrShareInvitation')}
                 </div>}
                 {fundedProjects.length > 0 && (

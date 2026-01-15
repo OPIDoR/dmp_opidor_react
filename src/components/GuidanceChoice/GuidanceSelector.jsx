@@ -22,6 +22,7 @@ import OrgWithGuidanceGroups from './OrgWithGuidanceGroups.jsx';
 import * as guidanceChoiceStyles from '../assets/css/guidance_choice.module.css';
 import * as formStyles from '../assets/css/form.module.css';
 import debounce from 'lodash.debounce';
+import { normalize } from '../../utils/utils.js';
 
 const description = {
   fontFamily: '"Helvetica Neue", sans-serif',
@@ -74,7 +75,7 @@ function GuidanceSelector({
   useEffect(() => {
     // Create a debounced function that updates debouncedCriteria
     const handler = debounce(() => {
-      setDebouncedCriteria(searchCriteria.toLowerCase());
+      setDebouncedCriteria(normalize(searchCriteria));
     }, 500);
 
     // Call the debounced function
@@ -151,8 +152,8 @@ function GuidanceSelector({
   const shouldGuidanceGroupDisplay = (org, guidanceGroup) => {
     if (selectedGuidancesIds.includes(guidanceGroup.id)) return false;
     if (!debouncedCriteria) return true;
-    if (guidanceGroup.name.toLowerCase().includes(debouncedCriteria)) return true;
-    if (org.name.toLowerCase().includes(debouncedCriteria)) return true;
+    if (normalize(guidanceGroup.name).includes(debouncedCriteria)) return true;
+    if (normalize(org.name).includes(debouncedCriteria)) return true;
     return false;
   };
 
