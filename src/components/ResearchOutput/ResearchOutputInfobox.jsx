@@ -7,7 +7,7 @@ import { BiDuplicate } from 'react-icons/bi';
 import { useTranslation } from 'react-i18next';
 
 import { GlobalContext } from '../context/Global';
-import { displayPersonalData } from '../../utils/GeneratorUtils';
+import { displayPersonalData, displayTopics } from '../../utils/GeneratorUtils';
 
 function ResearchOutputInfobox({
   handleEdit, handleDelete, handleDuplicate, readonly,
@@ -107,9 +107,12 @@ function ResearchOutputInfobox({
           <li>
             {t('type')} : <strong>{t(displayedResearchOutput.type || '-')}</strong>
           </li>
-          <li>
-            {t('topic')} : <strong>{t(displayedResearchOutput.topic)}</strong>
-          </li>
+
+          {displayedResearchOutput?.type && displayTopics(displayedResearchOutput.type) && (
+            <li>
+              {t('topic')} : <strong>{t(displayedResearchOutput.topic)}</strong>
+            </li>
+          )}
           {displayedResearchOutput?.type && displayPersonalData(displayedResearchOutput.type) && (
             <li>
               {t('containsPersonalData')} : <strong>{displayedResearchOutput.configuration.hasPersonalData ? t('yes') : t('no')}</strong>

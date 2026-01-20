@@ -10,7 +10,7 @@ import DOMPurify from 'dompurify';
 import * as stylesForm from '../assets/css/form.module.css';
 import { GlobalContext } from '../context/Global';
 import { researchOutput, service } from '../../services';
-import { createOptions, displayPersonalData, researchOutputTypeToDataType } from '../../utils/GeneratorUtils';
+import { createOptions, displayPersonalData, displayTopics, researchOutputTypeToDataType } from '../../utils/GeneratorUtils';
 import CustomSelect from '../Shared/CustomSelect';
 import { getErrorMessage } from '../../utils/utils';
 import TooltipInfoIcon from '../FormComponents/TooltipInfoIcon';
@@ -239,9 +239,9 @@ function AddResearchOutput({
             marginBottom: '10px',
             color: 'var(--rust)',
           }}
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize([t('outputTypeWarning')]),
-          }} />
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize([t('outputTypeWarning')]),
+            }} />
         )}
         {typeOptions && (
           <CustomSelect
@@ -254,34 +254,35 @@ function AddResearchOutput({
           />
         )}
       </div>
-      <div className="form-group">
-        <div className={stylesForm.label_form}>
-          <label data-tooltip-id={topicTooltipId}>
-            {t('topic')}
-            <TooltipInfoIcon />
-            <ReactTooltip
-              id={topicTooltipId}
-              place="bottom"
-              effect="solid"
-              variant="info"
-              content={<Trans
-                t={t}
-                defaults="Topic tooltip PLACEHOLDER"
-              />}
+      {type && displayTopics(type) && (
+        <div className="form-group">
+          <div className={stylesForm.label_form}>
+            <label data-tooltip-id={topicTooltipId}>
+              {t('topic')}
+              <TooltipInfoIcon />
+              <ReactTooltip
+                id={topicTooltipId}
+                place="bottom"
+                effect="solid"
+                variant="info"
+                content={<Trans
+                  t={t}
+                  defaults="Topic tooltip PLACEHOLDER"
+                />}
+              />
+            </label>
+          </div>
+          {topicOptions && (
+            <CustomSelect
+              onSelectChange={(e) => setSelectedTopic(topicOptions.find(({ value }) => value === e.value))}
+              options={topicOptions}
+              selectedOption={selectedTopic}
+              placeholder={t('Select a value from the list')}
+              overridable={false}
+              isDisabled={disableTypeChange || loading}
             />
-          </label>
-        </div>
-        {topicOptions && (
-          <CustomSelect
-            onSelectChange={(e) => setSelectedTopic(topicOptions.find(({ value }) => value === e.value))}
-            options={topicOptions}
-            selectedOption={selectedTopic}
-            placeholder={t('Select a value from the list')}
-            overridable={false}
-            isDisabled={disableTypeChange || loading}
-          />
-        )}
-      </div>
+          )}
+        </div>)}
       {type && displayPersonalData(type) && (
         <div className="form-group">
           <div className={stylesForm.label_form}>
