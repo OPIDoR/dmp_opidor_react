@@ -325,7 +325,7 @@ function GuidanceSelector({
                 <div style={{ width: '50%', float: 'left', color: 'var(--rust)', fontWeight: '600', alignSelf: 'center' }}>
                   {limitHasBeenReached() ? t('guidanceLimitReached', { limit: GUIDANCES_GROUPS_LIMIT }) : null}
                 </div>
-                <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ width: '50%', float: 'right', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
                   {!loading && !error && guidancesData && (
                     <>
                       {context === 'research_output' &&
