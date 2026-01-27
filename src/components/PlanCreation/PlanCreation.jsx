@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Step, Stepper } from 'react-form-stepper';
+import { Step, Stepper } from './BootstrapStepper.jsx';
 import { Toaster } from 'react-hot-toast';
 
 import { CustomButton } from '../Styled';
@@ -12,7 +12,6 @@ import {
   LangSelection,
   Import,
 } from './Steps';
-import * as styles from '../assets/css/main.module.css';
 import * as stepperStyles from '../assets/css/stepper.module.css';
 import { GlobalContext } from '../context/Global';
 
@@ -182,17 +181,8 @@ function PlanCreation({ locale = 'en_GB' }) {
       <div className="row justify-content-center">
         <div className="col-12">
           <h1>{t('createPlan')}</h1>
-          <div className={`${styles.main} ${stepperStyles.stepper_container}`}>
-            <Stepper
-              activeStep={currentStep}
-              connectorStateColors
-              styleConfig={{
-                activeBgColor: '#c6503d',
-                size: 55,
-                labelFontSize: 18,
-              }}
-              className={stepperStyles.stepper_steps}
-            >
+          <div className={`${stepperStyles.main}`}>
+            <Stepper activeStep={currentStep}>
               {
                 steps.filter(({ actions }) => actions.includes(currentAction)).map(({ label, value }, index) => (
                   <Step
