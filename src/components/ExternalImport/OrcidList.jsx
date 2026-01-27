@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
-import get from 'lodash.get';
 import set from 'lodash.set';
 import { externalServices } from '../../services';
 import CustomError from '../Shared/CustomError';
@@ -80,7 +79,7 @@ function OrcidList({ fragment, setFragment, mapping = {} }) {
         const flattenedMapping = flattenObject(mapping);
 
         for (const [key, value] of Object.entries(flattenedMapping)) {
-          set(obj, key, get(matchData, value));
+          set(obj, key, matchData?.[value] || '');
         }
       }
     }

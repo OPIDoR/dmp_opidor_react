@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaLink } from 'react-icons/fa6';
 import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
@@ -96,7 +95,7 @@ function RorList({
           if (key === 'name') {
             set(obj, value, el?.name[el?.country?.code?.toLowerCase()] || el?.name?.[Object.keys(el?.name).at(0)]) || '';
           } else {
-            set(obj, value, get(matchData, key) || '');
+            set(obj, value, matchData?.[key] || '');
           }
         }
       }

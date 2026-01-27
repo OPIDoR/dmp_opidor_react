@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import get from 'lodash.get';
 import set from 'lodash.set';
 import { FaCheckCircle, FaPlusSquare } from 'react-icons/fa';
 import Select from 'react-select';
@@ -94,7 +93,7 @@ function Metadore({ fragment, setFragment, mapping = {} }) {
       const flattenedMapping = flattenObject(mapping);
 
       for (const [key, value] of Object.entries(flattenedMapping)) {
-        set(obj, key, get(matchData, value));
+        set(obj, key, matchData?.[value] || '');
       }
     }
 
