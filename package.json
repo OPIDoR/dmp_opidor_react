@@ -32,7 +32,6 @@
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^19.1.0",
-    "react-form-stepper": "^2.0.3",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.0",
     "react-i18next": "^16.0.0",
