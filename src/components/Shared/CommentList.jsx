@@ -185,7 +185,7 @@ function CommentList({
     setComments([newNote, ...comments]);
 
     if(data.answer_created) {
-      setAnswer(data.answer);
+      setAnswer && setAnswer(data.answer);
     }
 
     return toast.success(t('Comment sent successfully.'));
